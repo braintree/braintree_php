@@ -5,6 +5,7 @@ require_once 'CreditCardTest.php';
 require_once 'CustomerTest.php';
 require_once 'TransactionTest.php';
 require_once 'Error/ErrorCollectionTest.php';
+require_once 'Result/ErrorTest.php';
 
 class Braintree_AllTests {
 
@@ -22,6 +23,7 @@ class Braintree_AllTests {
         $suite->addTestSuite('Braintree_CustomerTest');
         $suite->addTestSuite('Braintree_TransactionTest');
         $suite->addTestSuite('Braintree_Error_ErrorCollectionTest');
+        $suite->addTestSuite('Braintree_Result_ErrorTest');
         return $suite;
     }
 }
