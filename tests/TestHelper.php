@@ -19,7 +19,7 @@ require_once 'PHPUnit/Framework.php';
 
 set_include_path(
   get_include_path() . PATH_SEPARATOR .
-  realpath(dirname(__FILE__)) . '/../vendor/ZendFramework-1.10.1-minimal/library'
+  realpath(dirname(__FILE__)) . '/../vendor/ZendFramework-1.10.2-minimal/library'
 );
 
 set_include_path(

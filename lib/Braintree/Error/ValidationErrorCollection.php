@@ -44,7 +44,18 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
 
     }
 
-    public function forKey($key) {
+    public function deepSize()
+    {
+        $total = sizeof($this->_errors);
+        foreach($this->_nested as $_nestedErrors)
+        {
+            $total = $total + $_nestedErrors->deepSize();
+        }
+        return $total;
+    }
+
+    public function forKey($key)
+    {
         return isset($this->_nested[$key]) ? $this->_nested[$key] : null;
     }
 
