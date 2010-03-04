@@ -46,6 +46,18 @@ class Braintree_Result_Error
     */
    public $success = false;
 
+   public function valueForHtmlField($field)
+   {
+       $pieces = preg_split("/[\[\]]+/", $field, 0, PREG_SPLIT_NO_EMPTY);
+       $params = $this->_params;
+       foreach(array_slice($pieces, 0, -1) as $key) {
+           $params = $params[Braintree_Util::delimiterToCamelCase($key)];
+       }
+       $finalKey = Braintree_Util::delimiterToCamelCase(end($pieces));
+       $fieldValue = isset($params[$finalKey]) ? $params[$finalKey] : null;
+       return $fieldValue;
+   }
+
    /**
     * overrides default constructor
     * @param array $response gateway response array
