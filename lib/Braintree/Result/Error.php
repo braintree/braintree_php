@@ -46,6 +46,14 @@ class Braintree_Result_Error
     */
    public $success = false;
 
+    /**
+     * return original value for a field
+     * For example, if a user tried to submit 'invalid-email' in the html field transaction[customer][email],
+     * $result->valueForHtmlField("transaction[customer][email]") would yield "invalid-email"
+     *
+     * @param string $field
+     * @return string
+     */
    public function valueForHtmlField($field)
    {
        $pieces = preg_split("/[\[\]]+/", $field, 0, PREG_SPLIT_NO_EMPTY);

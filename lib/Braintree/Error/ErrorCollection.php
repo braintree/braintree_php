@@ -56,6 +56,13 @@ class Braintree_Error_ErrorCollection
         return $this->_errors->forKey($key);
     }
 
+    /**
+     * return errors for the passed html field.
+     * For example, $result->errors->onHtmlField("transaction[customer][last_name]")
+     *
+     * @param string $field
+     * @return array
+     */
     public function onHtmlField($field)
     {
         $pieces = preg_split("/[\[\]]+/", $field, 0, PREG_SPLIT_NO_EMPTY);
