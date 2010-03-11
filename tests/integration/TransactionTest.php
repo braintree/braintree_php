@@ -17,6 +17,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('authorized', $transaction->status);
         $this->assertEquals('sale', $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
+        $this->assertNotNull($transaction->processorAuthorizationCode);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
     }
