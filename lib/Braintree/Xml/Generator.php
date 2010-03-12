@@ -48,7 +48,8 @@ class Braintree_Xml_Generator
         // send the output as string
         return $writer->outputMemory();
     }
-    /** 
+
+    /**
      * Construct XML elements with attributes from an associative array.
      *
      * @access protected
@@ -56,7 +57,7 @@ class Braintree_Xml_Generator
      * @param object $writer XMLWriter object
      * @param array $aData contains attributes and values
      * @return none
-     */ 
+     */
     private static function _createElementsFromArray(&$writer, $aData, $parentElementName)
     {
         if (!is_array($aData)) {
@@ -106,16 +107,11 @@ class Braintree_Xml_Generator
             return array('type', 'integer', $value);
         }
         if (is_bool($value)) {
-            return array('type', 'boolean', $value);
+            return array('type', 'boolean', ($value ? 'true' : 'false'));
         }
         if ($value === NULL) {
             return array('nil', 'true', $value);
-    }
-        // attempt to convert to a datetime if nothing else found
-        // $possibleDateTime = self::_castDateTime($value);
-        // if ($possibleDateTime !== FALSE) {
-        //     return array('type', 'datetime', $possibleDateTime);
-        // }
+        }
     }
     /**
      * converts datetime back to xml schema format
