@@ -39,5 +39,24 @@ class Braintree_Error_ErrorCollectionTest extends PHPUnit_Framework_TestCase
         $errors = $result->errors->onHtmlField('customer[credit_card][billing_address][country_name]');
         $this->assertEquals('91803', $errors[0]->code);
     }
+
+    function testOnHtmlField_returnsEmptyArrayIfNone()
+    {
+        $result = Braintree_Customer::create(array(
+            'email' => 'invalid',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'billingAddress' => array(
+                    'streetAddress' => '1 E Main St'
+                )
+            )
+        ));
+        $this->assertEquals(false, $result->success);
+        $errors = $result->errors->onHtmlField('customer[email]');
+        $this->assertEquals('81604', $errors[0]->code);
+        $this->assertEquals(array(), $result->errors->onHtmlField('customer[credit_card][number]'));
+        $this->assertEquals(array(), $result->errors->onHtmlField('customer[credit_card][billing_address][country_name]'));
+    }
 }
 ?>
