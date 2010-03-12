@@ -47,6 +47,14 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         return $result->subscription;
     }
 
+    function testCreate_doesNotAcceptBadAttributes()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad');
+        $result = Braintree_Subscription::create(array(
+            'bad' => 'value'
+        ));
+    }
+
     function testCreate_whenSuccessful()
     {
         $creditCard = $this->createCreditCard();
@@ -157,7 +165,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('sale', $transaction->type);
     }
 
-    function testCraete_doesNotCreateTransactionIfTrialPeriod()
+    function testCreate_doesNotCreateTransactionIfTrialPeriod()
     {
         $creditCard = $this->createCreditCard();
         $plan = $this->trialPlan();
@@ -231,6 +239,14 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($newId, $result->subscription->id);
         $this->assertEquals($newPlan['id'], $result->subscription->planId);
         $this->assertEquals('999.99', $result->subscription->price);
+    }
+
+    function testUpdate_doesNotAcceptBadAttributes()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad');
+        $result = Braintree_Subscription::update('id', array(
+            'bad' => 'value'
+        ));
     }
 
     function testUpdate_createsTransactionOnProration()

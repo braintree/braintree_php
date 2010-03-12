@@ -13,8 +13,8 @@ class Braintree_Subscription extends Braintree
 
     public static function create($attributes)
     {
+        Braintree_Util::verifyKeys(self::allowedAttributes(), $attributes);
         $response = Braintree_Http::post('/subscriptions', array('subscription' => $attributes));
-
         return self::_verifyGatewayResponse($response);
     }
 
@@ -38,6 +38,7 @@ class Braintree_Subscription extends Braintree
 
     public static function update($subscriptionId, $attributes)
     {
+        Braintree_Util::verifyKeys(self::allowedAttributes(), $attributes);
         $response = Braintree_Http::put(
             '/subscriptions/' . $subscriptionId,
             array('subscription' => $attributes)
@@ -49,6 +50,14 @@ class Braintree_Subscription extends Braintree
     {
         $response = Braintree_Http::put('/subscriptions/' . $subscriptionId . '/cancel');
         return self::_verifyGatewayResponse($response);
+    }
+
+    private static function allowedAttributes()
+    {
+        return array(
+            'paymentMethodToken', 'planId', 'id', 'price', 'trialPeriod',
+            'trialDuration', 'trialDurationUnit'
+        );
     }
 
     public function __get($name)
