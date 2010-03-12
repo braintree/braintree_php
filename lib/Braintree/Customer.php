@@ -30,11 +30,6 @@
  */
 class Braintree_Customer extends Braintree
 {
-        /* public class methods */
-
-    /**
-     * 
-     */
     public static function all($options = null)
     {
         $page = isset($options['page']) ? $options['page'] : 1;
@@ -52,6 +47,7 @@ class Braintree_Customer extends Braintree
 
         return new Braintree_PagedCollection($attributes, $pager);
     }
+
     /**
      * Creates a customer using the given +attributes+. If <tt>:id</tt> is not passed,
      * the gateway will generate it.
@@ -182,7 +178,7 @@ class Braintree_Customer extends Braintree
         }
 
     }
- 
+
     /**
      * credit a customer for the passed transaction
      *
@@ -339,6 +335,7 @@ class Braintree_Customer extends Braintree
     /**
      * sets instance properties from an array of values
      *
+     * @ignore
      * @access protected
      * @param array $customerAttribs array of customer data
      * @return none
@@ -349,7 +346,7 @@ class Braintree_Customer extends Braintree
         $this->_attributes = array_merge($this->_attributes, $customerAttribs);
 
         // map each address into its own object
-        $addressArray = null;
+        $addressArray = array();
         if (isset($customerAttribs['addresses'])) {
 
             foreach ($customerAttribs['addresses'] AS $address) {
@@ -359,7 +356,7 @@ class Braintree_Customer extends Braintree
         $this->_set('addresses', $addressArray);
 
         // map each creditcard into its own object
-        $ccArray = null;
+        $ccArray = array();
         if (isset($customerAttribs['creditCards'])) {
             foreach ($customerAttribs['creditCards'] AS $creditCard) {
                 $ccArray[] = Braintree_CreditCard::factory($creditCard);
@@ -367,23 +364,6 @@ class Braintree_Customer extends Braintree
         }
         $this->_set('creditCards', $ccArray);
 
-    }
-
-    /**
-     * returns private/nonexistent instance properties
-     * @ignore
-     * @access public
-     * @param string $name property name
-     * @return mixed contents of instance properties
-     */
-    public function __get($name)
-    {
-        if (array_key_exists($name, $this->_attributes)) {
-            return $this->_attributes[$name];
-        }
-        else {
-            return parent::__get($name);
-        }
     }
 
     /**
@@ -426,7 +406,7 @@ class Braintree_Customer extends Braintree
      * @access protected
      * @var array registry of customer data
      */
-    private $_attributes = array(
+    protected $_attributes = array(
         'addresses'   => '',
         'company'     => '',
         'creditCards' => '',
@@ -444,6 +424,7 @@ class Braintree_Customer extends Braintree
     /**
      * sets private properties
      * this function is private so values are read only
+     * @ignore
      * @access protected
      * @param string $key
      * @param mixed $value
@@ -455,6 +436,7 @@ class Braintree_Customer extends Braintree
 
     /**
      * verifies that a valid customer id is being used
+     * @ignore
      * @param string customer id
      * @throws InvalidArgumentException
      */
@@ -476,7 +458,8 @@ class Braintree_Customer extends Braintree
 
     /**
      * sends the create request to the gateway
-     *  
+     *
+     * @ignore
      * @param string $url
      * @param array $params
      * @return mixed
@@ -490,6 +473,7 @@ class Braintree_Customer extends Braintree
     /**
      * sends the update request to the gateway
      *
+     * @ignore
      * @param string $url
      * @param array $params
      * @return mixed
@@ -509,6 +493,7 @@ class Braintree_Customer extends Braintree
      * encapsulates a Braintree_Errors object inside a Result_Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      * 
+     * @ignore
      * @param array $response gateway response values
      * @return object Result_Successful or Result_Error
      * @throws Braintree_Exception_Unexpected
@@ -533,6 +518,7 @@ class Braintree_Customer extends Braintree
      *  factory method: returns an instance of Braintree_Customer
      *  to the requesting method, with populated properties
      *
+     * @ignore
      * @return object instance of Braintree_Customer
      */
     public static function factory($attributes)

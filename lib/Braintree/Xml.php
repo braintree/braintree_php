@@ -3,16 +3,12 @@
  * Braintree Xml parser and generator
  * PHP version 5
  *
- * @package    Braintree
- * @subpackage Xml
  * @copyright  2010 Braintree Payment Solutions
  */
 
 /**
  * superclass for Braintree XML parsing and generation
  *
- * @package    Braintree
- * @subpackage Xml
  * @copyright  2010 Braintree Payment Solutions
  */
 final class Braintree_Xml

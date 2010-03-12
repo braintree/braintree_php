@@ -3,8 +3,6 @@
 /**
  * Braintree XML Parser
  *
- * @package    Braintree
- * @subpackage Xml
  * @copyright  2010 Braintree Payment Solutions
  */
 /**
@@ -12,8 +10,6 @@
  * built-in SimpleXML, and its extension via
  * Iterator, SimpleXMLIterator
  *
- * @package    Braintree
- * @subpackage Xml
  * @copyright  2010 Braintree Payment Solutions
  */
 class Braintree_Xml_Parser
@@ -145,6 +141,9 @@ class Braintree_Xml_Parser
             case 'datetime':
                 return self::_timestampToUTC((string) $valueObj);
                 break;
+            case 'date':
+                return new DateTime((string)$valueObj);
+                break;
             case 'integer':
                 return (int) $valueObj;
                 break;
@@ -179,7 +178,6 @@ class Braintree_Xml_Parser
         // to show the proper time zone
         $dateTime = new DateTime($timestamp, $tz);
         $dateTime->setTimezone($tz);
-        return $dateTime->format('D M d H:i:s e Y');
-
+        return $dateTime;
     }
 }

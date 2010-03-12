@@ -11,7 +11,7 @@
 /**
  * acts as a registry for config data.
  *
- * 
+ *
  * @package    Braintree
  * @subpackage Utility
  *
@@ -24,7 +24,7 @@ class Braintree_Configuration extends Braintree
      * @access public
      */
      const API_VERSION =  1;
-     
+
     /**
      * @var array array of config properties
      * @access protected
@@ -67,6 +67,7 @@ class Braintree_Configuration extends Braintree
     /**
      * performs sanity checks when config settings are being set
      *
+     * @ignore
      * @access protected
      * @param string $key name of config setting
      * @param string $value value to set
@@ -91,7 +92,7 @@ class Braintree_Configuration extends Braintree
              throw new Braintree_Exception_Configuration($key .
                                     ' is not a valid configuration setting.');
         }
-         
+
         if (empty($value)) {
              throw new InvalidArgumentException($key . ' cannot be empty.');
         }
@@ -116,7 +117,7 @@ class Braintree_Configuration extends Braintree
         self::$_cache[$key] = $value;
 
     }
-    
+
     /**
      *
      * gets private config registry values

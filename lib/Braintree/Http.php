@@ -2,8 +2,6 @@
 /**
  * Braintree HTTP Client based on Zend_Http_Client
  *
- * @package    Braintree
- * @subpackage Utility
  * @see        Zend_Http_Client
  * @copyright  2010 Braintree Payment Solutions
  */
@@ -11,8 +9,6 @@
 /**
  * processes Http requests using a Zend_Http_Client instance
  *
- * @package    Braintree
- * @subpackage Utility
  * @see        Zend_Http_Client
  * @copyright  2010 Braintree Payment Solutions
  */

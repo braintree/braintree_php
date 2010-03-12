@@ -2,8 +2,6 @@
 /**
  * Braintree Library Version
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
 
@@ -11,8 +9,6 @@
  * stores version information about the Braintree library
  *
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
 final class Braintree_Version
@@ -21,8 +17,8 @@ final class Braintree_Version
      * class constants
      */
     const MAJOR = 1;
-    const MINOR = 0;
-    const TINY = 1;
+    const MINOR = 1;
+    const TINY = 0;
 
     /**
      * @ignore

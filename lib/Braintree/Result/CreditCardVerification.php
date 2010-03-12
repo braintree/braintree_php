@@ -23,7 +23,7 @@
  * @property-read string $avsStreetAddressResponseCode
  * @property-read string $cvvResponseCode
  * @property-read string $status
- * 
+ *
  */
 class Braintree_Result_CreditCardVerification
 {
@@ -33,12 +33,16 @@ class Braintree_Result_CreditCardVerification
     private $_cvvResponseCode;
     private $_status;
 
+    /**
+     * @ignore
+     */
     public function  __construct($attributes)
     {
         $this->_initializeFromArray($attributes);
     }
     /**
      * initializes instance properties from the keys/values of an array
+     * @ignore
      * @access protected
      * @param <type> $aAttribs array of properties to set - single level
      * @return none

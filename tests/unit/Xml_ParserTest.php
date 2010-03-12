@@ -6,7 +6,7 @@ class Braintree_Xml_ParserTest extends PHPUnit_Framework_TestCase
 {
     function testTypeCastIntegers()
     {
-        $array = Braintree_XML::buildArrayFromXml('<root><foo type="integer">123</foo></root>');
+        $array = Braintree_Xml::buildArrayFromXml('<root><foo type="integer">123</foo></root>');
         $this->assertEquals($array, array('root' => array('foo' => 123)));
 
     }
@@ -20,7 +20,7 @@ class Braintree_Xml_ParserTest extends PHPUnit_Framework_TestCase
         </root>
 XML;
 
-        $array = Braintree_XML::buildArrayFromXml($xml);
+        $array = Braintree_Xml::buildArrayFromXml($xml);
         $this->assertEquals(array('root' =>
             array('dashEs' => '', 'underScores' => '')), $array);
     }
@@ -33,10 +33,9 @@ XML;
           <an_empty_string></an_empty_string>
         </root>
 XML;
-        $array = Braintree_XML::buildArrayFromXml($xml);
+        $array = Braintree_Xml::buildArrayFromXml($xml);
         $this->assertEquals(array('root' =>
             array('aNilValue' => null, 'anEmptyString' => '')), $array);
-        
     }
 
     function testTypeCastsDatetimes()
@@ -46,11 +45,24 @@ XML;
           <created-at type="datetime">2009-10-28T10:19:49Z</created-at>
         </root>
 XML;
-        $array = Braintree_XML::buildArrayFromXml($xml);
+        $array = Braintree_Xml::buildArrayFromXml($xml);
         date_default_timezone_set('UTC');
-        $dateTime = date('D M d H:i:s e Y', strtotime('2009-10-28T10:19:49Z'));
-        $this->assertEquals($array, array('root' => array('createdAt' => $dateTime)));
-  
+        $dateTime = new DateTime('2009-10-28T10:19:49', new DateTimeZone('UTC'));
+        $this->assertEquals(array('root' => array('createdAt' => $dateTime)), $array);
+        $this->assertType('DateTime', $array['root']['createdAt']);
+    }
+
+    function testTypeCastsDates()
+    {
+        $xml = <<<XML
+        <root>
+          <some-date type="date">2009-10-28</some-date>
+        </root>
+XML;
+        $array = Braintree_Xml::buildArrayFromXml($xml);
+        date_default_timezone_set('UTC');
+        $dateTime = new DateTime('2009-10-28', new DateTimeZone('UTC'));
+        $this->assertEquals(array('root' => array('someDate' => $dateTime)), $array);
     }
 
     function testBuildsArray()
@@ -63,7 +75,7 @@ XML;
           </customers>
         </root>
 XML;
-        $array = Braintree_XML::buildArrayFromXml($xml);
+        $array = Braintree_Xml::buildArrayFromXml($xml);
         $this->assertEquals(array('root' =>
             array('customers' =>
                     array(array('name' => 'Adam'),
@@ -85,7 +97,7 @@ XML;
           <uncasted-true>true</uncasted-true>
         </root>
 XML;
-         $array = Braintree_XML::buildArrayFromXml($xml);
+         $array = Braintree_Xml::buildArrayFromXml($xml);
          $this->assertEquals(
             array('root' =>
               array('castedTrue' => true,

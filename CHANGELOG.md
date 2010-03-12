@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Added recurring billing support
+
 ## 1.0.1
 
 * Fixed bug with Braintree_Error_ErrorCollection.deepSize

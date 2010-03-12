@@ -26,7 +26,7 @@ class Braintree_Error_Validation
    private $_message;
 
     /**
-     *
+     * @ignore
      * @param array $attributes
      */
     public function  __construct($attributes)
@@ -35,6 +35,7 @@ class Braintree_Error_Validation
     }
     /**
      * initializes instance properties from the keys/values of an array
+     * @ignore
      * @access protected
      * @param array $attributes array of properties to set - single level
      * @return none

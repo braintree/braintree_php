@@ -2,16 +2,12 @@
 /**
  * Digest encryption module
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
 
 /**
  * Digest creates an HMAC-SHA1 hash for encrypting messages
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
 class Braintree_Digest
@@ -40,6 +36,7 @@ class Braintree_Digest
      * based on the PHP hash_hmac() function & Braintree_Ruby _hmac_sha1
      * in case hash_hmac isn't available
      *
+     * @ignore
      * @access protected
      * @param var $message message to be embedded in the hash
      * @param var $key private hash key
