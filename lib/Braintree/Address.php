@@ -207,22 +207,6 @@ class Braintree_Address extends Braintree
     }
 
     /**
-     * returns private/nonexistent instance properties
-     * @ignore
-     * @access public
-     * @param  string $name property name
-     * @return mixed  contents of instance properties
-     */
-    public function __get($name)
-    {
-        if (array_key_exists($name, $this->_attributes)) {
-            return $this->_attributes[$name];
-        }
-        else {
-            return parent::__get($name);
-        }
-    }
-    /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
      * @return var
@@ -237,7 +221,7 @@ class Braintree_Address extends Braintree
      * @access protected
      * @var array registry of customer data
      */
-    private $_attributes = array(
+    protected $_attributes = array(
         'company'     => '',
         'countryName' => '',
         'customerId'  => '',

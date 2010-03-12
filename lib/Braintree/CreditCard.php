@@ -386,23 +386,6 @@ class Braintree_CreditCard extends Braintree
         return array_slice($signature, 1);
    }
 
-   /**
-     * returns private/nonexistent instance properties
-     * @ignore
-     * @access public
-     * @param string $name property name
-     * @return mixed contents of instance properties
-     */
-    public function __get($name)
-    {
-        if (array_key_exists($name, $this->_attributes)) {
-            return $this->_attributes[$name];
-        }
-        else {
-            return parent::__get($name);
-        }
-    }
-
     /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
@@ -419,7 +402,7 @@ class Braintree_CreditCard extends Braintree
      * @access protected
      * @var array registry of customer data
      */
-    private $_attributes = array(
+    protected $_attributes = array(
         'billingAddress'     => '',
         'bin' => '',
         'cardType'  => '',
@@ -431,7 +414,7 @@ class Braintree_CreditCard extends Braintree
         'last4'  => '',
         'token'      => '',
         'updatedAt'   => '',
-        ); 
+    );
 
     /**
      * verifies that a valid credit card token is being used

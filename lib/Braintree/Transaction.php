@@ -483,22 +483,6 @@ final class Braintree_Transaction extends Braintree
     }
 
     /**
-     * returns private/nonexistent instance properties
-     * @ignore
-     * @access public
-     * @param var $name property name
-     * @return mixed contents of instance properties
-     */
-    public function __get($name)
-    {
-        if (array_key_exists($name, $this->_attributes)) {
-            return $this->_attributes[$name];
-        }
-        else {
-            return parent::__get($name);
-        }
-    }
-    /**
      * returns a string representation of the transaction
      * @return string
      */
@@ -524,10 +508,6 @@ final class Braintree_Transaction extends Braintree
                 Braintree_Util::implodeAssociativeArray($printableAttribs) .']';
     }
 
-   
-    /**
-     * 
-     */
     public function refund()
     {
         self::validateId($this->id);
@@ -537,26 +517,17 @@ final class Braintree_Transaction extends Braintree
         $this->refundId = $response->refundId;
 
     }
-    
-    /**
-     * 
-     */
+
     public function isRefunded()
     {
         return isset($this->refundId);
     }
-    
-    /**
-     * 
-     */
+
     public function isEqual($otherTx)
     {
         return $this->id === $otherTx->id;
     }
-    
-    /**
-     * 
-     */
+
     public function vaultCreditCard()
     {
         // print($this->creditCardDetails->token);
@@ -568,9 +539,7 @@ final class Braintree_Transaction extends Braintree
             return Braintree_CreditCard::find($token);
         }
     }
-    /**
-     * 
-     */
+
     public function vaultCustomer()
     {
         $customerId = $this->customerDetails->id;
@@ -588,7 +557,7 @@ final class Braintree_Transaction extends Braintree
      * @access protected
      * @var array registry of transaction data
      */
-    private $_attributes = array(
+    protected $_attributes = array(
         'avsErrorResponseCode'         => '',
         'avsPostalCodeResponseCode'    => '',
         'avsStreetAddressResponseCode' => '',
@@ -641,10 +610,9 @@ final class Braintree_Transaction extends Braintree
 
     /* private class methods */
 
-    
     /**
      * sends the create request to the gateway
-     *  
+     *
      * @param var $url
      * @param array $params
      * @return mixed
@@ -658,12 +626,12 @@ final class Braintree_Transaction extends Braintree
 
     /**
      * generic method for validating incoming gateway responses
-     * 
+     *
      * creates a new Braintree_Transaction object and encapsulates
      * it inside a Braintree_Result_Successful object, or
      * encapsulates a Braintree_Errors object inside a Result_Error
      * alternatively, throws an Unexpected exception if the response is invalid.
-     * 
+     *
      * @param array $response gateway response values
      * @return object Result_Successful or Result_Error
      * @throws Braintree_Exception_Unexpected
@@ -696,6 +664,4 @@ final class Braintree_Transaction extends Braintree
         $instance->_initialize($attributes);
         return $instance;
     }
-
-
 }

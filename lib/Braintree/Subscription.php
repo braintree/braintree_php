@@ -9,7 +9,23 @@
  */
 class Braintree_Subscription extends Braintree
 {
-    private $_attributes = array();
+
+    protected $_attributes = array(
+        'billingPeriodEndDate' => '',
+        'billingPeriodStartDate' => '',
+        'failureCount' => '',
+        'firstBillingDate' => '',
+        'merchantId' => '',
+        'nextBillingDate' => '',
+        'paymentMethodId' => '',
+        'planId' => '',
+        'price' => '',
+        'status' => '',
+        'token' => '',
+        'trialDuration' => '',
+        'trialDurationUnit' => '',
+        'trialPeriod' => ''
+    );
 
     public static function create($attributes)
     {
@@ -60,21 +76,11 @@ class Braintree_Subscription extends Braintree
         );
     }
 
-    public function __get($name)
-    {
-        if (array_key_exists($name, $this->_attributes)) {
-            return $this->_attributes[$name];
-        }
-        else {
-            return parent::__get($name);
-        }
-    }
-
     protected function _initialize($attributes)
     {
         $this->_attributes = array_merge($this->_attributes, $attributes);
 
-        $transactionArray = null;
+        $transactionArray = array();
         if (isset($attributes['transactions'])) {
             foreach ($attributes['transactions'] AS $transaction) {
                 $transactionArray[] = Braintree_Transaction::factory($transaction);

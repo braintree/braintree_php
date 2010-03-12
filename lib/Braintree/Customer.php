@@ -349,7 +349,7 @@ class Braintree_Customer extends Braintree
         $this->_attributes = array_merge($this->_attributes, $customerAttribs);
 
         // map each address into its own object
-        $addressArray = null;
+        $addressArray = array();
         if (isset($customerAttribs['addresses'])) {
 
             foreach ($customerAttribs['addresses'] AS $address) {
@@ -359,7 +359,7 @@ class Braintree_Customer extends Braintree
         $this->_set('addresses', $addressArray);
 
         // map each creditcard into its own object
-        $ccArray = null;
+        $ccArray = array();
         if (isset($customerAttribs['creditCards'])) {
             foreach ($customerAttribs['creditCards'] AS $creditCard) {
                 $ccArray[] = Braintree_CreditCard::factory($creditCard);
@@ -367,23 +367,6 @@ class Braintree_Customer extends Braintree
         }
         $this->_set('creditCards', $ccArray);
 
-    }
-
-    /**
-     * returns private/nonexistent instance properties
-     * @ignore
-     * @access public
-     * @param string $name property name
-     * @return mixed contents of instance properties
-     */
-    public function __get($name)
-    {
-        if (array_key_exists($name, $this->_attributes)) {
-            return $this->_attributes[$name];
-        }
-        else {
-            return parent::__get($name);
-        }
     }
 
     /**
@@ -426,7 +409,7 @@ class Braintree_Customer extends Braintree
      * @access protected
      * @var array registry of customer data
      */
-    private $_attributes = array(
+    protected $_attributes = array(
         'addresses'   => '',
         'company'     => '',
         'creditCards' => '',

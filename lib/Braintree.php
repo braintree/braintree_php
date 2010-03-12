@@ -50,10 +50,22 @@ abstract class Braintree
     {
     }
 
+    /**
+     * returns private/nonexistent instance properties
+     * @ignore
+     * @access public
+     * @param string $name property name
+     * @return mixed contents of instance properties
+     */
     public function __get($name)
     {
-        trigger_error('Undefined property on ' . get_class($this) . ': ' . $name, E_USER_NOTICE);
-        return null;
+        if (array_key_exists($name, $this->_attributes)) {
+            return $this->_attributes[$name];
+        }
+        else {
+            trigger_error('Undefined property on ' . get_class($this) . ': ' . $name, E_USER_NOTICE);
+            return null;
+        }
     }
 
     /**
