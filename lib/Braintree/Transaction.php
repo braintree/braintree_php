@@ -168,7 +168,7 @@ final class Braintree_Transaction extends Braintree
     /* public class methods */
 
     /**
-     *
+     * @ignore
      * @access public
      * @param array $attribs
      * @return object
@@ -181,6 +181,7 @@ final class Braintree_Transaction extends Braintree
 
     /**
      *
+     * @ignore
      * @access public
      * @param array $attribs
      * @return object
@@ -348,6 +349,7 @@ final class Braintree_Transaction extends Braintree
     /**
      * returns pagedcollection of Braintree_Transaction objects
      *
+     * @ignore
      * @param string $query
      * @param array $options
      * @return object Braintree_PagedCollection
@@ -374,6 +376,8 @@ final class Braintree_Transaction extends Braintree
 
     /**
      * returns a PagedCollection of search results
+     *
+     * @ignore
      * @param array $query
      * @param array $options
      * @return object Braintree_PagedCollection
@@ -396,8 +400,10 @@ final class Braintree_Transaction extends Braintree
 
         return new Braintree_PagedCollection($attributes, $pager);
     }
+
     /**
      * void a transaction by id
+     *
      * @param string $id transaction id
      * @return object Braintree_Result_Successful|Braintree_Result_Error
      */
@@ -443,6 +449,7 @@ final class Braintree_Transaction extends Braintree
     /**
      * sets instance properties from an array of values
      *
+     * @ignore
      * @access protected
      * @param array $transactionAttribs array of transaction data
      * @return none
@@ -580,6 +587,7 @@ final class Braintree_Transaction extends Braintree
     /**
      * sets private properties
      * this function is private so values are read only
+     * @ignore
      * @access protected
      * @param var $key
      * @param var $value
@@ -591,6 +599,7 @@ final class Braintree_Transaction extends Braintree
 
     /**
      * verifies that a valid transaction id is being used
+     * @ignore
      * @param string transaction id
      * @throws InvalidArgumentException
      */
@@ -613,6 +622,7 @@ final class Braintree_Transaction extends Braintree
     /**
      * sends the create request to the gateway
      *
+     * @ignore
      * @param var $url
      * @param array $params
      * @return mixed
@@ -632,6 +642,7 @@ final class Braintree_Transaction extends Braintree
      * encapsulates a Braintree_Errors object inside a Result_Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
+     * @ignore
      * @param array $response gateway response values
      * @return object Result_Successful or Result_Error
      * @throws Braintree_Exception_Unexpected
@@ -656,6 +667,7 @@ final class Braintree_Transaction extends Braintree
      *  factory method: returns an instance of Braintree_Transaction
      *  to the requesting method, with populated properties
      *
+     * @ignore
      * @return object instance of Braintree_Transaction
      */
     public static function factory($attributes)

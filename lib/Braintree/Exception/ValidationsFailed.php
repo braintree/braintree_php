@@ -16,6 +16,6 @@
  */
 class Braintree_Exception_ValidationsFailed extends Braintree_Exception
 {
-    
+
 }
 

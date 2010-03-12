@@ -2,16 +2,12 @@
 /**
  * Braintree SSL Expiration Check
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
 
 /**
  * checks for expired ssl certificate
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  * @property-read boolean $sslExpirationDatesChecked
  */

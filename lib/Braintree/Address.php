@@ -209,6 +209,7 @@ class Braintree_Address extends Braintree
     /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
+     * @ignore
      * @return var
      */
     public function  __toString()
@@ -239,6 +240,7 @@ class Braintree_Address extends Braintree
     /**
      * sets instance properties from an array of values
      *
+     * @ignore
      * @access protected
      * @param array $addressAttribs array of address data
      * @return none
@@ -252,6 +254,7 @@ class Braintree_Address extends Braintree
 
     /**
      * verifies that a valid address id is being used
+     * @ignore
      * @param string $id address id
      * @throws InvalidArgumentException
      */
@@ -271,6 +274,7 @@ class Braintree_Address extends Braintree
 
     /**
      * verifies that a valid customer id is being used
+     * @ignore
      * @param string $id customer id
      * @throws InvalidArgumentException
      */
@@ -291,11 +295,9 @@ class Braintree_Address extends Braintree
 
     /**
      * determines if a string id or Customer object was passed
-     *
+     * @ignore
      * @param mixed $customerOrId
-     *
      * @return string customerId
-     * 
      */
     private static function _determineCustomerId($customerOrId)
     {
@@ -310,7 +312,7 @@ class Braintree_Address extends Braintree
     /* private class methods */
     /**
      * sends the create request to the gateway
-     *
+     * @ignore
      * @param string $url
      * @param array $params
      * @return mixed
@@ -331,6 +333,7 @@ class Braintree_Address extends Braintree
      * encapsulates a Braintree_Errors object inside a Result_Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
+     * @ignore
      * @param array $response gateway response values
      * @return object Result_Successful or Result_Error
      * @throws Braintree_Exception_Unexpected
@@ -355,7 +358,7 @@ class Braintree_Address extends Braintree
     /**
      *  factory method: returns an instance of Braintree_Address
      *  to the requesting method, with populated properties
-     *
+     * @ignore
      * @return object instance of Braintree_Address
      */
     public static function factory($attributes)

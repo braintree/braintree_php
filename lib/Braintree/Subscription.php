@@ -34,6 +34,9 @@ class Braintree_Subscription extends Braintree
         return self::_verifyGatewayResponse($response);
     }
 
+    /**
+     * @ignore
+     */
     public static function factory($attributes)
     {
         $instance = new self();
@@ -76,6 +79,9 @@ class Braintree_Subscription extends Braintree
         );
     }
 
+    /**
+     * @ignore
+     */
     protected function _initialize($attributes)
     {
         $this->_attributes = array_merge($this->_attributes, $attributes);
@@ -89,6 +95,9 @@ class Braintree_Subscription extends Braintree
         $this->_attributes['transactions'] = $transactionArray;
     }
 
+    /**
+     * @ignore
+     */
     private static function _verifyGatewayResponse($response)
     {
         if (isset($response['subscription'])) {

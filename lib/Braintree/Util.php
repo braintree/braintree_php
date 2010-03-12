@@ -3,8 +3,6 @@
  * Braintree Utility methods
  * PHP version 5
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
 
@@ -12,8 +10,6 @@
  * Braintree Utility methods
  *
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
 class Braintree_Util

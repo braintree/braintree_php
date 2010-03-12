@@ -2,8 +2,6 @@
 /**
  * PHP version 5
  *
- * @package    Braintree
- * @subpackage Xml
  * @copyright  2010 Braintree Payment Solutions
  */
 
@@ -11,8 +9,6 @@
  * Generates XML output from arrays using PHP's
  * built-in XMLWriter
  *
- * @package    Braintree
- * @subpackage Xml
  * @copyright  2010 Braintree Payment Solutions
  */
 class Braintree_Xml_Generator

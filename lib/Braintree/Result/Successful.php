@@ -47,6 +47,7 @@ class Braintree_Result_Successful extends Braintree_Instance
     private $_returnObjectName;
 
     /**
+     * @ignore
      * @param string $classToReturn name of class to instantiate
      */
     public function __construct($objToReturn = null)
@@ -67,6 +68,7 @@ class Braintree_Result_Successful extends Braintree_Instance
 
    /**
     *
+    * @ignore
     * @return string string representation of the object's structure
     */
    public function __toString()

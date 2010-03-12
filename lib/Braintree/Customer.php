@@ -30,11 +30,6 @@
  */
 class Braintree_Customer extends Braintree
 {
-        /* public class methods */
-
-    /**
-     * 
-     */
     public static function all($options = null)
     {
         $page = isset($options['page']) ? $options['page'] : 1;
@@ -52,6 +47,7 @@ class Braintree_Customer extends Braintree
 
         return new Braintree_PagedCollection($attributes, $pager);
     }
+
     /**
      * Creates a customer using the given +attributes+. If <tt>:id</tt> is not passed,
      * the gateway will generate it.
@@ -339,6 +335,7 @@ class Braintree_Customer extends Braintree
     /**
      * sets instance properties from an array of values
      *
+     * @ignore
      * @access protected
      * @param array $customerAttribs array of customer data
      * @return none
@@ -427,6 +424,7 @@ class Braintree_Customer extends Braintree
     /**
      * sets private properties
      * this function is private so values are read only
+     * @ignore
      * @access protected
      * @param string $key
      * @param mixed $value
@@ -438,6 +436,7 @@ class Braintree_Customer extends Braintree
 
     /**
      * verifies that a valid customer id is being used
+     * @ignore
      * @param string customer id
      * @throws InvalidArgumentException
      */
@@ -459,7 +458,8 @@ class Braintree_Customer extends Braintree
 
     /**
      * sends the create request to the gateway
-     *  
+     *
+     * @ignore
      * @param string $url
      * @param array $params
      * @return mixed
@@ -473,6 +473,7 @@ class Braintree_Customer extends Braintree
     /**
      * sends the update request to the gateway
      *
+     * @ignore
      * @param string $url
      * @param array $params
      * @return mixed
@@ -492,6 +493,7 @@ class Braintree_Customer extends Braintree
      * encapsulates a Braintree_Errors object inside a Result_Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      * 
+     * @ignore
      * @param array $response gateway response values
      * @return object Result_Successful or Result_Error
      * @throws Braintree_Exception_Unexpected
@@ -516,6 +518,7 @@ class Braintree_Customer extends Braintree
      *  factory method: returns an instance of Braintree_Customer
      *  to the requesting method, with populated properties
      *
+     * @ignore
      * @return object instance of Braintree_Customer
      */
     public static function factory($attributes)

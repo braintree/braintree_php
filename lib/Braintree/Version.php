@@ -2,8 +2,6 @@
 /**
  * Braintree Library Version
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
 
@@ -11,8 +9,6 @@
  * stores version information about the Braintree library
  *
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
 final class Braintree_Version

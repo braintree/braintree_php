@@ -4,7 +4,6 @@
  *
  *  PHP version 5
  *
- * @package    Braintree
  * @copyright  2010 Braintree Payment Solutions
  */
 
@@ -29,7 +28,6 @@ $loader->registerNamespace('Braintree_');
  *
  * Provides methods to child classes. This class cannot be instantiated.
  *
- * @package    Braintree
  * @copyright  2010 Braintree Payment Solutions
  */
 abstract class Braintree

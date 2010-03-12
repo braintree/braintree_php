@@ -68,6 +68,7 @@ class Braintree_Result_Error
 
    /**
     * overrides default constructor
+    * @ignore
     * @param array $response gateway response array
     */
    public function  __construct($response)
@@ -89,6 +90,7 @@ class Braintree_Result_Error
    /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
+     * @ignore
      * @return var
      */
     public function  __toString()

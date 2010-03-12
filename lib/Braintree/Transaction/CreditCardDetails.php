@@ -30,6 +30,9 @@ class Braintree_Transaction_CreditCardDetails extends Braintree_Instance
 {
     protected $_attributes = array();
 
+    /**
+     * @ignore
+     */
     public function __construct($attributes)
     {
         parent::__construct($attributes);

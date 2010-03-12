@@ -3,8 +3,6 @@
 /**
  * Braintree XML Parser
  *
- * @package    Braintree
- * @subpackage Xml
  * @copyright  2010 Braintree Payment Solutions
  */
 /**
@@ -12,8 +10,6 @@
  * built-in SimpleXML, and its extension via
  * Iterator, SimpleXMLIterator
  *
- * @package    Braintree
- * @subpackage Xml
  * @copyright  2010 Braintree Payment Solutions
  */
 class Braintree_Xml_Parser

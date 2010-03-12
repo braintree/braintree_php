@@ -22,6 +22,9 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
     private $_errors = array();
     private $_nested = array();
 
+    /**
+     * @ignore
+     */
     public function  __construct($data)
     {
         foreach($data AS $key => $errorData)
@@ -80,6 +83,9 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
         return isset($this->$varName) ? $this->$varName : null;
     }
 
+    /**
+     * @ignore
+     */
     public function __toString()
     {
         // TODO: implement scope
@@ -94,7 +100,9 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
        return join(', ', $output);
     }
 
-
+    /**
+     * @ignore
+     */
     private function _inspect($errors, $scope = null)
     {
         $eOutput = '[' . __CLASS__ . '/errors:[';

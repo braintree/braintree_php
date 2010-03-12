@@ -84,6 +84,10 @@ class Braintree_Error_ErrorCollection
         return isset($this->$varName) ? $this->$varName : null;
     }
 
+    /**
+     *
+     * @ignore
+     */
     public function  __toString()
     {
         return sprintf('%s', $this->_errors);
