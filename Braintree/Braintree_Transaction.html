@@ -1,0 +1,879 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Braintree_Transaction</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class Braintree_Transaction</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Creates and manages transactions</p>
+<p class="description"><p>At minimum, an amount, credit card number, and  credit card expiration date are required.</p><p><strong>Minimalistic example:</strong>  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-id"><a href="../Braintree/Braintree_Transaction.html">Braintree_Transaction</a></span><span class="src-sym">::</span><a href="../Braintree/Braintree_Transaction.html#methodsaleNoValidate">saleNoValidate</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-str">'amount'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'100.00'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-str">'creditCard'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'number'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'5105105105105100'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'expirationDate'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'05/12'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+</ol></div></p><p><strong>Full example:</strong>  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-id"><a href="../Braintree/Braintree_Transaction.html">Braintree_Transaction</a></span><span class="src-sym">::</span><a href="../Braintree/Braintree_Transaction.html#methodsaleNoValidate">saleNoValidate</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'amount'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'100.00'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'orderId'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'123'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'creditCard'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;if&nbsp;token&nbsp;is&nbsp;omitted,&nbsp;the&nbsp;gateway&nbsp;will&nbsp;generate&nbsp;a&nbsp;token</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'token'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'credit_card_123'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'number'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'5105105105105100'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'expirationDate'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'05/2011'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'cvv'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'123'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'customer'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;if&nbsp;id&nbsp;is&nbsp;omitted,&nbsp;the&nbsp;gateway&nbsp;will&nbsp;generate&nbsp;an&nbsp;id</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'id'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'customer_123'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'firstName'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Dan'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'lastName'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Smith'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'company'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Braintree&nbsp;Payment&nbsp;Solutions'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'email'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'dan@example.com'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'phone'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'419-555-1234'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'fax'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'419-555-1235'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'website'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'http://braintreepaymentsolutions.com'</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'billing'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'firstName'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Carl'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'lastName'&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Jones'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'company'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Braintree'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'streetAddress'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'123&nbsp;E&nbsp;Main&nbsp;St'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'extendedAddress'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Suite&nbsp;403'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'locality'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Chicago'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'region'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'IL'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'postalCode'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'60622'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'countryName'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'United&nbsp;States&nbsp;of&nbsp;America'</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'shipping'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'firstName'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Andrew'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'lastName'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Mason'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'company'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Braintree'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'streetAddress'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'456&nbsp;W&nbsp;Main&nbsp;St'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'extendedAddress'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Apt&nbsp;2F'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'locality'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Bartlett'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'region'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'IL'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'postalCode'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'60103'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'countryName'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'United&nbsp;States&nbsp;of&nbsp;America'</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'customFields'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'birthdate'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'11/13/1954'</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;<span class="src-sym">)</span></div></li>
+</ol></div></p><p><strong>== Storing in the Vault ==</strong></p><p>The customer and credit card information used for  a transaction can be stored in the vault by setting  <em>transaction[options][storeInVault]</em> to true.  <div class="src-code"><ol><li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-var">$transaction&nbsp;</span>=&nbsp;<span class="src-id"><a href="../Braintree/Braintree_Transaction.html">Braintree_Transaction</a></span><span class="src-sym">::</span><a href="../Braintree/Braintree_Transaction.html#methodsaleNoValidate">saleNoValidate</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'customer'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'firstName'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Adam'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'lastName'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Williams'</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'creditCard'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'number'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'5105105105105100'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'expirationDate'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'05/2012'</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'options'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'storeInVault'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-id">true</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;echo&nbsp;<span class="src-var">$transaction</span><span class="src-sym">-&gt;</span><span class="src-id">customerDetails</span><span class="src-sym">-&gt;</span><span class="src-id">id</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;<span class="src-comm">//&nbsp;'865534'</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;echo&nbsp;<span class="src-var">$transaction</span><span class="src-sym">-&gt;</span><span class="src-id">creditCardDetails</span><span class="src-sym">-&gt;</span><span class="src-id">token</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;<span class="src-comm">//&nbsp;'6b6m'</span></div></li>
+</ol></div></p><p>To also store the billing address in the vault, pass the  <strong>addBillingAddressToPaymentMethod</strong> option.  <div class="src-code"><ol><li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-id"><a href="../Braintree/Braintree_Transaction.html">Braintree_Transaction</a></span>.<a href="../Braintree/Braintree_Transaction.html#methodsaleNoValidate">saleNoValidate</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;...</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'options'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'storeInVault'&nbsp;</span>=&gt;&nbsp;<span class="src-id">true</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'addBillingAddressToPaymentMethod'&nbsp;</span>=&gt;&nbsp;<span class="src-id">true</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+</ol></div></p><p><strong>== Submitting for Settlement==</strong></p><p>This can only be done when the transction's  status is <strong>authorized</strong>. If <strong>amount</strong> is not specified,  the full authorized amount will be settled. If you would like to settle  less than the full authorized amount, pass the desired amount.  You cannot settle more than the authorized amount.</p><p>A transaction can be submitted for settlement when created by setting  $transaction[options][submitForSettlement] to true.</p><p><div class="src-code"><ol><li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-var">$transaction&nbsp;</span>=&nbsp;<span class="src-id"><a href="../Braintree/Braintree_Transaction.html">Braintree_Transaction</a></span><span class="src-sym">::</span><a href="../Braintree/Braintree_Transaction.html#methodsaleNoValidate">saleNoValidate</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'amount'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'100.00'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'creditCard'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'number'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'5105105105105100'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'expirationDate'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-str">'05/2012'</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'options'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'submitForSettlement'&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;<span class="src-id">true</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">property-read:</span> string $id: transaction id</li>
+				<li><span class="field">property-read:</span> string $amount: transaction amount</li>
+				<li><span class="field">property-read:</span> object $billingDetails: transaction billing address</li>
+				<li><span class="field">property-read:</span> string $createdAt: transaction created timestamp</li>
+				<li><span class="field">property-read:</span> object $creditCardDetails: transaction credit card info</li>
+				<li><span class="field">property-read:</span> object $customerDetails: transaction customer info</li>
+				<li><span class="field">property-read:</span> array $customFields: custom fields passed with the request</li>
+				<li><span class="field">property-read:</span> string $processorResponseCode: gateway response code</li>
+				<li><span class="field">property-read:</span> object $shippingDetails: transaction shipping address</li>
+				<li><span class="field">property-read:</span> string $status: transaction status</li>
+				<li><span class="field">property-read:</span> array $statusHistory: array of StatusDetails objects</li>
+				<li><span class="field">property-read:</span> string $type: transaction type</li>
+				<li><span class="field">property-read:</span> string $updatedAt: transaction updated timestamp</li>
+				<li><span class="field">copyright:</span> 2010 Braintree Payment Solutions</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Braintree---Transaction.php.html">/Braintree/Transaction.php</a> (line <span class="field">166</span>)
+		</p>
+		
+				
+		<pre>Braintree
+   |
+   --Braintree_Transaction</pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																								<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$_attributes" title="details" class="var-name">$_attributes</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+												<div class="method-definition">
+					static 						<span class="method-result">object</span>
+										<a href="#createFromTransparentRedirect" title="details" class="method-name">createFromTransparentRedirect</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$queryString</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">array</span>
+										<a href="#createSignature" title="details" class="method-name">createSignature</a>
+										()
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#createTransactionUrl" title="details" class="method-name">createTransactionUrl</a>
+											(<span class="var-type">none</span>&nbsp;<span class="var-name">0</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">object</span>
+										<a href="#credit" title="details" class="method-name">credit</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">object</span>
+										<a href="#creditNoValidate" title="details" class="method-name">creditNoValidate</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#find" title="details" class="method-name">find</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$id</span>)
+									</div>
+																																								<div class="method-definition">
+					static 						<span class="method-result">array</span>
+										<a href="#sale" title="details" class="method-name">sale</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">array</span>
+										<a href="#saleNoValidate" title="details" class="method-name">saleNoValidate</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../Braintree/Utility/Braintree_PagedCollection.html">object Braintree_PagedCollection</a></span>
+										<a href="#search" title="details" class="method-name">search</a>
+											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$query</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$options</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#submitForSettlement" title="details" class="method-name">submitForSettlement</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span> = <span class="var-default">null</span>])
+									</div>
+																																								<div class="method-definition">
+					static 						<span class="method-result"><a href="../Braintree/Result/Braintree_Result_Successful.html">object Braintree_Result_Successful</a>|<a href="../Braintree/Result/Braintree_Result_Error.html">Braintree_Result_Error</a></span>
+										<a href="#void" title="details" class="method-name">void</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$id</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#voidNoValidate" title="details" class="method-name">voidNoValidate</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>)
+									</div>
+																
+																																																												<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#isEqual" title="details" class="method-name">isEqual</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$otherTx</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#isRefunded" title="details" class="method-name">isRefunded</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#refund" title="details" class="method-name">refund</a>
+										()
+									</div>
+																																																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#submitForSettlementNoValidate" title="details" class="method-name">submitForSettlementNoValidate</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$id</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#vaultCreditCard" title="details" class="method-name">vaultCreditCard</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#vaultCustomer" title="details" class="method-name">vaultCustomer</a>
+										()
+									</div>
+																																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#__toString" title="details" class="method-name">__toString</a>
+										()
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$_attributes" id="$_attributes"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$_attributes</span>
+			 = <span class="var-default">array(<br />        'avsErrorResponseCode'         =&gt; '',<br />        'avsPostalCodeResponseCode'    =&gt; '',<br />        'avsStreetAddressResponseCode' =&gt; '',<br />        'cvvResponseCode'              =&gt; '',<br />        'amount'                       =&gt; '',<br />        'billingDetails'               =&gt; '',<br />        'createdAt'                    =&gt; '',<br />        'creditCardDetails'            =&gt; '',<br />        'customerDetails'              =&gt; '',<br />        'customFields'                 =&gt; '',<br />        'id'                           =&gt; '',<br />        'processorResponseCode'        =&gt; '',<br />        'shippingDetails transaction'  =&gt; '',<br />        'status'                       =&gt; '',<br />        'statusHistory'                =&gt; '',<br />        'type'                         =&gt; '',<br />        'updatedAt'                    =&gt; '',<br />        )</span>			(line <span class="line-number">567</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">var:</span> registry of transaction data</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodcreateFromTransparentRedirect" id="createFromTransparentRedirect"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method createFromTransparentRedirect</span> (line <span class="line-number">201</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">object</span>
+		<span class="method-name">
+			createFromTransparentRedirect
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$queryString</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$queryString</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateSignature" id="createSignature"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method createSignature</span> (line <span class="line-number">227</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">creates a full array signature of a valid gateway request</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> gateway request signature format</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">array</span>
+		<span class="method-name">
+			createSignature
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodcreateTransactionUrl" id="createTransactionUrl"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method createTransactionUrl</span> (line <span class="line-number">217</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			createTransactionUrl
+		</span>
+					(<span class="var-type">none</span>&nbsp;<span class="var-name">0</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">none</span>
+				<span class="var-name">0</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcredit" id="credit"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method credit</span> (line <span class="line-number">267</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">object</span>
+		<span class="method-name">
+			credit
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreditNoValidate" id="creditNoValidate"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method creditNoValidate</span> (line <span class="line-number">279</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">throws:</span> Braintree_Exception_ValidationError</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">object</span>
+		<span class="method-name">
+			creditNoValidate
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfind" id="find"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method find</span> (line <span class="line-number">290</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			find
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsale" id="sale"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method sale</span> (line <span class="line-number">308</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">new sale</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">array</span>
+		<span class="method-name">
+			sale
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsaleNoValidate" id="saleNoValidate"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method saleNoValidate</span> (line <span class="line-number">320</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">roughly equivalent to the ruby bang method</p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> Braintree_Exception_ValidationsFailed</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">array</span>
+		<span class="method-name">
+			saleNoValidate
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsearch" id="search"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method search</span> (line <span class="line-number">337</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns a PagedCollection of transactions matching the search query.</p>
+<p class="description"><p>If <strong>query</strong> is a string, the search will be a basic search.  If <strong>query</strong> is a hash, the search will be an advanced search.</p></p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> InvalidArgumentException</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../Braintree/Utility/Braintree_PagedCollection.html">object Braintree_PagedCollection</a></span>
+		<span class="method-name">
+			search
+		</span>
+					(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$query</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$options</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$query</span><span class="var-description">: search query</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$options</span><span class="var-description">: options such as page number</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsubmitForSettlement" id="submitForSettlement"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method submitForSettlement</span> (line <span class="line-number">426</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			submitForSettlement
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$transactionId</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$amount</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodvoid" id="void"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method void</span> (line <span class="line-number">410</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">void a transaction by id</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../Braintree/Result/Braintree_Result_Successful.html">object Braintree_Result_Successful</a>|<a href="../Braintree/Result/Braintree_Result_Error.html">Braintree_Result_Error</a></span>
+		<span class="method-name">
+			void
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$id</span><span class="var-description">: transaction id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$transactionId</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodvoidNoValidate" id="voidNoValidate"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method voidNoValidate</span> (line <span class="line-number">420</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			voidNoValidate
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$transactionId</span>			</li>
+				</ul>
+		
+			
+	</div>
+
+<a name="methodisEqual" id="isEqual"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">isEqual</span> (line <span class="line-number">533</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			isEqual
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$otherTx</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$otherTx</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodisRefunded" id="isRefunded"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">isRefunded</span> (line <span class="line-number">528</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			isRefunded
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodrefund" id="refund"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">refund</span> (line <span class="line-number">518</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			refund
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodsubmitForSettlementNoValidate" id="submitForSettlementNoValidate"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">submitForSettlementNoValidate</span> (line <span class="line-number">440</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">if calling this method in static context, id  is the 2nd attribute. id is not sent in object context.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			submitForSettlementNoValidate
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$id</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$amount</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodvaultCreditCard" id="vaultCreditCard"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">vaultCreditCard</span> (line <span class="line-number">538</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			vaultCreditCard
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodvaultCustomer" id="vaultCustomer"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">vaultCustomer</span> (line <span class="line-number">550</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			vaultCustomer
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method__toString" id="__toString"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">__toString</span> (line <span class="line-number">496</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns a string representation of the transaction</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			__toString
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Fri, 12 Mar 2010 16:31:09 -0600 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

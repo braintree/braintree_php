@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Braintree_PagedCollection</title>
+			<link rel="stylesheet" href="../../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class Braintree_PagedCollection</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">PagedCollection is a container object for paged result data</p>
+<p class="description"><p>stores and retrieves search results and aggregate data</p><p>example:  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-var">$result&nbsp;</span>=&nbsp;<span class="src-id"><a href="../../Braintree/Braintree_Customer.html">Braintree_Customer</a></span><span class="src-sym">::</span><a href="../../Braintree/Braintree_Customer.html#methodall">all</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//&nbsp;retrieve&nbsp;page&nbsp;2&nbsp;of&nbsp;search&nbsp;results</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><a href="../../Braintree/Utility/Braintree_PagedCollection.html#methodnextPage">nextPage</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;echo&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><a href="../../Braintree/Utility/Braintree_PagedCollection.html#methodcurrentPageNumber">currentPageNumber</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//&nbsp;prints&nbsp;2</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//&nbsp;get&nbsp;an&nbsp;item</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$item&nbsp;</span>=&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><a href="../../Braintree/Utility/Braintree_PagedCollection.html#methodfirstItem">firstItem</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;echo&nbsp;<span class="src-var">$item</span><span class="src-sym">[</span><span class="src-str">'id'</span><span class="src-sym">]</span><span class="src-sym">;</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">copyright:</span> 2010 Braintree Payment Solutions</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Braintree---PagedCollection.php.html">/Braintree/PagedCollection.php</a> (line <span class="field">35</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																				
+												<div class="method-definition">
+											<span class="method-result">Braintree_PagedCollection</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$attributes</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$pagerAttribs</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#currentPageNumber" title="details" class="method-name">currentPageNumber</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#deepSize" title="details" class="method-name">deepSize</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#firstItem" title="details" class="method-name">firstItem</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#getItem" title="details" class="method-name">getItem</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$index</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#isLastPage" title="details" class="method-name">isLastPage</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">object ArrayIterator</span>
+										<a href="#items" title="details" class="method-name">items</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">none</span>
+										<a href="#nextPage" title="details" class="method-name">nextPage</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#nextPageNumber" title="details" class="method-name">nextPageNumber</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#pageSize" title="details" class="method-name">pageSize</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#previousPageNumber" title="details" class="method-name">previousPageNumber</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#totalItems" title="details" class="method-name">totalItems</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#totalPages" title="details" class="method-name">totalPages</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#__get" title="details" class="method-name">__get</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">52</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">set up the paged collection</p>
+<p class="description"><p>expects an array of attributes with literal keys</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Braintree_PagedCollection</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$attributes</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$pagerAttribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attributes</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$pagerAttribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcurrentPageNumber" id="currentPageNumber"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">currentPageNumber</span> (line <span class="line-number">75</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns the current page number of the collection</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			currentPageNumber
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methoddeepSize" id="deepSize"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">deepSize</span> (line <span class="line-number">228</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">recursively count all items at all levels</p>
+<p class="description"><p>if the collection contains countable items,  they will be included in the total</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> size</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			deepSize
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodfirstItem" id="firstItem"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">firstItem</span> (line <span class="line-number">195</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns the first item in the collection</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			firstItem
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetItem" id="getItem"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getItem</span> (line <span class="line-number">206</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">get an item from the collection by index</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> item</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			getItem
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$index</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$index</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodisLastPage" id="isLastPage"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">isLastPage</span> (line <span class="line-number">85</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns whether the collection is on the last page</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			isLastPage
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methoditems" id="items"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">items</span> (line <span class="line-number">185</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns an ArrayIterator for iterating over the items in the collection</p>
+<p class="description"><p>the collection implements ArrayAccess so looping  via foreach, etc is possible.</p><p>iterator attributes can be accessed via chaining:  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-var">$item&nbsp;</span>=&nbsp;<span class="src-var">$pager</span><span class="src-sym">-&gt;</span><a href="../../Braintree/Utility/Braintree_PagedCollection.html#methoditems">items</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><a href="http://www.php.net/current">current</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></div>  OR  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-var">$p&nbsp;</span>=&nbsp;<span class="src-var">$pager</span><span class="src-sym">-&gt;</span><a href="../../Braintree/Utility/Braintree_PagedCollection.html#methoditems">items</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$item&nbsp;</span>=&nbsp;<span class="src-var">$p</span><span class="src-sym">-&gt;</span><a href="http://www.php.net/current">current</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">object ArrayIterator</span>
+		<span class="method-name">
+			items
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodnextPage" id="nextPage"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">nextPage</span> (line <span class="line-number">117</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">requests the next page of results for the collection</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">none</span>
+		<span class="method-name">
+			nextPage
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodnextPageNumber" id="nextPageNumber"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">nextPageNumber</span> (line <span class="line-number">146</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns null if on the last page, next page number otherwise</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			nextPageNumber
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodpageSize" id="pageSize"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">pageSize</span> (line <span class="line-number">107</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns the number of items per page, of the collection</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			pageSize
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodpreviousPageNumber" id="previousPageNumber"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">previousPageNumber</span> (line <span class="line-number">95</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns null if on the first page, otherwise previous page number</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			previousPageNumber
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtotalItems" id="totalItems"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">totalItems</span> (line <span class="line-number">215</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns total items in the search</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			totalItems
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtotalPages" id="totalPages"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">totalPages</span> (line <span class="line-number">156</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">calculates total pages in the collection based on page size</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			totalPages
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method__get" id="__get"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">__get</span> (line <span class="line-number">63</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">magic function to return inacessible properties</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			__get
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Fri, 12 Mar 2010 16:31:08 -0600 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

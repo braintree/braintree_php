@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Braintree_Customer</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class Braintree_Customer</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Creates and manages Customers</p>
+	<ul class="tags">
+				<li><span class="field">property-read:</span> array $customFields: custom fields passed with the request</li>
+				<li><span class="field">copyright:</span> 2010 Braintree Payment Solutions</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Braintree---Customer.php.html">/Braintree/Customer.php</a> (line <span class="field">31</span>)
+		</p>
+		
+				
+		<pre>Braintree
+   |
+   --Braintree_Customer</pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																								<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$_attributes" title="details" class="var-name">$_attributes</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+												<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#all" title="details" class="method-name">all</a>
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">object Result,</span>
+										<a href="#create" title="details" class="method-name">create</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#createCustomerUrl" title="details" class="method-name">createCustomerUrl</a>
+											(<span class="var-type">none</span>&nbsp;<span class="var-name">0</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">object</span>
+										<a href="#createFromTransparentRedirect" title="details" class="method-name">createFromTransparentRedirect</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$queryString</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">object</span>
+										<a href="#createNoValidate" title="details" class="method-name">createNoValidate</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">array</span>
+										<a href="#createSignature" title="details" class="method-name">createSignature</a>
+										()
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../Braintree/Result/Braintree_Result_Successful.html">object Braintree_Result_Successful</a></span>
+										<a href="#credit" title="details" class="method-name">credit</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$transactionAttribs</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../Braintree/Braintree_Transaction.html">object Braintree_Transaction</a></span>
+										<a href="#creditNoValidate" title="details" class="method-name">creditNoValidate</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$transactionAttribs</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#delete" title="details" class="method-name">delete</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$customerId</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../Braintree/Braintree_Customer.html">object Braintree_Customer</a></span>
+										<a href="#find" title="details" class="method-name">find</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$id</span>)
+									</div>
+																								<div class="method-definition">
+					static 						<span class="method-result"><a href="../Braintree/Result/Braintree_Result_Successful.html">object Braintree_Result_Successful</a></span>
+										<a href="#sale" title="details" class="method-name">sale</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$transactionAttribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../Braintree/Braintree_Transaction.html">object Braintree_Transaction</a></span>
+										<a href="#saleNoValidate" title="details" class="method-name">saleNoValidate</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$transactionAttribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../Braintree/Result/Braintree_Result_Successful.html">object Braintree_Result_Successful</a></span>
+										<a href="#update" title="details" class="method-name">update</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attributes</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#updateCustomerUrl" title="details" class="method-name">updateCustomerUrl</a>
+											(<span class="var-type">none</span>&nbsp;<span class="var-name">0</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">object</span>
+										<a href="#updateFromTransparentRedirect" title="details" class="method-name">updateFromTransparentRedirect</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$queryString</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../Braintree/Braintree_Customer.html">object Braintree_Customer</a></span>
+										<a href="#updateNoValidate" title="details" class="method-name">updateNoValidate</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attributes</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">array</span>
+										<a href="#updateSignature" title="details" class="method-name">updateSignature</a>
+										()
+									</div>
+																
+																																																																																												<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#isEqual" title="details" class="method-name">isEqual</a>
+											(<span class="var-type">object</span>&nbsp;<span class="var-name">$otherCust</span>)
+									</div>
+																																																																								<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#__toString" title="details" class="method-name">__toString</a>
+										()
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$_attributes" id="$_attributes"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$_attributes</span>
+			 = <span class="var-default">array(<br />        'addresses'   =&gt; '',<br />        'company'     =&gt; '',<br />        'creditCards' =&gt; '',<br />        'email'       =&gt; '',<br />        'fax'         =&gt; '',<br />        'firstName'   =&gt; '',<br />        'id'          =&gt; '',<br />        'lastName'    =&gt; '',<br />        'phone'       =&gt; '',<br />        'createdAt'   =&gt; '',<br />        'updatedAt'   =&gt; '',<br />        'website'     =&gt; '',<br />        )</span>			(line <span class="line-number">409</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">var:</span> registry of customer data</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodall" id="all"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method all</span> (line <span class="line-number">33</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			all
+		</span>
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$options</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreate" id="create"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method create</span> (line <span class="line-number">76</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Creates a customer using the given +attributes+. If &lt;tt&gt;:id&lt;/tt&gt; is not passed,  the gateway will generate it.</p>
+<p class="description"><p><div class="src-code"><ol><li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-var">$result&nbsp;</span>=&nbsp;<span class="src-id"><a href="../Braintree/Braintree_Customer.html">Braintree_Customer</a></span><span class="src-sym">::</span><a href="../Braintree/Braintree_Customer.html#methodcreate">create</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'first_name'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'John'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'last_name'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Smith'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'company'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'Smith&nbsp;Co.'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'email'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'john@smith.com'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'website'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'www.smithco.com'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'fax'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'419-555-1234'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'phone'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'614-555-1234'</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-key">if</span><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">success</span><span class="src-sym">)&nbsp;</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;<span class="src-str">'Created&nbsp;customer&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">customer</span><span class="src-sym">-&gt;</span><span class="src-id">id</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;<span class="src-str">'Could&nbsp;not&nbsp;create&nbsp;customer,&nbsp;see&nbsp;result-&gt;errors'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-sym">}</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> either Successful or Error</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">object Result,</span>
+		<span class="method-name">
+			create
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateCustomerUrl" id="createCustomerUrl"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method createCustomerUrl</span> (line <span class="line-number">120</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			createCustomerUrl
+		</span>
+					(<span class="var-type">none</span>&nbsp;<span class="var-name">0</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">none</span>
+				<span class="var-name">0</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateFromTransparentRedirect" id="createFromTransparentRedirect"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method createFromTransparentRedirect</span> (line <span class="line-number">103</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">create a customer from a TransparentRedirect operation</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">object</span>
+		<span class="method-name">
+			createFromTransparentRedirect
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$queryString</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$queryString</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateNoValidate" id="createNoValidate"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method createNoValidate</span> (line <span class="line-number">91</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">attempts the create operation assuming all data will validate  returns a Braintree_Customer object instead of a Result</p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> Braintree_Exception_ValidationError</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">object</span>
+		<span class="method-name">
+			createNoValidate
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateSignature" id="createSignature"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method createSignature</span> (line <span class="line-number">131</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">creates a full array signature of a valid create request</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> gateway create request format</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">array</span>
+		<span class="method-name">
+			createSignature
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodcredit" id="credit"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method credit</span> (line <span class="line-number">189</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">credit a customer for the passed transaction</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> or Braintree_Result_Error</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../Braintree/Result/Braintree_Result_Successful.html">object Braintree_Result_Successful</a></span>
+		<span class="method-name">
+			credit
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$transactionAttribs</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$customerId</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$transactionAttribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreditNoValidate" id="creditNoValidate"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method creditNoValidate</span> (line <span class="line-number">209</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">credit a customer, assuming validations will pass</p>
+<p class="description"><p>returns a Braintree_Transaction object on success</p></p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> Braintree_Exception_ValidationError</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../Braintree/Braintree_Transaction.html">object Braintree_Transaction</a></span>
+		<span class="method-name">
+			creditNoValidate
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$transactionAttribs</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$customerId</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$transactionAttribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddelete" id="delete"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method delete</span> (line <span class="line-number">220</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">delete a customer by id</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			delete
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$customerId</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$customerId</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfind" id="find"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method find</span> (line <span class="line-number">168</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">find a customer by id</p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> Braintree_Exception_NotFound</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../Braintree/Braintree_Customer.html">object Braintree_Customer</a></span>
+		<span class="method-name">
+			find
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$id</span><span class="var-description">: id customer Id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsale" id="sale"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method sale</span> (line <span class="line-number">235</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">create a new sale for a customer</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> or Braintree_Result_Error</li>
+				<li><span class="field">see:</span> <a href="../Braintree/Braintree_Transaction.html#methodsale">Braintree_Transaction::sale()</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../Braintree/Result/Braintree_Result_Successful.html">object Braintree_Result_Successful</a></span>
+		<span class="method-name">
+			sale
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$transactionAttribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$customerId</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$transactionAttribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsaleNoValidate" id="saleNoValidate"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method saleNoValidate</span> (line <span class="line-number">256</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">create a new sale for a customer, assuming validations will pass</p>
+<p class="description"><p>returns a Braintree_Transaction object on success</p></p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../Braintree/Braintree_Transaction.html#methodsale">Braintree_Transaction::sale()</a></li>
+				<li><span class="field">throws:</span> Braintree_Exception_ValidationsFailed</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../Braintree/Braintree_Transaction.html">object Braintree_Transaction</a></span>
+		<span class="method-name">
+			saleNoValidate
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$transactionAttribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$customerId</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$transactionAttribs</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodupdate" id="update"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method update</span> (line <span class="line-number">273</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">updates the customer record</p>
+<p class="description"><p>if calling this method in static context, customerId  is the 2nd attribute. customerId is not sent in object context.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> or Braintree_Result_Error</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../Braintree/Result/Braintree_Result_Successful.html">object Braintree_Result_Successful</a></span>
+		<span class="method-name">
+			update
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attributes</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attributes</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$customerId</span><span class="var-description">: (optional)</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodupdateCustomerUrl" id="updateCustomerUrl"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method updateCustomerUrl</span> (line <span class="line-number">308</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			updateCustomerUrl
+		</span>
+					(<span class="var-type">none</span>&nbsp;<span class="var-name">0</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">none</span>
+				<span class="var-name">0</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodupdateFromTransparentRedirect" id="updateFromTransparentRedirect"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method updateFromTransparentRedirect</span> (line <span class="line-number">321</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">update a customer from a TransparentRedirect operation</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">object</span>
+		<span class="method-name">
+			updateFromTransparentRedirect
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$queryString</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attribs</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$queryString</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodupdateNoValidate" id="updateNoValidate"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method updateNoValidate</span> (line <span class="line-number">297</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">update a customer record, assuming validations will pass</p>
+<p class="description"><p>if calling this method in static context, customerId  is the 2nd attribute. customerId is not sent in object context.  returns a Braintree_Customer object on success</p></p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> Braintree_Exception_ValidationsFailed</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../Braintree/Braintree_Customer.html">object Braintree_Customer</a></span>
+		<span class="method-name">
+			updateNoValidate
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$customerId</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$attributes</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$attributes</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$customerId</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodupdateSignature" id="updateSignature"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method updateSignature</span> (line <span class="line-number">149</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">creates a full array signature of a valid update request</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> update request format</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">array</span>
+		<span class="method-name">
+			updateSignature
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+
+<a name="methodisEqual" id="isEqual"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">isEqual</span> (line <span class="line-number">396</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns false if comparing object is not a Braintree_Customer,  or is a Braintree_Customer with a different id</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			isEqual
+		</span>
+					(<span class="var-type">object</span>&nbsp;<span class="var-name">$otherCust</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">object</span>
+				<span class="var-name">$otherCust</span><span class="var-description">: customer to compare against</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method__toString" id="__toString"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">__toString</span> (line <span class="line-number">373</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns a string representation of the customer</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			__toString
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Fri, 12 Mar 2010 16:31:08 -0600 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>
