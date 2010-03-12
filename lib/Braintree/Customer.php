@@ -182,7 +182,7 @@ class Braintree_Customer extends Braintree
         }
 
     }
- 
+
     /**
      * credit a customer for the passed transaction
      *
