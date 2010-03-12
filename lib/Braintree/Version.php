@@ -17,8 +17,8 @@ final class Braintree_Version
      * class constants
      */
     const MAJOR = 1;
-    const MINOR = 0;
-    const TINY = 1;
+    const MINOR = 1;
+    const TINY = 0;
 
     /**
      * @ignore
