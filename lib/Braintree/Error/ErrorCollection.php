@@ -69,6 +69,7 @@ class Braintree_Error_ErrorCollection
         $errors = $this;
         foreach(array_slice($pieces, 0, -1) as $key) {
             $errors = $errors->forKey(Braintree_Util::delimiterToCamelCase($key));
+            if (!isset($errors)) { return array(); }
         }
         $finalKey = Braintree_Util::delimiterToCamelCase(end($pieces));
         return $errors->onAttribute($finalKey);

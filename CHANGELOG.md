@@ -2,6 +2,7 @@
 
 * added Braintree_Transaction::refund
 * added Braintree_Transaction::submitForSettlementNoValidate
+* fixed a bug in errors->onHtmlField when checking for errors on custom fields when there are none
 
 ## 1.1.0
 
