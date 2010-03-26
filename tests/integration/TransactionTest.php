@@ -104,6 +104,50 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('50.00', $submitResult->transaction->amount);
     }
 
+    function testSubmitForSettlementNoValidate_whenValidWithoutAmount()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertEquals('authorized', $transaction->status);
+        $submittedTransaction = Braintree_Transaction::submitForSettlementNoValidate($transaction->id);
+        $this->assertEquals('submitted_for_settlement', $submittedTransaction->status);
+        $this->assertEquals('100.00', $submittedTransaction->amount);
+    }
+
+    function testSubmitForSettlementNoValidate_whenValidWithAmount()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertEquals('authorized', $transaction->status);
+        $submittedTransaction = Braintree_Transaction::submitForSettlementNoValidate($transaction->id, '99.00');
+        $this->assertEquals('submitted_for_settlement', $submittedTransaction->status);
+        $this->assertEquals('99.00', $submittedTransaction->amount);
+    }
+
+    function testSubmitForSettlementNoValidate_whenInvalid()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertEquals('authorized', $transaction->status);
+        $this->setExpectedException('Braintree_Exception_ValidationsFailed');
+        $submittedTransaction = Braintree_Transaction::submitForSettlementNoValidate($transaction->id, '101.00');
+    }
+
     function testVoid()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(

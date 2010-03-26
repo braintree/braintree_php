@@ -10,9 +10,9 @@
 /**
  * Creates and manages transactions
  *
- * At minimum, an amount, credit card number, and 
- * credit card expiration date are required. 
- * 
+ * At minimum, an amount, credit card number, and
+ * credit card expiration date are required.
+ *
  * <b>Minimalistic example:</b>
  * <code>
  * Braintree_Transaction::saleNoValidate(array(
@@ -142,7 +142,7 @@
  * @category   Resources
  * @copyright  2010 Braintree Payment Solutions
  *
- * 
+ *
  * @property-read string $avsErrorResponseCode
  * @property-read string $avsPostalCodeResponseCode
  * @property-read string $avsStreetAddressResponseCode
@@ -160,13 +160,11 @@
  * @property-read array  $statusHistory array of StatusDetails objects
  * @property-read string $type transaction type
  * @property-read string $updatedAt transaction updated timestamp
- * 
+ *
  */
 
 final class Braintree_Transaction extends Braintree
-{   
-    /* public class methods */
-
+{
     /**
      * @ignore
      * @access public
@@ -433,18 +431,13 @@ final class Braintree_Transaction extends Braintree
         );
         return self::_verifyGatewayResponse($response);
     }
-    /**
-     * if calling this method in static context, id
-     * is the 2nd attribute. id is not sent in object context.
-     */
-    public function submitForSettlementNoValidate($amount,$id = null)
+
+    public static function submitForSettlementNoValidate($transactionId, $amount = null)
     {
-        $result = self::submitForSettlement($id, $amount);
+        $result = self::submitForSettlement($transactionId, $amount);
         return self::returnObjectOrThrowException(__CLASS__, $result);
     }
 
-
-    /* instance methods */
 
     /**
      * sets instance properties from an array of values
@@ -456,10 +449,8 @@ final class Braintree_Transaction extends Braintree
      */
     protected function _initialize($transactionAttribs)
     {
-        // set the attributes
         $this->_attributes = array_merge($this->_attributes, $transactionAttribs);
 
-        // create detail objects from the transaction
         $this->_set('creditCardDetails',
                 new Braintree_Transaction_CreditCardDetails(
                 $transactionAttribs['creditCard']
@@ -547,8 +538,6 @@ final class Braintree_Transaction extends Braintree
             return Braintree_Customer::find($customerId);
         }
     }
-
-    /* private class properties  */
 
     /**
      * @access protected

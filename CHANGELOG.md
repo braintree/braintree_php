@@ -1,3 +1,8 @@
+## master
+
+* added Braintree_Transaction::refund
+* added Braintree_Transaction::submitForSettlementNoValidate
+
 ## 1.1.0
 
 * Added recurring billing support
