@@ -515,19 +515,10 @@ final class Braintree_Transaction extends Braintree
                 Braintree_Util::implodeAssociativeArray($printableAttribs) .']';
     }
 
-    public function refund()
+    public static function refund($transactionId)
     {
-        self::validateId($this->id);
-        $response = Braintree_Http::post(
-                '/transactions/'.$this->id.'/refund');
-        $response = $this->_verifyGatewayResponse($response);
-        $this->refundId = $response->refundId;
-
-    }
-
-    public function isRefunded()
-    {
-        return isset($this->refundId);
+        $response = Braintree_Http::post('/transactions/' . $transactionId . '/refund');
+        return self::_verifyGatewayResponse($response);
     }
 
     public function isEqual($otherTx)
@@ -537,7 +528,6 @@ final class Braintree_Transaction extends Braintree
 
     public function vaultCreditCard()
     {
-        // print($this->creditCardDetails->token);
         $token = $this->creditCardDetails->token;
         if (empty($token)) {
             return null;

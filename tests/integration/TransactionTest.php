@@ -304,6 +304,14 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('81709', $errors[0]->code);
     }
 
+    function testRefund()
+    {
+        $transaction = $this->createTransactionToRefund();
+        $result = Braintree_Transaction::refund($transaction->id);
+        $this->assertTrue($result->success);
+        $this->assertEquals('credit', $result->transaction->type);
+    }
+
     function createTransactionViaTr($regularParams, $trParams)
     {
         $trData = Braintree_TransparentRedirect::transactionData(
@@ -314,6 +322,20 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             $regularParams,
             $trData
         );
+    }
+
+    function createTransactionToRefund()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'options' => array('submitForSettlement' => true)
+        ));
+        Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
+        return $transaction;
     }
 }
 ?>
