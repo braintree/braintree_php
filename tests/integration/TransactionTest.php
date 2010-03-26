@@ -22,6 +22,42 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
     }
 
+    function testSale_withCustomFields()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'customFields' => array(
+                'storeMe' => 'custom value'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $customFields = $transaction->customFields;
+        $this->assertEquals('custom value', $customFields['storeMe']);
+    }
+
+    function testSale_withInvalidCustomField()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'customFields' => array(
+                'invalidKey' => 'custom value'
+            )
+        ));
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('customFields');
+        $this->assertEquals('91526', $errors[0]->code);
+        $this->assertEquals('Custom field is invalid: invalidKey.', $errors[0]->message);
+    }
+
     function testSaleNoValidate()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
@@ -104,6 +140,50 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('50.00', $submitResult->transaction->amount);
     }
 
+    function testSubmitForSettlementNoValidate_whenValidWithoutAmount()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertEquals('authorized', $transaction->status);
+        $submittedTransaction = Braintree_Transaction::submitForSettlementNoValidate($transaction->id);
+        $this->assertEquals('submitted_for_settlement', $submittedTransaction->status);
+        $this->assertEquals('100.00', $submittedTransaction->amount);
+    }
+
+    function testSubmitForSettlementNoValidate_whenValidWithAmount()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertEquals('authorized', $transaction->status);
+        $submittedTransaction = Braintree_Transaction::submitForSettlementNoValidate($transaction->id, '99.00');
+        $this->assertEquals('submitted_for_settlement', $submittedTransaction->status);
+        $this->assertEquals('99.00', $submittedTransaction->amount);
+    }
+
+    function testSubmitForSettlementNoValidate_whenInvalid()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertEquals('authorized', $transaction->status);
+        $this->setExpectedException('Braintree_Exception_ValidationsFailed');
+        $submittedTransaction = Braintree_Transaction::submitForSettlementNoValidate($transaction->id, '101.00');
+    }
+
     function testVoid()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
@@ -117,6 +197,24 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $voidResult = Braintree_Transaction::void($transaction->id);
         $this->assertEquals(true, $voidResult->success);
         $this->assertEquals('voided', $voidResult->transaction->status);
+    }
+
+    function testVoid_withValidationError()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertEquals('authorized', $transaction->status);
+        $voided = Braintree_Transaction::voidNoValidate($transaction->id);
+        $this->assertEquals('voided', $voided->status);
+        $result = Braintree_Transaction::void($transaction->id);
+        $this->assertEquals(false, $result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals('91504', $errors[0]->code);
     }
 
     function testVoidNoValidate()
@@ -304,6 +402,14 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('81709', $errors[0]->code);
     }
 
+    function testRefund()
+    {
+        $transaction = $this->createTransactionToRefund();
+        $result = Braintree_Transaction::refund($transaction->id);
+        $this->assertTrue($result->success);
+        $this->assertEquals('credit', $result->transaction->type);
+    }
+
     function createTransactionViaTr($regularParams, $trParams)
     {
         $trData = Braintree_TransparentRedirect::transactionData(
@@ -314,6 +420,20 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             $regularParams,
             $trData
         );
+    }
+
+    function createTransactionToRefund()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'options' => array('submitForSettlement' => true)
+        ));
+        Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
+        return $transaction;
     }
 }
 ?>

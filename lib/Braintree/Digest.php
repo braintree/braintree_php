@@ -12,37 +12,21 @@
  */
 class Braintree_Digest
 {
-    /**
-     * public interface
-     * @access public
-     * @param var $string
-     * @return var HMAC-SHA1 hash of passed string
-     */
     public static function hexDigest($string)
     {
         if(function_exists('hash_hmac')) {
-            return hash_hmac('sha1',
-                             $string,
-                             sha1(Braintree_Configuration::privateKey(), true)
-                            );
+            return self::_builtInHmacSha1($string, Braintree_Configuration::privateKey());
         } else {
-            return self::_hmacSHA1($string, 
-                                   Braintree_Configuration::privateKey()
-                                  );
+            return self::_hmacSha1($string, Braintree_Configuration::privateKey());
         }
     }
 
-    /**
-     * based on the PHP hash_hmac() function & Braintree_Ruby _hmac_sha1
-     * in case hash_hmac isn't available
-     *
-     * @ignore
-     * @access protected
-     * @param var $message message to be embedded in the hash
-     * @param var $key private hash key
-     * @return var hexadecimal HMAC-SHA1 hash
-     */
-    private function _hmacSHA1($message, $key)
+    public static function _builtInHmacSha1($message, $key)
+    {
+        return hash_hmac('sha1', $message, sha1(Braintree_Configuration::privateKey(), true));
+    }
+
+    public static function _hmacSha1($message, $key)
     {
         $pack = 'H40';
         $keyDigest = sha1($key,true);

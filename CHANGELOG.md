@@ -1,3 +1,10 @@
+## 1.1.1
+
+* added Braintree_Transaction::refund
+* added Braintree_Transaction::submitForSettlementNoValidate
+* fixed a bug in errors->onHtmlField when checking for errors on custom fields when there are none
+* added support for passing merchantAccountId for Transaction and Subscription
+
 ## 1.1.0
 
 * Added recurring billing support

@@ -15,6 +15,7 @@ class Braintree_Subscription extends Braintree
         'billingPeriodStartDate' => '',
         'failureCount' => '',
         'firstBillingDate' => '',
+        'merchantAccountId' => '',
         'merchantId' => '',
         'nextBillingDate' => '',
         'paymentMethodId' => '',
@@ -74,7 +75,7 @@ class Braintree_Subscription extends Braintree
     private static function allowedAttributes()
     {
         return array(
-            'paymentMethodToken', 'planId', 'id', 'price', 'trialPeriod',
+            'merchantAccountId', 'paymentMethodToken', 'planId', 'id', 'price', 'trialPeriod',
             'trialDuration', 'trialDurationUnit'
         );
     }

@@ -3,6 +3,16 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 {
+    function defaultMerchantAccountId()
+    {
+        return 'sandbox_credit_card';
+    }
+
+    function nonDefaultMerchantAccountId()
+    {
+        return 'sandbox_credit_card_non_default';
+    }
+
     function trialPlan()
     {
         return array(
@@ -69,6 +79,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($creditCard->token, $subscription->paymentMethodToken);
         $this->assertEquals(0, $subscription->failureCount);
         $this->assertEquals($plan['id'], $subscription->planId);
+        $this->assertEquals($this->defaultMerchantAccountId(), $subscription->merchantAccountId);
         $this->assertEquals('Active', $subscription->status);
         $this->assertType('DateTime', $subscription->firstBillingDate);
         $this->assertType('DateTime', $subscription->nextBillingDate);
@@ -90,6 +101,21 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $subscription = $result->subscription;
         $this->assertEquals($newId, $subscription->id);
+    }
+
+    function testCreate_canSetTheMerchantAccountId()
+    {
+        $creditCard = $this->createCreditCard();
+        $plan = $this->triallessPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+            'merchantAccountId' => $this->nonDefaultMerchantAccountId()
+        ));
+
+        $this->assertTrue($result->success);
+        $subscription = $result->subscription;
+        $this->assertEquals($this->nonDefaultMerchantAccountId(), $subscription->merchantAccountId);
     }
 
     function testCreate_trialPeriodDefaultsToPlanWithoutTrial()
