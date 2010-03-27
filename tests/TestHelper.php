@@ -6,14 +6,14 @@
 //         $path = str_replace('_', '/', $className);
 //         $file = $path . '.php';
 //         include $file;
-// 
+//
 //     }
-// 
+//
 // }
 // $libPath = realpath(dirname(__FILE__).'/../lib');
-// 
+//
 // define('LIB_DIR', $libPath);
-// 
+//
 // set_include_path($libPath.PATH_SEPARATOR.get_include_path());
 require_once 'PHPUnit/Framework.php';
 

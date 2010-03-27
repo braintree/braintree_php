@@ -3,6 +3,18 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 {
+    function setup()
+    {
+        Braintree_Configuration::reset();
+    }
+
+    function teardown()
+    {
+        Braintree_Configuration::environment('development');
+        Braintree_Configuration::merchantId('integration_merchant_id');
+        Braintree_Configuration::publicKey('integration_public_key');
+        Braintree_Configuration::privateKey('integration_private_key');
+    }
 
     function testSetValidEnvironment()
     {

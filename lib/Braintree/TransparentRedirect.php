@@ -254,7 +254,7 @@ class Braintree_TransparentRedirect
             )
         );
         ksort($trDataParams);
-        $trDataSegment = http_build_query($trDataParams);
+        $trDataSegment = http_build_query($trDataParams, null, '&');
         $trDataHash = self::_hash($trDataSegment);
         return "$trDataHash|$trDataSegment";
     }

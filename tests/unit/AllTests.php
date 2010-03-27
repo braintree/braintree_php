@@ -7,6 +7,7 @@ require_once 'CreditCardTest.php';
 require_once 'CustomerTest.php';
 require_once 'DigestTest.php';
 require_once 'TransactionTest.php';
+require_once 'TransparentRedirectTest.php';
 require_once 'Xml_GeneratorTest.php';
 require_once 'Xml_ParserTest.php';
 require_once 'UtilTest.php';
@@ -30,6 +31,7 @@ class Braintree_AllTests {
         $suite->addTestSuite('Braintree_CreditCardTest');
         $suite->addTestSuite('Braintree_DigestTest');
         $suite->addTestSuite('Braintree_TransactionTest');
+        $suite->addTestSuite('Braintree_TransparentRedirectTest');
         $suite->addTestSuite('Braintree_UtilTest');
         $suite->addTestSuite('Braintree_Xml_GeneratorTest');
         $suite->addTestSuite('Braintree_Xml_ParserTest');
