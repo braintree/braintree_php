@@ -100,6 +100,7 @@ class Braintree_Http
         //$config = Braintree_Configuration::singleton();
         // create an http client
         $connection = new Zend_Http_Client();
+        $connection->setConfig(array('timeout' => 60));
         // if ssl is on, special options need to be sent
         // to the http client to send the ssl params
         if(Braintree_Configuration::sslOn()) {
