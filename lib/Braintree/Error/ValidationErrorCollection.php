@@ -30,19 +30,11 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
         foreach($data AS $key => $errorData)
             // map errors to new collections recursively
             if ($key == 'errors') {
-                // todo: this array_key_exists check shouldn't be necessary
-                // bug in xml parsing
-                if (!empty($errorData)) {
-                    if (!array_key_exists('errors', $errorData)) {
-                        foreach ($errorData AS $error) {
-                            $this->_errors[] = new Braintree_Error_Validation($error);
-                        }
-                    }
+                foreach ($errorData AS $error) {
+                    $this->_errors[] = new Braintree_Error_Validation($error);
                 }
             } else {
-
-                $this->_nested[$key] =
-                        new Braintree_Error_ValidationErrorCollection($errorData);
+                $this->_nested[$key] = new Braintree_Error_ValidationErrorCollection($errorData);
             }
 
     }
