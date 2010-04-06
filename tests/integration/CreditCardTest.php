@@ -336,6 +336,40 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('5100', $creditCard->last4);
         $this->assertEquals('Cardholder', $creditCard->cardholderName);
         $this->assertEquals('05/2012', $creditCard->expirationDate);
+        $this->assertEquals(array(), $creditCard->subscriptions);
+    }
+
+    function testFindReturnsAssociatedSubscriptions()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddress' => array(
+                'firstName' => 'Drew',
+                'lastName' => 'Smith',
+                'company' => 'Smith Co.',
+                'streetAddress' => '1 E Main St',
+                'extendedAddress' => 'Suite 101',
+                'locality' => 'Chicago',
+                'region' => 'IL',
+                'postalCode' => '60622',
+                'countryName' => 'United States of America'
+            )
+        ));
+        $id = strval(rand());
+        Braintree_Subscription::create(array(
+            'id' => $id,
+            'paymentMethodToken' => $result->creditCard->token,
+            'planId' => 'integration_trialless_plan',
+            'price' => '1.00'
+        ));
+        $creditCard = Braintree_CreditCard::find($result->creditCard->token);
+        $this->assertEquals($id, $creditCard->subscriptions[0]->id);
+        $this->assertEquals('integration_trialless_plan', $creditCard->subscriptions[0]->planId);
+        $this->assertEquals('1.00', $creditCard->subscriptions[0]->price);
     }
 
     function testFind_throwsIfCannotBeFound()

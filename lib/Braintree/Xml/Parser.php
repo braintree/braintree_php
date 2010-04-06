@@ -71,16 +71,10 @@ class Braintree_Xml_Parser
             $parentElement = $iterator->xpath($iterator->key() . '/..');
             if ($parentElement[0] instanceof SimpleXMLIterator) {
                 $parentElement = $parentElement[0];
-                $parentKey =
-                Braintree_Util::delimiterToCamelCase($parentElement->getName());
-
-                if($parentElement->attributes()->type == 'array') {
-                    $parentIsArray = true;
-                }
+                $parentKey = Braintree_Util::delimiterToCamelCase($parentElement->getName());
             }
             // process children recursively
             if ($iterator->hasChildren()) {
-
                 // return the child elements
                 $value = self::_iteratorToArray($iterator->current());
 
@@ -96,7 +90,7 @@ class Braintree_Xml_Parser
 
             // set the output string
             $output = isset($tmpArray[$key]) ? $tmpArray[$key] : $value;
-            
+
             // determine if there are multiple tags of this name at the same level
             if (self::$_responseType == 'collection') {
                 // count of elements in xpath
@@ -108,7 +102,7 @@ class Braintree_Xml_Parser
                 if ($c > 1 || ($c == 1 && $iterator->hasChildren())) {
                     $xmlArray[$key][] = $output;
                     continue;
-                } 
+                }
             }
             // if the element was an array type, output to a numbered key
             // otherwise, use the element name
@@ -157,9 +151,8 @@ class Braintree_Xml_Parser
                     return ($value != "true") ? FALSE : TRUE;
                 }
                 break;
-            // don't set array types here
             case 'array':
-                return null;
+                return array();
             default:
                 return (string) $valueObj;
         }
