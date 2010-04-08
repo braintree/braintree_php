@@ -251,6 +251,30 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 
     }
 
+    function testSearch_planIdIs()
+    {
+        $creditCard = $this->createCreditCard();
+        $triallessPlan = $this->triallessPlan();
+        $trialPlan = $this->trialPlan();
+
+        $trialSubscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $trialPlan['id']
+        ))->subscription;
+
+        $triallessSubscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $triallessPlan['id']
+        ))->subscription;
+
+        $collection = Braintree_Subscription::search(array(
+            Braintree_Search::planId()->is("integration_trial_plan")
+        ));
+
+        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $trialSubscription));
+        $this->assertFalse(Braintree_TestHelper::includesOnAnyPage($collection, $triallessSubscription));
+    }
+
     function testUpdate_whenSuccessful()
     {
         $subscription = $this->createSubscription();

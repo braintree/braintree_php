@@ -134,15 +134,10 @@ class Braintree_PagedCollection
             );
 
             // call back to the original creator of the collection
-            $incomingPage = call_user_func_array(
-                    array($className, $classMethod),
-                    $methodArgs
-                    );
-
-           // replace current values with incoming
-           foreach($this AS $attributeName => $value) {
-               $this->$attributeName = $incomingPage->$attributeName;
-           }
+            return call_user_func_array(
+                array($className, $classMethod),
+                $methodArgs
+            );
         } else {
             return false;
         }

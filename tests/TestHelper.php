@@ -51,6 +51,24 @@ class Braintree_TestHelper
         $parsedUrl = parse_url($location);
         return $parsedUrl['query'];
     }
+
+    public static function includesOnAnyPage($collection, $targetItem)
+    {
+        foreach ($collection->items() AS $item)
+        {
+            if ($item->id == $targetItem->id)
+            {
+                return true;
+            }
+        }
+
+        if ($collection->isLastPage())
+        {
+            return false;
+        }
+
+        return Braintree_TestHelper::includesOnAnyPage($collection->nextPage(), $targetItem);
+    }
 }
 
 ?>
