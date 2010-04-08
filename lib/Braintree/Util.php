@@ -26,13 +26,10 @@ class Braintree_Util
      *
      * @return array array of Braintree_$attributeName objects, or a single element array
      */
-    public static function extractAttributeAsArray(
-        & $attribArray,
-        $attributeName
-        )
+    public static function extractAttributeAsArray(& $attribArray, $attributeName)
     {
         if(!isset($attribArray[$attributeName])):
-            return null;
+            return array();
         endif;
 
         // get what should be an array from the passed array

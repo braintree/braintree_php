@@ -120,14 +120,23 @@ class Braintree_PagedCollection
             // extract the method to be called which will return the next page
             $className = $this->_pager['className'];
             $classMethod = $this->_pager['classMethod'];
-            $methodArgs = array_merge(
-                    $this->_pager['methodArgs'],
+            if (array_key_exists(1, $this->_pager['methodArgs'])) {
+                $options = $this->_pager['methodArgs'][1];
+            } else {
+                $options = array();
+            }
+            $methodArgs = array(
+                $this->_pager['methodArgs'][0],
+                array_merge(
+                    $options,
                     array('page' => $this->nextPageNumber())
-                            );
+                )
+            );
+
             // call back to the original creator of the collection
             $incomingPage = call_user_func_array(
                     array($className, $classMethod),
-                    array($methodArgs)
+                    $methodArgs
                     );
 
            // replace current values with incoming
@@ -155,7 +164,11 @@ class Braintree_PagedCollection
      */
     public function totalPages()
     {
-        $total = $this->_totalItems / $this->_pageSize;
+        if ($this->_totalItems == 0) {
+            return 1;
+        }
+
+        $total = intval($this->_totalItems / $this->_pageSize);
         if (($this->_totalItems % $this->_pageSize) != 0) {
             $total += 1;
         }

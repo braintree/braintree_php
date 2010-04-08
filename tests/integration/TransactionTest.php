@@ -435,6 +435,12 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
         return $transaction;
     }
+
+    function testBasicSearch()
+    {
+        $collection = Braintree_Transaction::search("411111");
+        $this->assertTrue($collection->totalItems() > 1);
+    }
 }
 ?>
 

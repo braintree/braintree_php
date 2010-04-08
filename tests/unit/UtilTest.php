@@ -5,7 +5,6 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
 {
 
     // test throwStatusCodeException
-    
     /**
      * @expectedException Braintree_Exception_Authentication
      */
@@ -47,6 +46,12 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
      function testThrowUnknownException()
     {
         Braintree_Util::throwStatusCodeException(999);
+    }
+
+    function testExtractAttributeAsArrayReturnsEmptyArray()
+    {
+        $attributes = array();
+        $this->assertEquals(array(), Braintree_Util::extractAttributeAsArray($attributes, "foo"));
     }
 
     function testCleanClassName()
