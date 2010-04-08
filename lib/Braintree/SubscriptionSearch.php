@@ -1,5 +1,5 @@
 <?php
-class Braintree_Search
+class Braintree_SubscriptionSearch
 {
     static function planId()
     {

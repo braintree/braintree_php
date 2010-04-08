@@ -268,7 +268,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         ))->subscription;
 
         $collection = Braintree_Subscription::search(array(
-            Braintree_Search::planId()->is("integration_trial_plan")
+            Braintree_SubscriptionSearch::planId()->is("integration_trial_plan")
         ));
 
         $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $trialSubscription));
