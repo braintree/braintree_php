@@ -10,5 +10,10 @@ class Braintree_SubscriptionSearch
     {
         return new Braintree_TextNode("days_past_due");
     }
+
+    static function status()
+    {
+        return new Braintree_MultipleValueNode("status");
+    }
 }
 ?>

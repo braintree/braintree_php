@@ -124,6 +124,54 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $trialSubscription));
         $this->assertFalse(Braintree_TestHelper::includesOnAnyPage($collection, $triallessSubscription));
     }
+
+    function testSearch_statusIn()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $triallessPlan = Braintree_SubscriptionTestHelper::triallessPlan();
+
+        $activeSubscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $triallessPlan['id']
+        ))->subscription;
+
+        $canceledSubscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $triallessPlan['id']
+        ))->subscription;
+        Braintree_Subscription::cancel($canceledSubscription->id);
+
+        $collection = Braintree_Subscription::search(array(
+            Braintree_SubscriptionSearch::status()->in(array('Active'))
+        ));
+
+        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $activeSubscription));
+        $this->assertFalse(Braintree_TestHelper::includesOnAnyPage($collection, $canceledSubscription));
+    }
+
+    function testSearch_statusIn_multipleValues()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $triallessPlan = Braintree_SubscriptionTestHelper::triallessPlan();
+
+        $activeSubscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $triallessPlan['id']
+        ))->subscription;
+
+        $canceledSubscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $triallessPlan['id']
+        ))->subscription;
+        Braintree_Subscription::cancel($canceledSubscription->id);
+
+        $collection = Braintree_Subscription::search(array(
+            Braintree_SubscriptionSearch::status()->in(array('Active', 'Canceled'))
+        ));
+
+        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $activeSubscription));
+        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $canceledSubscription));
+    }
 }
 
 ?>
