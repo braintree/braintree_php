@@ -63,9 +63,6 @@ class Braintree_Subscription extends Braintree
     {
         $criteria = array();
         foreach ($query AS $term) {
-            // if criteria.get($term.name):
-            //     criteria[term.name] = dict(criteria[term.name].items() + term.to_param().items())
-            // else:
             $criteria[$term->name] = $term->toParam();
         }
 
