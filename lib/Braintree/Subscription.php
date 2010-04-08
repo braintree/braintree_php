@@ -9,6 +9,9 @@
  */
 class Braintree_Subscription extends Braintree
 {
+    const ACTIVE = 'active';
+    const CANCELED = 'canceled';
+    const PAST_DUE = 'past_due';
 
     protected $_attributes = array(
         'billingPeriodEndDate' => '',

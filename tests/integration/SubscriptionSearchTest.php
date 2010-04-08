@@ -142,7 +142,7 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         Braintree_Subscription::cancel($canceledSubscription->id);
 
         $collection = Braintree_Subscription::search(array(
-            Braintree_SubscriptionSearch::status()->in(array('Active'))
+            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::ACTIVE))
         ));
 
         $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $activeSubscription));
@@ -166,7 +166,7 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         Braintree_Subscription::cancel($canceledSubscription->id);
 
         $collection = Braintree_Subscription::search(array(
-            Braintree_SubscriptionSearch::status()->in(array('Active', 'Canceled'))
+            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::ACTIVE, Braintree_Subscription::CANCELED))
         ));
 
         $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $activeSubscription));
