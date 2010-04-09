@@ -84,28 +84,20 @@ abstract class Braintree
     }
 }
 
-/**
- * requirements and version checks
- */
-// check PHP version
 if (version_compare(PHP_VERSION, '5.2.1', '<')) {
     throw new Braintree_Exception('PHP version >= 5.2.1 required');
 }
 
 // check for extensions
-$requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash');
+$requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
 foreach ($requiredExtensions AS $ext) {
     if (!extension_loaded($ext)) {
-        throw new Braintree_Exception(
-                'The Braintree library requires the ' . $ext . ' extension.'
-                );
+        throw new Braintree_Exception('The Braintree library requires the ' . $ext . ' extension.');
     }
 }
 
 
-//
-// 
-// check ssl certificate
+// check ssl certificates
 Braintree_SSLExpirationCheck::checkDates();
 
 

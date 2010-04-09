@@ -1,153 +1,87 @@
 <?php
 /**
- * Braintree HTTP Client based on Zend_Http_Client
+ * Braintree HTTP Client
  *
- * @see        Zend_Http_Client
  * @copyright  2010 Braintree Payment Solutions
  */
 
 /**
- * processes Http requests using a Zend_Http_Client instance
+ * processes Http requests using curl
  *
- * @see        Zend_Http_Client
  * @copyright  2010 Braintree Payment Solutions
  */
 class Braintree_Http
 {
-    /**
-     * delete request
-     * @access public
-     * @param var $path url path to access
-     * @return boolean success or failure
-     */
     public static function delete($path)
     {
         $response = self::_doRequest('DELETE', $path);
-        if($response->getStatus() === 200) {
+        if($response['status'] === 200) {
             return true;
         } else {
-            Braintree_Util::throwStatusCodeException($response->getStatus());
+            Braintree_Util::throwStatusCodeException($response['status']);
         }
     }
-    /**
-     * request data via get
-     * @access public
-     * @param var $path url path to access
-     * @return array array of XML data
-     */
+
     public static function get($path)
     {
         $response = self::_doRequest('GET', $path);
-        if($response->getStatus() === 200) {
-            return Braintree_Xml::buildArrayFromXml($response->getBody());
+        if($response['status'] === 200) {
+            return Braintree_Xml::buildArrayFromXml($response['body']);
         } else {
-            Braintree_Util::throwStatusCodeException($response->getStatus());
+            Braintree_Util::throwStatusCodeException($response['status']);
         }
     }
-    /**
-     * post xml data to the gateway
-     * @param var $path
-     * @param array $params
-     * @return array
-     */
+
     public static function post($path, $params = null)
     {
         $response = self::_doRequest('POST', $path, self::_buildXml($params));
-        $responseCode = $response->getStatus();
+        $responseCode = $response['status'];
         if($responseCode === 200 || $responseCode === 201 || $responseCode === 422) {
-            return Braintree_Xml::buildArrayFromXml($response->getBody());
+            return Braintree_Xml::buildArrayFromXml($response['body']);
         } else {
             Braintree_Util::throwStatusCodeException($responseCode);
         }
     }
 
-    /**
-     * put xml data to the gateway
-     * @param var $path
-     * @param array $params
-     * @return array
-     */
     public static function put($path, $params = null)
     {
         $response = self::_doRequest('PUT', $path, self::_buildXml($params));
-        $responseCode = $response->getStatus();
+        $responseCode = $response['status'];
         if($responseCode === 200 || $responseCode === 201 || $responseCode === 422) {
-            return Braintree_Xml::buildArrayFromXml($response->getBody());
+            return Braintree_Xml::buildArrayFromXml($response['body']);
         } else {
             Braintree_Util::throwStatusCodeException($responseCode);
         }
     }
-    /**
-     * build outgoing XML
-     * @param array $params
-     * @return mixed array or null
-     */
+
     private static function _buildXml($params)
     {
         return empty($params) ? null : Braintree_Xml::buildXmlFromArray($params);
     }
-    /**
-     * gzip encoding is automatic depending on the status of the zip extension
-     * 
-     * @param var $httpVerb
-     * @param var $path
-     * @param var $requestBody
-     * @return object Zend_Http_Client_Response
-     */
+
     private static function _doRequest($httpVerb, $path, $requestBody = null)
     {
-        // set access to configuration
-        //$config = Braintree_Configuration::singleton();
-        // create an http client
-        $connection = new Zend_Http_Client();
-        $connection->setConfig(array('timeout' => 60));
-        // if ssl is on, special options need to be sent
-        // to the http client to send the ssl params
-        if(Braintree_Configuration::sslOn()) {
-            $streamOpts = array(
-                'ssl' => array(
-                    'verify_peer' => true,
-                    'cafile'        => Braintree_Configuration::caFile(),
-                    )
-                );
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, Braintree_Configuration::merchantUrl() . $path);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Accept: application/xml',
+            'Content-Type: application/xml',
+            'User-Agent: Braintree PHP Library ' . Braintree_Version::get(),
+            'X-ApiVersion: ' . Braintree_Configuration::API_VERSION
+        ));
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($curl, CURLOPT_USERPWD, Braintree_Configuration::publicKey() . ':' . Braintree_Configuration::privateKey());
 
-            // create a socket adapter
-            $adapter = new Zend_Http_Client_Adapter_Socket();
-            // attach the adapter to the client
-            $connection->setAdapter($adapter);
-            $adapter->setStreamContext($streamOpts);
-        }
-
-        $connection->setUri(Braintree_Configuration::merchantUrl().$path);
-        // http method
-        $connection->setMethod($httpVerb);
-        // headers
-        $connection->setHeaders(array(
-            'Accept' => 'application/xml',
-            'User-Agent' => 'Braintree PHP Library ' . Braintree_Version::get(),
-            'X-ApiVersion' => Braintree_Configuration::API_VERSION,
-            ));
-
-        // authentication
-        $connection->setAuth(Braintree_Configuration::publicKey(),
-                             Braintree_Configuration::privateKey(),
-                             Zend_Http_Client::AUTH_BASIC
-                            );
-
-        // body
         if(!empty($requestBody)) {
-            if ($httpVerb == 'PUT') {
-                $connection->setHeaders(array('X-Http-Method-Override' => 'PUT'));
-                $connection->setMethod('POST');
-            }
-            $connection->setRawData($requestBody, 'application/xml');
-           //Configuration.logger.debug _format_and_sanitize_body_for_log(body)
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
         }
 
-        // fire the request
-        $response = $connection->request();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($curl);
+        $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
 
-        return $response;
-
+        return array('status' => $httpStatus, 'body' => $response);
     }
 }
