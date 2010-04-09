@@ -76,7 +76,7 @@ class Braintree_Http
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
         if (Braintree_Configuration::sslOn()) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
             curl_setopt($curl, CURLOPT_CAINFO, Braintree_Configuration::caFile());
         }
 
