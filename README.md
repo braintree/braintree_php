@@ -4,20 +4,27 @@ The Braintree PHP library provides integration access to the Braintree Gateway.
 
 ## Dependencies
 
-* Zend Framework
+PHP version >= 5.2.1 required.
+
+The following PHP extensions are required:
+
+* curl
+* dom
+* hash
+* openssl
+* SimpleXML
+* xmlwriter
 
 ## Quick Start Example
 
     <?php
 
-    // ensure Zend_Framework is in your load path
     require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
 
-    // validates and sets config statically
     Braintree_Configuration::environment('sandbox');
-    Braintree_Configuration::merchantId('the_merchant_id');
-    Braintree_Configuration::publicKey('the_public_key');
-    Braintree_Configuration::privateKey('the_private_key');
+    Braintree_Configuration::merchantId('your_merchant_id');
+    Braintree_Configuration::publicKey('your_public_key');
+    Braintree_Configuration::privateKey('your_private_key');
 
     $transaction = Braintree_Transaction::saleNoValidate(array(
         'amount' => '100.00',

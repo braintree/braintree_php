@@ -75,7 +75,6 @@ if (version_compare(PHP_VERSION, '5.2.1', '<')) {
     throw new Braintree_Exception('PHP version >= 5.2.1 required');
 }
 
-// check for extensions
 $requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
 foreach ($requiredExtensions AS $ext) {
     if (!extension_loaded($ext)) {
