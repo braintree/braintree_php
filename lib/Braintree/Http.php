@@ -72,16 +72,26 @@ class Braintree_Http
         ));
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($curl, CURLOPT_USERPWD, Braintree_Configuration::publicKey() . ':' . Braintree_Configuration::privateKey());
+        // curl_setopt($curl, CURLOPT_VERBOSE, true);
+        if (Braintree_Configuration::sslOn()) {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
+            curl_setopt($curl, CURLOPT_CAINFO, Braintree_Configuration::caFile());
+        }
 
         if(!empty($requestBody)) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
         }
 
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
-
+        if (Braintree_Configuration::sslOn()) {
+            if ($httpStatus == 0) {
+                throw new Braintree_Exception_SSLCertificate();
+            }
+        }
         return array('status' => $httpStatus, 'body' => $response);
     }
 }
