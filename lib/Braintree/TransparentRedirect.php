@@ -218,13 +218,13 @@ class Braintree_TransparentRedirect
             $queryStringWithoutHash = $match[1];
         }
 
+        if($params['http_status'] != '200') {
+            Braintree_Util::throwStatusCodeException($params['http_status']);
+        }
+
         // recreate the hash and compare it
         if(self::_hash($queryStringWithoutHash) == $params['hash']) {
-            if($params['http_status'] == '200') {
-                return $params;
-            } else {
-                Braintree_Util::throwStatusCodeException($params['http_status']);
-            }
+            return $params;
         } else {
             throw new Braintree_Exception_ForgedQueryString();
         }
@@ -254,7 +254,7 @@ class Braintree_TransparentRedirect
             )
         );
         ksort($trDataParams);
-        $trDataSegment = http_build_query($trDataParams);
+        $trDataSegment = http_build_query($trDataParams, null, '&');
         $trDataHash = self::_hash($trDataSegment);
         return "$trDataHash|$trDataSegment";
     }

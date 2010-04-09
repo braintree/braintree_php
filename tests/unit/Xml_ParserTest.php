@@ -109,6 +109,28 @@ XML;
 
     }
 
+    function testEmptyArrayAndNestedElements()
+    {
+        $xml = <<<XML
+        <root>
+          <nested-values>
+            <value>1</value>
+          </nested-values>
+          <no-values type="array"/>
+        </root>
+XML;
+
+         $array = Braintree_Xml::buildArrayFromXml($xml);
+         $this->assertEquals(
+              array('root' => array(
+                  'noValues' => array(),
+                   'nestedValues' => array(
+                       'value' => 1
+                   )
+              )
+         ), $array);
+    }
+
     function xmlAndBack($array)
     {
         $xml = Braintree_Xml::buildXmlFromArray($array);

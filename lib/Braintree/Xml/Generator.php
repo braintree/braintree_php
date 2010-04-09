@@ -54,7 +54,7 @@ class Braintree_Xml_Generator
      * @param array $aData contains attributes and values
      * @return none
      */
-    private static function _createElementsFromArray(&$writer, $aData, $parentElementName)
+    private static function _createElementsFromArray(&$writer, $aData)
     {
         if (!is_array($aData)) {
           $writer->writeRaw($aData);
@@ -64,17 +64,20 @@ class Braintree_Xml_Generator
             // convert the style back to gateway format
             $elementName = Braintree_Util::camelCaseToDelimiter($index, '-');
             // handle child elements
+            $writer->startElement($elementName);
             if (is_array($element)) {
-                if(is_numeric($elementName)) {
-                    $elementName = substr($parentElementName, 0, -1);
+                if (array_key_exists(0, $element) || empty($element)) {
                     $writer->writeAttribute('type', 'array');
+                    foreach ($element AS $ignored => $itemInArray) {
+                        $writer->startElement('item');
+                        self::_createElementsFromArray($writer, $itemInArray);
+                        $writer->endElement();
+                    }
                 }
-                $writer->startElement($elementName);
-                self::_createElementsFromArray($writer, $element, $elementName);
-                $writer->endElement();
-
+                else {
+                    self::_createElementsFromArray($writer, $element);
+                }
             } else {
-                $writer->startElement($elementName);
                 // generate attributes as needed
                 $attribute = self::_generateXmlAttribute($element);
                 if (is_array($attribute)) {
@@ -82,8 +85,8 @@ class Braintree_Xml_Generator
                     $element = $attribute[2];
                 }
                 $writer->writeRaw($element);
-                $writer->endElement();
             }
+            $writer->endElement();
         }
     }
 

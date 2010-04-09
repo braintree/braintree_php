@@ -9,6 +9,9 @@
  */
 class Braintree_Subscription extends Braintree
 {
+    const ACTIVE = 'active';
+    const CANCELED = 'canceled';
+    const PAST_DUE = 'past_due';
 
     protected $_attributes = array(
         'billingPeriodEndDate' => '',
@@ -56,6 +59,30 @@ class Braintree_Subscription extends Braintree
 
     }
 
+    public static function search($query, $options=array())
+    {
+        $criteria = array();
+        foreach ($query AS $term) {
+            $criteria[$term->name] = $term->toParam();
+        }
+
+        $page = isset($options['page']) ? $options['page'] : 1;
+        $queryPath = '/subscriptions/advanced_search?page=' . $page;
+        $response = Braintree_Http::post($queryPath, array('search' => $criteria));
+        $attributes = $response['subscriptions'];
+        $attributes['items'] = Braintree_Util::extractAttributeAsArray(
+                $attributes,
+                'subscription'
+                );
+        $pager = array(
+            'className' => __CLASS__,
+            'classMethod' => __METHOD__,
+            'methodArgs' => array($query)
+            );
+
+        return new Braintree_PagedCollection($attributes, $pager);
+    }
+
     public static function update($subscriptionId, $attributes)
     {
         Braintree_Util::verifyKeys(self::allowedAttributes(), $attributes);
@@ -79,6 +106,7 @@ class Braintree_Subscription extends Braintree
             'trialDuration', 'trialDurationUnit'
         );
     }
+
 
     /**
      * @ignore

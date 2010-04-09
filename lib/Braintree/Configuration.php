@@ -99,16 +99,7 @@ class Braintree_Configuration extends Braintree
 
         return true;
     }
-    /**
-     *
-     * sets private config registry values, after validation
-     *
-     * @access protected
-     * @static
-     * @param string $key config item to be set
-     * @param string $value value to assign
-     *
-     */
+
     private static function set($key, $value)
     {
         // this method will raise an exception on invalid data
@@ -118,16 +109,6 @@ class Braintree_Configuration extends Braintree
 
     }
 
-    /**
-     *
-     * gets private config registry values
-     *
-     * @access protected
-     * @static
-     * @param string $key config item to retrieve
-     * @return string value of the retrieved item
-     * @throws Braintree_Exception_Configuration
-     */
     private static function get($key)
     {
         // throw an exception if the value hasn't been set
@@ -146,16 +127,7 @@ class Braintree_Configuration extends Braintree
         return null;
     }
 
-    
-    /**
-     * sets value of named property if passed, otherwise
-     * returns current value
-     * @access protected
-     * @static
-     * @param string $name name of property to set/get
-     * @param mixed $value value to set, defaults to null
-     * @return mixed
-     */
+
     private static function setOrGet($name, $value = null)
     {
         if (!empty($value) && is_array($value)) {
@@ -248,14 +220,14 @@ class Braintree_Configuration extends Braintree
      */
     public static function caFile()
     {
-        $sslPath = DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 
+        $sslPath = DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                    'ssl' . DIRECTORY_SEPARATOR;
 
         switch(self::environment()) {
          case 'production':
              $caPath = realpath(
                  dirname(__FILE__) .
-                 $sslPath .  'securetrust_ca.crt'
+                 $sslPath .  'www_braintreegateway_com.ca.crt'
              );
              break;
          case 'qa':
@@ -263,7 +235,7 @@ class Braintree_Configuration extends Braintree
          default:
              $caPath = realpath(
                  dirname(__FILE__) .
-                 $sslPath . 'valicert_ca.crt'
+                 $sslPath . 'sandbox_braintreegateway_com.ca.crt'
              );
              break;
         }

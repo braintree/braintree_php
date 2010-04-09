@@ -339,6 +339,14 @@ class Braintree_CreditCard extends Braintree
             Braintree_Address::factory($creditCardAttribs['billingAddress']) :
             null;
 
+        $subscriptionArray = array();
+        if (isset($creditCardAttribs['subscriptions'])) {
+            foreach ($creditCardAttribs['subscriptions'] AS $subscription) {
+                $subscriptionArray[] = Braintree_Subscription::factory($subscription);
+            }
+        }
+
+        $this->_set('subscriptions', $subscriptionArray);
         $this->_set('billingAddress', $billingAddress);
         $this->_set('expirationDate', $this->expirationMonth . '/' . $this->expirationYear);
         $this->_set('maskedNumber', $this->bin . '******' . $this->last4);

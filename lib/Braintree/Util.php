@@ -26,13 +26,10 @@ class Braintree_Util
      *
      * @return array array of Braintree_$attributeName objects, or a single element array
      */
-    public static function extractAttributeAsArray(
-        & $attribArray,
-        $attributeName
-        )
+    public static function extractAttributeAsArray(& $attribArray, $attributeName)
     {
         if(!isset($attribArray[$attributeName])):
-            return null;
+            return array();
         endif;
 
         // get what should be an array from the passed array
@@ -117,13 +114,9 @@ class Braintree_Util
      */
     public static function delimiterToCamelCase($string, $delimiter = '[\-\_]')
     {
-        return preg_replace_callback(
-            '/'. $delimiter . '(\w)/',
-            create_function('$match', 'return strtoupper($match[1]);'),
-            $string
-        );
-
+        return preg_replace('/' . $delimiter . '(\w)/e', 'strtoupper("$1")',$string);
     }
+
     /**
      * find capitals and convert to delimiter + lowercase
      * 
@@ -133,15 +126,7 @@ class Braintree_Util
      */
     public static function camelCaseToDelimiter($string, $delimiter = '-')
     {
-        $delimiter = "'$delimiter'";
-        return preg_replace_callback(
-                '/([A-Z])/',
-                create_function(
-                        '$match',
-                        'return ' . $delimiter . '. strtolower($match[1]);'
-                        ),
-                $string
-                );
+        return preg_replace('/([A-Z])/e', '"' . $delimiter . '" . strtolower("$1")', $string);
     }
 
     /**
@@ -161,6 +146,7 @@ class Braintree_Util
         // implode and return the new array
         return (is_array($tmpArray)) ? implode($glue, $tmpArray) : false;
     }
+
     /**
      * verify user request structure
      *

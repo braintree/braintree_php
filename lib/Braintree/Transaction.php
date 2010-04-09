@@ -332,7 +332,7 @@ final class Braintree_Transaction extends Braintree
      * @return object Braintree_PagedCollection
      * @throws InvalidArgumentException
      */
-    public static function search($query, $options)
+    public static function search($query, $options=array())
     {
         if(is_string($query)) {
             return self::_basicSearch($query, $options);
@@ -352,12 +352,12 @@ final class Braintree_Transaction extends Braintree
      * @param array $options
      * @return object Braintree_PagedCollection
      */
-    private static function _basicSearch($query, $options)
+    public static function _basicSearch($query, $options)
     {
         $page = isset($options['page']) ? $options['page'] : 1;
         $queryPath = '/transactions/all/search?' .
             http_build_query(array('q' => $query, 'page' => $page));
-        $response = Braintree_Http::post($queryPath);
+        $response = Braintree_Http::get($queryPath);
         $attributes = $response['creditCardTransactions'];
         $attributes['items'] = Braintree_Util::extractAttributeAsArray(
                 $attributes,

@@ -1,26 +1,6 @@
 <?php
 
-// function __autoload($className)
-// {
-//     if (!class_exists($className)) {
-//         $path = str_replace('_', '/', $className);
-//         $file = $path . '.php';
-//         include $file;
-// 
-//     }
-// 
-// }
-// $libPath = realpath(dirname(__FILE__).'/../lib');
-// 
-// define('LIB_DIR', $libPath);
-// 
-// set_include_path($libPath.PATH_SEPARATOR.get_include_path());
 require_once 'PHPUnit/Framework.php';
-
-set_include_path(
-  get_include_path() . PATH_SEPARATOR .
-  realpath(dirname(__FILE__)) . '/../vendor/ZendFramework-1.10.2-minimal/library'
-);
 
 set_include_path(
   get_include_path() . PATH_SEPARATOR .
@@ -38,18 +18,39 @@ class Braintree_TestHelper
 {
     public static function submitTrRequest($url, $regularParams, $trData)
     {
-        $connection = new Zend_Http_Client();
-        $connection->setConfig(array('maxredirects' => 0));
-        $connection->setUri($url);
-        $connection->setMethod('POST');
-        $connection->setRawData(
-            http_build_query(array_merge($regularParams, array('tr_data' => $trData))),
-            'application/x-www-form-urlencoded'
-        );
-        $response = $connection->request();
-        $location = $response->getHeader('Location');
-        $parsedUrl = parse_url($location);
-        return $parsedUrl['query'];
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        // curl_setopt($curl, CURLOPT_VERBOSE, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array_merge($regularParams, array('tr_data' => $trData))));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/x-www-form-urlencoded'
+        ));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        curl_close($curl);
+        preg_match('/Location: .*\?(.*)/', $response, $match);
+        return trim($match[1]);
+    }
+
+    public static function includesOnAnyPage($collection, $targetItem)
+    {
+        foreach ($collection->items() AS $item)
+        {
+            if ($item->id == $targetItem->id)
+            {
+                return true;
+            }
+        }
+
+        if ($collection->isLastPage())
+        {
+            return false;
+        }
+
+        return Braintree_TestHelper::includesOnAnyPage($collection->nextPage(), $targetItem);
     }
 }
 
