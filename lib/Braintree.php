@@ -8,20 +8,7 @@
  */
 
 
-/*
- * append the include path
-*/
-set_include_path(get_include_path() . 
-    PATH_SEPARATOR . realpath(dirname(__FILE__))
-    );
-
-/**
- * set up autoloader
- */
-require_once 'Zend/Loader/Autoloader.php';
-$loader = Zend_Loader_Autoloader::getInstance();
-$loader->registerNamespace('Braintree_');
-
+set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__)));
 
 /**
  * Braintree PHP Library
@@ -96,6 +83,52 @@ foreach ($requiredExtensions AS $ext) {
     }
 }
 
+require_once('Braintree/Address.php');
+require_once('Braintree/Collection.php');
+require_once('Braintree/Configuration.php');
+require_once('Braintree/CreditCard.php');
+require_once('Braintree/Customer.php');
+require_once('Braintree/Digest.php');
+require_once('Braintree/Exception.php');
+require_once('Braintree/Http.php');
+require_once('Braintree/Instance.php');
+require_once('Braintree/MultipleValueNode.php');
+require_once('Braintree/PagedCollection.php');
+require_once('Braintree/SSLExpirationCheck.php');
+require_once('Braintree/Subscription.php');
+require_once('Braintree/SubscriptionSearch.php');
+require_once('Braintree/SubscriptionStatus.php');
+require_once('Braintree/TextNode.php');
+require_once('Braintree/Transaction.php');
+require_once('Braintree/TransparentRedirect.php');
+require_once('Braintree/Util.php');
+require_once('Braintree/Version.php');
+require_once('Braintree/Xml.php');
+require_once('Braintree/Error/Codes.php');
+require_once('Braintree/Error/ErrorCollection.php');
+require_once('Braintree/Error/Validation.php');
+require_once('Braintree/Error/ValidationErrorCollection.php');
+require_once('Braintree/Exception/Authentication.php');
+require_once('Braintree/Exception/Authorization.php');
+require_once('Braintree/Exception/Configuration.php');
+require_once('Braintree/Exception/DownForMaintenance.php');
+require_once('Braintree/Exception/ForgedQueryString.php');
+require_once('Braintree/Exception/NotFound.php');
+require_once('Braintree/Exception/ServerError.php');
+require_once('Braintree/Exception/SSLCertificate.php');
+require_once('Braintree/Exception/Unexpected.php');
+require_once('Braintree/Exception/ValidationsFailed.php');
+require_once('Braintree/Result/CreditCardVerification.php');
+require_once('Braintree/Result/Error.php');
+require_once('Braintree/Result/Successful.php');
+require_once('Braintree/Test/CreditCardNumbers.php');
+require_once('Braintree/Test/TransactionAmounts.php');
+require_once('Braintree/Transaction/AddressDetails.php');
+require_once('Braintree/Transaction/CreditCardDetails.php');
+require_once('Braintree/Transaction/CustomerDetails.php');
+require_once('Braintree/Transaction/StatusDetails.php');
+require_once('Braintree/Xml/Generator.php');
+require_once('Braintree/Xml/Parser.php');
 
 // check ssl certificates
 Braintree_SSLExpirationCheck::checkDates();

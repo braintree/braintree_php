@@ -28,6 +28,7 @@ set_include_path(
 );
 
 require_once "Braintree.php";
+require_once "Zend/Http/Client.php";
 
 Braintree_Configuration::environment('development');
 Braintree_Configuration::merchantId('integration_merchant_id');
