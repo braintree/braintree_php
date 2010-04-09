@@ -1,9 +1,19 @@
+## 1.2.0
+
+* Added subscription search
+* Provide access to associated subscriptions from CreditCard
+* Switched from using Zend framework for HTTP requests to using curl extension
+* Fixed a bug in Transparent Redirect when arg_separator.output is configured as &amp; instead of &
+* Increased http request timeout
+* Fixed a bug where ForgedQueryString exception was being raised instead of DownForMaintenance
+* Updated SSL CA files
+
 ## 1.1.1
 
-* added Braintree_Transaction::refund
-* added Braintree_Transaction::submitForSettlementNoValidate
-* fixed a bug in errors->onHtmlField when checking for errors on custom fields when there are none
-* added support for passing merchantAccountId for Transaction and Subscription
+* Added Braintree_Transaction::refund
+* Added Braintree_Transaction::submitForSettlementNoValidate
+* Fixed a bug in errors->onHtmlField when checking for errors on custom fields when there are none
+* Added support for passing merchantAccountId for Transaction and Subscription
 
 ## 1.1.0
 
