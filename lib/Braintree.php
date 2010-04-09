@@ -71,17 +71,6 @@ abstract class Braintree
     }
 }
 
-if (version_compare(PHP_VERSION, '5.2.1', '<')) {
-    throw new Braintree_Exception('PHP version >= 5.2.1 required');
-}
-
-$requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
-foreach ($requiredExtensions AS $ext) {
-    if (!extension_loaded($ext)) {
-        throw new Braintree_Exception('The Braintree library requires the ' . $ext . ' extension.');
-    }
-}
-
 require_once('Braintree/Address.php');
 require_once('Braintree/Collection.php');
 require_once('Braintree/Configuration.php');
@@ -128,6 +117,17 @@ require_once('Braintree/Transaction/CustomerDetails.php');
 require_once('Braintree/Transaction/StatusDetails.php');
 require_once('Braintree/Xml/Generator.php');
 require_once('Braintree/Xml/Parser.php');
+
+if (version_compare(PHP_VERSION, '5.2.1', '<')) {
+    throw new Braintree_Exception('PHP version >= 5.2.1 required');
+}
+
+$requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
+foreach ($requiredExtensions AS $ext) {
+    if (!extension_loaded($ext)) {
+        throw new Braintree_Exception('The Braintree library requires the ' . $ext . ' extension.');
+    }
+}
 
 // check ssl certificates
 Braintree_SSLExpirationCheck::checkDates();
