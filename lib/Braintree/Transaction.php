@@ -165,6 +165,18 @@
 
 final class Braintree_Transaction extends Braintree
 {
+
+    const AUTHORIZING              = 'authorizing';
+    const AUTHORIZED               = 'authorized';
+    const GATEWAY_REJECTED         = 'gateway_rejected';
+    const FAILED                   = 'failed';
+    const PROCESSOR_DECLINED       = 'processor_declined';
+    const SETTLED                  = 'settled';
+    const SETTLEMENT_FAILED        = 'settlement_failed';
+    const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
+    const UNKNOWN                  = 'unknown';
+    const VOIDED                   = 'voided';
+
     /**
      * @ignore
      * @access public

@@ -371,7 +371,7 @@ class Braintree_CreditCard extends Braintree
         return array(
             'customerId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
-            array('options' => array('verifyCard')),
+            array('options' => array('makeDefault', 'verifyCard')),
             array(
                 'billingAddress' => array(
                     'firstName',

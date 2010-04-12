@@ -14,7 +14,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $this->assertEquals('sale', $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertNotNull($transaction->processorAuthorizationCode);
@@ -67,7 +67,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $this->assertEquals('sale', $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
@@ -85,7 +85,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals('submitted_for_settlement', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
         $this->assertEquals('credit', $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
@@ -102,7 +102,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             )
         ));
         $this->assertEquals('credit', $transaction->type);
-        $this->assertEquals('submitted_for_settlement', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
@@ -117,10 +117,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $submitResult = Braintree_Transaction::submitForSettlement($transaction->id);
         $this->assertEquals(true, $submitResult->success);
-        $this->assertEquals('submitted_for_settlement', $submitResult->transaction->status);
+        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
         $this->assertEquals('100.00', $submitResult->transaction->amount);
     }
 
@@ -133,10 +133,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $submitResult = Braintree_Transaction::submitForSettlement($transaction->id, '50.00');
         $this->assertEquals(true, $submitResult->success);
-        $this->assertEquals('submitted_for_settlement', $submitResult->transaction->status);
+        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
         $this->assertEquals('50.00', $submitResult->transaction->amount);
     }
 
@@ -149,9 +149,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $submittedTransaction = Braintree_Transaction::submitForSettlementNoValidate($transaction->id);
-        $this->assertEquals('submitted_for_settlement', $submittedTransaction->status);
+        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $submittedTransaction->status);
         $this->assertEquals('100.00', $submittedTransaction->amount);
     }
 
@@ -164,9 +164,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $submittedTransaction = Braintree_Transaction::submitForSettlementNoValidate($transaction->id, '99.00');
-        $this->assertEquals('submitted_for_settlement', $submittedTransaction->status);
+        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $submittedTransaction->status);
         $this->assertEquals('99.00', $submittedTransaction->amount);
     }
 
@@ -179,7 +179,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $this->setExpectedException('Braintree_Exception_ValidationsFailed');
         $submittedTransaction = Braintree_Transaction::submitForSettlementNoValidate($transaction->id, '101.00');
     }
@@ -193,10 +193,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $voidResult = Braintree_Transaction::void($transaction->id);
         $this->assertEquals(true, $voidResult->success);
-        $this->assertEquals('voided', $voidResult->transaction->status);
+        $this->assertEquals(Braintree_Transaction::VOIDED, $voidResult->transaction->status);
     }
 
     function testVoid_withValidationError()
@@ -208,9 +208,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $voided = Braintree_Transaction::voidNoValidate($transaction->id);
-        $this->assertEquals('voided', $voided->status);
+        $this->assertEquals(Braintree_Transaction::VOIDED, $voided->status);
         $result = Braintree_Transaction::void($transaction->id);
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('base');
@@ -226,9 +226,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $voided = Braintree_Transaction::voidNoValidate($transaction->id);
-        $this->assertEquals('voided', $voided->status);
+        $this->assertEquals(Braintree_Transaction::VOIDED, $voided->status);
     }
 
     function testVoidNoValidate_throwsIfNotInvalid()
@@ -240,9 +240,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $voided = Braintree_Transaction::voidNoValidate($transaction->id);
-        $this->assertEquals('voided', $voided->status);
+        $this->assertEquals(Braintree_Transaction::VOIDED, $voided->status);
         $this->setExpectedException('Braintree_Exception_ValidationsFailed');
         $voided = Braintree_Transaction::voidNoValidate($transaction->id);
     }
@@ -257,7 +257,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             )
         ));
         $transaction = Braintree_Transaction::find($result->transaction->id);
-        $this->assertEquals('authorized', $transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $this->assertEquals('sale', $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
@@ -327,7 +327,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
         $this->assertEquals('sale', $result->transaction->type);
-        $this->assertEquals('authorized', $result->transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $result->transaction->status);
         $creditCard = $result->transaction->creditCardDetails;
         $this->assertEquals('510510', $creditCard->bin);
         $this->assertEquals('5100', $creditCard->last4);
@@ -362,7 +362,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
         $this->assertEquals('sale', $result->transaction->type);
-        $this->assertEquals('authorized', $result->transaction->status);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $result->transaction->status);
         $creditCard = $result->transaction->creditCardDetails;
         $this->assertEquals('510510', $creditCard->bin);
         $this->assertEquals('5100', $creditCard->last4);

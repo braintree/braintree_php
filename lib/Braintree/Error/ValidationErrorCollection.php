@@ -39,6 +39,16 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
 
     }
 
+    public function deepAll()
+    {
+        $validationErrors = array_merge(array(), $this->_errors);
+        foreach($this->_nested as $nestedErrors)
+        {
+            $validationErrors = array_merge($validationErrors, $nestedErrors->deepAll());
+        }
+        return $validationErrors;
+    }
+
     public function deepSize()
     {
         $total = sizeof($this->_errors);
@@ -63,6 +73,12 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
            }
         }
         return $matches;
+    }
+
+
+    public function shallowAll()
+    {
+        return $this->_errors;
     }
 
     /**

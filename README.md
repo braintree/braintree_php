@@ -26,7 +26,7 @@ The following PHP extensions are required:
     Braintree_Configuration::publicKey('your_public_key');
     Braintree_Configuration::privateKey('your_private_key');
 
-    $transaction = Braintree_Transaction::saleNoValidate(array(
+    $result = Braintree_Transaction::sale(array(
         'amount' => '100.00',
         'creditCard' => array(
             'number' => '5105105105105100',
@@ -34,8 +34,20 @@ The following PHP extensions are required:
         )
     ));
 
-    print 'Transaction ID: ' . $transaction->id;
-    print 'Status: ' . $transaction->status;
+    if ($result->success) {
+        if ($result->transaction->status == Braintree_Transaction::AUTHORIZED) {
+            print_r("sucess!: " . $result->transaction->id);
+        } else {
+            print_r("Error processing transaction:");
+            print_r("\n  code: " . $result->transaction->processorResponseCode);
+            print_r("\n  text: " . $result->transaction->processorResponseText);
+        }
+    } else {
+        print_r("Validation errors: \n");
+        print_r($result->errors->deepAll());
+
+    }
+
     ?>
 
 ## License

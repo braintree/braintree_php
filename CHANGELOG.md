@@ -1,3 +1,10 @@
+## 1.2.1
+
+* Added methods to get both shallow and deep errors from a Braintree_ValidationErrorCollection
+* Added the ability to make a credit card the default card for a customer
+* Added constants for transaction statuses
+* Updated Quick Start in README.md to show a workflow with error checking
+
 ## 1.2.0
 
 * Added subscription search
