@@ -90,6 +90,7 @@ class Braintree_Error_ErrorCollection
      * <code>
      *   $result = Braintree_Customer::create(...);
      *   $customerErrors = $result->errors->forKey('customer')->shallowAll();
+     * </code>
      */
     public function shallowAll()
     {
