@@ -19,7 +19,7 @@ class Braintree_Error_ValidationErrorCollectionTest extends PHPUnit_Framework_Te
                 'number' => '1234123412341234',
                 'expirationDate' => 'invalid',
                 'billingAddress' => array(
-                    'countryName' => 'invaild'
+                    'countryName' => 'invalid'
                 )
             )
         ));
