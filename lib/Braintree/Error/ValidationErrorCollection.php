@@ -65,6 +65,12 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
         return $matches;
     }
 
+
+    public function shallowAll()
+    {
+        return $this->_errors;
+    }
+
     /**
      *
      * @ignore

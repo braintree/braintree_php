@@ -65,7 +65,7 @@ class Braintree_Error_Codes
         'TokenIsNotAllowed'           => '91721',
         'TokenIsRequired'             => '91722',
         );
-    
+
     public static $customer     = array(
         'CompanyisTooLong'            => '81601',
         'CustomFieldIsInvalid'        => '91602',

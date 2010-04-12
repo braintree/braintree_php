@@ -75,6 +75,11 @@ class Braintree_Error_ErrorCollection
         return $errors->onAttribute($finalKey);
     }
 
+    public function shallowAll()
+    {
+        return $this->_errors->shallowAll();
+    }
+
     /**
      *
      * @ignore
