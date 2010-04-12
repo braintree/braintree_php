@@ -19,7 +19,9 @@
 													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
 						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
 						
-					</div>
+											<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+						
+			</div>
 	<div class="info-box-body">
         		<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Creates and manages transactions</p>
@@ -142,6 +144,74 @@
 </div>
 
 
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Constants</span> (<a href="#sec-consts">details</a>)
+												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#AUTHORIZED" title="details" class="const-name">AUTHORIZED</a> = 					<span class="var-type"> 'authorized'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#AUTHORIZING" title="details" class="const-name">AUTHORIZING</a> = 					<span class="var-type"> 'authorizing'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#FAILED" title="details" class="const-name">FAILED</a> = 					<span class="var-type"> 'failed'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#GATEWAY_REJECTED" title="details" class="const-name">GATEWAY_REJECTED</a> = 					<span class="var-type"> 'gateway_rejected'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#PROCESSOR_DECLINED" title="details" class="const-name">PROCESSOR_DECLINED</a> = 					<span class="var-type"> 'processor_declined'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#SETTLED" title="details" class="const-name">SETTLED</a> = 					<span class="var-type"> 'settled'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#SETTLEMENT_FAILED" title="details" class="const-name">SETTLEMENT_FAILED</a> = 					<span class="var-type"> 'settlement_failed'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#SUBMITTED_FOR_SETTLEMENT" title="details" class="const-name">SUBMITTED_FOR_SETTLEMENT</a> = 					<span class="var-type"> 'submitted_for_settlement'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#UNKNOWN" title="details" class="const-name">UNKNOWN</a> = 					<span class="var-type"> 'unknown'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#VOIDED" title="details" class="const-name">VOIDED</a> = 					<span class="var-type"> 'voided'</span>
+
+				</div>
+							</div>
+		</div>
+	</div>
 
 	<a name="sec-var-summary"></a>
 	<div class="info-box">
@@ -152,7 +222,9 @@
 							| 
 									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
 							
-								</div>
+															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+					</div>
 		<div class="info-box-body">
 			<div class="var-summary">
 																								<div class="var-title">
@@ -168,7 +240,9 @@
 		<div class="info-box-title">Method Summary</span></div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
-																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
 				 
 				|
 						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
@@ -205,7 +279,12 @@
 										<a href="#find" title="details" class="method-name">find</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$id</span>)
 									</div>
-																																								<div class="method-definition">
+																								<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#refund" title="details" class="method-name">refund</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>)
+									</div>
+																<div class="method-definition">
 					static 						<span class="method-result">array</span>
 										<a href="#sale" title="details" class="method-name">sale</a>
 											(<span class="var-type">array</span>&nbsp;<span class="var-name">$attribs</span>)
@@ -218,14 +297,19 @@
 																<div class="method-definition">
 					static 						<span class="method-result"><a href="../Braintree/Utility/Braintree_PagedCollection.html">object Braintree_PagedCollection</a></span>
 										<a href="#search" title="details" class="method-name">search</a>
-											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$query</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$options</span>)
+											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$query</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
 									</div>
 																<div class="method-definition">
 					static 						<span class="method-result">void</span>
 										<a href="#submitForSettlement" title="details" class="method-name">submitForSettlement</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span> = <span class="var-default">null</span>])
 									</div>
-																																								<div class="method-definition">
+																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#submitForSettlementNoValidate" title="details" class="method-name">submitForSettlementNoValidate</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span> = <span class="var-default">null</span>])
+									</div>
+																																<div class="method-definition">
 					static 						<span class="method-result"><a href="../Braintree/Result/Braintree_Result_Successful.html">object Braintree_Result_Successful</a>|<a href="../Braintree/Result/Braintree_Result_Error.html">Braintree_Result_Error</a></span>
 										<a href="#void" title="details" class="method-name">void</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$id</span>)
@@ -241,22 +325,7 @@
 										<a href="#isEqual" title="details" class="method-name">isEqual</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$otherTx</span>)
 									</div>
-																<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#isRefunded" title="details" class="method-name">isRefunded</a>
-										()
-									</div>
-																<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#refund" title="details" class="method-name">refund</a>
-										()
-									</div>
-																																																<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#submitForSettlementNoValidate" title="details" class="method-name">submitForSettlementNoValidate</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$id</span> = <span class="var-default">null</span>])
-									</div>
-																<div class="method-definition">
+																																																																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#vaultCreditCard" title="details" class="method-name">vaultCreditCard</a>
 										()
@@ -283,6 +352,8 @@
 										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
 						
 			
+												<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
 										| 
 									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
 							
@@ -295,7 +366,7 @@
 		<span class="var-title">
 			<span class="var-type">array</span>
 			<span class="var-name">$_attributes</span>
-			 = <span class="var-default">array(<br />        'avsErrorResponseCode'         =&gt; '',<br />        'avsPostalCodeResponseCode'    =&gt; '',<br />        'avsStreetAddressResponseCode' =&gt; '',<br />        'cvvResponseCode'              =&gt; '',<br />        'amount'                       =&gt; '',<br />        'billingDetails'               =&gt; '',<br />        'createdAt'                    =&gt; '',<br />        'creditCardDetails'            =&gt; '',<br />        'customerDetails'              =&gt; '',<br />        'customFields'                 =&gt; '',<br />        'id'                           =&gt; '',<br />        'processorResponseCode'        =&gt; '',<br />        'shippingDetails transaction'  =&gt; '',<br />        'status'                       =&gt; '',<br />        'statusHistory'                =&gt; '',<br />        'type'                         =&gt; '',<br />        'updatedAt'                    =&gt; '',<br />        )</span>			(line <span class="line-number">567</span>)
+			 = <span class="var-default">array(<br />        'avsErrorResponseCode'         =&gt; '',<br />        'avsPostalCodeResponseCode'    =&gt; '',<br />        'avsStreetAddressResponseCode' =&gt; '',<br />        'cvvResponseCode'              =&gt; '',<br />        'amount'                       =&gt; '',<br />        'billingDetails'               =&gt; '',<br />        'createdAt'                    =&gt; '',<br />        'creditCardDetails'            =&gt; '',<br />        'customerDetails'              =&gt; '',<br />        'customFields'                 =&gt; '',<br />        'id'                           =&gt; '',<br />        'processorResponseCode'        =&gt; '',<br />        'shippingDetails transaction'  =&gt; '',<br />        'status'                       =&gt; '',<br />        'statusHistory'                =&gt; '',<br />        'type'                         =&gt; '',<br />        'updatedAt'                    =&gt; '',<br />        )</span>			(line <span class="line-number">558</span>)
 		</span>
 	</div>
 
@@ -320,7 +391,9 @@
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
 															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+																			<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+										<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
 						
 		</div>
 		<div class="info-box-body">
@@ -329,7 +402,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method createFromTransparentRedirect</span> (line <span class="line-number">201</span>)
+		<span class="method-title">static method createFromTransparentRedirect</span> (line <span class="line-number">211</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -361,7 +434,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method createSignature</span> (line <span class="line-number">227</span>)
+		<span class="method-title">static method createSignature</span> (line <span class="line-number">237</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -387,7 +460,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method createTransactionUrl</span> (line <span class="line-number">217</span>)
+		<span class="method-title">static method createTransactionUrl</span> (line <span class="line-number">227</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -416,7 +489,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method credit</span> (line <span class="line-number">267</span>)
+		<span class="method-title">static method credit</span> (line <span class="line-number">277</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -445,7 +518,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method creditNoValidate</span> (line <span class="line-number">279</span>)
+		<span class="method-title">static method creditNoValidate</span> (line <span class="line-number">289</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -475,7 +548,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method find</span> (line <span class="line-number">290</span>)
+		<span class="method-title">static method find</span> (line <span class="line-number">300</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -500,11 +573,40 @@
 		
 			
 	</div>
-<a name="methodsale" id="sale"><!-- --></a>
+<a name="methodrefund" id="refund"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method sale</span> (line <span class="line-number">308</span>)
+		<span class="method-title">static method refund</span> (line <span class="line-number">521</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			refund
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$transactionId</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsale" id="sale"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method sale</span> (line <span class="line-number">318</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -531,10 +633,10 @@
 			
 	</div>
 <a name="methodsaleNoValidate" id="saleNoValidate"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method saleNoValidate</span> (line <span class="line-number">320</span>)
+		<span class="method-title">static method saleNoValidate</span> (line <span class="line-number">330</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -562,10 +664,10 @@
 			
 	</div>
 <a name="methodsearch" id="search"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method search</span> (line <span class="line-number">337</span>)
+		<span class="method-title">static method search</span> (line <span class="line-number">347</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -582,7 +684,7 @@
 		<span class="method-name">
 			search
 		</span>
-					(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$query</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$options</span>)
+					(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$query</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
 			</div>
 	
 			<ul class="parameters">
@@ -597,10 +699,10 @@
 			
 	</div>
 <a name="methodsubmitForSettlement" id="submitForSettlement"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method submitForSettlement</span> (line <span class="line-number">426</span>)
+		<span class="method-title">static method submitForSettlement</span> (line <span class="line-number">436</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -628,11 +730,43 @@
 		
 			
 	</div>
+<a name="methodsubmitForSettlementNoValidate" id="submitForSettlementNoValidate"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method submitForSettlementNoValidate</span> (line <span class="line-number">447</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			submitForSettlementNoValidate
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$transactionId</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$amount</span>			</li>
+				</ul>
+		
+			
+	</div>
 <a name="methodvoid" id="void"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method void</span> (line <span class="line-number">410</span>)
+		<span class="method-title">static method void</span> (line <span class="line-number">420</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -665,7 +799,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method voidNoValidate</span> (line <span class="line-number">420</span>)
+		<span class="method-title">static method voidNoValidate</span> (line <span class="line-number">430</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -695,7 +829,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">isEqual</span> (line <span class="line-number">533</span>)
+		<span class="method-title">isEqual</span> (line <span class="line-number">527</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -719,89 +853,11 @@
 		
 			
 	</div>
-<a name="methodisRefunded" id="isRefunded"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">isRefunded</span> (line <span class="line-number">528</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			isRefunded
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodrefund" id="refund"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">refund</span> (line <span class="line-number">518</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			refund
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodsubmitForSettlementNoValidate" id="submitForSettlementNoValidate"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">submitForSettlementNoValidate</span> (line <span class="line-number">440</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">if calling this method in static context, id  is the 2nd attribute. id is not sent in object context.</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			submitForSettlementNoValidate
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$id</span> = <span class="var-default">null</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$amount</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$id</span>			</li>
-				</ul>
-		
-			
-	</div>
 <a name="methodvaultCreditCard" id="vaultCreditCard"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">vaultCreditCard</span> (line <span class="line-number">538</span>)
+		<span class="method-title">vaultCreditCard</span> (line <span class="line-number">532</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -821,10 +877,10 @@
 			
 	</div>
 <a name="methodvaultCustomer" id="vaultCustomer"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">vaultCustomer</span> (line <span class="line-number">550</span>)
+		<span class="method-title">vaultCustomer</span> (line <span class="line-number">543</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -844,10 +900,10 @@
 			
 	</div>
 <a name="method__toString" id="__toString"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">__toString</span> (line <span class="line-number">496</span>)
+		<span class="method-title">__toString</span> (line <span class="line-number">499</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -871,9 +927,186 @@
 		</div>
 	</div>
 
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+														| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="constAUTHORIZED" id="AUTHORIZED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">AUTHORIZED</span>
+			 = <span class="const-default"> 'authorized'</span>
+			(line <span class="line-number">170</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constAUTHORIZING" id="AUTHORIZING"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">AUTHORIZING</span>
+			 = <span class="const-default"> 'authorizing'</span>
+			(line <span class="line-number">169</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constFAILED" id="FAILED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">FAILED</span>
+			 = <span class="const-default"> 'failed'</span>
+			(line <span class="line-number">172</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constGATEWAY_REJECTED" id="GATEWAY_REJECTED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">GATEWAY_REJECTED</span>
+			 = <span class="const-default"> 'gateway_rejected'</span>
+			(line <span class="line-number">171</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPROCESSOR_DECLINED" id="PROCESSOR_DECLINED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">PROCESSOR_DECLINED</span>
+			 = <span class="const-default"> 'processor_declined'</span>
+			(line <span class="line-number">173</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSETTLED" id="SETTLED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SETTLED</span>
+			 = <span class="const-default"> 'settled'</span>
+			(line <span class="line-number">174</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSETTLEMENT_FAILED" id="SETTLEMENT_FAILED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SETTLEMENT_FAILED</span>
+			 = <span class="const-default"> 'settlement_failed'</span>
+			(line <span class="line-number">175</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSUBMITTED_FOR_SETTLEMENT" id="SUBMITTED_FOR_SETTLEMENT"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SUBMITTED_FOR_SETTLEMENT</span>
+			 = <span class="const-default"> 'submitted_for_settlement'</span>
+			(line <span class="line-number">176</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constUNKNOWN" id="UNKNOWN"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">UNKNOWN</span>
+			 = <span class="const-default"> 'unknown'</span>
+			(line <span class="line-number">177</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constVOIDED" id="VOIDED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">VOIDED</span>
+			 = <span class="const-default"> 'voided'</span>
+			(line <span class="line-number">178</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+						
+		</div>
+	</div>
 
 	<p class="notes" id="credit">
-		Documentation generated on Fri, 12 Mar 2010 16:31:09 -0600 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Mon, 12 Apr 2010 18:33:56 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>
