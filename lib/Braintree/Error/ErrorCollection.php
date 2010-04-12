@@ -32,6 +32,15 @@ class Braintree_Error_ErrorCollection
                 new Braintree_Error_ValidationErrorCollection($errorData);
     }
 
+
+    /**
+     * Returns all of the validation errors at all levels of nesting in a single, flat array.
+     */
+    public function deepAll()
+    {
+        return $this->_errors->deepAll();
+    }
+
     /**
      * Returns the total number of validation errors at all levels of nesting. For example,
      *if creating a customer with a credit card and a billing address, and each of the customer,
@@ -75,6 +84,13 @@ class Braintree_Error_ErrorCollection
         return $errors->onAttribute($finalKey);
     }
 
+    /**
+     * Returns the errors at the given nesting level (see forKey) in a single, flat array:
+     *
+     * <code>
+     *   $result = Braintree_Customer::create(...);
+     *   $customerErrors = $result->errors->forKey('customer')->shallowAll();
+     */
     public function shallowAll()
     {
         return $this->_errors->shallowAll();
