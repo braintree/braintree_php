@@ -36,7 +36,7 @@ The following PHP extensions are required:
 
     if ($result->success) {
         if ($result->transaction->status == Braintree_Transaction::AUTHORIZED) {
-            print_r("sucess!: " . $result->transaction->id);
+            print_r("success!: " . $result->transaction->id);
         } else {
             print_r("Error processing transaction:");
             print_r("\n  code: " . $result->transaction->processorResponseCode);
