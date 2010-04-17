@@ -57,7 +57,7 @@ class Braintree_Xml_Generator
     private static function _createElementsFromArray(&$writer, $aData)
     {
         if (!is_array($aData)) {
-          $writer->writeRaw($aData);
+          $writer->text($aData);
           return;
         }
         foreach ($aData AS $index => $element) {
@@ -84,7 +84,7 @@ class Braintree_Xml_Generator
                     $writer->writeAttribute($attribute[0], $attribute[1]);
                     $element = $attribute[2];
                 }
-                $writer->writeRaw($element);
+                $writer->text($element);
             }
             $writer->endElement();
         }

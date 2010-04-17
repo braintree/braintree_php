@@ -42,6 +42,13 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($result->customer->id);
     }
 
+    function testCreate_withSpecialChars()
+    {
+        $result = Braintree_Customer::create(array('firstName' => '<>&"\''));
+        $this->assertEquals(true, $result->success);
+        $this->assertEquals('<>&"\'', $result->customer->firstName);
+    }
+
     function testCreate_withCreditCard()
     {
         $result = Braintree_Customer::create(array(
