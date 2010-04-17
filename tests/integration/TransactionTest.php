@@ -8,6 +8,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => '100.00',
             'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
             )
@@ -20,6 +21,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($transaction->processorAuthorizationCode);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
+        $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
     }
 
     function testSale_withCustomFields()
