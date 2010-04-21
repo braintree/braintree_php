@@ -1,11 +1,11 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_PagedCollectionTest extends PHPUnit_Framework_TestCase
+class Braintree_ResourceCollectionTest extends PHPUnit_Framework_TestCase
 {
     function testPageWithZeroResults()
     {
-        $collection = new Braintree_PagedCollection(array(
+        $collection = new Braintree_ResourceCollection(array(
             "items" => array(),
             "currentPageNumber" => 1,
             "pageSize" => 50,
@@ -23,7 +23,7 @@ class Braintree_PagedCollectionTest extends PHPUnit_Framework_TestCase
 
     function testFirstItemWithResults()
     {
-        $collection = new Braintree_PagedCollection(array(
+        $collection = new Braintree_ResourceCollection(array(
             "items" => array("one"),
             "currentPageNumber" => 1,
             "pageSize" => 50,

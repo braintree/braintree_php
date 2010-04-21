@@ -1,6 +1,6 @@
 <?php
 /**
- * Braintree PagedCollection
+ * Braintree ResourceCollection
  *
  * @package    Braintree
  * @subpackage Utility
@@ -8,7 +8,7 @@
  */
 
 /**
- * PagedCollection is a container object for paged result data
+ * ResourceCollection is a container object for result data
  *
  * stores and retrieves search results and aggregate data
  *
@@ -25,7 +25,7 @@
  * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_PagedCollection implements Iterator
+class Braintree_ResourceCollection implements Iterator
 {
     private $_index;
     private $_items;
@@ -33,11 +33,11 @@ class Braintree_PagedCollection implements Iterator
     private $_pageSize;
     private $_pager;
     private $_totalItems;
-    private $_internalPagedCollection;
-    private $_firstPagedCollection;
+    private $_internalResourceCollection;
+    private $_firstResourceCollection;
 
     /**
-     * set up the paged collection
+     * set up the resource collection
      *
      * expects an array of attributes with literal keys
      *
@@ -49,8 +49,8 @@ class Braintree_PagedCollection implements Iterator
         $this->_initializeFromArray($attributes);
         $this->_pager = $pagerAttribs;
         $this->_index = 0;
-        $this->_internalPagedCollection = $this;
-        $this->_firstPagedCollection = $this;
+        $this->_internalResourceCollection = $this;
+        $this->_firstResourceCollection = $this;
     }
 
     /**
@@ -58,7 +58,7 @@ class Braintree_PagedCollection implements Iterator
      */
     public function current()
     {
-        return $this->_internalPagedCollection->_items->get($this->_index);
+        return $this->_internalResourceCollection->_items->get($this->_index);
     }
 
     /**
@@ -70,7 +70,7 @@ class Braintree_PagedCollection implements Iterator
     {
         if ($this->_totalItems == 0)
             return null;
-        return $this->_firstPagedCollection->_items->get(0);
+        return $this->_firstResourceCollection->_items->get(0);
     }
 
     public function key()
@@ -79,12 +79,12 @@ class Braintree_PagedCollection implements Iterator
     }
 
     /**
-     * advances to the next item in the paged collection when iterating with foreach
+     * advances to the next item in the collection when iterating with foreach
      */
     public function next()
     {
-        if ($this->_index == count($this->_internalPagedCollection->_items) - 1) {
-            $this->_internalPagedCollection = $this->_internalPagedCollection->_nextPage();
+        if ($this->_index == count($this->_internalResourceCollection->_items) - 1) {
+            $this->_internalResourceCollection = $this->_internalResourceCollection->_nextPage();
             $this->_index = 0;
         } else {
             ++$this->_index;
@@ -96,7 +96,7 @@ class Braintree_PagedCollection implements Iterator
      */
     public function rewind()
     {
-        $this->_internalPagedCollection = $this->_firstPagedCollection;
+        $this->_internalResourceCollection = $this->_firstResourceCollection;
         $this->_index = 0;
     }
 
@@ -105,7 +105,7 @@ class Braintree_PagedCollection implements Iterator
      */
     public function valid()
     {
-        return $this->_internalPagedCollection && isset($this->_internalPagedCollection->_items[$this->_index]);
+        return $this->_internalResourceCollection && isset($this->_internalResourceCollection->_items[$this->_index]);
     }
 
     public function _approximateCount()

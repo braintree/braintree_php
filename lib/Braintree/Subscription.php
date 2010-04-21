@@ -80,7 +80,7 @@ class Braintree_Subscription extends Braintree
             'methodArgs' => array($query)
             );
 
-        return new Braintree_PagedCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($attributes, $pager);
     }
 
     public static function update($subscriptionId, $attributes)

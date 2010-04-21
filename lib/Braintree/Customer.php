@@ -45,7 +45,7 @@ class Braintree_Customer extends Braintree
             'classMethod' => __FUNCTION__,
             'methodArgs' => array());
 
-        return new Braintree_PagedCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($attributes, $pager);
     }
 
     /**
