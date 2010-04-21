@@ -11,7 +11,7 @@
  * PagedCollection is a container object for paged result data
  *
  * stores and retrieves search results and aggregate data
- * 
+ *
  * example:
  * <code>
  * $result = Braintree_Customer::all();
@@ -24,7 +24,7 @@
  *
  * // get an item
  * $item = $result->firstItem();
- * 
+ *
  * echo $item['id'];
  * </code>
  *
@@ -32,14 +32,16 @@
  * @subpackage Utility
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_PagedCollection
+class Braintree_PagedCollection implements Iterator
 {
+    private $_index;
     private $_items;
     private $_currentPageNumber;
     private $_pageSize;
     private $_pager;
     private $_totalItems;
-
+    private $_internal_paged_collection;
+    private $_first_paged_collection;
 
     /**
      * set up the paged collection
@@ -53,6 +55,40 @@ class Braintree_PagedCollection
     {
         $this->_initializeFromArray($attributes);
         $this->_pager = $pagerAttribs;
+        $this->_index = 0;
+        $this->_internal_paged_collection = $this;
+        $this->_first_paged_collection = $this;
+    }
+
+    function rewind()
+    {
+        $this->_internal_paged_collection = $this->_first_paged_collection;
+        $this->_index = 0;
+    }
+
+    function current()
+    {
+        return $this->_internal_paged_collection->_items->get($this->_index);
+    }
+
+    function key()
+    {
+        return null;
+    }
+
+    function next()
+    {
+        if ($this->_index == count($this->_items) - 1) {
+            $this->_internal_paged_collection = $this->_internal_paged_collection->nextPage();
+            $this->_index = 0;
+        } else {
+            ++$this->_index;
+        }
+    }
+
+    function valid()
+    {
+        return $this->_internal_paged_collection && isset($this->_internal_paged_collection->_items[$this->_index]);
     }
 
     /**
@@ -67,6 +103,7 @@ class Braintree_PagedCollection
         }
         return null;
     }
+
     /**
      * returns the current page number of the collection
      *
@@ -101,7 +138,7 @@ class Braintree_PagedCollection
 
     /**
      * returns the number of items per page, of the collection
-     * 
+     *
      * @return int
      */
     public function pageSize()
@@ -111,7 +148,7 @@ class Braintree_PagedCollection
 
     /**
      * requests the next page of results for the collection
-     * 
+     *
      * @return none
      */
     public function nextPage()
@@ -144,7 +181,7 @@ class Braintree_PagedCollection
     }
     /**
      * returns null if on the last page, next page number otherwise
-     * 
+     *
      * @return mixed
      */
     public function nextPageNumber()
@@ -154,7 +191,7 @@ class Braintree_PagedCollection
 
     /**
      * calculates total pages in the collection based on page size
-     * 
+     *
      * @return int
      */
     public function totalPages()
@@ -174,10 +211,10 @@ class Braintree_PagedCollection
 
     /**
      * returns an ArrayIterator for iterating over the items in the collection
-     * 
-     * the collection implements ArrayAccess so looping 
+     *
+     * the collection implements ArrayAccess so looping
      * via foreach, etc is possible.
-     * 
+     *
      * iterator attributes can be accessed via chaining:
      * <code>
      * $item = $pager->items()->current();
@@ -187,66 +224,44 @@ class Braintree_PagedCollection
      * $p = $pager->items();
      * $item = $p->current();
      * </code>
-     * 
+     *
      * @return object ArrayIterator
      */
     public function items()
     {
         return $this->_items;//->getIterator();
     }
-    
+
     /**
      * returns the first item in the collection
-     * 
-     * @return mixed 
+     *
+     * @return mixed
      */
     public function firstItem()
     {
         return $this->_items->get(0);
     }
-    
+
     /**
      * get an item from the collection by index
-     * 
+     *
      * @param int $index
-     * @return  mixed item 
+     * @return  mixed item
      */
     public function getItem($index)
     {
         return $this->_items->get($index);
     }
-    
+
     /**
      * returns total items in the search
-     * @return int 
+     * @return int
      */
     public function totalItems()
     {
         return $this->_totalItems;
     }
-    
-    /**
-     * recursively count all items at all levels
-     *
-     * if the collection contains countable items,
-     * they will be included in the total
-     * @return int size
-     */
-    
-    public function deepSize()
-    {
-        $size = $this->_items->count();
-        foreach($this->_items AS $item) {
-            if (is_object($item)) {
-                if (method_exists($item, 'deepSize')) {
-                    $size += $item->deepSize();
-                } else if (method_exists($item, 'count')) {
-                    $size += $item->count();
-                }
-            }
-        }
-        return $size;
-    }
+
     /**
      * initializes instance properties from the keys/values of an array
      * @access protected

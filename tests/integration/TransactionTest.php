@@ -451,10 +451,29 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         return $transaction;
     }
 
-    function testBasicSearch()
+    function testBasicSearchWithNoResults()
+    {
+        $collection = Braintree_Transaction::search("badsearch");
+        $this->assertEquals(0, $collection->totalItems());
+
+        $arr = array();
+        foreach($collection as $key => $transaction) {
+            array_push($arr, $transaction->id);
+        }
+        $this->assertEquals(0, count($arr));
+    }
+
+    function testBasicSearchWithManyResults()
     {
         $collection = Braintree_Transaction::search("411111");
-        $this->assertTrue($collection->totalItems() > 1);
+        $this->assertTrue($collection->totalItems() > 100);
+
+        $arr = array();
+        foreach($collection as $key => $transaction) {
+            array_push($arr, $transaction->id);
+        }
+        $unique_transaction_ids = array_unique(array_values($arr));
+        $this->assertEquals($collection->totalItems(), count($unique_transaction_ids));
     }
 }
 ?>
