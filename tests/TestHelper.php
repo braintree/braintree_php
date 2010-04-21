@@ -35,22 +35,14 @@ class Braintree_TestHelper
         return trim($match[1]);
     }
 
-    public static function includesOnAnyPage($collection, $targetItem)
+    public static function includes($collection, $targetItem)
     {
-        foreach ($collection->items() AS $item)
-        {
-            if ($item->id == $targetItem->id)
-            {
+        foreach ($collection AS $item) {
+            if ($item->id == $targetItem->id) {
                 return true;
             }
         }
-
-        if ($collection->isLastPage())
-        {
-            return false;
-        }
-
-        return Braintree_TestHelper::includesOnAnyPage($collection->nextPage(), $targetItem);
+        return false;
     }
 }
 

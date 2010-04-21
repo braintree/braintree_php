@@ -454,7 +454,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     function testBasicSearchWithNoResults()
     {
         $collection = Braintree_Transaction::search("badsearch");
-        $this->assertEquals(0, $collection->totalItems());
+        $this->assertEquals(0, $collection->_approximateCount());
 
         $arr = array();
         foreach($collection as $key => $transaction) {
@@ -466,29 +466,29 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     function testBasicSearchWithManyResults()
     {
         $collection = Braintree_Transaction::search("411111");
-        $this->assertTrue($collection->totalItems() > 100);
+        $this->assertTrue($collection->_approximateCount() > 100);
 
         $arr = array();
-        foreach($collection as $key => $transaction) {
+        foreach($collection as $transaction) {
             array_push($arr, $transaction->id);
         }
         $unique_transaction_ids = array_unique(array_values($arr));
-        $this->assertEquals($collection->totalItems(), count($unique_transaction_ids));
+        $this->assertEquals($collection->_approximateCount(), count($unique_transaction_ids));
     }
 
     function testBasicSearchWithMultipleIterations()
     {
         $collection = Braintree_Transaction::search("411111");
-        $this->assertTrue($collection->totalItems() > 100);
+        $this->assertTrue($collection->_approximateCount() > 100);
 
         $arr_1 = array();
-        foreach($collection as $key => $transaction) {
+        foreach($collection as $transaction) {
             array_push($arr_1, $transaction->id);
         }
         $unique_transaction_ids_1 = array_unique(array_values($arr_1));
 
         $arr_2 = array();
-        foreach($collection as $key => $transaction) {
+        foreach($collection as $transaction) {
             array_push($arr_2, $transaction->id);
         }
         $unique_transaction_ids_2 = array_unique(array_values($arr_2));

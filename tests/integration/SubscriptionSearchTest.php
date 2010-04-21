@@ -24,8 +24,8 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
             Braintree_SubscriptionSearch::planId()->is("integration_trial_plan")
         ));
 
-        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $trialSubscription));
-        $this->assertFalse(Braintree_TestHelper::includesOnAnyPage($collection, $triallessSubscription));
+        $this->assertTrue(Braintree_TestHelper::includes($collection, $trialSubscription));
+        $this->assertFalse(Braintree_TestHelper::includes($collection, $triallessSubscription));
     }
 
     function testSearch_planIdIsNot()
@@ -48,8 +48,8 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
             Braintree_SubscriptionSearch::planId()->isNot("integration_trialless_plan")
         ));
 
-        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $trialSubscription));
-        $this->assertFalse(Braintree_TestHelper::includesOnAnyPage($collection, $triallessSubscription));
+        $this->assertTrue(Braintree_TestHelper::includes($collection, $trialSubscription));
+        $this->assertFalse(Braintree_TestHelper::includes($collection, $triallessSubscription));
     }
 
     function testSearch_planIdStartsWith()
@@ -72,8 +72,8 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
             Braintree_SubscriptionSearch::planId()->startsWith("integration_trial_pl")
         ));
 
-        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $trialSubscription));
-        $this->assertFalse(Braintree_TestHelper::includesOnAnyPage($collection, $triallessSubscription));
+        $this->assertTrue(Braintree_TestHelper::includes($collection, $trialSubscription));
+        $this->assertFalse(Braintree_TestHelper::includes($collection, $triallessSubscription));
     }
 
     function testSearch_planIdEndsWith()
@@ -96,8 +96,8 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
             Braintree_SubscriptionSearch::planId()->endsWith("rial_plan")
         ));
 
-        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $trialSubscription));
-        $this->assertFalse(Braintree_TestHelper::includesOnAnyPage($collection, $triallessSubscription));
+        $this->assertTrue(Braintree_TestHelper::includes($collection, $trialSubscription));
+        $this->assertFalse(Braintree_TestHelper::includes($collection, $triallessSubscription));
     }
 
 
@@ -121,8 +121,8 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
             Braintree_SubscriptionSearch::planId()->contains("ration_trial_pl")
         ));
 
-        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $trialSubscription));
-        $this->assertFalse(Braintree_TestHelper::includesOnAnyPage($collection, $triallessSubscription));
+        $this->assertTrue(Braintree_TestHelper::includes($collection, $trialSubscription));
+        $this->assertFalse(Braintree_TestHelper::includes($collection, $triallessSubscription));
     }
 
     function testSearch_statusIn()
@@ -145,8 +145,8 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
             Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::ACTIVE))
         ));
 
-        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $activeSubscription));
-        $this->assertFalse(Braintree_TestHelper::includesOnAnyPage($collection, $canceledSubscription));
+        $this->assertTrue(Braintree_TestHelper::includes($collection, $activeSubscription));
+        $this->assertFalse(Braintree_TestHelper::includes($collection, $canceledSubscription));
     }
 
     function testSearch_statusIn_multipleValues()
@@ -169,8 +169,8 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
             Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::ACTIVE, Braintree_Subscription::CANCELED))
         ));
 
-        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $activeSubscription));
-        $this->assertTrue(Braintree_TestHelper::includesOnAnyPage($collection, $canceledSubscription));
+        $this->assertTrue(Braintree_TestHelper::includes($collection, $activeSubscription));
+        $this->assertTrue(Braintree_TestHelper::includes($collection, $canceledSubscription));
     }
 }
 

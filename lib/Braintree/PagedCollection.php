@@ -16,16 +16,9 @@
  * <code>
  * $result = Braintree_Customer::all();
  *
- * // retrieve page 2 of search results
- * $result->nextPage();
- *
- * echo $result->currentPageNumber();
- * // prints 2
- *
- * // get an item
- * $item = $result->firstItem();
- *
- * echo $item['id'];
+ * foreach($result as $transaction) {
+ *   print_r($transaction->id);
+ * }
  * </code>
  *
  * @package    Braintree
@@ -40,8 +33,8 @@ class Braintree_PagedCollection implements Iterator
     private $_pageSize;
     private $_pager;
     private $_totalItems;
-    private $_internal_paged_collection;
-    private $_first_paged_collection;
+    private $_internalPagedCollection;
+    private $_firstPagedCollection;
 
     /**
      * set up the paged collection
@@ -56,178 +49,16 @@ class Braintree_PagedCollection implements Iterator
         $this->_initializeFromArray($attributes);
         $this->_pager = $pagerAttribs;
         $this->_index = 0;
-        $this->_internal_paged_collection = $this;
-        $this->_first_paged_collection = $this;
-    }
-
-    function rewind()
-    {
-        $this->_internal_paged_collection = $this->_first_paged_collection;
-        $this->_index = 0;
-    }
-
-    function current()
-    {
-        return $this->_internal_paged_collection->_items->get($this->_index);
-    }
-
-    function key()
-    {
-        return null;
-    }
-
-    function next()
-    {
-        if ($this->_index == count($this->_items) - 1) {
-            $this->_internal_paged_collection = $this->_internal_paged_collection->nextPage();
-            $this->_index = 0;
-        } else {
-            ++$this->_index;
-        }
-    }
-
-    function valid()
-    {
-        return $this->_internal_paged_collection && isset($this->_internal_paged_collection->_items[$this->_index]);
+        $this->_internalPagedCollection = $this;
+        $this->_firstPagedCollection = $this;
     }
 
     /**
-     * magic function to return inacessible properties
-     * @param string $name
-     * @return mixed
+     * returns the current item when iterating with foreach
      */
-    public function __get($name)
+    public function current()
     {
-        if (isset($this->$name)) {
-           return $this->$name;
-        }
-        return null;
-    }
-
-    /**
-     * returns the current page number of the collection
-     *
-     * @return int
-     */
-    public function currentPageNumber()
-    {
-        return $this->_currentPageNumber;
-    }
-
-    /**
-     * returns whether the collection is on the last page
-     *
-     * @return boolean
-     */
-    public function isLastPage()
-    {
-        return ($this->_currentPageNumber == $this->totalPages());
-    }
-
-    /**
-     * returns null if on the first page, otherwise previous page number
-     *
-     * @return mixed
-     */
-    public function previousPageNumber()
-    {
-        return ($this->_currentPageNumber == 1) ?
-                null :
-                $this->_currentPageNumber - 1;
-    }
-
-    /**
-     * returns the number of items per page, of the collection
-     *
-     * @return int
-     */
-    public function pageSize()
-    {
-        return $this->_pageSize;
-    }
-
-    /**
-     * requests the next page of results for the collection
-     *
-     * @return none
-     */
-    public function nextPage()
-    {
-        if(!$this->isLastPage()) {
-            // extract the method to be called which will return the next page
-            $className = $this->_pager['className'];
-            $classMethod = $this->_pager['classMethod'];
-            if (array_key_exists(1, $this->_pager['methodArgs'])) {
-                $options = $this->_pager['methodArgs'][1];
-            } else {
-                $options = array();
-            }
-            $methodArgs = array();
-            if (array_key_exists(0, $this->_pager['methodArgs'])) {
-                array_push($methodArgs, $this->_pager['methodArgs'][0]);
-            }
-            array_push($methodArgs, array_merge($options, array('page' => $this->nextPageNumber())));
-
-            // call back to the original creator of the collection
-            return call_user_func_array(
-                array($className, $classMethod),
-                $methodArgs
-            );
-        } else {
-            return false;
-        }
-    }
-    /**
-     * returns null if on the last page, next page number otherwise
-     *
-     * @return mixed
-     */
-    public function nextPageNumber()
-    {
-        return ($this->isLastPage()) ? null : $this->_currentPageNumber + 1;
-    }
-
-    /**
-     * calculates total pages in the collection based on page size
-     *
-     * @return int
-     */
-    public function totalPages()
-    {
-        if ($this->_totalItems == 0) {
-            return 1;
-        }
-
-        $total = intval($this->_totalItems / $this->_pageSize);
-        if (($this->_totalItems % $this->_pageSize) != 0) {
-            $total += 1;
-        }
-        return $total;
-    }
-
-
-
-    /**
-     * returns an ArrayIterator for iterating over the items in the collection
-     *
-     * the collection implements ArrayAccess so looping
-     * via foreach, etc is possible.
-     *
-     * iterator attributes can be accessed via chaining:
-     * <code>
-     * $item = $pager->items()->current();
-     * </code>
-     * OR
-     * <code>
-     * $p = $pager->items();
-     * $item = $p->current();
-     * </code>
-     *
-     * @return object ArrayIterator
-     */
-    public function items()
-    {
-        return $this->_items;//->getIterator();
+        return $this->_internalPagedCollection->_items->get($this->_index);
     }
 
     /**
@@ -237,25 +68,47 @@ class Braintree_PagedCollection implements Iterator
      */
     public function firstItem()
     {
-        return $this->_items->get(0);
+        if ($this->_totalItems == 0)
+            return null;
+        return $this->_firstPagedCollection->_items->get(0);
     }
 
-    /**
-     * get an item from the collection by index
-     *
-     * @param int $index
-     * @return  mixed item
-     */
-    public function getItem($index)
+    public function key()
     {
-        return $this->_items->get($index);
+        return null;
     }
 
     /**
-     * returns total items in the search
-     * @return int
+     * advances to the next item in the paged collection when iterating with foreach
      */
-    public function totalItems()
+    public function next()
+    {
+        if ($this->_index == count($this->_internalPagedCollection->_items) - 1) {
+            $this->_internalPagedCollection = $this->_internalPagedCollection->_nextPage();
+            $this->_index = 0;
+        } else {
+            ++$this->_index;
+        }
+    }
+
+    /**
+     * rewinds the collection to the first item when iterating with foreach
+     */
+    public function rewind()
+    {
+        $this->_internalPagedCollection = $this->_firstPagedCollection;
+        $this->_index = 0;
+    }
+
+    /**
+     * returns whether the current item is valid when iterating with foreach
+     */
+    public function valid()
+    {
+        return $this->_internalPagedCollection && isset($this->_internalPagedCollection->_items[$this->_index]);
+    }
+
+    public function _approximateCount()
     {
         return $this->_totalItems;
     }
@@ -280,6 +133,61 @@ class Braintree_PagedCollection implements Iterator
                $this->$key = $attribute;
             }
         }
+    }
+
+    /**
+     * returns whether the collection is on the last page
+     *
+     * @return boolean
+     */
+    private function _isLastPage()
+    {
+        return ($this->_currentPageNumber == $this->_totalPages());
+    }
+
+    /**
+     * requests the next page of results for the collection
+     *
+     * @return none
+     */
+    private function _nextPage()
+    {
+        if(!$this->_isLastPage()) {
+            // extract the method to be called which will return the next page
+            $className = $this->_pager['className'];
+            $classMethod = $this->_pager['classMethod'];
+            if (array_key_exists(1, $this->_pager['methodArgs'])) {
+                $options = $this->_pager['methodArgs'][1];
+            } else {
+                $options = array();
+            }
+            $methodArgs = array();
+            if (array_key_exists(0, $this->_pager['methodArgs'])) {
+                array_push($methodArgs, $this->_pager['methodArgs'][0]);
+            }
+            array_push($methodArgs, array_merge($options, array('page' => $this->_currentPageNumber + 1)));
+
+            // call back to the original creator of the collection
+            return call_user_func_array(
+                array($className, $classMethod),
+                $methodArgs
+            );
+        } else {
+            return false;
+        }
+    }
+
+    private function _totalPages()
+    {
+        if ($this->_totalItems == 0) {
+            return 1;
+        }
+
+        $total = intval($this->_totalItems / $this->_pageSize);
+        if (($this->_totalItems % $this->_pageSize) != 0) {
+            $total += 1;
+        }
+        return $total;
     }
 }
 ?>
