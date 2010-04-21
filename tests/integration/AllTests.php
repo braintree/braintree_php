@@ -9,6 +9,7 @@ require_once 'SubscriptionSearchTest.php';
 require_once 'TransactionTest.php';
 require_once 'TransparentRedirectTest.php';
 require_once 'Error/ErrorCollectionTest.php';
+require_once 'Error/ValidationErrorCollectionTest.php';
 require_once 'Result/ErrorTest.php';
 
 class Braintree_AllTests {
@@ -25,13 +26,14 @@ class Braintree_AllTests {
         $suite->addTestSuite('Braintree_AddressTest');
         $suite->addTestSuite('Braintree_CreditCardTest');
         $suite->addTestSuite('Braintree_CustomerTest');
+        $suite->addTestSuite('Braintree_Error_ErrorCollectionTest');
+        $suite->addTestSuite('Braintree_Error_ValidationErrorCollectionTest');
         $suite->addTestSuite('Braintree_HttpTest');
-        $suite->addTestSuite('Braintree_SubscriptionTest');
+        $suite->addTestSuite('Braintree_Result_ErrorTest');
         $suite->addTestSuite('Braintree_SubscriptionSearchTest');
+        $suite->addTestSuite('Braintree_SubscriptionTest');
         $suite->addTestSuite('Braintree_TransactionTest');
         $suite->addTestSuite('Braintree_TransparentRedirectTest');
-        $suite->addTestSuite('Braintree_Error_ErrorCollectionTest');
-        $suite->addTestSuite('Braintree_Result_ErrorTest');
         return $suite;
     }
 }
