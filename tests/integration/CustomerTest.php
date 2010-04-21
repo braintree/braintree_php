@@ -9,6 +9,19 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($all->totalItems() > 0);
     }
 
+    function testAllWithManyResults()
+    {
+        $collection = Braintree_Customer::all();
+        $this->assertTrue($collection->totalItems() > 100);
+
+        $arr = array();
+        foreach($collection as $key => $customer) {
+            array_push($arr, $customer->id);
+        }
+        $unique_customer_ids = array_unique(array_values($arr));
+        $this->assertEquals($collection->totalItems(), count($unique_customer_ids));
+    }
+
     function testCreate()
     {
         $result = Braintree_Customer::create(array(

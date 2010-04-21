@@ -162,13 +162,11 @@ class Braintree_PagedCollection implements Iterator
             } else {
                 $options = array();
             }
-            $methodArgs = array(
-                $this->_pager['methodArgs'][0],
-                array_merge(
-                    $options,
-                    array('page' => $this->nextPageNumber())
-                )
-            );
+            $methodArgs = array();
+            if (array_key_exists(0, $this->_pager['methodArgs'])) {
+                array_push($methodArgs, $this->_pager['methodArgs'][0]);
+            }
+            array_push($methodArgs, array_merge($options, array('page' => $this->nextPageNumber())));
 
             // call back to the original creator of the collection
             return call_user_func_array(
