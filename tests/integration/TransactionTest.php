@@ -56,7 +56,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('customFields');
-        $this->assertEquals('91526', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_CUSTOM_FIELD_IS_INVALID, $errors[0]->code);
         $this->assertEquals('Custom field is invalid: invalidKey.', $errors[0]->message);
     }
 
@@ -229,7 +229,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::void($transaction->id);
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals('91504', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_CANNOT_BE_VOIDED, $errors[0]->code);
     }
 
     function testVoidNoValidate()
@@ -410,11 +410,11 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::createFromTransparentRedirect($queryString);
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->forKey('customer')->onAttribute('firstName');
-        $this->assertEquals('81608', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CUSTOMER_FIRST_NAME_IS_TOO_LONG, $errors[0]->code);
         $errors = $result->errors->forKey('transaction')->forKey('creditCard')->onAttribute('number');
-        $this->assertEquals('81716', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_NUMBER_INVALID_LENGTH, $errors[0]->code);
         $errors = $result->errors->forKey('transaction')->forKey('creditCard')->onAttribute('expirationDate');
-        $this->assertEquals('81709', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED, $errors[0]->code);
     }
 
     function testRefund()

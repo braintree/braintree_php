@@ -185,7 +185,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('subscription')->onAttribute('id');
-        $this->assertEquals('81906', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_TOKEN_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
     function testFind()
@@ -255,7 +255,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Subscription::update($subscription->id, array('price' => ''));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('subscription')->onAttribute('price');
-        $this->assertEquals('81903', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_PRICE_CANNOT_BE_BLANK, $errors[0]->code);
     }
 
     function testUpdate_cannotUpdateCanceledSubscription()
@@ -265,7 +265,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Subscription::update($subscription->id, array('price' => '1.00'));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('subscription')->onAttribute('base');
-        $this->assertEquals('81901', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_CANNOT_EDIT_CANCELED_SUBSCRIPTION, $errors[0]->code);
     }
 
     function testCancel_returnsSuccessIfCanceled()
@@ -289,7 +289,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Subscription::cancel($subscription->id);
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('subscription')->onAttribute('status');
-        $this->assertEquals('81905', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_STATUS_IS_CANCELED, $errors[0]->code);
     }
 }
 ?>

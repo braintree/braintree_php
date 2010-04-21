@@ -167,11 +167,11 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('customer')->onAttribute('email');
-        $this->assertEquals('81604', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CUSTOMER_EMAIL_IS_INVALID, $errors[0]->code);
         $errors = $result->errors->forKey('customer')->forKey('creditCard')->onAttribute('number');
-        $this->assertEquals('81716', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_NUMBER_INVALID_LENGTH, $errors[0]->code);
         $errors = $result->errors->forKey('customer')->forKey('creditCard')->forKey('billingAddress')->onAttribute('streetAddress');
-        $this->assertEquals('81812', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_STREET_ADDRESS_IS_TOO_LONG, $errors[0]->code);
     }
 
     function testCreateNoValidate_returnsCustomer()
@@ -361,11 +361,11 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Customer::createFromTransparentRedirect($queryString);
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('customer')->onAttribute('firstName');
-        $this->assertEquals('81608', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CUSTOMER_FIRST_NAME_IS_TOO_LONG, $errors[0]->code);
         $errors = $result->errors->forKey('customer')->forKey('creditCard')->onAttribute('number');
-        $this->assertEquals('81716', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_NUMBER_INVALID_LENGTH, $errors[0]->code);
         $errors = $result->errors->forKey('customer')->forKey('creditCard')->onAttribute('expirationDate');
-        $this->assertEquals('81709', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED, $errors[0]->code);
     }
 
     function testUpdateFromTransparentRedirect()
@@ -428,7 +428,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Customer::updateFromTransparentRedirect($queryString);
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('customer')->onAttribute('firstName');
-        $this->assertEquals('81608', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CUSTOMER_FIRST_NAME_IS_TOO_LONG, $errors[0]->code);
     }
 
     function testSale_createsASaleUsingGivenToken()

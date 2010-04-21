@@ -40,7 +40,7 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertFalse($result->success);
         $countryErrors = $result->errors->forKey('address')->onAttribute('countryName');
-        $this->assertEquals('91803', $countryErrors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED, $countryErrors[0]->code);
     }
 
     function testCreateNoValidate()
@@ -182,7 +182,7 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         );
         $this->assertFalse($result->success);
         $countryErrors = $result->errors->forKey('address')->onAttribute('countryName');
-        $this->assertEquals('91803', $countryErrors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED, $countryErrors[0]->code);
     }
 
     function testUpdateNoValidate()

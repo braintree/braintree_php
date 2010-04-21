@@ -33,11 +33,11 @@ class Braintree_Error_ErrorCollectionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->onHtmlField('customer[email]');
-        $this->assertEquals('81604', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CUSTOMER_EMAIL_IS_INVALID, $errors[0]->code);
         $errors = $result->errors->onHtmlField('customer[credit_card][number]');
-        $this->assertEquals('81716', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_NUMBER_INVALID_LENGTH, $errors[0]->code);
         $errors = $result->errors->onHtmlField('customer[credit_card][billing_address][country_name]');
-        $this->assertEquals('91803', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED, $errors[0]->code);
     }
 
     function testOnHtmlField_returnsEmptyArrayIfNone()
@@ -54,7 +54,7 @@ class Braintree_Error_ErrorCollectionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->onHtmlField('customer[email]');
-        $this->assertEquals('81604', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CUSTOMER_EMAIL_IS_INVALID, $errors[0]->code);
         $this->assertEquals(array(), $result->errors->onHtmlField('customer[credit_card][number]'));
         $this->assertEquals(array(), $result->errors->onHtmlField('customer[credit_card][billing_address][country_name]'));
     }
