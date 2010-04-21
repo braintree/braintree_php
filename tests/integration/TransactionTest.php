@@ -76,6 +76,19 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
     }
 
+    function testSale_withProcessorDecline()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '2000.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->transaction->status);
+    }
+
     function testCredit()
     {
         $result = Braintree_Transaction::credit(array(
