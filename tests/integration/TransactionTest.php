@@ -475,6 +475,26 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $unique_transaction_ids = array_unique(array_values($arr));
         $this->assertEquals($collection->totalItems(), count($unique_transaction_ids));
     }
+
+    function testBasicSearchWithMultipleIterations()
+    {
+        $collection = Braintree_Transaction::search("411111");
+        $this->assertTrue($collection->totalItems() > 100);
+
+        $arr_1 = array();
+        foreach($collection as $key => $transaction) {
+            array_push($arr_1, $transaction->id);
+        }
+        $unique_transaction_ids_1 = array_unique(array_values($arr_1));
+
+        $arr_2 = array();
+        foreach($collection as $key => $transaction) {
+            array_push($arr_2, $transaction->id);
+        }
+        $unique_transaction_ids_2 = array_unique(array_values($arr_2));
+
+        $this->assertEquals($unique_transaction_ids_1, $unique_transaction_ids_2);
+    }
 }
 ?>
 
