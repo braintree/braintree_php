@@ -112,7 +112,7 @@ class Braintree_Result_Error
     public function __get($name)
     {
         $key = "_$name";
-        if (isset($key)) {
+        if (isset($this->$key)) {
             return $this->$key;
         }
         return null;

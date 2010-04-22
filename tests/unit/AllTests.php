@@ -13,6 +13,7 @@ require_once 'TransparentRedirectTest.php';
 require_once 'Xml_GeneratorTest.php';
 require_once 'Xml_ParserTest.php';
 require_once 'UtilTest.php';
+require_once 'Result/ErrorTest.php';
 
 class Braintree_AllTests {
 
@@ -33,6 +34,7 @@ class Braintree_AllTests {
         $suite->addTestSuite('Braintree_CustomerTest');
         $suite->addTestSuite('Braintree_DigestTest');
         $suite->addTestSuite('Braintree_ResourceCollectionTest');
+        $suite->addTestSuite('Braintree_Result_ErrorTest');
         $suite->addTestSuite('Braintree_SubscriptionSearchTest');
         $suite->addTestSuite('Braintree_TransactionTest');
         $suite->addTestSuite('Braintree_TransparentRedirectTest');
