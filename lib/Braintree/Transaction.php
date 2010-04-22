@@ -137,6 +137,9 @@
  *   ));
  * </code>
  *
+ * <b>== More information ==</b>
+ *
+ * For more detailed information on Transactions, see {@link http://www.braintreepaymentsolutions.com/gateway/transaction-api http://www.braintreepaymentsolutions.com/gateway/transaction-api}
  *
  * @package    Braintree
  * @category   Resources

@@ -11,6 +11,10 @@
  * error object returned as part of a validation error collection
  * provides read-only access to $attribute, $code, and $message
  *
+ * <b>== More information ==</b>
+ *
+ * For more detailed information on Validation errors, see {@link http://www.braintreepaymentsolutions.com/gateway/validation-errors http://www.braintreepaymentsolutions.com/gateway/validation-errors}
+ *
  * @package    Braintree
  * @subpackage Error
  * @copyright  2010 Braintree Payment Solutions
