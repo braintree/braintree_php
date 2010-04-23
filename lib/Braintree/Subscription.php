@@ -97,6 +97,20 @@ class Braintree_Subscription extends Braintree
         return self::_verifyGatewayResponse($response);
     }
 
+    public static function retryCharge($subscriptionId, $amount = null)
+    {
+        $transaction_params = array('type' => Braintree_Transaction::SALE,
+            'subscriptionId' => $subscriptionId);
+        if (isset($amount)) {
+            $transaction_params['amount'] = $amount;
+        }
+
+        $response = Braintree_Http::post(
+            '/transactions',
+            array('transaction' => $transaction_params));
+        return self::_verifyGatewayResponse($response);
+    }
+
     public static function cancel($subscriptionId)
     {
         $response = Braintree_Http::put('/subscriptions/' . $subscriptionId . '/cancel');
@@ -136,6 +150,11 @@ class Braintree_Subscription extends Braintree
         if (isset($response['subscription'])) {
             return new Braintree_Result_Successful(
                 self::factory($response['subscription'])
+            );
+        } else if (isset($response['transaction'])) {
+            // return a populated instance of Braintree_Transaction, for subscription retryCharge
+            return new Braintree_Result_Successful(
+                Braintree_Transaction::factory($response['transaction'])
             );
         } else if (isset($response['apiErrorResponse'])) {
             return new Braintree_Result_Error($response['apiErrorResponse']);

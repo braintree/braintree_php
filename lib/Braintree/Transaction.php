@@ -168,7 +168,6 @@
 
 final class Braintree_Transaction extends Braintree
 {
-
     const AUTHORIZING              = 'authorizing';
     const AUTHORIZED               = 'authorized';
     const GATEWAY_REJECTED         = 'gateway_rejected';
@@ -179,6 +178,9 @@ final class Braintree_Transaction extends Braintree
     const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
     const UNKNOWN                  = 'unknown';
     const VOIDED                   = 'voided';
+
+    const SALE   = 'sale';
+    const CREDIT = 'credit';
 
     /**
      * @ignore
@@ -279,7 +281,7 @@ final class Braintree_Transaction extends Braintree
      */
     public static function credit($attribs)
     {
-        return self::create(array_merge($attribs, array('type' => 'credit')));
+        return self::create(array_merge($attribs, array('type' => Braintree_Transaction::CREDIT)));
     }
 
     /**
@@ -320,7 +322,7 @@ final class Braintree_Transaction extends Braintree
      */
     public static function sale($attribs)
     {
-        return self::create(array_merge(array('type' => 'sale'), $attribs));
+        return self::create(array_merge(array('type' => Braintree_Transaction::SALE), $attribs));
     }
 
     /**

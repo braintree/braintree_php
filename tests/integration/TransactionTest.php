@@ -16,7 +16,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
-        $this->assertEquals('sale', $transaction->type);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertNotNull($transaction->processorAuthorizationCode);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
@@ -70,7 +70,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             )
         ));
         $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
-        $this->assertEquals('sale', $transaction->type);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
@@ -101,7 +101,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
-        $this->assertEquals('credit', $transaction->type);
+        $this->assertEquals(Braintree_Transaction::CREDIT, $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
@@ -116,7 +116,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals('credit', $transaction->type);
+        $this->assertEquals(Braintree_Transaction::CREDIT, $transaction->type);
         $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
@@ -273,7 +273,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         $transaction = Braintree_Transaction::find($result->transaction->id);
         $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
-        $this->assertEquals('sale', $transaction->type);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
@@ -333,7 +333,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 'transaction' => array(
-                    'type' => 'sale',
+                    'type' => Braintree_Transaction::SALE,
                     'amount' => '100.00'
                 )
             )
@@ -341,7 +341,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::createFromTransparentRedirect($queryString);
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
-        $this->assertEquals('sale', $result->transaction->type);
+        $this->assertEquals(Braintree_Transaction::SALE, $result->transaction->type);
         $this->assertEquals(Braintree_Transaction::AUTHORIZED, $result->transaction->status);
         $creditCard = $result->transaction->creditCardDetails;
         $this->assertEquals('510510', $creditCard->bin);
@@ -361,7 +361,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 'transaction' => array(
-                    'type' => 'sale',
+                    'type' => Braintree_Transaction::SALE,
                     'amount' => '100.00',
                     'customer' => array(
                         'firstName' => 'First'
@@ -376,7 +376,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::createFromTransparentRedirect($queryString);
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
-        $this->assertEquals('sale', $result->transaction->type);
+        $this->assertEquals(Braintree_Transaction::SALE, $result->transaction->type);
         $this->assertEquals(Braintree_Transaction::AUTHORIZED, $result->transaction->status);
         $creditCard = $result->transaction->creditCardDetails;
         $this->assertEquals('510510', $creditCard->bin);
@@ -404,7 +404,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                'transaction' => array('type' => 'sale')
+                'transaction' => array('type' => Braintree_Transaction::SALE)
             )
         );
         $result = Braintree_Transaction::createFromTransparentRedirect($queryString);
@@ -422,7 +422,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = $this->createTransactionToRefund();
         $result = Braintree_Transaction::refund($transaction->id);
         $this->assertTrue($result->success);
-        $this->assertEquals('credit', $result->transaction->type);
+        $this->assertEquals(Braintree_Transaction::CREDIT, $result->transaction->type);
     }
 
     function createTransactionViaTr($regularParams, $trParams)
