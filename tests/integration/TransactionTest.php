@@ -8,6 +8,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => '100.00',
             'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
             )
@@ -20,6 +21,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($transaction->processorAuthorizationCode);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
+        $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
     }
 
     function testSale_withCustomFields()
@@ -54,7 +56,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('customFields');
-        $this->assertEquals('91526', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_CUSTOM_FIELD_IS_INVALID, $errors[0]->code);
         $this->assertEquals('Custom field is invalid: invalidKey.', $errors[0]->message);
     }
 
@@ -72,6 +74,19 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
+    }
+
+    function testSale_withProcessorDecline()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '2000.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->transaction->status);
     }
 
     function testCredit()
@@ -214,7 +229,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::void($transaction->id);
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals('91504', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_CANNOT_BE_VOIDED, $errors[0]->code);
     }
 
     function testVoidNoValidate()
@@ -395,11 +410,11 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::createFromTransparentRedirect($queryString);
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->forKey('customer')->onAttribute('firstName');
-        $this->assertEquals('81608', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CUSTOMER_FIRST_NAME_IS_TOO_LONG, $errors[0]->code);
         $errors = $result->errors->forKey('transaction')->forKey('creditCard')->onAttribute('number');
-        $this->assertEquals('81716', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_NUMBER_INVALID_LENGTH, $errors[0]->code);
         $errors = $result->errors->forKey('transaction')->forKey('creditCard')->onAttribute('expirationDate');
-        $this->assertEquals('81709', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED, $errors[0]->code);
     }
 
     function testRefund()
@@ -436,10 +451,49 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         return $transaction;
     }
 
-    function testBasicSearch()
+    function testBasicSearchWithNoResults()
+    {
+        $collection = Braintree_Transaction::search("badsearch");
+        $this->assertEquals(0, $collection->_approximateCount());
+
+        $arr = array();
+        foreach($collection as $key => $transaction) {
+            array_push($arr, $transaction->id);
+        }
+        $this->assertEquals(0, count($arr));
+    }
+
+    function testBasicSearchWithManyResults()
     {
         $collection = Braintree_Transaction::search("411111");
-        $this->assertTrue($collection->totalItems() > 1);
+        $this->assertTrue($collection->_approximateCount() > 100);
+
+        $arr = array();
+        foreach($collection as $transaction) {
+            array_push($arr, $transaction->id);
+        }
+        $unique_transaction_ids = array_unique(array_values($arr));
+        $this->assertEquals($collection->_approximateCount(), count($unique_transaction_ids));
+    }
+
+    function testBasicSearchWithMultipleIterations()
+    {
+        $collection = Braintree_Transaction::search("411111");
+        $this->assertTrue($collection->_approximateCount() > 100);
+
+        $arr_1 = array();
+        foreach($collection as $transaction) {
+            array_push($arr_1, $transaction->id);
+        }
+        $unique_transaction_ids_1 = array_unique(array_values($arr_1));
+
+        $arr_2 = array();
+        foreach($collection as $transaction) {
+            array_push($arr_2, $transaction->id);
+        }
+        $unique_transaction_ids_2 = array_unique(array_values($arr_2));
+
+        $this->assertEquals($unique_transaction_ids_1, $unique_transaction_ids_2);
     }
 }
 ?>

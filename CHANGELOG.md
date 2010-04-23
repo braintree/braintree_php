@@ -1,3 +1,11 @@
+## 2.0.0
+
+* Updated success? on transaction responses to return false on declined transactions
+* Search results now include Enumerable and will automatically paginate data
+* Added credit_card[cardholder_name] to allowed transaction params and CreditCardDetails (thanks chrismcc[http://github.com/chrismcc])
+* Fixed a bug with Customer::all
+* Added constants for error codes
+
 ## 1.2.1
 
 * Added methods to get both shallow and deep errors from a Braintree_ValidationErrorCollection

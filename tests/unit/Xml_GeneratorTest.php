@@ -51,5 +51,20 @@ XML;
         ));
         $this->assertEquals($expected, $xml);
     }
+
+    function testEscapingSpecialChars()
+    {
+        $expected = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+ <stuff>&lt;&gt;&amp;'&quot;</stuff>
+</root>
+
+XML;
+        $xml = Braintree_Xml::buildXmlFromArray(array(
+            'root' => array('stuff' => '<>&\'"')
+        ));
+        $this->assertEquals($expected, $xml);
+    }
 }
 ?>

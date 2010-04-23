@@ -81,7 +81,7 @@ require_once('Braintree/Exception.php');
 require_once('Braintree/Http.php');
 require_once('Braintree/Instance.php');
 require_once('Braintree/MultipleValueNode.php');
-require_once('Braintree/PagedCollection.php');
+require_once('Braintree/ResourceCollection.php');
 require_once('Braintree/SSLExpirationCheck.php');
 require_once('Braintree/Subscription.php');
 require_once('Braintree/SubscriptionSearch.php');

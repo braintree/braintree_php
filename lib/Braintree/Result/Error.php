@@ -40,6 +40,7 @@ class Braintree_Result_Error
    private $_params;
    private $_errors;
    private $_creditCardVerification;
+   private $_transaction;
    /**
     *
     * @var boolean always false
@@ -78,12 +79,14 @@ class Braintree_Result_Error
        // create a CreditCardVerification object
        // populated with gateway response data
        if(isset($response['verification'])) {
-           $this->_creditCardVerification =
-                   new Braintree_Result_CreditCardVerification(
-                           $response['verification']
-                           );
+           $this->_creditCardVerification = new Braintree_Result_CreditCardVerification($response['verification']);
        } else {
            unset($this->_creditCardVerification);
+       }
+       if(isset($response['transaction'])) {
+           $this->_transaction = Braintree_Transaction::factory($response['transaction']);
+       } else {
+           unset($this->_transaction);
        }
    }
 
@@ -109,7 +112,7 @@ class Braintree_Result_Error
     public function __get($name)
     {
         $key = "_$name";
-        if (isset($key)) {
+        if (isset($this->$key)) {
             return $this->$key;
         }
         return null;

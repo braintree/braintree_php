@@ -16,6 +16,7 @@ namespace :docs do
   ROOT_DIR = File.dirname(__FILE__)
   DOCS_PATH = File.join(ROOT_DIR, 'docs')
 
+  desc "clean documentation"
   task :clean do
     rm_rf DOCS_PATH
   end

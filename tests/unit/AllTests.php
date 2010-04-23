@@ -6,12 +6,14 @@ require_once 'ConfigurationTest.php';
 require_once 'CreditCardTest.php';
 require_once 'CustomerTest.php';
 require_once 'DigestTest.php';
-require_once 'PagedCollectionTest.php';
+require_once 'ResourceCollectionTest.php';
+require_once 'SubscriptionSearchTest.php';
 require_once 'TransactionTest.php';
 require_once 'TransparentRedirectTest.php';
 require_once 'Xml_GeneratorTest.php';
 require_once 'Xml_ParserTest.php';
 require_once 'UtilTest.php';
+require_once 'Result/ErrorTest.php';
 
 class Braintree_AllTests {
 
@@ -28,10 +30,12 @@ class Braintree_AllTests {
         $suite->addTestSuite('Braintree_AddressTest');
         $suite->addTestSuite('Braintree_BraintreeTest');
         $suite->addTestSuite('Braintree_ConfigurationTest');
-        $suite->addTestSuite('Braintree_CustomerTest');
         $suite->addTestSuite('Braintree_CreditCardTest');
+        $suite->addTestSuite('Braintree_CustomerTest');
         $suite->addTestSuite('Braintree_DigestTest');
-        $suite->addTestSuite('Braintree_PagedCollectionTest');
+        $suite->addTestSuite('Braintree_ResourceCollectionTest');
+        $suite->addTestSuite('Braintree_Result_ErrorTest');
+        $suite->addTestSuite('Braintree_SubscriptionSearchTest');
         $suite->addTestSuite('Braintree_TransactionTest');
         $suite->addTestSuite('Braintree_TransparentRedirectTest');
         $suite->addTestSuite('Braintree_UtilTest');

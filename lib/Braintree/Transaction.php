@@ -137,6 +137,9 @@
  *   ));
  * </code>
  *
+ * <b>== More information ==</b>
+ *
+ * For more detailed information on Transactions, see {@link http://www.braintreepaymentsolutions.com/gateway/transaction-api http://www.braintreepaymentsolutions.com/gateway/transaction-api}
  *
  * @package    Braintree
  * @category   Resources
@@ -334,14 +337,14 @@ final class Braintree_Transaction extends Braintree
     }
 
     /**
-     * Returns a PagedCollection of transactions matching the search query.
+     * Returns a ResourceCollection of transactions matching the search query.
      *
      * If <b>query</b> is a string, the search will be a basic search.
      * If <b>query</b> is a hash, the search will be an advanced search.
      *
      * @param mixed $query search query
      * @param array $options options such as page number
-     * @return object Braintree_PagedCollection
+     * @return object Braintree_ResourceCollection
      * @throws InvalidArgumentException
      */
     public static function search($query, $options=array())
@@ -357,12 +360,12 @@ final class Braintree_Transaction extends Braintree
         }
     }
     /**
-     * returns pagedcollection of Braintree_Transaction objects
+     * returns resource collection of Braintree_Transaction objects
      *
      * @ignore
      * @param string $query
      * @param array $options
-     * @return object Braintree_PagedCollection
+     * @return object Braintree_ResourceCollection
      */
     public static function _basicSearch($query, $options)
     {
@@ -381,16 +384,16 @@ final class Braintree_Transaction extends Braintree
             'methodArgs' => array($query)
             );
 
-        return new Braintree_PagedCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($attributes, $pager);
     }
 
     /**
-     * returns a PagedCollection of search results
+     * returns a ResourceCollection of search results
      *
      * @ignore
      * @param array $query
      * @param array $options
-     * @return object Braintree_PagedCollection
+     * @return object Braintree_ResourceCollection
      */
     private static function _advancedSearch($query, $options)
     {
@@ -408,7 +411,7 @@ final class Braintree_Transaction extends Braintree
             'methodArgs' => array($query)
             );
 
-        return new Braintree_PagedCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($attributes, $pager);
     }
 
     /**

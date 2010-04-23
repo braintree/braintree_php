@@ -10,6 +10,10 @@
 /**
  * collection of errors enumerating all validation errors for a given request
  *
+ * <b>== More information ==</b>
+ *
+ * For more detailed information on Validation errors, see {@link http://www.braintreepaymentsolutions.com/gateway/validation-errors http://www.braintreepaymentsolutions.com/gateway/validation-errors}
+ *
  * @package    Braintree
  * @subpackage Error
  * @copyright  2010 Braintree Payment Solutions

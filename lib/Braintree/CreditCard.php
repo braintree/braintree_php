@@ -10,6 +10,10 @@
 /**
  * Creates and manages Braintree CreditCards
  *
+ * <b>== More information ==</b>
+ *
+ * For more detailed information on CreditCards, see {@link http://www.braintreepaymentsolutions.com/gateway/credit-card-api http://www.braintreepaymentsolutions.com/gateway/credit-card-api}<br />
+ * For more detailed information on CreditCard verifications, see {@link http://www.braintreepaymentsolutions.com/gateway/credit-card-verification-api http://www.braintreepaymentsolutions.com/gateway/credit-card-verification-api}
  *
  * @package    Braintree
  * @category   Resources
@@ -82,8 +86,8 @@ class Braintree_CreditCard extends Braintree
     }
 
     /**
-     * returns a PagedCollection of expired credit cards
-     * @return object PagedCollection
+     * returns a ResourceCollection of expired credit cards
+     * @return object ResourceCollection
      */
     public static function expired($options = null)
     {
@@ -101,12 +105,12 @@ class Braintree_CreditCard extends Braintree
             'methodArgs' => array()
         );
 
-        return new Braintree_PagedCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($attributes, $pager);
     }
     /**
-     * returns a PagedCollection of credit cards expiring between start/end
+     * returns a ResourceCollection of credit cards expiring between start/end
      *
-     * @return object PagedCollection
+     * @return object ResourceCollection
      */
     public static function expiringBetween($startDate, $endDate, $options = null)
     {
@@ -125,12 +129,12 @@ class Braintree_CreditCard extends Braintree
             'methodArgs' => array($startDate, $endDate)
         );
 
-        return new Braintree_PagedCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($attributes, $pager);
 
     }
     /**
      * find a creditcard by token
-     * 
+     *
      * @access public
      * @param string $token credit card unique id
      * @return object Braintree_CreditCard

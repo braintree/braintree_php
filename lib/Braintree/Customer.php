@@ -10,6 +10,10 @@
 /**
  * Creates and manages Customers
  *
+ * <b>== More information ==</b>
+ *
+ * For more detailed information on Customers, see {@link http://www.braintreepaymentsolutions.com/gateway/customer-api http://www.braintreepaymentsolutions.com/gateway/customer-api}
+ *
  * @package    Braintree
  * @category   Resources
  * @copyright  2010 Braintree Payment Solutions
@@ -45,7 +49,7 @@ class Braintree_Customer extends Braintree
             'classMethod' => __FUNCTION__,
             'methodArgs' => array());
 
-        return new Braintree_PagedCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($attributes, $pager);
     }
 
     /**

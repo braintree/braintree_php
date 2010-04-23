@@ -144,7 +144,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('creditCard')->onAttribute('expirationDate');
-        $this->assertEquals('81710', $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_INVALID, $errors[0]->code);
     }
 
     function testCreateNoValidate_throwsIfValidationsFail()
@@ -376,8 +376,8 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     function testExpired()
     {
         $results = Braintree_CreditCard::expired();
-        $this->assertTrue($results->totalItems() > 0);
-        foreach($results->items() as $expiredCard)
+        $this->assertTrue($results->_approximateCount() > 0);
+        foreach($results as $expiredCard)
         {
             $this->assertTrue($expiredCard->isExpired());
         }
@@ -389,8 +389,8 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             mktime(0, 0, 0, 1, 1, 2009),
             mktime(23, 59, 59, 12, 31, 2009)
         );
-        $this->assertTrue($results->totalItems() > 0);
-        foreach($results->items() as $expiredCard)
+        $this->assertTrue($results->_approximateCount() > 0);
+        foreach($results as $expiredCard)
         {
             $this->assertTrue($expiredCard->isExpired());
             $this->assertEquals('2009', $expiredCard->expirationYear);

@@ -2,6 +2,10 @@
 /**
  * Braintree Subscription module
  *
+ * <b>== More information ==</b>
+ *
+ * For more detailed information on Subscriptions, see {@link http://www.braintreepaymentsolutions.com/gateway/subscription-api http://www.braintreepaymentsolutions.com/gateway/subscription-api}
+ *
  * PHP Version 5
  *
  * @package   Braintree
@@ -80,7 +84,7 @@ class Braintree_Subscription extends Braintree
             'methodArgs' => array($query)
             );
 
-        return new Braintree_PagedCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($attributes, $pager);
     }
 
     public static function update($subscriptionId, $attributes)
