@@ -55,13 +55,12 @@ class Braintree_Xml_Parser
         // if not, return the string it contains
         $iterator->rewind();
         if (!$iterator->valid()) {
-               return self::_typecastXmlValue($iterator);
+            return self::_typecastXmlValue($iterator);
         }
-        // loop through the iterator
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
 
             $tmpArray = null;
-            // convert dashed keys to camelCase
+            $value = null;
             $key = Braintree_Util::delimiterToCamelCase($iterator->key());
 
             // get the attribute type string for use in conditions below
@@ -89,7 +88,7 @@ class Braintree_Xml_Parser
             }
 
             // set the output string
-            $output = isset($tmpArray[$key]) ? $tmpArray[$key] : $value;
+            $output = isset($value) ? $value : $tmpArray[$key];
 
             // determine if there are multiple tags of this name at the same level
             if (self::$_responseType == 'collection') {
