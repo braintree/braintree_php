@@ -89,6 +89,59 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->transaction->status);
     }
 
+    function testSale_withExistingCustomer()
+    {
+        $customer = Braintree_Customer::create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com'
+        ))->customer;
+
+        $transaction = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'customerId' => $customer->id,
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/12'
+            )
+        ))->transaction;
+        $this->assertEquals($transaction->creditCardDetails->maskedNumber, '401288******1881');
+        $this->assertNull($transaction->vaultCreditCard());
+    }
+
+    function testSale_withExistingCustomer_storeInVault()
+    {
+        $customer = Braintree_Customer::create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com'
+        ))->customer;
+
+        $transaction = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'customerId' => $customer->id,
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'storeInVault' => true
+            )
+        ))->transaction;
+        $this->assertEquals($transaction->creditCardDetails->maskedNumber, '401288******1881');
+        $this->assertEquals($transaction->vaultCreditCard()->maskedNumber, '401288******1881');
+    }
+
     function testCredit()
     {
         $result = Braintree_Transaction::credit(array(
