@@ -64,6 +64,7 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             ),
         ));
 
+
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::billingCompany()->is("Braintree"),
             Braintree_TransactionSearch::billingCountryName()->is("United States of America"),
@@ -102,6 +103,109 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, $collection->_approximateCount());
         $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function testEachTextField()
+    {
+        $firstName  = 'Tim' . rand();
+        $token      = 'creditcard' . rand();
+        $customerId = 'customer' . rand();
+
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012',
+                'cardholderName' => 'tom smith',
+                'token'          => $token,
+            ),
+            'billing' => array(
+                'company'         => 'braintree',
+                'countryName'     => 'united states of america',
+                'extendedAddress' => 'suite 123',
+                'firstName'       => $firstName,
+                'lastName'        => 'smith',
+                'locality'        => 'chicago',
+                'postalCode'      => '12345',
+                'region'          => 'il',
+                'streetAddress'   => '123 main st'
+            ),
+            'customer' => array(
+                'company'   => 'braintree',
+                'email'     => 'smith@example.com',
+                'fax'       => '5551231234',
+                'firstName' => 'tom',
+                'id'        => $customerId,
+                'lastName'  => 'smith',
+                'phone'     => '5551231234',
+                'website'   => 'http://example.com',
+            ),
+            'options' => array(
+                'storeInVault' => true
+            ),
+            'orderId' => 'myorder',
+            'shipping' => array(
+                'company'         => 'braintree p.s.',
+                'countryName'     => 'mexico',
+                'extendedAddress' => 'apt 456',
+                'firstName'       => 'thomas',
+                'lastName'        => 'smithy',
+                'locality'        => 'braintree',
+                'postalCode'      => '54321',
+                'region'          => 'ma',
+                'streetAddress'   => '456 road'
+            ),
+        ));
+
+        $search_criteria = array(
+          'billingCompany' => "Braintree",
+          'billingCountryName' => "United States of America",
+          'billingExtendedAddress' => "Suite 123",
+          'billingFirstName' => $firstName,
+          'billingLastName' => "Smith",
+          'billingLocality' => "Chicago",
+          'billingPostalCode' => "12345",
+          'billingRegion' => "IL",
+          'billingStreetAddress' => "123 Main St",
+          'creditCardCardholderName' => "Tom Smith",
+          'creditCardExpirationDate' => "05/2012",
+          'creditCardNumber' => Braintree_Test_CreditCardNumbers::$visa,
+          'customerCompany' => "Braintree",
+          'customerEmail' => "smith@example.com",
+          'customerFax' => "5551231234",
+          'customerFirstName' => "Tom",
+          'customerId' => $customerId,
+          'customerLastName' => "Smith",
+          'customerPhone' => "5551231234",
+          'customerWebsite' => "http://example.com",
+          'orderId' => "myorder",
+          'paymentMethodToken' => $token,
+          'processorAuthorizationCode' => $transaction->processorAuthorizationCode,
+          'shippingCompany' => "Braintree P.S.",
+          'shippingCountryName' => "Mexico",
+          'shippingExtendedAddress' => "Apt 456",
+          'shippingFirstName' => "Thomas",
+          'shippingLastName' => "Smithy",
+          'shippingLocality' => "Braintree",
+          'shippingPostalCode' => "54321",
+          'shippingRegion' => "MA",
+          'shippingStreetAddress' => "456 Road"
+        );
+
+        foreach ($search_criteria AS $criterion => $value) {
+            $collection = Braintree_Transaction::search(array(
+                Braintree_TransactionSearch::$criterion()->is($value),
+                Braintree_TransactionSearch::id()->is($transaction->id)
+            ));
+            $this->assertEquals(1, $collection->_approximateCount());
+            $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+            $collection = Braintree_Transaction::search(array(
+                Braintree_TransactionSearch::$criterion()->is('invalid_attribute'),
+                Braintree_TransactionSearch::id()->is($transaction->id)
+            ));
+            $this->assertEquals(0, $collection->_approximateCount());
+        }
     }
 }
 ?>
