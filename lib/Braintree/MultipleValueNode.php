@@ -14,6 +14,11 @@ class Braintree_MultipleValueNode
         return $this;
     }
 
+    function is($value)
+    {
+        return $this->in(array($value));
+    }
+
     function toParam()
     {
         return $this->items;

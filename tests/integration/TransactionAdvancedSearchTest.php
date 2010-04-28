@@ -342,6 +342,283 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(0, $collection->_approximateCount());
     }
+
+    function test_multipleValueNode_createdUsing()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012'
+            )
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::createdUsing()->is(Braintree_Transaction::FULL_INFORMATION)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::createdUsing()->in(
+                array(Braintree_Transaction::FULL_INFORMATION, Braintree_Transaction::TOKEN)
+            )
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::createdUsing()->in(array(Braintree_Transaction::TOKEN))
+        ));
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
+
+    function test_multipleValueNode_creditCardCustomerLocation()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012'
+            )
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCustomerLocation()->is(Braintree_CreditCard::US)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCustomerLocation()->in(
+                array(Braintree_CreditCard::US, Braintree_CreditCard::INTERNATIONAL)
+            )
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCustomerLocation()->in(array(Braintree_CreditCard::INTERNATIONAL))
+        ));
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
+      // it "searches on credit_card_customer_location" do
+      //   transaction = Braintree::Transaction.sale!(
+      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
+      //     :credit_card => {
+      //     :number => Braintree::Test::CreditCardNumbers::Visa,
+      //     :expiration_date => "05/12"
+      //   }
+      //   )
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.credit_card_customer_location.is Braintree::CreditCard::CustomerLocation::US
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.credit_card_customer_location.in Braintree::CreditCard::CustomerLocation::US, Braintree::CreditCard::CustomerLocation::International
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.credit_card_customer_location.is Braintree::CreditCard::CustomerLocation::International
+      //   end
+
+      //   collection._approximate_size.should == 0
+      // end
+
+      // it "searches on merchant_account_id" do
+      //   transaction = Braintree::Transaction.sale!(
+      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
+      //     :credit_card => {
+      //     :number => Braintree::Test::CreditCardNumbers::Visa,
+      //     :expiration_date => "05/12"
+      //   }
+      //   )
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.merchant_account_id.is transaction.merchant_account_id
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.merchant_account_id.in transaction.merchant_account_id, "bogus_merchant_account_id"
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.merchant_account_id.is "bogus_merchant_account_id"
+      //   end
+
+      //   collection._approximate_size.should == 0
+      // end
+
+      // it "searches on credit_card_card_type" do
+      //   transaction = Braintree::Transaction.sale!(
+      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
+      //     :credit_card => {
+      //     :number => Braintree::Test::CreditCardNumbers::Visa,
+      //     :expiration_date => "05/12"
+      //   }
+      //   )
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.credit_card_card_type.is Braintree::CreditCard::CardType::Visa
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.credit_card_card_type.is transaction.credit_card_details.card_type
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.credit_card_card_type.in Braintree::CreditCard::CardType::Visa, Braintree::CreditCard::CardType::MasterCard
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.credit_card_card_type.is Braintree::CreditCard::CardType::MasterCard
+      //   end
+
+      //   collection._approximate_size.should == 0
+      // end
+
+      // it "searches on status" do
+      //   transaction = Braintree::Transaction.sale!(
+      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
+      //     :credit_card => {
+      //     :number => Braintree::Test::CreditCardNumbers::Visa,
+      //     :expiration_date => "05/12"
+      //   }
+      //   )
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.status.is Braintree::Transaction::Status::Authorized
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.status.in Braintree::Transaction::Status::Authorized, Braintree::Transaction::Status::ProcessorDeclined
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.status.is Braintree::Transaction::Status::ProcessorDeclined
+      //   end
+
+      //   collection._approximate_size.should == 0
+      // end
+
+      // it "searches on source" do
+      //   transaction = Braintree::Transaction.sale!(
+      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
+      //     :credit_card => {
+      //       :number => Braintree::Test::CreditCardNumbers::Visa,
+      //       :expiration_date => "05/12"
+      //     }
+      //   )
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.source.is Braintree::Transaction::Source::Api
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.source.in Braintree::Transaction::Source::Api, Braintree::Transaction::Source::ControlPanel
+      //   end
+
+      //   collection._approximate_size.should == 1
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.id.is transaction.id
+      //     search.source.is Braintree::Transaction::Source::ControlPanel
+      //   end
+
+      //   collection._approximate_size.should == 0
+      // end
+
+      // it "searches on transaction_type" do
+      //   cardholder_name = "refunds#{rand(10000)}"
+      //   credit_transaction = Braintree::Transaction.credit!(
+      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
+      //     :credit_card => {
+      //     :cardholder_name => cardholder_name,
+      //     :number => Braintree::Test::CreditCardNumbers::Visa,
+      //     :expiration_date => "05/12"
+      //   }
+      //   )
+
+      //   transaction = Braintree::Transaction.sale!(
+      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
+      //     :credit_card => {
+      //     :cardholder_name => cardholder_name,
+      //     :number => Braintree::Test::CreditCardNumbers::Visa,
+      //     :expiration_date => "05/12"
+      //   },
+      //   :options => { :submit_for_settlement => true }
+      //   )
+      //   Braintree::Http.put "/transactions/#{transaction.id}/settle"
+
+      //   refund_transaction = transaction.refund.new_transaction
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.credit_card_cardholder_name.is cardholder_name
+      //     search.type.is Braintree::Transaction::Type::Credit
+      //   end
+
+      //   collection._approximate_size.should == 2
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.credit_card_cardholder_name.is cardholder_name
+      //     search.type.is Braintree::Transaction::Type::Credit
+      //     search.refund.is true
+      //   end
+
+      //   collection._approximate_size.should == 1
+      //   collection.first.id.should == refund_transaction.id
+
+      //   collection = Braintree::Transaction.search do |search|
+      //     search.credit_card_cardholder_name.is cardholder_name
+      //     search.type.is Braintree::Transaction::Type::Credit
+      //     search.refund.is false
+      //   end
+
+      //   collection._approximate_size.should == 1
+      //   collection.first.id.should == credit_transaction.id
+      // end
 }
 ?>
 

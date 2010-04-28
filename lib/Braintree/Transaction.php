@@ -168,6 +168,7 @@
 
 final class Braintree_Transaction extends Braintree
 {
+    // Transaction Status
     const AUTHORIZING              = 'authorizing';
     const AUTHORIZED               = 'authorized';
     const GATEWAY_REJECTED         = 'gateway_rejected';
@@ -179,8 +180,18 @@ final class Braintree_Transaction extends Braintree
     const UNKNOWN                  = 'unknown';
     const VOIDED                   = 'voided';
 
+    // Transaction Types
     const SALE   = 'sale';
     const CREDIT = 'credit';
+
+    // Transaction Created Using
+    const FULL_INFORMATION = 'full_information';
+    const TOKEN = 'token';
+
+    // Transaction Sources
+    const API = 'api';
+    const CONTROL_PANEL = 'control_panel';
+    const RECURRING = 'recurring';
 
     /**
      * @ignore

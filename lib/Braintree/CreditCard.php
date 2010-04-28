@@ -35,6 +35,10 @@
  */
 class Braintree_CreditCard extends Braintree
 {
+	// Credit card origination location
+	const INTERNATIONAL = "international";
+	const US            = "us";
+
     public static function create($attribs)
     {
         Braintree_Util::verifyKeys(self::createSignature(), $attribs);

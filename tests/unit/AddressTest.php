@@ -47,10 +47,5 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($first->isEqual($second));
         $this->assertFalse($second->isEqual($first));
     }
-
-    function testNoAddress()
-    {
-
-    }
 }
 ?>
