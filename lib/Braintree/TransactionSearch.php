@@ -44,5 +44,7 @@ class Braintree_TransactionSearch
 	static function type()                       { return new Braintree_MultipleValueNode("type"); }
 
 	static function refund()                     { return new Braintree_KeyValueNode("refund"); }
+
+	static function amount()                     { return new Braintree_RangeValueNode("amount"); }
 }
 ?>

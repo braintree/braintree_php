@@ -627,6 +627,56 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $collection->_approximateCount());
         $this->assertEquals($credit->id, $collection->firstItem()->id);
     }
+
+    function test_rangeNode_amount()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $creditCard = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Jane Everywoman' . rand(),
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ))->creditCard;
+
+        $t_1000 = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1000.00',
+            'paymentMethodToken' => $creditCard->token
+        ));
+
+        $t_1500 = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1500.00',
+            'paymentMethodToken' => $creditCard->token
+        ));
+
+        $t_1800 = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1800.00',
+            'paymentMethodToken' => $creditCard->token
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($creditCard->cardholderName),
+            Braintree_TransactionSearch::amount()->greaterThanOrEqualTo('1700')
+        ));
+
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($t_1800->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($creditCard->cardholderName),
+            Braintree_TransactionSearch::amount()->lessThanOrEqualTo('1250')
+        ));
+
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($t_1000->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($creditCard->cardholderName),
+            Braintree_TransactionSearch::amount()->between('1100', '1600')
+        ));
+
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($t_1500->id, $collection->firstItem()->id);
+    }
 }
 ?>
 
