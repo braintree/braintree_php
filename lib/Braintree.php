@@ -88,6 +88,7 @@ require_once('Braintree/SubscriptionSearch.php');
 require_once('Braintree/SubscriptionStatus.php');
 require_once('Braintree/TextNode.php');
 require_once('Braintree/Transaction.php');
+require_once('Braintree/TransactionSearch.php');
 require_once('Braintree/TransparentRedirect.php');
 require_once('Braintree/Util.php');
 require_once('Braintree/Version.php');

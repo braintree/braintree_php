@@ -399,9 +399,14 @@ final class Braintree_Transaction extends Braintree
      */
     private static function _advancedSearch($query, $options)
     {
+        $criteria = array();
+        foreach ($query AS $term) {
+            $criteria[$term->name] = $term->toParam();
+        }
+
         $page = isset($options['page']) ? $options['page'] : 1;
-        $queryPath = '/transactions/advanced_search?page=?' . $page;
-        $response = Braintree_Http::post($queryPath, array('search' => $query));
+        $queryPath = '/transactions/advanced_search?page=' . $page;
+        $response = Braintree_Http::post($queryPath, array('search' => $criteria));
         $attributes = $response['creditCardTransactions'];
         $attributes['items'] = Braintree_Util::extractAttributeAsArray(
                 $attributes,
