@@ -207,6 +207,141 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             $this->assertEquals(0, $collection->_approximateCount());
         }
     }
+
+    function testIs()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012',
+                'cardholderName' => 'tom smith'
+            )
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardholderName()->is('tom smith')
+        ));
+
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardholderName()->is('somebody else')
+        ));
+
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
+
+    function testIsNot()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012',
+                'cardholderName' => 'tom smith'
+            )
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardholderName()->isNot('somebody else')
+        ));
+
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardholderName()->isNot('tom smith')
+        ));
+
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
+
+    function testEndsWith()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012',
+                'cardholderName' => 'tom smith'
+            )
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardholderName()->endsWith('m smith')
+        ));
+
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardholderName()->endsWith('tom s')
+        ));
+
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
+
+    function testStartsWith()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012',
+                'cardholderName' => 'tom smith'
+            )
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardholderName()->startsWith('tom s')
+        ));
+
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardholderName()->startsWith('m smith')
+        ));
+
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
+
+    function testContains()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012',
+                'cardholderName' => 'tom smith'
+            )
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardholderName()->contains('m sm')
+        ));
+
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardholderName()->contains('something else')
+        ));
+
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
 }
 ?>
 
