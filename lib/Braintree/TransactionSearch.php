@@ -36,6 +36,13 @@ class Braintree_TransactionSearch
 	static function shippingStreetAddress()      { return new Braintree_TextNode('shipping_street_address'); }
 
 	static function createdUsing()               { return new Braintree_MultipleValueNode("created_using"); }
+	static function creditCardCardType()         { return new Braintree_MultipleValueNode("credit_card_card_type"); }
 	static function creditCardCustomerLocation() { return new Braintree_MultipleValueNode("credit_card_customer_location"); }
+	static function merchantAccountId()          { return new Braintree_MultipleValueNode("merchant_account_id"); }
+	static function source()                     { return new Braintree_MultipleValueNode("source"); }
+	static function status()                     { return new Braintree_MultipleValueNode("status"); }
+	static function type()                       { return new Braintree_MultipleValueNode("type"); }
+
+	static function refund()                     { return new Braintree_KeyValueNode("refund"); }
 }
 ?>

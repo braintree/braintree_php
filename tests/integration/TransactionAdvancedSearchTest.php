@@ -408,217 +408,225 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertEquals(0, $collection->_approximateCount());
     }
-      // it "searches on credit_card_customer_location" do
-      //   transaction = Braintree::Transaction.sale!(
-      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
-      //     :credit_card => {
-      //     :number => Braintree::Test::CreditCardNumbers::Visa,
-      //     :expiration_date => "05/12"
-      //   }
-      //   )
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.credit_card_customer_location.is Braintree::CreditCard::CustomerLocation::US
-      //   end
+    function test_multipleValueNode_merchantAccountId()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012'
+            )
+        ));
 
-      //   collection._approximate_size.should == 1
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::merchantAccountId()->is($transaction->merchantAccountId)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.credit_card_customer_location.in Braintree::CreditCard::CustomerLocation::US, Braintree::CreditCard::CustomerLocation::International
-      //   end
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::merchantAccountId()->in(
+                array($transaction->merchantAccountId, "bogus_merchant_account_id")
+            )
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
 
-      //   collection._approximate_size.should == 1
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::merchantAccountId()->is("bogus_merchant_account_id")
+        ));
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.credit_card_customer_location.is Braintree::CreditCard::CustomerLocation::International
-      //   end
+    function test_multipleValueNode_creditCardType()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012'
+            )
+        ));
 
-      //   collection._approximate_size.should == 0
-      // end
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardType()->is($transaction->creditCardDetails->cardType)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
 
-      // it "searches on merchant_account_id" do
-      //   transaction = Braintree::Transaction.sale!(
-      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
-      //     :credit_card => {
-      //     :number => Braintree::Test::CreditCardNumbers::Visa,
-      //     :expiration_date => "05/12"
-      //   }
-      //   )
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardType()->in(
+                array($transaction->creditCardDetails->cardType, "another_credit_card_type")
+            )
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.merchant_account_id.is transaction.merchant_account_id
-      //   end
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::creditCardCardType()->is("another_credit_card_type")
+        ));
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
 
-      //   collection._approximate_size.should == 1
+    function test_multipleValueNode_status()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012'
+            )
+        ));
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.merchant_account_id.in transaction.merchant_account_id, "bogus_merchant_account_id"
-      //   end
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::status()->is($transaction->status)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
 
-      //   collection._approximate_size.should == 1
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::status()->in(
+                array($transaction->status, Braintree_Transaction::SETTLED)
+            )
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.merchant_account_id.is "bogus_merchant_account_id"
-      //   end
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::status()->is(Braintree_Transaction::SETTLED)
+        ));
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
 
-      //   collection._approximate_size.should == 0
-      // end
+    function test_multipleValueNode_source()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012'
+            )
+        ));
 
-      // it "searches on credit_card_card_type" do
-      //   transaction = Braintree::Transaction.sale!(
-      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
-      //     :credit_card => {
-      //     :number => Braintree::Test::CreditCardNumbers::Visa,
-      //     :expiration_date => "05/12"
-      //   }
-      //   )
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::source()->is(Braintree_Transaction::API)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.credit_card_card_type.is Braintree::CreditCard::CardType::Visa
-      //   end
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::source()->in(
+                array(Braintree_Transaction::API, Braintree_Transaction::RECURRING)
+            )
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
 
-      //   collection._approximate_size.should == 1
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::source()->is(Braintree_Transaction::RECURRING)
+        ));
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.credit_card_card_type.is transaction.credit_card_details.card_type
-      //   end
+    function test_multipleValueNode_transactionType()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $creditCard = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Joe Everyman' . rand(),
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ))->creditCard;
 
-      //   collection._approximate_size.should == 1
+        $sale = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodToken' => $creditCard->token,
+            'options' => array('submitForSettlement' => true)
+        ));
+        Braintree_Http::put('/transactions/' . $sale->id . '/settle');
+        $refund = Braintree_Transaction::refund($sale->id)->transaction;
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.credit_card_card_type.in Braintree::CreditCard::CardType::Visa, Braintree::CreditCard::CardType::MasterCard
-      //   end
+        $credit = Braintree_Transaction::creditNoValidate(array(
+            'amount' => '100.00',
+            'paymentMethodToken' => $creditCard->token
+        ));
 
-      //   collection._approximate_size.should == 1
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.credit_card_card_type.is Braintree::CreditCard::CardType::MasterCard
-      //   end
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($creditCard->cardholderName),
+            Braintree_TransactionSearch::type()->is($sale->type)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
 
-      //   collection._approximate_size.should == 0
-      // end
 
-      // it "searches on status" do
-      //   transaction = Braintree::Transaction.sale!(
-      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
-      //     :credit_card => {
-      //     :number => Braintree::Test::CreditCardNumbers::Visa,
-      //     :expiration_date => "05/12"
-      //   }
-      //   )
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($creditCard->cardholderName),
+            Braintree_TransactionSearch::type()->in(
+                array($sale->type, $credit->type)
+            )
+        ));
+        $this->assertEquals(3, $collection->_approximateCount());
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.status.is Braintree::Transaction::Status::Authorized
-      //   end
 
-      //   collection._approximate_size.should == 1
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($creditCard->cardholderName),
+            Braintree_TransactionSearch::type()->is($credit->type)
+        ));
+        $this->assertEquals(2, $collection->_approximateCount());
+    }
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.status.in Braintree::Transaction::Status::Authorized, Braintree::Transaction::Status::ProcessorDeclined
-      //   end
+    function test_multipleValueNode_transactionType_withRefund()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $creditCard = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Joe Everyman' . rand(),
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ))->creditCard;
 
-      //   collection._approximate_size.should == 1
+        $sale = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodToken' => $creditCard->token,
+            'options' => array('submitForSettlement' => true)
+        ));
+        Braintree_Http::put('/transactions/' . $sale->id . '/settle');
+        $refund = Braintree_Transaction::refund($sale->id)->transaction;
 
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.status.is Braintree::Transaction::Status::ProcessorDeclined
-      //   end
+        $credit = Braintree_Transaction::creditNoValidate(array(
+            'amount' => '100.00',
+            'paymentMethodToken' => $creditCard->token
+        ));
 
-      //   collection._approximate_size.should == 0
-      // end
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($creditCard->cardholderName),
+            Braintree_TransactionSearch::type()->is($credit->type),
+            Braintree_TransactionSearch::refund()->is(True)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($refund->id, $collection->firstItem()->id);
 
-      // it "searches on source" do
-      //   transaction = Braintree::Transaction.sale!(
-      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
-      //     :credit_card => {
-      //       :number => Braintree::Test::CreditCardNumbers::Visa,
-      //       :expiration_date => "05/12"
-      //     }
-      //   )
-
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.source.is Braintree::Transaction::Source::Api
-      //   end
-
-      //   collection._approximate_size.should == 1
-
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.source.in Braintree::Transaction::Source::Api, Braintree::Transaction::Source::ControlPanel
-      //   end
-
-      //   collection._approximate_size.should == 1
-
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.id.is transaction.id
-      //     search.source.is Braintree::Transaction::Source::ControlPanel
-      //   end
-
-      //   collection._approximate_size.should == 0
-      // end
-
-      // it "searches on transaction_type" do
-      //   cardholder_name = "refunds#{rand(10000)}"
-      //   credit_transaction = Braintree::Transaction.credit!(
-      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
-      //     :credit_card => {
-      //     :cardholder_name => cardholder_name,
-      //     :number => Braintree::Test::CreditCardNumbers::Visa,
-      //     :expiration_date => "05/12"
-      //   }
-      //   )
-
-      //   transaction = Braintree::Transaction.sale!(
-      //     :amount => Braintree::Test::TransactionAmounts::Authorize,
-      //     :credit_card => {
-      //     :cardholder_name => cardholder_name,
-      //     :number => Braintree::Test::CreditCardNumbers::Visa,
-      //     :expiration_date => "05/12"
-      //   },
-      //   :options => { :submit_for_settlement => true }
-      //   )
-      //   Braintree::Http.put "/transactions/#{transaction.id}/settle"
-
-      //   refund_transaction = transaction.refund.new_transaction
-
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.credit_card_cardholder_name.is cardholder_name
-      //     search.type.is Braintree::Transaction::Type::Credit
-      //   end
-
-      //   collection._approximate_size.should == 2
-
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.credit_card_cardholder_name.is cardholder_name
-      //     search.type.is Braintree::Transaction::Type::Credit
-      //     search.refund.is true
-      //   end
-
-      //   collection._approximate_size.should == 1
-      //   collection.first.id.should == refund_transaction.id
-
-      //   collection = Braintree::Transaction.search do |search|
-      //     search.credit_card_cardholder_name.is cardholder_name
-      //     search.type.is Braintree::Transaction::Type::Credit
-      //     search.refund.is false
-      //   end
-
-      //   collection._approximate_size.should == 1
-      //   collection.first.id.should == credit_transaction.id
-      // end
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($creditCard->cardholderName),
+            Braintree_TransactionSearch::type()->is($credit->type),
+            Braintree_TransactionSearch::refund()->is(False)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($credit->id, $collection->firstItem()->id);
+    }
 }
 ?>
 
