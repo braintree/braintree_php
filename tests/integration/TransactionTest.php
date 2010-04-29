@@ -60,6 +60,36 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Custom field is invalid: invalidKey.', $errors[0]->message);
     }
 
+    function testSale_withMerchantAccountId()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_TestHelper::nonDefaultMerchantAccountId(), $transaction->merchantAccountId);
+    }
+
+    function testSale_withoutMerchantAccountIdFallsBackToDefault()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $transaction->merchantAccountId);
+    }
+
+
     function testSaleNoValidate()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
@@ -174,6 +204,35 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
+    }
+
+    function testCredit_withMerchantAccountId()
+    {
+        $result = Braintree_Transaction::credit(array(
+            'amount' => '100.00',
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_TestHelper::nonDefaultMerchantAccountId(), $transaction->merchantAccountId);
+    }
+
+    function testCredit_withoutMerchantAccountIdFallsBackToDefault()
+    {
+        $result = Braintree_Transaction::credit(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $transaction->merchantAccountId);
     }
 
     function testSubmitForSettlement_nullAmount()

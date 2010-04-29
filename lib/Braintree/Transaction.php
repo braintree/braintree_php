@@ -253,7 +253,7 @@ final class Braintree_Transaction extends Braintree
     public static function createSignature()
     {
         return array(
-                'amount', 'customerId', 'orderId', 'paymentMethodToken', 'type',
+                'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken', 'type',
                 array('creditCard'   =>
                     array('token', 'cardholderName', 'cvv', 'expirationDate', 'number'),
                 ),
