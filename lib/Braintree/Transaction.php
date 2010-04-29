@@ -539,9 +539,10 @@ final class Braintree_Transaction extends Braintree
                 Braintree_Util::implodeAssociativeArray($printableAttribs) .']';
     }
 
-    public static function refund($transactionId)
+    public static function refund($transactionId, $amount = null)
     {
-        $response = Braintree_Http::post('/transactions/' . $transactionId . '/refund');
+        $params = array('transaction' => array('amount' => $amount));
+        $response = Braintree_Http::post('/transactions/' . $transactionId . '/refund', $params);
         return self::_verifyGatewayResponse($response);
     }
 
