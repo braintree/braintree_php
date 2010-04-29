@@ -409,6 +409,14 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $collection->_approximateCount());
     }
 
+    function test_multipleValueNode_creditCardCustomerLocation_allowedValues()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for credit_card_customer_location: noSuchLocation');
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCustomerLocation()->is('noSuchLocation')
+        ));
+    }
+
     function test_multipleValueNode_merchantAccountId()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
@@ -516,6 +524,14 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $collection->_approximateCount());
     }
 
+    function test_multipleValueNode_status_allowedValues()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for status: noSuchStatus');
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::status()->is('noSuchStatus')
+        ));
+    }
+
     function test_multipleValueNode_source()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
@@ -549,7 +565,15 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $collection->_approximateCount());
     }
 
-    function test_multipleValueNode_transactionType()
+    function test_multipleValueNode_source_allowedValues()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for source: noSuchSource');
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::source()->is('noSuchSource')
+        ));
+    }
+
+    function test_multipleValueNode_type()
     {
         $customer = Braintree_Customer::createNoValidate();
         $creditCard = Braintree_CreditCard::create(array(
@@ -596,7 +620,15 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, $collection->_approximateCount());
     }
 
-    function test_multipleValueNode_transactionType_withRefund()
+    function test_multipleValueNode_type_allowedValues()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for type: noSuchType');
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::type()->is('noSuchType')
+        ));
+    }
+
+    function test_multipleValueNode_type_withRefund()
     {
         $customer = Braintree_Customer::createNoValidate();
         $creditCard = Braintree_CreditCard::create(array(

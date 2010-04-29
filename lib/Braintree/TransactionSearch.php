@@ -39,29 +39,60 @@ class Braintree_TransactionSearch
 
     static function creditCardCardType()
     {
-        return new Braintree_MultipleValueNode("credit_card_card_type",
-            array(
-                Braintree_CreditCard::AMEX,
-                Braintree_CreditCard::CARTE_BLANCHE,
-                Braintree_CreditCard::CHINA_UNION_PAY,
-                Braintree_CreditCard::DINERS_CLUB_INTERNATIONAL,
-                Braintree_CreditCard::DISCOVER,
-                Braintree_CreditCard::JCB,
-                Braintree_CreditCard::LASER,
-                Braintree_CreditCard::MAESTRO,
-                Braintree_CreditCard::MASTER_CARD,
-                Braintree_CreditCard::SOLO,
-                Braintree_CreditCard::SWITCH_TYPE,
-                Braintree_CreditCard::VISA,
-                Braintree_CreditCard::UNKNOWN
-            ));
+        return new Braintree_MultipleValueNode("credit_card_card_type", array(
+            Braintree_CreditCard::AMEX,
+            Braintree_CreditCard::CARTE_BLANCHE,
+            Braintree_CreditCard::CHINA_UNION_PAY,
+            Braintree_CreditCard::DINERS_CLUB_INTERNATIONAL,
+            Braintree_CreditCard::DISCOVER,
+            Braintree_CreditCard::JCB,
+            Braintree_CreditCard::LASER,
+            Braintree_CreditCard::MAESTRO,
+            Braintree_CreditCard::MASTER_CARD,
+            Braintree_CreditCard::SOLO,
+            Braintree_CreditCard::SWITCH_TYPE,
+            Braintree_CreditCard::VISA,
+            Braintree_CreditCard::UNKNOWN
+        ));
     }
 
-	static function creditCardCustomerLocation() { return new Braintree_MultipleValueNode("credit_card_customer_location"); }
-	static function merchantAccountId()          { return new Braintree_MultipleValueNode("merchant_account_id"); }
-	static function source()                     { return new Braintree_MultipleValueNode("source"); }
-	static function status()                     { return new Braintree_MultipleValueNode("status"); }
-	static function type()                       { return new Braintree_MultipleValueNode("type"); }
+    static function creditCardCustomerLocation() {
+        return new Braintree_MultipleValueNode("credit_card_customer_location", array(
+            Braintree_CreditCard::INTERNATIONAL,
+            Braintree_CreditCard::US
+        ));
+    }
+
+    static function merchantAccountId() {
+        return new Braintree_MultipleValueNode("merchant_account_id");
+    }
+    static function source()                     {
+        return new Braintree_MultipleValueNode("source", array(
+            Braintree_Transaction::API,
+            Braintree_Transaction::CONTROL_PANEL,
+            Braintree_Transaction::RECURRING,
+        ));
+    }
+    static function status()                     {
+        return new Braintree_MultipleValueNode("status", array(
+            Braintree_Transaction::AUTHORIZING,
+            Braintree_Transaction::AUTHORIZED,
+            Braintree_Transaction::GATEWAY_REJECTED,
+            Braintree_Transaction::FAILED,
+            Braintree_Transaction::PROCESSOR_DECLINED,
+            Braintree_Transaction::SETTLED,
+            Braintree_Transaction::SETTLEMENT_FAILED,
+            Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT,
+            Braintree_Transaction::UNKNOWN,
+            Braintree_Transaction::VOIDED
+        ));
+    }
+    static function type()                       {
+        return new Braintree_MultipleValueNode("type", array(
+            Braintree_Transaction::SALE,
+            Braintree_Transaction::CREDIT
+        ));
+    }
 
 	static function refund()                     { return new Braintree_KeyValueNode("refund"); }
 
