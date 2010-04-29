@@ -10,13 +10,13 @@ class Braintree_RangeValueNode
 
     function greaterThanOrEqualTo($value)
     {
-        $this->searchTerms["min"] = strval($value);
+        $this->searchTerms["min"] = $value;
         return $this;
     }
 
     function lessThanOrEqualTo($value)
     {
-        $this->searchTerms["max"] = strval($value);
+        $this->searchTerms["max"] = $value;
         return $this;
     }
 

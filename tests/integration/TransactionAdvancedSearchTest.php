@@ -677,6 +677,118 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $collection->_approximateCount());
         $this->assertEquals($t_1500->id, $collection->firstItem()->id);
     }
+
+    function test_rangeNode_createdAt_lessThanOrEqualTo()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'cardholderName' => 'Ted Everywoman' . rand(),
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $past = date_sub(clone $transaction->createdAt, new DateInterval("PT1H"));
+        $now = $transaction->createdAt;
+        $future = date_add(clone $transaction->createdAt, new DateInterval("PT1H"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->lessThanOrEqualTo($future)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->lessThanOrEqualTo($now)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->lessThanOrEqualTo($past)
+        ));
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
+
+    function test_rangeNode_createdAt_GreaterThanOrEqualTo()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'cardholderName' => 'Ted Everyman' . rand(),
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $past = date_sub(clone $transaction->createdAt, new DateInterval("PT1H"));
+        $now = $transaction->createdAt;
+        $future = date_add(clone $transaction->createdAt, new DateInterval("PT1H"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->GreaterThanOrEqualTo($future)
+        ));
+        $this->assertEquals(0, $collection->_approximateCount());
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->GreaterThanOrEqualTo($now)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->GreaterThanOrEqualTo($past)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function test_rangeNode_createdAt_between()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'cardholderName' => 'Ted Everyman' . rand(),
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $past = date_sub(clone $transaction->createdAt, new DateInterval("PT1H"));
+        $now = $transaction->createdAt;
+        $future = date_add(clone $transaction->createdAt, new DateInterval("PT1H"));
+        $future2 = date_add(clone $transaction->createdAt, new DateInterval("P1D"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->between($past, $future)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->between($now, $future)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->between($past, $now)
+        ));
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->between($future, $future2)
+        ));
+        $this->assertEquals(0, $collection->_approximateCount());
+    }
 }
 ?>
-
