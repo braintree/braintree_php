@@ -35,6 +35,21 @@
  */
 class Braintree_CreditCard extends Braintree
 {
+    // Card Type
+    const AMEX = 'American Express';
+    const CARTE_BLANCHE = 'Carte Blanche';
+    const CHINA_UNION_PAY = 'China UnionPay';
+    const DINERS_CLUB_INTERNATIONAL = 'Diners Club';
+    const DISCOVER = 'Discover';
+    const JCB = 'JCB';
+    const LASER = 'Laser';
+    const MAESTRO = 'Maestro';
+    const MASTER_CARD = 'MasterCard';
+    const SOLO = 'Solo';
+    const SWITCH_TYPE = 'Switch';
+    const VISA = 'Visa';
+    const UNKNOWN = 'Unknown';
+
 	// Credit card origination location
 	const INTERNATIONAL = "international";
 	const US            = "us";

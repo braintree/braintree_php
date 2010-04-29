@@ -462,7 +462,7 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::id()->is($transaction->id),
             Braintree_TransactionSearch::creditCardCardType()->in(
-                array($transaction->creditCardDetails->cardType, "another_credit_card_type")
+                array($transaction->creditCardDetails->cardType, Braintree_CreditCard::CHINA_UNION_PAY)
             )
         ));
         $this->assertEquals(1, $collection->_approximateCount());
@@ -470,9 +470,17 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::id()->is($transaction->id),
-            Braintree_TransactionSearch::creditCardCardType()->is("another_credit_card_type")
+            Braintree_TransactionSearch::creditCardCardType()->is(Braintree_CreditCard::CHINA_UNION_PAY)
         ));
         $this->assertEquals(0, $collection->_approximateCount());
+    }
+
+    function test_multipleValueNode_creditCardType_allowedValues()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for credit_card_card_type: noSuchCardType');
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardType()->is('noSuchCardType')
+        ));
     }
 
     function test_multipleValueNode_status()

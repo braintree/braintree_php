@@ -36,7 +36,27 @@ class Braintree_TransactionSearch
 	static function shippingStreetAddress()      { return new Braintree_TextNode('shipping_street_address'); }
 
 	static function createdUsing()               { return new Braintree_MultipleValueNode("created_using"); }
-	static function creditCardCardType()         { return new Braintree_MultipleValueNode("credit_card_card_type"); }
+
+    static function creditCardCardType()
+    {
+        return new Braintree_MultipleValueNode("credit_card_card_type",
+            array(
+                Braintree_CreditCard::AMEX,
+                Braintree_CreditCard::CARTE_BLANCHE,
+                Braintree_CreditCard::CHINA_UNION_PAY,
+                Braintree_CreditCard::DINERS_CLUB_INTERNATIONAL,
+                Braintree_CreditCard::DISCOVER,
+                Braintree_CreditCard::JCB,
+                Braintree_CreditCard::LASER,
+                Braintree_CreditCard::MAESTRO,
+                Braintree_CreditCard::MASTER_CARD,
+                Braintree_CreditCard::SOLO,
+                Braintree_CreditCard::SWITCH_TYPE,
+                Braintree_CreditCard::VISA,
+                Braintree_CreditCard::UNKNOWN
+            ));
+    }
+
 	static function creditCardCustomerLocation() { return new Braintree_MultipleValueNode("credit_card_customer_location"); }
 	static function merchantAccountId()          { return new Braintree_MultipleValueNode("merchant_account_id"); }
 	static function source()                     { return new Braintree_MultipleValueNode("source"); }
