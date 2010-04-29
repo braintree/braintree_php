@@ -790,5 +790,51 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertEquals(0, $collection->_approximateCount());
     }
+
+    function test_rangeNode_createdAt_convertLocalToUTC()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'cardholderName' => 'Pingu Penguin' . rand(),
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("US/Pacific"));
+        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("US/Pacific"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::createdAt()->between($ten_min_ago, $ten_min_from_now)
+        ));
+
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function test_rangeNode_createdAt_handlesUTCDateTimes()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'cardholderName' => 'Pingu Penguin' . rand(),
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("UTC"));
+        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("UTC"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::createdAt()->between($ten_min_ago, $ten_min_from_now)
+        ));
+
+        $this->assertEquals(1, $collection->_approximateCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
 }
 ?>
