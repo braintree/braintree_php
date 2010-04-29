@@ -35,7 +35,20 @@ class Braintree_TransactionSearch
 	static function shippingRegion()             { return new Braintree_TextNode('shipping_region'); }
 	static function shippingStreetAddress()      { return new Braintree_TextNode('shipping_street_address'); }
 
-	static function createdUsing()               { return new Braintree_MultipleValueNode("created_using"); }
+	static function refund()                     { return new Braintree_KeyValueNode("refund"); }
+
+	static function amount()                     { return new Braintree_RangeValueNode("amount"); }
+	static function createdAt()                  { return new Braintree_RangeValueNode("createdAt"); }
+
+    static function merchantAccountId()          { return new Braintree_MultipleValueNode("merchant_account_id"); }
+
+    static function createdUsing()
+    {
+        return new Braintree_MultipleValueNode("created_using", array(
+            Braintree_Transaction::FULL_INFORMATION,
+            Braintree_Transaction::TOKEN
+        ));
+    }
 
     static function creditCardCardType()
     {
@@ -56,24 +69,25 @@ class Braintree_TransactionSearch
         ));
     }
 
-    static function creditCardCustomerLocation() {
+    static function creditCardCustomerLocation()
+    {
         return new Braintree_MultipleValueNode("credit_card_customer_location", array(
             Braintree_CreditCard::INTERNATIONAL,
             Braintree_CreditCard::US
         ));
     }
 
-    static function merchantAccountId() {
-        return new Braintree_MultipleValueNode("merchant_account_id");
-    }
-    static function source()                     {
+    static function source()
+    {
         return new Braintree_MultipleValueNode("source", array(
             Braintree_Transaction::API,
             Braintree_Transaction::CONTROL_PANEL,
             Braintree_Transaction::RECURRING,
         ));
     }
-    static function status()                     {
+
+    static function status()
+    {
         return new Braintree_MultipleValueNode("status", array(
             Braintree_Transaction::AUTHORIZING,
             Braintree_Transaction::AUTHORIZED,
@@ -87,16 +101,13 @@ class Braintree_TransactionSearch
             Braintree_Transaction::VOIDED
         ));
     }
-    static function type()                       {
+
+    static function type()
+    {
         return new Braintree_MultipleValueNode("type", array(
             Braintree_Transaction::SALE,
             Braintree_Transaction::CREDIT
         ));
     }
-
-	static function refund()                     { return new Braintree_KeyValueNode("refund"); }
-
-	static function amount()                     { return new Braintree_RangeValueNode("amount"); }
-	static function createdAt()                  { return new Braintree_RangeValueNode("createdAt"); }
 }
 ?>

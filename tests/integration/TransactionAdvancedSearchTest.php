@@ -376,6 +376,14 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $collection->_approximateCount());
     }
 
+    function test_multipleValueNode_createdUsing_allowedValues()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for created_using: noSuchCreatedUsing');
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::createdUsing()->is('noSuchCreatedUsing')
+        ));
+    }
+
     function test_multipleValueNode_creditCardCustomerLocation()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
