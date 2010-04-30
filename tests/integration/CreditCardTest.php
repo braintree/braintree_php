@@ -477,6 +477,53 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('07/2014', $updateResult->creditCard->expirationDate);
     }
 
+    function testUpdate_createsNewBillingAddressByDefault()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $initialCreditCard = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddress' => array(
+                'streetAddress' => '123 Nigeria Ave'
+            )
+        ))->creditCard;
+
+        $updatedCreditCard = Braintree_CreditCard::update($initialCreditCard->token, array(
+            'billingAddress' => array(
+                'region' => 'IL'
+            )
+        ))->creditCard;
+        $this->assertEquals('IL', $updatedCreditCard->billingAddress->region);
+        $this->assertNull($updatedCreditCard->billingAddress->streetAddress);
+        $this->assertNotEquals($initialCreditCard->billingAddress->id, $updatedCreditCard->billingAddress->id);
+    }
+
+    function testUpdate_updatesExistingBillingAddressIfUpdateExistingOptionIsTrue()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $initialCreditCard = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddress' => array(
+                'streetAddress' => '123 Nigeria Ave'
+            )
+        ))->creditCard;
+
+        $updatedCreditCard = Braintree_CreditCard::update($initialCreditCard->token, array(
+            'billingAddress' => array(
+                'region' => 'IL',
+                'options' => array(
+                    'updateExisting' => True
+                )
+            )
+        ))->creditCard;
+        $this->assertEquals('IL', $updatedCreditCard->billingAddress->region);
+        $this->assertEquals('123 Nigeria Ave', $updatedCreditCard->billingAddress->streetAddress);
+        $this->assertEquals($initialCreditCard->billingAddress->id, $updatedCreditCard->billingAddress->id);
+    }
+
     function testUpdate_canChangeToken()
     {
         $oldToken = strval(rand());
