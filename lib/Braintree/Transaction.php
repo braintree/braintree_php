@@ -425,7 +425,7 @@ final class Braintree_Transaction extends Braintree
                 );
         $pager = array(
             'className' => __CLASS__,
-            'classMethod' => __METHOD__,
+            'classMethod' => "search",
             'methodArgs' => array($query)
             );
 

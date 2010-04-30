@@ -884,5 +884,20 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $collection->_approximateCount());
         $this->assertEquals($transaction->id, $collection->firstItem()->id);
     }
+
+    function test_advancedSearchGivesIterableResult()
+    {
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardNumber()->startsWith("411111")
+        ));
+        $this->assertTrue($collection->_approximateCount() > 100);
+
+        $arr = array();
+        foreach($collection as $transaction) {
+            array_push($arr, $transaction->id);
+        }
+        $unique_transaction_ids = array_unique(array_values($arr));
+        $this->assertEquals($collection->_approximateCount(), count($unique_transaction_ids));
+    }
 }
 ?>
