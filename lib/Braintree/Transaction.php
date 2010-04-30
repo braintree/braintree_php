@@ -380,7 +380,7 @@ final class Braintree_Transaction extends Braintree
      * @param array $options
      * @return object Braintree_ResourceCollection
      */
-    public static function _basicSearch($query, $options)
+    private static function _basicSearch($query, $options)
     {
         $page = isset($options['page']) ? $options['page'] : 1;
         $queryPath = '/transactions/all/search?' .
@@ -393,7 +393,7 @@ final class Braintree_Transaction extends Braintree
                 );
         $pager = array(
             'className' => __CLASS__,
-            'classMethod' => __METHOD__,
+            'classMethod' => 'search',
             'methodArgs' => array($query)
             );
 
@@ -425,7 +425,7 @@ final class Braintree_Transaction extends Braintree
                 );
         $pager = array(
             'className' => __CLASS__,
-            'classMethod' => "search",
+            'classMethod' => 'search',
             'methodArgs' => array($query)
             );
 
