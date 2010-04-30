@@ -11,8 +11,6 @@ class Braintree_TransactionSearch
 	static function billingRegion()              { return new Braintree_TextNode('billing_region'); }
 	static function billingStreetAddress()       { return new Braintree_TextNode('billing_street_address'); }
 	static function creditCardCardholderName()   { return new Braintree_TextNode('credit_card_cardholderName'); }
-	static function creditCardExpirationDate()   { return new Braintree_TextNode('credit_card_expiration_date'); }
-	static function creditCardNumber()           { return new Braintree_TextNode('credit_card_number'); }
 	static function customerCompany()            { return new Braintree_TextNode('customer_company'); }
 	static function customerEmail()              { return new Braintree_TextNode('customer_email'); }
 	static function customerFax()                { return new Braintree_TextNode('customer_fax'); }
@@ -34,6 +32,10 @@ class Braintree_TransactionSearch
 	static function shippingPostalCode()         { return new Braintree_TextNode('shipping_postal_code'); }
 	static function shippingRegion()             { return new Braintree_TextNode('shipping_region'); }
 	static function shippingStreetAddress()      { return new Braintree_TextNode('shipping_street_address'); }
+
+	static function creditCardExpirationDate()   { return new Braintree_EqualityNode('credit_card_expiration_date'); }
+
+	static function creditCardNumber()           { return new Braintree_PartialMatchNode('credit_card_number'); }
 
 	static function refund()                     { return new Braintree_KeyValueNode("refund"); }
 
