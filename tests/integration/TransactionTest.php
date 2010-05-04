@@ -466,6 +466,36 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertequals('First', $customer->firstName);
     }
 
+    function testCreateFromTransparentRedirectWithInvalidParams()
+    {
+        $queryString = $this->createTransactionViaTr(
+            array(
+                'transaction' => array(
+                    'bad_key' => 'bad_value',
+                    'customer' => array(
+                        'first_name' => 'First'
+                    ),
+                    'credit_card' => array(
+                        'number' => '5105105105105100',
+                        'expiration_date' => '05/12'
+                    )
+                )
+            ),
+            array(
+                'transaction' => array(
+                    'type' => Braintree_Transaction::SALE,
+                    'amount' => '100.00'
+                )
+            )
+        );
+        try {
+            $result = Braintree_Transaction::createFromTransparentRedirect($queryString);
+            $this->fail();
+        } catch (Braintree_Exception_Authorization $e) {
+            $this->assertEquals("Invalid params: transaction[bad_key]", $e->getMessage());
+        }
+    }
+
     function testCreateFromTransparentRedirect_withParamsInTrData()
     {
         $queryString = $this->createTransactionViaTr(
