@@ -335,7 +335,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
-        $this->assertEquals('credit', $result->transaction->type);
+        $this->assertEquals(Braintree_Transaction::CREDIT, $result->transaction->type);
         $this->assertEquals($customer->id, $result->transaction->customerDetails->id);
         $this->assertEquals($creditCard->token, $result->transaction->creditCardDetails->token);
     }
@@ -353,7 +353,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             'amount' => '100.00'
         ));
         $this->assertEquals('100.00', $transaction->amount);
-        $this->assertEquals('credit', $transaction->type);
+        $this->assertEquals(Braintree_Transaction::CREDIT, $transaction->type);
         $this->assertEquals($customer->id, $transaction->customerDetails->id);
         $this->assertEquals($creditCard->token, $transaction->creditCardDetails->token);
     }
@@ -475,6 +475,53 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('1111', $updateResult->creditCard->last4);
         $this->assertEquals('New Cardholder', $updateResult->creditCard->cardholderName);
         $this->assertEquals('07/2014', $updateResult->creditCard->expirationDate);
+    }
+
+    function testUpdate_createsNewBillingAddressByDefault()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $initialCreditCard = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddress' => array(
+                'streetAddress' => '123 Nigeria Ave'
+            )
+        ))->creditCard;
+
+        $updatedCreditCard = Braintree_CreditCard::update($initialCreditCard->token, array(
+            'billingAddress' => array(
+                'region' => 'IL'
+            )
+        ))->creditCard;
+        $this->assertEquals('IL', $updatedCreditCard->billingAddress->region);
+        $this->assertNull($updatedCreditCard->billingAddress->streetAddress);
+        $this->assertNotEquals($initialCreditCard->billingAddress->id, $updatedCreditCard->billingAddress->id);
+    }
+
+    function testUpdate_updatesExistingBillingAddressIfUpdateExistingOptionIsTrue()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $initialCreditCard = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddress' => array(
+                'streetAddress' => '123 Nigeria Ave'
+            )
+        ))->creditCard;
+
+        $updatedCreditCard = Braintree_CreditCard::update($initialCreditCard->token, array(
+            'billingAddress' => array(
+                'region' => 'IL',
+                'options' => array(
+                    'updateExisting' => True
+                )
+            )
+        ))->creditCard;
+        $this->assertEquals('IL', $updatedCreditCard->billingAddress->region);
+        $this->assertEquals('123 Nigeria Ave', $updatedCreditCard->billingAddress->streetAddress);
+        $this->assertEquals($initialCreditCard->billingAddress->id, $updatedCreditCard->billingAddress->id);
     }
 
     function testUpdate_canChangeToken()

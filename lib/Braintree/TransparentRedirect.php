@@ -140,7 +140,7 @@ class Braintree_TransparentRedirect
         $transactionType = isset($params['transaction']['type']) ?
             $params['transaction']['type'] :
             null;
-        if ($transactionType != 'sale' && $transactionType != 'credit') {
+        if ($transactionType != Braintree_Transaction::SALE && $transactionType != Braintree_Transaction::CREDIT) {
            throw new InvalidArgumentException(
                    'expected transaction[type] of sale or credit, was: ' .
                    $transactionType

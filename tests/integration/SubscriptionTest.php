@@ -4,17 +4,6 @@ require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
 
 class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 {
-    function defaultMerchantAccountId()
-    {
-        return 'sandbox_credit_card';
-    }
-
-    function nonDefaultMerchantAccountId()
-    {
-        return 'sandbox_credit_card_non_default';
-    }
-
-
     function testCreate_doesNotAcceptBadAttributes()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad');
@@ -37,7 +26,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($creditCard->token, $subscription->paymentMethodToken);
         $this->assertEquals(0, $subscription->failureCount);
         $this->assertEquals($plan['id'], $subscription->planId);
-        $this->assertEquals($this->defaultMerchantAccountId(), $subscription->merchantAccountId);
+        $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $subscription->merchantAccountId);
         $this->assertEquals('Active', $subscription->status);
         $this->assertType('DateTime', $subscription->firstBillingDate);
         $this->assertType('DateTime', $subscription->nextBillingDate);
@@ -68,12 +57,12 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'merchantAccountId' => $this->nonDefaultMerchantAccountId()
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId()
         ));
 
         $this->assertTrue($result->success);
         $subscription = $result->subscription;
-        $this->assertEquals($this->nonDefaultMerchantAccountId(), $subscription->merchantAccountId);
+        $this->assertEquals(Braintree_TestHelper::nonDefaultMerchantAccountId(), $subscription->merchantAccountId);
     }
 
     function testCreate_trialPeriodDefaultsToPlanWithoutTrial()
@@ -146,7 +135,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $transaction = $subscription->transactions[0];
         $this->assertType('Braintree_Transaction', $transaction);
         $this->assertEquals($plan['price'], $transaction->amount);
-        $this->assertEquals('sale', $transaction->type);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
     }
 
     function testCreate_doesNotCreateTransactionIfTrialPeriod()
@@ -290,6 +279,40 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('subscription')->onAttribute('status');
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_STATUS_IS_CANCELED, $errors[0]->code);
+    }
+
+    function testRetryCharge_WithoutAmount()
+    {
+        $subscription = Braintree_Subscription::search(array(
+            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::ACTIVE))
+        ))->firstItem();
+
+        $result = Braintree_Subscription::retryCharge($subscription->id);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals($subscription->price, $transaction->amount);
+        $this->assertNotNull($transaction->processorAuthorizationCode);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
+    }
+
+    function testRetryCharge_WithAmount()
+    {
+        $subscription = Braintree_Subscription::search(array(
+            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::ACTIVE))
+        ))->firstItem();
+
+        $result = Braintree_Subscription::retryCharge($subscription->id, 1000);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(1000, $transaction->amount);
+        $this->assertNotNull($transaction->processorAuthorizationCode);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
     }
 }
 ?>

@@ -42,5 +42,56 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $creditCard = Braintree_CreditCard::factory(array('bin' => '123456', 'last4' => '7890'));
         $this->assertEquals('123456******7890', $creditCard->maskedNumber);
     }
+
+    function testCreateSignature()
+    {
+        $expected = array(
+            'customerId', 'cardholderName', 'cvv', 'number',
+            'expirationDate', 'expirationMonth', 'expirationYear', 'token',
+            array('options' => array('makeDefault', 'verifyCard')),
+            array(
+                'billingAddress' => array(
+                    'firstName',
+                    'lastName',
+                    'company',
+                    'countryName',
+                    'extendedAddress',
+                    'locality',
+                    'region',
+                    'postalCode',
+                    'streetAddress'
+                ),
+            ),
+        );
+        $this->assertEquals($expected, Braintree_CreditCard::CreateSignature());
+    }
+
+    function testUpdateSignature()
+    {
+        $expected = array(
+            'cardholderName', 'cvv', 'number',
+            'expirationDate', 'expirationMonth', 'expirationYear', 'token',
+            array('options' => array('makeDefault', 'verifyCard')),
+            array(
+                'billingAddress' => array(
+                    'firstName',
+                    'lastName',
+                    'company',
+                    'countryName',
+                    'extendedAddress',
+                    'locality',
+                    'region',
+                    'postalCode',
+                    'streetAddress',
+                    array(
+                        'options' => array(
+                            'updateExisting'
+                        )
+                    )
+                ),
+            ),
+        );
+        $this->assertEquals($expected, Braintree_CreditCard::UpdateSignature());
+    }
 }
 ?>

@@ -131,6 +131,125 @@ XML;
          ), $array);
     }
 
+    function testParsingNilEqualsTrueAfterArray()
+    {
+        $xml = <<<XML
+        <root>
+          <customer>
+            <first-name>Dan</first-name>
+          </customer>
+          <blank nil="true" />
+        </root>
+XML;
+        $array = Braintree_Xml::buildArrayFromXml($xml);
+        $this->assertEquals(null, $array['root']['blank']);
+
+    }
+
+    function testTransactionParsingNil()
+    {
+        $xml = <<<XML
+<transaction>
+  <id>8ysndw</id>
+  <status>settled</status>
+  <type>sale</type>
+  <currency>USD</currency>
+  <amount>1.00</amount>
+  <merchant-account-id>default</merchant-account-id>
+  <order-id nil="true"></order-id>
+  <created-at type="datetime">2010-04-01T19:32:23Z</created-at>
+  <updated-at type="datetime">2010-04-02T08:05:35Z</updated-at>
+  <customer>
+    <id nil="true"></id>
+    <first-name>First</first-name>
+    <last-name>Last</last-name>
+    <company nil="true"></company>
+    <email></email>
+    <website nil="true"></website>
+    <phone nil="true"></phone>
+    <fax nil="true"></fax>
+  </customer>
+  <billing>
+    <id nil="true"></id>
+    <first-name nil="true"></first-name>
+    <last-name nil="true"></last-name>
+    <company>Widgets Inc</company>
+    <street-address>1234 My Street</street-address>
+    <extended-address>Apt 1</extended-address>
+    <locality>Ottawa</locality>
+    <region>ON</region>
+    <postal-code>K1C2N6</postal-code>
+    <country-name>Canada</country-name>
+  </billing>
+  <refund-id nil="true"></refund-id>
+  <shipping>
+    <id nil="true"></id>
+    <first-name nil="true"></first-name>
+    <last-name nil="true"></last-name>
+    <company nil="true"></company>
+    <street-address nil="true"></street-address>
+    <extended-address nil="true"></extended-address>
+    <locality nil="true"></locality>
+    <region nil="true"></region>
+    <postal-code nil="true"></postal-code>
+    <country-name nil="true"></country-name>
+  </shipping>
+  <custom-fields>
+  </custom-fields>
+  <avs-error-response-code nil="true"></avs-error-response-code>
+  <avs-postal-code-response-code>M</avs-postal-code-response-code>
+  <avs-street-address-response-code>M</avs-street-address-response-code>
+  <cvv-response-code>M</cvv-response-code>
+  <processor-authorization-code>13390</processor-authorization-code>
+  <processor-response-code>1000</processor-response-code>
+  <processor-response-text>Approved</processor-response-text>
+  <credit-card>
+    <token nil="true"></token>
+    <bin>510510</bin>
+    <last-4>5100</last-4>
+    <card-type>MasterCard</card-type>
+    <expiration-month>09</expiration-month>
+    <expiration-year>2011</expiration-year>
+    <customer-location>US</customer-location>
+    <cardholder-name nil="true"></cardholder-name>
+  </credit-card>
+  <status-history type="array">
+    <status-event>
+      <timestamp type="datetime">2010-04-01T19:32:24Z</timestamp>
+      <status>authorized</status>
+      <amount>1.00</amount>
+      <user>dmanges-am</user>
+      <transaction-source>API</transaction-source>
+    </status-event>
+    <status-event>
+      <timestamp type="datetime">2010-04-01T19:32:25Z</timestamp>
+      <status>submitted_for_settlement</status>
+      <amount>1.00</amount>
+      <user>dmanges-am</user>
+      <transaction-source>API</transaction-source>
+    </status-event>
+    <status-event>
+      <timestamp type="datetime">2010-04-02T08:05:36Z</timestamp>
+      <status>settled</status>
+      <amount>1.00</amount>
+      <user nil="true"></user>
+      <transaction-source></transaction-source>
+    </status-event>
+  </status-history>
+</transaction>
+XML;
+        $array = Braintree_Xml::buildArrayFromXml($xml);
+        $this->assertEquals(null, $array['transaction']['avsErrorResponseCode']);
+        $this->assertEquals(null, $array['transaction']['refundId']);
+        $this->assertEquals(null, $array['transaction']['orderId']);
+        $this->assertEquals(null, $array['transaction']['customer']['fax']);
+        $this->assertEquals(null, $array['transaction']['creditCard']['token']);
+        $this->assertEquals(null, $array['transaction']['creditCard']['cardholderName']);
+        $this->assertEquals('First', $array['transaction']['customer']['firstName']);
+        $this->assertEquals('Approved', $array['transaction']['processorResponseText']);
+
+    }
+
     function xmlAndBack($array)
     {
         $xml = Braintree_Xml::buildXmlFromArray($array);

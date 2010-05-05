@@ -35,6 +35,25 @@
  */
 class Braintree_CreditCard extends Braintree
 {
+    // Card Type
+    const AMEX = 'American Express';
+    const CARTE_BLANCHE = 'Carte Blanche';
+    const CHINA_UNION_PAY = 'China UnionPay';
+    const DINERS_CLUB_INTERNATIONAL = 'Diners Club';
+    const DISCOVER = 'Discover';
+    const JCB = 'JCB';
+    const LASER = 'Laser';
+    const MAESTRO = 'Maestro';
+    const MASTER_CARD = 'MasterCard';
+    const SOLO = 'Solo';
+    const SWITCH_TYPE = 'Switch';
+    const VISA = 'Visa';
+    const UNKNOWN = 'Unknown';
+
+	// Credit card origination location
+	const INTERNATIONAL = "international";
+	const US            = "us";
+
     public static function create($attribs)
     {
         Braintree_Util::verifyKeys(self::createSignature(), $attribs);
@@ -57,7 +76,7 @@ class Braintree_CreditCard extends Braintree
     }
     /**
      * create a customer from a TransparentRedirect operation
-     * 
+     *
      * @access public
      * @param array $attribs
      * @return object
@@ -74,7 +93,7 @@ class Braintree_CreditCard extends Braintree
     }
 
     /**
-     * 
+     *
      * @access public
      * @param none
      * @return string
@@ -211,7 +230,7 @@ class Braintree_CreditCard extends Braintree
      * create a new sale using this card, assuming validations will pass
      *
      * returns a Braintree_Transaction object on success
-     * 
+     *
      * @access public
      * @param array $transactionAttribs
      * @param string $token
@@ -386,15 +405,30 @@ class Braintree_CreditCard extends Braintree
                     'locality',
                     'region',
                     'postalCode',
-                    'streetAddress',
-                    ),
+                    'streetAddress'
                 ),
-            );
+            ),
+        );
    }
    public static function updateSignature()
    {
-        // return all but the first element of create signature
         $signature = self::createSignature();
+
+        $updateExistingBillingSignature = array(
+            array(
+                'options' => array(
+                    'updateExisting'
+                )
+            )
+        );
+
+        foreach($signature AS $key => $value) {
+            if(is_array($value) and array_key_exists('billingAddress', $value)) {
+                $signature[$key]['billingAddress'] = array_merge_recursive($value['billingAddress'], $updateExistingBillingSignature);
+            }
+        }
+
+        // return all but the customerId (the first element)
         return array_slice($signature, 1);
    }
 

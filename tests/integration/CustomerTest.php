@@ -495,7 +495,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
-        $this->assertEquals('credit', $result->transaction->type);
+        $this->assertEquals(Braintree_Transaction::CREDIT, $result->transaction->type);
         $this->assertEquals($customer->id, $result->transaction->customerDetails->id);
         $this->assertEquals($creditCard->token, $result->transaction->creditCardDetails->token);
     }
@@ -513,7 +513,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
             'amount' => '100.00'
         ));
         $this->assertEquals('100.00', $transaction->amount);
-        $this->assertEquals('credit', $transaction->type);
+        $this->assertEquals(Braintree_Transaction::CREDIT, $transaction->type);
         $this->assertEquals($customer->id, $transaction->customerDetails->id);
         $this->assertEquals($creditCard->token, $transaction->creditCardDetails->token);
     }

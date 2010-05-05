@@ -168,7 +168,7 @@
 
 final class Braintree_Transaction extends Braintree
 {
-
+    // Transaction Status
     const AUTHORIZING              = 'authorizing';
     const AUTHORIZED               = 'authorized';
     const GATEWAY_REJECTED         = 'gateway_rejected';
@@ -179,6 +179,19 @@ final class Braintree_Transaction extends Braintree
     const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
     const UNKNOWN                  = 'unknown';
     const VOIDED                   = 'voided';
+
+    // Transaction Types
+    const SALE   = 'sale';
+    const CREDIT = 'credit';
+
+    // Transaction Created Using
+    const FULL_INFORMATION = 'full_information';
+    const TOKEN = 'token';
+
+    // Transaction Sources
+    const API = 'api';
+    const CONTROL_PANEL = 'control_panel';
+    const RECURRING = 'recurring';
 
     /**
      * @ignore
@@ -240,7 +253,7 @@ final class Braintree_Transaction extends Braintree
     public static function createSignature()
     {
         return array(
-                'amount', 'customerId', 'orderId', 'paymentMethodToken', 'type',
+                'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken', 'type',
                 array('creditCard'   =>
                     array('token', 'cardholderName', 'cvv', 'expirationDate', 'number'),
                 ),
@@ -279,7 +292,7 @@ final class Braintree_Transaction extends Braintree
      */
     public static function credit($attribs)
     {
-        return self::create(array_merge($attribs, array('type' => 'credit')));
+        return self::create(array_merge($attribs, array('type' => Braintree_Transaction::CREDIT)));
     }
 
     /**
@@ -320,7 +333,7 @@ final class Braintree_Transaction extends Braintree
      */
     public static function sale($attribs)
     {
-        return self::create(array_merge(array('type' => 'sale'), $attribs));
+        return self::create(array_merge(array('type' => Braintree_Transaction::SALE), $attribs));
     }
 
     /**
@@ -367,7 +380,7 @@ final class Braintree_Transaction extends Braintree
      * @param array $options
      * @return object Braintree_ResourceCollection
      */
-    public static function _basicSearch($query, $options)
+    private static function _basicSearch($query, $options)
     {
         $page = isset($options['page']) ? $options['page'] : 1;
         $queryPath = '/transactions/all/search?' .
@@ -380,7 +393,7 @@ final class Braintree_Transaction extends Braintree
                 );
         $pager = array(
             'className' => __CLASS__,
-            'classMethod' => __METHOD__,
+            'classMethod' => 'search',
             'methodArgs' => array($query)
             );
 
@@ -397,9 +410,14 @@ final class Braintree_Transaction extends Braintree
      */
     private static function _advancedSearch($query, $options)
     {
+        $criteria = array();
+        foreach ($query AS $term) {
+            $criteria[$term->name] = $term->toParam();
+        }
+
         $page = isset($options['page']) ? $options['page'] : 1;
-        $queryPath = '/transactions/advanced_search?page=?' . $page;
-        $response = Braintree_Http::post($queryPath, array('search' => $query));
+        $queryPath = '/transactions/advanced_search?page=' . $page;
+        $response = Braintree_Http::post($queryPath, array('search' => $criteria));
         $attributes = $response['creditCardTransactions'];
         $attributes['items'] = Braintree_Util::extractAttributeAsArray(
                 $attributes,
@@ -407,7 +425,7 @@ final class Braintree_Transaction extends Braintree
                 );
         $pager = array(
             'className' => __CLASS__,
-            'classMethod' => __METHOD__,
+            'classMethod' => 'search',
             'methodArgs' => array($query)
             );
 
@@ -521,9 +539,10 @@ final class Braintree_Transaction extends Braintree
                 Braintree_Util::implodeAssociativeArray($printableAttribs) .']';
     }
 
-    public static function refund($transactionId)
+    public static function refund($transactionId, $amount = null)
     {
-        $response = Braintree_Http::post('/transactions/' . $transactionId . '/refund');
+        $params = array('transaction' => array('amount' => $amount));
+        $response = Braintree_Http::post('/transactions/' . $transactionId . '/refund', $params);
         return self::_verifyGatewayResponse($response);
     }
 

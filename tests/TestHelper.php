@@ -16,6 +16,16 @@ Braintree_Configuration::privateKey('integration_private_key');
 
 class Braintree_TestHelper
 {
+    public static function defaultMerchantAccountId()
+    {
+        return 'sandbox_credit_card';
+    }
+
+    public static function nonDefaultMerchantAccountId()
+    {
+        return 'sandbox_credit_card_non_default';
+    }
+
     public static function submitTrRequest($url, $regularParams, $trData)
     {
         $curl = curl_init();
