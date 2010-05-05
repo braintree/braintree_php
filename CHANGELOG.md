@@ -1,3 +1,14 @@
+## 2.1.0
+
+* Added transaction advanced search
+* Added ability to partially refund transactions
+* Added ability to manually retry past-due subscriptions
+* Added new transaction error codes
+* Allow merchant account to be specified when creating transactions
+* Allow creating a transaction with a vault customer and new payment method
+* Allow existing billing address to be updated when updating credit card
+* Correctly handle xml with nil=true
+
 ## 2.0.0
 
 * Updated success? on transaction responses to return false on declined transactions
