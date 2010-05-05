@@ -161,6 +161,11 @@
 			<div class="const-summary">
 								<div class="const-title">
 					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#API" title="details" class="const-name">API</a> = 					<span class="var-type"> 'api'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
 					<a href="#AUTHORIZED" title="details" class="const-name">AUTHORIZED</a> = 					<span class="var-type"> 'authorized'</span>
 
 				</div>
@@ -171,7 +176,22 @@
 				</div>
 								<div class="const-title">
 					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#CONTROL_PANEL" title="details" class="const-name">CONTROL_PANEL</a> = 					<span class="var-type"> 'control_panel'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#CREDIT" title="details" class="const-name">CREDIT</a> = 					<span class="var-type"> 'credit'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
 					<a href="#FAILED" title="details" class="const-name">FAILED</a> = 					<span class="var-type"> 'failed'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#FULL_INFORMATION" title="details" class="const-name">FULL_INFORMATION</a> = 					<span class="var-type"> 'full_information'</span>
 
 				</div>
 								<div class="const-title">
@@ -182,6 +202,16 @@
 								<div class="const-title">
 					<img src="../media/images/Constant.png" alt=" " />
 					<a href="#PROCESSOR_DECLINED" title="details" class="const-name">PROCESSOR_DECLINED</a> = 					<span class="var-type"> 'processor_declined'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#RECURRING" title="details" class="const-name">RECURRING</a> = 					<span class="var-type"> 'recurring'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#SALE" title="details" class="const-name">SALE</a> = 					<span class="var-type"> 'sale'</span>
 
 				</div>
 								<div class="const-title">
@@ -197,6 +227,11 @@
 								<div class="const-title">
 					<img src="../media/images/Constant.png" alt=" " />
 					<a href="#SUBMITTED_FOR_SETTLEMENT" title="details" class="const-name">SUBMITTED_FOR_SETTLEMENT</a> = 					<span class="var-type"> 'submitted_for_settlement'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#TOKEN" title="details" class="const-name">TOKEN</a> = 					<span class="var-type"> 'token'</span>
 
 				</div>
 								<div class="const-title">
@@ -282,7 +317,7 @@
 																								<div class="method-definition">
 					static 						<span class="method-result">void</span>
 										<a href="#refund" title="details" class="method-name">refund</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>)
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span> = <span class="var-default">null</span>])
 									</div>
 																<div class="method-definition">
 					static 						<span class="method-result">array</span>
@@ -366,7 +401,7 @@
 		<span class="var-title">
 			<span class="var-type">array</span>
 			<span class="var-name">$_attributes</span>
-			 = <span class="var-default">array(<br />        'avsErrorResponseCode'         =&gt; '',<br />        'avsPostalCodeResponseCode'    =&gt; '',<br />        'avsStreetAddressResponseCode' =&gt; '',<br />        'cvvResponseCode'              =&gt; '',<br />        'amount'                       =&gt; '',<br />        'billingDetails'               =&gt; '',<br />        'createdAt'                    =&gt; '',<br />        'creditCardDetails'            =&gt; '',<br />        'customerDetails'              =&gt; '',<br />        'customFields'                 =&gt; '',<br />        'id'                           =&gt; '',<br />        'processorResponseCode'        =&gt; '',<br />        'shippingDetails transaction'  =&gt; '',<br />        'status'                       =&gt; '',<br />        'statusHistory'                =&gt; '',<br />        'type'                         =&gt; '',<br />        'updatedAt'                    =&gt; '',<br />        )</span>			(line <span class="line-number">561</span>)
+			 = <span class="var-default">array(<br />        'avsErrorResponseCode'         =&gt; '',<br />        'avsPostalCodeResponseCode'    =&gt; '',<br />        'avsStreetAddressResponseCode' =&gt; '',<br />        'cvvResponseCode'              =&gt; '',<br />        'amount'                       =&gt; '',<br />        'billingDetails'               =&gt; '',<br />        'createdAt'                    =&gt; '',<br />        'creditCardDetails'            =&gt; '',<br />        'customerDetails'              =&gt; '',<br />        'customFields'                 =&gt; '',<br />        'id'                           =&gt; '',<br />        'processorResponseCode'        =&gt; '',<br />        'shippingDetails transaction'  =&gt; '',<br />        'status'                       =&gt; '',<br />        'statusHistory'                =&gt; '',<br />        'type'                         =&gt; '',<br />        'updatedAt'                    =&gt; '',<br />        )</span>			(line <span class="line-number">580</span>)
 		</span>
 	</div>
 
@@ -402,7 +437,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method createFromTransparentRedirect</span> (line <span class="line-number">214</span>)
+		<span class="method-title">static method createFromTransparentRedirect</span> (line <span class="line-number">227</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -434,7 +469,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method createSignature</span> (line <span class="line-number">240</span>)
+		<span class="method-title">static method createSignature</span> (line <span class="line-number">253</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -460,7 +495,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method createTransactionUrl</span> (line <span class="line-number">230</span>)
+		<span class="method-title">static method createTransactionUrl</span> (line <span class="line-number">243</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -489,7 +524,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method credit</span> (line <span class="line-number">280</span>)
+		<span class="method-title">static method credit</span> (line <span class="line-number">293</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -518,7 +553,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method creditNoValidate</span> (line <span class="line-number">292</span>)
+		<span class="method-title">static method creditNoValidate</span> (line <span class="line-number">305</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -548,7 +583,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method find</span> (line <span class="line-number">303</span>)
+		<span class="method-title">static method find</span> (line <span class="line-number">316</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -577,7 +612,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method refund</span> (line <span class="line-number">524</span>)
+		<span class="method-title">static method refund</span> (line <span class="line-number">542</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -591,13 +626,16 @@
 		<span class="method-name">
 			refund
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>)
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$transactionId</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$amount</span> = <span class="var-default">null</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
 				<span class="var-type"></span>
 				<span class="var-name">$transactionId</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$amount</span>			</li>
 				</ul>
 		
 			
@@ -606,7 +644,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method sale</span> (line <span class="line-number">321</span>)
+		<span class="method-title">static method sale</span> (line <span class="line-number">334</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -636,7 +674,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method saleNoValidate</span> (line <span class="line-number">333</span>)
+		<span class="method-title">static method saleNoValidate</span> (line <span class="line-number">346</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -667,7 +705,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method search</span> (line <span class="line-number">350</span>)
+		<span class="method-title">static method search</span> (line <span class="line-number">363</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -702,7 +740,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method submitForSettlement</span> (line <span class="line-number">439</span>)
+		<span class="method-title">static method submitForSettlement</span> (line <span class="line-number">457</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -734,7 +772,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method submitForSettlementNoValidate</span> (line <span class="line-number">450</span>)
+		<span class="method-title">static method submitForSettlementNoValidate</span> (line <span class="line-number">468</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -766,7 +804,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method void</span> (line <span class="line-number">423</span>)
+		<span class="method-title">static method void</span> (line <span class="line-number">441</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -799,7 +837,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method voidNoValidate</span> (line <span class="line-number">433</span>)
+		<span class="method-title">static method voidNoValidate</span> (line <span class="line-number">451</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -829,7 +867,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">isEqual</span> (line <span class="line-number">530</span>)
+		<span class="method-title">isEqual</span> (line <span class="line-number">549</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -857,7 +895,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">vaultCreditCard</span> (line <span class="line-number">535</span>)
+		<span class="method-title">vaultCreditCard</span> (line <span class="line-number">554</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -880,7 +918,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">vaultCustomer</span> (line <span class="line-number">546</span>)
+		<span class="method-title">vaultCustomer</span> (line <span class="line-number">565</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -903,7 +941,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">__toString</span> (line <span class="line-number">502</span>)
+		<span class="method-title">__toString</span> (line <span class="line-number">520</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -941,8 +979,24 @@
 							
 					</div>
 		<div class="info-box-body">
-			<a name="constAUTHORIZED" id="AUTHORIZED"><!-- --></A>
+			<a name="constAPI" id="API"><!-- --></A>
 <div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">API</span>
+			 = <span class="const-default"> 'api'</span>
+			(line <span class="line-number">192</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constAUTHORIZED" id="AUTHORIZED"><!-- --></A>
+<div class="oddrow">
 
 	<div class="const-header">
 		<img src="../media/images/Variable.png" />
@@ -958,7 +1012,7 @@
 	
 </div>
 <a name="constAUTHORIZING" id="AUTHORIZING"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="const-header">
 		<img src="../media/images/Variable.png" />
@@ -973,8 +1027,40 @@
 	
 	
 </div>
-<a name="constFAILED" id="FAILED"><!-- --></A>
+<a name="constCONTROL_PANEL" id="CONTROL_PANEL"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">CONTROL_PANEL</span>
+			 = <span class="const-default"> 'control_panel'</span>
+			(line <span class="line-number">193</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constCREDIT" id="CREDIT"><!-- --></A>
 <div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">CREDIT</span>
+			 = <span class="const-default"> 'credit'</span>
+			(line <span class="line-number">185</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constFAILED" id="FAILED"><!-- --></A>
+<div class="oddrow">
 
 	<div class="const-header">
 		<img src="../media/images/Variable.png" />
@@ -982,6 +1068,22 @@
 			<span class="const-name">FAILED</span>
 			 = <span class="const-default"> 'failed'</span>
 			(line <span class="line-number">175</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constFULL_INFORMATION" id="FULL_INFORMATION"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">FULL_INFORMATION</span>
+			 = <span class="const-default"> 'full_information'</span>
+			(line <span class="line-number">188</span>)
 		</span>
 	</div>
 
@@ -1014,6 +1116,38 @@
 			<span class="const-name">PROCESSOR_DECLINED</span>
 			 = <span class="const-default"> 'processor_declined'</span>
 			(line <span class="line-number">176</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constRECURRING" id="RECURRING"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">RECURRING</span>
+			 = <span class="const-default"> 'recurring'</span>
+			(line <span class="line-number">194</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSALE" id="SALE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SALE</span>
+			 = <span class="const-default"> 'sale'</span>
+			(line <span class="line-number">184</span>)
 		</span>
 	</div>
 
@@ -1069,8 +1203,24 @@
 	
 	
 </div>
-<a name="constUNKNOWN" id="UNKNOWN"><!-- --></A>
+<a name="constTOKEN" id="TOKEN"><!-- --></A>
 <div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">TOKEN</span>
+			 = <span class="const-default"> 'token'</span>
+			(line <span class="line-number">189</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constUNKNOWN" id="UNKNOWN"><!-- --></A>
+<div class="oddrow">
 
 	<div class="const-header">
 		<img src="../media/images/Variable.png" />
@@ -1086,7 +1236,7 @@
 	
 </div>
 <a name="constVOIDED" id="VOIDED"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="const-header">
 		<img src="../media/images/Variable.png" />
@@ -1106,7 +1256,7 @@
 	</div>
 
 	<p class="notes" id="credit">
-		Documentation generated on Fri, 23 Apr 2010 10:10:09 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Wed, 05 May 2010 13:50:44 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>
