@@ -354,6 +354,7 @@ final class Braintree_Transaction extends Braintree
      *
      * If <b>query</b> is a string, the search will be a basic search.
      * If <b>query</b> is a hash, the search will be an advanced search.
+     * For more detailed information and examples, see {@link http://www.braintreepaymentsolutions.com/gateway/transaction-api#searching http://www.braintreepaymentsolutions.com/gateway/transaction-api}
      *
      * @param mixed $query search query
      * @param array $options options such as page number
