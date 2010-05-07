@@ -1,42 +1,50 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
+class Braintree_TestResource
+{
+    static function fetch($ids)
+    {
+        $lookup = function($id) {
+            return Braintree_ResourceCollectionTest::$values[intval($id)];
+        };
+
+        return array_map($lookup, $ids);
+    }
+}
+
 class Braintree_ResourceCollectionTest extends PHPUnit_Framework_TestCase
 {
-    function testPageWithZeroResults()
+    public static $values = array("a", "b", "c", "d", "e");
+
+    function testIterateOverResults()
     {
-        $collection = new Braintree_ResourceCollection(array(
-            "items" => array(),
-            "currentPageNumber" => 1,
-            "pageSize" => 50,
-            "totalItems" => 0
-        ), array(
-            "className" => "Transaction",
-            "classMethod" => "search",
-            "methodArgs" => array()
-            ));
 
+        $response = array(
+            'searchResults' => array(
+                'pageSize' => 2,
+                'ids' => array('0', '1', '2', '3', '4')
+            )
+        );
 
-        $this->assertEquals(0, $collection->_approximateCount());
-        $this->assertNull($collection->firstItem());
-    }
+        $pager = array(
+            'className' => 'Braintree_TestResource',
+            'classMethod' => 'fetch',
+            'methodArgs' => array()
+        );
 
-    function testFirstItemWithResults()
-    {
-        $collection = new Braintree_ResourceCollection(array(
-            "items" => array("one"),
-            "currentPageNumber" => 1,
-            "pageSize" => 50,
-            "totalItems" => 1
-        ), array(
-            "className" => "Transaction",
-            "classMethod" => "search",
-            "methodArgs" => array()
-            ));
+        $collection = new Braintree_ResourceCollection($response, $pager);
 
+        $count = 0;
+        $index = 0;
+        foreach ($collection as $value)
+        {
+            $this->assertEquals(Braintree_ResourceCollectionTest::$values[$index], $value);
+            $index += 1;
+            $count += 1;
+        }
 
-        $this->assertEquals(1, $collection->_approximateCount());
-        $this->assertEquals("one", $collection->firstItem());
+        $this->assertEquals(5, $count);
     }
 }
 ?>

@@ -34,22 +34,26 @@
  */
 class Braintree_Customer extends Braintree
 {
-    public static function all($options = null)
+    public static function all()
     {
-        $page = isset($options['page']) ? $options['page'] : 1;
-        $response = Braintree_Http::get('/customers?page=' . $page);
-        $attributes = $response['customers'];
-        $attributes['items'] = Braintree_Util::extractAttributeAsArray(
-                $attributes,
-                'customer'
-                );
-        unset($attributes['customer']);
+        $response = braintree_http::post('/customers/advanced_search_ids');
         $pager = array(
-            'className'   => __CLASS__,
-            'classMethod' => __FUNCTION__,
-            'methodArgs' => array());
+            'className' => __CLASS__,
+            'classMethod' => 'fetch',
+            'methodArgs' => array(array())
+            );
 
-        return new Braintree_ResourceCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($response, $pager);
+    }
+
+    public static function fetch($query, $ids)
+    {
+        $response = braintree_http::post('/customers/advanced_search', array('search' => array('ids' => $ids)));
+
+        return braintree_util::extractattributeasarray(
+            $response['customers'],
+            'customer'
+        );
     }
 
     /**

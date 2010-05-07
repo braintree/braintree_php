@@ -108,49 +108,56 @@ class Braintree_CreditCard extends Braintree
      * returns a ResourceCollection of expired credit cards
      * @return object ResourceCollection
      */
-    public static function expired($options = null)
+    public static function expired()
     {
-        $page = isset($options['page']) ? $options['page'] : 1;
-        $queryPath = '/payment_methods/all/expired?page=' . $page;
-        $response = Braintree_Http::get($queryPath);
-        $attributes = $response['paymentMethods'];
-        $attributes['items'] = Braintree_Util::extractAttributeAsArray(
-            $attributes,
-            'creditCard'
-        );
+        $response = Braintree_Http::post("/payment_methods/all/expired_ids");
         $pager = array(
             'className' => __CLASS__,
-            'classMethod' => __METHOD__,
+            'classMethod' => 'fetchExpired',
             'methodArgs' => array()
         );
 
-        return new Braintree_ResourceCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($response, $pager);
+    }
+
+    public static function fetchExpired($ids)
+    {
+        $response = Braintree_Http::post("/payment_methods/all/expired", array('search' => array('ids' => $ids)));
+
+        return braintree_util::extractattributeasarray(
+            $response['creditCards'],
+            'creditCard'
+        );
     }
     /**
      * returns a ResourceCollection of credit cards expiring between start/end
      *
      * @return object ResourceCollection
      */
-    public static function expiringBetween($startDate, $endDate, $options = null)
+    public static function expiringBetween($startDate, $endDate)
     {
-        $page = isset($options['page']) ? $options['page'] : 1;
-        $queryPath = '/payment_methods/all/expiring?page=' . $page .
-        '&start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
-        $response = Braintree_Http::get($queryPath);
-        $attributes = $response['paymentMethods'];
-        $attributes['items'] = Braintree_Util::extractAttributeAsArray(
-            $attributes,
-            'creditCard'
-        );
+        $queryPath = '/payment_methods/all/expiring_ids?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
+        $response = Braintree_Http::post($queryPath);
         $pager = array(
             'className' => __CLASS__,
-            'classMethod' => __METHOD__,
+            'classMethod' => 'fetchExpiring',
             'methodArgs' => array($startDate, $endDate)
         );
 
-        return new Braintree_ResourceCollection($attributes, $pager);
-
+        return new Braintree_ResourceCollection($response, $pager);
     }
+
+    public static function fetchExpiring($startDate, $endDate, $ids)
+    {
+        $queryPath = '/payment_methods/all/expiring?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
+        $response = Braintree_Http::post($queryPath, array('search' => array('ids' => $ids)));
+
+        return Braintree_Util::extractAttributeAsArray(
+            $response['creditCards'],
+            'creditCard'
+        );
+    }
+
     /**
      * find a creditcard by token
      *

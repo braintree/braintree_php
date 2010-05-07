@@ -376,7 +376,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     function testExpired()
     {
         $results = Braintree_CreditCard::expired();
-        $this->assertTrue($results->_approximateCount() > 0);
+        $this->assertTrue($results->_maximumCount() > 0);
         foreach($results as $expiredCard)
         {
             $this->assertTrue($expiredCard->isExpired());
@@ -389,7 +389,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             mktime(0, 0, 0, 1, 1, 2009),
             mktime(23, 59, 59, 12, 31, 2009)
         );
-        $this->assertTrue($results->_approximateCount() > 0);
+        $this->assertTrue($results->_maximumCount() > 0);
         foreach($results as $expiredCard)
         {
             $this->assertTrue($expiredCard->isExpired());

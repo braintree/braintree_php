@@ -15,5 +15,10 @@ class Braintree_SubscriptionSearch
     {
         return new Braintree_MultipleValueNode("status");
     }
+
+    static function ids()
+    {
+        return new Braintree_MultipleValueNode("ids");
+    }
 }
 ?>

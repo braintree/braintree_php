@@ -361,76 +361,36 @@ final class Braintree_Transaction extends Braintree
      * @return object Braintree_ResourceCollection
      * @throws InvalidArgumentException
      */
-    public static function search($query, $options=array())
-    {
-        if(is_string($query)) {
-            return self::_basicSearch($query, $options);
-        } else if(is_array($query)) {
-            return self::_advancedSearch($query, $options);
-        } else {
-            throw new InvalidArgumentException(
-                    'expected search query to be a string or array.'
-                    );
-        }
-    }
-    /**
-     * returns resource collection of Braintree_Transaction objects
-     *
-     * @ignore
-     * @param string $query
-     * @param array $options
-     * @return object Braintree_ResourceCollection
-     */
-    private static function _basicSearch($query, $options)
-    {
-        $page = isset($options['page']) ? $options['page'] : 1;
-        $queryPath = '/transactions/all/search?' .
-            http_build_query(array('q' => $query, 'page' => $page));
-        $response = Braintree_Http::get($queryPath);
-        $attributes = $response['creditCardTransactions'];
-        $attributes['items'] = Braintree_Util::extractAttributeAsArray(
-                $attributes,
-                'transaction'
-                );
-        $pager = array(
-            'className' => __CLASS__,
-            'classMethod' => 'search',
-            'methodArgs' => array($query)
-            );
-
-        return new Braintree_ResourceCollection($attributes, $pager);
-    }
-
-    /**
-     * returns a ResourceCollection of search results
-     *
-     * @ignore
-     * @param array $query
-     * @param array $options
-     * @return object Braintree_ResourceCollection
-     */
-    private static function _advancedSearch($query, $options)
+    public static function search($query)
     {
         $criteria = array();
-        foreach ($query AS $term) {
-            $criteria[$term->name] = $term->toParam();
+        foreach ($query as $term) {
+            $criteria[$term->name] = $term->toparam();
         }
 
-        $page = isset($options['page']) ? $options['page'] : 1;
-        $queryPath = '/transactions/advanced_search?page=' . $page;
-        $response = Braintree_Http::post($queryPath, array('search' => $criteria));
-        $attributes = $response['creditCardTransactions'];
-        $attributes['items'] = Braintree_Util::extractAttributeAsArray(
-                $attributes,
-                'transaction'
-                );
+        $response = braintree_http::post('/transactions/advanced_search_ids', array('search' => $criteria));
         $pager = array(
             'className' => __CLASS__,
-            'classMethod' => 'search',
+            'classMethod' => 'fetch',
             'methodArgs' => array($query)
             );
 
-        return new Braintree_ResourceCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($response, $pager);
+    }
+
+    public static function fetch($query, $ids)
+    {
+        $criteria = array();
+        foreach ($query as $term) {
+            $criteria[$term->name] = $term->toparam();
+        }
+        $criteria["ids"] = Braintree_TransactionSearch::ids()->in($ids)->toparam();
+        $response = braintree_http::post('/transactions/advanced_search', array('search' => $criteria));
+
+        return braintree_util::extractattributeasarray(
+            $response['creditCardTransactions'],
+            'transaction'
+        );
     }
 
     /**

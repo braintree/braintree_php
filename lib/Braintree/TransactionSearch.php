@@ -20,6 +20,7 @@ class Braintree_TransactionSearch
 	static function customerPhone()              { return new Braintree_TextNode('customer_phone'); }
 	static function customerWebsite()            { return new Braintree_TextNode('customer_website'); }
 	static function id()                         { return new Braintree_TextNode('id'); }
+	static function ids()                        { return new Braintree_MultipleValueNode('ids'); }
 	static function orderId()                    { return new Braintree_TextNode('order_id'); }
 	static function paymentMethodToken()         { return new Braintree_TextNode('payment_method_token'); }
 	static function processorAuthorizationCode() { return new Braintree_TextNode('processor_authorization_code'); }
