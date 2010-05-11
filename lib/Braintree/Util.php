@@ -64,6 +64,9 @@ class Braintree_Util
          case 404:
              throw new Braintree_Exception_NotFound();
             break;
+         case 426:
+             throw new Braintree_Exception_UpgradeRequired();
+            break;
          case 500:
              throw new Braintree_Exception_ServerError();
             break;
