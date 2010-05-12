@@ -48,7 +48,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $expected = array(
             'customerId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
-            array('options' => array('makeDefault', 'verifyCard')),
+            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
             array(
                 'billingAddress' => array(
                     'firstName',
@@ -71,7 +71,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $expected = array(
             'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
-            array('options' => array('makeDefault', 'verifyCard')),
+            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
             array(
                 'billingAddress' => array(
                     'firstName',

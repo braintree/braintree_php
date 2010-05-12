@@ -98,6 +98,25 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('I', $result->creditCardVerification->avsStreetAddressResponseCode);
     }
 
+    function testCreate_withCardVerificationAndSpecificMerchantAccount()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/2011',
+            'options' => array('verificationMerchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(), 'verifyCard' => true)
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
+        $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
+        $this->assertEquals('I', $result->creditCardVerification->cvvResponseCode);
+        $this->assertEquals(null, $result->creditCardVerification->avsErrorResponseCode);
+        $this->assertEquals('I', $result->creditCardVerification->avsPostalCodeResponseCode);
+        $this->assertEquals('I', $result->creditCardVerification->avsStreetAddressResponseCode);
+    }
+
     function testCreate_withBillingAddress()
     {
         $customer = Braintree_Customer::createNoValidate();
@@ -475,6 +494,59 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('1111', $updateResult->creditCard->last4);
         $this->assertEquals('New Cardholder', $updateResult->creditCard->cardholderName);
         $this->assertEquals('07/2014', $updateResult->creditCard->expirationDate);
+    }
+
+    function testUpdate_withCardVerification()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $initialCreditCard = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ))->creditCard;
+
+        $result = Braintree_CreditCard::update($initialCreditCard->token, array(
+            'billingAddress' => array(
+                'region' => 'IL'
+            ),
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
+        $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
+        $this->assertEquals('I', $result->creditCardVerification->cvvResponseCode);
+        $this->assertEquals(null, $result->creditCardVerification->avsErrorResponseCode);
+        $this->assertEquals('I', $result->creditCardVerification->avsPostalCodeResponseCode);
+        $this->assertEquals('I', $result->creditCardVerification->avsStreetAddressResponseCode);
+    }
+
+    function testUpdate_withCardVerificationAndSpecificMerchantAccount()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $initialCreditCard = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ))->creditCard;
+
+        $result = Braintree_CreditCard::update($initialCreditCard->token, array(
+            'billingAddress' => array(
+                'region' => 'IL'
+            ),
+            'options' => array(
+                'verificationMerchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+                'verifyCard' => true
+            )
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
+        $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
+        $this->assertEquals('I', $result->creditCardVerification->cvvResponseCode);
+        $this->assertEquals(null, $result->creditCardVerification->avsErrorResponseCode);
+        $this->assertEquals('I', $result->creditCardVerification->avsPostalCodeResponseCode);
+        $this->assertEquals('I', $result->creditCardVerification->avsStreetAddressResponseCode);
     }
 
     function testUpdate_createsNewBillingAddressByDefault()
