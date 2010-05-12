@@ -519,6 +519,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(null, $result->creditCardVerification->avsErrorResponseCode);
         $this->assertEquals('I', $result->creditCardVerification->avsPostalCodeResponseCode);
         $this->assertEquals('I', $result->creditCardVerification->avsStreetAddressResponseCode);
+        $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $result->creditCardVerification->merchantAccountId);
     }
 
     function testUpdate_withCardVerificationAndSpecificMerchantAccount()
@@ -541,12 +542,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertFalse($result->success);
         $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->creditCardVerification->status);
-        $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
-        $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
-        $this->assertEquals('I', $result->creditCardVerification->cvvResponseCode);
-        $this->assertEquals(null, $result->creditCardVerification->avsErrorResponseCode);
-        $this->assertEquals('I', $result->creditCardVerification->avsPostalCodeResponseCode);
-        $this->assertEquals('I', $result->creditCardVerification->avsStreetAddressResponseCode);
+        $this->assertEquals(Braintree_TestHelper::nonDefaultMerchantAccountId(), $result->creditCardVerification->merchantAccountId);
     }
 
     function testUpdate_createsNewBillingAddressByDefault()
