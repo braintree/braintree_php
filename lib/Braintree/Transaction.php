@@ -554,6 +554,7 @@ final class Braintree_Transaction extends Braintree
         'shippingDetails transaction'  => '',
         'status'                       => '',
         'statusHistory'                => '',
+        'subscriptionId'               => '',
         'type'                         => '',
         'updatedAt'                    => '',
         );

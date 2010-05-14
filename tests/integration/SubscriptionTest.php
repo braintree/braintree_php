@@ -136,6 +136,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertType('Braintree_Transaction', $transaction);
         $this->assertEquals($plan['price'], $transaction->amount);
         $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
+        $this->assertEquals($subscription->id, $transaction->subscriptionId);
     }
 
     function testCreate_doesNotCreateTransactionIfTrialPeriod()
