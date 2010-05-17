@@ -1,4 +1,7 @@
-task :default => %w[test:unit test:integration]
+load File.dirname(__FILE__) + "/cruise.rake"
+
+task :default => :test
+task :test => %w[test:unit test:integration]
 
 namespace :test do
   desc "run unit tests"
