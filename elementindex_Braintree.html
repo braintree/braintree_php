@@ -138,10 +138,10 @@
 			<div class="index-item-details"><a href="Braintree/Utility/Braintree_Collection.html#var$_collection">Braintree_Collection::$_collection</a> in Collection.php</div>
 					</dd>
 			<dt class="field">
-						<span class="method-title">_approximateCount</span>
+						<span class="method-title">_maximumCount</span>
 					</dt>
 		<dd class="index-item-body">
-			<div class="index-item-details"><a href="Braintree/Utility/Braintree_ResourceCollection.html#method_approximateCount">Braintree_ResourceCollection::_approximateCount()</a> in ResourceCollection.php</div>
+			<div class="index-item-details"><a href="Braintree/Utility/Braintree_ResourceCollection.html#method_maximumCount">Braintree_ResourceCollection::_maximumCount()</a> in ResourceCollection.php</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">__construct</span>
@@ -491,6 +491,13 @@
 							<div class="index-item-description">Raised when an error occurs that the client library is not built to handle.</div>
 					</dd>
 			<dt class="field">
+						Braintree_Exception_UpgradeRequired
+					</dt>
+		<dd class="index-item-body">
+			<div class="index-item-details"><a href="Braintree/Exception/Braintree_Exception_UpgradeRequired.html">Braintree_Exception_UpgradeRequired</a> in UpgradeRequired.php</div>
+							<div class="index-item-description">Raised when a client library must be upgraded.</div>
+					</dd>
+			<dt class="field">
 						Braintree_Exception_ValidationsFailed
 					</dt>
 		<dd class="index-item-body">
@@ -778,16 +785,16 @@
 							<div class="index-item-description">create a credit on the card for the passed transaction</div>
 					</dd>
 			<dt class="field">
-						CREDIT
-					</dt>
-		<dd class="index-item-body">
-			<div class="index-item-details"><a href="Braintree/Braintree_Transaction.html#constCREDIT">Braintree_Transaction::CREDIT</a> in Transaction.php</div>
-					</dd>
-			<dt class="field">
 						<span class="method-title">credit</span>
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="Braintree/Braintree_Transaction.html#methodcredit">Braintree_Transaction::credit()</a> in Transaction.php</div>
+					</dd>
+			<dt class="field">
+						CREDIT
+					</dt>
+		<dd class="index-item-body">
+			<div class="index-item-details"><a href="Braintree/Braintree_Transaction.html#constCREDIT">Braintree_Transaction::CREDIT</a> in Transaction.php</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">credit</span>
@@ -1284,23 +1291,40 @@
 			<div class="index-item-details"><a href="Braintree/Braintree_Transaction.html#constFAILED">Braintree_Transaction::FAILED</a> in Transaction.php</div>
 					</dd>
 			<dt class="field">
+						<span class="method-title">fetch</span>
+					</dt>
+		<dd class="index-item-body">
+			<div class="index-item-details"><a href="Braintree/Braintree_Customer.html#methodfetch">Braintree_Customer::fetch()</a> in Customer.php</div>
+					</dd>
+			<dt class="field">
+						<span class="method-title">fetch</span>
+					</dt>
+		<dd class="index-item-body">
+			<div class="index-item-details"><a href="Braintree/Braintree_Subscription.html#methodfetch">Braintree_Subscription::fetch()</a> in Subscription.php</div>
+					</dd>
+			<dt class="field">
+						<span class="method-title">fetch</span>
+					</dt>
+		<dd class="index-item-body">
+			<div class="index-item-details"><a href="Braintree/Braintree_Transaction.html#methodfetch">Braintree_Transaction::fetch()</a> in Transaction.php</div>
+					</dd>
+			<dt class="field">
+						<span class="method-title">fetchExpired</span>
+					</dt>
+		<dd class="index-item-body">
+			<div class="index-item-details"><a href="Braintree/Braintree_CreditCard.html#methodfetchExpired">Braintree_CreditCard::fetchExpired()</a> in CreditCard.php</div>
+					</dd>
+			<dt class="field">
+						<span class="method-title">fetchExpiring</span>
+					</dt>
+		<dd class="index-item-body">
+			<div class="index-item-details"><a href="Braintree/Braintree_CreditCard.html#methodfetchExpiring">Braintree_CreditCard::fetchExpiring()</a> in CreditCard.php</div>
+					</dd>
+			<dt class="field">
 						<span class="method-title">find</span>
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="Braintree/Braintree_Transaction.html#methodfind">Braintree_Transaction::find()</a> in Transaction.php</div>
-					</dd>
-			<dt class="field">
-						<span class="method-title">find</span>
-					</dt>
-		<dd class="index-item-body">
-			<div class="index-item-details"><a href="Braintree/Braintree_Address.html#methodfind">Braintree_Address::find()</a> in Address.php</div>
-							<div class="index-item-description">find an address by id</div>
-					</dd>
-			<dt class="field">
-						<span class="method-title">find</span>
-					</dt>
-		<dd class="index-item-body">
-			<div class="index-item-details"><a href="Braintree/Braintree_Subscription.html#methodfind">Braintree_Subscription::find()</a> in Subscription.php</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">find</span>
@@ -1315,6 +1339,19 @@
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="Braintree/Braintree_CreditCard.html#methodfind">Braintree_CreditCard::find()</a> in CreditCard.php</div>
 							<div class="index-item-description">find a creditcard by token</div>
+					</dd>
+			<dt class="field">
+						<span class="method-title">find</span>
+					</dt>
+		<dd class="index-item-body">
+			<div class="index-item-details"><a href="Braintree/Braintree_Address.html#methodfind">Braintree_Address::find()</a> in Address.php</div>
+							<div class="index-item-description">find an address by id</div>
+					</dd>
+			<dt class="field">
+						<span class="method-title">find</span>
+					</dt>
+		<dd class="index-item-body">
+			<div class="index-item-details"><a href="Braintree/Braintree_Subscription.html#methodfind">Braintree_Subscription::find()</a> in Subscription.php</div>
 					</dd>
 			<dt class="field">
 						FULL_INFORMATION
@@ -1738,7 +1775,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="Braintree/Utility/Braintree_ResourceCollection.html#methodrewind">Braintree_ResourceCollection::rewind()</a> in ResourceCollection.php</div>
-							<div class="index-item-description">rewinds the collection to the first item when iterating with foreach</div>
+							<div class="index-item-description">rewinds thtestIterateOverResultse collection to the first item when iterating with foreach</div>
 					</dd>
 		</dl>
 	<a name="s"></a>
@@ -2351,6 +2388,12 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="Braintree/Exception/_Braintree---Exception---Unexpected.php.html">Unexpected.php</a> in Unexpected.php</div>
+					</dd>
+			<dt class="field">
+						<span class="include-title">UpgradeRequired.php</span>
+					</dt>
+		<dd class="index-item-body">
+			<div class="index-item-details"><a href="Braintree/Exception/_Braintree---Exception---UpgradeRequired.php.html">UpgradeRequired.php</a> in UpgradeRequired.php</div>
 					</dd>
 			<dt class="field">
 						<span class="var-title">$unknowns</span>

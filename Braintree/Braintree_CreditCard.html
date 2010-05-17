@@ -215,12 +215,22 @@
 																<div class="method-definition">
 					static 						<span class="method-result">object ResourceCollection</span>
 										<a href="#expired" title="details" class="method-name">expired</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">null</span>])
+										()
 									</div>
 																<div class="method-definition">
 					static 						<span class="method-result">object ResourceCollection</span>
 										<a href="#expiringBetween" title="details" class="method-name">expiringBetween</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$startDate</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$endDate</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">null</span>])
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$startDate</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$endDate</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#fetchExpired" title="details" class="method-name">fetchExpired</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$ids</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#fetchExpiring" title="details" class="method-name">fetchExpiring</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$startDate</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$endDate</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$ids</span>)
 									</div>
 																<div class="method-definition">
 					static 						<span class="method-result"><a href="../Braintree/Braintree_CreditCard.html">object Braintree_CreditCard</a></span>
@@ -263,7 +273,7 @@
 										()
 									</div>
 																								
-																																																																																																				<div class="method-definition">
+																																																																																																																				<div class="method-definition">
 											<span class="method-result">boolean</span>
 										<a href="#isDefault" title="details" class="method-name">isDefault</a>
 										()
@@ -314,7 +324,7 @@
 		<span class="var-title">
 			<span class="var-type">array</span>
 			<span class="var-name">$_attributes</span>
-			 = <span class="var-default">array(<br />        'billingAddress'     =&gt; '',<br />        'bin' =&gt; '',<br />        'cardType'  =&gt; '',<br />        'cardholderName' =&gt; '',<br />        'createdAt'   =&gt; '',<br />        'customerId'          =&gt; '',<br />        'expirationMonth'    =&gt; '',<br />        'expirationYear'    =&gt; '',<br />        'last4'  =&gt; '',<br />        'token'      =&gt; '',<br />        'updatedAt'   =&gt; '',<br />    )</span>			(line <span class="line-number">451</span>)
+			 = <span class="var-default">array(<br />        'billingAddress'     =&gt; '',<br />        'bin' =&gt; '',<br />        'cardType'  =&gt; '',<br />        'cardholderName' =&gt; '',<br />        'createdAt'   =&gt; '',<br />        'customerId'          =&gt; '',<br />        'expirationMonth'    =&gt; '',<br />        'expirationYear'    =&gt; '',<br />        'last4'  =&gt; '',<br />        'token'      =&gt; '',<br />        'updatedAt'   =&gt; '',<br />    )</span>			(line <span class="line-number">458</span>)
 		</span>
 	</div>
 
@@ -472,7 +482,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method createSignature</span> (line <span class="line-number">392</span>)
+		<span class="method-title">static method createSignature</span> (line <span class="line-number">399</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -496,7 +506,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method credit</span> (line <span class="line-number">183</span>)
+		<span class="method-title">static method credit</span> (line <span class="line-number">190</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -533,7 +543,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method creditNoValidate</span> (line <span class="line-number">204</span>)
+		<span class="method-title">static method creditNoValidate</span> (line <span class="line-number">211</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -571,7 +581,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method delete</span> (line <span class="line-number">341</span>)
+		<span class="method-title">static method delete</span> (line <span class="line-number">348</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -615,14 +625,9 @@
 		<span class="method-name">
 			expired
 		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">null</span>])
+				()
 			</div>
 	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$options</span>			</li>
-				</ul>
 		
 			
 	</div>
@@ -630,7 +635,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method expiringBetween</span> (line <span class="line-number">134</span>)
+		<span class="method-title">static method expiringBetween</span> (line <span class="line-number">137</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -645,7 +650,68 @@
 		<span class="method-name">
 			expiringBetween
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$startDate</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$endDate</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">null</span>])
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$startDate</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$endDate</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$startDate</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$endDate</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchExpired" id="fetchExpired"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method fetchExpired</span> (line <span class="line-number">123</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			fetchExpired
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$ids</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$ids</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchExpiring" id="fetchExpiring"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method fetchExpiring</span> (line <span class="line-number">150</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			fetchExpiring
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$startDate</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$endDate</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$ids</span>)
 			</div>
 	
 			<ul class="parameters">
@@ -657,7 +723,7 @@
 				<span class="var-name">$endDate</span>			</li>
 					<li>
 				<span class="var-type"></span>
-				<span class="var-name">$options</span>			</li>
+				<span class="var-name">$ids</span>			</li>
 				</ul>
 		
 			
@@ -666,7 +732,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method find</span> (line <span class="line-number">162</span>)
+		<span class="method-title">static method find</span> (line <span class="line-number">169</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -697,7 +763,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method sale</span> (line <span class="line-number">218</span>)
+		<span class="method-title">static method sale</span> (line <span class="line-number">225</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -732,7 +798,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method saleNoValidate</span> (line <span class="line-number">241</span>)
+		<span class="method-title">static method saleNoValidate</span> (line <span class="line-number">248</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -768,7 +834,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method update</span> (line <span class="line-number">258</span>)
+		<span class="method-title">static method update</span> (line <span class="line-number">265</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -803,7 +869,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method updateCreditCardUrl</span> (line <span class="line-number">289</span>)
+		<span class="method-title">static method updateCreditCardUrl</span> (line <span class="line-number">296</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -832,7 +898,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method updateFromTransparentRedirect</span> (line <span class="line-number">302</span>)
+		<span class="method-title">static method updateFromTransparentRedirect</span> (line <span class="line-number">309</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -865,7 +931,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method updateNoValidate</span> (line <span class="line-number">278</span>)
+		<span class="method-title">static method updateNoValidate</span> (line <span class="line-number">285</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -900,7 +966,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method updateSignature</span> (line <span class="line-number">413</span>)
+		<span class="method-title">static method updateSignature</span> (line <span class="line-number">420</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -925,7 +991,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">isDefault</span> (line <span class="line-number">320</span>)
+		<span class="method-title">isDefault</span> (line <span class="line-number">327</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -949,7 +1015,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">isEqual</span> (line <span class="line-number">385</span>)
+		<span class="method-title">isEqual</span> (line <span class="line-number">392</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -978,7 +1044,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">isExpired</span> (line <span class="line-number">333</span>)
+		<span class="method-title">isExpired</span> (line <span class="line-number">340</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1002,7 +1068,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">_initialize</span> (line <span class="line-number">355</span>)
+		<span class="method-title">_initialize</span> (line <span class="line-number">362</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1031,7 +1097,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">__toString</span> (line <span class="line-number">440</span>)
+		<span class="method-title">__toString</span> (line <span class="line-number">447</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1315,7 +1381,7 @@
 	</div>
 
 	<p class="notes" id="credit">
-		Documentation generated on Thu, 06 May 2010 14:23:59 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Mon, 17 May 2010 15:36:31 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>
