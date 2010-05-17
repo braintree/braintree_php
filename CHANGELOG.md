@@ -1,3 +1,11 @@
+## 2.2.0
+
+* Prevent race condition when pulling back collection results -- search results represent the state of the data at the time the query was run
+* Rename ResourceCollection's approximate_size to maximum_size because items that no longer match the query will not be returned in the result set
+* Correctly handle HTTP error 426 (Upgrade Required) -- the error code is returned when your client library version is no long compatible with the gateway
+* Add the ability to specify merchant_account_id when verifying credit cards
+* Add subscription_id to transactions created from subscriptions
+
 ## 2.1.0
 
 * Added transaction advanced search
