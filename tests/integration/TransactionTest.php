@@ -466,6 +466,36 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertequals('First', $customer->firstName);
     }
 
+    function testCreateFromTransparentRedirectWithInvalidParams()
+    {
+        $queryString = $this->createTransactionViaTr(
+            array(
+                'transaction' => array(
+                    'bad_key' => 'bad_value',
+                    'customer' => array(
+                        'first_name' => 'First'
+                    ),
+                    'credit_card' => array(
+                        'number' => '5105105105105100',
+                        'expiration_date' => '05/12'
+                    )
+                )
+            ),
+            array(
+                'transaction' => array(
+                    'type' => Braintree_Transaction::SALE,
+                    'amount' => '100.00'
+                )
+            )
+        );
+        try {
+            $result = Braintree_Transaction::createFromTransparentRedirect($queryString);
+            $this->fail();
+        } catch (Braintree_Exception_Authorization $e) {
+            $this->assertEquals("Invalid params: transaction[bad_key]", $e->getMessage());
+        }
+    }
+
     function testCreateFromTransparentRedirect_withParamsInTrData()
     {
         $queryString = $this->createTransactionViaTr(
@@ -582,51 +612,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
         return $transaction;
-    }
-
-    function testBasicSearchWithNoResults()
-    {
-        $collection = Braintree_Transaction::search("badsearch");
-        $this->assertEquals(0, $collection->_approximateCount());
-
-        $arr = array();
-        foreach($collection as $key => $transaction) {
-            array_push($arr, $transaction->id);
-        }
-        $this->assertEquals(0, count($arr));
-    }
-
-    function testBasicSearchWithManyResults()
-    {
-        $collection = Braintree_Transaction::search("411111");
-        $this->assertTrue($collection->_approximateCount() > 100);
-
-        $arr = array();
-        foreach($collection as $transaction) {
-            array_push($arr, $transaction->id);
-        }
-        $unique_transaction_ids = array_unique(array_values($arr));
-        $this->assertEquals($collection->_approximateCount(), count($unique_transaction_ids));
-    }
-
-    function testBasicSearchWithMultipleIterations()
-    {
-        $collection = Braintree_Transaction::search("411111");
-        $this->assertTrue($collection->_approximateCount() > 100);
-
-        $arr_1 = array();
-        foreach($collection as $transaction) {
-            array_push($arr_1, $transaction->id);
-        }
-        $unique_transaction_ids_1 = array_unique(array_values($arr_1));
-
-        $arr_2 = array();
-        foreach($collection as $transaction) {
-            array_push($arr_2, $transaction->id);
-        }
-        $unique_transaction_ids_2 = array_unique(array_values($arr_2));
-
-        $this->assertEquals($unique_transaction_ids_1, $unique_transaction_ids_2);
     }
 }
 ?>

@@ -52,17 +52,20 @@ class Braintree_Util
      * @throws Braintree_Exception multiple types depending on the error
      *
      */
-    public static function throwStatusCodeException($statusCode)
+    public static function throwStatusCodeException($statusCode, $message=null)
     {
         switch($statusCode) {
          case 401:
             throw new Braintree_Exception_Authentication();
             break;
          case 403:
-             throw new Braintree_Exception_Authorization();
+             throw new Braintree_Exception_Authorization($message);
             break;
          case 404:
              throw new Braintree_Exception_NotFound();
+            break;
+         case 426:
+             throw new Braintree_Exception_UpgradeRequired();
             break;
          case 500:
              throw new Braintree_Exception_ServerError();

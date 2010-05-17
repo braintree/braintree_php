@@ -12,38 +12,51 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
     {
         Braintree_Util::throwStatusCodeException(401);
     }
+
     /**
      * @expectedException Braintree_Exception_Authorization
      */
-     function testThrow403Exception()
+    function testThrow403Exception()
     {
         Braintree_Util::throwStatusCodeException(403);
     }
+
     /**
      * @expectedException Braintree_Exception_NotFound
      */
-     function testThrow404Exception()
+    function testThrow404Exception()
     {
         Braintree_Util::throwStatusCodeException(404);
     }
+
+    /**
+     * @expectedException Braintree_Exception_UpgradeRequired
+     */
+    function testThrow426Exception()
+    {
+        Braintree_Util::throwStatusCodeException(426);
+    }
+
     /**
      * @expectedException Braintree_Exception_ServerError
      */
-     function testThrow500Exception()
+    function testThrow500Exception()
     {
         Braintree_Util::throwStatusCodeException(500);
     }
+
     /**
      * @expectedException Braintree_Exception_DownForMaintenance
      */
-     function testThrow503Exception()
+    function testThrow503Exception()
     {
         Braintree_Util::throwStatusCodeException(503);
     }
+
     /**
      * @expectedException Braintree_Exception_Unexpected
      */
-     function testThrowUnknownException()
+    function testThrowUnknownException()
     {
         Braintree_Util::throwStatusCodeException(999);
     }
@@ -134,7 +147,7 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException');
 
         Braintree_Util::verifyKeys($signature, $userKeys);
-        
+
         // test valid
         $userKeys = array(
                 'amount' => '100.00',

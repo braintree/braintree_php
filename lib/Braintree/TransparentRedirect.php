@@ -219,7 +219,11 @@ class Braintree_TransparentRedirect
         }
 
         if($params['http_status'] != '200') {
-            Braintree_Util::throwStatusCodeException($params['http_status']);
+            $message = null;
+            if(array_key_exists('bt_message', $params)) {
+                $message = $params['bt_message'];
+            }
+            Braintree_Util::throwStatusCodeException($params['http_status'], $message);
         }
 
         // recreate the hash and compare it

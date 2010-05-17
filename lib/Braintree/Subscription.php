@@ -63,28 +63,36 @@ class Braintree_Subscription extends Braintree
 
     }
 
-    public static function search($query, $options=array())
+    public static function search($query)
     {
         $criteria = array();
-        foreach ($query AS $term) {
-            $criteria[$term->name] = $term->toParam();
+        foreach ($query as $term) {
+            $criteria[$term->name] = $term->toparam();
         }
 
-        $page = isset($options['page']) ? $options['page'] : 1;
-        $queryPath = '/subscriptions/advanced_search?page=' . $page;
-        $response = Braintree_Http::post($queryPath, array('search' => $criteria));
-        $attributes = $response['subscriptions'];
-        $attributes['items'] = Braintree_Util::extractAttributeAsArray(
-                $attributes,
-                'subscription'
-                );
+        $response = braintree_http::post('/subscriptions/advanced_search_ids', array('search' => $criteria));
         $pager = array(
             'className' => __CLASS__,
-            'classMethod' => __METHOD__,
+            'classMethod' => 'fetch',
             'methodArgs' => array($query)
             );
 
-        return new Braintree_ResourceCollection($attributes, $pager);
+        return new Braintree_ResourceCollection($response, $pager);
+    }
+
+    public static function fetch($query, $ids)
+    {
+        $criteria = array();
+        foreach ($query as $term) {
+            $criteria[$term->name] = $term->toparam();
+        }
+        $criteria["ids"] = Braintree_SubscriptionSearch::ids()->in($ids)->toparam();
+        $response = braintree_http::post('/subscriptions/advanced_search', array('search' => $criteria));
+
+        return braintree_util::extractattributeasarray(
+            $response['subscriptions'],
+            'subscription'
+        );
     }
 
     public static function update($subscriptionId, $attributes)
