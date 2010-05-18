@@ -33,13 +33,31 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             ),
             'customFields' => array(
+                'store_me' => 'custom value'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $customFields = $transaction->customFields;
+        $this->assertEquals('custom value', $customFields['store_me']);
+    }
+
+    function testSale_underscoresAllCustomFields()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'customFields' => array(
                 'storeMe' => 'custom value'
             )
         ));
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $customFields = $transaction->customFields;
-        $this->assertEquals('custom value', $customFields['storeMe']);
+        $this->assertEquals('custom value', $customFields['store_me']);
     }
 
     function testSale_withInvalidCustomField()

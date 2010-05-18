@@ -108,8 +108,7 @@ class Braintree_Util
     }
 
     /**
-     * convert alpha-beta-gamma to alphaBetaGamma using
-     * a preg_replace_callback function on each match
+     * convert alpha-beta-gamma to alphaBetaGamma
      *
      * @access public
      * @param string $string
@@ -121,8 +120,21 @@ class Braintree_Util
     }
 
     /**
+     * convert alpha-beta-gamma to alpha_beta_gamma
+     *
+     * @access public
+     * @param string $string
+     * @return string modified string
+     */
+    public static function delimiterToUnderscore($string)
+    {
+        return preg_replace('/-/', '_', $string);
+    }
+
+
+    /**
      * find capitals and convert to delimiter + lowercase
-     * 
+     *
      * @access public
      * @param var $string
      * @return var modified string

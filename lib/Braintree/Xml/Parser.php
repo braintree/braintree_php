@@ -61,7 +61,6 @@ class Braintree_Xml_Parser
 
             $tmpArray = null;
             $value = null;
-            $key = Braintree_Util::delimiterToCamelCase($iterator->key());
 
             // get the attribute type string for use in conditions below
             $attributeType = $iterator->attributes()->type;
@@ -72,6 +71,13 @@ class Braintree_Xml_Parser
                 $parentElement = $parentElement[0];
                 $parentKey = Braintree_Util::delimiterToCamelCase($parentElement->getName());
             }
+
+            if ($parentKey == "customFields") {
+                $key = Braintree_Util::delimiterToUnderscore($iterator->key());
+            } else {
+                $key = Braintree_Util::delimiterToCamelCase($iterator->key());
+            }
+
             // process children recursively
             if ($iterator->hasChildren()) {
                 // return the child elements
