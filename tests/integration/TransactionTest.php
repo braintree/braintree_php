@@ -572,7 +572,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $errors = $result->errors->forKey('transaction')->forKey('customer')->onAttribute('firstName');
         $this->assertEquals(Braintree_Error_Codes::CUSTOMER_FIRST_NAME_IS_TOO_LONG, $errors[0]->code);
         $errors = $result->errors->forKey('transaction')->forKey('creditCard')->onAttribute('number');
-        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_NUMBER_INVALID_LENGTH, $errors[0]->code);
+        $this->assertTrue(count($errors) > 0);
         $errors = $result->errors->forKey('transaction')->forKey('creditCard')->onAttribute('expirationDate');
         $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED, $errors[0]->code);
     }
