@@ -94,7 +94,7 @@ class Braintree_TransparentRedirect
         self::$_updateCreditCardSignature = array(
             self::$_transparentRedirectKeys,
             'paymentMethodToken',
-            array('creditCard' => Braintree_CreditCard::createSignature()),
+            array('creditCard' => Braintree_CreditCard::updateSignature()),
             );
     }
     /**

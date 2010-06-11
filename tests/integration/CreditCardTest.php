@@ -290,6 +290,53 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Braintree_CreditCard::find($card2->token)->isDefault());
     }
 
+    function testUpdateFromTransparentRedirect_andUpdateExistingBillingAddress()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $card = Braintree_CreditCard::createNoValidate(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddress' => array(
+                'firstName' => 'Drew',
+                'lastName' => 'Smith',
+                'company' => 'Smith Co.',
+                'streetAddress' => '123 Old St',
+                'extendedAddress' => 'Suite 101',
+                'locality' => 'Chicago',
+                'region' => 'IL',
+                'postalCode' => '60622',
+                'countryName' => 'United States of America'
+            )
+        ));
+
+        $queryString = $this->updateCreditCardViaTr(
+            array(),
+            array(
+                'paymentMethodToken' => $card->token,
+                'creditCard' => array(
+                    'billingAddress' => array(
+                        'streetAddress' => '123 New St',
+                        'locality' => 'St. Louis',
+                        'region' => 'MO',
+                        'postalCode' => '63119',
+                        'options' => array(
+                            'updateExisting' => True
+                        )
+                    )
+                )
+            )
+        );
+        $result = Braintree_CreditCard::updateFromTransparentRedirect($queryString);
+        $this->assertTrue($result->success);
+        $card = $result->creditCard;
+        $this->assertEquals(1, sizeof(Braintree_Customer::find($customer->id)->addresses));
+        $this->assertEquals('123 New St', $card->billingAddress->streetAddress);
+        $this->assertEquals('St. Louis', $card->billingAddress->locality);
+        $this->assertEquals('MO', $card->billingAddress->region);
+        $this->assertEquals('63119', $card->billingAddress->postalCode);
+    }
+
     function testSale_createsASaleUsingGivenToken()
     {
         $customer = Braintree_Customer::createNoValidate(array(
