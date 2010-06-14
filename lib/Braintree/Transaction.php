@@ -538,26 +538,7 @@ final class Braintree_Transaction extends Braintree
      * @access protected
      * @var array registry of transaction data
      */
-    protected $_attributes = array(
-        'avsErrorResponseCode'         => '',
-        'avsPostalCodeResponseCode'    => '',
-        'avsStreetAddressResponseCode' => '',
-        'cvvResponseCode'              => '',
-        'amount'                       => '',
-        'billingDetails'               => '',
-        'createdAt'                    => '',
-        'creditCardDetails'            => '',
-        'customerDetails'              => '',
-        'customFields'                 => '',
-        'id'                           => '',
-        'processorResponseCode'        => '',
-        'shippingDetails transaction'  => '',
-        'status'                       => '',
-        'statusHistory'                => '',
-        'subscriptionId'               => '',
-        'type'                         => '',
-        'updatedAt'                    => '',
-        );
+    protected $_attributes = array();
 
     /**
      * sets private properties
