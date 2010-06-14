@@ -551,22 +551,15 @@ class Braintree_CreditCard extends Braintree
      */
     public static function factory($attributes)
     {
-        $default_attributes = array(
-            'billingAddress'     => array(),
+        $defaultAttributes = array(
             'bin' => '',
-            'cardType'  => '',
-            'cardholderName' => '',
-            'createdAt'   => '',
-            'customerId'          => '',
             'expirationMonth'    => '',
             'expirationYear'    => '',
             'last4'  => '',
-            'token'      => '',
-            'updatedAt'   => '',
         );
 
         $instance = new self();
-        $instance->_initialize(array_merge($default_attributes, $attributes));
+        $instance->_initialize(array_merge($defaultAttributes, $attributes));
         return $instance;
     }
 }

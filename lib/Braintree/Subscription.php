@@ -29,26 +29,8 @@ class Braintree_Subscription extends Braintree
      */
     public static function factory($attributes)
     {
-        $default_attributes = array(
-            'billingPeriodEndDate' => '',
-            'billingPeriodStartDate' => '',
-            'failureCount' => '',
-            'firstBillingDate' => '',
-            'merchantAccountId' => '',
-            'merchantId' => '',
-            'nextBillingDate' => '',
-            'paymentMethodId' => '',
-            'planId' => '',
-            'price' => '',
-            'status' => '',
-            'token' => '',
-            'trialDuration' => '',
-            'trialDurationUnit' => '',
-            'trialPeriod' => ''
-        );
-
         $instance = new self();
-        $instance->_initialize($attributes, $default_attributes);
+        $instance->_initialize($attributes);
 
         return $instance;
     }

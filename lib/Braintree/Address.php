@@ -343,23 +343,8 @@ class Braintree_Address extends Braintree
      */
     public static function factory($attributes)
     {
-        $default_attributes = array(
-            'company'     => '',
-            'countryName' => '',
-            'customerId'  => '',
-            'extendedAddress' => '',
-            'firstName'   => '',
-            'id'          => '',
-            'lastName'    => '',
-            'locality'    => '',
-            'postalCode'  => '',
-            'region'      => '',
-            'streetAddress' => '',
-            'updatedAt'   => '',
-        );
-
         $instance = new self();
-        $instance->_initialize(array_merge($default_attributes, $attributes));
+        $instance->_initialize($attributes);
         return $instance;
 
     }
