@@ -18,7 +18,6 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('5100', $result->creditCard->last4);
         $this->assertEquals('Cardholder', $result->creditCard->cardholderName);
         $this->assertEquals('05/2012', $result->creditCard->expirationDate);
-        $this->assertEquals('US', $result->creditCard->customerLocation);
     }
 
     function testCreate_withDefault()
