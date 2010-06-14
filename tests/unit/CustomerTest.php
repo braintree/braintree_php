@@ -9,5 +9,19 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $c = Braintree_Customer::factory(array());
         $c->foo;
     }
+
+    function testUpdateSignature_doesNotAlterOptionsInCreditCardUpdateSignature()
+    {
+        Braintree_Customer::updateSignature();
+        foreach(Braintree_CreditCard::updateSignature() AS $key => $value) {
+            if(is_array($value) and array_key_exists('options', $value)) {
+                $this->assertEquals(array(
+                    'makeDefault',
+                    'verificationMerchantAccountId',
+                    'verifyCard'
+                ), $value['options']);
+            }
+        }
+    }
 }
 ?>

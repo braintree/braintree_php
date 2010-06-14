@@ -3,6 +3,20 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
 {
+    function testRedirectUrl()
+    {
+        $trData = Braintree_TransparentRedirect::createCustomerData(
+            array("redirectUrl" => "http://www.example.com?foo=bar")
+        );
+        $queryString = Braintree_TestHelper::submitTrRequest(
+            Braintree_Configuration::merchantUrl() . '/test/maintenance',
+            array(),
+            $trData
+        );
+        $this->setExpectedException('Braintree_Exception_DownForMaintenance');
+        Braintree_Customer::createFromTransparentRedirect($queryString);
+    }
+
     function testParseAndValidateQueryString_throwsDownForMaintenanceErrorIfDownForMaintenance()
     {
         $trData = Braintree_TransparentRedirect::createCustomerData(

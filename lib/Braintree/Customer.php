@@ -156,9 +156,18 @@ class Braintree_Customer extends Braintree
      */
     public static function updateSignature()
     {
+        $creditCardSignature = Braintree_CreditCard::updateSignature();
+
+        foreach($creditCardSignature AS $key => $value) {
+            if(is_array($value) and array_key_exists('options', $value)) {
+                array_push($creditCardSignature[$key]['options'], 'updateExistingToken');
+            }
+        }
+
         $signature = array(
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website',
+            array('creditCard' => $creditCardSignature),
             array('customFields' => array('_anyKey_')),
             );
         return $signature;

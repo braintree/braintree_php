@@ -304,6 +304,46 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://new.example.com', $updateResult->customer->website);
     }
 
+    function testUpdate_withUpdatingExistingCreditCard()
+    {
+        $create_result = Braintree_Customer::create(array(
+            'firstName' => 'Old First',
+            'lastName' => 'Old Last',
+            'company' => 'Old Co.',
+            'email' => 'old@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://old.example.com',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cvv' => '123',
+                'cardholderName' => 'Old Cardholder'
+            )
+        ));
+        $this->assertEquals(true, $create_result->success);
+        $customer = $create_result->customer;
+        $creditCard = $customer->creditCards[0];
+        $result = Braintree_Customer::update($customer->id, array(
+            'firstName' => 'New First',
+            'lastName' => 'New Last',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '11/14',
+                'options' => array(
+                    'updateExistingToken' => $creditCard->token
+                )
+            )
+        ));
+        $this->assertEquals(true, $result->success);
+        $this->assertEquals('New First', $result->customer->firstName);
+        $this->assertEquals('New Last', $result->customer->lastName);
+        $this->assertEquals(1, sizeof($result->customer->creditCards));
+        $creditCard = $result->customer->creditCards[0];
+        $this->assertEquals('411111', $creditCard->bin);
+        $this->assertEquals('11/2014', $creditCard->expirationDate);
+    }
+
     function testUpdateNoValidate()
     {
         $result = Braintree_Customer::create(array(
