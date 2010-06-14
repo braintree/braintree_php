@@ -360,7 +360,7 @@ class Braintree_Customer extends Braintree
     protected function _initialize($customerAttribs)
     {
         // set the attributes
-        $this->_attributes = array_merge($this->_attributes, $customerAttribs);
+        $this->_attributes = $customerAttribs;
 
         // map each address into its own object
         $addressArray = array();

@@ -443,7 +443,7 @@ final class Braintree_Transaction extends Braintree
      */
     protected function _initialize($transactionAttribs)
     {
-        $this->_attributes = array_merge($this->_attributes, $transactionAttribs);
+        $this->_attributes = $transactionAttribs;
 
         $this->_set('creditCardDetails',
                 new Braintree_Transaction_CreditCardDetails(
@@ -533,12 +533,6 @@ final class Braintree_Transaction extends Braintree
             return Braintree_Customer::find($customerId);
         }
     }
-
-    /**
-     * @access protected
-     * @var array registry of transaction data
-     */
-    protected $_attributes = array();
 
     /**
      * sets private properties

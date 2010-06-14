@@ -22,5 +22,4 @@
  */
 class Braintree_Transaction_StatusDetails extends Braintree_Instance
 {
-    protected $_attributes = array();
 }

@@ -362,7 +362,7 @@ class Braintree_CreditCard extends Braintree
     protected function _initialize($creditCardAttribs)
     {
         // set the attributes
-        $this->_attributes = array_merge($this->_attributes, $creditCardAttribs);
+        $this->_attributes = $creditCardAttribs;
 
         // map each address into its own object
         $billingAddress = isset($creditCardAttribs['billingAddress']) ?
@@ -449,25 +449,6 @@ class Braintree_CreditCard extends Braintree
         $objOutput = Braintree_Util::implodeAssociativeArray($this->_attributes);
         return __CLASS__ . '[' . $objOutput . ']';
     }
-    /* private class properties  */
-
-    /**
-     * @access protected
-     * @var array registry of customer data
-     */
-    protected $_attributes = array(
-        'billingAddress'     => '',
-        'bin' => '',
-        'cardType'  => '',
-        'cardholderName' => '',
-        'createdAt'   => '',
-        'customerId'          => '',
-        'expirationMonth'    => '',
-        'expirationYear'    => '',
-        'last4'  => '',
-        'token'      => '',
-        'updatedAt'   => '',
-    );
 
     /**
      * verifies that a valid credit card token is being used
@@ -570,8 +551,22 @@ class Braintree_CreditCard extends Braintree
      */
     public static function factory($attributes)
     {
+        $default_attributes = array(
+            'billingAddress'     => array(),
+            'bin' => '',
+            'cardType'  => '',
+            'cardholderName' => '',
+            'createdAt'   => '',
+            'customerId'          => '',
+            'expirationMonth'    => '',
+            'expirationYear'    => '',
+            'last4'  => '',
+            'token'      => '',
+            'updatedAt'   => '',
+        );
+
         $instance = new self();
-        $instance->_initialize($attributes);
+        $instance->_initialize(array_merge($default_attributes, $attributes));
         return $instance;
     }
 }

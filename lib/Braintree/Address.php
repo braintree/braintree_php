@@ -217,25 +217,6 @@ class Braintree_Address extends Braintree
         $objOutput = Braintree_Util::implodeAssociativeArray($this->_attributes);
         return __CLASS__ . '[' . $objOutput . ']';
     }
-    /* private class properties  */
-    /**
-     * @access protected
-     * @var array registry of customer data
-     */
-    protected $_attributes = array(
-        'company'     => '',
-        'countryName' => '',
-        'customerId'  => '',
-        'extendedAddress' => '',
-        'firstName'   => '',
-        'id'          => '',
-        'lastName'    => '',
-        'locality'    => '',
-        'postalCode'  => '',
-        'region'      => '',
-        'streetAddress' => '',
-        'updatedAt'   => '',
-    );
 
     /**
      * sets instance properties from an array of values
@@ -248,8 +229,7 @@ class Braintree_Address extends Braintree
     protected function _initialize($addressAttribs)
     {
         // set the attributes
-        $this->_attributes = array_merge($this->_attributes, $addressAttribs);
-
+        $this->_attributes = $addressAttribs;
     }
 
     /**
@@ -363,8 +343,23 @@ class Braintree_Address extends Braintree
      */
     public static function factory($attributes)
     {
+        $default_attributes = array(
+            'company'     => '',
+            'countryName' => '',
+            'customerId'  => '',
+            'extendedAddress' => '',
+            'firstName'   => '',
+            'id'          => '',
+            'lastName'    => '',
+            'locality'    => '',
+            'postalCode'  => '',
+            'region'      => '',
+            'streetAddress' => '',
+            'updatedAt'   => '',
+        );
+
         $instance = new self();
-        $instance->_initialize($attributes);
+        $instance->_initialize(array_merge($default_attributes, $attributes));
         return $instance;
 
     }

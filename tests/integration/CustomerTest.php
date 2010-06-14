@@ -42,6 +42,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('419.555.1234', $customer->phone);
         $this->assertEquals('419.555.1235', $customer->fax);
         $this->assertEquals('http://example.com', $customer->website);
+        $this->assertNotNull($customer->merchantId);
     }
 
     function testCreate_blankCustomer()
