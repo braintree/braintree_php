@@ -258,6 +258,29 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_CANNOT_EDIT_CANCELED_SUBSCRIPTION, $errors[0]->code);
     }
 
+    function testUpdate_canUpdatePaymentMethodToken()
+    {
+        $oldCreditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
+        $subscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $oldCreditCard->token,
+            'price' => '54.99',
+            'planId' => $plan['id']
+        ))->subscription;
+
+        $newCreditCard = Braintree_CreditCard::createNoValidate(array(
+            'number' => '5105105105105100',
+            'expirationDate' => '05/2010',
+            'customerId' => $oldCreditCard->customerId
+        ));
+
+        $result = Braintree_Subscription::update($subscription->id, array(
+            'paymentMethodToken' => $newCreditCard->token
+        ));
+        $this->assertTrue($result->success);
+        $this->assertEquals($newCreditCard->token, $result->subscription->paymentMethodToken);
+    }
+
     function testCancel_returnsSuccessIfCanceled()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
