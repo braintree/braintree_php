@@ -535,6 +535,21 @@ final class Braintree_Transaction extends Braintree
     }
 
     /**
+     * sends the create request to the gateway
+     *
+     * @ignore
+     * @param var $url
+     * @param array $params
+     * @return mixed
+     */
+    public static function _doCreate($url, $params)
+    {
+        $response = Braintree_Http::post($url, $params);
+
+        return self::_verifyGatewayResponse($response);
+    }
+
+    /**
      * sets private properties
      * this function is private so values are read only
      * @ignore
@@ -568,21 +583,6 @@ final class Braintree_Transaction extends Braintree
 
 
     /* private class methods */
-
-    /**
-     * sends the create request to the gateway
-     *
-     * @ignore
-     * @param var $url
-     * @param array $params
-     * @return mixed
-     */
-    private static function _doCreate($url, $params)
-    {
-        $response = Braintree_Http::post($url, $params);
-
-        return self::_verifyGatewayResponse($response);
-    }
 
     /**
      * generic method for validating incoming gateway responses

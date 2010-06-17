@@ -104,6 +104,22 @@ class Braintree_TransparentRedirect
             array('creditCard' => Braintree_CreditCard::updateSignature()),
             );
     }
+
+    public static function confirm($queryString)
+    {
+        $params = Braintree_TransparentRedirect::parseAndValidateQueryString(
+                $queryString
+        );
+        $confirmationKlasses = array(
+            Braintree_TransparentRedirect::CREATE_TRANSACTION => 'Braintree_Transaction',
+            Braintree_TransparentRedirect::CREATE_CUSTOMER => 'Braintree_Customer'
+        );
+        return $confirmationKlasses[$params["kind"]]::_doCreate(
+            '/transparent_redirect_requests/' . $params['id'] . '/confirm',
+            array()
+        );
+    }
+
     /**
      * returns the trData string for creating a credit card,
      * @param array $params
@@ -129,6 +145,7 @@ class Braintree_TransparentRedirect
                 self::$_createCustomerSignature,
                 $params
                 );
+        $params["kind"] = Braintree_TransparentRedirect::CREATE_CUSTOMER;
         return self::_data($params);
 
     }

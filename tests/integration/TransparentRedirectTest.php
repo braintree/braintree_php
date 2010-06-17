@@ -82,7 +82,7 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
             $trData
         );
 
-        $result = Braintree_Transaction::createFromTransparentRedirect($queryString);
+        $result = Braintree_TransparentRedirect::confirm($queryString);
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
         $this->assertEquals(Braintree_Transaction::SALE, $result->transaction->type);
@@ -96,6 +96,37 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('510510******5100', $creditCard->maskedNumber);
         $customer = $result->transaction->customerDetails;
         $this->assertequals('First', $customer->firstName);
+    }
+
+    function testCreateCustomerFromTransparentRedirect()
+    {
+        $params = array(
+            'customer' => array(
+                'first_name' => 'Second'
+            )
+        );
+        $trParams = array(
+            'customer' => array(
+                'lastName' => 'Penultimate'
+            )
+        );
+
+        $trData = Braintree_TransparentRedirect::createCustomerData(
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+        );
+
+        $queryString = Braintree_TestHelper::submitTrRequest(
+            Braintree_TransparentRedirect::url(),
+            $params,
+            $trData
+        );
+
+        $result = Braintree_TransparentRedirect::confirm($queryString);
+        $this->assertTrue($result->success);
+
+        $customer = $result->customer;
+        $this->assertequals('Second', $customer->firstName);
+        $this->assertequals('Penultimate', $customer->lastName);
     }
 
     function testUrl()

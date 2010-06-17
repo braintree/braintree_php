@@ -439,6 +439,21 @@ class Braintree_Customer extends Braintree
         );
 
     /**
+     * sends the create request to the gateway
+     *
+     * @ignore
+     * @param string $url
+     * @param array $params
+     * @return mixed
+     */
+    public static function _doCreate($url, $params)
+    {
+        $response = Braintree_Http::post($url, $params);
+
+        return self::_verifyGatewayResponse($response);
+    }
+
+    /**
      * sets private properties
      * this function is private so values are read only
      * @ignore
@@ -473,20 +488,6 @@ class Braintree_Customer extends Braintree
 
     /* private class methods */
 
-    /**
-     * sends the create request to the gateway
-     *
-     * @ignore
-     * @param string $url
-     * @param array $params
-     * @return mixed
-     */
-    private static function _doCreate($url, $params)
-    {
-        $response = Braintree_Http::post($url, $params);
-
-        return self::_verifyGatewayResponse($response);
-    }
     /**
      * sends the update request to the gateway
      *
