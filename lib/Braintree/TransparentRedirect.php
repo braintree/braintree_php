@@ -45,6 +45,13 @@
  */
 class Braintree_TransparentRedirect
 {
+    // Request Kinds
+    const CREATE_TRANSACTION = 'create_transaction';
+    const CREATE_PAYMENT_METHOD = 'create_payment_method';
+    const UPDATE_PAYMENT_METHOD = 'update_payment_method';
+    const CREATE_CUSTOMER = 'create_customer';
+    const UPDATE_CUSTOMER = 'update_customer';
+
     /**
      *
      * @ignore
@@ -126,6 +133,11 @@ class Braintree_TransparentRedirect
 
     }
 
+    public static function url()
+    {
+        return Braintree_Configuration::merchantUrl() . "/transparent_redirect_requests";
+    }
+
     /**
      * returns the trData string for creating a transaction
      * @param array $params
@@ -137,6 +149,7 @@ class Braintree_TransparentRedirect
                 self::$_transactionSignature,
                 $params
                 );
+        $params["kind"] = Braintree_TransparentRedirect::CREATE_TRANSACTION;
         $transactionType = isset($params['transaction']['type']) ?
             $params['transaction']['type'] :
             null;

@@ -26,6 +26,18 @@ class Braintree_TestHelper
         return 'sandbox_credit_card_non_default';
     }
 
+    public static function createViaTr($regularParams, $trParams)
+    {
+        $trData = Braintree_TransparentRedirect::transactionData(
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+        );
+        return Braintree_TestHelper::submitTrRequest(
+            TransparentRedirect::url(),
+            $regularParams,
+            $trData
+        );
+    }
+
     public static function submitTrRequest($url, $regularParams, $trData)
     {
         $curl = curl_init();
