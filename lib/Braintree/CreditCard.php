@@ -440,6 +440,21 @@ class Braintree_CreditCard extends Braintree
    }
 
     /**
+     * sends the create request to the gateway
+     *
+     * @ignore
+     * @param string $url
+     * @param array $params
+     * @return mixed
+     */
+    public static function _doCreate($url, $params)
+    {
+        $response = Braintree_Http::post($url, $params);
+
+        return self::_verifyGatewayResponse($response);
+    }
+
+    /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
      * @return string
@@ -483,21 +498,6 @@ class Braintree_CreditCard extends Braintree
     }
 
      /* private class methods */
-
-    /**
-     * sends the create request to the gateway
-     *
-     * @ignore
-     * @param string $url
-     * @param array $params
-     * @return mixed
-     */
-    private static function _doCreate($url, $params)
-    {
-        $response = Braintree_Http::post($url, $params);
-
-        return self::_verifyGatewayResponse($response);
-    }
 
     /**
      * sends the update request to the gateway

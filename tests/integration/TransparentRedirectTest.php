@@ -165,6 +165,89 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $this->assertequals('Penultimate', $customer->lastName);
     }
 
+    function testCreateCreditCardFromTransparentRedirect()
+    {
+        $customer = Braintree_Customer::create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jonez'
+        ))->customer;
+
+        $params = array(
+            'credit_card' => array(
+                'number' => Braintree_Test_CreditCardNumbers::$visa
+            )
+        );
+        $trParams = array(
+            'creditCard' => array(
+                'customerId' => $customer->id,
+                'expirationMonth' => '01',
+                'expirationYear' => '10'
+            )
+        );
+
+        $trData = Braintree_TransparentRedirect::createCreditCardData(
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+        );
+
+        $queryString = Braintree_TestHelper::submitTrRequest(
+            Braintree_TransparentRedirect::url(),
+            $params,
+            $trData
+        );
+
+        $result = Braintree_TransparentRedirect::confirm($queryString);
+        $this->assertTrue($result->success);
+
+        $creditCard = $result->creditCard;
+        $this->assertequals('401288', $creditCard->bin);
+        $this->assertequals('1881', $creditCard->last4);
+        $this->assertequals('01/2010', $creditCard->expirationDate);
+    }
+
+    function testUpdateCreditCardFromTransparentRedirect()
+    {
+        $customer = Braintree_Customer::create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jonez'
+        ))->customer;
+        $creditCard = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => Braintree_Test_CreditCardNumbers::$masterCard,
+            'expirationMonth' => '10',
+            'expirationYear' => '10'
+        ))->creditCard;
+
+        $params = array(
+            'credit_card' => array(
+                'number' => Braintree_Test_CreditCardNumbers::$visa
+            )
+        );
+        $trParams = array(
+            'paymentMethodToken' => $creditCard->token,
+            'creditCard' => array(
+                'expirationMonth' => '11',
+                'expirationYear' => '11'
+            )
+        );
+
+        $trData = Braintree_TransparentRedirect::updateCreditCardData(
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+        );
+
+        $queryString = Braintree_TestHelper::submitTrRequest(
+            Braintree_TransparentRedirect::url(),
+            $params,
+            $trData
+        );
+
+        Braintree_TransparentRedirect::confirm($queryString);
+
+        $creditCard = Braintree_CreditCard::find($creditCard->token);
+        $this->assertequals('401288', $creditCard->bin);
+        $this->assertequals('1881', $creditCard->last4);
+        $this->assertequals('11/2011', $creditCard->expirationDate);
+    }
+
     function testUrl()
     {
         $url = Braintree_TransparentRedirect::url();

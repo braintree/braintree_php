@@ -113,7 +113,9 @@ class Braintree_TransparentRedirect
         $confirmationKlasses = array(
             Braintree_TransparentRedirect::CREATE_TRANSACTION => 'Braintree_Transaction',
             Braintree_TransparentRedirect::CREATE_CUSTOMER => 'Braintree_Customer',
-            Braintree_TransparentRedirect::UPDATE_CUSTOMER => 'Braintree_Customer'
+            Braintree_TransparentRedirect::UPDATE_CUSTOMER => 'Braintree_Customer',
+            Braintree_TransparentRedirect::CREATE_PAYMENT_METHOD => 'Braintree_CreditCard',
+            Braintree_TransparentRedirect::UPDATE_PAYMENT_METHOD => 'Braintree_CreditCard'
         );
         return $confirmationKlasses[$params["kind"]]::_doCreate(
             '/transparent_redirect_requests/' . $params['id'] . '/confirm',
@@ -132,6 +134,7 @@ class Braintree_TransparentRedirect
                 self::$_createCreditCardSignature,
                 $params
                 );
+        $params["kind"] = Braintree_TransparentRedirect::CREATE_PAYMENT_METHOD;
         return self::_data($params);
     }
 
@@ -207,6 +210,7 @@ class Braintree_TransparentRedirect
                    'expected params to contain paymentMethodToken.'
                    );
         }
+        $params["kind"] = Braintree_TransparentRedirect::UPDATE_PAYMENT_METHOD;
         return self::_data($params);
     }
 
