@@ -112,7 +112,8 @@ class Braintree_TransparentRedirect
         );
         $confirmationKlasses = array(
             Braintree_TransparentRedirect::CREATE_TRANSACTION => 'Braintree_Transaction',
-            Braintree_TransparentRedirect::CREATE_CUSTOMER => 'Braintree_Customer'
+            Braintree_TransparentRedirect::CREATE_CUSTOMER => 'Braintree_Customer',
+            Braintree_TransparentRedirect::UPDATE_CUSTOMER => 'Braintree_Customer'
         );
         return $confirmationKlasses[$params["kind"]]::_doCreate(
             '/transparent_redirect_requests/' . $params['id'] . '/confirm',
@@ -235,6 +236,7 @@ class Braintree_TransparentRedirect
                    'expected params to contain customerId of customer to update'
                    );
         }
+        $params["kind"] = Braintree_TransparentRedirect::UPDATE_CUSTOMER;
         return self::_data($params);
     }
 

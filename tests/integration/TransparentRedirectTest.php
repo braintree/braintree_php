@@ -129,6 +129,42 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $this->assertequals('Penultimate', $customer->lastName);
     }
 
+    function testUpdateCustomerFromTransparentRedirect()
+    {
+        $customer = Braintree_Customer::create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jonez'
+        ))->customer;
+        $params = array(
+            'customer' => array(
+                'first_name' => 'Second'
+            )
+        );
+        $trParams = array(
+            'customerId' => $customer->id,
+            'customer' => array(
+                'lastName' => 'Penultimate'
+            )
+        );
+
+        $trData = Braintree_TransparentRedirect::updateCustomerData(
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+        );
+
+        $queryString = Braintree_TestHelper::submitTrRequest(
+            Braintree_TransparentRedirect::url(),
+            $params,
+            $trData
+        );
+
+        $result = Braintree_TransparentRedirect::confirm($queryString);
+        $this->assertTrue($result->success);
+
+        $customer = $result->customer;
+        $this->assertequals('Second', $customer->firstName);
+        $this->assertequals('Penultimate', $customer->lastName);
+    }
+
     function testUrl()
     {
         $url = Braintree_TransparentRedirect::url();
