@@ -129,11 +129,9 @@ class Braintree_Address extends Braintree
      */
     public function isEqual($other)
     {
-        return !is_a($other, __CLASS__) ?
-            false : ($this->id === $other->id &&
-                $this->customerId === $other->customerId
-        );
-
+        return !($other instanceof Braintree_Address) ?
+            false :
+            ($this->id === $other->id && $this->customerId === $other->customerId);
     }
 
     /**
@@ -281,9 +279,7 @@ class Braintree_Address extends Braintree
      */
     private static function _determineCustomerId($customerOrId)
     {
-        $customerId = is_a('Braintree_Customer', $customerOrId) ?
-            $customerOrId->id :
-            $customerOrId;
+        $customerId = ($customerOrId instanceof Braintree_Customer) ? $customerOrId->id : $customerOrId;
         self::_validateCustomerId($customerId);
         return $customerId;
 

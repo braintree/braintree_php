@@ -412,9 +412,7 @@ class Braintree_Customer extends Braintree
      */
     public function isEqual($otherCust)
     {
-        return !is_a('Braintree_Customer', $otherCust) ?
-                false :
-                $this->id === $otherCust->id;
+        return !($otherCust instanceof Braintree_Customer) ? false : $this->id === $otherCust->id;
     }
 
     /* private class properties  */

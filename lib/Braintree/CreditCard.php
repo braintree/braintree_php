@@ -391,9 +391,7 @@ class Braintree_CreditCard extends Braintree
      */
     public function isEqual($otherCreditCard)
     {
-        return !is_a('Braintree_CreditCard', $otherCreditCard) ?
-                false :
-                $this->token === $otherCreditCard->token;
+        return !($otherCreditCard instanceof Braintree_CreditCard) ? false : $this->token === $otherCreditCard->token;
     }
 
    public static function createSignature()

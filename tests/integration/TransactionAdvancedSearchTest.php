@@ -736,9 +736,11 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $past = date_sub(clone $transaction->createdAt, new DateInterval("PT1H"));
+        $past = clone $transaction->createdAt;
+        $past->modify("-1 hour");
         $now = $transaction->createdAt;
-        $future = date_add(clone $transaction->createdAt, new DateInterval("PT1H"));
+        $future = clone $transaction->createdAt;
+        $future->modify("+1 hour");
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
@@ -771,9 +773,11 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $past = date_sub(clone $transaction->createdAt, new DateInterval("PT1H"));
+        $past = clone $transaction->createdAt;
+        $past->modify("-1 hour");
         $now = $transaction->createdAt;
-        $future = date_add(clone $transaction->createdAt, new DateInterval("PT1H"));
+        $future = clone $transaction->createdAt;
+        $future->modify("+1 hour");
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
@@ -806,10 +810,13 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $past = date_sub(clone $transaction->createdAt, new DateInterval("PT1H"));
+        $past = clone $transaction->createdAt;
+        $past->modify("-1 hour");
         $now = $transaction->createdAt;
-        $future = date_add(clone $transaction->createdAt, new DateInterval("PT1H"));
-        $future2 = date_add(clone $transaction->createdAt, new DateInterval("P1D"));
+        $future = clone $transaction->createdAt;
+        $future->modify("+1 hour");
+        $future2 = clone $transaction->createdAt;
+        $future2->modify("+1 day");
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
