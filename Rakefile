@@ -6,12 +6,12 @@ task :test => %w[test:unit test:integration]
 namespace :test do
   desc "run unit tests"
   task :unit do
-    sh "phpunit tests/unit"
+    sh "phpunit --configuration tests/unit.xml"
   end
 
   desc "run integration tests"
   task :integration do
-    sh "phpunit tests/integration"
+    sh "phpunit --configuration tests/integration.xml"
   end
 end
 
