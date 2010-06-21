@@ -1,3 +1,4 @@
+require 'English'
 load File.dirname(__FILE__) + "/cruise.rake"
 
 task :default => :test
@@ -6,12 +7,12 @@ task :test => %w[test:unit test:integration]
 namespace :test do
   desc "run unit tests"
   task :unit do
-    sh "phpunit --configuration tests/unit.xml"
+    run_php_tests("tests/unit")
   end
 
   desc "run integration tests"
   task :integration do
-    sh "phpunit --configuration tests/integration.xml"
+    run_php_tests("tests/integration")
   end
 end
 
@@ -39,4 +40,9 @@ namespace :docs do
 
     sh "#{phpdoc_path} -d #{project_path} -t #{DOCS_PATH} -ti \"#{title}\" -po #{packages} #{output_format}:#{converter}:#{template} -pp #{private_flag} --ignore \"tests/\",\"Zend/\""
   end
+end
+
+def run_php_tests(path)
+  sh "phpunit #{path} | tee /tmp/phpunit.#{$PID}"
+  raise "Error loading tests" if File.read("/tmp/phpunit.#{$PID}") =~ /\(0 tests/
 end
