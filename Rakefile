@@ -43,6 +43,7 @@ namespace :docs do
 end
 
 def run_php_tests(path)
-  sh "phpunit #{path} | tee /tmp/phpunit.#{$PID}"
-  raise "Error loading tests" if File.read("/tmp/phpunit.#{$PID}") =~ /\(0 tests/
+  Dir.glob(path + "/**/*Test.php").each do |file|
+    sh "phpunit #{file}"
+  end
 end
