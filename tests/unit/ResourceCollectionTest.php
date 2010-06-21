@@ -3,13 +3,14 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_TestResource
 {
+    static function lookup($id) {
+        return Braintree_ResourceCollectionTest::$values[intval($id)];
+    }
+
     static function fetch($ids)
     {
-        $lookup = function($id) {
-            return Braintree_ResourceCollectionTest::$values[intval($id)];
-        };
 
-        return array_map($lookup, $ids);
+        return array_map("Braintree_TestResource::lookup", $ids);
     }
 }
 
