@@ -164,6 +164,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('creditCard')->onAttribute('expirationDate');
         $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_INVALID, $errors[0]->code);
+        $this->assertEquals("Customer ID is required.\nCredit card number is required.\nExpiration date is invalid.", $result->summary);
     }
 
     function testCreateNoValidate_throwsIfValidationsFail()

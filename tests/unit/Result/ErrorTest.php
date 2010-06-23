@@ -5,7 +5,7 @@ class Braintree_Result_ErrorTest extends PHPUnit_Framework_TestCase
 {
     function testCallingNonExsitingFieldReturnsNull()
     {
-        $result = new Braintree_Result_Error(array('errors' => array(), 'params' => array()));
+        $result = new Braintree_Result_Error(array('errors' => array(), 'params' => array(), 'summary' => 'briefly describe'));
         $this->assertNull($result->transaction);
     }
 }
