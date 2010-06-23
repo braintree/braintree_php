@@ -6,18 +6,13 @@ task :test => %w[test:unit test:integration]
 
 namespace :test do
   desc "run unit tests"
-  task :unit => :verify_phpunit do
-    sh 'phpunit tests/unit'
+  task :unit do
+    run_php_tests("tests/unit")
   end
 
   desc "run integration tests"
-  task :integration => :verify_phpunit do
-    sh 'phpunit tests/integration'
-  end
-
-  desc "make sure we are on phpunit 3.5"
-  task :verify_phpunit do
-    raise "We require phpunit 3.5" unless `phpunit --version` =~ /PHPUnit 3\.5/
+  task :integration do
+    run_php_tests("tests/integration")
   end
 end
 
@@ -44,5 +39,11 @@ namespace :docs do
     private_flag = "off"
 
     sh "#{phpdoc_path} -d #{project_path} -t #{DOCS_PATH} -ti \"#{title}\" -po #{packages} #{output_format}:#{converter}:#{template} -pp #{private_flag} --ignore \"tests/\",\"Zend/\""
+  end
+end
+
+def run_php_tests(path)
+  Dir.glob(path + "/**/*Test.php").each do |file|
+    sh "phpunit #{file}"
   end
 end

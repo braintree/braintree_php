@@ -25,7 +25,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
      /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage "invalid" is not a valid environment
+     * @expectedExceptionMessage environment needs to be set
      */
     function testSetInvalidEnvironment()
     {

@@ -115,7 +115,7 @@ class Braintree_Configuration extends Braintree
         if (isset(self::$_cache[$key]) &&
            (empty(self::$_cache[$key]))) {
             throw new Braintree_Exception_Configuration(
-                      $key.' needs to be set.'
+                      $key.' needs to be set'
                       );
         }
 
