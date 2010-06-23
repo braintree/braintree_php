@@ -195,6 +195,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $customer = Braintree_Customer::createNoValidate();
         $queryString = $this->createCreditCardViaTr(
             array(
@@ -218,6 +219,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect_withDefault()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $customer = Braintree_Customer::createNoValidate();
         $queryString = $this->createCreditCardViaTr(
             array(

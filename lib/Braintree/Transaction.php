@@ -226,6 +226,7 @@ final class Braintree_Transaction extends Braintree
      */
     public static function createFromTransparentRedirect($queryString)
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::confirm", E_USER_NOTICE);
         $params = Braintree_TransparentRedirect::parseAndValidateQueryString(
                 $queryString
         );
@@ -242,6 +243,7 @@ final class Braintree_Transaction extends Braintree
      */
     public static function createTransactionUrl()
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
         return Braintree_Configuration::merchantUrl() .
                 '/transactions/all/create_via_transparent_redirect_request';
     }

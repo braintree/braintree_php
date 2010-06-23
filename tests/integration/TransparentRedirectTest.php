@@ -5,6 +5,7 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
 {
     function testRedirectUrl()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $trData = Braintree_TransparentRedirect::createCustomerData(
             array("redirectUrl" => "http://www.example.com?foo=bar")
         );
@@ -19,6 +20,7 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
 
     function testParseAndValidateQueryString_throwsDownForMaintenanceErrorIfDownForMaintenance()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $trData = Braintree_TransparentRedirect::createCustomerData(
             array("redirectUrl" => "http://www.example.com")
         );
@@ -33,6 +35,7 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
 
     function testParseAndValidateQueryString_throwsAuthenticationErrorIfBadCredentials()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $privateKey = Braintree_Configuration::privateKey();
         Braintree_Configuration::privateKey('incorrect');
         try {

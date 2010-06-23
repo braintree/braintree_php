@@ -427,6 +427,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createCustomerViaTr(
             array(
                 'customer' => array(
@@ -453,6 +454,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect_withParamsInTrData()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createCustomerViaTr(
             array(
             ),
@@ -479,6 +481,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect_withValidationErrors()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createCustomerViaTr(
             array(
                 'customer' => array(
@@ -504,6 +507,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testUpdateFromTransparentRedirect()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $customer = Braintree_Customer::createNoValidate();
         $queryString = $this->updateCustomerViaTr(
             array(
@@ -526,6 +530,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testUpdateFromTransparentRedirect_withParamsInTrData()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $customer = Braintree_Customer::createNoValidate();
         $queryString = $this->updateCustomerViaTr(
             array(
@@ -548,6 +553,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testUpdateFromTransparentRedirect_withValidationErrors()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $customer = Braintree_Customer::createNoValidate();
         $queryString = $this->updateCustomerViaTr(
             array(
@@ -567,6 +573,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testUpdateFromTransparentRedirect_withUpdateExisting()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $customer = Braintree_Customer::create(array(
             'firstName' => 'Mike',
             'lastName' => 'Jones',
@@ -732,6 +739,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function createCustomerViaTr($regularParams, $trParams)
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $trData = Braintree_TransparentRedirect::createCustomerData(
             array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
@@ -744,6 +752,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function updateCustomerViaTr($regularParams, $trParams)
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $trData = Braintree_TransparentRedirect::updateCustomerData(
             array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );

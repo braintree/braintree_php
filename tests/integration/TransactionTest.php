@@ -549,6 +549,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createTransactionViaTr(
             array(
                 'transaction' => array(
@@ -586,6 +587,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirectWithInvalidParams()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createTransactionViaTr(
             array(
                 'transaction' => array(
@@ -616,6 +618,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect_withParamsInTrData()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createTransactionViaTr(
             array(
             ),
@@ -651,6 +654,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect_withValidationErrors()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createTransactionViaTr(
             array(
                 'transaction' => array(
@@ -711,6 +715,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function createTransactionViaTr($regularParams, $trParams)
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $trData = Braintree_TransparentRedirect::transactionData(
             array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );

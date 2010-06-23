@@ -83,6 +83,7 @@ class Braintree_CreditCard extends Braintree
      */
     public static function createFromTransparentRedirect($queryString)
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::confirm", E_USER_NOTICE);
         $params = Braintree_TransparentRedirect::parseAndValidateQueryString(
             $queryString
         );
@@ -100,6 +101,7 @@ class Braintree_CreditCard extends Braintree
      */
     public static function createCreditCardUrl()
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
         return Braintree_Configuration::merchantUrl() .
                 '/payment_methods/all/create_via_transparent_redirect_request';
     }
@@ -295,6 +297,7 @@ class Braintree_CreditCard extends Braintree
      */
     public static function updateCreditCardUrl()
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
         return Braintree_Configuration::merchantUrl() .
                 '/payment_methods/all/update_via_transparent_redirect_request';
     }
@@ -308,6 +311,7 @@ class Braintree_CreditCard extends Braintree
      */
     public static function updateFromTransparentRedirect($queryString)
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::confirm", E_USER_NOTICE);
         $params = Braintree_TransparentRedirect::parseAndValidateQueryString(
             $queryString
         );

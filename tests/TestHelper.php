@@ -57,6 +57,18 @@ class Braintree_TestHelper
         return trim($match[1]);
     }
 
+    public static function suppressDeprecationWarnings()
+    {
+        set_error_handler("Braintree_TestHelper::_errorHandler", E_USER_NOTICE);
+    }
+
+    static function _errorHandler($errno, $errstr, $errfile, $errline)
+    {
+        if (preg_match('/^DEPRECATED/', $errstr) == 0) {
+            trigger_error('Unknown error received: ' . $errstr, E_USER_ERROR);
+        }
+    }
+
     public static function includes($collection, $targetItem)
     {
         foreach ($collection AS $item) {
