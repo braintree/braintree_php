@@ -125,7 +125,7 @@ class Braintree_CreditCard extends Braintree
         $response = Braintree_Http::post("/payment_methods/all/expired", array('search' => array('ids' => $ids)));
 
         return braintree_util::extractattributeasarray(
-            $response['creditCards'],
+            $response['paymentMethods'],
             'creditCard'
         );
     }
@@ -153,7 +153,7 @@ class Braintree_CreditCard extends Braintree
         $response = Braintree_Http::post($queryPath, array('search' => array('ids' => $ids)));
 
         return Braintree_Util::extractAttributeAsArray(
-            $response['creditCards'],
+            $response['paymentMethods'],
             'creditCard'
         );
     }
@@ -326,10 +326,7 @@ class Braintree_CreditCard extends Braintree
      */
     public function isDefault()
     {
-        if ($this->default) {
-            return true;
-        }
-        return false;
+        return $this->default;
     }
 
     /**
@@ -339,10 +336,7 @@ class Braintree_CreditCard extends Braintree
      */
     public function isExpired()
     {
-        if ($this->expirationYear == date('Y')) {
-           return ($this->expirationMonth < date('m'));
-        }
-        return ($this->expirationYear < date('Y'));
+        return $this->expired;
     }
 
     public static function delete($token)

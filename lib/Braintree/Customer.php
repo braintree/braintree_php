@@ -40,13 +40,13 @@ class Braintree_Customer extends Braintree
         $pager = array(
             'className' => __CLASS__,
             'classMethod' => 'fetch',
-            'methodArgs' => array(array())
+            'methodArgs' => array()
             );
 
         return new Braintree_ResourceCollection($response, $pager);
     }
 
-    public static function fetch($query, $ids)
+    public static function fetch($ids)
     {
         $response = braintree_http::post('/customers/advanced_search', array('search' => array('ids' => $ids)));
 
