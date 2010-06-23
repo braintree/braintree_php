@@ -251,7 +251,8 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
     function testUrl()
     {
         $url = Braintree_TransparentRedirect::url();
-        $this->assertEquals("http://localhost:3000/merchants/integration_merchant_id/transparent_redirect_requests", $url);
+        $developmentPort = getenv("GATEWAY_PORT") ? getenv("GATEWAY_PORT") : 3000;
+        $this->assertEquals("http://localhost:" . $developmentPort . "/merchants/integration_merchant_id/transparent_redirect_requests", $url);
     }
 }
 ?>

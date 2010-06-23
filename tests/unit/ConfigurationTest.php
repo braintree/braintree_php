@@ -72,7 +72,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         Braintree_Configuration::environment('development');
         $pn = Braintree_Configuration::portNumber();
-        $this->assertEquals(3000, $pn);
+        $this->assertEquals(getenv("GATEWAY_PORT") ? getenv("GATEWAY_PORT") : 3000, $pn);
 
         Braintree_Configuration::environment('sandbox');
         $pn = Braintree_Configuration::portNumber();
