@@ -442,7 +442,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     function testExpired()
     {
         $collection = Braintree_CreditCard::expired();
-        $this->assertTrue($collection->_maximumCount() > 1);
+        $this->assertTrue($collection->maximumCount() > 1);
 
         $arr = array();
         foreach($collection as $creditCard) {
@@ -450,7 +450,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             array_push($arr, $creditCard->token);
         }
         $uniqueCreditCardTokens = array_unique(array_values($arr));
-        $this->assertEquals($collection->_maximumCount(), count($uniqueCreditCardTokens));
+        $this->assertEquals($collection->maximumCount(), count($uniqueCreditCardTokens));
     }
 
 
@@ -460,7 +460,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             mktime(0, 0, 0, 1, 1, 2009),
             mktime(23, 59, 59, 12, 31, 2009)
         );
-        $this->assertTrue($collection->_maximumCount() > 1);
+        $this->assertTrue($collection->maximumCount() > 1);
 
         $arr = array();
         foreach($collection as $creditCard) {
@@ -468,7 +468,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             array_push($arr, $creditCard->token);
         }
         $uniqueCreditCardTokens = array_unique(array_values($arr));
-        $this->assertEquals($collection->_maximumCount(), count($uniqueCreditCardTokens));
+        $this->assertEquals($collection->maximumCount(), count($uniqueCreditCardTokens));
     }
 
     function testFind()

@@ -106,7 +106,7 @@ class Braintree_ResourceCollection implements Iterator
         }
     }
 
-    public function _maximumCount()
+    public function maximumCount()
     {
         return count($this->_ids);
     }

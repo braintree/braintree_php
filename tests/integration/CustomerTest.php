@@ -6,20 +6,20 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
     function testAll_smokeTest()
     {
         $all = Braintree_Customer::all();
-        $this->assertTrue($all->_maximumCount() > 0);
+        $this->assertTrue($all->maximumCount() > 0);
     }
 
     function testAllWithManyResults()
     {
         $collection = Braintree_Customer::all();
-        $this->assertTrue($collection->_maximumCount() > 100);
+        $this->assertTrue($collection->maximumCount() > 100);
 
         $arr = array();
         foreach($collection as $customer) {
             array_push($arr, $customer->id);
         }
         $unique_customer_ids = array_unique(array_values($arr));
-        $this->assertEquals($collection->_maximumCount(), count($unique_customer_ids));
+        $this->assertEquals($collection->maximumCount(), count($unique_customer_ids));
     }
 
     function testCreate()
