@@ -12,7 +12,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
     function testAllWithManyResults()
     {
         $collection = Braintree_Customer::all();
-        $this->assertTrue($collection->maximumCount() > 100);
+        $this->assertTrue($collection->maximumCount() > 1);
 
         $arr = array();
         foreach($collection as $customer) {
