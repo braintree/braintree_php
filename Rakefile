@@ -1,4 +1,3 @@
-require 'English'
 load File.dirname(__FILE__) + "/cruise.rake"
 
 task :default => :test
