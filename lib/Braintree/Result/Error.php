@@ -39,6 +39,7 @@ class Braintree_Result_Error
 {
    private $_params;
    private $_errors;
+   private $_summary;
    private $_creditCardVerification;
    private $_transaction;
    /**
@@ -76,6 +77,7 @@ class Braintree_Result_Error
    {
        $this->_params = $response['params'];
        $this->_errors = new Braintree_Error_ErrorCollection($response['errors']);
+       $this->_summary = $response['summary'];
        // create a CreditCardVerification object
        // populated with gateway response data
        if(isset($response['verification'])) {
