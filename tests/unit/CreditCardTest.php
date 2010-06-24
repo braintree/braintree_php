@@ -25,18 +25,6 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($creditCard->isDefault());
     }
 
-    function testIsExpired()
-    {
-        $creditCard = Braintree_CreditCard::factory(array('expirationMonth' => '01', 'expirationYear' => '2010'));
-        $this->assertTrue($creditCard->isExpired());
-
-        $creditCard = Braintree_CreditCard::factory(array('expirationMonth' => '01', 'expirationYear' => '2009'));
-        $this->assertTrue($creditCard->isExpired());
-
-        $creditCard = Braintree_CreditCard::factory(array('expirationMonth' => '01', 'expirationYear' => (date('Y') + 1)));
-        $this->assertFalse($creditCard->isExpired());
-    }
-
     function testMaskedNumber()
     {
         $creditCard = Braintree_CreditCard::factory(array('bin' => '123456', 'last4' => '7890'));
@@ -48,7 +36,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $expected = array(
             'customerId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
-            array('options' => array('makeDefault', 'verifyCard')),
+            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
             array(
                 'billingAddress' => array(
                     'firstName',
@@ -71,7 +59,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $expected = array(
             'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
-            array('options' => array('makeDefault', 'verifyCard')),
+            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
             array(
                 'billingAddress' => array(
                     'firstName',

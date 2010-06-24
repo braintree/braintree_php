@@ -1,3 +1,11 @@
+## 2.3.0
+
+* Added unified Braintree_TransparentRedirect url and confirm methods and deprecated old methods
+* Added functions to Braintree_CreditCard to allow searching on expiring and expired credit cards
+* Allow card verification against a specified merchant account
+* Added ability to update a customer, credit card, and billing address in one request
+* Allow updating the paymentMethodToken on a subscription
+
 ## 2.2.0
 
 * Prevent race condition when pulling back collection results -- search results represent the state of the data at the time the query was run

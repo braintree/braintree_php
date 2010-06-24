@@ -17,24 +17,6 @@ class Braintree_Subscription extends Braintree
     const CANCELED = 'canceled';
     const PAST_DUE = 'past_due';
 
-    protected $_attributes = array(
-        'billingPeriodEndDate' => '',
-        'billingPeriodStartDate' => '',
-        'failureCount' => '',
-        'firstBillingDate' => '',
-        'merchantAccountId' => '',
-        'merchantId' => '',
-        'nextBillingDate' => '',
-        'paymentMethodId' => '',
-        'planId' => '',
-        'price' => '',
-        'status' => '',
-        'token' => '',
-        'trialDuration' => '',
-        'trialDurationUnit' => '',
-        'trialPeriod' => ''
-    );
-
     public static function create($attributes)
     {
         Braintree_Util::verifyKeys(self::allowedAttributes(), $attributes);
@@ -49,6 +31,7 @@ class Braintree_Subscription extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 
@@ -133,13 +116,12 @@ class Braintree_Subscription extends Braintree
         );
     }
 
-
     /**
      * @ignore
      */
     protected function _initialize($attributes)
     {
-        $this->_attributes = array_merge($this->_attributes, $attributes);
+        $this->_attributes = $attributes;
 
         $transactionArray = array();
         if (isset($attributes['transactions'])) {

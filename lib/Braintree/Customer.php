@@ -40,13 +40,13 @@ class Braintree_Customer extends Braintree
         $pager = array(
             'className' => __CLASS__,
             'classMethod' => 'fetch',
-            'methodArgs' => array(array())
+            'methodArgs' => array()
             );
 
         return new Braintree_ResourceCollection($response, $pager);
     }
 
-    public static function fetch($query, $ids)
+    public static function fetch($ids)
     {
         $response = braintree_http::post('/customers/advanced_search', array('search' => array('ids' => $ids)));
 
@@ -103,13 +103,14 @@ class Braintree_Customer extends Braintree
     }
     /**
      * create a customer from a TransparentRedirect operation
-     * 
+     *
      * @access public
      * @param array $attribs
      * @return object
      */
     public static function createFromTransparentRedirect($queryString)
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::confirm", E_USER_NOTICE);
         $params = Braintree_TransparentRedirect::parseAndValidateQueryString(
                 $queryString
                 );
@@ -120,13 +121,14 @@ class Braintree_Customer extends Braintree
     }
 
     /**
-     * 
+     *
      * @access public
      * @param none
      * @return string
      */
     public static function createCustomerUrl()
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
         return Braintree_Configuration::merchantUrl() .
                 '/customers/all/create_via_transparent_redirect_request';
     }
@@ -156,9 +158,18 @@ class Braintree_Customer extends Braintree
      */
     public static function updateSignature()
     {
+        $creditCardSignature = Braintree_CreditCard::updateSignature();
+
+        foreach($creditCardSignature AS $key => $value) {
+            if(is_array($value) and array_key_exists('options', $value)) {
+                array_push($creditCardSignature[$key]['options'], 'updateExistingToken');
+            }
+        }
+
         $signature = array(
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website',
+            array('creditCard' => $creditCardSignature),
             array('customFields' => array('_anyKey_')),
             );
         return $signature;
@@ -167,7 +178,7 @@ class Braintree_Customer extends Braintree
 
     /**
      * find a customer by id
-     * 
+     *
      * @access public
      * @param string id customer Id
      * @return object Braintree_Customer
@@ -269,12 +280,12 @@ class Braintree_Customer extends Braintree
 
     /**
      * updates the customer record
-     * 
+     *
      * if calling this method in static context, customerId
      * is the 2nd attribute. customerId is not sent in object context.
-     * 
+     *
      * @access public
-     * @param array $attributes 
+     * @param array $attributes
      * @param string $customerId (optional)
      * @return object Braintree_Result_Successful or Braintree_Result_Error
      */
@@ -290,8 +301,8 @@ class Braintree_Customer extends Braintree
     }
 
     /**
-     * update a customer record, assuming validations will pass 
-     * 
+     * update a customer record, assuming validations will pass
+     *
      * if calling this method in static context, customerId
      * is the 2nd attribute. customerId is not sent in object context.
      * returns a Braintree_Customer object on success
@@ -308,26 +319,28 @@ class Braintree_Customer extends Braintree
         return self::returnObjectOrThrowException(__CLASS__, $result);
     }
     /**
-     * 
+     *
      * @access public
      * @param none
      * @return string
      */
     public static function updateCustomerUrl()
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
         return Braintree_Configuration::merchantUrl() .
                 '/customers/all/update_via_transparent_redirect_request';
     }
 
     /**
      * update a customer from a TransparentRedirect operation
-     * 
+     *
      * @access public
      * @param array $attribs
      * @return object
      */
     public static function updateFromTransparentRedirect($queryString)
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::confirm", E_USER_NOTICE);
         $params = Braintree_TransparentRedirect::parseAndValidateQueryString(
                 $queryString
         );
@@ -351,7 +364,7 @@ class Braintree_Customer extends Braintree
     protected function _initialize($customerAttribs)
     {
         // set the attributes
-        $this->_attributes = array_merge($this->_attributes, $customerAttribs);
+        $this->_attributes = $customerAttribs;
 
         // map each address into its own object
         $addressArray = array();
@@ -403,9 +416,7 @@ class Braintree_Customer extends Braintree
      */
     public function isEqual($otherCust)
     {
-        return !is_a('Braintree_Customer', $otherCust) ?
-                false :
-                $this->id === $otherCust->id;
+        return !($otherCust instanceof Braintree_Customer) ? false : $this->id === $otherCust->id;
     }
 
     /* private class properties  */
@@ -428,6 +439,21 @@ class Braintree_Customer extends Braintree
         'updatedAt'   => '',
         'website'     => '',
         );
+
+    /**
+     * sends the create request to the gateway
+     *
+     * @ignore
+     * @param string $url
+     * @param array $params
+     * @return mixed
+     */
+    public static function _doCreate($url, $params)
+    {
+        $response = Braintree_Http::post($url, $params);
+
+        return self::_verifyGatewayResponse($response);
+    }
 
     /**
      * sets private properties
@@ -465,20 +491,6 @@ class Braintree_Customer extends Braintree
     /* private class methods */
 
     /**
-     * sends the create request to the gateway
-     *
-     * @ignore
-     * @param string $url
-     * @param array $params
-     * @return mixed
-     */
-    private static function _doCreate($url, $params)
-    {
-        $response = Braintree_Http::post($url, $params);
-
-        return self::_verifyGatewayResponse($response);
-    }
-    /**
      * sends the update request to the gateway
      *
      * @ignore
@@ -495,12 +507,12 @@ class Braintree_Customer extends Braintree
 
     /**
      * generic method for validating incoming gateway responses
-     * 
+     *
      * creates a new Braintree_Customer object and encapsulates
      * it inside a Braintree_Result_Successful object, or
      * encapsulates a Braintree_Errors object inside a Result_Error
      * alternatively, throws an Unexpected exception if the response is invalid.
-     * 
+     *
      * @ignore
      * @param array $response gateway response values
      * @return object Result_Successful or Result_Error

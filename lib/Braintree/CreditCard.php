@@ -83,6 +83,7 @@ class Braintree_CreditCard extends Braintree
      */
     public static function createFromTransparentRedirect($queryString)
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::confirm", E_USER_NOTICE);
         $params = Braintree_TransparentRedirect::parseAndValidateQueryString(
             $queryString
         );
@@ -100,6 +101,7 @@ class Braintree_CreditCard extends Braintree
      */
     public static function createCreditCardUrl()
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
         return Braintree_Configuration::merchantUrl() .
                 '/payment_methods/all/create_via_transparent_redirect_request';
     }
@@ -125,7 +127,7 @@ class Braintree_CreditCard extends Braintree
         $response = Braintree_Http::post("/payment_methods/all/expired", array('search' => array('ids' => $ids)));
 
         return braintree_util::extractattributeasarray(
-            $response['creditCards'],
+            $response['paymentMethods'],
             'creditCard'
         );
     }
@@ -153,7 +155,7 @@ class Braintree_CreditCard extends Braintree
         $response = Braintree_Http::post($queryPath, array('search' => array('ids' => $ids)));
 
         return Braintree_Util::extractAttributeAsArray(
-            $response['creditCards'],
+            $response['paymentMethods'],
             'creditCard'
         );
     }
@@ -295,6 +297,7 @@ class Braintree_CreditCard extends Braintree
      */
     public static function updateCreditCardUrl()
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
         return Braintree_Configuration::merchantUrl() .
                 '/payment_methods/all/update_via_transparent_redirect_request';
     }
@@ -308,6 +311,7 @@ class Braintree_CreditCard extends Braintree
      */
     public static function updateFromTransparentRedirect($queryString)
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::confirm", E_USER_NOTICE);
         $params = Braintree_TransparentRedirect::parseAndValidateQueryString(
             $queryString
         );
@@ -326,10 +330,7 @@ class Braintree_CreditCard extends Braintree
      */
     public function isDefault()
     {
-        if ($this->default) {
-            return true;
-        }
-        return false;
+        return $this->default;
     }
 
     /**
@@ -339,10 +340,7 @@ class Braintree_CreditCard extends Braintree
      */
     public function isExpired()
     {
-        if ($this->expirationYear == date('Y')) {
-           return ($this->expirationMonth < date('m'));
-        }
-        return ($this->expirationYear < date('Y'));
+        return $this->expired;
     }
 
     public static function delete($token)
@@ -362,7 +360,7 @@ class Braintree_CreditCard extends Braintree
     protected function _initialize($creditCardAttribs)
     {
         // set the attributes
-        $this->_attributes = array_merge($this->_attributes, $creditCardAttribs);
+        $this->_attributes = $creditCardAttribs;
 
         // map each address into its own object
         $billingAddress = isset($creditCardAttribs['billingAddress']) ?
@@ -391,9 +389,7 @@ class Braintree_CreditCard extends Braintree
      */
     public function isEqual($otherCreditCard)
     {
-        return !is_a('Braintree_CreditCard', $otherCreditCard) ?
-                false :
-                $this->token === $otherCreditCard->token;
+        return !($otherCreditCard instanceof Braintree_CreditCard) ? false : $this->token === $otherCreditCard->token;
     }
 
    public static function createSignature()
@@ -401,7 +397,7 @@ class Braintree_CreditCard extends Braintree
         return array(
             'customerId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
-            array('options' => array('makeDefault', 'verifyCard')),
+            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
             array(
                 'billingAddress' => array(
                     'firstName',
@@ -440,6 +436,21 @@ class Braintree_CreditCard extends Braintree
    }
 
     /**
+     * sends the create request to the gateway
+     *
+     * @ignore
+     * @param string $url
+     * @param array $params
+     * @return mixed
+     */
+    public static function _doCreate($url, $params)
+    {
+        $response = Braintree_Http::post($url, $params);
+
+        return self::_verifyGatewayResponse($response);
+    }
+
+    /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
      * @return string
@@ -449,25 +460,6 @@ class Braintree_CreditCard extends Braintree
         $objOutput = Braintree_Util::implodeAssociativeArray($this->_attributes);
         return __CLASS__ . '[' . $objOutput . ']';
     }
-    /* private class properties  */
-
-    /**
-     * @access protected
-     * @var array registry of customer data
-     */
-    protected $_attributes = array(
-        'billingAddress'     => '',
-        'bin' => '',
-        'cardType'  => '',
-        'cardholderName' => '',
-        'createdAt'   => '',
-        'customerId'          => '',
-        'expirationMonth'    => '',
-        'expirationYear'    => '',
-        'last4'  => '',
-        'token'      => '',
-        'updatedAt'   => '',
-    );
 
     /**
      * verifies that a valid credit card token is being used
@@ -502,21 +494,6 @@ class Braintree_CreditCard extends Braintree
     }
 
      /* private class methods */
-
-    /**
-     * sends the create request to the gateway
-     *
-     * @ignore
-     * @param string $url
-     * @param array $params
-     * @return mixed
-     */
-    private static function _doCreate($url, $params)
-    {
-        $response = Braintree_Http::post($url, $params);
-
-        return self::_verifyGatewayResponse($response);
-    }
 
     /**
      * sends the update request to the gateway
@@ -570,8 +547,15 @@ class Braintree_CreditCard extends Braintree
      */
     public static function factory($attributes)
     {
+        $defaultAttributes = array(
+            'bin' => '',
+            'expirationMonth'    => '',
+            'expirationYear'    => '',
+            'last4'  => '',
+        );
+
         $instance = new self();
-        $instance->_initialize($attributes);
+        $instance->_initialize(array_merge($defaultAttributes, $attributes));
         return $instance;
     }
 }

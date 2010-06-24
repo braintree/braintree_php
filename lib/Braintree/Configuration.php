@@ -252,7 +252,10 @@ class Braintree_Configuration extends Braintree
      */
     public static function portNumber()
     {
-        return self::sslOn() ? 443 : 3000;
+        if (self::sslOn()) {
+            return 443;
+        }
+        return getenv("GATEWAY_PORT") ? getenv("GATEWAY_PORT") : 3000;
     }
 
     /**

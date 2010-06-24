@@ -26,6 +26,18 @@ class Braintree_TestHelper
         return 'sandbox_credit_card_non_default';
     }
 
+    public static function createViaTr($regularParams, $trParams)
+    {
+        $trData = Braintree_TransparentRedirect::transactionData(
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+        );
+        return Braintree_TestHelper::submitTrRequest(
+            TransparentRedirect::url(),
+            $regularParams,
+            $trData
+        );
+    }
+
     public static function submitTrRequest($url, $regularParams, $trData)
     {
         $curl = curl_init();
@@ -43,6 +55,18 @@ class Braintree_TestHelper
         curl_close($curl);
         preg_match('/Location: .*\?(.*)/', $response, $match);
         return trim($match[1]);
+    }
+
+    public static function suppressDeprecationWarnings()
+    {
+        set_error_handler("Braintree_TestHelper::_errorHandler", E_USER_NOTICE);
+    }
+
+    static function _errorHandler($errno, $errstr, $errfile, $errline)
+    {
+        if (preg_match('/^DEPRECATED/', $errstr) == 0) {
+            trigger_error('Unknown error received: ' . $errstr, E_USER_ERROR);
+        }
     }
 
     public static function includes($collection, $targetItem)

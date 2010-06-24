@@ -67,6 +67,11 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), Braintree_Util::extractAttributeAsArray($attributes, "foo"));
     }
 
+    function testDelimeterToUnderscore()
+    {
+        $this->assertEquals("a_b_c", Braintree_Util::delimiterToUnderscore("a-b-c"));
+    }
+
     function testCleanClassName()
     {
         $cn = Braintree_Util::cleanClassName('Braintree_Transaction');

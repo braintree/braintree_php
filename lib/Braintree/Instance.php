@@ -18,12 +18,6 @@
 abstract class Braintree_Instance
 {
     /**
-     * storage for read-only properties
-     * @var array  
-     */
-    // protected $_attributes = array();
-
-    /**
      *
      * @param array $aAttribs 
      */
@@ -67,7 +61,7 @@ abstract class Braintree_Instance
      */
     private function _initializeFromArray($attributes)
     {
-        $this->_attributes = array_merge($this->_attributes, $attributes);
+        $this->_attributes = $attributes;
     }
     
 }

@@ -129,11 +129,9 @@ class Braintree_Address extends Braintree
      */
     public function isEqual($other)
     {
-        return !is_a($other, __CLASS__) ?
-            false : ($this->id === $other->id &&
-                $this->customerId === $other->customerId
-        );
-
+        return !($other instanceof Braintree_Address) ?
+            false :
+            ($this->id === $other->id && $this->customerId === $other->customerId);
     }
 
     /**
@@ -217,25 +215,6 @@ class Braintree_Address extends Braintree
         $objOutput = Braintree_Util::implodeAssociativeArray($this->_attributes);
         return __CLASS__ . '[' . $objOutput . ']';
     }
-    /* private class properties  */
-    /**
-     * @access protected
-     * @var array registry of customer data
-     */
-    protected $_attributes = array(
-        'company'     => '',
-        'countryName' => '',
-        'customerId'  => '',
-        'extendedAddress' => '',
-        'firstName'   => '',
-        'id'          => '',
-        'lastName'    => '',
-        'locality'    => '',
-        'postalCode'  => '',
-        'region'      => '',
-        'streetAddress' => '',
-        'updatedAt'   => '',
-    );
 
     /**
      * sets instance properties from an array of values
@@ -248,8 +227,7 @@ class Braintree_Address extends Braintree
     protected function _initialize($addressAttribs)
     {
         // set the attributes
-        $this->_attributes = array_merge($this->_attributes, $addressAttribs);
-
+        $this->_attributes = $addressAttribs;
     }
 
     /**
@@ -301,9 +279,7 @@ class Braintree_Address extends Braintree
      */
     private static function _determineCustomerId($customerOrId)
     {
-        $customerId = is_a('Braintree_Customer', $customerOrId) ?
-            $customerOrId->id :
-            $customerOrId;
+        $customerId = ($customerOrId instanceof Braintree_Customer) ? $customerOrId->id : $customerOrId;
         self::_validateCustomerId($customerId);
         return $customerId;
 

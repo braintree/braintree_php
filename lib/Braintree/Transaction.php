@@ -226,6 +226,7 @@ final class Braintree_Transaction extends Braintree
      */
     public static function createFromTransparentRedirect($queryString)
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::confirm", E_USER_NOTICE);
         $params = Braintree_TransparentRedirect::parseAndValidateQueryString(
                 $queryString
         );
@@ -242,6 +243,7 @@ final class Braintree_Transaction extends Braintree
      */
     public static function createTransactionUrl()
     {
+        trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
         return Braintree_Configuration::merchantUrl() .
                 '/transactions/all/create_via_transparent_redirect_request';
     }
@@ -443,7 +445,7 @@ final class Braintree_Transaction extends Braintree
      */
     protected function _initialize($transactionAttribs)
     {
-        $this->_attributes = array_merge($this->_attributes, $transactionAttribs);
+        $this->_attributes = $transactionAttribs;
 
         $this->_set('creditCardDetails',
                 new Braintree_Transaction_CreditCardDetails(
@@ -535,28 +537,19 @@ final class Braintree_Transaction extends Braintree
     }
 
     /**
-     * @access protected
-     * @var array registry of transaction data
+     * sends the create request to the gateway
+     *
+     * @ignore
+     * @param var $url
+     * @param array $params
+     * @return mixed
      */
-    protected $_attributes = array(
-        'avsErrorResponseCode'         => '',
-        'avsPostalCodeResponseCode'    => '',
-        'avsStreetAddressResponseCode' => '',
-        'cvvResponseCode'              => '',
-        'amount'                       => '',
-        'billingDetails'               => '',
-        'createdAt'                    => '',
-        'creditCardDetails'            => '',
-        'customerDetails'              => '',
-        'customFields'                 => '',
-        'id'                           => '',
-        'processorResponseCode'        => '',
-        'shippingDetails transaction'  => '',
-        'status'                       => '',
-        'statusHistory'                => '',
-        'type'                         => '',
-        'updatedAt'                    => '',
-        );
+    public static function _doCreate($url, $params)
+    {
+        $response = Braintree_Http::post($url, $params);
+
+        return self::_verifyGatewayResponse($response);
+    }
 
     /**
      * sets private properties
@@ -592,21 +585,6 @@ final class Braintree_Transaction extends Braintree
 
 
     /* private class methods */
-
-    /**
-     * sends the create request to the gateway
-     *
-     * @ignore
-     * @param var $url
-     * @param array $params
-     * @return mixed
-     */
-    private static function _doCreate($url, $params)
-    {
-        $response = Braintree_Http::post($url, $params);
-
-        return self::_verifyGatewayResponse($response);
-    }
 
     /**
      * generic method for validating incoming gateway responses

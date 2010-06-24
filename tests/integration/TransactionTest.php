@@ -24,7 +24,125 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
     }
 
+    function testSale_withAllAttributes()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'orderId' => '123',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2011',
+                'cvv' => '123'
+            ),
+            'customer' => array(
+                'firstName' => 'Dan',
+                'lastName' => 'Smith',
+                'company' => 'Braintree Payment Solutions',
+                'email' => 'dan@example.com',
+                'phone' => '419-555-1234',
+                'fax' => '419-555-1235',
+                'website' => 'http://braintreepaymentsolutions.com'
+            ),
+            'billing' => array(
+                'firstName' => 'Carl',
+                'lastName' => 'Jones',
+                'company' => 'Braintree',
+                'streetAddress' => '123 E Main St',
+                'extendedAddress' => 'Suite 403',
+                'locality' => 'Chicago',
+                'region' => 'IL',
+                'postalCode' => '60622',
+                'countryName' => 'United States of America'
+            ),
+            'shipping' => array(
+                'firstName' => 'Andrew',
+                'lastName' => 'Mason',
+                'company' => 'Braintree',
+                'streetAddress' => '456 W Main St',
+                'extendedAddress' => 'Apt 2F',
+                'locality' => 'Bartlett',
+                'region' => 'IL',
+                'postalCode' => '60103',
+                'countryName' => 'United States of America'
+            )
+      ));
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+
+      $this->assertNotNull($transaction->id);
+      $this->assertNotNull($transaction->createdAt);
+      $this->assertNotNull($transaction->updatedAt);
+      $this->assertNull($transaction->refundId);
+
+      $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $transaction->merchantAccountId);
+      $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
+      $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
+      $this->assertEquals('100.00', $transaction->amount);
+      $this->assertEquals('USD', $transaction->currencyIsoCode);
+      $this->assertEquals('123', $transaction->orderId);
+      $this->assertEquals('MasterCard', $transaction->creditCardDetails->cardType);
+      $this->assertEquals('1000', $transaction->processorResponseCode);
+      $this->assertEquals('Approved', $transaction->processorResponseText);
+
+      $this->assertEquals('M', $transaction->avsPostalCodeResponseCode);
+      $this->assertEquals('M', $transaction->avsStreetAddressResponseCode);
+      $this->assertEquals('M', $transaction->cvvResponseCode);
+
+      $this->assertEquals('Dan', $transaction->customerDetails->firstName);
+      $this->assertEquals('Smith', $transaction->customerDetails->lastName);
+      $this->assertEquals('Braintree Payment Solutions', $transaction->customerDetails->company);
+      $this->assertEquals('dan@example.com', $transaction->customerDetails->email);
+      $this->assertEquals('419-555-1234', $transaction->customerDetails->phone);
+      $this->assertEquals('419-555-1235', $transaction->customerDetails->fax);
+      $this->assertEquals('http://braintreepaymentsolutions.com', $transaction->customerDetails->website);
+
+      $this->assertEquals('Carl', $transaction->billingDetails->firstName);
+      $this->assertEquals('Jones', $transaction->billingDetails->lastName);
+      $this->assertEquals('Braintree', $transaction->billingDetails->company);
+      $this->assertEquals('123 E Main St', $transaction->billingDetails->streetAddress);
+      $this->assertEquals('Suite 403', $transaction->billingDetails->extendedAddress);
+      $this->assertEquals('Chicago', $transaction->billingDetails->locality);
+      $this->assertEquals('IL', $transaction->billingDetails->region);
+      $this->assertEquals('60622', $transaction->billingDetails->postalCode);
+      $this->assertEquals('United States of America', $transaction->billingDetails->countryName);
+
+      $this->assertEquals('Andrew', $transaction->shippingDetails->firstName);
+      $this->assertEquals('Mason', $transaction->shippingDetails->lastName);
+      $this->assertEquals('Braintree', $transaction->shippingDetails->company);
+      $this->assertEquals('456 W Main St', $transaction->shippingDetails->streetAddress);
+      $this->assertEquals('Apt 2F', $transaction->shippingDetails->extendedAddress);
+      $this->assertEquals('Bartlett', $transaction->shippingDetails->locality);
+      $this->assertEquals('IL', $transaction->shippingDetails->region);
+      $this->assertEquals('60103', $transaction->shippingDetails->postalCode);
+      $this->assertEquals('United States of America', $transaction->shippingDetails->countryName);
+
+      $this->assertNotNull($transaction->processorAuthorizationCode);
+      $this->assertEquals('510510', $transaction->creditCardDetails->bin);
+      $this->assertEquals('5100', $transaction->creditCardDetails->last4);
+      $this->assertEquals('510510******5100', $transaction->creditCardDetails->maskedNumber);
+      $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
+    }
+
     function testSale_withCustomFields()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'customFields' => array(
+                'store_me' => 'custom value'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $customFields = $transaction->customFields;
+        $this->assertEquals('custom value', $customFields['store_me']);
+    }
+
+    function testSale_underscoresAllCustomFields()
     {
         $result = Braintree_Transaction::sale(array(
             'amount' => '100.00',
@@ -39,7 +157,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $customFields = $transaction->customFields;
-        $this->assertEquals('custom value', $customFields['storeMe']);
+        $this->assertEquals('custom value', $customFields['store_me']);
     }
 
     function testSale_withInvalidCustomField()
@@ -431,6 +549,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createTransactionViaTr(
             array(
                 'transaction' => array(
@@ -468,6 +587,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirectWithInvalidParams()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createTransactionViaTr(
             array(
                 'transaction' => array(
@@ -498,6 +618,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect_withParamsInTrData()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createTransactionViaTr(
             array(
             ),
@@ -533,6 +654,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreateFromTransparentRedirect_withValidationErrors()
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $queryString = $this->createTransactionViaTr(
             array(
                 'transaction' => array(
@@ -554,7 +676,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $errors = $result->errors->forKey('transaction')->forKey('customer')->onAttribute('firstName');
         $this->assertEquals(Braintree_Error_Codes::CUSTOMER_FIRST_NAME_IS_TOO_LONG, $errors[0]->code);
         $errors = $result->errors->forKey('transaction')->forKey('creditCard')->onAttribute('number');
-        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_NUMBER_INVALID_LENGTH, $errors[0]->code);
+        $this->assertTrue(count($errors) > 0);
         $errors = $result->errors->forKey('transaction')->forKey('creditCard')->onAttribute('expirationDate');
         $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED, $errors[0]->code);
     }
@@ -564,7 +686,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = $this->createTransactionToRefund();
         $result = Braintree_Transaction::refund($transaction->id);
         $this->assertTrue($result->success);
-        $this->assertEquals(Braintree_Transaction::CREDIT, $result->transaction->type);
+        $refund = $result->transaction;
+        $this->assertEquals(Braintree_Transaction::CREDIT, $refund->type);
+        $this->assertEquals($transaction->id, $refund->refundedTransactionId);
+        $this->assertEquals($refund->id, Braintree_Transaction::find($transaction->id)->refundId);
     }
 
     function testRefundWithPartialAmount()
@@ -590,6 +715,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function createTransactionViaTr($regularParams, $trParams)
     {
+        Braintree_TestHelper::suppressDeprecationWarnings();
         $trData = Braintree_TransparentRedirect::transactionData(
             array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );

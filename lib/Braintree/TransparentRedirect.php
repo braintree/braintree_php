@@ -45,6 +45,13 @@
  */
 class Braintree_TransparentRedirect
 {
+    // Request Kinds
+    const CREATE_TRANSACTION = 'create_transaction';
+    const CREATE_PAYMENT_METHOD = 'create_payment_method';
+    const UPDATE_PAYMENT_METHOD = 'update_payment_method';
+    const CREATE_CUSTOMER = 'create_customer';
+    const UPDATE_CUSTOMER = 'update_customer';
+
     /**
      *
      * @ignore
@@ -94,9 +101,28 @@ class Braintree_TransparentRedirect
         self::$_updateCreditCardSignature = array(
             self::$_transparentRedirectKeys,
             'paymentMethodToken',
-            array('creditCard' => Braintree_CreditCard::createSignature()),
+            array('creditCard' => Braintree_CreditCard::updateSignature()),
             );
     }
+
+    public static function confirm($queryString)
+    {
+        $params = Braintree_TransparentRedirect::parseAndValidateQueryString(
+                $queryString
+        );
+        $confirmationKlasses = array(
+            Braintree_TransparentRedirect::CREATE_TRANSACTION => 'Braintree_Transaction',
+            Braintree_TransparentRedirect::CREATE_CUSTOMER => 'Braintree_Customer',
+            Braintree_TransparentRedirect::UPDATE_CUSTOMER => 'Braintree_Customer',
+            Braintree_TransparentRedirect::CREATE_PAYMENT_METHOD => 'Braintree_CreditCard',
+            Braintree_TransparentRedirect::UPDATE_PAYMENT_METHOD => 'Braintree_CreditCard'
+        );
+        return call_user_func(array($confirmationKlasses[$params["kind"]], '_doCreate'),
+            '/transparent_redirect_requests/' . $params['id'] . '/confirm',
+            array()
+        );
+    }
+
     /**
      * returns the trData string for creating a credit card,
      * @param array $params
@@ -108,6 +134,7 @@ class Braintree_TransparentRedirect
                 self::$_createCreditCardSignature,
                 $params
                 );
+        $params["kind"] = Braintree_TransparentRedirect::CREATE_PAYMENT_METHOD;
         return self::_data($params);
     }
 
@@ -122,8 +149,14 @@ class Braintree_TransparentRedirect
                 self::$_createCustomerSignature,
                 $params
                 );
+        $params["kind"] = Braintree_TransparentRedirect::CREATE_CUSTOMER;
         return self::_data($params);
 
+    }
+
+    public static function url()
+    {
+        return Braintree_Configuration::merchantUrl() . "/transparent_redirect_requests";
     }
 
     /**
@@ -137,6 +170,7 @@ class Braintree_TransparentRedirect
                 self::$_transactionSignature,
                 $params
                 );
+        $params["kind"] = Braintree_TransparentRedirect::CREATE_TRANSACTION;
         $transactionType = isset($params['transaction']['type']) ?
             $params['transaction']['type'] :
             null;
@@ -176,6 +210,7 @@ class Braintree_TransparentRedirect
                    'expected params to contain paymentMethodToken.'
                    );
         }
+        $params["kind"] = Braintree_TransparentRedirect::UPDATE_PAYMENT_METHOD;
         return self::_data($params);
     }
 
@@ -205,6 +240,7 @@ class Braintree_TransparentRedirect
                    'expected params to contain customerId of customer to update'
                    );
         }
+        $params["kind"] = Braintree_TransparentRedirect::UPDATE_CUSTOMER;
         return self::_data($params);
     }
 
