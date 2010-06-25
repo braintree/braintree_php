@@ -193,6 +193,12 @@ final class Braintree_Transaction extends Braintree
     const CONTROL_PANEL = 'control_panel';
     const RECURRING = 'recurring';
 
+    // Gateway Rejection Reason
+    const AVS = 'avs';
+    const AVS_AND_CVV = 'avs_and_cvv';
+    const CVV = 'cvv';
+    const DUPLICATE = 'duplicate';
+
     /**
      * @ignore
      * @access public
