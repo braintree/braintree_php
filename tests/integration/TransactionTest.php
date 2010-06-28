@@ -227,7 +227,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     function testSale_withProcessorDecline()
     {
         $result = Braintree_Transaction::sale(array(
-            'amount' => '2000.00',
+            'amount' => Braintree_Test_TransactionAmounts::$decline,
             'creditCard' => array(
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'

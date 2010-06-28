@@ -41,7 +41,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'price' => '2000.00'
+            'price' => Braintree_Test_TransactionAmounts::$decline
 
         ));
         $this->assertFalse($result->success);
