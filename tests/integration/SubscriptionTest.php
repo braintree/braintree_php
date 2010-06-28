@@ -34,6 +34,20 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertType('DateTime', $subscription->billingPeriodEndDate);
     }
 
+    function testCreate_returnsTransactionWhenTransactionFails()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+            'price' => '2000.00'
+
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->transaction->status);
+    }
+
     function testCreate_canSetTheId()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
