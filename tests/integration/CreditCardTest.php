@@ -750,6 +750,60 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         Braintree_CreditCard::find($creditCard->token);
     }
 
+    function testGatewayRejectionOnCVV()
+    {
+        $old_merchant_id = Braintree_Configuration::merchantId();
+        $old_public_key = Braintree_Configuration::publicKey();
+        $old_private_key = Braintree_Configuration::privateKey();
+
+        Braintree_Configuration::merchantId('processing_rules_merchant_id');
+        Braintree_Configuration::publicKey('processing_rules_public_key');
+        Braintree_Configuration::privateKey('processing_rules_private_key');
+
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2011',
+            'cvv' => '200',
+            'options' => array('verifyCard' => true)
+        ));
+
+        Braintree_Configuration::merchantId($old_merchant_id);
+        Braintree_Configuration::publicKey($old_public_key);
+        Braintree_Configuration::privateKey($old_private_key);
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Transaction::CVV, $result->creditCardVerification->gatewayRejectionReason);
+    }
+
+    function testGatewayRejectionIsNullOnProcessorDecline()
+    {
+        $old_merchant_id = Braintree_Configuration::merchantId();
+        $old_public_key = Braintree_Configuration::publicKey();
+        $old_private_key = Braintree_Configuration::privateKey();
+
+        Braintree_Configuration::merchantId('processing_rules_merchant_id');
+        Braintree_Configuration::publicKey('processing_rules_public_key');
+        Braintree_Configuration::privateKey('processing_rules_private_key');
+
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/2011',
+            'cvv' => '200',
+            'options' => array('verifyCard' => true)
+        ));
+
+        Braintree_Configuration::merchantId($old_merchant_id);
+        Braintree_Configuration::publicKey($old_public_key);
+        Braintree_Configuration::privateKey($old_private_key);
+
+        $this->assertFalse($result->success);
+        $this->assertNull($result->creditCardVerification->gatewayRejectionReason);
+    }
+
     function createCreditCardViaTr($regularParams, $trParams)
     {
         $trData = Braintree_TransparentRedirect::createCreditCardData(
