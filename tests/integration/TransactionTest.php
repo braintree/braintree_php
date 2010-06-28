@@ -713,6 +713,99 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    function testGatewayRejectionOnAvs()
+    {
+        $old_merchant_id = Braintree_Configuration::merchantId();
+        $old_public_key = Braintree_Configuration::publicKey();
+        $old_private_key = Braintree_Configuration::privateKey();
+
+        Braintree_Configuration::merchantId('processing_rules_merchant_id');
+        Braintree_Configuration::publicKey('processing_rules_public_key');
+        Braintree_Configuration::privateKey('processing_rules_private_key');
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'billing' => array(
+                'streetAddress' => '200 2nd Street'
+            ),
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        Braintree_Configuration::merchantId($old_merchant_id);
+        Braintree_Configuration::publicKey($old_public_key);
+        Braintree_Configuration::privateKey($old_private_key);
+
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(Braintree_Transaction::AVS, $transaction->gatewayRejectionReason);
+    }
+
+    function testGatewayRejectionOnAvsAndCvv()
+    {
+        $old_merchant_id = Braintree_Configuration::merchantId();
+        $old_public_key = Braintree_Configuration::publicKey();
+        $old_private_key = Braintree_Configuration::privateKey();
+
+        Braintree_Configuration::merchantId('processing_rules_merchant_id');
+        Braintree_Configuration::publicKey('processing_rules_public_key');
+        Braintree_Configuration::privateKey('processing_rules_private_key');
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'billing' => array(
+                'postalCode' => '20000'
+            ),
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cvv' => '200'
+            )
+        ));
+
+        Braintree_Configuration::merchantId($old_merchant_id);
+        Braintree_Configuration::publicKey($old_public_key);
+        Braintree_Configuration::privateKey($old_private_key);
+
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(Braintree_Transaction::AVS_AND_CVV, $transaction->gatewayRejectionReason);
+    }
+
+    function testGatewayRejectionOnCvv()
+    {
+        $old_merchant_id = Braintree_Configuration::merchantId();
+        $old_public_key = Braintree_Configuration::publicKey();
+        $old_private_key = Braintree_Configuration::privateKey();
+
+        Braintree_Configuration::merchantId('processing_rules_merchant_id');
+        Braintree_Configuration::publicKey('processing_rules_public_key');
+        Braintree_Configuration::privateKey('processing_rules_private_key');
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cvv' => '200'
+            )
+        ));
+
+        Braintree_Configuration::merchantId($old_merchant_id);
+        Braintree_Configuration::publicKey($old_public_key);
+        Braintree_Configuration::privateKey($old_private_key);
+
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(Braintree_Transaction::CVV, $transaction->gatewayRejectionReason);
+    }
+
+
     function createTransactionViaTr($regularParams, $trParams)
     {
         Braintree_TestHelper::suppressDeprecationWarnings();
@@ -739,6 +832,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
         return $transaction;
     }
+
 }
 ?>
 
