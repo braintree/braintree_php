@@ -177,7 +177,6 @@ final class Braintree_Transaction extends Braintree
     const SETTLED                  = 'settled';
     const SETTLEMENT_FAILED        = 'settlement_failed';
     const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
-    const UNKNOWN                  = 'unknown';
     const VOIDED                   = 'voided';
 
     // Transaction Types
