@@ -122,7 +122,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $customer = Braintree_Customer::createNoValidate();
         $result = Braintree_CreditCard::create(array(
             'customerId' => $customer->id,
-            'cardholderName' => 'Cardholder',
+            'cardholderName' => 'Peter Tomlin',
             'number' => '5105105105105100',
             'expirationDate' => '05/12',
             'billingAddress' => array(
@@ -134,14 +134,17 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
                 'locality' => 'Chicago',
                 'region' => 'IL',
                 'postalCode' => '60622',
-                'countryName' => 'United States of America'
+                'countryName' => 'Micronesia',
+                'countryCodeAlpha2' => 'FM',
+                'countryCodeAlpha3' => 'FSM',
+                'countryCodeNumeric' => '583'
             )
         ));
         $this->assertTrue($result->success);
         $this->assertEquals($customer->id, $result->creditCard->customerId);
         $this->assertEquals('510510', $result->creditCard->bin);
         $this->assertEquals('5100', $result->creditCard->last4);
-        $this->assertEquals('Cardholder', $result->creditCard->cardholderName);
+        $this->assertEquals('Peter Tomlin', $result->creditCard->cardholderName);
         $this->assertEquals('05/2012', $result->creditCard->expirationDate);
         $address = $result->creditCard->billingAddress;
         $this->assertEquals('Drew', $address->firstName);
@@ -152,7 +155,10 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Chicago', $address->locality);
         $this->assertEquals('IL', $address->region);
         $this->assertEquals('60622', $address->postalCode);
-        $this->assertEquals('United States of America', $address->countryName);
+        $this->assertEquals('Micronesia', $address->countryName);
+        $this->assertEquals('FM', $address->countryCodeAlpha2);
+        $this->assertEquals('FSM', $address->countryCodeAlpha3);
+        $this->assertEquals('583', $address->countryCodeNumeric);
     }
 
     function testCreate_withValidationErrors()
@@ -160,6 +166,10 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $customer = Braintree_Customer::createNoValidate();
         $result = Braintree_CreditCard::create(array(
             'expirationDate' => 'invalid',
+            'billingAddress' => array(
+                'countryName' => 'Tuvalu',
+                'countryCodeAlpha2' => 'US'
+            )
         ));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('creditCard')->onAttribute('expirationDate');
@@ -167,6 +177,9 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, preg_match('/Credit card number is required\./', $result->message));
         $this->assertEquals(1, preg_match('/Customer ID is required\./', $result->message));
         $this->assertEquals(1, preg_match('/Expiration date is invalid\./', $result->message));
+
+        $errors = $result->errors->forKey('creditCard')->forKey('billingAddress')->onAttribute('base');
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_INCONSISTENT_COUNTRY, $errors[0]->code);
     }
 
     function testCreateNoValidate_throwsIfValidationsFail()
@@ -635,20 +648,28 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             'number' => '5105105105105100',
             'expirationDate' => '05/12',
             'billingAddress' => array(
-                'streetAddress' => '123 Nigeria Ave'
+                'countryName' => 'Turkey',
+                'countryCodeAlpha2' => 'TR',
+                'countryCodeAlpha3' => 'TUR',
+                'countryCodeNumeric' => '792',
             )
         ))->creditCard;
 
         $updatedCreditCard = Braintree_CreditCard::update($initialCreditCard->token, array(
             'billingAddress' => array(
-                'region' => 'IL',
+                'countryName' => 'Thailand',
+                'countryCodeAlpha2' => 'TH',
+                'countryCodeAlpha3' => 'THA',
+                'countryCodeNumeric' => '764',
                 'options' => array(
                     'updateExisting' => True
                 )
             )
         ))->creditCard;
-        $this->assertEquals('IL', $updatedCreditCard->billingAddress->region);
-        $this->assertEquals('123 Nigeria Ave', $updatedCreditCard->billingAddress->streetAddress);
+        $this->assertEquals('Thailand', $updatedCreditCard->billingAddress->countryName);
+        $this->assertEquals('TH', $updatedCreditCard->billingAddress->countryCodeAlpha2);
+        $this->assertEquals('THA', $updatedCreditCard->billingAddress->countryCodeAlpha3);
+        $this->assertEquals('764', $updatedCreditCard->billingAddress->countryCodeNumeric);
         $this->assertEquals($initialCreditCard->billingAddress->id, $updatedCreditCard->billingAddress->id);
     }
 
