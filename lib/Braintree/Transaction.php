@@ -273,12 +273,14 @@ final class Braintree_Transaction extends Braintree
                 array('billing'       =>
                     array(
                         'firstName', 'lastName', 'company', 'countryName',
+                        'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
                         'extendedAddress', 'locality', 'postalCode', 'region',
                         'streetAddress'),
                 ),
                 array('shipping'      =>
                     array(
                         'firstName', 'lastName', 'company', 'countryName',
+                        'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
                         'extendedAddress', 'locality', 'postalCode', 'region',
                         'streetAddress'),
                 ),

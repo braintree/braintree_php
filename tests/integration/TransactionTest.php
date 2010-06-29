@@ -53,7 +53,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'locality' => 'Chicago',
                 'region' => 'IL',
                 'postalCode' => '60622',
-                'countryName' => 'United States of America'
+                'countryName' => 'United States of America',
+                'countryCodeAlpha2' => 'US',
+                'countryCodeAlpha3' => 'USA',
+                'countryCodeNumeric' => '840'
             ),
             'shipping' => array(
                 'firstName' => 'Andrew',
@@ -64,7 +67,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'locality' => 'Bartlett',
                 'region' => 'IL',
                 'postalCode' => '60103',
-                'countryName' => 'United States of America'
+                'countryName' => 'United States of America',
+                'countryCodeAlpha2' => 'US',
+                'countryCodeAlpha3' => 'USA',
+                'countryCodeNumeric' => '840'
             )
       ));
       $this->assertTrue($result->success);
@@ -106,6 +112,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('IL', $transaction->billingDetails->region);
       $this->assertEquals('60622', $transaction->billingDetails->postalCode);
       $this->assertEquals('United States of America', $transaction->billingDetails->countryName);
+      $this->assertEquals('US', $transaction->billingDetails->countryCodeAlpha2);
+      $this->assertEquals('USA', $transaction->billingDetails->countryCodeAlpha3);
+      $this->assertEquals('840', $transaction->billingDetails->countryCodeNumeric);
 
       $this->assertEquals('Andrew', $transaction->shippingDetails->firstName);
       $this->assertEquals('Mason', $transaction->shippingDetails->lastName);
@@ -116,6 +125,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('IL', $transaction->shippingDetails->region);
       $this->assertEquals('60103', $transaction->shippingDetails->postalCode);
       $this->assertEquals('United States of America', $transaction->shippingDetails->countryName);
+      $this->assertEquals('US', $transaction->shippingDetails->countryCodeAlpha2);
+      $this->assertEquals('USA', $transaction->shippingDetails->countryCodeAlpha3);
+      $this->assertEquals('840', $transaction->shippingDetails->countryCodeNumeric);
 
       $this->assertNotNull($transaction->processorAuthorizationCode);
       $this->assertEquals('510510', $transaction->creditCardDetails->bin);
@@ -442,6 +454,79 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $voidResult = Braintree_Transaction::void($transaction->id);
         $this->assertEquals(true, $voidResult->success);
         $this->assertEquals(Braintree_Transaction::VOIDED, $voidResult->transaction->status);
+    }
+
+    function test_countryValidationError_inconsistency()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'billing' => array(
+                'countryCodeAlpha2' => 'AS',
+                'countryCodeAlpha3' => 'USA'
+            )
+        ));
+        $this->assertFalse($result->success);
+
+        $errors = $result->errors->forKey('transaction')->forKey('billing')->onAttribute('base');
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_INCONSISTENT_COUNTRY, $errors[0]->code);
+    }
+
+    function test_countryValidationError_incorrectAlpha2()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'billing' => array(
+                'countryCodeAlpha2' => 'ZZ'
+            )
+        ));
+        $this->assertFalse($result->success);
+
+        $errors = $result->errors->forKey('transaction')->forKey('billing')->onAttribute('countryCodeAlpha2');
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_CODE_ALPHA2_IS_NOT_ACCEPTED, $errors[0]->code);
+    }
+
+    function test_countryValidationError_incorrectAlpha3()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'billing' => array(
+                'countryCodeAlpha3' => 'ZZZ'
+            )
+        ));
+        $this->assertFalse($result->success);
+
+        $errors = $result->errors->forKey('transaction')->forKey('billing')->onAttribute('countryCodeAlpha3');
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_CODE_ALPHA3_IS_NOT_ACCEPTED, $errors[0]->code);
+    }
+
+    function test_countryValidationError_incorrectNumericCode()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'billing' => array(
+                'countryCodeNumeric' => '000'
+            )
+        ));
+        $this->assertFalse($result->success);
+
+        $errors = $result->errors->forKey('transaction')->forKey('billing')->onAttribute('countryCodeNumeric');
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_CODE_NUMERIC_IS_NOT_ACCEPTED, $errors[0]->code);
     }
 
     function testVoid_withValidationError()
