@@ -247,6 +247,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertFalse($result->success);
         $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->transaction->status);
+        $this->assertEquals(2000, $result->transaction->processorResponseCode);
+        $this->assertEquals("Do Not Honor", $result->transaction->processorResponseText);
     }
 
     function testSale_withExistingCustomer()
