@@ -13,9 +13,9 @@
  */
 class Braintree_Subscription extends Braintree
 {
-    const ACTIVE = 'active';
-    const CANCELED = 'canceled';
-    const PAST_DUE = 'past_due';
+    const ACTIVE = 'Active';
+    const CANCELED = 'Canceled';
+    const PAST_DUE = 'Past Due';
 
     public static function create($attributes)
     {

@@ -144,9 +144,25 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         $collection = Braintree_Subscription::search(array(
             Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::ACTIVE))
         ));
+        foreach ($collection AS $item) {
+            $this->assertEquals(Braintree_Subscription::ACTIVE, $item->status);
+        }
 
         $this->assertTrue(Braintree_TestHelper::includes($collection, $activeSubscription));
         $this->assertFalse(Braintree_TestHelper::includes($collection, $canceledSubscription));
+    }
+
+    function testSearch_statusIsPastDue()
+    {
+        $found = false;
+        $collection = Braintree_Subscription::search(array(
+            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::PAST_DUE))
+        ));
+        foreach ($collection AS $item) {
+            $found = true;
+            $this->assertEquals(Braintree_Subscription::PAST_DUE, $item->status);
+        }
+        $this->assertTrue($found);
     }
 
     function testSearch_statusIn_multipleValues()

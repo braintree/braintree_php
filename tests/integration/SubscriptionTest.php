@@ -27,7 +27,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $subscription->failureCount);
         $this->assertEquals($plan['id'], $subscription->planId);
         $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $subscription->merchantAccountId);
-        $this->assertEquals('Active', $subscription->status);
+        $this->assertEquals(Braintree_Subscription::ACTIVE, $subscription->status);
         $this->assertType('DateTime', $subscription->firstBillingDate);
         $this->assertType('DateTime', $subscription->nextBillingDate);
         $this->assertType('DateTime', $subscription->billingPeriodStartDate);
@@ -300,7 +300,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $result = Braintree_Subscription::cancel($subscription->id);
         $this->assertTrue($result->success);
-        $this->assertEquals('Canceled', $result->subscription->status);
+        $this->assertEquals(Braintree_Subscription::CANCELED, $result->subscription->status);
     }
 
     function testCancel_throwsErrorIfRecordNotFound()
