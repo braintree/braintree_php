@@ -250,6 +250,183 @@ XML;
 
     }
 
+    function testParsingWithNodeHavingSameNameAsNodesDirectlyUnderCollection()
+    {
+        $xml = <<<END
+<foos type="collection">
+  <page-size>50</page-size>
+  <bar>
+    <baz>one</baz>
+  </bar>
+  <bar>
+    <baz>two</baz>
+    <bar>bug was here</bar>
+  </bar>
+</foos>
+END;
+        $array = Braintree_Xml::buildArrayFromXml($xml);
+        $this->assertEquals(array('baz' => 'two', 'bar' => 'bug was here'), $array['foos']['bar'][1]);
+    }
+
+    function testParsingCreditCardSearchResults()
+    {
+        $xml = <<<END
+<payment-methods type="collection">
+  <current-page-number type="integer">1</current-page-number>
+  <page-size type="integer">50</page-size>
+  <total-items type="integer">8</total-items>
+  <credit-card>
+    <bin>411111</bin>
+    <cardholder-name>John Doe</cardholder-name>
+    <card-type>Visa</card-type>
+    <created-at type="datetime">2010-07-02T15:50:51Z</created-at>
+    <customer-id>589636</customer-id>
+    <default type="boolean">true</default>
+    <expiration-month>05</expiration-month>
+    <expiration-year>2009</expiration-year>
+    <expired type="boolean">true</expired>
+    <customer-location>US</customer-location>
+    <last-4>1111</last-4>
+    <subscriptions type="array"/>
+    <token>22pb</token>
+    <updated-at type="datetime">2010-07-02T15:50:51Z</updated-at>
+  </credit-card>
+  <credit-card>
+    <bin>411111</bin>
+    <cardholder-name></cardholder-name>
+    <card-type>Visa</card-type>
+    <created-at type="datetime">2010-07-02T15:52:09Z</created-at>
+    <customer-id>613603</customer-id>
+    <default type="boolean">false</default>
+    <expiration-month>05</expiration-month>
+    <expiration-year>2009</expiration-year>
+    <expired type="boolean">true</expired>
+    <customer-location>US</customer-location>
+    <last-4>1111</last-4>
+    <subscriptions type="array">
+      <subscription>
+        <id>hzjh8b</id>
+        <price>54.32</price>
+        <plan-id>integration_trialless_plan</plan-id>
+        <first-billing-date type="date">2010-07-02</first-billing-date>
+        <next-billing-date type="date">2010-08-02</next-billing-date>
+        <billing-period-start-date type="date">2010-07-02</billing-period-start-date>
+        <billing-period-end-date type="date">2010-08-01</billing-period-end-date>
+        <merchant-account-id>sandbox_credit_card</merchant-account-id>
+        <trial-period type="boolean">false</trial-period>
+        <status>Active</status>
+        <failure-count type="integer">0</failure-count>
+        <payment-method-token>3wx6</payment-method-token>
+        <trial-duration nil="true"></trial-duration>
+        <trial-duration-unit nil="true"></trial-duration-unit>
+        <transactions type="array">
+          <transaction>
+            <id>2dpk76</id>
+            <status>submitted_for_settlement</status>
+            <type>sale</type>
+            <currency-iso-code>USD</currency-iso-code>
+            <amount>54.32</amount>
+            <merchant-account-id>sandbox_credit_card</merchant-account-id>
+            <order-id nil="true"></order-id>
+            <created-at type="datetime">2010-07-02T15:52:09Z</created-at>
+            <updated-at type="datetime">2010-07-02T15:52:09Z</updated-at>
+            <customer>
+              <id>613603</id>
+              <first-name>Mike</first-name>
+              <last-name>Jones</last-name>
+              <company nil="true"></company>
+              <email nil="true"></email>
+              <website nil="true"></website>
+              <phone nil="true"></phone>
+              <fax nil="true"></fax>
+            </customer>
+            <billing>
+              <id nil="true"></id>
+              <first-name nil="true"></first-name>
+              <last-name nil="true"></last-name>
+              <company nil="true"></company>
+              <street-address nil="true"></street-address>
+              <extended-address nil="true"></extended-address>
+              <locality nil="true"></locality>
+              <region nil="true"></region>
+              <postal-code nil="true"></postal-code>
+              <country-name nil="true"></country-name>
+              <country-code-alpha2 nil="true"></country-code-alpha2>
+              <country-code-alpha3 nil="true"></country-code-alpha3>
+              <country-code-numeric nil="true"></country-code-numeric>
+            </billing>
+            <refund-id nil="true"></refund-id>
+            <refunded-transaction-id nil="true"></refunded-transaction-id>
+            <shipping>
+              <id nil="true"></id>
+              <first-name nil="true"></first-name>
+              <last-name nil="true"></last-name>
+              <company nil="true"></company>
+              <street-address nil="true"></street-address>
+              <extended-address nil="true"></extended-address>
+              <locality nil="true"></locality>
+              <region nil="true"></region>
+              <postal-code nil="true"></postal-code>
+              <country-name nil="true"></country-name>
+              <country-code-alpha2 nil="true"></country-code-alpha2>
+              <country-code-alpha3 nil="true"></country-code-alpha3>
+              <country-code-numeric nil="true"></country-code-numeric>
+            </shipping>
+            <custom-fields>
+            </custom-fields>
+            <avs-error-response-code nil="true"></avs-error-response-code>
+            <avs-postal-code-response-code>I</avs-postal-code-response-code>
+            <avs-street-address-response-code>I</avs-street-address-response-code>
+            <cvv-response-code>I</cvv-response-code>
+            <gateway-rejection-reason nil="true"></gateway-rejection-reason>
+            <processor-authorization-code>9ZR5QB</processor-authorization-code>
+            <processor-response-code>1000</processor-response-code>
+            <processor-response-text>Approved</processor-response-text>
+            <credit-card>
+              <token>sb8w</token>
+              <bin>411111</bin>
+              <last-4>1111</last-4>
+              <card-type>Visa</card-type>
+              <expiration-month>05</expiration-month>
+              <expiration-year>2010</expiration-year>
+              <customer-location>US</customer-location>
+              <cardholder-name></cardholder-name>
+            </credit-card>
+            <status-history type="array">
+              <status-event>
+                <timestamp type="datetime">2010-07-02T15:52:09Z</timestamp>
+                <status>authorized</status>
+                <amount>54.32</amount>
+                <user>merchant</user>
+                <transaction-source>Recurring</transaction-source>
+              </status-event>
+              <status-event>
+                <timestamp type="datetime">2010-07-02T15:52:09Z</timestamp>
+                <status>submitted_for_settlement</status>
+                <amount>54.32</amount>
+                <user>merchant</user>
+                <transaction-source>Recurring</transaction-source>
+              </status-event>
+            </status-history>
+            <subscription-id>hzjh8b</subscription-id>
+          </transaction>
+        </transactions>
+      </subscription>
+    </subscriptions>
+    <token>3wx6</token>
+    <updated-at type="datetime">2010-07-02T15:52:09Z</updated-at>
+  </credit-card>
+</payment-methods>
+END;
+        $array = Braintree_Xml::buildArrayFromXml($xml);
+        $creditCards = $array['paymentMethods']['creditCard'];
+        $creditCardWithSubscription = $creditCards[1];
+        $transaction = $creditCardWithSubscription['subscriptions'][0]['transactions'][0];
+        $this->assertEquals('411111', $transaction['creditCard']['bin']);
+        $this->assertEquals('1111', $transaction['creditCard']['last4']);
+        $this->assertEquals('Visa', $transaction['creditCard']['cardType']);
+    }
+
     function xmlAndBack($array)
     {
         $xml = Braintree_Xml::buildXmlFromArray($array);

@@ -489,6 +489,23 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($collection->maximumCount(), count($uniqueCreditCardTokens));
     }
 
+    function testExpiringBetween_parsesCreditCardDetailsUnderTransactionsCorrectly()
+    {
+        $collection = Braintree_CreditCard::expiringBetween(
+            mktime(0, 0, 0, 1, 1, 2009),
+            mktime(23, 59, 59, 12, 31, 2009)
+        );
+        $this->assertTrue($collection->maximumCount() > 1);
+
+        foreach($collection as $creditCard) {
+            foreach($creditCard->subscriptions as $subscription) {
+                foreach($subscription->transactions as $transaction) {
+                    $this->assertNotNull($transaction->creditCardDetails->expirationMonth);
+                }
+            }
+        }
+    }
+
     function testFind()
     {
         $customer = Braintree_Customer::createNoValidate();
