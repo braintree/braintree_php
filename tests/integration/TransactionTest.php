@@ -276,6 +276,41 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertNull($transaction->vaultCreditCard());
     }
 
+    function testSale_andStoreShippingAddressInVault()
+    {
+        $customer = Braintree_Customer::create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com'
+        ))->customer;
+
+        $transaction = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'customerId' => $customer->id,
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/12'
+            ),
+            'shipping' => array(
+                'firstName' => 'Darren',
+                'lastName' => 'Stevens'
+            ),
+            'options' => array(
+                'storeInVault' => true,
+                'storeShippingAddressInVault' => true
+            )
+        ))->transaction;
+
+        $customer = Braintree_Customer::find($customer->id);
+        $this->assertEquals('Darren', $customer->addresses[0]->firstName);
+        $this->assertEquals('Stevens', $customer->addresses[0]->lastName);
+    }
+
     function testSale_withExistingCustomer_storeInVault()
     {
         $customer = Braintree_Customer::create(array(

@@ -260,36 +260,38 @@ final class Braintree_Transaction extends Braintree
     public static function createSignature()
     {
         return array(
-                'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken', 'type',
-                array('creditCard'   =>
-                    array('token', 'cardholderName', 'cvv', 'expirationDate', 'number'),
-                ),
-                array('customer'      =>
-                    array(
-                        'id', 'company', 'email', 'fax', 'firstName',
-                        'lastName', 'phone', 'website'),
-                ),
-                array('billing'       =>
-                    array(
-                        'firstName', 'lastName', 'company', 'countryName',
-                        'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
-                        'extendedAddress', 'locality', 'postalCode', 'region',
-                        'streetAddress'),
-                ),
-                array('shipping'      =>
-                    array(
-                        'firstName', 'lastName', 'company', 'countryName',
-                        'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
-                        'extendedAddress', 'locality', 'postalCode', 'region',
-                        'streetAddress'),
-                ),
-                array('options'       =>
-                    array(
-                        'storeInVault', 'submitForSettlement',
-                        'addBillingAddressToPaymentMethod'),
-                ),
-                array('customFields' => array('_anyKey_')
-                ),
+            'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken', 'type',
+            array('creditCard' =>
+                array('token', 'cardholderName', 'cvv', 'expirationDate', 'number'),
+            ),
+            array('customer' =>
+                array(
+                    'id', 'company', 'email', 'fax', 'firstName',
+                    'lastName', 'phone', 'website'),
+            ),
+            array('billing' =>
+                array(
+                    'firstName', 'lastName', 'company', 'countryName',
+                    'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
+                    'extendedAddress', 'locality', 'postalCode', 'region',
+                    'streetAddress'),
+            ),
+            array('shipping' =>
+                array(
+                    'firstName', 'lastName', 'company', 'countryName',
+                    'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
+                    'extendedAddress', 'locality', 'postalCode', 'region',
+                    'streetAddress'),
+            ),
+            array('options' =>
+                array(
+                    'storeInVault',
+                    'submitForSettlement',
+                    'addBillingAddressToPaymentMethod',
+                    'storeShippingAddressInVault'),
+            ),
+            array('customFields' => array('_anyKey_')
+            ),
         );
     }
 
