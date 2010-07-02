@@ -53,6 +53,11 @@ abstract class Braintree
         }
     }
 
+    public function _set($key, $value)
+    {
+        $this->_attributes[$key] = $value;
+    }
+
     /**
      *
      * @param string $className

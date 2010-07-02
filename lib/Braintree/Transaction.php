@@ -561,19 +561,6 @@ final class Braintree_Transaction extends Braintree
     }
 
     /**
-     * sets private properties
-     * this function is private so values are read only
-     * @ignore
-     * @access protected
-     * @param var $key
-     * @param var $value
-     */
-    private function _set($key, $value)
-    {
-        $this->_attributes[$key] = $value;
-    }
-
-    /**
      * verifies that a valid transaction id is being used
      * @ignore
      * @param string transaction id

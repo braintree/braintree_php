@@ -483,20 +483,6 @@ class Braintree_CreditCard extends Braintree
                     );
         }
     }
-    /**
-     * sets private properties
-     * this function is private so values are read only
-     * @ignore
-     * @access protected
-     * @param string $key
-     * @param mixed $value
-     */
-    private function _set($key, $value)
-    {
-        $this->_attributes[$key] = $value;
-    }
-
-     /* private class methods */
 
     /**
      * sends the update request to the gateway

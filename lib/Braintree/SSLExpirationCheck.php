@@ -15,10 +15,6 @@ class Braintree_SSLExpirationCheck
 {
     private static $_sslExpirationDatesChecked;
 
-    public function __get($name) {
-        $varName = "_$name";
-        return $this->$varName;
-    }
     public static function checkDates()
     {
         date_default_timezone_set('UTC');
