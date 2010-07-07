@@ -48,7 +48,8 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
                 'website'   => 'http://example.com',
             ),
             'options' => array(
-                'storeInVault' => true
+                'storeInVault' => true,
+                'submitForSettlement' => true
             ),
             'orderId' => 'myorder',
             'shipping' => array(
@@ -64,6 +65,8 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             ),
         ));
 
+        Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
+        $transaction = Braintree_Transaction::find($transaction->id);
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::billingCompany()->is("Braintree"),
@@ -89,6 +92,7 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             Braintree_TransactionSearch::orderId()->is("myorder"),
             Braintree_TransactionSearch::paymentMethodToken()->is($token),
             Braintree_TransactionSearch::processorAuthorizationCode()->is($transaction->processorAuthorizationCode),
+            Braintree_TransactionSearch::settlementBatchId()->is($transaction->settlementBatchId),
             Braintree_TransactionSearch::shippingCompany()->is("Braintree P.S."),
             Braintree_TransactionSearch::shippingCountryName()->is("Mexico"),
             Braintree_TransactionSearch::shippingExtendedAddress()->is("Apt 456"),

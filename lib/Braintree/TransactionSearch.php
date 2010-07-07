@@ -24,6 +24,7 @@ class Braintree_TransactionSearch
 	static function orderId()                    { return new Braintree_TextNode('order_id'); }
 	static function paymentMethodToken()         { return new Braintree_TextNode('payment_method_token'); }
 	static function processorAuthorizationCode() { return new Braintree_TextNode('processor_authorization_code'); }
+	static function settlementBatchId()          { return new Braintree_TextNode('settlement_batch_id'); }
 	static function shippingCompany()            { return new Braintree_TextNode('shipping_company'); }
 	static function shippingCountryName()        { return new Braintree_TextNode('shipping_country_name'); }
 	static function shippingExtendedAddress()    { return new Braintree_TextNode('shipping_extended_address'); }
