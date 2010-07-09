@@ -896,6 +896,244 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($transaction->id, $collection->firstItem()->id);
     }
 
+    function test_rangeNode_authorizedAt()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        $twenty_min_ago = date_create("now -20 minutes", new DateTimeZone("UTC"));
+        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("UTC"));
+        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("UTC"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::authorizedAt()->between($twenty_min_ago, $ten_min_ago)
+        ));
+
+        $this->assertEquals(0, $collection->maximumCount());
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::authorizedAt()->between($ten_min_ago, $ten_min_from_now)
+        ));
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function test_rangeNode_failedAt()
+    {
+        $transaction = Braintree_Transaction::sale(array(
+            'amount' => '3000.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/12'
+            )
+        ))->transaction;
+
+        $twenty_min_ago = date_create("now -20 minutes", new DateTimeZone("UTC"));
+        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("UTC"));
+        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("UTC"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::failedAt()->between($twenty_min_ago, $ten_min_ago)
+        ));
+
+        $this->assertEquals(0, $collection->maximumCount());
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::failedAt()->between($ten_min_ago, $ten_min_from_now)
+        ));
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function test_rangeNode_gatewayRejectedAt()
+    {
+        $old_merchant_id = Braintree_Configuration::merchantId();
+        $old_public_key = Braintree_Configuration::publicKey();
+        $old_private_key = Braintree_Configuration::privateKey();
+
+        Braintree_Configuration::merchantId('processing_rules_merchant_id');
+        Braintree_Configuration::publicKey('processing_rules_public_key');
+        Braintree_Configuration::privateKey('processing_rules_private_key');
+
+        $transaction = Braintree_Transaction::sale(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/12',
+                'cvv' => '200'
+            )
+        ))->transaction;
+
+        $twenty_min_ago = date_create("now -20 minutes", new DateTimeZone("UTC"));
+        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("UTC"));
+        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("UTC"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::gatewayRejectedAt()->between($twenty_min_ago, $ten_min_ago)
+        ));
+
+        $firstCount = $collection->maximumCount();
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::gatewayRejectedAt()->between($ten_min_ago, $ten_min_from_now)
+        ));
+
+        $secondCount = $collection->maximumCount();
+        $firstId = $collection->firstItem()->id;
+
+        Braintree_Configuration::merchantId($old_merchant_id);
+        Braintree_Configuration::publicKey($old_public_key);
+        Braintree_Configuration::privateKey($old_private_key);
+
+        $this->assertEquals(0, $firstCount);
+        $this->assertEquals(1, $secondCount);
+        $this->assertEquals($transaction->id, $firstId);
+    }
+
+    function test_rangeNode_processorDeclinedAt()
+    {
+        $transaction = Braintree_Transaction::sale(array(
+            'amount' => '2000.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/12'
+            )
+        ))->transaction;
+
+        $twenty_min_ago = date_create("now -20 minutes", new DateTimeZone("UTC"));
+        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("UTC"));
+        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("UTC"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::processorDeclinedAt()->between($twenty_min_ago, $ten_min_ago)
+        ));
+
+        $this->assertEquals(0, $collection->maximumCount());
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::processorDeclinedAt()->between($ten_min_ago, $ten_min_from_now)
+        ));
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function test_rangeNode_settledAt()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'submitForSettlement' => true
+            )
+        ));
+
+        Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
+        $transaction = Braintree_Transaction::find($transaction->id);
+
+        $twenty_min_ago = date_create("now -20 minutes", new DateTimeZone("UTC"));
+        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("UTC"));
+        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("UTC"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::settledAt()->between($twenty_min_ago, $ten_min_ago)
+        ));
+
+        $this->assertEquals(0, $collection->maximumCount());
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::settledAt()->between($ten_min_ago, $ten_min_from_now)
+        ));
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function test_rangeNode_submittedForSettlementAt()
+    {
+        $transaction = Braintree_Transaction::sale(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'submitForSettlement' => true
+            )
+        ))->transaction;
+
+        $twenty_min_ago = date_create("now -20 minutes", new DateTimeZone("UTC"));
+        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("UTC"));
+        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("UTC"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::submittedForSettlementAt()->between($twenty_min_ago, $ten_min_ago)
+        ));
+
+        $this->assertEquals(0, $collection->maximumCount());
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::submittedForSettlementAt()->between($ten_min_ago, $ten_min_from_now)
+        ));
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function test_rangeNode_voidedAt()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        $transaction = Braintree_Transaction::void($transaction->id)->transaction;
+
+        $twenty_min_ago = date_create("now -20 minutes", new DateTimeZone("UTC"));
+        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("UTC"));
+        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("UTC"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::voidedAt()->between($twenty_min_ago, $ten_min_ago)
+        ));
+
+        $this->assertEquals(0, $collection->maximumCount());
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::voidedAt()->between($ten_min_ago, $ten_min_from_now)
+        ));
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
     function test_advancedSearchGivesIterableResult()
     {
         $collection = Braintree_Transaction::search(array(

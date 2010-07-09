@@ -42,7 +42,14 @@ class Braintree_TransactionSearch
 	static function refund()                     { return new Braintree_KeyValueNode("refund"); }
 
 	static function amount()                     { return new Braintree_RangeValueNode("amount"); }
+	static function authorizedAt()               { return new Braintree_RangeValueNode("authorizedAt"); }
 	static function createdAt()                  { return new Braintree_RangeValueNode("createdAt"); }
+	static function failedAt()                   { return new Braintree_RangeValueNode("failedAt"); }
+	static function gatewayRejectedAt()          { return new Braintree_RangeValueNode("gatewayRejectedAt"); }
+	static function processorDeclinedAt()        { return new Braintree_RangeValueNode("processorDeclinedAt"); }
+	static function settledAt()                  { return new Braintree_RangeValueNode("settledAt"); }
+	static function submittedForSettlementAt()   { return new Braintree_RangeValueNode("submittedForSettlementAt"); }
+	static function voidedAt()                   { return new Braintree_RangeValueNode("voidedAt"); }
 
     static function merchantAccountId()          { return new Braintree_MultipleValueNode("merchant_account_id"); }
 
