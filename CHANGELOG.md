@@ -1,3 +1,9 @@
+## 2.4.0
+
+* Added ability to specify country using countryName, countryCodeAlpha2, countryCodeAlpha3, or countryCodeNumeric (see ISO_3166-1[http://en.wikipedia.org/wiki/ISO_3166-1])
+* Added gatewayRejectionReason to Braintree_Transaction and Braintree_Verification
+* Added unified message to result objects
+
 ## 2.3.0
 
 * Added unified Braintree_TransparentRedirect url and confirm methods and deprecated old methods

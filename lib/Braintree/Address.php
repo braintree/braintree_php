@@ -189,8 +189,11 @@ class Braintree_Address extends Braintree
      */
     public static function createSignature()
     {
-        return array('company', 'countryName', 'customerId', 'extendedAddress', 'firstName',
-            'lastName', 'locality', 'postalCode', 'region', 'streetAddress');
+        return array(
+            'company', 'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
+            'countryName', 'customerId', 'extendedAddress', 'firstName',
+            'lastName', 'locality', 'postalCode', 'region', 'streetAddress'
+        );
     }
 
     /**

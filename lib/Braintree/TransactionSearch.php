@@ -100,7 +100,6 @@ class Braintree_TransactionSearch
             Braintree_Transaction::SETTLED,
             Braintree_Transaction::SETTLEMENT_FAILED,
             Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT,
-            Braintree_Transaction::UNKNOWN,
             Braintree_Transaction::VOIDED
         ));
     }

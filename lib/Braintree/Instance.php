@@ -23,9 +23,9 @@ abstract class Braintree_Instance
      */
     public function  __construct($attributes)
     {
-       if (!empty($attributes)) {
-           $this->_initializeFromArray($attributes);
-       }
+        if (!empty($attributes)) {
+            $this->_initializeFromArray($attributes);
+        }
     }
 
     
@@ -39,6 +39,9 @@ abstract class Braintree_Instance
     {
         if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
+        } else {
+            trigger_error('Undefined property on ' . get_class($this) . ': ' . $name, E_USER_NOTICE);
+            return null;
         }
     }
 

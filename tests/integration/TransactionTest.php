@@ -53,7 +53,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'locality' => 'Chicago',
                 'region' => 'IL',
                 'postalCode' => '60622',
-                'countryName' => 'United States of America'
+                'countryName' => 'United States of America',
+                'countryCodeAlpha2' => 'US',
+                'countryCodeAlpha3' => 'USA',
+                'countryCodeNumeric' => '840'
             ),
             'shipping' => array(
                 'firstName' => 'Andrew',
@@ -64,7 +67,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'locality' => 'Bartlett',
                 'region' => 'IL',
                 'postalCode' => '60103',
-                'countryName' => 'United States of America'
+                'countryName' => 'United States of America',
+                'countryCodeAlpha2' => 'US',
+                'countryCodeAlpha3' => 'USA',
+                'countryCodeNumeric' => '840'
             )
       ));
       $this->assertTrue($result->success);
@@ -106,6 +112,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('IL', $transaction->billingDetails->region);
       $this->assertEquals('60622', $transaction->billingDetails->postalCode);
       $this->assertEquals('United States of America', $transaction->billingDetails->countryName);
+      $this->assertEquals('US', $transaction->billingDetails->countryCodeAlpha2);
+      $this->assertEquals('USA', $transaction->billingDetails->countryCodeAlpha3);
+      $this->assertEquals('840', $transaction->billingDetails->countryCodeNumeric);
 
       $this->assertEquals('Andrew', $transaction->shippingDetails->firstName);
       $this->assertEquals('Mason', $transaction->shippingDetails->lastName);
@@ -116,12 +125,17 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('IL', $transaction->shippingDetails->region);
       $this->assertEquals('60103', $transaction->shippingDetails->postalCode);
       $this->assertEquals('United States of America', $transaction->shippingDetails->countryName);
+      $this->assertEquals('US', $transaction->shippingDetails->countryCodeAlpha2);
+      $this->assertEquals('USA', $transaction->shippingDetails->countryCodeAlpha3);
+      $this->assertEquals('840', $transaction->shippingDetails->countryCodeNumeric);
 
       $this->assertNotNull($transaction->processorAuthorizationCode);
       $this->assertEquals('510510', $transaction->creditCardDetails->bin);
       $this->assertEquals('5100', $transaction->creditCardDetails->last4);
       $this->assertEquals('510510******5100', $transaction->creditCardDetails->maskedNumber);
       $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
+      $this->assertEquals('05', $transaction->creditCardDetails->expirationMonth);
+      $this->assertEquals('2011', $transaction->creditCardDetails->expirationYear);
     }
 
     function testSale_withCustomFields()
@@ -227,7 +241,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     function testSale_withProcessorDecline()
     {
         $result = Braintree_Transaction::sale(array(
-            'amount' => '2000.00',
+            'amount' => Braintree_Test_TransactionAmounts::$decline,
             'creditCard' => array(
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
@@ -235,6 +249,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertFalse($result->success);
         $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->transaction->status);
+        $this->assertEquals(2000, $result->transaction->processorResponseCode);
+        $this->assertEquals("Do Not Honor", $result->transaction->processorResponseText);
     }
 
     function testSale_withExistingCustomer()
@@ -260,6 +276,41 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ))->transaction;
         $this->assertEquals($transaction->creditCardDetails->maskedNumber, '401288******1881');
         $this->assertNull($transaction->vaultCreditCard());
+    }
+
+    function testSale_andStoreShippingAddressInVault()
+    {
+        $customer = Braintree_Customer::create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com'
+        ))->customer;
+
+        $transaction = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'customerId' => $customer->id,
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/12'
+            ),
+            'shipping' => array(
+                'firstName' => 'Darren',
+                'lastName' => 'Stevens'
+            ),
+            'options' => array(
+                'storeInVault' => true,
+                'storeShippingAddressInVault' => true
+            )
+        ))->transaction;
+
+        $customer = Braintree_Customer::find($customer->id);
+        $this->assertEquals('Darren', $customer->addresses[0]->firstName);
+        $this->assertEquals('Stevens', $customer->addresses[0]->lastName);
     }
 
     function testSale_withExistingCustomer_storeInVault()
@@ -442,6 +493,79 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $voidResult = Braintree_Transaction::void($transaction->id);
         $this->assertEquals(true, $voidResult->success);
         $this->assertEquals(Braintree_Transaction::VOIDED, $voidResult->transaction->status);
+    }
+
+    function test_countryValidationError_inconsistency()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'billing' => array(
+                'countryCodeAlpha2' => 'AS',
+                'countryCodeAlpha3' => 'USA'
+            )
+        ));
+        $this->assertFalse($result->success);
+
+        $errors = $result->errors->forKey('transaction')->forKey('billing')->onAttribute('base');
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_INCONSISTENT_COUNTRY, $errors[0]->code);
+    }
+
+    function test_countryValidationError_incorrectAlpha2()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'billing' => array(
+                'countryCodeAlpha2' => 'ZZ'
+            )
+        ));
+        $this->assertFalse($result->success);
+
+        $errors = $result->errors->forKey('transaction')->forKey('billing')->onAttribute('countryCodeAlpha2');
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_CODE_ALPHA2_IS_NOT_ACCEPTED, $errors[0]->code);
+    }
+
+    function test_countryValidationError_incorrectAlpha3()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'billing' => array(
+                'countryCodeAlpha3' => 'ZZZ'
+            )
+        ));
+        $this->assertFalse($result->success);
+
+        $errors = $result->errors->forKey('transaction')->forKey('billing')->onAttribute('countryCodeAlpha3');
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_CODE_ALPHA3_IS_NOT_ACCEPTED, $errors[0]->code);
+    }
+
+    function test_countryValidationError_incorrectNumericCode()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'billing' => array(
+                'countryCodeNumeric' => '000'
+            )
+        ));
+        $this->assertFalse($result->success);
+
+        $errors = $result->errors->forKey('transaction')->forKey('billing')->onAttribute('countryCodeNumeric');
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_CODE_NUMERIC_IS_NOT_ACCEPTED, $errors[0]->code);
     }
 
     function testVoid_withValidationError()
@@ -713,6 +837,99 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    function testGatewayRejectionOnAvs()
+    {
+        $old_merchant_id = Braintree_Configuration::merchantId();
+        $old_public_key = Braintree_Configuration::publicKey();
+        $old_private_key = Braintree_Configuration::privateKey();
+
+        Braintree_Configuration::merchantId('processing_rules_merchant_id');
+        Braintree_Configuration::publicKey('processing_rules_public_key');
+        Braintree_Configuration::privateKey('processing_rules_private_key');
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'billing' => array(
+                'streetAddress' => '200 2nd Street'
+            ),
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        Braintree_Configuration::merchantId($old_merchant_id);
+        Braintree_Configuration::publicKey($old_public_key);
+        Braintree_Configuration::privateKey($old_private_key);
+
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(Braintree_Transaction::AVS, $transaction->gatewayRejectionReason);
+    }
+
+    function testGatewayRejectionOnAvsAndCvv()
+    {
+        $old_merchant_id = Braintree_Configuration::merchantId();
+        $old_public_key = Braintree_Configuration::publicKey();
+        $old_private_key = Braintree_Configuration::privateKey();
+
+        Braintree_Configuration::merchantId('processing_rules_merchant_id');
+        Braintree_Configuration::publicKey('processing_rules_public_key');
+        Braintree_Configuration::privateKey('processing_rules_private_key');
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'billing' => array(
+                'postalCode' => '20000'
+            ),
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cvv' => '200'
+            )
+        ));
+
+        Braintree_Configuration::merchantId($old_merchant_id);
+        Braintree_Configuration::publicKey($old_public_key);
+        Braintree_Configuration::privateKey($old_private_key);
+
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(Braintree_Transaction::AVS_AND_CVV, $transaction->gatewayRejectionReason);
+    }
+
+    function testGatewayRejectionOnCvv()
+    {
+        $old_merchant_id = Braintree_Configuration::merchantId();
+        $old_public_key = Braintree_Configuration::publicKey();
+        $old_private_key = Braintree_Configuration::privateKey();
+
+        Braintree_Configuration::merchantId('processing_rules_merchant_id');
+        Braintree_Configuration::publicKey('processing_rules_public_key');
+        Braintree_Configuration::privateKey('processing_rules_private_key');
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cvv' => '200'
+            )
+        ));
+
+        Braintree_Configuration::merchantId($old_merchant_id);
+        Braintree_Configuration::publicKey($old_public_key);
+        Braintree_Configuration::privateKey($old_private_key);
+
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(Braintree_Transaction::CVV, $transaction->gatewayRejectionReason);
+    }
+
+
     function createTransactionViaTr($regularParams, $trParams)
     {
         Braintree_TestHelper::suppressDeprecationWarnings();
@@ -739,6 +956,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
         return $transaction;
     }
+
 }
 ?>
 

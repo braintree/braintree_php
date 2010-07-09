@@ -35,12 +35,8 @@
  * @property-read object $errors Braintree_Error_ErrorCollection
  * @property-read object $creditCardVerification credit card verification data
  */
-class Braintree_Result_Error
+class Braintree_Result_Error extends Braintree
 {
-   private $_params;
-   private $_errors;
-   private $_creditCardVerification;
-   private $_transaction;
    /**
     *
     * @var boolean always false
@@ -58,7 +54,7 @@ class Braintree_Result_Error
    public function valueForHtmlField($field)
    {
        $pieces = preg_split("/[\[\]]+/", $field, 0, PREG_SPLIT_NO_EMPTY);
-       $params = $this->_params;
+       $params = $this->params;
        foreach(array_slice($pieces, 0, -1) as $key) {
            $params = $params[Braintree_Util::delimiterToCamelCase($key)];
        }
@@ -74,19 +70,19 @@ class Braintree_Result_Error
     */
    public function  __construct($response)
    {
-       $this->_params = $response['params'];
-       $this->_errors = new Braintree_Error_ErrorCollection($response['errors']);
-       // create a CreditCardVerification object
-       // populated with gateway response data
+       $this->_attributes = $response;
+       $this->_set('errors',  new Braintree_Error_ErrorCollection($response['errors']));
+
        if(isset($response['verification'])) {
-           $this->_creditCardVerification = new Braintree_Result_CreditCardVerification($response['verification']);
+           $this->_set('creditCardVerification', new Braintree_Result_CreditCardVerification($response['verification']));
        } else {
-           unset($this->_creditCardVerification);
+           $this->_set('creditCardVerification', null);
        }
+
        if(isset($response['transaction'])) {
-           $this->_transaction = Braintree_Transaction::factory($response['transaction']);
+           $this->_set('transaction', Braintree_Transaction::factory($response['transaction']));
        } else {
-           unset($this->_transaction);
+           $this->_set('transaction', null);
        }
    }
 
@@ -104,17 +100,5 @@ class Braintree_Result_Error
             $output .= sprintf('%s', $this->_creditCardVerification);
         }
         return __CLASS__ .'['.$output.']';
-    }
-
-    /**
-     * @ignore
-     */
-    public function __get($name)
-    {
-        $key = "_$name";
-        if (isset($this->$key)) {
-            return $this->$key;
-        }
-        return null;
     }
 }

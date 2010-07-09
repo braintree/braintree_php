@@ -45,6 +45,30 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($customer->merchantId);
     }
 
+    function testCreate_withCountry()
+    {
+        $result = Braintree_Customer::create(array(
+            'firstName' => 'Bat',
+            'lastName' => 'Manderson',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'billingAddress' => array(
+                   'countryName' => 'Gabon',
+                   'countryCodeAlpha2' => 'GA',
+                   'countryCodeAlpha3' => 'GAB',
+                   'countryCodeNumeric' => '266'
+                )
+            )
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals('Gabon', $customer->creditCards[0]->billingAddress->countryName);
+        $this->assertEquals('GA', $customer->creditCards[0]->billingAddress->countryCodeAlpha2);
+        $this->assertEquals('GAB', $customer->creditCards[0]->billingAddress->countryCodeAlpha3);
+        $this->assertEquals('266', $customer->creditCards[0]->billingAddress->countryCodeNumeric);
+    }
+
     function testCreate_blankCustomer()
     {
         $result = Braintree_Customer::create();
@@ -219,6 +243,21 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::ADDRESS_STREET_ADDRESS_IS_TOO_LONG, $errors[0]->code);
     }
 
+    function testCreate_countryValidations_inconsistency()
+    {
+        $result = Braintree_Customer::create(array(
+            'creditCard' => array(
+                'billingAddress' => array(
+                    'countryName' => 'Georgia',
+                    'countryCodeAlpha2' => 'TF'
+                )
+            )
+        ));
+        $this->assertEquals(false, $result->success);
+        $errors = $result->errors->forKey('customer')->forKey('creditCard')->forKey('billingAddress')->onAttribute('base');
+        $this->assertEquals(Braintree_Error_Codes::ADDRESS_INCONSISTENT_COUNTRY, $errors[0]->code);
+    }
+
     function testCreateNoValidate_returnsCustomer()
     {
         $customer = Braintree_Customer::createNoValidate(array(
@@ -303,6 +342,50 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('new phone', $updateResult->customer->phone);
         $this->assertEquals('new fax', $updateResult->customer->fax);
         $this->assertEquals('http://new.example.com', $updateResult->customer->website);
+    }
+
+    function testUpdate_withCountry()
+    {
+        $customer = Braintree_Customer::create(array(
+            'firstName' => 'Bat',
+            'lastName' => 'Manderson',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'billingAddress' => array(
+                    'countryName' => 'United States of America',
+                    'countryCodeAlpha2' => 'US',
+                    'countryCodeAlpha3' => 'USA',
+                    'countryCodeNumeric' => '840'
+                )
+            )
+        ))->customer;
+
+        $result = Braintree_Customer::update($customer->id, array(
+            'firstName' => 'Bat',
+            'lastName' => 'Manderson',
+            'creditCard' => array(
+				'options' => array(
+					'updateExistingToken' => $customer->creditCards[0]->token
+				),
+                'billingAddress' => array(
+                    'countryName' => 'Gabon',
+                    'countryCodeAlpha2' => 'GA',
+                    'countryCodeAlpha3' => 'GAB',
+                    'countryCodeNumeric' => '266',
+                    'options' => array(
+                        'updateExisting' => true
+                    )
+            	)
+            )
+        ));
+
+        $this->assertEquals(true, $result->success);
+        $updatedCustomer = $result->customer;
+        $this->assertEquals('Gabon', $updatedCustomer->creditCards[0]->billingAddress->countryName);
+        $this->assertEquals('GA', $updatedCustomer->creditCards[0]->billingAddress->countryCodeAlpha2);
+        $this->assertEquals('GAB', $updatedCustomer->creditCards[0]->billingAddress->countryCodeAlpha3);
+        $this->assertEquals('266', $updatedCustomer->creditCards[0]->billingAddress->countryCodeNumeric);
     }
 
     function testUpdate_withUpdatingExistingCreditCard()

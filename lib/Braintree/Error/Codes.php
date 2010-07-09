@@ -25,19 +25,23 @@
  */
 class Braintree_Error_Codes
 {
-    const ADDRESS_CANNOT_BE_BLANK              = '81801';
-    const ADDRESS_COMPANY_IS_TOO_LONG          = '81802';
-    const ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED = '91803';
-    const ADDRESS_EXTENDED_ADDRESS_IS_TOO_LONG = '81804';
-    const ADDRESS_FIRST_NAME_IS_TOO_LONG       = '81805';
-    const ADDRESS_LAST_NAME_IS_TOO_LONG        = '81806';
-    const ADDRESS_LOCALITY_IS_TOO_LONG         = '81807';
-    const ADDRESS_POSTAL_CODE_IS_REQUIRED      = '81808';
-    const ADDRESS_POSTAL_CODE_INVALID_CHARACTERS = '81813';
-    const ADDRESS_POSTAL_CODE_IS_TOO_LONG      = '81809';
-    const ADDRESS_REGION_IS_TOO_LONG           = '81810';
-    const ADDRESS_STREET_ADDRESS_IS_REQUIRED   = '81811';
-    const ADDRESS_STREET_ADDRESS_IS_TOO_LONG   = '81812';
+    const ADDRESS_CANNOT_BE_BLANK                      = '81801';
+    const ADDRESS_COMPANY_IS_TOO_LONG                  = '81802';
+    const ADDRESS_COUNTRY_CODE_ALPHA2_IS_NOT_ACCEPTED  = '91814';
+    const ADDRESS_COUNTRY_CODE_ALPHA3_IS_NOT_ACCEPTED  = '91816';
+    const ADDRESS_COUNTRY_CODE_NUMERIC_IS_NOT_ACCEPTED = '91817';
+    const ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED         = '91803';
+    const ADDRESS_EXTENDED_ADDRESS_IS_TOO_LONG         = '81804';
+    const ADDRESS_FIRST_NAME_IS_TOO_LONG               = '81805';
+    const ADDRESS_INCONSISTENT_COUNTRY                 = '91815';
+    const ADDRESS_LAST_NAME_IS_TOO_LONG                = '81806';
+    const ADDRESS_LOCALITY_IS_TOO_LONG                 = '81807';
+    const ADDRESS_POSTAL_CODE_IS_REQUIRED              = '81808';
+    const ADDRESS_POSTAL_CODE_INVALID_CHARACTERS       = '81813';
+    const ADDRESS_POSTAL_CODE_IS_TOO_LONG              = '81809';
+    const ADDRESS_REGION_IS_TOO_LONG                   = '81810';
+    const ADDRESS_STREET_ADDRESS_IS_REQUIRED           = '81811';
+    const ADDRESS_STREET_ADDRESS_IS_TOO_LONG           = '81812';
 
     const CREDIT_CARD_BILLING_ADDRESS_CONFLICT                                          = '91701';
     const CREDIT_CARD_BILLING_ADDRESS_ID_IS_INVALID                                     = '91702';
@@ -69,18 +73,19 @@ class Braintree_Error_Codes
     const CUSTOMER_CUSTOM_FIELD_IS_INVALID  = '91602';
     const CUSTOMER_CUSTOM_FIELD_IS_TOO_LONG = '81603';
     const CUSTOMER_EMAIL_IS_INVALID         = '81604';
-    const CUSTOMER_EMAIL_IS_TOO_LONG        = '81605';
     const CUSTOMER_EMAIL_IS_REQUIRED        = '81606';
+    const CUSTOMER_EMAIL_IS_TOO_LONG        = '81605';
     const CUSTOMER_FAX_IS_TOO_LONG          = '81607';
     const CUSTOMER_FIRST_NAME_IS_TOO_LONG   = '81608';
-    const CUSTOMER_ID_IS_IN_USE             = '91609';
     const CUSTOMER_ID_IS_INVAILD            = '91610';
+    const CUSTOMER_ID_IS_IN_USE             = '91609';
     const CUSTOMER_ID_IS_NOT_ALLOWED        = '91611';
+    const CUSTOMER_ID_IS_REQUIRED           = '91613';
     const CUSTOMER_ID_IS_TOO_LONG           = '91612';
     const CUSTOMER_LAST_NAME_IS_TOO_LONG    = '81613';
     const CUSTOMER_PHONE_IS_TOO_LONG        = '81614';
-    const CUSTOMER_WEBSITE_IS_TOO_LONG      = '81615';
     const CUSTOMER_WEBSITE_IS_INVALID       = '81616';
+    const CUSTOMER_WEBSITE_IS_TOO_LONG      = '81615';
 
     const SUBSCRIPTION_CANNOT_EDIT_CANCELED_SUBSCRIPTION                 = '81901';
     const SUBSCRIPTION_ID_IS_IN_USE                                      = '81902';

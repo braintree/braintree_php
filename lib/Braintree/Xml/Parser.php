@@ -70,7 +70,10 @@ class Braintree_Xml_Parser
             if ($parentElement[0] instanceof SimpleXMLIterator) {
                 $parentElement = $parentElement[0];
                 $parentKey = Braintree_Util::delimiterToCamelCase($parentElement->getName());
+            } else {
+                $parentElement = null;
             }
+
 
             if ($parentKey == "customFields") {
                 $key = Braintree_Util::delimiterToUnderscore($iterator->key());
@@ -97,18 +100,13 @@ class Braintree_Xml_Parser
             $output = isset($value) ? $value : $tmpArray[$key];
 
             // determine if there are multiple tags of this name at the same level
-            if (self::$_responseType == 'collection') {
-                // count of elements in xpath
-                $x = '/' . self::$_xmlRoot . '/' . $iterator->key();
-                $c = count($iterator->xpath($x));
-                // if the path is found more than once, OR
-                // if the path is found once and has children,
-                // it's the body of the collection
-                if ($c > 1 || ($c == 1 && $iterator->hasChildren())) {
-                    $xmlArray[$key][] = $output;
-                    continue;
-                }
+            if (isset($parentElement) &&
+                ($parentElement->attributes()->type == 'collection') &&
+                $iterator->hasChildren()) {
+              $xmlArray[$key][] = $output;
+              continue;
             }
+
             // if the element was an array type, output to a numbered key
             // otherwise, use the element name
             if ($attributeType == 'array') {

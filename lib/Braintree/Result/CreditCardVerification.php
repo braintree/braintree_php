@@ -31,6 +31,7 @@ class Braintree_Result_CreditCardVerification
     private $_avsPostalCodeResponseCode;
     private $_avsStreetAddressResponseCode;
     private $_cvvResponseCode;
+    private $_gatewayRejectionReason;
     private $_status;
 
     /**

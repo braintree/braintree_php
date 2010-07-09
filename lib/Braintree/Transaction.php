@@ -177,7 +177,6 @@ final class Braintree_Transaction extends Braintree
     const SETTLED                  = 'settled';
     const SETTLEMENT_FAILED        = 'settlement_failed';
     const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
-    const UNKNOWN                  = 'unknown';
     const VOIDED                   = 'voided';
 
     // Transaction Types
@@ -192,6 +191,12 @@ final class Braintree_Transaction extends Braintree
     const API = 'api';
     const CONTROL_PANEL = 'control_panel';
     const RECURRING = 'recurring';
+
+    // Gateway Rejection Reason
+    const AVS = 'avs';
+    const AVS_AND_CVV = 'avs_and_cvv';
+    const CVV = 'cvv';
+    const DUPLICATE = 'duplicate';
 
     /**
      * @ignore
@@ -255,34 +260,38 @@ final class Braintree_Transaction extends Braintree
     public static function createSignature()
     {
         return array(
-                'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken', 'type',
-                array('creditCard'   =>
-                    array('token', 'cardholderName', 'cvv', 'expirationDate', 'number'),
-                ),
-                array('customer'      =>
-                    array(
-                        'id', 'company', 'email', 'fax', 'firstName',
-                        'lastName', 'phone', 'website'),
-                ),
-                array('billing'       =>
-                    array(
-                        'firstName', 'lastName', 'company', 'countryName',
-                        'extendedAddress', 'locality', 'postalCode', 'region',
-                        'streetAddress'),
-                ),
-                array('shipping'      =>
-                    array(
-                        'firstName', 'lastName', 'company', 'countryName',
-                        'extendedAddress', 'locality', 'postalCode', 'region',
-                        'streetAddress'),
-                ),
-                array('options'       =>
-                    array(
-                        'storeInVault', 'submitForSettlement',
-                        'addBillingAddressToPaymentMethod'),
-                ),
-                array('customFields' => array('_anyKey_')
-                ),
+            'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken', 'type',
+            array('creditCard' =>
+                array('token', 'cardholderName', 'cvv', 'expirationDate', 'number'),
+            ),
+            array('customer' =>
+                array(
+                    'id', 'company', 'email', 'fax', 'firstName',
+                    'lastName', 'phone', 'website'),
+            ),
+            array('billing' =>
+                array(
+                    'firstName', 'lastName', 'company', 'countryName',
+                    'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
+                    'extendedAddress', 'locality', 'postalCode', 'region',
+                    'streetAddress'),
+            ),
+            array('shipping' =>
+                array(
+                    'firstName', 'lastName', 'company', 'countryName',
+                    'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
+                    'extendedAddress', 'locality', 'postalCode', 'region',
+                    'streetAddress'),
+            ),
+            array('options' =>
+                array(
+                    'storeInVault',
+                    'submitForSettlement',
+                    'addBillingAddressToPaymentMethod',
+                    'storeShippingAddressInVault'),
+            ),
+            array('customFields' => array('_anyKey_')
+            ),
         );
     }
 
@@ -549,19 +558,6 @@ final class Braintree_Transaction extends Braintree
         $response = Braintree_Http::post($url, $params);
 
         return self::_verifyGatewayResponse($response);
-    }
-
-    /**
-     * sets private properties
-     * this function is private so values are read only
-     * @ignore
-     * @access protected
-     * @param var $key
-     * @param var $value
-     */
-    private function _set($key, $value)
-    {
-        $this->_attributes[$key] = $value;
     }
 
     /**
