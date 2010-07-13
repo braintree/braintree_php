@@ -27,6 +27,12 @@
  */
 class Braintree_Result_CreditCardVerification
 {
+    // Status
+    const FAILED                   = 'failed';
+    const GATEWAY_REJECTED         = 'gateway_rejected';
+    const PROCESSOR_DECLINED       = 'processor_declined';
+    const VERIFIED                 = 'verified';
+
     private $_avsErrorResponseCode;
     private $_avsPostalCodeResponseCode;
     private $_avsStreetAddressResponseCode;
