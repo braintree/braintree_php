@@ -15,6 +15,7 @@ class Braintree_Subscription extends Braintree
 {
     const ACTIVE = 'Active';
     const CANCELED = 'Canceled';
+    const EXPIRED = 'Expired';
     const PAST_DUE = 'Past Due';
 
     public static function create($attributes)
@@ -111,8 +112,8 @@ class Braintree_Subscription extends Braintree
     private static function allowedAttributes()
     {
         return array(
-            'merchantAccountId', 'paymentMethodToken', 'planId', 'id', 'price', 'trialPeriod',
-            'trialDuration', 'trialDurationUnit'
+			'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
+		   	'id', 'neverExpires', 'price', 'trialPeriod', 'trialDuration', 'trialDurationUnit'
         );
     }
 

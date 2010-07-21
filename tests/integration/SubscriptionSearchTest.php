@@ -165,6 +165,19 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($found);
     }
 
+    function testSearch_statusIsExpired()
+    {
+        $found = false;
+        $collection = Braintree_Subscription::search(array(
+            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::EXPIRED))
+        ));
+        foreach ($collection AS $item) {
+            $found = true;
+            $this->assertEquals(Braintree_Subscription::EXPIRED, $item->status);
+        }
+        $this->assertTrue($found);
+    }
+
     function testSearch_statusIn_multipleValues()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();

@@ -8,6 +8,7 @@ class Braintree_SubscriptionTestHelper extends PHPUnit_Framework_TestCase
         return array(
             'description' => 'Plan for integration tests -- with trial',
             'id' => 'integration_trial_plan',
+			'numberOfBillingCycles' => 12,
             'price' => '43.21',
             'trial_period' => true,
             'trial_duration' => 2,
@@ -20,6 +21,7 @@ class Braintree_SubscriptionTestHelper extends PHPUnit_Framework_TestCase
         return array(
             'description' => 'Plan for integration tests -- without a trial',
             'id' => 'integration_trialless_plan',
+			'numberOfBillingCycles' => 12,
             'price' => '12.34',
             'trial_period' => false
         );
