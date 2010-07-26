@@ -116,12 +116,14 @@ class Braintree_Subscription extends Braintree
             'id', 'neverExpires', 'price', 'trialPeriod', 'trialDuration', 'trialDurationUnit',
             array(
                 'addOns' => array(
-                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity'))
+                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
+                    array('remove' => array('_anyKey_')),
                 )
             ),
             array(
                 'discounts' => array(
-                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity'))
+                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
+                    array('remove' => array('_anyKey_')),
                 )
             ),
             array('options' => array('doNotInheritAddOnsOrDiscounts')),

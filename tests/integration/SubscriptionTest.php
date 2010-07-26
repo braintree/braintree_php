@@ -336,6 +336,31 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($discounts[1]->neverExpires, true);
     }
 
+    function testCreate_allowsRemovalOfInheritedAddOnsAndDiscounts()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+            'addOns' => array(
+                'remove' => array('increase_10', 'increase_20')
+            ),
+            'discounts' => array(
+                'remove' => array('discount_7')
+            )
+        ));
+        $subscription = $result->subscription;
+        $this->assertEquals(0, sizeof($subscription->addOns));
+
+        $this->assertEquals(1, sizeof($subscription->discounts));
+
+        $this->assertEquals($subscription->discounts[0]->amount, "11.00");
+        $this->assertEquals($subscription->discounts[0]->quantity, 1);
+        $this->assertEquals($subscription->discounts[0]->numberOfBillingCycles, null);
+        $this->assertEquals($subscription->discounts[0]->neverExpires, true);
+    }
+
     function testValidationErrors_hasValidationErrorsOnId()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
