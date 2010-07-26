@@ -3,6 +3,18 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_SubscriptionTestHelper extends PHPUnit_Framework_TestCase
 {
+    static function addOnDiscountPlan()
+    {
+        return array(
+            'description' => "Plan for integration tests -- with add-ons and discounts",
+            'id' => "integration_plan_with_add_ons_and_discounts",
+            'price' => '9.99',
+            'trial_period' => true,
+            'trial_duration' => 2,
+            'trial_duration_unit' => 'day'
+        );
+    }
+
     static function trialPlan()
     {
         return array(
@@ -12,7 +24,7 @@ class Braintree_SubscriptionTestHelper extends PHPUnit_Framework_TestCase
             'price' => '43.21',
             'trial_period' => true,
             'trial_duration' => 2,
-            'trial_duration_unit' => 'day' // Braintree::Subscription::TrialDurationUnit::Day
+            'trial_duration_unit' => 'day'
         );
     }
 

@@ -220,6 +220,20 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($subscription->neverExpires);
     }
 
+    function testCreate_doesNotInheritAddOnsAndDiscountsWhenDoNotInheritAddOnsOrDiscountsIsSet()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+            'options' => array('doNotInheritAddOnsOrDiscounts' => true)
+        ));
+        $subscription = $result->subscription;
+        $this->assertEquals(0, sizeof($subscription->addOns));
+        $this->assertEquals(0, sizeof($subscription->discounts));
+    }
+
     function testValidationErrors_hasValidationErrorsOnId()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
