@@ -102,6 +102,43 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
         Braintree_Util::verifyKeys($signature, $data);
     }
 
+	function testVerifyKeys_withArrayOfArrays()
+	{
+        $signature = array(
+			array('addOns' => array(array('update' => array('amount', 'existingId'))))
+		);
+
+		$goodData = array(
+            'addOns' => array(
+                'update' => array(
+                    array(
+                        'amount' => '50.00',
+                        'existingId' => 'increase_10',
+                    ),
+                    array(
+                        'amount' => '60.00',
+                        'existingId' => 'increase_20',
+                    )
+                )
+            )
+		);
+
+        Braintree_Util::verifyKeys($signature, $goodData);
+
+		$badData = array(
+            'addOns' => array(
+                'update' => array(
+                    array(
+                        'invalid' => '50.00',
+                    )
+                )
+            )
+		);
+
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_Util::verifyKeys($signature, $badData);
+	}
+
     function testVerifyKeys()
     {
         $signature = array(
@@ -136,6 +173,20 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
                 ),
         );
 
+        // test valid
+        $userKeys = array(
+                'amount' => '100.00',
+                'customFields'   => array('HEY' => 'HO',
+                                          'WAY' => 'NO'),
+                'creditCard' => array(
+                    'number' => '5105105105105100',
+                    'expirationDate' => '05/12',
+                    ),
+                );
+
+        $n = Braintree_Util::verifyKeys($signature, $userKeys);
+        $this->assertNull($n);
+
         $userKeys = array(
                 'amount' => '100.00',
                 'customFields'   => array('HEY' => 'HO',
@@ -152,21 +203,6 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException');
 
         Braintree_Util::verifyKeys($signature, $userKeys);
-
-        // test valid
-        $userKeys = array(
-                'amount' => '100.00',
-                'customFields'   => array('HEY' => 'HO',
-                                          'WAY' => 'NO'),
-                'creditCard' => array(
-                    'number' => '5105105105105100',
-                    'expirationDate' => '05/12',
-                    ),
-                );
-
-        $n = Braintree_Util::verifyKeys($signature, $userKeys);
-        $this->assertNull($n);
     }
-
 }
 ?>

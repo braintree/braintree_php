@@ -213,7 +213,10 @@ class Braintree_Util
     {
        $flattenedArray = array();
        foreach($keys AS $key => $value) {
-           $fullKey = empty($namespace) ? $key : $namespace . '[' . $key . ']';
+           $fullKey = empty($namespace) ? $key : $namespace;
+           if (!is_numeric($key) && $namespace != null) {
+              $fullKey .= '[' . $key . ']';
+           }
            if(is_array($value)) {
                $more = self::_flattenUserKeys($value, $fullKey);
                $flattenedArray = array_merge($flattenedArray, $more);

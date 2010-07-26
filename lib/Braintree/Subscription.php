@@ -71,9 +71,9 @@ class Braintree_Subscription extends Braintree
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = Braintree_SubscriptionSearch::ids()->in($ids)->toparam();
-        $response = braintree_http::post('/subscriptions/advanced_search', array('search' => $criteria));
+        $response = Braintree_Http::post('/subscriptions/advanced_search', array('search' => $criteria));
 
-        return braintree_util::extractattributeasarray(
+        return Braintree_Util::extractAttributeAsArray(
             $response['subscriptions'],
             'subscription'
         );
@@ -114,6 +114,16 @@ class Braintree_Subscription extends Braintree
         return array(
             'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
             'id', 'neverExpires', 'price', 'trialPeriod', 'trialDuration', 'trialDurationUnit',
+            array(
+                'addOns' => array(
+                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity'))
+                )
+            ),
+            array(
+                'discounts' => array(
+                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity'))
+                )
+            ),
             array('options' => array('doNotInheritAddOnsOrDiscounts')),
         );
     }
