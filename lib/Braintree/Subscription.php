@@ -133,6 +133,22 @@ class Braintree_Subscription extends Braintree
     {
         $this->_attributes = $attributes;
 
+        $addOnArray = array();
+        if (isset($attributes['addOns'])) {
+            foreach ($attributes['addOns'] AS $addOn) {
+                $addOnArray[] = Braintree_AddOn::factory($addOn);
+            }
+        }
+        $this->_attributes['addOns'] = $addOnArray;
+
+        $discountArray = array();
+        if (isset($attributes['discounts'])) {
+            foreach ($attributes['discounts'] AS $discount) {
+                $discountArray[] = Braintree_Discount::factory($discount);
+            }
+        }
+        $this->_attributes['discounts'] = $discountArray;
+
         $transactionArray = array();
         if (isset($attributes['transactions'])) {
             foreach ($attributes['transactions'] AS $transaction) {

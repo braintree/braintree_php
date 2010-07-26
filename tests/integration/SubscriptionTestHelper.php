@@ -60,6 +60,13 @@ class Braintree_SubscriptionTestHelper extends PHPUnit_Framework_TestCase
         ));
         return $result->subscription;
     }
+
+    static function sortModificationsById(&$modifications)
+    {
+        usort($modifications, function($left, $right) {
+            return strcmp($left->id, $right->id);
+        });
+    }
 }
 
 ?>

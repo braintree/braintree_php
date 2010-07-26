@@ -234,6 +234,44 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, sizeof($subscription->discounts));
     }
 
+    function testCreate_inheritsAddOnsAndDiscountsFromPlanByDefault()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+        ));
+        $subscription = $result->subscription;
+        $this->assertEquals(2, sizeof($subscription->addOns));
+        $addOns = $subscription->addOns;
+        Braintree_SubscriptionTestHelper::sortModificationsById($addOns);
+
+        $this->assertEquals($addOns[0]->amount, "10.00");
+        $this->assertEquals($addOns[0]->quantity, 1);
+        $this->assertEquals($addOns[0]->numberOfBillingCycles, null);
+        $this->assertEquals($addOns[0]->neverExpires, true);
+
+        $this->assertEquals($addOns[1]->amount, "20.00");
+        $this->assertEquals($addOns[1]->quantity, 1);
+        $this->assertEquals($addOns[1]->numberOfBillingCycles, null);
+        $this->assertEquals($addOns[1]->neverExpires, true);
+
+        $this->assertEquals(2, sizeof($subscription->discounts));
+        $discounts = $subscription->discounts;
+        Braintree_SubscriptionTestHelper::sortModificationsById($discounts);
+
+        $this->assertEquals($discounts[0]->amount, "11.00");
+        $this->assertEquals($discounts[0]->quantity, 1);
+        $this->assertEquals($discounts[0]->numberOfBillingCycles, null);
+        $this->assertEquals($discounts[0]->neverExpires, true);
+
+        $this->assertEquals($discounts[1]->amount, "7.00");
+        $this->assertEquals($discounts[1]->quantity, 1);
+        $this->assertEquals($discounts[1]->numberOfBillingCycles, null);
+        $this->assertEquals($discounts[1]->neverExpires, true);
+    }
+
     function testValidationErrors_hasValidationErrorsOnId()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
