@@ -196,6 +196,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         ));
         $subscription = $result->subscription;
         $this->assertEquals(10, $subscription->numberOfBillingCycles);
+        $this->assertFalse($subscription->neverExpires);
     }
 
     function testCreate_numberOfBillingCyclesCanBeOverriddenToNeverExpire()
@@ -216,6 +217,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         ));
         $subscription = $result->subscription;
         $this->assertNull($subscription->numberOfBillingCycles);
+        $this->assertTrue($subscription->neverExpires);
     }
 
     function testValidationErrors_hasValidationErrorsOnId()
