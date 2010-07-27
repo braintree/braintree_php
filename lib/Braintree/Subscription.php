@@ -127,6 +127,7 @@ class Braintree_Subscription extends Braintree
             array(
                 'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
                 'id', 'neverExpires', 'price',
+                array('options' => array('replaceAllAddOnsAndDiscounts')),
             ),
             self::_addOnDiscountSignature()
         );
