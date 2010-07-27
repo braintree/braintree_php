@@ -20,7 +20,7 @@ class Braintree_Subscription extends Braintree
 
     public static function create($attributes)
     {
-        Braintree_Util::verifyKeys(self::createSignature(), $attributes);
+        Braintree_Util::verifyKeys(self::_createSignature(), $attributes);
         $response = Braintree_Http::post('/subscriptions', array('subscription' => $attributes));
         return self::_verifyGatewayResponse($response);
     }
@@ -81,7 +81,7 @@ class Braintree_Subscription extends Braintree
 
     public static function update($subscriptionId, $attributes)
     {
-        Braintree_Util::verifyKeys(self::updateSignature(), $attributes);
+        Braintree_Util::verifyKeys(self::_updateSignature(), $attributes);
         $response = Braintree_Http::put(
             '/subscriptions/' . $subscriptionId,
             array('subscription' => $attributes)
@@ -109,11 +109,32 @@ class Braintree_Subscription extends Braintree
         return self::_verifyGatewayResponse($response);
     }
 
-    private static function createSignature()
+    private static function _createSignature()
+    {
+        return array_merge(
+            array(
+                'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
+                'id', 'neverExpires', 'price', 'trialPeriod', 'trialDuration', 'trialDurationUnit',
+                array('options' => array('doNotInheritAddOnsOrDiscounts')),
+            ),
+            self::_addOnDiscountSignature()
+        );
+    }
+
+    private static function _updateSignature()
+    {
+        return array_merge(
+            array(
+                'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
+                'id', 'neverExpires', 'price',
+            ),
+            self::_addOnDiscountSignature()
+        );
+    }
+
+    private static function _addOnDiscountSignature()
     {
         return array(
-            'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
-            'id', 'neverExpires', 'price', 'trialPeriod', 'trialDuration', 'trialDurationUnit',
             array(
                 'addOns' => array(
                     array('add' => array('amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
@@ -127,16 +148,7 @@ class Braintree_Subscription extends Braintree
                     array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
                     array('remove' => array('_anyKey_')),
                 )
-            ),
-            array('options' => array('doNotInheritAddOnsOrDiscounts')),
-        );
-    }
-
-    private static function updateSignature()
-    {
-        return array(
-            'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
-            'id', 'neverExpires', 'price',
+            )
         );
     }
 
