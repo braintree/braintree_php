@@ -61,11 +61,14 @@ class Braintree_SubscriptionTestHelper extends PHPUnit_Framework_TestCase
         return $result->subscription;
     }
 
+    static function compareModificationsById($left, $right)
+    {
+        return strcmp($left->id, $right->id);
+    }
+
     static function sortModificationsById(&$modifications)
     {
-        usort($modifications, function($left, $right) {
-            return strcmp($left->id, $right->id);
-        });
+        usort($modifications, "self::compareModificationsById");
     }
 }
 
