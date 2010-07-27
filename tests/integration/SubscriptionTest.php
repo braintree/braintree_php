@@ -418,6 +418,35 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($discounts[2]->amount, "7.00");
     }
+
+    function testCreate_properlyParsesValidationErrorsForArrays()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+            'addOns' => array(
+                'update' => array(
+                    array(
+                        'existingId' => 'increase_10',
+                        'amount' => 'invalid',
+                    ),
+                    array(
+                        'existingId' => 'increase_20',
+                        'quantity' => -10,
+                    )
+                )
+            )
+        ));
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('subscription')->forKey('addOns')->forKey('update')->forIndex(0)->onAttribute('amount');
+        $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_MODIFICATION_AMOUNT_IS_INVALID, $errors[0]->code);
+        $errors = $result->errors->forKey('subscription')->forKey('addOns')->forKey('update')->forIndex(1)->onAttribute('quantity');
+        $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_MODIFICATION_QUANTITY_IS_INVALID, $errors[0]->code);
+    }
+
     function testValidationErrors_hasValidationErrorsOnId()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
