@@ -28,6 +28,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($plan['id'], $subscription->planId);
         $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $subscription->merchantAccountId);
         $this->assertEquals(Braintree_Subscription::ACTIVE, $subscription->status);
+        $this->assertEquals('12.34', $subscription->nextBillAmount);
         $this->assertType('DateTime', $subscription->firstBillingDate);
         $this->assertType('DateTime', $subscription->nextBillingDate);
         $this->assertType('DateTime', $subscription->billingPeriodStartDate);
