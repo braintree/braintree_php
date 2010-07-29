@@ -131,6 +131,7 @@ class Braintree_Error_Codes
     const TRANSACTION_AMOUNT_IS_REQUIRED                                        = '81502';
     const TRANSACTION_AMOUNT_IS_INVALID                                         = '81503';
     const TRANSACTION_AMOUNT_IS_TOO_LARGE                                       = '81528';
+    const TRANSACTION_AMOUNT_MUST_BE_GREATER_THAN_ZERO                          = '81531';
     const TRANSACTION_BILLING_ADDRESS_CONFLICT                                  = '91530';
     const TRANSACTION_CANNOT_BE_VOIDED                                          = '91504';
     const TRANSACTION_CANNOT_REFUND_CREDIT                                      = '91505';
