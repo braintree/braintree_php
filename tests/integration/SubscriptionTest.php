@@ -541,6 +541,28 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
     }
 
+    function testUpdate_createsProratedTransactionWhenFlagIsPassedTrue()
+    {
+        $subscription = Braintree_SubscriptionTestHelper::createSubscription();
+        $result = Braintree_Subscription::update($subscription->id, array(
+            'price' => $subscription->price + 1,
+            'options' => array('prorateCharges' => true)
+        ));
+        $this->assertTrue($result->success);
+        $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
+    }
+
+    function testUpdate_createsProratedTransactionWhenFlagIsPassedFalse()
+    {
+        $subscription = Braintree_SubscriptionTestHelper::createSubscription();
+        $result = Braintree_Subscription::update($subscription->id, array(
+            'price' => $subscription->price + 1,
+            'options' => array('prorateCharges' => false)
+        ));
+        $this->assertTrue($result->success);
+        $this->assertEquals(sizeof($subscription->transactions), sizeof($result->subscription->transactions));
+    }
+
     function testUpdate_invalidSubscriptionId()
     {
         $this->setExpectedException('Braintree_Exception_NotFound');
