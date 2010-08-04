@@ -39,6 +39,12 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         $this->assertType('Braintree_MultipleValueNode', $node);
     }
 
+    function testSearch_planId_isMultipleValueOrTextNode()
+    {
+        $node = Braintree_SubscriptionSearch::planId();
+        $this->assertType('Braintree_MultipleValueOrTextNode', $node);
+    }
+
     function testSearch_status_isMultipleValueNode()
     {
         $node = Braintree_SubscriptionSearch::status();
