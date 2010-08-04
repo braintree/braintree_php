@@ -3,37 +3,45 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
 {
-    function testSearch_daysPastDue_is()
+    function testSearch_billingCyclesRemaining_isRangeNode()
     {
-        $expected = array("is" => "5");
-
-        $textNode = Braintree_SubscriptionSearch::daysPastDue()->is(5);
-        $this->assertEquals($expected, $textNode->toParam());
+        $node = Braintree_SubscriptionSearch::billingCyclesRemaining();
+        $this->assertType('Braintree_RangeNode', $node);
     }
 
-    function testSearch_daysPastDue_isNot()
+    function testSearch_price_isRangeNode()
     {
-        $expected = array("is_not" => "5");
-
-        $textNode = Braintree_SubscriptionSearch::daysPastDue()->isNot(5);
-        $this->assertEquals($expected, $textNode->toParam());
+        $node = Braintree_SubscriptionSearch::price();
+        $this->assertType('Braintree_RangeNode', $node);
     }
 
-    function testSearch_daysPastDue_startsWith()
+    function testSearch_daysPastDue_isRangeNode()
     {
-        $expected = array("starts_with" => "5");
-
-        $textNode = Braintree_SubscriptionSearch::daysPastDue()->startsWith(5);
-        $this->assertEquals($expected, $textNode->toParam());
+        $node = Braintree_SubscriptionSearch::daysPastDue();
+        $this->assertType('Braintree_RangeNode', $node);
     }
 
-    function testSearch_daysPastDue_contains()
+    function testSearch_id_isTextNode()
     {
-        $expected = array("contains" => "5");
+        $node = Braintree_SubscriptionSearch::id();
+        $this->assertType('Braintree_TextNode', $node);
+    }
 
-        $textNode = Braintree_SubscriptionSearch::daysPastDue()->contains(5);
-        $this->assertEquals($expected, $textNode->toParam());
+    function testSearch_ids_isMultipleValueNode()
+    {
+        $node = Braintree_SubscriptionSearch::ids();
+        $this->assertType('Braintree_MultipleValueNode', $node);
+    }
+
+    function testSearch_merchantAccountId_isMultipleValueNode()
+    {
+        $node = Braintree_SubscriptionSearch::merchantAccountId();
+        $this->assertType('Braintree_MultipleValueNode', $node);
+    }
+
+    function testSearch_status_isMultipleValueNode()
+    {
+        $node = Braintree_SubscriptionSearch::status();
+        $this->assertType('Braintree_MultipleValueNode', $node);
     }
 }
-
-?>

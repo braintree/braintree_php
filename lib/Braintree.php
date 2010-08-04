@@ -92,7 +92,7 @@ require_once('Braintree/Instance.php');
 require_once('Braintree/KeyValueNode.php');
 require_once('Braintree/MultipleValueNode.php');
 require_once('Braintree/PartialMatchNode.php');
-require_once('Braintree/RangeValueNode.php');
+require_once('Braintree/RangeNode.php');
 require_once('Braintree/ResourceCollection.php');
 require_once('Braintree/SSLExpirationCheck.php');
 require_once('Braintree/Subscription.php');

@@ -10,13 +10,13 @@ class Braintree_EqualityNode
 
     function is($value)
     {
-        $this->searchTerms["is"] = strval($value);
+        $this->searchTerms['is'] = strval($value);
         return $this;
     }
 
     function isNot($value)
     {
-        $this->searchTerms["is_not"] = strval($value);
+        $this->searchTerms['is_not'] = strval($value);
         return $this;
     }
 

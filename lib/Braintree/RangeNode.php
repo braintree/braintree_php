@@ -1,6 +1,6 @@
 <?php
 
-class Braintree_RangeValueNode
+class Braintree_RangeNode
 {
     function __construct($name)
     {
@@ -10,13 +10,19 @@ class Braintree_RangeValueNode
 
     function greaterThanOrEqualTo($value)
     {
-        $this->searchTerms["min"] = $value;
+        $this->searchTerms['min'] = $value;
         return $this;
     }
 
     function lessThanOrEqualTo($value)
     {
-        $this->searchTerms["max"] = $value;
+        $this->searchTerms['max'] = $value;
+        return $this;
+    }
+
+    function is($value)
+    {
+        $this->searchTerms['is'] = $value;
         return $this;
     }
 
