@@ -12,16 +12,19 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
 
         $trialSubscription = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $trialPlan['id']
+            'planId' => $trialPlan['id'],
+            'price' => '1'
         ))->subscription;
 
         $triallessSubscription = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $triallessPlan['id']
+            'planId' => $triallessPlan['id'],
+            'price' => '1'
         ))->subscription;
 
         $collection = Braintree_Subscription::search(array(
-            Braintree_SubscriptionSearch::planId()->is("integration_trial_plan")
+            Braintree_SubscriptionSearch::planId()->is('integration_trial_plan'),
+            Braintree_SubscriptionSearch::price()->is('1')
         ));
 
         $this->assertTrue(Braintree_TestHelper::includes($collection, $trialSubscription));
@@ -130,19 +133,22 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         $subscription_1 = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'id' => strval(rand()) . '_subscription_' . $rand_id
+            'id' => strval(rand()) . '_subscription_' . $rand_id,
+            'price' => '2'
         ))->subscription;
 
         $subscription_2 = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
             'id' => strval(rand()) . '_subscription_' . $rand_id,
-            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId()
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'price' => '2'
         ))->subscription;
 
         $collection = Braintree_Subscription::search(array(
             Braintree_SubscriptionSearch::id()->endsWith('subscription_' . $rand_id),
-            Braintree_SubscriptionSearch::merchantAccountId()->in(array(Braintree_TestHelper::nonDefaultMerchantAccountId()))
+            Braintree_SubscriptionSearch::merchantAccountId()->in(array(Braintree_TestHelper::nonDefaultMerchantAccountId())),
+            Braintree_SubscriptionSearch::price()->is('2')
         ));
 
         $this->assertFalse(Braintree_TestHelper::includes($collection, $subscription_1));
@@ -194,6 +200,4 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Braintree_TestHelper::includes($collection, $subscription_852));
         $this->assertFalse(Braintree_TestHelper::includes($collection, $subscription_850));
     }
-
 }
-
