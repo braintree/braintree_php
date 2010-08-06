@@ -974,17 +974,20 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($addOns[0]->id, "increase_10");
         $this->assertEquals($addOns[0]->quantity, 2);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, 5);
+        $this->assertFalse($addOns[0]->neverExpires);
 
         $this->assertEquals($addOns[1]->amount, "21.00");
         $this->assertEquals($addOns[1]->id, "increase_20");
         $this->assertEquals($addOns[1]->quantity, 3);
         $this->assertEquals($addOns[1]->numberOfBillingCycles, 6);
+        $this->assertFalse($addOns[1]->neverExpires);
 
         $discounts = $transaction->discounts;
         $this->assertEquals($discounts[0]->amount, "7.50");
         $this->assertEquals($discounts[0]->id, "discount_7");
         $this->assertEquals($discounts[0]->quantity, 2);
         $this->assertEquals($discounts[0]->numberOfBillingCycles, null);
+        $this->assertTrue($discounts[0]->neverExpires);
     }
 
     function createTransactionViaTr($regularParams, $trParams)
