@@ -483,6 +483,22 @@ final class Braintree_Transaction extends Braintree
         }
         $this->_set('statusHistory', $statusHistory);
 
+
+        $addOnArray = array();
+        if (isset($transactionAttribs['addOns'])) {
+            foreach ($transactionAttribs['addOns'] AS $addOn) {
+                $addOnArray[] = Braintree_AddOn::factory($addOn);
+            }
+        }
+        $this->_set('addOns', $addOnArray);
+
+        $discountArray = array();
+        if (isset($transactionAttribs['discounts'])) {
+            foreach ($transactionAttribs['discounts'] AS $discount) {
+                $discountArray[] = Braintree_Discount::factory($discount);
+            }
+        }
+        $this->_set('discounts', $discountArray);
     }
 
     /**

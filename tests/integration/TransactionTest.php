@@ -1,5 +1,6 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
 
 class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 {
@@ -929,6 +930,62 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Transaction::CVV, $transaction->gatewayRejectionReason);
     }
 
+    function testSnapshotAddOnsAndDiscountsFromSubscription()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+            'addOns' => array(
+                'add' => array(
+                    array(
+                        'amount' => '11.00',
+                        'inheritedFromId' => 'increase_10',
+                        'quantity' => 2,
+                        'numberOfBillingCycles' => 5
+                    ),
+                    array(
+                        'amount' => '21.00',
+                        'inheritedFromId' => 'increase_20',
+                        'quantity' => 3,
+                        'numberOfBillingCycles' => 6
+                    )
+                ),
+            ),
+            'discounts' => array(
+                'add' => array(
+                    array(
+                        'amount' => '7.50',
+                        'inheritedFromId' => 'discount_7',
+                        'quantity' => 2,
+                        'neverExpires' => true
+                    )
+                )
+            )
+        ));
+
+        $transaction = $result->subscription->transactions[0];
+
+        $addOns = $transaction->addOns;
+        Braintree_SubscriptionTestHelper::sortModificationsById($addOns);
+
+        $this->assertEquals($addOns[0]->amount, "11.00");
+        $this->assertEquals($addOns[0]->id, "increase_10");
+        $this->assertEquals($addOns[0]->quantity, 2);
+        $this->assertEquals($addOns[0]->numberOfBillingCycles, 5);
+
+        $this->assertEquals($addOns[1]->amount, "21.00");
+        $this->assertEquals($addOns[1]->id, "increase_20");
+        $this->assertEquals($addOns[1]->quantity, 3);
+        $this->assertEquals($addOns[1]->numberOfBillingCycles, 6);
+
+        $discounts = $transaction->discounts;
+        $this->assertEquals($discounts[0]->amount, "7.50");
+        $this->assertEquals($discounts[0]->id, "discount_7");
+        $this->assertEquals($discounts[0]->quantity, 2);
+        $this->assertEquals($discounts[0]->numberOfBillingCycles, null);
+    }
 
     function createTransactionViaTr($regularParams, $trParams)
     {
