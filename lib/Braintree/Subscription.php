@@ -17,6 +17,7 @@ class Braintree_Subscription extends Braintree
     const CANCELED = 'Canceled';
     const EXPIRED = 'Expired';
     const PAST_DUE = 'Past Due';
+    const PENDING = 'Pending';
 
     public static function create($attributes)
     {
@@ -113,9 +114,24 @@ class Braintree_Subscription extends Braintree
     {
         return array_merge(
             array(
-                'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
-                'id', 'neverExpires', 'price', 'trialPeriod', 'trialDuration', 'trialDurationUnit',
-                array('options' => array('doNotInheritAddOnsOrDiscounts')),
+                'billingDayOfMonth',
+                'firstBillingDate',
+                'id',
+                'merchantAccountId',
+                'neverExpires',
+                'numberOfBillingCycles',
+                'paymentMethodToken',
+                'planId',
+                'price',
+                'trialDuration',
+                'trialDurationUnit',
+                'trialPeriod',
+                array(
+                    'options' => array(
+                        'doNotInheritAddOnsOrDiscounts',
+                        'startImmediately'
+                    )
+                ),
             ),
             self::_addOnDiscountSignature()
         );

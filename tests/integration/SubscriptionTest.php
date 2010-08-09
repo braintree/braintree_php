@@ -179,6 +179,84 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('2.00', $subscription->price);
     }
 
+    function testCreate_billingDayOfMonthIsInheritedFromPlan()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id']
+        ));
+        $subscription = $result->subscription;
+        $this->assertEquals(5, $subscription->billingDayOfMonth);
+    }
+
+    function testCreate_billingDayOfMonthCanBeOverriden()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+            'billingDayOfMonth' => 14
+        ));
+        $subscription = $result->subscription;
+        $this->assertEquals(14, $subscription->billingDayOfMonth);
+    }
+
+    function testCreate_billingDayOfMonthCanBeOverridenWithStartImmediately()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+            'options' => array('startImmediately' => true)
+        ));
+        $subscription = $result->subscription;
+        $this->assertEquals(1, sizeof($subscription->transactions));
+    }
+
+    function testCreate_firstBillingDateCanBeSet()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
+
+        $tomorrow = new DateTime();
+        $tomorrow->modify("+1 day");
+        $tomorrow->setTime(0,0,0);
+
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+            'firstBillingDate' => $tomorrow
+        ));
+
+        $subscription = $result->subscription;
+        $this->assertEquals($tomorrow, $subscription->firstBillingDate);
+        $this->assertEquals(Braintree_Subscription::PENDING, $result->subscription->status);
+    }
+
+    function testCreate_firstBillingDateInThePast()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
+
+        $yesterday = new DateTime();
+        $yesterday->modify("-1 day");
+        $yesterday->setTime(0,0,0);
+
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+            'firstBillingDate' => $yesterday
+        ));
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('subscription')->onAttribute('firstBillingDate');
+        $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_FIRST_BILLING_DATE_CANNOT_BE_IN_THE_PAST, $errors[0]->code);
+    }
+
     function testCreate_numberOfBillingCyclesCanBeOverridden()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
