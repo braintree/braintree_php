@@ -222,8 +222,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
 
-        $tomorrow = new DateTime();
-        $tomorrow->modify("+1 day");
+        $tomorrow = new DateTime("now + 1 day");
         $tomorrow->setTime(0,0,0);
 
         $result = Braintree_Subscription::create(array(
@@ -242,8 +241,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
 
-        $yesterday = new DateTime();
-        $yesterday->modify("-1 day");
+        $yesterday = new DateTime("now - 1 day");
         $yesterday->setTime(0,0,0);
 
         $result = Braintree_Subscription::create(array(

@@ -33,7 +33,13 @@ class Braintree_SubscriptionSearch
 
     static function status()
     {
-        return new Braintree_MultipleValueNode('status');
+        return new Braintree_MultipleValueNode("status", array(
+            Braintree_Subscription::ACTIVE,
+            Braintree_Subscription::CANCELED,
+            Braintree_Subscription::EXPIRED,
+            Braintree_Subscription::PAST_DUE,
+            Braintree_Subscription::PENDING
+        ));
     }
 
     static function ids()
