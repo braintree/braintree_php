@@ -878,7 +878,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
     function testRetryCharge_WithoutAmount()
     {
         $subscription = Braintree_Subscription::search(array(
-            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::ACTIVE))
+            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::PAST_DUE))
         ))->firstItem();
 
         $result = Braintree_Subscription::retryCharge($subscription->id);
@@ -895,7 +895,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
     function testRetryCharge_WithAmount()
     {
         $subscription = Braintree_Subscription::search(array(
-            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::ACTIVE))
+            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::PAST_DUE))
         ))->firstItem();
 
         $result = Braintree_Subscription::retryCharge($subscription->id, 1000);
