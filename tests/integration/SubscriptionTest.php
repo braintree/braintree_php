@@ -241,13 +241,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
 
-        $yesterday = new DateTime("now - 1 day");
-        $yesterday->setTime(0,0,0);
+        $past = new DateTime("now - 3 days");
+        $past->setTime(0,0,0);
 
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'firstBillingDate' => $yesterday
+            'firstBillingDate' => $past
         ));
 
         $this->assertFalse($result->success);
