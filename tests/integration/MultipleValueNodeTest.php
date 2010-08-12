@@ -38,7 +38,7 @@ class Braintree_MultipleValueNodeTest extends PHPUnit_Framework_TestCase
     {
         $found = false;
         $collection = Braintree_Subscription::search(array(
-            Braintree_SubscriptionSearch::status()->in(array(Braintree_Subscription::PAST_DUE))
+            Braintree_SubscriptionSearch::status()->is(Braintree_Subscription::PAST_DUE)
         ));
         foreach ($collection AS $item) {
             $found = true;
