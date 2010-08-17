@@ -77,7 +77,8 @@ class Braintree_Error_Codes
     const CUSTOMER_EMAIL_IS_TOO_LONG        = '81605';
     const CUSTOMER_FAX_IS_TOO_LONG          = '81607';
     const CUSTOMER_FIRST_NAME_IS_TOO_LONG   = '81608';
-    const CUSTOMER_ID_IS_INVAILD            = '91610';
+    const CUSTOMER_ID_IS_INVAILD            = '91610'; //Deprecated
+    const CUSTOMER_ID_IS_INVALID            = '91610';
     const CUSTOMER_ID_IS_IN_USE             = '91609';
     const CUSTOMER_ID_IS_NOT_ALLOWED        = '91611';
     const CUSTOMER_ID_IS_REQUIRED           = '91613';
@@ -152,7 +153,8 @@ class Braintree_Error_Codes
     const TRANSACTION_CUSTOMER_ID_IS_INVALID                                    = '91510';
     const TRANSACTION_CUSTOMER_DOES_NOT_HAVE_CREDIT_CARD                        = '91511';
     const TRANSACTION_HAS_ALREADY_BEEN_REFUNDED                                 = '91512';
-    const TRANSACTION_MERCHANT_ACCOUNT_NAME_IS_INVALID                          = '91513';
+    const TRANSACTION_MERCHANT_ACCOUNT_NAME_IS_INVALID                          = '91513'; //Deprecated
+    const TRANSACTION_MERCHANT_ACCOUNT_ID_IS_INVALID                            = '91513';
     const TRANSACTION_MERCHANT_ACCOUNT_IS_SUSPENDED                             = '91514';
     const TRANSACTION_ORDER_ID_IS_TOO_LONG                                      = '91501';
     const TRANSACTION_PAYMENT_METHOD_DOES_NOT_BELONG_TO_SUBSCRIPTION            = '91527';
