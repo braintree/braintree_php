@@ -24,6 +24,7 @@ class Braintree_TransactionSearch
 	static function orderId()                    { return new Braintree_TextNode('order_id'); }
 	static function paymentMethodToken()         { return new Braintree_TextNode('payment_method_token'); }
 	static function processorAuthorizationCode() { return new Braintree_TextNode('processor_authorization_code'); }
+	static function settlementBatchId()          { return new Braintree_TextNode('settlement_batch_id'); }
 	static function shippingCompany()            { return new Braintree_TextNode('shipping_company'); }
 	static function shippingCountryName()        { return new Braintree_TextNode('shipping_country_name'); }
 	static function shippingExtendedAddress()    { return new Braintree_TextNode('shipping_extended_address'); }
@@ -40,8 +41,15 @@ class Braintree_TransactionSearch
 
 	static function refund()                     { return new Braintree_KeyValueNode("refund"); }
 
-	static function amount()                     { return new Braintree_RangeValueNode("amount"); }
-	static function createdAt()                  { return new Braintree_RangeValueNode("createdAt"); }
+	static function amount()                     { return new Braintree_RangeNode("amount"); }
+	static function authorizedAt()               { return new Braintree_RangeNode("authorizedAt"); }
+	static function createdAt()                  { return new Braintree_RangeNode("createdAt"); }
+	static function failedAt()                   { return new Braintree_RangeNode("failedAt"); }
+	static function gatewayRejectedAt()          { return new Braintree_RangeNode("gatewayRejectedAt"); }
+	static function processorDeclinedAt()        { return new Braintree_RangeNode("processorDeclinedAt"); }
+	static function settledAt()                  { return new Braintree_RangeNode("settledAt"); }
+	static function submittedForSettlementAt()   { return new Braintree_RangeNode("submittedForSettlementAt"); }
+	static function voidedAt()                   { return new Braintree_RangeNode("voidedAt"); }
 
     static function merchantAccountId()          { return new Braintree_MultipleValueNode("merchant_account_id"); }
 

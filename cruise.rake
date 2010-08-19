@@ -13,17 +13,15 @@ task :cruise do
     Rake::Task["test"].invoke
   ensure
     Rake::Task["stop_gateway"].invoke
-    Rake::Task["stop_sphinx"].invoke
   end
 end
 
 task :prep_gateway do
   Dir.chdir(GATEWAY_ROOT) do
     sh "git pull"
-    sh "env RAILS_ENV=integration #{CRUISE_BUILD} SPHINX_PORT=#{ENV['SPHINX_PORT']} rake db:migrate:reset --trace"
-    sh "env RAILS_ENV=integration #{CRUISE_BUILD} SPHINX_PORT=#{ENV['SPHINX_PORT']} ruby script/populate_data"
+    sh "env RAILS_ENV=integration #{CRUISE_BUILD} rake db:migrate:reset --trace"
+    sh "env RAILS_ENV=integration #{CRUISE_BUILD} ruby script/populate_data"
     Rake::Task[:start_gateway].invoke
-    Rake::Task[:start_sphinx].invoke
   end
 end
 
@@ -33,21 +31,9 @@ task :start_gateway do
   end
 end
 
-task :start_sphinx do
-  Dir.chdir(GATEWAY_ROOT) do
-    sh "env RAILS_ENV=integration #{CRUISE_BUILD} SPHINX_PORT=#{ENV['SPHINX_PORT']} rake ts:rebuild --trace"
-  end
-end
-
 task :stop_gateway do
   Dir.chdir(GATEWAY_ROOT) do
     shutdown_server(PID_FILE)
-  end
-end
-
-task :stop_sphinx do
-  Dir.chdir(GATEWAY_ROOT) do
-    sh "env RAILS_ENV=integration rake ts:stop --trace"
   end
 end
 

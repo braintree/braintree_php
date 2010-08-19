@@ -49,7 +49,7 @@ class Braintree_Test_CreditCardNumbers
         '4009348888881881',
         '4012888888881881',
         '4111111111111111',
-        '4222222222222',
+        '4000111111111115',
         );
 
     public static $unknowns       = array(
@@ -60,7 +60,7 @@ class Braintree_Test_CreditCardNumbers
         'AmEx'       => '378734493671000',
         'Discover'   => '6011000990139424',
         'MasterCard' => '5105105105105100',
-        'Visa'       => '4222222222222',
+        'Visa'       => '4000111111111115',
         );
 
 

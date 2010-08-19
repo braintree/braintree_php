@@ -1,6 +1,23 @@
+## 2.5.0
+
+* Added Braintree_AddOns/Braintree_Discounts
+* Enhanced Braintree_Subscription search
+* Enhanced Braintree_Transaction search
+* Added constants for Braintree_Result_CreditCardVerification statuses
+* Added EXPIRED and PENDING statuses to Braintree_Subscription
+* Allowed prorateCharges to be specified on Braintree_Subscription update
+* Added Braintree_AddOn/Braintree_Discount details to Braintree_Transactions that were created from a Braintree_Subscription
+* Removed 13 digit Visa Sandbox Credit Card number and replaced it with a 16 digit Visa
+* Added new fields to Braintree_Subscription:
+  * billingDayOfMonth
+  * daysPastDue
+  * firstBillingDate
+  * neverExpires
+  * numberOfBillingCycles
+
 ## 2.4.0
 
-* Added ability to specify country using countryName, countryCodeAlpha2, countryCodeAlpha3, or countryCodeNumeric (see ISO_3166-1[http://en.wikipedia.org/wiki/ISO_3166-1])
+* Added ability to specify country using countryName, countryCodeAlpha2, countryCodeAlpha3, or countryCodeNumeric (see [ISO_3166-1](http://en.wikipedia.org/wiki/ISO_3166-1))
 * Added gatewayRejectionReason to Braintree_Transaction and Braintree_Verification
 * Added unified message to result objects
 
@@ -35,7 +52,7 @@
 
 * Updated success? on transaction responses to return false on declined transactions
 * Search results now include Enumerable and will automatically paginate data
-* Added credit_card[cardholder_name] to allowed transaction params and CreditCardDetails (thanks chrismcc[http://github.com/chrismcc])
+* Added credit_card[cardholder_name] to allowed transaction params and CreditCardDetails (thanks [chrismcc](http://github.com/chrismcc))
 * Fixed a bug with Customer::all
 * Added constants for error codes
 

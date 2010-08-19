@@ -157,7 +157,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
             )
         ));
         $this->assertFalse($result->success);
-        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals(Braintree_Result_CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
         $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
         $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
         $this->assertEquals('M', $result->creditCardVerification->cvvResponseCode);

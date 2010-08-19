@@ -63,6 +63,11 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
         return $total;
     }
 
+    public function forIndex($index)
+    {
+        return $this->forKey("index" . $index);
+    }
+
     public function forKey($key)
     {
         return isset($this->_nested[$key]) ? $this->_nested[$key] : null;

@@ -47,6 +47,10 @@ The following PHP extensions are required:
 
     ?>
 
+## Documentation
+
+ * [Official documentation](http://www.braintreepaymentsolutions.com/docs/php)
+
 ## License
 
 See the LICENSE file.

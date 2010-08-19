@@ -15,11 +15,13 @@ class Braintree_Subscription extends Braintree
 {
     const ACTIVE = 'Active';
     const CANCELED = 'Canceled';
+    const EXPIRED = 'Expired';
     const PAST_DUE = 'Past Due';
+    const PENDING = 'Pending';
 
     public static function create($attributes)
     {
-        Braintree_Util::verifyKeys(self::allowedAttributes(), $attributes);
+        Braintree_Util::verifyKeys(self::_createSignature(), $attributes);
         $response = Braintree_Http::post('/subscriptions', array('subscription' => $attributes));
         return self::_verifyGatewayResponse($response);
     }
@@ -70,9 +72,9 @@ class Braintree_Subscription extends Braintree
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = Braintree_SubscriptionSearch::ids()->in($ids)->toparam();
-        $response = braintree_http::post('/subscriptions/advanced_search', array('search' => $criteria));
+        $response = Braintree_Http::post('/subscriptions/advanced_search', array('search' => $criteria));
 
-        return braintree_util::extractattributeasarray(
+        return Braintree_Util::extractAttributeAsArray(
             $response['subscriptions'],
             'subscription'
         );
@@ -80,7 +82,7 @@ class Braintree_Subscription extends Braintree
 
     public static function update($subscriptionId, $attributes)
     {
-        Braintree_Util::verifyKeys(self::allowedAttributes(), $attributes);
+        Braintree_Util::verifyKeys(self::_updateSignature(), $attributes);
         $response = Braintree_Http::put(
             '/subscriptions/' . $subscriptionId,
             array('subscription' => $attributes)
@@ -108,11 +110,62 @@ class Braintree_Subscription extends Braintree
         return self::_verifyGatewayResponse($response);
     }
 
-    private static function allowedAttributes()
+    private static function _createSignature()
+    {
+        return array_merge(
+            array(
+                'billingDayOfMonth',
+                'firstBillingDate',
+                'id',
+                'merchantAccountId',
+                'neverExpires',
+                'numberOfBillingCycles',
+                'paymentMethodToken',
+                'planId',
+                'price',
+                'trialDuration',
+                'trialDurationUnit',
+                'trialPeriod',
+                array(
+                    'options' => array(
+                        'doNotInheritAddOnsOrDiscounts',
+                        'startImmediately'
+                    )
+                ),
+            ),
+            self::_addOnDiscountSignature()
+        );
+    }
+
+    private static function _updateSignature()
+    {
+        return array_merge(
+            array(
+                'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
+                'id', 'neverExpires', 'price',
+                array('options' => array('prorateCharges', 'replaceAllAddOnsAndDiscounts')),
+            ),
+            self::_addOnDiscountSignature()
+        );
+    }
+
+    private static function _addOnDiscountSignature()
     {
         return array(
-            'merchantAccountId', 'paymentMethodToken', 'planId', 'id', 'price', 'trialPeriod',
-            'trialDuration', 'trialDurationUnit'
+            array(
+                'addOns' => array(
+                    array('add' => array('amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
+                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
+                    array('remove' => array('_anyKey_')),
+                )
+            ),
+            array(
+                'discounts' => array(
+                    array('add' => array('amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
+                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
+                    array('remove' => array('_anyKey_')),
+                )
+            )
         );
     }
 
@@ -122,6 +175,22 @@ class Braintree_Subscription extends Braintree
     protected function _initialize($attributes)
     {
         $this->_attributes = $attributes;
+
+        $addOnArray = array();
+        if (isset($attributes['addOns'])) {
+            foreach ($attributes['addOns'] AS $addOn) {
+                $addOnArray[] = Braintree_AddOn::factory($addOn);
+            }
+        }
+        $this->_attributes['addOns'] = $addOnArray;
+
+        $discountArray = array();
+        if (isset($attributes['discounts'])) {
+            foreach ($attributes['discounts'] AS $discount) {
+                $discountArray[] = Braintree_Discount::factory($discount);
+            }
+        }
+        $this->_attributes['discounts'] = $discountArray;
 
         $transactionArray = array();
         if (isset($attributes['transactions'])) {
