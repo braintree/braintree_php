@@ -826,6 +826,28 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("50.00", $result->transaction->amount);
     }
 
+    function testMultipleRefundsWithPartialAmounts()
+    {
+        $transaction = $this->createTransactionToRefund();
+
+        $transaction1 = Braintree_Transaction::refund($transaction->id, '50.00')->transaction;
+        $this->assertEquals(Braintree_Transaction::CREDIT, $transaction1->type);
+        $this->assertEquals("50.00", $transaction1->amount);
+
+        $transaction2 = Braintree_Transaction::refund($transaction->id, '50.00')->transaction;
+        $this->assertEquals(Braintree_Transaction::CREDIT, $transaction2->type);
+        $this->assertEquals("50.00", $transaction2->amount);
+
+        $transaction = Braintree_Transaction::find($transaction->id);
+
+        $expectedRefundIds = array($transaction1->id, $transaction2->id);
+        $refundIds = $transaction->refundIds;
+        sort($expectedRefundIds);
+        sort($refundIds);
+
+        $this->assertEquals($expectedRefundIds, $refundIds);
+    }
+
     function testRefundWithUnsuccessfulPartialAmount()
     {
         $transaction = $this->createTransactionToRefund();
