@@ -95,7 +95,6 @@ require_once('Braintree/MultipleValueOrTextNode.php');
 require_once('Braintree/PartialMatchNode.php');
 require_once('Braintree/RangeNode.php');
 require_once('Braintree/ResourceCollection.php');
-require_once('Braintree/SSLExpirationCheck.php');
 require_once('Braintree/Subscription.php');
 require_once('Braintree/SubscriptionSearch.php');
 require_once('Braintree/SubscriptionStatus.php');
@@ -143,8 +142,5 @@ foreach ($requiredExtensions AS $ext) {
         throw new Braintree_Exception('The Braintree library requires the ' . $ext . ' extension.');
     }
 }
-
-// check ssl certificates
-Braintree_SSLExpirationCheck::checkDates();
 
 
