@@ -157,6 +157,16 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
 
     function testSearch_daysPastDue()
     {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $triallessPlan = Braintree_SubscriptionTestHelper::triallessPlan();
+
+        $subscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $triallessPlan['id']
+        ))->subscription;
+
+        Braintree_Http::put('/subscriptions/' . $subscription->id . '/make_past_due', array('daysPastDue' => 5));
+
         $found = false;
         $collection = Braintree_Subscription::search(array(
             Braintree_SubscriptionSearch::daysPastDue()->between(2, 10)
