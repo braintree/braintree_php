@@ -157,6 +157,22 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('custom value', $customFields['store_me']);
     }
 
+    function testSale_withExpirationMonthAndYear()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationMonth' => '5',
+                'expirationYear' => '2012'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('05', $transaction->creditCardDetails->expirationMonth);
+        $this->assertEquals('2012', $transaction->creditCardDetails->expirationYear);
+    }
+
     function testSale_underscoresAllCustomFields()
     {
         $result = Braintree_Transaction::sale(array(
