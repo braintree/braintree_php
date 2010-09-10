@@ -143,7 +143,7 @@ class Braintree_Subscription extends Braintree
             array(
                 'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
                 'id', 'neverExpires', 'price',
-                array('options' => array('prorateCharges', 'replaceAllAddOnsAndDiscounts')),
+                array('options' => array('prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure')),
             ),
             self::_addOnDiscountSignature()
         );

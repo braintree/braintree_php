@@ -641,6 +641,34 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(sizeof($subscription->transactions), sizeof($result->subscription->transactions));
     }
 
+    function testUpdate_DoesNotUpdateSubscriptionWhenProrationTransactionFailsAndRevertIsTrue()
+    {
+        $subscription = Braintree_SubscriptionTestHelper::createSubscription();
+        $result = Braintree_Subscription::update($subscription->id, array(
+            'price' => $subscription->price + 2100,
+            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => true)
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
+        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->subscription->transactions[0]->status);
+        $this->assertEquals("0.00", $result->subscription->balance);
+        $this->assertEquals($subscription->price, $result->subscription->price);
+    }
+
+    function testUpdate_DoesNotUpdateSubscriptionWhenProrationTransactionFailsAndRevertIsFalse()
+    {
+        $subscription = Braintree_SubscriptionTestHelper::createSubscription();
+        $result = Braintree_Subscription::update($subscription->id, array(
+            'price' => $subscription->price + 2100,
+            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => false)
+        ));
+        $this->assertTrue($result->success);
+        $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
+        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->subscription->transactions[0]->status);
+        $this->assertEquals($result->subscription->transactions[0]->amount, $result->subscription->balance);
+        $this->assertEquals($subscription->price + 2100, $result->subscription->price);
+    }
+
     function testUpdate_invalidSubscriptionId()
     {
         $this->setExpectedException('Braintree_Exception_NotFound');
