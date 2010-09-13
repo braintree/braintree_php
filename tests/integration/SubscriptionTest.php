@@ -656,7 +656,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($subscription->price, $result->subscription->price);
     }
 
-    function testUpdate_DoesNotUpdateSubscriptionWhenProrationTransactionFailsAndRevertIsFalse()
+    function testUpdate_UpdatesSubscriptionWhenProrationTransactionFailsAndRevertIsFalse()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $result = Braintree_Subscription::update($subscription->id, array(
