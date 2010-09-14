@@ -277,20 +277,18 @@ class Braintree_TransparentRedirect
      */
     private static function _data($params)
     {
-        // set timezone to UTC
-        date_default_timezone_set('UTC');
-
         if (!isset($params['redirectUrl'])) {
             throw new InvalidArgumentException(
                     'expected params to contain redirectUrl'
                     );
         }
         $params = self::_underscoreKeys($params);
+        $now = new DateTime('now', new DateTimeZone('UTC'));
         $trDataParams = array_merge($params,
             array(
                 'api_version' => Braintree_Configuration::API_VERSION,
                 'public_key'  => Braintree_Configuration::publicKey(),
-                'time'       => date('YmdHis'),
+                'time'        => $now->format('YmdHis'),
             )
         );
         ksort($trDataParams);
