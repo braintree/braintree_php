@@ -36,4 +36,3 @@ class Braintree_RangeNode
         return $this->searchTerms;
     }
 }
-?>

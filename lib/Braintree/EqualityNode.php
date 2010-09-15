@@ -25,4 +25,3 @@ class Braintree_EqualityNode
         return $this->searchTerms;
     }
 }
-?>

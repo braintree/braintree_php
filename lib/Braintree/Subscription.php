@@ -220,4 +220,3 @@ class Braintree_Subscription extends Braintree
         }
     }
 }
-?>

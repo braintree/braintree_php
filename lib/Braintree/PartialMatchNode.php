@@ -14,4 +14,3 @@ class Braintree_PartialMatchNode extends Braintree_EqualityNode
         return $this;
     }
 }
-?>

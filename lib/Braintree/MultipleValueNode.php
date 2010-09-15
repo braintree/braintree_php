@@ -35,5 +35,3 @@ class Braintree_MultipleValueNode
         return $this->items;
     }
 }
-
-?>

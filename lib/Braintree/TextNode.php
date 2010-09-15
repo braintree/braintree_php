@@ -8,4 +8,3 @@ class Braintree_TextNode extends Braintree_PartialMatchNode
         return $this;
     }
 }
-?>

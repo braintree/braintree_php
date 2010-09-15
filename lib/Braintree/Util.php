@@ -249,4 +249,3 @@ class Braintree_Util
         return $invalidKeys;
     }
 }
-?>

@@ -17,14 +17,12 @@
  * respond to the void request if it failed:
  *
  * <code>
- * <?php
  * $result = Braintree_Transaction::void('abc123');
  * if ($result->success) {
  *     // Successful Result
  * } else {
  *     // Braintree_Result_Error
  * }
- * ?>
  * </code>
  *
  * @package    Braintree
