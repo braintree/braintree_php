@@ -101,6 +101,7 @@ class Braintree_Error_Codes
     const SUBSCRIPTION_ID_IS_IN_USE                                               = '81902';
     const SUBSCRIPTION_INCONSISTENT_NUMBER_OF_BILLING_CYCLES                      = '91908';
     const SUBSCRIPTION_INCONSISTENT_START_DATE                                    = '91917';
+    const SUBSCRIPTION_INVALID_REQUEST_FORMAT                                     = '91921';
     const SUBSCRIPTION_MERCHANT_ACCOUNT_ID_IS_INVALID                             = '91901';
     const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_CANNOT_BE_BLANK                   = '91912';
     const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_IS_TOO_SMALL                      = '91909';

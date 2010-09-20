@@ -14,6 +14,8 @@ Braintree_Configuration::merchantId('integration_merchant_id');
 Braintree_Configuration::publicKey('integration_public_key');
 Braintree_Configuration::privateKey('integration_private_key');
 
+date_default_timezone_set("UTC");
+
 class Braintree_TestHelper
 {
     public static function defaultMerchantAccountId()

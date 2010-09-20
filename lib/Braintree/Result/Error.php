@@ -17,14 +17,12 @@
  * respond to the void request if it failed:
  *
  * <code>
- * <?php
  * $result = Braintree_Transaction::void('abc123');
  * if ($result->success) {
  *     // Successful Result
  * } else {
  *     // Braintree_Result_Error
  * }
- * ?>
  * </code>
  *
  * @package    Braintree
@@ -83,6 +81,12 @@ class Braintree_Result_Error extends Braintree
            $this->_set('transaction', Braintree_Transaction::factory($response['transaction']));
        } else {
            $this->_set('transaction', null);
+       }
+
+       if(isset($response['subscription'])) {
+           $this->_set('subscription', Braintree_Subscription::factory($response['subscription']));
+       } else {
+           $this->_set('subscription', null);
        }
    }
 

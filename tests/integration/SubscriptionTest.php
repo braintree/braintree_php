@@ -29,10 +29,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $subscription->merchantAccountId);
         $this->assertEquals(Braintree_Subscription::ACTIVE, $subscription->status);
         $this->assertEquals('12.34', $subscription->nextBillAmount);
+        $this->assertEquals('12.34', $subscription->nextBillingPeriodAmount);
+        $this->assertEquals('0.00', $subscription->balance);
         $this->assertType('DateTime', $subscription->firstBillingDate);
         $this->assertType('DateTime', $subscription->nextBillingDate);
         $this->assertType('DateTime', $subscription->billingPeriodStartDate);
         $this->assertType('DateTime', $subscription->billingPeriodEndDate);
+        $this->assertType('DateTime', $subscription->paidThroughDate);
     }
 
     function testCreate_returnsTransactionWhenTransactionFails()
@@ -637,6 +640,34 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
         $this->assertEquals(sizeof($subscription->transactions), sizeof($result->subscription->transactions));
+    }
+
+    function testUpdate_DoesNotUpdateSubscriptionWhenProrationTransactionFailsAndRevertIsTrue()
+    {
+        $subscription = Braintree_SubscriptionTestHelper::createSubscription();
+        $result = Braintree_Subscription::update($subscription->id, array(
+            'price' => $subscription->price + 2100,
+            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => true)
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
+        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->subscription->transactions[0]->status);
+        $this->assertEquals("0.00", $result->subscription->balance);
+        $this->assertEquals($subscription->price, $result->subscription->price);
+    }
+
+    function testUpdate_UpdatesSubscriptionWhenProrationTransactionFailsAndRevertIsFalse()
+    {
+        $subscription = Braintree_SubscriptionTestHelper::createSubscription();
+        $result = Braintree_Subscription::update($subscription->id, array(
+            'price' => $subscription->price + 2100,
+            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => false)
+        ));
+        $this->assertTrue($result->success);
+        $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
+        $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->subscription->transactions[0]->status);
+        $this->assertEquals($result->subscription->transactions[0]->amount, $result->subscription->balance);
+        $this->assertEquals($subscription->price + 2100, $result->subscription->price);
     }
 
     function testUpdate_invalidSubscriptionId()

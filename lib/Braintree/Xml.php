@@ -41,4 +41,3 @@ final class Braintree_Xml
         return Braintree_Xml_Generator::arrayToXml($array);
     }
 }
-?>

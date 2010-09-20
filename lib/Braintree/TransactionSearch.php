@@ -120,4 +120,3 @@ class Braintree_TransactionSearch
         ));
     }
 }
-?>

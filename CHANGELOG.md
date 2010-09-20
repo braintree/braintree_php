@@ -1,3 +1,15 @@
+## 2.6.0
+
+* Added ability to perform multiple partial refunds on Braintree_Transactions
+* Allow passing expirationMonth and expirationYear separately when creating Braintree_Transactions
+* Added revertSubscriptionOnProrationFailure flag to Braintree_Subscription update that specifies how a Subscription should react to a failed proration charge
+* Deprecated Braintree_Subscription nextBillAmount in favor of nextBillingPeriodAmount
+* Deprecated Braintree_Transaction refundId in favor of refundIds
+* Added new fields to Braintree_Subscription:
+  * balance
+  * paidThroughDate
+  * nextBillingPeriodAmount
+
 ## 2.5.0
 
 * Added Braintree_AddOns/Braintree_Discounts

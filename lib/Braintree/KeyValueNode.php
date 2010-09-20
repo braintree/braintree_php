@@ -20,4 +20,3 @@ class Braintree_KeyValueNode
         return $this->searchTerm;
     }
 }
-?>

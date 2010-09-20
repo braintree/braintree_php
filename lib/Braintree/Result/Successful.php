@@ -9,7 +9,7 @@
 
 /**
  * Braintree Successful Result
- * 
+ *
  * A Successful Result will be returned from gateway methods when
  * validations pass. It will provide access to the created resource.
  *
@@ -17,7 +17,6 @@
  * respond to <b>customer</b> like so:
  *
  * <code>
- * <?php
  * $result = Braintree_Customer::create(array('first_name' => "John"));
  * if ($result->success) {
  *     // Braintree_Result_Successful
@@ -25,7 +24,6 @@
  * } else {
  *     // Braintree_Result_Error
  * }
- * ?>
  * </code>
  *
  *

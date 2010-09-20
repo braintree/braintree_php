@@ -23,27 +23,27 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             'creditCard' => array(
                 'number'         => Braintree_Test_CreditCardNumbers::$visa,
                 'expirationDate' => '05/2012',
-                'cardholderName' => 'tom smith',
+                'cardholderName' => 'Tom Smith',
                 'token'          => $token,
             ),
             'billing' => array(
-                'company'         => 'braintree',
-                'countryName'     => 'united states of america',
-                'extendedAddress' => 'suite 123',
+                'company'         => 'Braintree',
+                'countryName'     => 'United States of America',
+                'extendedAddress' => 'Suite 123',
                 'firstName'       => $firstName,
-                'lastName'        => 'smith',
-                'locality'        => 'chicago',
+                'lastName'        => 'Smith',
+                'locality'        => 'Chicago',
                 'postalCode'      => '12345',
-                'region'          => 'il',
-                'streetAddress'   => '123 main st'
+                'region'          => 'IL',
+                'streetAddress'   => '123 Main St'
             ),
             'customer' => array(
-                'company'   => 'braintree',
+                'company'   => 'Braintree',
                 'email'     => 'smith@example.com',
                 'fax'       => '5551231234',
-                'firstName' => 'tom',
+                'firstName' => 'Tom',
                 'id'        => $customerId,
-                'lastName'  => 'smith',
+                'lastName'  => 'Smith',
                 'phone'     => '5551231234',
                 'website'   => 'http://example.com',
             ),
@@ -53,15 +53,15 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             ),
             'orderId' => 'myorder',
             'shipping' => array(
-                'company'         => 'braintree p.s.',
-                'countryName'     => 'mexico',
-                'extendedAddress' => 'apt 456',
-                'firstName'       => 'thomas',
-                'lastName'        => 'smithy',
-                'locality'        => 'braintree',
+                'company'         => 'Braintree P.S.',
+                'countryName'     => 'Mexico',
+                'extendedAddress' => 'Apt 456',
+                'firstName'       => 'Thomas',
+                'lastName'        => 'Smithy',
+                'locality'        => 'Braintree',
                 'postalCode'      => '54321',
-                'region'          => 'ma',
-                'streetAddress'   => '456 road'
+                'region'          => 'MA',
+                'streetAddress'   => '456 Road'
             ),
         ));
 
@@ -120,27 +120,27 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             'creditCard' => array(
                 'number'         => Braintree_Test_CreditCardNumbers::$visa,
                 'expirationDate' => '05/2012',
-                'cardholderName' => 'tom smith',
+                'cardholderName' => 'Tom Smith',
                 'token'          => $token,
             ),
             'billing' => array(
-                'company'         => 'braintree',
-                'countryName'     => 'united states of america',
-                'extendedAddress' => 'suite 123',
+                'company'         => 'Braintree',
+                'countryName'     => 'United States of America',
+                'extendedAddress' => 'Suite 123',
                 'firstName'       => $firstName,
-                'lastName'        => 'smith',
-                'locality'        => 'chicago',
+                'lastName'        => 'Smith',
+                'locality'        => 'Chicago',
                 'postalCode'      => '12345',
-                'region'          => 'il',
-                'streetAddress'   => '123 main st'
+                'region'          => 'IL',
+                'streetAddress'   => '123 Main St'
             ),
             'customer' => array(
-                'company'   => 'braintree',
+                'company'   => 'Braintree',
                 'email'     => 'smith@example.com',
                 'fax'       => '5551231234',
-                'firstName' => 'tom',
+                'firstName' => 'Tom',
                 'id'        => $customerId,
-                'lastName'  => 'smith',
+                'lastName'  => 'Smith',
                 'phone'     => '5551231234',
                 'website'   => 'http://example.com',
             ),
@@ -149,15 +149,15 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             ),
             'orderId' => 'myorder',
             'shipping' => array(
-                'company'         => 'braintree p.s.',
-                'countryName'     => 'mexico',
-                'extendedAddress' => 'apt 456',
-                'firstName'       => 'thomas',
-                'lastName'        => 'smithy',
-                'locality'        => 'braintree',
+                'company'         => 'Braintree P.S.',
+                'countryName'     => 'Mexico',
+                'extendedAddress' => 'Apt 456',
+                'firstName'       => 'Thomas',
+                'lastName'        => 'Smithy',
+                'locality'        => 'Braintree',
                 'postalCode'      => '54321',
-                'region'          => 'ma',
-                'streetAddress'   => '456 road'
+                'region'          => 'MA',
+                'streetAddress'   => '456 Road'
             ),
         ));
 
@@ -846,6 +846,42 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
             Braintree_TransactionSearch::createdAt()->between($future, $future2)
+        ));
+        $this->assertEquals(0, $collection->maximumCount());
+    }
+
+    function test_rangeNode_createdAt_is()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '1000.00',
+            'creditCard' => array(
+                'cardholderName' => 'Ted Everyman' . rand(),
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $past = clone $transaction->createdAt;
+        $past->modify("-1 hour");
+        $now = $transaction->createdAt;
+        $future = clone $transaction->createdAt;
+        $future->modify("+1 hour");
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->is($future)
+        ));
+        $this->assertEquals(0, $collection->maximumCount());
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->is($now)
+        ));
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::creditCardCardholderName()->is($transaction->creditCardDetails->cardholderName),
+            Braintree_TransactionSearch::createdAt()->is($past)
         ));
         $this->assertEquals(0, $collection->maximumCount());
     }

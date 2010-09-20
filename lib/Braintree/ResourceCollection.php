@@ -139,4 +139,3 @@ class Braintree_ResourceCollection implements Iterator
         );
     }
 }
-?>
