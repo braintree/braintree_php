@@ -33,6 +33,12 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         $this->assertType('Braintree_MultipleValueNode', $node);
     }
 
+    function testSearch_inTrialPeriod_isMultipleValueNode()
+    {
+        $node = Braintree_SubscriptionSearch::inTrialPeriod();
+        $this->assertType('Braintree_MultipleValueNode', $node);
+    }
+
     function testSearch_merchantAccountId_isMultipleValueNode()
     {
         $node = Braintree_SubscriptionSearch::merchantAccountId();

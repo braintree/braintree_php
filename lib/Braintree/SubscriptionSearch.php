@@ -16,6 +16,11 @@ class Braintree_SubscriptionSearch
         return new Braintree_TextNode('id');
     }
 
+    static function inTrialPeriod()
+    {
+        return new Braintree_MultipleValueNode('in_trial_period', array(true, false));
+    }
+
     static function merchantAccountId()
     {
         return new Braintree_MultipleValueNode('merchant_account_id');

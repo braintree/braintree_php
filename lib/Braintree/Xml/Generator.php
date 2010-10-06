@@ -57,7 +57,11 @@ class Braintree_Xml_Generator
     private static function _createElementsFromArray(&$writer, $aData)
     {
         if (!is_array($aData)) {
-          $writer->text($aData);
+            if (is_bool($aData)) {
+                $writer->text($aData ? 'true' : 'false');
+            } else {
+                $writer->text($aData);
+            }
           return;
         }
         foreach ($aData AS $index => $element) {
