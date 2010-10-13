@@ -588,6 +588,26 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED, $errors[0]->code);
     }
 
+    function testCreateWithInvalidUTF8Bytes()
+    {
+        $result = Braintree_Customer::create(array(
+            'firstName' => "Jos\xe8 Maria",
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals("Jos\xc3\xa8 Maria", $customer->firstName);
+    }
+
+    function testCreateWithValidUTF8Bytes()
+    {
+        $result = Braintree_Customer::create(array(
+            'firstName' => "Jos\303\251",
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals("Jos\303\251", $customer->firstName);
+    }
+
     function testUpdateFromTransparentRedirect()
     {
         Braintree_TestHelper::suppressDeprecationWarnings();
