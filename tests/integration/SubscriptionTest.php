@@ -21,6 +21,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             'planId' => $plan['id']
 
         ));
+        Braintree_TestHelper::assertPrintable($result);
         $this->assertTrue($result->success);
         $subscription = $result->subscription;
         $this->assertEquals($creditCard->token, $subscription->paymentMethodToken);
@@ -48,6 +49,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             'price' => Braintree_Test_TransactionAmounts::$decline
 
         ));
+        Braintree_TestHelper::assertPrintable($result);
         $this->assertFalse($result->success);
         $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->transaction->status);
     }

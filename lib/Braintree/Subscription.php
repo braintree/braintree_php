@@ -219,4 +219,15 @@ class Braintree_Subscription extends Braintree
             return new Braintree_Result_Error($response['apiErrorResponse']);
         }
     }
+
+    /**
+     * returns a string representation of the customer
+     * @return string
+     */
+    public function  __toString()
+    {
+        return __CLASS__ . '[' .
+                Braintree_Util::attributesToString($this->_attributes) .']';
+    }
+
 }

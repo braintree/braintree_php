@@ -393,18 +393,8 @@ class Braintree_Customer extends Braintree
      */
     public function  __toString()
     {
-        foreach ($this->_attributes AS $key => $value) {
-            if (is_array($value)) {
-                foreach ($value AS $obj) {
-                    $pAttrib .= sprintf('%s', $obj);
-                }
-            } else {
-                $pAttrib = $value;
-            }
-            $printableAttribs[$key] = sprintf('%s', $pAttrib);
-        }
         return __CLASS__ . '[' .
-                Braintree_Util::implodeAssociativeArray($printableAttribs) .']';
+                Braintree_Util::attributesToString($this->_attributes) .']';
     }
 
     /**

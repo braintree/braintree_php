@@ -74,6 +74,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'countryCodeNumeric' => '840'
             )
       ));
+      Braintree_TestHelper::assertPrintable($result);
       $this->assertTrue($result->success);
       $transaction = $result->transaction;
 
@@ -711,6 +712,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             )
         );
         $result = Braintree_Transaction::createFromTransparentRedirect($queryString);
+        Braintree_TestHelper::assertPrintable($result);
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
         $this->assertEquals(Braintree_Transaction::SALE, $result->transaction->type);
@@ -902,6 +904,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::privateKey($old_private_key);
 
         $this->assertFalse($result->success);
+        Braintree_TestHelper::assertPrintable($result);
         $transaction = $result->transaction;
 
         $this->assertEquals(Braintree_Transaction::AVS, $transaction->gatewayRejectionReason);

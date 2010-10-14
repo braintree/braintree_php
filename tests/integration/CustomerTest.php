@@ -156,6 +156,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
                 )
             )
         ));
+        Braintree_TestHelper::assertPrintable($result);
         $this->assertFalse($result->success);
         $this->assertEquals(Braintree_Result_CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
         $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
@@ -194,6 +195,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
                 )
             )
         ));
+        Braintree_TestHelper::assertPrintable($result);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals('Mike', $customer->firstName);
@@ -234,6 +236,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
                 )
             )
         ));
+        Braintree_TestHelper::assertPrintable($result);
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('customer')->onAttribute('email');
         $this->assertEquals(Braintree_Error_Codes::CUSTOMER_EMAIL_IS_INVALID, $errors[0]->code);
