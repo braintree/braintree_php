@@ -392,51 +392,58 @@ class Braintree_CreditCard extends Braintree
         return !($otherCreditCard instanceof Braintree_CreditCard) ? false : $this->token === $otherCreditCard->token;
     }
 
-   public static function createSignature()
-   {
-        return array(
-            'customerId', 'cardholderName', 'cvv', 'number',
-            'expirationDate', 'expirationMonth', 'expirationYear', 'token',
-            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
-            array(
-                'billingAddress' => array(
-                    'firstName',
-                    'lastName',
-                    'company',
-                    'countryCodeAlpha2',
-                    'countryCodeAlpha3',
-                    'countryCodeNumeric',
-                    'countryName',
-                    'extendedAddress',
-                    'locality',
-                    'region',
-                    'postalCode',
-                    'streetAddress'
-                ),
-            ),
-        );
-   }
-   public static function updateSignature()
-   {
-        $signature = self::createSignature();
+    private static function baseSignature()
+    {
+         return array(
+             'billingAddressId', 'cardholderName', 'cvv', 'number',
+             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
+             array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
+             array(
+                 'billingAddress' => array(
+                     'firstName',
+                     'lastName',
+                     'company',
+                     'countryCodeAlpha2',
+                     'countryCodeAlpha3',
+                     'countryCodeNumeric',
+                     'countryName',
+                     'extendedAddress',
+                     'locality',
+                     'region',
+                     'postalCode',
+                     'streetAddress'
+                 ),
+             ),
+         );
+    }
 
-        $updateExistingBillingSignature = array(
-            array(
-                'options' => array(
-                    'updateExisting'
-                )
-            )
-        );
+    public static function createSignature()
+    {
+        $signature = self::baseSignature();
+        $signature[] = 'customerId';
+        return $signature;
+    }
 
-        foreach($signature AS $key => $value) {
-            if(is_array($value) and array_key_exists('billingAddress', $value)) {
-                $signature[$key]['billingAddress'] = array_merge_recursive($value['billingAddress'], $updateExistingBillingSignature);
-            }
-        }
+    public static function updateSignature()
+    {
+         $signature = self::baseSignature();
 
-        // return all but the customerId (the first element)
-        return array_slice($signature, 1);
-   }
+         $updateExistingBillingSignature = array(
+             array(
+                 'options' => array(
+                     'updateExisting'
+                 )
+             )
+         );
+
+         foreach($signature AS $key => $value) {
+             if(is_array($value) and array_key_exists('billingAddress', $value)) {
+                 $signature[$key]['billingAddress'] = array_merge_recursive($value['billingAddress'], $updateExistingBillingSignature);
+             }
+         }
+
+         return $signature;
+    }
 
     /**
      * sends the create request to the gateway

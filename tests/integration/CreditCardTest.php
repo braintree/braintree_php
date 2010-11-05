@@ -161,6 +161,25 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('583', $address->countryCodeNumeric);
     }
 
+    function testCreate_withExistingBillingAddress()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $existingAddress = Braintree_Address::createNoValidate(array(
+            'customerId' => $customer->id,
+            'firstName' => 'John'
+        ));
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddressId' => $existingAddress->id
+        ));
+        $this->assertTrue($result->success);
+        $address = $result->creditCard->billingAddress;
+        $this->assertEquals($existingAddress->id, $address->id);
+        $this->assertEquals('John', $address->firstName);
+    }
+
     function testCreate_withValidationErrors()
     {
         $customer = Braintree_Customer::createNoValidate();

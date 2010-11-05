@@ -175,7 +175,7 @@ final class Braintree_Transaction extends Braintree
     const FAILED                   = 'failed';
     const PROCESSOR_DECLINED       = 'processor_declined';
     const SETTLED                  = 'settled';
-    const SETTLEMENT_FAILED        = 'settlement_failed';
+    const SETTLING                 = 'settling';
     const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
     const VOIDED                   = 'voided';
 

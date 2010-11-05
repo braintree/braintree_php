@@ -106,7 +106,7 @@ class Braintree_TransactionSearch
             Braintree_Transaction::FAILED,
             Braintree_Transaction::PROCESSOR_DECLINED,
             Braintree_Transaction::SETTLED,
-            Braintree_Transaction::SETTLEMENT_FAILED,
+            Braintree_Transaction::SETTLING,
             Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT,
             Braintree_Transaction::VOIDED
         ));

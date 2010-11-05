@@ -18,6 +18,7 @@ end
 
 task :prep_gateway do
   Dir.chdir(GATEWAY_ROOT) do
+    sh "rake log:clear"
     sh "git pull"
     sh "env RAILS_ENV=integration #{CRUISE_BUILD} rake db:migrate:reset --trace"
     sh "env RAILS_ENV=integration #{CRUISE_BUILD} ruby script/populate_data"

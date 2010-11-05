@@ -477,6 +477,27 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('New Billing Last', $billingAddress->lastName);
     }
 
+    function testUpdate_withNewCreditCardAndExistingBillingAddress()
+    {
+        $customer = Braintree_Customer::create()->customer;
+        $address = Braintree_Address::create(array(
+            'customerId' => $customer->id,
+            'firstName' => 'Dan'
+        ))->address;
+
+        $result = Braintree_Customer::update($customer->id, array(
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '11/14',
+                'billingAddressId' => $address->id
+            )
+        ));
+
+        $billingAddress = $result->customer->creditCards[0]->billingAddress;
+        $this->assertEquals($address->id, $billingAddress->id);
+        $this->assertEquals('Dan', $billingAddress->firstName);
+    }
+
     function testUpdateNoValidate()
     {
         $result = Braintree_Customer::create(array(
@@ -586,6 +607,26 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_NUMBER_INVALID_LENGTH, $errors[0]->code);
         $errors = $result->errors->forKey('customer')->forKey('creditCard')->onAttribute('expirationDate');
         $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED, $errors[0]->code);
+    }
+
+    function testCreateWithInvalidUTF8Bytes()
+    {
+        $result = Braintree_Customer::create(array(
+            'firstName' => "Jos\xe8 Maria",
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals("Jos\xc3\xa8 Maria", $customer->firstName);
+    }
+
+    function testCreateWithValidUTF8Bytes()
+    {
+        $result = Braintree_Customer::create(array(
+            'firstName' => "Jos\303\251",
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals("Jos\303\251", $customer->firstName);
     }
 
     function testUpdateFromTransparentRedirect()

@@ -37,6 +37,24 @@ XML;
         $this->assertEquals($expected, $xml);
     }
 
+    function testCreatesArraysWithBooleans()
+    {
+        $expected = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+ <stuff type="array">
+  <item>true</item>
+  <item>false</item>
+ </stuff>
+</root>
+
+XML;
+        $xml = Braintree_Xml::buildXmlFromArray(array(
+            'root' => array('stuff' => array(true, false))
+        ));
+        $this->assertEquals($expected, $xml);
+    }
+
     function testHandlesEmptyArrays()
     {
         $expected = <<<XML
