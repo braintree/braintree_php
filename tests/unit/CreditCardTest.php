@@ -34,7 +34,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     function testCreateSignature()
     {
         $expected = array(
-            'customerId', 'cardholderName', 'cvv', 'number',
+            'billingAddressId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
             array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
             array(
@@ -53,6 +53,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
                     'streetAddress'
                 ),
             ),
+            'customerId'
         );
         $this->assertEquals($expected, Braintree_CreditCard::CreateSignature());
     }
@@ -60,7 +61,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     function testUpdateSignature()
     {
         $expected = array(
-            'cardholderName', 'cvv', 'number',
+            'billingAddressId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
             array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
             array(

@@ -477,6 +477,27 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('New Billing Last', $billingAddress->lastName);
     }
 
+    function testUpdate_withNewCreditCardAndExistingBillingAddress()
+    {
+        $customer = Braintree_Customer::create()->customer;
+        $address = Braintree_Address::create(array(
+            'customerId' => $customer->id,
+            'firstName' => 'Dan'
+        ))->address;
+
+        $result = Braintree_Customer::update($customer->id, array(
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '11/14',
+                'billingAddressId' => $address->id
+            )
+        ));
+
+        $billingAddress = $result->customer->creditCards[0]->billingAddress;
+        $this->assertEquals($address->id, $billingAddress->id);
+        $this->assertEquals('Dan', $billingAddress->firstName);
+    }
+
     function testUpdateNoValidate()
     {
         $result = Braintree_Customer::create(array(
