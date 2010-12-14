@@ -153,6 +153,8 @@ class Braintree_Error_Codes
     const TRANSACTION_CUSTOMER_DEFAULT_PAYMENT_METHOD_CARD_TYPE_IS_NOT_ACCEPTED = '81509';
     const TRANSACTION_CUSTOMER_ID_IS_INVALID                                    = '91510';
     const TRANSACTION_CUSTOMER_DOES_NOT_HAVE_CREDIT_CARD                        = '91511';
+    const TRANSACTION_DESCRIPTOR_NAME_FORMAT_IS_INVALID                         = '91532';
+    const TRANSACTION_DESCRIPTOR_PHONE_FORMAT_IS_INVALID                        = '91533';
     const TRANSACTION_HAS_ALREADY_BEEN_REFUNDED                                 = '91512';
     const TRANSACTION_MERCHANT_ACCOUNT_NAME_IS_INVALID                          = '91513'; //Deprecated
     const TRANSACTION_MERCHANT_ACCOUNT_ID_IS_INVALID                            = '91513';

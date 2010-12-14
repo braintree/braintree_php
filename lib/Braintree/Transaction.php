@@ -292,6 +292,7 @@ final class Braintree_Transaction extends Braintree
             ),
             array('customFields' => array('_anyKey_')
             ),
+            array('descriptor' => array('name', 'phone')),
         );
     }
 
@@ -474,6 +475,11 @@ final class Braintree_Transaction extends Braintree
         $this->_set('shippingDetails',
                 new Braintree_Transaction_AddressDetails(
                 $transactionAttribs['shipping']
+                )
+            );
+        $this->_set('descriptor',
+                new Braintree_Transaction_Descriptor(
+                $transactionAttribs['descriptor']
                 )
             );
 

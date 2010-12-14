@@ -688,6 +688,48 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://getbraintree.com', $customer->website);
     }
 
+    function testSale_withDescriptor()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'descriptor' => array(
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('123*123456789012345678', $transaction->descriptor->name);
+        $this->assertEquals('3334445555', $transaction->descriptor->phone);
+    }
+
+    function testSale_withDescriptorValidation()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'descriptor' => array(
+                'name' => 'badcompanyname12*badproduct12',
+                'phone' => '%bad4445555'
+            )
+        ));
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('name');
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_DESCRIPTOR_NAME_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('phone');
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
+    }
+
     function testCreateFromTransparentRedirect()
     {
         Braintree_TestHelper::suppressDeprecationWarnings();
