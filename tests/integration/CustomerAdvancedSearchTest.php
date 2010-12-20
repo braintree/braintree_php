@@ -3,7 +3,7 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
 {
-    function testNoMatches()
+    function test_noMatches()
     {
         $collection = Braintree_Customer::search(array(
             Braintree_CustomerSearch::company()->is('badname')
@@ -12,7 +12,7 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $collection->maximumCount());
     }
 
-    function testSearchOnTextFields()
+    function test_searchOnTextFields()
     {
         $token  = 'cctoken' . rand();
 
@@ -84,6 +84,37 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
             ));
             $this->assertEquals(0, $collection->maximumCount());
         }
+    }
+
+    function test_createdAt()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+
+        $past = clone $customer->createdAt;
+        $past->modify("-1 hour");
+        $future = clone $customer->createdAt;
+        $future->modify("+1 hour");
+
+        $collection = Braintree_Customer::search(array(
+            Braintree_CustomerSearch::id()->is($customer->id),
+            Braintree_CustomerSearch::createdAt()->between($past, $future)
+        ));
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($customer->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Customer::search(array(
+            Braintree_CustomerSearch::id()->is($customer->id),
+            Braintree_CustomerSearch::createdAt()->lessThanOrEqualTo($future)
+        ));
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($customer->id, $collection->firstItem()->id);
+
+        $collection = Braintree_Customer::search(array(
+            Braintree_CustomerSearch::id()->is($customer->id),
+            Braintree_CustomerSearch::createdAt()->greaterThanOrEqualTo($past)
+        ));
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($customer->id, $collection->firstItem()->id);
     }
 }
 ?>

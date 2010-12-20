@@ -13,12 +13,14 @@ class Braintree_CustomerSearch
     static function email()                    { return new Braintree_TextNode('email'); }
     static function fax()                      { return new Braintree_TextNode('fax'); }
     static function firstName()                { return new Braintree_TextNode('first_name'); }
-    static function id()                       { return new Braintree_TextNode('customer_id'); }
+    static function id()                       { return new Braintree_TextNode('id'); }
     static function lastName()                 { return new Braintree_TextNode('last_name'); }
     static function paymentMethodToken()       { return new Braintree_TextNode('payment_method_token'); }
     static function phone()                    { return new Braintree_TextNode('phone'); }
     static function website()                  { return new Braintree_TextNode('website'); }
 
     static function ids()                      { return new Braintree_MultipleValueNode('ids'); }
+
+    static function createdAt()                { return new Braintree_RangeNode("created_at"); }
 }
 
