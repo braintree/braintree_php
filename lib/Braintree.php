@@ -83,6 +83,7 @@ require_once('Braintree/Collection.php');
 require_once('Braintree/Configuration.php');
 require_once('Braintree/CreditCard.php');
 require_once('Braintree/Customer.php');
+require_once('Braintree/CustomerSearch.php');
 require_once('Braintree/Digest.php');
 require_once('Braintree/Discount.php');
 require_once('Braintree/EqualityNode.php');

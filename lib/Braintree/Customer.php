@@ -40,14 +40,19 @@ class Braintree_Customer extends Braintree
         $pager = array(
             'className' => __CLASS__,
             'classMethod' => 'fetch',
-            'methodArgs' => array()
+            'methodArgs' => array(array())
             );
 
         return new Braintree_ResourceCollection($response, $pager);
     }
 
-    public static function fetch($ids)
+    public static function fetch($query, $ids)
     {
+        $criteria = array();
+        foreach ($query as $term) {
+            $criteria[$term->name] = $term->toparam();
+        }
+        $criteria["ids"] = Braintree_CustomerSearch::ids()->in($ids)->toparam();
         $response = braintree_http::post('/customers/advanced_search', array('search' => array('ids' => $ids)));
 
         return braintree_util::extractattributeasarray(
@@ -276,6 +281,35 @@ class Braintree_Customer extends Braintree
     {
         $result = self::sale($customerId, $transactionAttribs);
         return self::returnObjectOrThrowException('Braintree_Transaction', $result);
+    }
+
+    /**
+     * Returns a ResourceCollection of customers matching the search query.
+     *
+     * If <b>query</b> is a string, the search will be a basic search.
+     * If <b>query</b> is a hash, the search will be an advanced search.
+     * For more detailed information and examples, see {@link http://www.braintreepaymentsolutions.com/gateway/customer-api#searching http://www.braintreepaymentsolutions.com/gateway/customer-api}
+     *
+     * @param mixed $query search query
+     * @param array $options options such as page number
+     * @return object Braintree_ResourceCollection
+     * @throws InvalidArgumentException
+     */
+    public static function search($query)
+    {
+        $criteria = array();
+        foreach ($query as $term) {
+            $criteria[$term->name] = $term->toparam();
+        }
+
+        $response = braintree_http::post('/customers/advanced_search_ids', array('search' => $criteria));
+        $pager = array(
+            'className' => __CLASS__,
+            'classMethod' => 'fetch',
+            'methodArgs' => array($query)
+            );
+
+        return new Braintree_ResourceCollection($response, $pager);
     }
 
     /**
