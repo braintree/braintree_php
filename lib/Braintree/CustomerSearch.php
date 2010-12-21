@@ -19,6 +19,8 @@ class Braintree_CustomerSearch
     static function phone()                    { return new Braintree_TextNode('phone'); }
     static function website()                  { return new Braintree_TextNode('website'); }
 
+	static function creditCardNumber()         { return new Braintree_PartialMatchNode('credit_card_number'); }
+
     static function ids()                      { return new Braintree_MultipleValueNode('ids'); }
 
     static function createdAt()                { return new Braintree_RangeNode("created_at"); }

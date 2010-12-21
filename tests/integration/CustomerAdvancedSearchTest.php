@@ -25,6 +25,7 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
             'phone' => '3145551234',
             'fax' => '3145551235',
             'creditCardExpirationDate' => '05/2010',
+            'creditCardNumber' => '4111111111111111',
             'paymentMethodToken' => $token,
             'addressFirstName' => 'Thomas',
             'addressLastName' => 'Otool',
