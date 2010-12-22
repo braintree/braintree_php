@@ -24,6 +24,7 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
             'website' => 'http://example.com',
             'phone' => '3145551234',
             'fax' => '3145551235',
+            'cardholderName' => 'Tim Toole',
             'creditCardExpirationDate' => '05/2010',
             'creditCardNumber' => '4111111111111111',
             'paymentMethodToken' => $token,
@@ -45,6 +46,7 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
             'phone' => $search_criteria['phone'],
             'website' => $search_criteria['website'],
             'creditCard' => array(
+                'cardholderName' => 'Tim Toole',
                 'number' => '4111111111111111',
                 'expirationDate' => $search_criteria['creditCardExpirationDate'],
                 'token' => $token,
