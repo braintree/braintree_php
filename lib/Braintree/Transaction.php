@@ -520,18 +520,12 @@ final class Braintree_Transaction extends Braintree
             'createdAt', 'creditCardDetails', 'customerDetails'
             );
 
+        $displayAttributes = array();
         foreach ($display AS $attrib) {
-            if (is_array($this->$attrib)) {
-                foreach ($this->$attrib AS $obj) {
-                    $pAttrib .= sprintf('%s', $obj);
-                }
-            } else {
-                $pAttrib = $this->$attrib;
-            }
-            $printableAttribs[$attrib] = sprintf('%s', $pAttrib);
+            $displayAttributes[$attrib] = $this->$attrib;
         }
         return __CLASS__ . '[' .
-                Braintree_Util::implodeAssociativeArray($printableAttribs) .']';
+                Braintree_Util::attributesToString($displayAttributes) .']';
     }
 
     public static function refund($transactionId, $amount = null)
