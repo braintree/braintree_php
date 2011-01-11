@@ -284,6 +284,32 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $transaction->merchantAccountId);
     }
 
+    function testSale_withShippingAddressId()
+    {
+        $customer = Braintree_Customer::create(array(
+            'firstName' => 'Mike',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/12'
+            )
+        ))->customer;
+
+        $address = Braintree_Address::create(array(
+            'customerId' => $customer->id,
+            'streetAddress' => '123 Fake St.'
+        ))->address;
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'customerId' => $customer->id,
+            'shippingAddressId' => $address->id
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('123 Fake St.', $transaction->shippingDetails->streetAddress);
+        $this->assertEquals($address->id, $transaction->shippingDetails->id);
+    }
 
     function testSaleNoValidate()
     {
