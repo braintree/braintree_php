@@ -88,6 +88,9 @@ class Braintree_Error_Codes
     const CUSTOMER_WEBSITE_IS_INVALID       = '81616';
     const CUSTOMER_WEBSITE_IS_TOO_LONG      = '81615';
 
+    const DESCRIPTOR_NAME_FORMAT_IS_INVALID  = '92201';
+    const DESCRIPTOR_PHONE_FORMAT_IS_INVALID = '92202';
+
     const SUBSCRIPTION_BILLING_DAY_OF_MONTH_CANNOT_BE_UPDATED                     = '91918';
     const SUBSCRIPTION_BILLING_DAY_OF_MONTH_IS_INVALID                            = '91914';
     const SUBSCRIPTION_BILLING_DAY_OF_MONTH_MUST_BE_NUMERIC                       = '91913';
@@ -155,8 +158,6 @@ class Braintree_Error_Codes
     const TRANSACTION_CUSTOMER_ID_IS_INVALID                                    = '91510';
     const TRANSACTION_CUSTOM_FIELD_IS_INVALID                                   = '91526';
     const TRANSACTION_CUSTOM_FIELD_IS_TOO_LONG                                  = '81527';
-    const TRANSACTION_DESCRIPTOR_NAME_FORMAT_IS_INVALID                         = '91532';
-    const TRANSACTION_DESCRIPTOR_PHONE_FORMAT_IS_INVALID                        = '91533';
     const TRANSACTION_HAS_ALREADY_BEEN_REFUNDED                                 = '91512';
     const TRANSACTION_MERCHANT_ACCOUNT_ID_IS_INVALID                            = '91513';
     const TRANSACTION_MERCHANT_ACCOUNT_IS_SUSPENDED                             = '91514';

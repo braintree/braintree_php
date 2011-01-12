@@ -126,12 +126,8 @@ class Braintree_Subscription extends Braintree
                 'trialDuration',
                 'trialDurationUnit',
                 'trialPeriod',
-                array(
-                    'options' => array(
-                        'doNotInheritAddOnsOrDiscounts',
-                        'startImmediately'
-                    )
-                ),
+                array('descriptor' => array('name', 'phone')),
+                array('options' => array('doNotInheritAddOnsOrDiscounts', 'startImmediately')),
             ),
             self::_addOnDiscountSignature()
         );
@@ -143,6 +139,7 @@ class Braintree_Subscription extends Braintree
             array(
                 'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
                 'id', 'neverExpires', 'price',
+                array('descriptor' => array('name', 'phone')),
                 array('options' => array('prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure')),
             ),
             self::_addOnDiscountSignature()
@@ -191,6 +188,8 @@ class Braintree_Subscription extends Braintree
             }
         }
         $this->_attributes['discounts'] = $discountArray;
+
+        $this->_set('descriptor', new Braintree_Descriptor($attributes['descriptor']));
 
         $transactionArray = array();
         if (isset($attributes['transactions'])) {

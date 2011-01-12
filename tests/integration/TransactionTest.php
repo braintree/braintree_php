@@ -796,10 +796,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = $result->transaction;
 
         $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('name');
-        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_DESCRIPTOR_NAME_FORMAT_IS_INVALID, $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_NAME_FORMAT_IS_INVALID, $errors[0]->code);
 
         $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('phone');
-        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
     function testCreateFromTransparentRedirect()

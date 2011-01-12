@@ -479,7 +479,7 @@ final class Braintree_Transaction extends Braintree
                 )
             );
         $this->_set('descriptor',
-                new Braintree_Transaction_Descriptor(
+                new Braintree_Descriptor(
                 $transactionAttribs['descriptor']
                 )
             );

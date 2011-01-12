@@ -76,6 +76,7 @@ abstract class Braintree
     }
 }
 require_once('Braintree/Modification.php');
+require_once('Braintree/Instance.php');
 
 require_once('Braintree/Address.php');
 require_once('Braintree/AddOn.php');
@@ -84,12 +85,12 @@ require_once('Braintree/Configuration.php');
 require_once('Braintree/CreditCard.php');
 require_once('Braintree/Customer.php');
 require_once('Braintree/CustomerSearch.php');
+require_once('Braintree/Descriptor.php');
 require_once('Braintree/Digest.php');
 require_once('Braintree/Discount.php');
 require_once('Braintree/EqualityNode.php');
 require_once('Braintree/Exception.php');
 require_once('Braintree/Http.php');
-require_once('Braintree/Instance.php');
 require_once('Braintree/KeyValueNode.php');
 require_once('Braintree/MultipleValueNode.php');
 require_once('Braintree/MultipleValueOrTextNode.php');
@@ -129,7 +130,6 @@ require_once('Braintree/Test/TransactionAmounts.php');
 require_once('Braintree/Transaction/AddressDetails.php');
 require_once('Braintree/Transaction/CreditCardDetails.php');
 require_once('Braintree/Transaction/CustomerDetails.php');
-require_once('Braintree/Transaction/Descriptor.php');
 require_once('Braintree/Transaction/StatusDetails.php');
 require_once('Braintree/Xml/Generator.php');
 require_once('Braintree/Xml/Parser.php');
