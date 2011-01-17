@@ -1,6 +1,7 @@
 <?php
 class Braintree_CustomerSearch
 {
+    static function addressCountryName()       { return new Braintree_TextNode('address_country_name'); }
     static function addressExtendedAddress()   { return new Braintree_TextNode('address_extended_address'); }
     static function addressFirstName()         { return new Braintree_TextNode('address_first_name'); }
     static function addressLastName()          { return new Braintree_TextNode('address_last_name'); }
