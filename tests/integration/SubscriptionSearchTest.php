@@ -243,4 +243,54 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Braintree_TestHelper::includes($collection, $subscription_852));
         $this->assertFalse(Braintree_TestHelper::includes($collection, $subscription_850));
     }
+
+    function testSearch_nextBillingDate()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $triallessPlan = Braintree_SubscriptionTestHelper::triallessPlan();
+        $trialPlan = Braintree_SubscriptionTestHelper::trialPlan();
+
+        $triallessSubscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $triallessPlan['id'],
+        ))->subscription;
+
+        $trialSubscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $trialPlan['id'],
+        ))->subscription;
+
+        $fiveDaysFromNow = new DateTime();
+        $fiveDaysFromNow->modify("+5 days");
+
+        $collection = Braintree_Subscription::search(array(
+            Braintree_SubscriptionSearch::nextBillingDate()->greaterThanOrEqualTo($fiveDaysFromNow)
+        ));
+
+        $this->assertTrue(Braintree_TestHelper::includes($collection, $triallessSubscription));
+        $this->assertFalse(Braintree_TestHelper::includes($collection, $trialSubscription));
+    }
+
+    function testSearch_transactionId()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $triallessPlan = Braintree_SubscriptionTestHelper::triallessPlan();
+
+        $matchingSubscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $triallessPlan['id'],
+        ))->subscription;
+
+        $nonMatchingSubscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $triallessPlan['id'],
+        ))->subscription;
+
+        $collection = Braintree_Subscription::search(array(
+            Braintree_SubscriptionSearch::transactionId()->is($matchingSubscription->transactions[0]->id)
+        ));
+
+        $this->assertTrue(Braintree_TestHelper::includes($collection, $matchingSubscription));
+        $this->assertFalse(Braintree_TestHelper::includes($collection, $nonMatchingSubscription));
+    }
 }
