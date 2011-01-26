@@ -126,12 +126,8 @@ class Braintree_Subscription extends Braintree
                 'trialDuration',
                 'trialDurationUnit',
                 'trialPeriod',
-                array(
-                    'options' => array(
-                        'doNotInheritAddOnsOrDiscounts',
-                        'startImmediately'
-                    )
-                ),
+                array('descriptor' => array('name', 'phone')),
+                array('options' => array('doNotInheritAddOnsOrDiscounts', 'startImmediately')),
             ),
             self::_addOnDiscountSignature()
         );
@@ -143,6 +139,7 @@ class Braintree_Subscription extends Braintree
             array(
                 'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
                 'id', 'neverExpires', 'price',
+                array('descriptor' => array('name', 'phone')),
                 array('options' => array('prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure')),
             ),
             self::_addOnDiscountSignature()
@@ -192,6 +189,8 @@ class Braintree_Subscription extends Braintree
         }
         $this->_attributes['discounts'] = $discountArray;
 
+        $this->_set('descriptor', new Braintree_Descriptor($attributes['descriptor']));
+
         $transactionArray = array();
         if (isset($attributes['transactions'])) {
             foreach ($attributes['transactions'] AS $transaction) {
@@ -219,4 +218,15 @@ class Braintree_Subscription extends Braintree
             return new Braintree_Result_Error($response['apiErrorResponse']);
         }
     }
+
+    /**
+     * returns a string representation of the customer
+     * @return string
+     */
+    public function  __toString()
+    {
+        return __CLASS__ . '[' .
+                Braintree_Util::attributesToString($this->_attributes) .']';
+    }
+
 }

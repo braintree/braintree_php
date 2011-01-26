@@ -9,6 +9,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             'creditCard' => array('expirationMonth' => '05', 'expirationYear' => '2010', 'bin' => '510510', 'last4' => '5100'),
             'customer' => array(),
             'billing' => array(),
+            'descriptor' => array(),
             'shipping' => array(),
             'statusHistory' => array()
         ));

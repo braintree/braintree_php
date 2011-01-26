@@ -105,16 +105,18 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
      */
     public function __toString()
     {
+        $output = array();
+
         // TODO: implement scope
-       if (!empty($this->_errors)) {
-           $output[] = $this->_inspect($this->_errors);
-       }
-       if (!empty($this->_nested)) {
-           foreach ($this->_nested AS $key => $values) {
-               $output[] = $this->_inspect($this->_nested);
-           }
-       }
-       return join(', ', $output);
+        if (!empty($this->_errors)) {
+            $output[] = $this->_inspect($this->_errors);
+        }
+        if (!empty($this->_nested)) {
+            foreach ($this->_nested AS $key => $values) {
+                $output[] = $this->_inspect($this->_nested);
+            }
+        }
+        return join(', ', $output);
     }
 
     /**

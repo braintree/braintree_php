@@ -12,104 +12,7 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $collection->maximumCount());
     }
 
-    function testOneResultForTextFieldSearch()
-    {
-        $firstName  = 'Tim' . rand();
-        $token      = 'creditcard' . rand();
-        $customerId = 'customer' . rand();
-
-        $transaction = Braintree_Transaction::saleNoValidate(array(
-            'amount' => Braintree_Test_TransactionAmounts::$authorize,
-            'creditCard' => array(
-                'number'         => Braintree_Test_CreditCardNumbers::$visa,
-                'expirationDate' => '05/2012',
-                'cardholderName' => 'Tom Smith',
-                'token'          => $token,
-            ),
-            'billing' => array(
-                'company'         => 'Braintree',
-                'countryName'     => 'United States of America',
-                'extendedAddress' => 'Suite 123',
-                'firstName'       => $firstName,
-                'lastName'        => 'Smith',
-                'locality'        => 'Chicago',
-                'postalCode'      => '12345',
-                'region'          => 'IL',
-                'streetAddress'   => '123 Main St'
-            ),
-            'customer' => array(
-                'company'   => 'Braintree',
-                'email'     => 'smith@example.com',
-                'fax'       => '5551231234',
-                'firstName' => 'Tom',
-                'id'        => $customerId,
-                'lastName'  => 'Smith',
-                'phone'     => '5551231234',
-                'website'   => 'http://example.com',
-            ),
-            'options' => array(
-                'storeInVault' => true,
-                'submitForSettlement' => true
-            ),
-            'orderId' => 'myorder',
-            'shipping' => array(
-                'company'         => 'Braintree P.S.',
-                'countryName'     => 'Mexico',
-                'extendedAddress' => 'Apt 456',
-                'firstName'       => 'Thomas',
-                'lastName'        => 'Smithy',
-                'locality'        => 'Braintree',
-                'postalCode'      => '54321',
-                'region'          => 'MA',
-                'streetAddress'   => '456 Road'
-            ),
-        ));
-
-        Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
-        $transaction = Braintree_Transaction::find($transaction->id);
-
-        $collection = Braintree_Transaction::search(array(
-            Braintree_TransactionSearch::billingCompany()->is("Braintree"),
-            Braintree_TransactionSearch::billingCountryName()->is("United States of America"),
-            Braintree_TransactionSearch::billingExtendedAddress()->is("Suite 123"),
-            Braintree_TransactionSearch::billingFirstName()->is($firstName),
-            Braintree_TransactionSearch::billingLastName()->is("Smith"),
-            Braintree_TransactionSearch::billingLocality()->is("Chicago"),
-            Braintree_TransactionSearch::billingPostalCode()->is("12345"),
-            Braintree_TransactionSearch::billingRegion()->is("IL"),
-            Braintree_TransactionSearch::billingStreetAddress()->is("123 Main St"),
-            Braintree_TransactionSearch::creditCardCardholderName()->is("Tom Smith"),
-            Braintree_TransactionSearch::creditCardExpirationDate()->is("05/2012"),
-            Braintree_TransactionSearch::creditCardNumber()->is(Braintree_Test_CreditCardNumbers::$visa),
-            Braintree_TransactionSearch::customerCompany()->is("Braintree"),
-            Braintree_TransactionSearch::customerEmail()->is("smith@example.com"),
-            Braintree_TransactionSearch::customerFax()->is("5551231234"),
-            Braintree_TransactionSearch::customerFirstName()->is("Tom"),
-            Braintree_TransactionSearch::customerId()->is($customerId),
-            Braintree_TransactionSearch::customerLastName()->is("Smith"),
-            Braintree_TransactionSearch::customerPhone()->is("5551231234"),
-            Braintree_TransactionSearch::customerWebsite()->is("http://example.com"),
-            Braintree_TransactionSearch::orderId()->is("myorder"),
-            Braintree_TransactionSearch::paymentMethodToken()->is($token),
-            Braintree_TransactionSearch::processorAuthorizationCode()->is($transaction->processorAuthorizationCode),
-            Braintree_TransactionSearch::settlementBatchId()->is($transaction->settlementBatchId),
-            Braintree_TransactionSearch::shippingCompany()->is("Braintree P.S."),
-            Braintree_TransactionSearch::shippingCountryName()->is("Mexico"),
-            Braintree_TransactionSearch::shippingExtendedAddress()->is("Apt 456"),
-            Braintree_TransactionSearch::shippingFirstName()->is("Thomas"),
-            Braintree_TransactionSearch::shippingLastName()->is("Smithy"),
-            Braintree_TransactionSearch::shippingLocality()->is("Braintree"),
-            Braintree_TransactionSearch::shippingPostalCode()->is("54321"),
-            Braintree_TransactionSearch::shippingRegion()->is("MA"),
-            Braintree_TransactionSearch::shippingStreetAddress()->is("456 Road"),
-            Braintree_TransactionSearch::id()->is($transaction->id)
-        ));
-
-        $this->assertEquals(1, $collection->maximumCount());
-        $this->assertEquals($transaction->id, $collection->firstItem()->id);
-    }
-
-    function testEachTextField()
+    function testSearchOnTextFields()
     {
         $firstName  = 'Tim' . rand();
         $token      = 'creditcard' . rand();
@@ -195,6 +98,16 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
           'shippingRegion' => "MA",
           'shippingStreetAddress' => "456 Road"
         );
+
+        $query = array(Braintree_TransactionSearch::id()->is($transaction->id));
+        foreach ($search_criteria AS $criterion => $value) {
+            $query[] = Braintree_TransactionSearch::$criterion()->is($value);
+        }
+
+        $collection = Braintree_Transaction::search($query);
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
 
         foreach ($search_criteria AS $criterion => $value) {
             $collection = Braintree_Transaction::search(array(

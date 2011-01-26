@@ -215,8 +215,8 @@ class Braintree_Address extends Braintree
      */
     public function  __toString()
     {
-        $objOutput = Braintree_Util::implodeAssociativeArray($this->_attributes);
-        return __CLASS__ . '[' . $objOutput . ']';
+        return __CLASS__ . '[' .
+                Braintree_Util::attributesToString($this->_attributes) .']';
     }
 
     /**

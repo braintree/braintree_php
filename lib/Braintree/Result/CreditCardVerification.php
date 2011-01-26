@@ -33,6 +33,7 @@ class Braintree_Result_CreditCardVerification
     const PROCESSOR_DECLINED       = 'processor_declined';
     const VERIFIED                 = 'verified';
 
+    private $_attributes;
     private $_avsErrorResponseCode;
     private $_avsPostalCodeResponseCode;
     private $_avsStreetAddressResponseCode;
@@ -56,6 +57,7 @@ class Braintree_Result_CreditCardVerification
      */
     private function _initializeFromArray($attributes)
     {
+        $this->_attributes = $attributes;
         foreach($attributes AS $name => $value) {
             $varName = "_$name";
             $this->$varName = $value;
@@ -70,5 +72,15 @@ class Braintree_Result_CreditCardVerification
     {
         $varName = "_$name";
         return isset($this->$varName) ? $this->$varName : null;
+    }
+
+    /**
+     * returns a string representation of the customer
+     * @return string
+     */
+    public function  __toString()
+    {
+        return __CLASS__ . '[' .
+                Braintree_Util::attributesToString($this->_attributes) .']';
     }
 }

@@ -25,6 +25,50 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
     }
 
+    function testSale_withLevel2Attributes()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'expirationDate' => '05/2011',
+                'number' => '5105105105105100'
+            ),
+            'taxExempt' => true,
+            'taxAmount' => '10.00',
+            'purchaseOrderNumber' => '12345'
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertTrue($transaction->taxExempt);
+        $this->assertEquals('10.00', $transaction->taxAmount);
+        $this->assertEquals('12345', $transaction->purchaseOrderNumber);
+    }
+
+    function testSale_withInvalidLevel2Attributes()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'expirationDate' => '05/2011',
+                'number' => '5105105105105100'
+            ),
+            'taxAmount' => 'abc',
+            'purchaseOrderNumber' => 'aaaaaaaaaaaaaaaaaa'
+        ));
+
+        $this->assertFalse($result->success);
+
+        $taxAmountErrors = $result->errors->forKey('transaction')->onAttribute('taxAmount');
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_TAX_AMOUNT_FORMAT_IS_INVALID, $taxAmountErrors[0]->code);
+
+        $purchaseOrderNumberErrors = $result->errors->forKey('transaction')->onAttribute('purchaseOrderNumber');
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG, $purchaseOrderNumberErrors[0]->code);
+    }
+
     function testSale_withAllAttributes()
     {
         $result = Braintree_Transaction::sale(array(
@@ -74,6 +118,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'countryCodeNumeric' => '840'
             )
       ));
+      Braintree_TestHelper::assertPrintable($result);
       $this->assertTrue($result->success);
       $transaction = $result->transaction;
 
@@ -91,6 +136,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('MasterCard', $transaction->creditCardDetails->cardType);
       $this->assertEquals('1000', $transaction->processorResponseCode);
       $this->assertEquals('Approved', $transaction->processorResponseText);
+      $this->assertFalse($transaction->taxExempt);
 
       $this->assertEquals('M', $transaction->avsPostalCodeResponseCode);
       $this->assertEquals('M', $transaction->avsStreetAddressResponseCode);
@@ -238,6 +284,32 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $transaction->merchantAccountId);
     }
 
+    function testSale_withShippingAddressId()
+    {
+        $customer = Braintree_Customer::create(array(
+            'firstName' => 'Mike',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/12'
+            )
+        ))->customer;
+
+        $address = Braintree_Address::create(array(
+            'customerId' => $customer->id,
+            'streetAddress' => '123 Fake St.'
+        ))->address;
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'customerId' => $customer->id,
+            'shippingAddressId' => $address->id
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('123 Fake St.', $transaction->shippingDetails->streetAddress);
+        $this->assertEquals($address->id, $transaction->shippingDetails->id);
+    }
 
     function testSaleNoValidate()
     {
@@ -688,6 +760,48 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://getbraintree.com', $customer->website);
     }
 
+    function testSale_withDescriptor()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'descriptor' => array(
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('123*123456789012345678', $transaction->descriptor->name);
+        $this->assertEquals('3334445555', $transaction->descriptor->phone);
+    }
+
+    function testSale_withDescriptorValidation()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'descriptor' => array(
+                'name' => 'badcompanyname12*badproduct12',
+                'phone' => '%bad4445555'
+            )
+        ));
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('name');
+        $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_NAME_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('phone');
+        $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
+    }
+
     function testCreateFromTransparentRedirect()
     {
         Braintree_TestHelper::suppressDeprecationWarnings();
@@ -711,6 +825,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             )
         );
         $result = Braintree_Transaction::createFromTransparentRedirect($queryString);
+        Braintree_TestHelper::assertPrintable($result);
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
         $this->assertEquals(Braintree_Transaction::SALE, $result->transaction->type);
@@ -902,6 +1017,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::privateKey($old_private_key);
 
         $this->assertFalse($result->success);
+        Braintree_TestHelper::assertPrintable($result);
         $transaction = $result->transaction;
 
         $this->assertEquals(Braintree_Transaction::AVS, $transaction->gatewayRejectionReason);

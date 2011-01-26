@@ -1,3 +1,12 @@
+## 2.7.0
+
+* Added Customer search
+* Added dynamic descriptors to Subscriptions and Transactions
+* Added level 2 fields to Transactions:
+  * tax_amount
+  * tax_exempt
+  * purchase_order_number
+
 ## 2.6.1
 
 * Added billingAddressId to allowed parameters for credit cards create and update
