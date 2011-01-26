@@ -162,6 +162,22 @@ class Braintree_Util
         return (is_array($tmpArray)) ? implode($glue, $tmpArray) : false;
     }
 
+    public static function attributesToString($attributes) {
+        foreach ($attributes AS $key => $value) {
+            if (is_array($value)) {
+                foreach ($value AS $obj) {
+                    $pAttrib .= sprintf('%s', $obj);
+                }
+            } else if ($value instanceof DateTime) {
+                $pAttrib = $value->format(DateTime::RFC850);
+            } else {
+                $pAttrib = $value;
+            }
+            $printableAttribs[$key] = sprintf('%s', $pAttrib);
+        }
+        return Braintree_Util::implodeAssociativeArray($printableAttribs);
+    }
+
     /**
      * verify user request structure
      *

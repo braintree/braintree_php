@@ -88,6 +88,9 @@ class Braintree_Error_Codes
     const CUSTOMER_WEBSITE_IS_INVALID       = '81616';
     const CUSTOMER_WEBSITE_IS_TOO_LONG      = '81615';
 
+    const DESCRIPTOR_NAME_FORMAT_IS_INVALID  = '92201';
+    const DESCRIPTOR_PHONE_FORMAT_IS_INVALID = '92202';
+
     const SUBSCRIPTION_BILLING_DAY_OF_MONTH_CANNOT_BE_UPDATED                     = '91918';
     const SUBSCRIPTION_BILLING_DAY_OF_MONTH_IS_INVALID                            = '91914';
     const SUBSCRIPTION_BILLING_DAY_OF_MONTH_MUST_BE_NUMERIC                       = '91913';
@@ -110,6 +113,7 @@ class Braintree_Error_Codes
     const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_CARD_TYPE_IS_NOT_ACCEPTED             = '91902';
     const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_IS_INVALID                            = '91903';
     const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_NOT_ASSOCIATED_WITH_CUSTOMER          = '91905';
+    const SUBSCRIPTION_PLAN_BILLING_FREQUENCY_CANNOT_BE_UPDATED                   = '91922';
     const SUBSCRIPTION_PLAN_ID_IS_INVALID                                         = '91904';
     const SUBSCRIPTION_PRICE_CANNOT_BE_BLANK                                      = '81903';
     const SUBSCRIPTION_PRICE_FORMAT_IS_INVALID                                    = '81904';
@@ -139,8 +143,8 @@ class Braintree_Error_Codes
     const SUBSCRIPTION_MODIFICATION_QUANTITY_MUST_BE_GREATER_THAN_ZERO                 = '92010';
 
     const TRANSACTION_AMOUNT_CANNOT_BE_NEGATIVE                                 = '81501';
-    const TRANSACTION_AMOUNT_IS_REQUIRED                                        = '81502';
     const TRANSACTION_AMOUNT_IS_INVALID                                         = '81503';
+    const TRANSACTION_AMOUNT_IS_REQUIRED                                        = '81502';
     const TRANSACTION_AMOUNT_IS_TOO_LARGE                                       = '81528';
     const TRANSACTION_AMOUNT_MUST_BE_GREATER_THAN_ZERO                          = '81531';
     const TRANSACTION_BILLING_ADDRESS_CONFLICT                                  = '91530';
@@ -149,29 +153,33 @@ class Braintree_Error_Codes
     const TRANSACTION_CANNOT_REFUND_UNLESS_SETTLED                              = '91506';
     const TRANSACTION_CANNOT_SUBMIT_FOR_SETTLEMENT                              = '91507';
     const TRANSACTION_CREDIT_CARD_IS_REQUIRED                                   = '91508';
-    const TRANSACTION_CUSTOM_FIELD_IS_TOO_LONG                                  = '81527';
     const TRANSACTION_CUSTOMER_DEFAULT_PAYMENT_METHOD_CARD_TYPE_IS_NOT_ACCEPTED = '81509';
-    const TRANSACTION_CUSTOMER_ID_IS_INVALID                                    = '91510';
     const TRANSACTION_CUSTOMER_DOES_NOT_HAVE_CREDIT_CARD                        = '91511';
+    const TRANSACTION_CUSTOMER_ID_IS_INVALID                                    = '91510';
+    const TRANSACTION_CUSTOM_FIELD_IS_INVALID                                   = '91526';
+    const TRANSACTION_CUSTOM_FIELD_IS_TOO_LONG                                  = '81527';
     const TRANSACTION_HAS_ALREADY_BEEN_REFUNDED                                 = '91512';
-    const TRANSACTION_MERCHANT_ACCOUNT_NAME_IS_INVALID                          = '91513'; //Deprecated
     const TRANSACTION_MERCHANT_ACCOUNT_ID_IS_INVALID                            = '91513';
     const TRANSACTION_MERCHANT_ACCOUNT_IS_SUSPENDED                             = '91514';
+    const TRANSACTION_MERCHANT_ACCOUNT_NAME_IS_INVALID                          = '91513'; //Deprecated
+    const TRANSACTION_OPTIONS_VAULT_IS_DISABLED                                 = '91525';
     const TRANSACTION_ORDER_ID_IS_TOO_LONG                                      = '91501';
-    const TRANSACTION_PAYMENT_METHOD_DOES_NOT_BELONG_TO_SUBSCRIPTION            = '91527';
-    const TRANSACTION_SUBSCRIPTION_ID_IS_INVALID                                = '91528';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT                                   = '91515';
     const TRANSACTION_PAYMENT_METHOD_DOES_NOT_BELONG_TO_CUSTOMER                = '91516';
+    const TRANSACTION_PAYMENT_METHOD_DOES_NOT_BELONG_TO_SUBSCRIPTION            = '91527';
     const TRANSACTION_PAYMENT_METHOD_TOKEN_CARD_TYPE_IS_NOT_ACCEPTED            = '91517';
     const TRANSACTION_PAYMENT_METHOD_TOKEN_IS_INVALID                           = '91518';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_CANNOT_BE_SET                = '91519';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_IS_INVALID                   = '81520';
+    const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                         = '91537';
     const TRANSACTION_REFUND_AMOUNT_IS_TOO_LARGE                                = '91521';
     const TRANSACTION_SETTLEMENT_AMOUNT_IS_TOO_LARGE                            = '91522';
     const TRANSACTION_SUBSCRIPTION_DOES_NOT_BELONG_TO_CUSTOMER                  = '91529';
+    const TRANSACTION_SUBSCRIPTION_ID_IS_INVALID                                = '91528';
     const TRANSACTION_SUBSCRIPTION_STATUS_MUST_BE_PAST_DUE                      = '91531';
+    const TRANSACTION_TAX_AMOUNT_CANNOT_BE_NEGATIVE                             = '81534';
+    const TRANSACTION_TAX_AMOUNT_FORMAT_IS_INVALID                              = '81535';
+    const TRANSACTION_TAX_AMOUNT_IS_TOO_LARGE                                   = '81536';
     const TRANSACTION_TYPE_IS_INVALID                                           = '91523';
     const TRANSACTION_TYPE_IS_REQUIRED                                          = '91524';
-    const TRANSACTION_OPTIONS_VAULT_IS_DISABLED                                 = '91525';
-    const TRANSACTION_CUSTOM_FIELD_IS_INVALID                                   = '91526';
 }

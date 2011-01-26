@@ -80,6 +80,10 @@ class Braintree_TestHelper
         }
         return false;
     }
+
+    public static function assertPrintable($object) {
+        " " . $object;
+    }
 }
 
 ?>

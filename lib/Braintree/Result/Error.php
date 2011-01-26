@@ -98,8 +98,7 @@ class Braintree_Result_Error extends Braintree
      */
     public function  __toString()
     {
-        $output = Braintree_Util::implodeAssociativeArray($this->_params);
-        $output .= sprintf('%s', $this->_errors);
+        $output = Braintree_Util::attributesToString($this->_attributes);
         if (isset($this->_creditCardVerification)) {
             $output .= sprintf('%s', $this->_creditCardVerification);
         }

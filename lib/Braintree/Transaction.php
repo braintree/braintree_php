@@ -260,7 +260,8 @@ final class Braintree_Transaction extends Braintree
     public static function createSignature()
     {
         return array(
-            'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken', 'type',
+            'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken',
+            'purchaseOrderNumber', 'shippingAddressId', 'taxAmount', 'taxExempt', 'type',
             array('creditCard' =>
                 array('token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'),
             ),
@@ -292,6 +293,7 @@ final class Braintree_Transaction extends Braintree
             ),
             array('customFields' => array('_anyKey_')
             ),
+            array('descriptor' => array('name', 'phone')),
         );
     }
 
@@ -476,6 +478,11 @@ final class Braintree_Transaction extends Braintree
                 $transactionAttribs['shipping']
                 )
             );
+        $this->_set('descriptor',
+                new Braintree_Descriptor(
+                $transactionAttribs['descriptor']
+                )
+            );
 
         $statusHistory = array();
         foreach ($transactionAttribs['statusHistory'] AS $history) {
@@ -513,18 +520,12 @@ final class Braintree_Transaction extends Braintree
             'createdAt', 'creditCardDetails', 'customerDetails'
             );
 
+        $displayAttributes = array();
         foreach ($display AS $attrib) {
-            if (is_array($this->$attrib)) {
-                foreach ($this->$attrib AS $obj) {
-                    $pAttrib .= sprintf('%s', $obj);
-                }
-            } else {
-                $pAttrib = $this->$attrib;
-            }
-            $printableAttribs[$attrib] = sprintf('%s', $pAttrib);
+            $displayAttributes[$attrib] = $this->$attrib;
         }
         return __CLASS__ . '[' .
-                Braintree_Util::implodeAssociativeArray($printableAttribs) .']';
+                Braintree_Util::attributesToString($displayAttributes) .']';
     }
 
     public static function refund($transactionId, $amount = null)

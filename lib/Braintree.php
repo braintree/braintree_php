@@ -76,6 +76,7 @@ abstract class Braintree
     }
 }
 require_once('Braintree/Modification.php');
+require_once('Braintree/Instance.php');
 
 require_once('Braintree/Address.php');
 require_once('Braintree/AddOn.php');
@@ -83,12 +84,13 @@ require_once('Braintree/Collection.php');
 require_once('Braintree/Configuration.php');
 require_once('Braintree/CreditCard.php');
 require_once('Braintree/Customer.php');
+require_once('Braintree/CustomerSearch.php');
+require_once('Braintree/Descriptor.php');
 require_once('Braintree/Digest.php');
 require_once('Braintree/Discount.php');
 require_once('Braintree/EqualityNode.php');
 require_once('Braintree/Exception.php');
 require_once('Braintree/Http.php');
-require_once('Braintree/Instance.php');
 require_once('Braintree/KeyValueNode.php');
 require_once('Braintree/MultipleValueNode.php');
 require_once('Braintree/MultipleValueOrTextNode.php');
