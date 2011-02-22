@@ -117,6 +117,7 @@ class Braintree_Error_Codes
     const SUBSCRIPTION_PLAN_ID_IS_INVALID                                         = '91904';
     const SUBSCRIPTION_PRICE_CANNOT_BE_BLANK                                      = '81903';
     const SUBSCRIPTION_PRICE_FORMAT_IS_INVALID                                    = '81904';
+    const SUBSCRIPTION_PRICE_IS_TOO_LARGE                                         = '81923';
     const SUBSCRIPTION_STATUS_IS_CANCELED                                         = '81905';
     const SUBSCRIPTION_TOKEN_FORMAT_IS_INVALID                                    = '81906';
     const SUBSCRIPTION_TRIAL_DURATION_FORMAT_IS_INVALID                           = '81907';
@@ -125,6 +126,7 @@ class Braintree_Error_Codes
 
     const SUBSCRIPTION_MODIFICATION_AMOUNT_CANNOT_BE_BLANK                             = '92003';
     const SUBSCRIPTION_MODIFICATION_AMOUNT_IS_INVALID                                  = '92002';
+    const SUBSCRIPTION_MODIFICATION_AMOUNT_IS_TOO_LARGE                                = '92023';
     const SUBSCRIPTION_MODIFICATION_CANNOT_EDIT_MODIFICATIONS_ON_PAST_DUE_SUBSCRIPTION = '92022';
     const SUBSCRIPTION_MODIFICATION_CANNOT_UPDATE_AND_REMOVE                           = '92015';
     const SUBSCRIPTION_MODIFICATION_EXISTING_ID_IS_INCORRECT_KIND                      = '92020';

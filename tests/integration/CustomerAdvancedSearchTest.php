@@ -34,7 +34,8 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
             'addressExtendedAddress' => 'Suite 3',
             'addressLocality' => 'Chicago',
             'addressRegion' => 'Illinois',
-            'addressPostalCode' => '60622'
+            'addressPostalCode' => '60622',
+            'addressCountryName' => 'United States of America'
         );
 
         $customer = Braintree_Customer::createNoValidate(array(

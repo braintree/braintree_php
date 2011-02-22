@@ -166,7 +166,7 @@ class Braintree_Util
         foreach ($attributes AS $key => $value) {
             if (is_array($value)) {
                 foreach ($value AS $obj) {
-                    $pAttrib .= sprintf('%s', $obj);
+                    $pAttrib = sprintf('%s', $obj);
                 }
             } else if ($value instanceof DateTime) {
                 $pAttrib = $value->format(DateTime::RFC850);
