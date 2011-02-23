@@ -449,6 +449,15 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $collection->maximumCount());
     }
 
+    function test_multipleValueNode_status_authorizationExpired()
+    {
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::status()->is(Braintree_Transaction::AUTHORIZATION_EXPIRED)
+        ));
+        $this->assertGreaterThan(0, $collection->maximumCount());
+        $this->assertEquals(Braintree_Transaction::AUTHORIZATION_EXPIRED, $collection->firstItem()->status);
+    }
+
     function test_multipleValueNode_status_allowedValues()
     {
         $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for status: noSuchStatus');
@@ -843,6 +852,26 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function test_rangeNode_authorizationExpiredAt()
+    {
+        $two_days_ago = date_create("now -2 days", new DateTimeZone("UTC"));
+        $yesterday = date_create("now -1 day", new DateTimeZone("UTC"));
+        $tomorrow = date_create("now +1 day", new DateTimeZone("UTC"));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::authorizationExpiredAt()->between($two_days_ago, $yesterday)
+        ));
+
+        $this->assertEquals(0, $collection->maximumCount());
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::authorizationExpiredAt()->between($yesterday, $tomorrow)
+        ));
+
+        $this->assertGreaterThan(0, $collection->maximumCount());
+        $this->assertEquals(Braintree_Transaction::AUTHORIZATION_EXPIRED, $collection->firstItem()->status);
     }
 
     function test_rangeNode_authorizedAt()

@@ -43,6 +43,7 @@ class Braintree_TransactionSearch
 
 	static function amount()                     { return new Braintree_RangeNode("amount"); }
 	static function authorizedAt()               { return new Braintree_RangeNode("authorizedAt"); }
+	static function authorizationExpiredAt()     { return new Braintree_RangeNode("authorizationExpiredAt"); }
 	static function createdAt()                  { return new Braintree_RangeNode("createdAt"); }
 	static function failedAt()                   { return new Braintree_RangeNode("failedAt"); }
 	static function gatewayRejectedAt()          { return new Braintree_RangeNode("gatewayRejectedAt"); }
@@ -100,6 +101,7 @@ class Braintree_TransactionSearch
     static function status()
     {
         return new Braintree_MultipleValueNode("status", array(
+            Braintree_Transaction::AUTHORIZATION_EXPIRED,
             Braintree_Transaction::AUTHORIZING,
             Braintree_Transaction::AUTHORIZED,
             Braintree_Transaction::GATEWAY_REJECTED,
