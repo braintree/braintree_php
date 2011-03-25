@@ -169,6 +169,7 @@
 final class Braintree_Transaction extends Braintree
 {
     // Transaction Status
+    const AUTHORIZATION_EXPIRED    = 'authorization_expired';
     const AUTHORIZING              = 'authorizing';
     const AUTHORIZED               = 'authorized';
     const GATEWAY_REJECTED         = 'gateway_rejected';
