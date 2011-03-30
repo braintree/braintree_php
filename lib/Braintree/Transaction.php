@@ -479,6 +479,11 @@ final class Braintree_Transaction extends Braintree
                 $transactionAttribs['shipping']
                 )
             );
+        $this->_set('subscriptionDetails',
+                new Braintree_Transaction_SubscriptionDetails(
+                $transactionAttribs['subscription']
+                )
+            );
         $this->_set('descriptor',
                 new Braintree_Descriptor(
                 $transactionAttribs['descriptor']
