@@ -288,6 +288,7 @@ final class Braintree_Transaction extends Braintree
             array('options' =>
                 array(
                     'storeInVault',
+                    'storeInVaultOnSuccess',
                     'submitForSettlement',
                     'addBillingAddressToPaymentMethod',
                     'storeShippingAddressInVault'),

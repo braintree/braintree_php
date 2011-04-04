@@ -760,6 +760,73 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://getbraintree.com', $customer->website);
     }
 
+    function testSale_storeInVaultOnSuccessWithSuccessfulTransaction()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'Card Holder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'customer' => array(
+                'firstName' => 'Dan',
+                'lastName' => 'Smith',
+                'company' => 'Braintree Payment Solutions',
+                'email' => 'dan@example.com',
+                'phone' => '419-555-1234',
+                'fax' => '419-555-1235',
+                'website' => 'http://getbraintree.com'
+            ),
+            'options' => array(
+                'storeInVaultOnSuccess' => true
+            )
+        ));
+        $this->assertNotNull($transaction->creditCardDetails->token);
+        $creditCard = $transaction->vaultCreditCard();
+        $this->assertEquals('510510', $creditCard->bin);
+        $this->assertEquals('5100', $creditCard->last4);
+        $this->assertEquals('05/2012', $creditCard->expirationDate);
+        $this->assertEquals('Card Holder', $creditCard->cardholderName);
+        $customer = $transaction->vaultCustomer();
+        $this->assertEquals('Dan', $customer->firstName);
+        $this->assertEquals('Smith', $customer->lastName);
+        $this->assertEquals('Braintree Payment Solutions', $customer->company);
+        $this->assertEquals('dan@example.com', $customer->email);
+        $this->assertEquals('419-555-1234', $customer->phone);
+        $this->assertEquals('419-555-1235', $customer->fax);
+        $this->assertEquals('http://getbraintree.com', $customer->website);
+    }
+
+    function testSale_storeInVaultOnSuccessWithFailedTransaction()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => Braintree_Test_TransactionAmounts::$decline,
+            'creditCard' => array(
+                'cardholderName' => 'Card Holder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'customer' => array(
+                'firstName' => 'Dan',
+                'lastName' => 'Smith',
+                'company' => 'Braintree Payment Solutions',
+                'email' => 'dan@example.com',
+                'phone' => '419-555-1234',
+                'fax' => '419-555-1235',
+                'website' => 'http://getbraintree.com'
+            ),
+            'options' => array(
+                'storeInVaultOnSuccess' => true
+            )
+        ));
+        $transaction = $result->transaction;
+        $this->assertNull($transaction->creditCardDetails->token);
+        $this->assertNull($transaction->vaultCreditCard());
+        $this->assertNull($transaction->customerDetails->id);
+        $this->assertNull($transaction->vaultCustomer());
+    }
+
     function testSale_withDescriptor()
     {
         $result = Braintree_Transaction::sale(array(
