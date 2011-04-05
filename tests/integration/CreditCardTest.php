@@ -409,6 +409,27 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($creditCard->token, $transaction->creditCardDetails->token);
     }
 
+    function testSaleNoValidate_createsASaleUsingGivenTokenAndCvv()
+    {
+        $customer = Braintree_Customer::createNoValidate(array(
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $creditCard = $customer->creditCards[0];
+        $transaction = Braintree_CreditCard::saleNoValidate($creditCard->token, array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cvv' => '301'
+            )
+        ));
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertEquals($customer->id, $transaction->customerDetails->id);
+        $this->assertEquals($creditCard->token, $transaction->creditCardDetails->token);
+        $this->assertEquals('S', $transaction->cvvResponseCode);
+    }
+
     function testSaleNoValidate_throwsIfInvalid()
     {
         $customer = Braintree_Customer::createNoValidate(array(
