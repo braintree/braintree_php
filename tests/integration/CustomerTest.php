@@ -45,6 +45,29 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($customer->merchantId);
     }
 
+    function testCreate_withUnicode()
+    {
+        $result = Braintree_Customer::create(array(
+            'firstName' => "Здравствуйте",
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com'
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals("Здравствуйте", $customer->firstName);
+        $this->assertEquals('Jones', $customer->lastName);
+        $this->assertEquals('Jones Co.', $customer->company);
+        $this->assertEquals('mike.jones@example.com', $customer->email);
+        $this->assertEquals('419.555.1234', $customer->phone);
+        $this->assertEquals('419.555.1235', $customer->fax);
+        $this->assertEquals('http://example.com', $customer->website);
+        $this->assertNotNull($customer->merchantId);
+    }
+
     function testCreate_withCountry()
     {
         $result = Braintree_Customer::create(array(
