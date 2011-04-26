@@ -1,3 +1,9 @@
+## 2.10.0
+
+* Added subscriptionDetails to Transaction
+* Added flag to store in vault only when a transaction is successful
+* Added new error code
+
 ## 2.9.0
 
 * Added a new transaction state, AUTHORIZATION_EXPIRED.
