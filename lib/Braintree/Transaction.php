@@ -288,6 +288,7 @@ final class Braintree_Transaction extends Braintree
             array('options' =>
                 array(
                     'storeInVault',
+                    'storeInVaultOnSuccess',
                     'submitForSettlement',
                     'addBillingAddressToPaymentMethod',
                     'storeShippingAddressInVault'),
@@ -477,6 +478,11 @@ final class Braintree_Transaction extends Braintree
         $this->_set('shippingDetails',
                 new Braintree_Transaction_AddressDetails(
                 $transactionAttribs['shipping']
+                )
+            );
+        $this->_set('subscriptionDetails',
+                new Braintree_Transaction_SubscriptionDetails(
+                $transactionAttribs['subscription']
                 )
             );
         $this->_set('descriptor',

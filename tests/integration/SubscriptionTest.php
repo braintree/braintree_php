@@ -171,6 +171,20 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, sizeof($subscription->transactions));
     }
 
+    function testCreate_returnsATransactionWithSubscriptionBillingPeriod()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+        ));
+        $subscription = $result->subscription;
+        $transaction = $subscription->transactions[0];
+        $this->assertEquals($subscription->billingPeriodStartDate, $transaction->subscriptionDetails->billingPeriodStartDate);
+        $this->assertEquals($subscription->billingPeriodEndDate, $transaction->subscriptionDetails->billingPeriodEndDate);
+    }
+
     function testCreate_priceCanBeOverriden()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();

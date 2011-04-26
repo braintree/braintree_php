@@ -11,6 +11,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             'billing' => array(),
             'descriptor' => array(),
             'shipping' => array(),
+            'subscription' => array('billingPeriodStartDate' => '1983-07-12'),
             'statusHistory' => array()
         ));
         $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree_Transaction: foo');
