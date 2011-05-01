@@ -13,7 +13,7 @@
  *
  * <b>== More information ==</b>
  *
- * For more detailed information on Validation errors, see {@link http://www.braintreepaymentsolutions.com/gateway/validation-errors http://www.braintreepaymentsolutions.com/gateway/validation-errors}
+ * For more detailed information on Validation errors, see {@link http://www.braintreepayments.com/gateway/validation-errors http://www.braintreepaymentsolutions.com/gateway/validation-errors}
  *
  * @package    Braintree
  * @subpackage Error
