@@ -65,6 +65,7 @@ class Braintree_Http
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
         curl_setopt($curl, CURLOPT_URL, Braintree_Configuration::merchantUrl() . $path);
+        curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Accept: application/xml',
             'Content-Type: application/xml',

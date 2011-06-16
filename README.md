@@ -49,7 +49,7 @@ The following PHP extensions are required:
 
 ## Documentation
 
- * [Official documentation](http://www.braintreepaymentsolutions.com/docs/php)
+ * [Official documentation](http://www.braintreepayments.com/docs/php)
 
 ## License
 
