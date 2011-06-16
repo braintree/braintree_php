@@ -12,8 +12,8 @@
  *
  * <b>== More information ==</b>
  *
- * For more detailed information on CreditCards, see {@link http://www.braintreepaymentsolutions.com/gateway/credit-card-api http://www.braintreepaymentsolutions.com/gateway/credit-card-api}<br />
- * For more detailed information on CreditCard verifications, see {@link http://www.braintreepaymentsolutions.com/gateway/credit-card-verification-api http://www.braintreepaymentsolutions.com/gateway/credit-card-verification-api}
+ * For more detailed information on CreditCards, see {@link http://www.braintreepayments.com/gateway/credit-card-api http://www.braintreepaymentsolutions.com/gateway/credit-card-api}<br />
+ * For more detailed information on CreditCard verifications, see {@link http://www.braintreepayments.com/gateway/credit-card-verification-api http://www.braintreepaymentsolutions.com/gateway/credit-card-verification-api}
  *
  * @package    Braintree
  * @category   Resources

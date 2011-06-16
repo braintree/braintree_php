@@ -1,3 +1,7 @@
+## 2.10.1
+
+* Wrap dependency requirement in a function, to prevent pollution of the global namespace
+
 ## 2.10.0
 
 * Added subscriptionDetails to Transaction
