@@ -229,10 +229,14 @@ class Braintree_Util
     private static function _flattenUserKeys($keys, $namespace = null)
     {
        $flattenedArray = array();
+
        foreach($keys AS $key => $value) {
            $fullKey = empty($namespace) ? $key : $namespace;
            if (!is_numeric($key) && $namespace != null) {
               $fullKey .= '[' . $key . ']';
+           }
+           if (is_numeric($key) && is_string($value)) {
+              $fullKey .= '[' . $value . ']';
            }
            if(is_array($value)) {
                $more = self::_flattenUserKeys($value, $fullKey);
