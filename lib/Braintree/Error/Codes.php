@@ -46,7 +46,6 @@ class Braintree_Error_Codes
 
     const CREDIT_CARD_BILLING_ADDRESS_CONFLICT                                          = '91701';
     const CREDIT_CARD_BILLING_ADDRESS_ID_IS_INVALID                                     = '91702';
-    const CREDIT_CARD_CANNOT_VERIFY_WITH_SUSPENDED_MERCHANT_ACCOUNT                     = '91724';
     const CREDIT_CARD_CARDHOLDER_NAME_IS_TOO_LONG                                       = '81723';
     const CREDIT_CARD_CREDIT_CARD_TYPE_IS_NOT_ACCEPTED                                  = '81703';
     const CREDIT_CARD_CREDIT_CARD_TYPE_IS_NOT_ACCEPTED_BY_SUBSCRIPTION_MERCHANT_ACCOUNT = '81718';
