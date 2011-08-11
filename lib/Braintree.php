@@ -97,6 +97,7 @@ require_once('Braintree/MultipleValueOrTextNode.php');
 require_once('Braintree/PartialMatchNode.php');
 require_once('Braintree/RangeNode.php');
 require_once('Braintree/ResourceCollection.php');
+require_once('Braintree/SettlementBatchSummary.php');
 require_once('Braintree/Subscription.php');
 require_once('Braintree/SubscriptionSearch.php');
 require_once('Braintree/SubscriptionStatus.php');

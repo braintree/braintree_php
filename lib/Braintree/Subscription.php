@@ -216,6 +216,10 @@ class Braintree_Subscription extends Braintree
             );
         } else if (isset($response['apiErrorResponse'])) {
             return new Braintree_Result_Error($response['apiErrorResponse']);
+        } else {
+            throw new Braintree_Exception_Unexpected(
+            "Expected subscription, transaction, or apiErrorResponse"
+            );
         }
     }
 
