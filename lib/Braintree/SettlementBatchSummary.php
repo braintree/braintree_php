@@ -10,7 +10,31 @@ class Braintree_SettlementBatchSummary extends Braintree
         }
         $params = array('settlement_batch_summary' => $criteria);
         $response = Braintree_Http::post('/settlement_batch_summary', $params);
+
+        if (isset($groupByCustomField))
+        {
+            $response['settlementBatchSummary']['records'] = self::_underscoreCustomField(
+                $groupByCustomField,
+                $response['settlementBatchSummary']['records']
+            );
+        }
+
         return self::_verifyGatewayResponse($response);
+    }
+
+    private static function _underscoreCustomField($groupByCustomField, $records)
+    {
+        $updatedRecords = array();
+
+        foreach ($records as $record)
+        {
+            $camelized = Braintree_Util::delimiterToCamelCase($groupByCustomField);
+            $record[$groupByCustomField] = $record[$camelized];
+            unset($record[$camelized]);
+            $updatedRecords[] = $record;
+        }
+
+        return $updatedRecords;
     }
 
     private static function _verifyGatewayResponse($response)

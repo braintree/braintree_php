@@ -4,6 +4,11 @@ require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
 
 class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 {
+    function isMasterCard($record)
+    {
+        return $record['cardType'] == Braintree_CreditCard::MASTER_CARD;
+    }
+
     function testGenerate_returnsAnEmptyCollectionWhenThereIsNoData()
     {
         $result = Braintree_SettlementBatchSummary::generate('2000-01-01');
@@ -37,8 +42,11 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_SettlementBatchSummary::generate($today->format('Y-m-d'));
 
         $this->assertTrue($result->success);
-        $this->assertTrue(count($result->settlementBatchSummary->records) > 0);
-        $this->assertEquals(Braintree_CreditCard::MASTER_CARD, $result->settlementBatchSummary->records[0]['cardType']);
+        $masterCardRecords = array_filter($result->settlementBatchSummary->records, 'self::isMasterCard');
+        $masterCardKeys = array_keys($masterCardRecords);
+        $masterCardIndex = $masterCardKeys[0];
+        $this->assertTrue(count($masterCardRecords) > 0);
+        $this->assertEquals(Braintree_CreditCard::MASTER_CARD, $masterCardRecords[$masterCardIndex]['cardType']);
     }
 
     function testGenerate_canBeGroupedByACustomField()
@@ -62,7 +70,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($result->success);
         $this->assertTrue(count($result->settlementBatchSummary->records) > 0);
-        $this->assertEquals('custom value', $result->settlementBatchSummary->records[0]['storeMe']);
+        $this->assertArrayHasKey('store_me', $result->settlementBatchSummary->records[0]);
     }
 }
 ?>
