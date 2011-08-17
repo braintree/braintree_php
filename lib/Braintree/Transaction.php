@@ -199,6 +199,12 @@ final class Braintree_Transaction extends Braintree
     const CVV = 'cvv';
     const DUPLICATE = 'duplicate';
 
+    public static function cloneTransaction($transactionId, $attribs)
+    {
+        Braintree_Util::verifyKeys(self::cloneSignature(), $attribs);
+        return self::_doCreate('/transactions/' . $transactionId . '/clone', array('transactionClone' => $attribs));
+    }
+
     /**
      * @ignore
      * @access public
@@ -252,6 +258,11 @@ final class Braintree_Transaction extends Braintree
         trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
         return Braintree_Configuration::merchantUrl() .
                 '/transactions/all/create_via_transparent_redirect_request';
+    }
+
+    public static function cloneSignature()
+    {
+        return array('amount');
     }
 
     /**

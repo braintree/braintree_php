@@ -157,6 +157,10 @@ class Braintree_Error_Codes
     const TRANSACTION_AMOUNT_MUST_BE_GREATER_THAN_ZERO                          = '81531';
     const TRANSACTION_BILLING_ADDRESS_CONFLICT                                  = '91530';
     const TRANSACTION_CANNOT_BE_VOIDED                                          = '91504';
+    const TRANSACTION_CANNOT_CLONE_CREDIT                                       = '91543';
+    const TRANSACTION_CANNOT_CLONE_TRANSACTION_WITH_VAULT_CREDIT_CARD           = '91540';
+    const TRANSACTION_CANNOT_CLONE_UNSUCCESSFUL_TRANSACTION                     = '91542';
+    const TRANSACTION_CANNOT_CLONE_VOICE_AUTHORIZATIONS                         = '91541';
     const TRANSACTION_CANNOT_REFUND_CREDIT                                      = '91505';
     const TRANSACTION_CANNOT_REFUND_UNLESS_SETTLED                              = '91506';
     const TRANSACTION_CANNOT_REFUND_WITH_SUSPENDED_MERCHANT_ACCOUNT             = '91538';

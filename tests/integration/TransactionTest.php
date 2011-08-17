@@ -4,6 +4,56 @@ require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
 
 class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 {
+    function testCloneTransaction()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'orderId' => '123',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2011',
+            ),
+            'customer' => array(
+                'firstName' => 'Dan',
+            ),
+            'billing' => array(
+                'firstName' => 'Carl',
+            ),
+            'shipping' => array(
+                'firstName' => 'Andrew',
+            )
+      ));
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+
+      $cloneResult = Braintree_Transaction::cloneTransaction($transaction->id, array('amount' => '123.45'));
+      Braintree_TestHelper::assertPrintable($cloneResult);
+      $this->assertTrue($cloneResult->success);
+      $cloneTransaction = $cloneResult->transaction;
+      $this->assertEquals('Dan', $cloneTransaction->customerDetails->firstName);
+      $this->assertEquals('Carl', $cloneTransaction->billingDetails->firstName);
+      $this->assertEquals('Andrew', $cloneTransaction->shippingDetails->firstName);
+      $this->assertEquals('510510******5100', $cloneTransaction->creditCardDetails->maskedNumber);
+    }
+
+    function testCloneWithValidations()
+    {
+        $result = Braintree_Transaction::credit(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2011'
+            )
+      ));
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+
+      $cloneResult = Braintree_Transaction::cloneTransaction($transaction->id, array('amount' => '123.45'));
+      $this->assertFalse($cloneResult->success);
+      $errors = $cloneResult->errors->forKey('transaction')->onAttribute('base');
+      $this->assertEquals(Braintree_Error_Codes::TRANSACTION_CANNOT_CLONE_CREDIT, $errors[0]->code);
+    }
+
     function testSale()
     {
         $result = Braintree_Transaction::sale(array(
