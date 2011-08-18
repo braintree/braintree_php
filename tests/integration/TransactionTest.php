@@ -34,6 +34,26 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('Carl', $cloneTransaction->billingDetails->firstName);
       $this->assertEquals('Andrew', $cloneTransaction->shippingDetails->firstName);
       $this->assertEquals('510510******5100', $cloneTransaction->creditCardDetails->maskedNumber);
+      $this->assertEquals('authorized', $cloneTransaction->status);
+    }
+
+
+    function testCloneTransactionAndSubmitForSettlement()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2011',
+            )
+        ));
+
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+
+      $cloneResult = Braintree_Transaction::cloneTransaction($transaction->id, array('amount' => '123.45', 'options' => array('submitForSettlement' => true)));
+      $cloneTransaction = $cloneResult->transaction;
+      $this->assertEquals('submitted_for_settlement', $cloneTransaction->status);
     }
 
     function testCloneWithValidations()
