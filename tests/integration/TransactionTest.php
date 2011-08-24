@@ -1234,7 +1234,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             'options' => array('submitForSettlement' => true)
         ));
-        Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
+        Braintree_TestHelper::settle($transaction->id);
         return $transaction;
     }
 

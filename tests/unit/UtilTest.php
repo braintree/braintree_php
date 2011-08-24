@@ -139,6 +139,14 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
         Braintree_Util::verifyKeys($signature, $badData);
 	}
 
+    function testVerifyKeys_arrayAsValue()
+    {
+        $signature = array('key');
+        $data = array('key' => array('value'));
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_Util::verifyKeys($signature, $data);
+    }
+
     function testVerifyKeys()
     {
         $signature = array(

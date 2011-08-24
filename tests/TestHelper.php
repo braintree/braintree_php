@@ -81,8 +81,14 @@ class Braintree_TestHelper
         return false;
     }
 
-    public static function assertPrintable($object) {
+    public static function assertPrintable($object)
+    {
         " " . $object;
+    }
+
+    public static function settle($transactionId)
+    {
+        Braintree_Http::put('/transactions/' . $transactionId . '/settle');
     }
 }
 

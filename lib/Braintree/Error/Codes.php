@@ -92,6 +92,10 @@ class Braintree_Error_Codes
     const DESCRIPTOR_NAME_FORMAT_IS_INVALID  = '92201';
     const DESCRIPTOR_PHONE_FORMAT_IS_INVALID = '92202';
 
+    const SETTLEMENT_BATCH_SUMMARY_SETTLEMENT_DATE_IS_INVALID = '82302';
+    const SETTLEMENT_BATCH_SUMMARY_SETTLEMENT_DATE_IS_REQUIRED = '82301';
+    const SETTLEMENT_BATCH_SUMMARY_CUSTOM_FIELD_IS_INVALID = '82303';
+
     const SUBSCRIPTION_BILLING_DAY_OF_MONTH_CANNOT_BE_UPDATED                     = '91918';
     const SUBSCRIPTION_BILLING_DAY_OF_MONTH_IS_INVALID                            = '91914';
     const SUBSCRIPTION_BILLING_DAY_OF_MONTH_MUST_BE_NUMERIC                       = '91913';
@@ -107,6 +111,7 @@ class Braintree_Error_Codes
     const SUBSCRIPTION_INCONSISTENT_START_DATE                                    = '91917';
     const SUBSCRIPTION_INVALID_REQUEST_FORMAT                                     = '91921';
     const SUBSCRIPTION_MERCHANT_ACCOUNT_ID_IS_INVALID                             = '91901';
+    const SUBSCRIPTION_MISMATCH_CURRENCY_ISO_CODE                                 = '91923';
     const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_CANNOT_BE_BLANK                   = '91912';
     const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_IS_TOO_SMALL                      = '91909';
     const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_MUST_BE_GREATER_THAN_ZERO         = '91907';
@@ -186,4 +191,5 @@ class Braintree_Error_Codes
     const TRANSACTION_TAX_AMOUNT_IS_TOO_LARGE                                   = '81536';
     const TRANSACTION_TYPE_IS_INVALID                                           = '91523';
     const TRANSACTION_TYPE_IS_REQUIRED                                          = '91524';
+    const TRANSACTION_UNSUPPORTED_VOICE_AUTHORIZATION                           = '91539';
 }

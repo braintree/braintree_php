@@ -1,3 +1,7 @@
+## 2.11.0
+
+* Added Braintree_SettlementBatchSummary
+
 ## 2.10.1
 
 * Wrap dependency requirement in a function, to prevent pollution of the global namespace
