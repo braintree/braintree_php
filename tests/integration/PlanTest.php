@@ -1,7 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
+class Braintree_PlanTest extends PHPUnit_Framework_TestCase
 {
     function testAll_returnsAllPlans()
     {
