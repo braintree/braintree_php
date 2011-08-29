@@ -5,8 +5,10 @@ class Braintree_Plan extends Braintree
     {
         $response = Braintree_Http::get('/plans');
 
+        $plans = array("plan" => $response['plans']);
+
         return Braintree_Util::extractAttributeAsArray(
-            $response['plans'],
+            $plans,
             'plan'
         );
     }

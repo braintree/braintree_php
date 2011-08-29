@@ -5,11 +5,11 @@ class Braintree_AddOn extends Braintree_Modification
     {
         $response = Braintree_Http::get('/add_ons');
 
-        $modifications = array("modification" => $response['modifications']);
+        $addOns = array("addOn" => $response['addOns']);
 
         return Braintree_Util::extractAttributeAsArray(
-            $modifications,
-            'modification'
+            $addOns,
+            'addOn'
         );
     }
 }

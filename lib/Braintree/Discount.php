@@ -5,11 +5,11 @@ class Braintree_Discount extends Braintree_Modification
     {
         $response = Braintree_Http::get('/discounts');
 
-        $modifications = array("modification" => $response['modifications']);
+        $discounts = array("discount" => $response['discounts']);
 
         return Braintree_Util::extractAttributeAsArray(
-            $modifications,
-            'modification'
+            $discounts,
+            'discount'
         );
     }
 }
