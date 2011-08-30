@@ -26,7 +26,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertTrue($result->success);
       $transaction = $result->transaction;
 
-      $cloneResult = Braintree_Transaction::cloneTransaction($transaction->id, array('amount' => '123.45'));
+      $cloneResult = Braintree_Transaction::cloneTransaction($transaction->id, array('amount' => '123.45', 'options' => array('submitForSettlement' => false)));
       Braintree_TestHelper::assertPrintable($cloneResult);
       $this->assertTrue($cloneResult->success);
       $cloneTransaction = $cloneResult->transaction;
@@ -70,8 +70,12 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
       $cloneResult = Braintree_Transaction::cloneTransaction($transaction->id, array('amount' => '123.45'));
       $this->assertFalse($cloneResult->success);
-      $errors = $cloneResult->errors->forKey('transaction')->onAttribute('base');
-      $this->assertEquals(Braintree_Error_Codes::TRANSACTION_CANNOT_CLONE_CREDIT, $errors[0]->code);
+
+      $baseErrors = $cloneResult->errors->forKey('transaction')->onAttribute('base');
+      $submitForSettlementErrors = $cloneResult->errors->forKey('transaction')->onAttribute('submitForSettlement');
+
+      $this->assertEquals(Braintree_Error_Codes::TRANSACTION_CANNOT_CLONE_CREDIT, $baseErrors[0]->code);
+      $this->assertEquals(Braintree_Error_Codes::TRANSACTION_OPTIONS_SUBMIT_FOR_SETTLEMENT_IS_REQUIRED_FOR_CLONING, $submitForSettlementErrors[0]->code);
     }
 
     function testSale()

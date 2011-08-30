@@ -175,6 +175,7 @@ class Braintree_Error_Codes
     const TRANSACTION_MERCHANT_ACCOUNT_ID_IS_INVALID                            = '91513';
     const TRANSACTION_MERCHANT_ACCOUNT_IS_SUSPENDED                             = '91514';
     const TRANSACTION_MERCHANT_ACCOUNT_NAME_IS_INVALID                          = '91513'; //Deprecated
+    const TRANSACTION_OPTIONS_SUBMIT_FOR_SETTLEMENT_IS_REQUIRED_FOR_CLONING     = '91544';
     const TRANSACTION_OPTIONS_VAULT_IS_DISABLED                                 = '91525';
     const TRANSACTION_ORDER_ID_IS_TOO_LONG                                      = '91501';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT                                   = '91515';
