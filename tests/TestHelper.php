@@ -90,6 +90,13 @@ class Braintree_TestHelper
     {
         Braintree_Http::put('/transactions/' . $transactionId . '/settle');
     }
+
+    public static function nowInEastern()
+    {
+        $eastern = new DateTimeZone('America/New_York');
+        $now = new DateTime('now', $eastern);
+        return $now->format('Y-m-d');
+    }
 }
 
 ?>
