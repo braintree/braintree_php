@@ -121,6 +121,7 @@ require_once('Braintree/Exception/ForgedQueryString.php');
 require_once('Braintree/Exception/NotFound.php');
 require_once('Braintree/Exception/ServerError.php');
 require_once('Braintree/Exception/SSLCertificate.php');
+require_once('Braintree/Exception/SSLCaFileNotFound.php');
 require_once('Braintree/Exception/Unexpected.php');
 require_once('Braintree/Exception/UpgradeRequired.php');
 require_once('Braintree/Exception/ValidationsFailed.php');
