@@ -53,6 +53,11 @@ abstract class Braintree
         }
     }
 
+    public function __isset($name)
+    {
+        return array_key_exists($name, $this->_attributes);
+    }
+
     public function _set($key, $value)
     {
         $this->_attributes[$key] = $value;
