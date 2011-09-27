@@ -185,6 +185,8 @@ class Braintree_Error_Codes
     const TRANSACTION_PAYMENT_METHOD_TOKEN_IS_INVALID                           = '91518';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_CANNOT_BE_SET                = '91519';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_IS_INVALID                   = '81520';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_CREDITS                        = '91546';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_VOICE_AUTHORIZATIONS           = '91545';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                         = '91537';
     const TRANSACTION_REFUND_AMOUNT_IS_TOO_LARGE                                = '91521';
     const TRANSACTION_SETTLEMENT_AMOUNT_IS_TOO_LARGE                            = '91522';
