@@ -53,6 +53,17 @@ abstract class Braintree
         }
     }
 
+    /**
+     * used by isset() and empty()
+     * @access public
+     * @param string $name property name
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        return array_key_exists($name, $this->_attributes);
+    }
+
     public function _set($key, $value)
     {
         $this->_attributes[$key] = $value;
