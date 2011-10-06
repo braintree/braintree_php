@@ -39,6 +39,8 @@ class Braintree_Subscription extends Braintree
 
     public static function find($id)
     {
+        self::_validateId($id);
+
         try {
             $response = Braintree_Http::get('/subscriptions/' . $id);
             return self::factory($response['subscription']);
@@ -200,6 +202,21 @@ class Braintree_Subscription extends Braintree
         $this->_attributes['transactions'] = $transactionArray;
     }
 
+    /**
+     * @ignore
+     */
+    private static function _validateId($id = null) {
+        if (empty($id)) {
+           throw new InvalidArgumentException(
+                   'expected subscription id to be set'
+                   );
+        }
+        if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
+            throw new InvalidArgumentException(
+                    $id . ' is an invalid subscription id.'
+                    );
+        }
+    }
     /**
      * @ignore
      */
