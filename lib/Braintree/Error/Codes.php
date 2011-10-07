@@ -157,6 +157,10 @@ class Braintree_Error_Codes
     const TRANSACTION_AMOUNT_MUST_BE_GREATER_THAN_ZERO                          = '81531';
     const TRANSACTION_BILLING_ADDRESS_CONFLICT                                  = '91530';
     const TRANSACTION_CANNOT_BE_VOIDED                                          = '91504';
+    const TRANSACTION_CANNOT_CLONE_CREDIT                                       = '91543';
+    const TRANSACTION_CANNOT_CLONE_TRANSACTION_WITH_VAULT_CREDIT_CARD           = '91540';
+    const TRANSACTION_CANNOT_CLONE_UNSUCCESSFUL_TRANSACTION                     = '91542';
+    const TRANSACTION_CANNOT_CLONE_VOICE_AUTHORIZATIONS                         = '91541';
     const TRANSACTION_CANNOT_REFUND_CREDIT                                      = '91505';
     const TRANSACTION_CANNOT_REFUND_UNLESS_SETTLED                              = '91506';
     const TRANSACTION_CANNOT_REFUND_WITH_SUSPENDED_MERCHANT_ACCOUNT             = '91538';
@@ -171,6 +175,7 @@ class Braintree_Error_Codes
     const TRANSACTION_MERCHANT_ACCOUNT_ID_IS_INVALID                            = '91513';
     const TRANSACTION_MERCHANT_ACCOUNT_IS_SUSPENDED                             = '91514';
     const TRANSACTION_MERCHANT_ACCOUNT_NAME_IS_INVALID                          = '91513'; //Deprecated
+    const TRANSACTION_OPTIONS_SUBMIT_FOR_SETTLEMENT_IS_REQUIRED_FOR_CLONING     = '91544';
     const TRANSACTION_OPTIONS_VAULT_IS_DISABLED                                 = '91525';
     const TRANSACTION_ORDER_ID_IS_TOO_LONG                                      = '91501';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT                                   = '91515';
@@ -180,6 +185,8 @@ class Braintree_Error_Codes
     const TRANSACTION_PAYMENT_METHOD_TOKEN_IS_INVALID                           = '91518';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_CANNOT_BE_SET                = '91519';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_IS_INVALID                   = '81520';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_CREDITS                        = '91546';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_VOICE_AUTHORIZATIONS           = '91545';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                         = '91537';
     const TRANSACTION_REFUND_AMOUNT_IS_TOO_LARGE                                = '91521';
     const TRANSACTION_SETTLEMENT_AMOUNT_IS_TOO_LARGE                            = '91522';

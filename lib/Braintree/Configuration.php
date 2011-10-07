@@ -218,9 +218,9 @@ class Braintree_Configuration extends Braintree
      * @param none
      * @return string filepath
      */
-    public static function caFile()
+    public static function caFile($sslPath = NULL)
     {
-        $sslPath = DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
+        $sslPath = $sslPath ? $sslPath : DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                    'ssl' . DIRECTORY_SEPARATOR;
 
         switch(self::environment()) {
@@ -239,6 +239,12 @@ class Braintree_Configuration extends Braintree
              );
              break;
         }
+
+        if (!file_exists($caPath))
+        {
+            throw new Braintree_Exception_SSLCaFileNotFound();
+        }
+
         return $caPath;
     }
 

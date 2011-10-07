@@ -53,6 +53,17 @@ abstract class Braintree
         }
     }
 
+    /**
+     * used by isset() and empty()
+     * @access public
+     * @param string $name property name
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        return array_key_exists($name, $this->_attributes);
+    }
+
     public function _set($key, $value)
     {
         $this->_attributes[$key] = $value;
@@ -95,6 +106,7 @@ require_once('Braintree/KeyValueNode.php');
 require_once('Braintree/MultipleValueNode.php');
 require_once('Braintree/MultipleValueOrTextNode.php');
 require_once('Braintree/PartialMatchNode.php');
+require_once('Braintree/Plan.php');
 require_once('Braintree/RangeNode.php');
 require_once('Braintree/ResourceCollection.php');
 require_once('Braintree/SettlementBatchSummary.php');
@@ -120,6 +132,7 @@ require_once('Braintree/Exception/ForgedQueryString.php');
 require_once('Braintree/Exception/NotFound.php');
 require_once('Braintree/Exception/ServerError.php');
 require_once('Braintree/Exception/SSLCertificate.php');
+require_once('Braintree/Exception/SSLCaFileNotFound.php');
 require_once('Braintree/Exception/Unexpected.php');
 require_once('Braintree/Exception/UpgradeRequired.php');
 require_once('Braintree/Exception/ValidationsFailed.php');

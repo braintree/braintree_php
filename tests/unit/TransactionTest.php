@@ -17,5 +17,11 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree_Transaction: foo');
         $t->foo;
     }
+
+	function testCloneTransaction_RaisesErrorOnInvalidProperty()
+	{
+        $this->setExpectedException('InvalidArgumentException');
+		Braintree_Transaction::cloneTransaction('an id', array('amount' => '123.45', 'invalidProperty' => 'foo'));
+	}
 }
 ?>

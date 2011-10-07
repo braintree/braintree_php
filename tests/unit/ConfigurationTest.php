@@ -51,6 +51,13 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::reset();
     }
 
+    function testCaFile()
+    {
+        Braintree_Configuration::environment('development');
+        $this->setExpectedException('Braintree_Exception_SSLCaFileNotFound');
+        Braintree_Configuration::caFile('/does/not/exist/');
+    }
+
     function testSSLOn()
     {
         Braintree_Configuration::environment('development');

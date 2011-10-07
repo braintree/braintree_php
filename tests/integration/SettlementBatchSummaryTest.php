@@ -1,8 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
-require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
 
-class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
+class Braintree_SettlementBatchSummaryTest extends PHPUnit_Framework_TestCase
 {
     function isMasterCard($record)
     {
@@ -39,7 +38,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         Braintree_TestHelper::settle($transaction->id);
 
         $today = new Datetime;
-        $result = Braintree_SettlementBatchSummary::generate($today->format('Y-m-d'));
+        $result = Braintree_SettlementBatchSummary::generate(Braintree_TestHelper::nowInEastern());
 
         $this->assertTrue($result->success);
         $masterCardRecords = array_filter($result->settlementBatchSummary->records, 'self::isMasterCard');
@@ -66,7 +65,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         Braintree_TestHelper::settle($transaction->id);
 
         $today = new Datetime;
-        $result = Braintree_SettlementBatchSummary::generate($today->format('Y-m-d'), 'store_me');
+        $result = Braintree_SettlementBatchSummary::generate(Braintree_TestHelper::nowInEastern(), 'store_me');
 
         $this->assertTrue($result->success);
         $this->assertTrue(count($result->settlementBatchSummary->records) > 0);

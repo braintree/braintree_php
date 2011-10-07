@@ -1,3 +1,8 @@
+## 2.12.0
+
+* Added ability to retrieve all Plans, AddOns, and Discounts
+* Added Transaction cloning
+
 ## 2.11.0
 
 * Added Braintree_SettlementBatchSummary
