@@ -172,6 +172,7 @@ class Braintree_Error_Codes
     const TRANSACTION_CUSTOM_FIELD_IS_INVALID                                   = '91526';
     const TRANSACTION_CUSTOM_FIELD_IS_TOO_LONG                                  = '81527';
     const TRANSACTION_HAS_ALREADY_BEEN_REFUNDED                                 = '91512';
+    const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_REFUNDS                 = '91547';
     const TRANSACTION_MERCHANT_ACCOUNT_ID_IS_INVALID                            = '91513';
     const TRANSACTION_MERCHANT_ACCOUNT_IS_SUSPENDED                             = '91514';
     const TRANSACTION_MERCHANT_ACCOUNT_NAME_IS_INVALID                          = '91513'; //Deprecated
