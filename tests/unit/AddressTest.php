@@ -47,5 +47,29 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($first->isEqual($second));
         $this->assertFalse($second->isEqual($first));
     }
+
+    function testFindErrorsOnBlankCustomerId()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_Address::find('', '123');
+    }
+
+    function testFindErrorsOnBlankAddressId()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_Address::find('123', '');
+    }
+
+    function testFindErrorsOnWhitespaceOnlyId()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_Address::find('123', '  ');
+    }
+
+    function testFindErrorsOnWhitespaceOnlyCustomerId()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_Address::find('  ', '123');
+    }
 }
 ?>

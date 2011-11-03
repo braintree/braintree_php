@@ -23,5 +23,17 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
             }
         }
     }
+
+    function testFindErrorsOnBlankId()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_Customer::find('');
+    }
+
+    function testFindErrorsOnWhitespaceId()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_Customer::find('\t');
+    }
 }
 ?>

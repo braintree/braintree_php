@@ -23,5 +23,17 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException');
 		Braintree_Transaction::cloneTransaction('an id', array('amount' => '123.45', 'invalidProperty' => 'foo'));
 	}
+
+	function testErrorsWhenFindWithBlankString()
+	{
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_Transaction::find('');
+	}
+
+	function testErrorsWhenFindWithWhitespaceString()
+	{
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_Transaction::find('\t');
+	}
 }
 ?>
