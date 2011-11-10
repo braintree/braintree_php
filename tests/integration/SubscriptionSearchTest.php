@@ -31,6 +31,22 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(Braintree_TestHelper::includes($collection, $triallessSubscription));
     }
 
+    function test_noRequestsWhenIterating()
+    {
+        $resultsReturned = false;
+        $collection = Braintree_Subscription::search(array(
+            Braintree_SubscriptionSearch::planId()->is('imaginary')
+        ));
+
+        foreach($collection as $transaction) {
+            $resultsReturned = true;
+            break;
+        }
+
+        $this->assertSame(0, $collection->maximumCount());
+        $this->assertEquals(false, $resultsReturned);
+    }
+
     function testSearch_inTrialPeriod()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();

@@ -12,6 +12,22 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $collection->maximumCount());
     }
 
+    function test_noRequestsWhenIterating()
+    {
+        $resultsReturned = false;
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::billingFirstName()->is('thisnameisnotreal')
+        ));
+
+        foreach($collection as $transaction) {
+            $resultsReturned = true;
+            break;
+        }
+
+        $this->assertSame(0, $collection->maximumCount());
+        $this->assertEquals(false, $resultsReturned);
+    }
+
     function testSearchOnTextFields()
     {
         $firstName  = 'Tim' . rand();

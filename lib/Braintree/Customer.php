@@ -53,7 +53,7 @@ class Braintree_Customer extends Braintree
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = Braintree_CustomerSearch::ids()->in($ids)->toparam();
-        $response = braintree_http::post('/customers/advanced_search', array('search' => array('ids' => $ids)));
+        $response = braintree_http::post('/customers/advanced_search', array('search' => $criteria));
 
         return braintree_util::extractattributeasarray(
             $response['customers'],
