@@ -12,6 +12,22 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $collection->maximumCount());
     }
 
+    function test_noRequestsWhenIterating()
+    {
+        $resultsReturned = false;
+        $collection = Braintree_Customer::search(array(
+            Braintree_CustomerSearch::firstName()->is('badname')
+        ));
+
+        foreach($collection as $customer) {
+            $resultsReturned = true;
+            break;
+        }
+
+        $this->assertSame(0, $collection->maximumCount());
+        $this->assertEquals(false, $resultsReturned);
+    }
+
     function test_searchOnTextFields()
     {
         $token  = 'cctoken' . rand();

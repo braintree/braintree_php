@@ -1,3 +1,7 @@
+## 2.12.2
+
+* Fixed customer search, which returned customers when no customers matched search criteria
+
 ## 2.12.1
 
 * Added new error message for merchant accounts that do not support refunds
