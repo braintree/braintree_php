@@ -23,7 +23,7 @@ class Braintree_Configuration extends Braintree
      * Braintree API version to use
      * @access public
      */
-     const API_VERSION =  "2.12.2";
+     const API_VERSION =  2;
 
     /**
      * @var array array of config properties
