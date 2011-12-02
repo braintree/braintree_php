@@ -113,9 +113,16 @@ class Braintree_ResourceCollection implements Iterator
 
     private function _getNextPage()
     {
-        $this->_items = $this->_getPage(array_slice($this->_ids, $this->_batchIndex, $this->_pageSize));
-        $this->_batchIndex += $this->_pageSize;
-        $this->_index = 0;
+        if (empty($this->_ids))
+        {
+            $this->_items = array();
+        }
+        else
+        {
+            $this->_items = $this->_getPage(array_slice($this->_ids, $this->_batchIndex, $this->_pageSize));
+            $this->_batchIndex += $this->_pageSize;
+            $this->_index = 0;
+        }
     }
 
     /**
