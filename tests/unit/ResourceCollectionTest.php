@@ -47,5 +47,36 @@ class Braintree_ResourceCollectionTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(5, $count);
     }
+
+    function testDoesntIterateWhenNoResults()
+    {
+
+        $response = array(
+            'searchResults' => array(
+                'pageSize' => 2,
+                'ids' => array()
+            )
+        );
+
+        $pager = array(
+            'className' => 'Braintree_TestResource',
+            'classMethod' => 'fetch',
+            'methodArgs' => array()
+        );
+
+        $collection = new Braintree_ResourceCollection($response, $pager);
+
+        $count = 0;
+        $index = 0;
+        foreach ($collection as $value)
+        {
+            $index += 1;
+            $count += 1;
+            break;
+        }
+
+        $this->assertEquals(0, $count);
+        $this->assertEquals(0, $index);
+    }
 }
 ?>

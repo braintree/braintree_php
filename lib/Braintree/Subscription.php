@@ -57,6 +57,7 @@ class Braintree_Subscription extends Braintree
             $criteria[$term->name] = $term->toparam();
         }
 
+
         $response = braintree_http::post('/subscriptions/advanced_search_ids', array('search' => $criteria));
         $pager = array(
             'className' => __CLASS__,
