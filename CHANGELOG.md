@@ -1,3 +1,7 @@
+## 2.12.3
+
+* Fixed problematic case in ResourceCollection when no results are returned from a search.
+
 ## 2.12.2
 
 * Fixed customer search, which returned customers when no customers matched search criteria
