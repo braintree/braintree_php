@@ -481,12 +481,12 @@ class Braintree_CreditCard extends Braintree
     {
         if (empty($token)) {
            throw new InvalidArgumentException(
-                   'expected address id to be set'
+                   'expected credit card id to be set'
                    );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $token)) {
             throw new InvalidArgumentException(
-                    $token . ' is an invalid address id.'
+                    $token . ' is an invalid credit card id.'
                     );
         }
     }
