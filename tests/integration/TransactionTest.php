@@ -164,7 +164,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/2011',
                 'number' => '5105105105105100'
             ),
-            'purchaseOrderNumber' => 'ßå∂'
+            'purchaseOrderNumber' => "\x80\x90\xA0"
         ));
 
         $this->assertFalse($result->success);
