@@ -1,3 +1,7 @@
+## 2.12.4
+
+* Added error code for invalid purchase order number
+
 ## 2.12.3
 
 * Fixed problematic case in ResourceCollection when no results are returned from a search.
