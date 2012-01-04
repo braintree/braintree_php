@@ -119,7 +119,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('12345', $transaction->purchaseOrderNumber);
     }
 
-    function testSale_withInvalidLevel2Attributes()
+    function testSale_withInvalidTaxAmountAttribute()
     {
         $result = Braintree_Transaction::sale(array(
             'amount' => '100.00',
@@ -128,17 +128,49 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/2011',
                 'number' => '5105105105105100'
             ),
-            'taxAmount' => 'abc',
-            'purchaseOrderNumber' => 'aaaaaaaaaaaaaaaaaa'
+            'taxAmount' => 'abc'
         ));
 
         $this->assertFalse($result->success);
 
         $taxAmountErrors = $result->errors->forKey('transaction')->onAttribute('taxAmount');
         $this->assertEquals(Braintree_Error_Codes::TRANSACTION_TAX_AMOUNT_FORMAT_IS_INVALID, $taxAmountErrors[0]->code);
+    }
+
+    function testSale_withTooLongPurchaseOrderAttribute()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'expirationDate' => '05/2011',
+                'number' => '5105105105105100'
+            ),
+            'purchaseOrderNumber' => 'aaaaaaaaaaaaaaaaaa'
+        ));
+
+        $this->assertFalse($result->success);
 
         $purchaseOrderNumberErrors = $result->errors->forKey('transaction')->onAttribute('purchaseOrderNumber');
         $this->assertEquals(Braintree_Error_Codes::TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG, $purchaseOrderNumberErrors[0]->code);
+    }
+
+    function testSale_withInvalidPurchaseOrderNumber()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'expirationDate' => '05/2011',
+                'number' => '5105105105105100'
+            ),
+            'purchaseOrderNumber' => "\x80\x90\xA0"
+        ));
+
+        $this->assertFalse($result->success);
+
+        $purchaseOrderNumberErrors = $result->errors->forKey('transaction')->onAttribute('purchaseOrderNumber');
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID, $purchaseOrderNumberErrors[0]->code);
     }
 
     function testSale_withAllAttributes()
