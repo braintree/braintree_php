@@ -189,6 +189,7 @@ class Braintree_Error_Codes
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_CREDITS                        = '91546';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_VOICE_AUTHORIZATIONS           = '91545';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                         = '91537';
+    const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID                          = '91548';
     const TRANSACTION_REFUND_AMOUNT_IS_TOO_LARGE                                = '91521';
     const TRANSACTION_SETTLEMENT_AMOUNT_IS_TOO_LARGE                            = '91522';
     const TRANSACTION_SUBSCRIPTION_DOES_NOT_BELONG_TO_CUSTOMER                  = '91529';

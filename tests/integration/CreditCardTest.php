@@ -604,6 +604,18 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         Braintree_CreditCard::find('invalid-token');
     }
 
+    function testFind_throwsUsefulErrorMessagesWhenEmpty()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'expected credit card id to be set');
+        Braintree_CreditCard::find('');
+    }
+
+    function testFind_throwsUsefulErrorMessagesWhenInvalid()
+    {
+        $this->setExpectedException('InvalidArgumentException', '@ is an invalid credit card id');
+        Braintree_CreditCard::find('@');
+    }
+
     function testUpdate()
     {
         $customer = Braintree_Customer::createNoValidate();
