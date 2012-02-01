@@ -1,3 +1,7 @@
+## 2.12.5
+
+* Exposes plan_id on transactions
+
 ## 2.12.4
 
 * Added error code for invalid purchase order number

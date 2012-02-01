@@ -1255,7 +1255,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Transaction::CVV, $transaction->gatewayRejectionReason);
     }
 
-    function testSnapshotAddOnsAndDiscountsFromSubscription()
+    function testSnapshotPlanIdAddOnsAndDiscountsFromSubscription()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
@@ -1291,6 +1291,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $transaction = $result->subscription->transactions[0];
+
+        $this->assertEquals($transaction->planId, $plan['id']);
 
         $addOns = $transaction->addOns;
         Braintree_SubscriptionTestHelper::sortModificationsById($addOns);
