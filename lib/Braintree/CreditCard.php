@@ -392,12 +392,17 @@ class Braintree_CreditCard extends Braintree
         return !($otherCreditCard instanceof Braintree_CreditCard) ? false : $this->token === $otherCreditCard->token;
     }
 
-    private static function baseSignature()
+    private static function baseOptions()
+    {
+        return array('makeDefault', 'verificationMerchantAccountId', 'verifyCard');
+    }
+
+    private static function baseSignature($options)
     {
          return array(
              'billingAddressId', 'cardholderName', 'cvv', 'number',
              'expirationDate', 'expirationMonth', 'expirationYear', 'token',
-             array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
+             array('options' => $options),
              array(
                  'billingAddress' => array(
                      'firstName',
@@ -419,14 +424,16 @@ class Braintree_CreditCard extends Braintree
 
     public static function createSignature()
     {
-        $signature = self::baseSignature();
+        $options = self::baseOptions();
+        $options[] = "failOnDuplicatePaymentMethod";
+        $signature = self::baseSignature($options);
         $signature[] = 'customerId';
         return $signature;
     }
 
     public static function updateSignature()
     {
-         $signature = self::baseSignature();
+         $signature = self::baseSignature(self::baseOptions());
 
          $updateExistingBillingSignature = array(
              array(

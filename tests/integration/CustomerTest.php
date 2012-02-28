@@ -158,6 +158,37 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('2012', $creditCard->expirationYear);
     }
 
+    function testCreate_withDuplicateCardCheck()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+
+        $attributes = array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cvv' => '123',
+                'cardholderName' => 'Mike Jones',
+                'options' => array(
+                    'failOnDuplicatePaymentMethod' => true
+                )
+            )
+        );
+        Braintree_Customer::create($attributes);
+        $result = Braintree_Customer::create($attributes);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('customer')->forKey('creditCard')->onAttribute('number');
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_DUPLICATE_CARD_EXISTS, $errors[0]->code);
+        $this->assertEquals(1, preg_match('/Duplicate card exists in the vault\./', $result->message));
+    }
+
     function testCreate_withCreditCardAndSpecificVerificationMerchantAccount()
     {
         $result = Braintree_Customer::create(array(
