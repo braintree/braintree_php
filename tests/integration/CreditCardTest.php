@@ -516,6 +516,30 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    function testDuplicates()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+
+        $attributes = array(
+            'customerId' => $customer->id,
+            'number' => '4012000033330026',
+            'expirationDate' => '05/2011'
+        );
+        $card1 = Braintree_CreditCard::create($attributes)->creditCard;
+        $card2 = Braintree_CreditCard::create($attributes)->creditCard;
+
+        $collection = Braintree_CreditCard::duplicates($card1->token);
+        $this->assertTrue($collection->maximumCount() > 1);
+
+        $tokens = array();
+        foreach($collection as $creditCard) {
+            array_push($tokens, $creditCard->token);
+        }
+
+        $this->assertTrue(in_array($card1->token, $tokens));
+        $this->assertTrue(in_array($card2->token, $tokens));
+    }
+
     function testExpired()
     {
         $collection = Braintree_CreditCard::expired();
