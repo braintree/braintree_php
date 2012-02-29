@@ -1,27 +1,10 @@
 <?php
 
-class Braintree_EqualityNode
+class Braintree_EqualityNode extends Braintree_IsNode
 {
-    function __construct($name)
-    {
-        $this->name = $name;
-        $this->searchTerms = array();
-    }
-
-    function is($value)
-    {
-        $this->searchTerms['is'] = strval($value);
-        return $this;
-    }
-
     function isNot($value)
     {
         $this->searchTerms['is_not'] = strval($value);
         return $this;
-    }
-
-    function toParam()
-    {
-        return $this->searchTerms;
     }
 }

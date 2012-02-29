@@ -99,6 +99,7 @@ require_once('Braintree/CustomerSearch.php');
 require_once('Braintree/Descriptor.php');
 require_once('Braintree/Digest.php');
 require_once('Braintree/Discount.php');
+require_once('Braintree/IsNode.php');
 require_once('Braintree/EqualityNode.php');
 require_once('Braintree/Exception.php');
 require_once('Braintree/Http.php');
