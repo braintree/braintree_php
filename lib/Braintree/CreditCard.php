@@ -107,32 +107,6 @@ class Braintree_CreditCard extends Braintree
     }
 
     /**
-     * returns a ResourceCollection of duplicated credit cards
-     * @return object ResourceCollection
-     */
-    public static function duplicates($credit_card_token)
-    {
-        $response = Braintree_Http::post("/payment_methods/" . $credit_card_token . "/duplicate_ids");
-        $pager = array(
-            'className' => __CLASS__,
-            'classMethod' => 'fetchDuplicates',
-            'methodArgs' => array($credit_card_token)
-        );
-
-        return new Braintree_ResourceCollection($response, $pager);
-    }
-
-    public static function fetchDuplicates($credit_card_token, $ids)
-    {
-        $response = Braintree_Http::post("/payment_methods/" . $credit_card_token . "/duplicates", array('search' => array('ids' => $ids)));
-
-        return braintree_util::extractattributeasarray(
-            $response['paymentMethods'],
-            'creditCard'
-        );
-    }
-
-    /**
      * returns a ResourceCollection of expired credit cards
      * @return object ResourceCollection
      */
@@ -157,7 +131,6 @@ class Braintree_CreditCard extends Braintree
             'creditCard'
         );
     }
-
     /**
      * returns a ResourceCollection of credit cards expiring between start/end
      *
