@@ -53,6 +53,7 @@ class Braintree_Error_Codes
     const CREDIT_CARD_CUSTOMER_ID_IS_REQUIRED                                           = '91704';
     const CREDIT_CARD_CVV_IS_INVALID                                                    = '81707';
     const CREDIT_CARD_CVV_IS_REQUIRED                                                   = '81706';
+    const CREDIT_CARD_DUPLICATE_CARD_EXISTS                                             = '81724';
     const CREDIT_CARD_EXPIRATION_DATE_CONFLICT                                          = '91708';
     const CREDIT_CARD_EXPIRATION_DATE_IS_INVALID                                        = '81710';
     const CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED                                       = '81709';

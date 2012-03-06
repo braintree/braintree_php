@@ -28,6 +28,26 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $resultsReturned);
     }
 
+    function test_findDuplicateCardsGivenPaymentMethodToken()
+    {
+        $creditCardRequest = array('number' => '63049580000009', 'expirationDate' => '05/2012');
+
+        $jim = Braintree_Customer::create(array('firstName' => 'Jim', 'creditCard' => $creditCardRequest))->customer;
+        $joe = Braintree_Customer::create(array('firstName' => 'Joe', 'creditCard' => $creditCardRequest))->customer;
+
+        $query = array(Braintree_CustomerSearch::paymentMethodTokenWithDuplicates()->is($jim->creditCards[0]->token));
+        $collection = Braintree_Customer::search($query);
+
+        $customerIds = array();
+        foreach($collection as $customer)
+        {
+            $customerIds[] = $customer->id;
+        }
+
+        $this->assertTrue(in_array($jim->id, $customerIds));
+        $this->assertTrue(in_array($joe->id, $customerIds));
+    }
+
     function test_searchOnTextFields()
     {
         $token  = 'cctoken' . rand();

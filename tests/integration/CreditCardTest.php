@@ -79,6 +79,25 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($token, Braintree_CreditCard::find($token)->token);
     }
 
+    function testCreate_withDuplicateCardCheck()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+
+        $attributes = array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/2011',
+            'options' => array('failOnDuplicatePaymentMethod' => true)
+        );
+        Braintree_CreditCard::create($attributes);
+
+        $result = Braintree_CreditCard::create($attributes);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('creditCard')->onAttribute('number');
+        $this->assertEquals(Braintree_Error_Codes::CREDIT_CARD_DUPLICATE_CARD_EXISTS, $errors[0]->code);
+        $this->assertEquals(1, preg_match('/Duplicate card exists in the vault\./', $result->message));
+    }
+
     function testCreate_withCardVerification()
     {
         $customer = Braintree_Customer::createNoValidate();

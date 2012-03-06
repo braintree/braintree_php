@@ -1,3 +1,8 @@
+## 2.13.0
+
+* Adds search for duplicate credit cards given a payment method token
+* Adds flag to fail saving credit card to vault if card is duplicate
+
 ## 2.12.5
 
 * Exposes plan_id on transactions

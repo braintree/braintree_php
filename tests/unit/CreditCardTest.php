@@ -36,7 +36,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $expected = array(
             'billingAddressId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
-            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard')),
+            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'failOnDuplicatePaymentMethod')),
             array(
                 'billingAddress' => array(
                     'firstName',
