@@ -192,7 +192,9 @@ class Braintree_Subscription extends Braintree
         }
         $this->_attributes['discounts'] = $discountArray;
 
-        $this->_set('descriptor', new Braintree_Descriptor($attributes['descriptor']));
+        if (isset($attributes['descriptor'])) {
+            $this->_set('descriptor', new Braintree_Descriptor($attributes['descriptor']));
+        }
 
         $transactionArray = array();
         if (isset($attributes['transactions'])) {

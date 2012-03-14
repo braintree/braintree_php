@@ -147,6 +147,8 @@ require_once('Braintree/Transaction/CreditCardDetails.php');
 require_once('Braintree/Transaction/CustomerDetails.php');
 require_once('Braintree/Transaction/StatusDetails.php');
 require_once('Braintree/Transaction/SubscriptionDetails.php');
+require_once('Braintree/WebhookNotification.php');
+require_once('Braintree/WebhookTesting.php');
 require_once('Braintree/Xml/Generator.php');
 require_once('Braintree/Xml/Parser.php');
 
