@@ -44,7 +44,8 @@ class Braintree_WebhookNotification extends Braintree
         $signaturePairs = preg_split("/&/", $signature);
         $matchingSignature = self::_matchingSignature($signaturePairs);
 
-        if ($matchingSignature != Braintree_Digest::hexDigest($payload)) {
+        $payloadSignature = Braintree_Digest::hexDigest($payload);
+        if (!Braintree_Digest::secureCompare($matchingSignature, $payloadSignature)) {
             throw new Braintree_Exception_InvalidSignature("webhook notification signature invalid");
         }
     }
