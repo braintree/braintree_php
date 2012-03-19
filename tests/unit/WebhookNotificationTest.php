@@ -12,7 +12,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
     function testSampleNotificationReturnsAParsableNotification()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::SUBSCRIPTION_PAST_DUE,
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
             'my_id'
         );
 
@@ -21,7 +21,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
             $sampleNotification['payload']
         );
 
-        $this->assertEquals(Braintree_WebhookNotification::SUBSCRIPTION_PAST_DUE, $webhookNotification->kind);
+        $this->assertEquals(Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE, $webhookNotification->kind);
         $this->assertNotNull($webhookNotification->timestamp);
         $this->assertEquals("my_id", $webhookNotification->subscription->id);
     }
@@ -29,7 +29,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
     function testParsingModifiedSignatureRaisesError()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::SUBSCRIPTION_PAST_DUE,
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
             'my_id'
         );
 
@@ -44,7 +44,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
     function testParsingUnknownPublicKeyRaisesError()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::SUBSCRIPTION_PAST_DUE,
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
             'my_id'
         );
 
@@ -59,7 +59,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
     function testParsingInvalidSignatureRaisesError()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::SUBSCRIPTION_PAST_DUE,
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
             'my_id'
         );
 

@@ -1,7 +1,13 @@
 <?php
 class Braintree_WebhookNotification extends Braintree
 {
-    const SUBSCRIPTION_PAST_DUE = 'subscription_past_due';
+    const SUBSCRIPTION_CANCELED = 'subscription_canceled';
+    const SUBSCRIPTION_CHARGED_SUCCESSFULLY = 'subscription_charged_successfully';
+    const SUBSCRIPTION_CHARGED_UNSUCCESSFULLY = 'subscription_charged_unsuccessfully';
+    const SUBSCRIPTION_EXPIRED = 'subscription_expired';
+    const SUBSCRIPTION_TRIAL_ENDED = 'subscription_trial_ended';
+    const SUBSCRIPTION_WENT_ACTIVE = 'subscription_went_active';
+    const SUBSCRIPTION_WENT_PAST_DUE = 'subscription_went_past_due';
 
     public static function parse($signature, $payload)
     {
