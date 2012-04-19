@@ -1,3 +1,7 @@
+## 2.14.0
+
+* Adds webhook gateways for parsing, verifying, and testing notifications
+
 ## 2.13.0
 
 * Adds search for duplicate credit cards given a payment method token
