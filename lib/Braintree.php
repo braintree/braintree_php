@@ -130,6 +130,7 @@ require_once('Braintree/Exception/Authorization.php');
 require_once('Braintree/Exception/Configuration.php');
 require_once('Braintree/Exception/DownForMaintenance.php');
 require_once('Braintree/Exception/ForgedQueryString.php');
+require_once('Braintree/Exception/InvalidSignature.php');
 require_once('Braintree/Exception/NotFound.php');
 require_once('Braintree/Exception/ServerError.php');
 require_once('Braintree/Exception/SSLCertificate.php');
@@ -147,6 +148,8 @@ require_once('Braintree/Transaction/CreditCardDetails.php');
 require_once('Braintree/Transaction/CustomerDetails.php');
 require_once('Braintree/Transaction/StatusDetails.php');
 require_once('Braintree/Transaction/SubscriptionDetails.php');
+require_once('Braintree/WebhookNotification.php');
+require_once('Braintree/WebhookTesting.php');
 require_once('Braintree/Xml/Generator.php');
 require_once('Braintree/Xml/Parser.php');
 

@@ -21,6 +21,22 @@ class Braintree_Digest
         }
     }
 
+    public static function secureCompare($left, $right)
+    {
+        if (strlen($left) != strlen($right)) {
+            return false;
+        }
+
+        $leftBytes = unpack("C*", $left);
+        $rightBytes = unpack("C*", $right);
+
+        $result = 0;
+        for ($i = 0; $i < strlen($left); $i++) {
+            $result = $result | ($left[$i] ^ $right[$i]);
+        }
+        return $result == 0;
+    }
+
     public static function _builtInHmacSha1($message, $key)
     {
         return hash_hmac('sha1', $message, sha1(Braintree_Configuration::privateKey(), true));
