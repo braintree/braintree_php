@@ -3,6 +3,15 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_PlanTest extends PHPUnit_Framework_TestCase
 {
+    function testAll_withNoPlans_returnsEmptyArray()
+    {
+        testMerchantConfig();
+        $plans = Braintree_Plan::all();
+        $this->assertEquals($plans, array());
+        integrationMerchantConfig();
+
+    }
+
     function testAll_returnsAllPlans()
     {
         $newId = strval(rand());
