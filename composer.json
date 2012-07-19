@@ -1,0 +1,26 @@
+{
+    "name":"braintree/braintree_php",
+    "description": "The Braintree PHP Client Library",
+    "type":"Library",
+    "license": "BSD-2-Clause",
+    "authors":[
+        {
+            "name":"Braintree",
+            "homepage":"https://github.com/braintree/braintree_php/graphs/contributors"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Braintree": "lib/"
+        }
+    },
+    "require":{
+        "php":">=5.2.1",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-hash": "*",
+        "ext-openssl": "*",
+        "ext-simplexml": "*",
+        "ext-xmlwriter": "*"
+    }
+}
