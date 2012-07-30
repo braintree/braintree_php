@@ -4,8 +4,11 @@ class Braintree_Plan extends Braintree
     public static function all()
     {
         $response = Braintree_Http::get('/plans');
-
-        $plans = array("plan" => $response['plans']);
+        if (key_exists('plans', $response)){
+            $plans = array("plan" => $response['plans']);
+        } else {
+            $plans = array("plan" => array());
+        }
 
         return Braintree_Util::extractAttributeAsArray(
             $plans,

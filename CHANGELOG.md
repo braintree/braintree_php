@@ -1,3 +1,9 @@
+## 2.14.1
+
+* Adds composer support
+* Fixes erroneous version number
+* Braintree_Plan::all() returns empty array if no plans exist
+
 ## 2.14.0
 
 * Adds webhook gateways for parsing, verifying, and testing notifications
