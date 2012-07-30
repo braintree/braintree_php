@@ -1,6 +1,6 @@
 ## 2.14.1
 
-* Adds composer support
+* Adds composer support (thanks [till](https://github.com/till))
 * Fixes erroneous version number
 * Braintree_Plan::all() returns empty array if no plans exist
 
