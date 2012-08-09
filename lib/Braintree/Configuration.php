@@ -35,6 +35,7 @@ class Braintree_Configuration extends Braintree
                     'merchantId'    => '',
                     'publicKey'     => '',
                     'privateKey'    => '',
+					'cacheCAFile' => null,
                    );
     /**
      *
@@ -61,6 +62,7 @@ class Braintree_Configuration extends Braintree
             'merchantId'  => '',
             'publicKey' => '',
             'privateKey' => '',
+			'cacheCAFile' => null,
         );
     }
 
@@ -88,7 +90,7 @@ class Braintree_Configuration extends Braintree
                                     $value . '" is not a valid environment.');
         }
 
-        if (!isset(self::$_cache[$key])) {
+        if (!isset(self::$_cache[$key]) && self::$_cache[$key] !== null) {
              throw new Braintree_Exception_Configuration($key .
                                     ' is not a valid configuration setting.');
         }
@@ -166,6 +168,11 @@ class Braintree_Configuration extends Braintree
     {
         return self::setOrGet(__FUNCTION__, $value);
     }
+
+	public static function cacheCAFile($value = null)
+	{
+		return self::setOrGet(__FUNCTION__, $value);
+	}
     /**#@-*/
 
     /**
@@ -220,6 +227,16 @@ class Braintree_Configuration extends Braintree
      */
     public static function caFile($sslPath = NULL)
     {
+		if(self::setOrGet('cacheCAFile') != null)
+		{
+			if (!file_exists(self::setOrGet('cacheCAFile')))
+			{
+				throw new Braintree_Exception_SSLCaFileNotFound();
+			}
+
+			return self::setOrGet('cacheCAFile');
+		}
+
         $sslPath = $sslPath ? $sslPath : DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                    'ssl' . DIRECTORY_SEPARATOR;
 
@@ -336,7 +353,7 @@ class Braintree_Configuration extends Braintree
      * log message to default logger
      *
      * @param string $message
-     * 
+     *
      */
     public static function logMessage($message)
     {
