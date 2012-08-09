@@ -90,7 +90,7 @@ class Braintree_Configuration extends Braintree
                                     $value . '" is not a valid environment.');
         }
 
-        if (!isset(self::$_cache[$key])) {
+        if (!isset(self::$_cache[$key]) && self::$_cache[$key] !== null) {
              throw new Braintree_Exception_Configuration($key .
                                     ' is not a valid configuration setting.');
         }
