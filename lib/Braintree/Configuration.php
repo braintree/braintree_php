@@ -35,7 +35,7 @@ class Braintree_Configuration extends Braintree
                     'merchantId'    => '',
                     'publicKey'     => '',
                     'privateKey'    => '',
-					'cacheCAFile' => '',
+					'cacheCAFile' => null,
                    );
     /**
      *
@@ -62,7 +62,7 @@ class Braintree_Configuration extends Braintree
             'merchantId'  => '',
             'publicKey' => '',
             'privateKey' => '',
-			'cacheCAFile' => '',
+			'cacheCAFile' => null,
         );
     }
 
@@ -236,7 +236,7 @@ class Braintree_Configuration extends Braintree
 
 			return self::setOrGet('cacheCAFile');
 		}
-		
+
         $sslPath = $sslPath ? $sslPath : DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                    'ssl' . DIRECTORY_SEPARATOR;
 
