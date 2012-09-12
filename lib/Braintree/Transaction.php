@@ -273,7 +273,7 @@ final class Braintree_Transaction extends Braintree
     {
         return array(
             'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken',
-            'purchaseOrderNumber', 'shippingAddressId', 'taxAmount', 'taxExempt', 'type',
+            'purchaseOrderNumber', 'recurring', 'shippingAddressId', 'taxAmount', 'taxExempt', 'type',
             array('creditCard' =>
                 array('token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'),
             ),
