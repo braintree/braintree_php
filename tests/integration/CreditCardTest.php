@@ -937,6 +937,45 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             $trData
         );
     }
+
+    function testPrepaidCard()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '4500600000000061',
+            'expirationDate' => '05/12',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertEquals(Braintree_CreditCard::PREPAID_YES, $result->creditCard->prepaid);
+    }
+
+    function testNegativeCardTypeIndicators()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/12',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertEquals(Braintree_CreditCard::PREPAID_NO, $result->creditCard->prepaid);
+    }
+
+    function testUnknownCardTypeIndicators()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '5555555555554444',
+            'expirationDate' => '05/12',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertEquals(Braintree_CreditCard::PREPAID_UNKNOWN, $result->creditCard->prepaid);
+    }
 }
 ?>
 

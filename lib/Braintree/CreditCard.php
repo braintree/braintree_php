@@ -54,6 +54,10 @@ class Braintree_CreditCard extends Braintree
 	const INTERNATIONAL = "international";
 	const US            = "us";
 
+    const PREPAID_YES = 'Yes';
+    const PREPAID_NO = 'No';
+    const PREPAID_UNKNOWN = 'Unknown';
+
     public static function create($attribs)
     {
         Braintree_Util::verifyKeys(self::createSignature(), $attribs);
