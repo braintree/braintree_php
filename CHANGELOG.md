@@ -1,3 +1,7 @@
+## 2.15.0
+
+* Adds prepaid field to credit cards (possible values include Yes, No, Unknown)
+
 ## 2.14.1
 
 * Adds composer support (thanks [till](https://github.com/till))
