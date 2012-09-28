@@ -58,6 +58,26 @@ class Braintree_CreditCard extends Braintree
     const PREPAID_NO = 'No';
     const PREPAID_UNKNOWN = 'Unknown';
 
+    const PAYROLL_YES = 'Yes';
+    const PAYROLL_NO = 'No';
+    const PAYROLL_UNKNOWN = 'Unknown';
+
+    const HEALTHCARE_YES = 'Yes';
+    const HEALTHCARE_NO = 'No';
+    const HEALTHCARE_UNKNOWN = 'Unknown';
+
+    const DURBIN_REGULATED_YES = 'Yes';
+    const DURBIN_REGULATED_NO = 'No';
+    const DURBIN_REGULATED_UNKNOWN = 'Unknown';
+
+    const DEBIT_YES = 'Yes';
+    const DEBIT_NO = 'No';
+    const DEBIT_UNKNOWN = 'Unknown';
+
+    const COMMERCIAL_YES = 'Yes';
+    const COMMERCIAL_NO = 'No';
+    const COMMERCIAL_UNKNOWN = 'Unknown';
+
     public static function create($attribs)
     {
         Braintree_Util::verifyKeys(self::createSignature(), $attribs);

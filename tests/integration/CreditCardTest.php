@@ -944,11 +944,76 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $result = Braintree_CreditCard::create(array(
             'customerId' => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number' => '4500600000000061',
+            'number' => Braintree_CreditCardNumbers_CardTypeIndicators::PREPAID,
             'expirationDate' => '05/12',
             'options' => array('verifyCard' => true)
         ));
         $this->assertEquals(Braintree_CreditCard::PREPAID_YES, $result->creditCard->prepaid);
+    }
+
+    function testCommercialCard()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => Braintree_CreditCardNumbers_CardTypeIndicators::COMMERCIAL,
+            'expirationDate' => '05/12',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertEquals(Braintree_CreditCard::COMMERCIAL_YES, $result->creditCard->commercial);
+    }
+
+    function testDebitCard()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => Braintree_CreditCardNumbers_CardTypeIndicators::DEBIT,
+            'expirationDate' => '05/12',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertEquals(Braintree_CreditCard::DEBIT_YES, $result->creditCard->debit);
+    }
+
+    function testPayrollCard()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => Braintree_CreditCardNumbers_CardTypeIndicators::PAYROLL,
+            'expirationDate' => '05/12',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertEquals(Braintree_CreditCard::PAYROLL_YES, $result->creditCard->payroll);
+    }
+
+    function testHealthCareCard()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => Braintree_CreditCardNumbers_CardTypeIndicators::HEALTHCARE,
+            'expirationDate' => '05/12',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertEquals(Braintree_CreditCard::HEALTHCARE_YES, $result->creditCard->healthcare);
+    }
+
+    function testDurbinRegulatedCard()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => Braintree_CreditCardNumbers_CardTypeIndicators::DURBIN_REGULATED,
+            'expirationDate' => '05/12',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertEquals(Braintree_CreditCard::DURBIN_REGULATED_YES, $result->creditCard->durbinRegulated);
     }
 
     function testNegativeCardTypeIndicators()
@@ -957,11 +1022,16 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $result = Braintree_CreditCard::create(array(
             'customerId' => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number' => '4111111111111111',
+            'number' => Braintree_CreditCardNumbers_CardTypeIndicators::NO,
             'expirationDate' => '05/12',
             'options' => array('verifyCard' => true)
         ));
         $this->assertEquals(Braintree_CreditCard::PREPAID_NO, $result->creditCard->prepaid);
+        $this->assertEquals(Braintree_CreditCard::DURBIN_REGULATED_NO, $result->creditCard->durbinRegulated);
+        $this->assertEquals(Braintree_CreditCard::PAYROLL_NO, $result->creditCard->payroll);
+        $this->assertEquals(Braintree_CreditCard::DEBIT_NO, $result->creditCard->debit);
+        $this->assertEquals(Braintree_CreditCard::HEALTHCARE_NO, $result->creditCard->healthcare);
+        $this->assertEquals(Braintree_CreditCard::COMMERCIAL_NO, $result->creditCard->commercial);
     }
 
     function testUnknownCardTypeIndicators()
@@ -970,11 +1040,16 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $result = Braintree_CreditCard::create(array(
             'customerId' => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number' => '5555555555554444',
+            'number' => Braintree_CreditCardNumbers_CardTypeIndicators::UNKNOWN,
             'expirationDate' => '05/12',
             'options' => array('verifyCard' => true)
         ));
         $this->assertEquals(Braintree_CreditCard::PREPAID_UNKNOWN, $result->creditCard->prepaid);
+        $this->assertEquals(Braintree_CreditCard::DURBIN_REGULATED_UNKNOWN, $result->creditCard->durbinRegulated);
+        $this->assertEquals(Braintree_CreditCard::PAYROLL_UNKNOWN, $result->creditCard->payroll);
+        $this->assertEquals(Braintree_CreditCard::DEBIT_UNKNOWN, $result->creditCard->debit);
+        $this->assertEquals(Braintree_CreditCard::HEALTHCARE_UNKNOWN, $result->creditCard->healthcare);
+        $this->assertEquals(Braintree_CreditCard::COMMERCIAL_UNKNOWN, $result->creditCard->commercial);
     }
 }
 ?>
