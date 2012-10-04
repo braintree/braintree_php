@@ -97,6 +97,23 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
     }
 
+    function testRecurring()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'recurring' => true,
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(true, $transaction->recurring);
+    }
+
+
     function testSale_withLevel2Attributes()
     {
         $result = Braintree_Transaction::sale(array(
