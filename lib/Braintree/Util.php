@@ -163,12 +163,10 @@ class Braintree_Util
     }
 
     public static function attributesToString($attributes) {
+        $printableAttribs = array();
         foreach ($attributes AS $key => $value) {
             if (is_array($value)) {
-                $pAttrib = "";
-                foreach ($value AS $obj) {
-                    $pAttrib .= sprintf('%s', $obj);
-                }
+                $pAttrib = Braintree_Util::attributesToString($value);
             } else if ($value instanceof DateTime) {
                 $pAttrib = $value->format(DateTime::RFC850);
             } else {
