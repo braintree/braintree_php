@@ -87,14 +87,21 @@ class Braintree_Util
      */
     public static function cleanClassName($name)
     {
-        $name = str_replace('Braintree_', '', $name);
-        // lcfirst only exists >= 5.3
-        if ( false === function_exists('lcfirst') ):
-            function lcfirst( $str )
-            { return (string)(strtolower(substr($str,0,1)).substr($str,1));}
-        endif;
+        $classNamesToResponseKeys = array(
+            'CreditCard' => 'creditCard',
+            'Customer' => 'customer',
+            'Subscription' => 'subscription',
+            'Transaction' => 'transaction',
+            'CreditCardVerification' => 'verification',
+            'AddOn' => 'addOn',
+            'Discount' => 'discount',
+            'Plan' => 'plan',
+            'Address' => 'address',
+            'SettlementBatchSummary' => 'settlementBatchSummary'
+        );
 
-        return lcfirst($name);
+        $name = str_replace('Braintree_', '', $name);
+        return $classNamesToResponseKeys[$name];
     }
 
     /**
@@ -104,7 +111,20 @@ class Braintree_Util
      */
     public static function buildClassName($name)
     {
-        return 'Braintree_' . ucfirst($name);
+        $responseKeysToClassNames = array(
+            'creditCard' => 'CreditCard',
+            'customer' => 'Customer',
+            'subscription' => 'Subscription',
+            'transaction' => 'Transaction',
+            'verification' => 'CreditCardVerification',
+            'addOn' => 'AddOn',
+            'discount' => 'Discount',
+            'plan' => 'Plan',
+            'address' => 'Address',
+            'settlementBatchSummary' => 'SettlementBatchSummary'
+        );
+
+        return 'Braintree_' . $responseKeysToClassNames[$name];
     }
 
     /**
