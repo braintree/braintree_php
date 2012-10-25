@@ -1,3 +1,7 @@
+## 2.17.0
+
+* Adds verification search
+
 ## 2.16.0
 
 * Additional card information, such as prepaid, debit, commercial, Durbin regulated, healthcare, and payroll, are returned on credit card responses

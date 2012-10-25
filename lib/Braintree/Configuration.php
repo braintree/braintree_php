@@ -23,7 +23,7 @@ class Braintree_Configuration extends Braintree
      * Braintree API version to use
      * @access public
      */
-     const API_VERSION =  2;
+     const API_VERSION =  3;
 
     /**
      * @var array array of config properties
@@ -336,7 +336,7 @@ class Braintree_Configuration extends Braintree
      * log message to default logger
      *
      * @param string $message
-     * 
+     *
      */
     public static function logMessage($message)
     {

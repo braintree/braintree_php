@@ -17,7 +17,7 @@
  * @package    Braintree
  * @category   Resources
  * @copyright  2010 Braintree Payment Solutions
- * 
+ *
  * @property-read array  $addresses
  * @property-read string $company
  * @property-read string $createdAt
