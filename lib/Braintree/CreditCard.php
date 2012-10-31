@@ -78,6 +78,9 @@ class Braintree_CreditCard extends Braintree
     const COMMERCIAL_NO = 'No';
     const COMMERCIAL_UNKNOWN = 'Unknown';
 
+    const COUNTRY_OF_ISSUANCE_UNKNOWN = "Unknown";
+    const ISSUING_BANK_UNKNOWN = "Unknown";
+
     public static function create($attribs)
     {
         Braintree_Util::verifyKeys(self::createSignature(), $attribs);

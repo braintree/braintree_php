@@ -1016,6 +1016,32 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_CreditCard::DURBIN_REGULATED_YES, $result->creditCard->durbinRegulated);
     }
 
+    function testCountryOfIssuanceCard()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => Braintree_CreditCardNumbers_CardTypeIndicators::COUNTRY_OF_ISSUANCE,
+            'expirationDate' => '05/12',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertEquals("USA", $result->creditCard->countryOfIssuance);
+    }
+
+    function testIssuingBankCard()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => Braintree_CreditCardNumbers_CardTypeIndicators::ISSUING_BANK,
+            'expirationDate' => '05/12',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertEquals("NETWORK ONLY", $result->creditCard->issuingBank);
+    }
+
     function testNegativeCardTypeIndicators()
     {
         $customer = Braintree_Customer::createNoValidate();
@@ -1050,6 +1076,8 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_CreditCard::DEBIT_UNKNOWN, $result->creditCard->debit);
         $this->assertEquals(Braintree_CreditCard::HEALTHCARE_UNKNOWN, $result->creditCard->healthcare);
         $this->assertEquals(Braintree_CreditCard::COMMERCIAL_UNKNOWN, $result->creditCard->commercial);
+        $this->assertEquals(Braintree_CreditCard::COUNTRY_OF_ISSUANCE_UNKNOWN, $result->creditCard->countryOfIssuance);
+        $this->assertEquals(Braintree_CreditCard::ISSUING_BANK_UNKNOWN, $result->creditCard->issuingBank);
     }
 }
 ?>
