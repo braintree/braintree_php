@@ -428,7 +428,7 @@ class Braintree_CreditCard extends Braintree
     {
          return array(
              'billingAddressId', 'cardholderName', 'cvv', 'number',
-             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
+             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
              array('options' => $options),
              array(
                  'billingAddress' => array(

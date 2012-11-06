@@ -18,7 +18,8 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
                 $this->assertEquals(array(
                     'makeDefault',
                     'verificationMerchantAccountId',
-                    'verifyCard'
+                    'verifyCard',
+                    'venmoSdkSession'
                 ), $value['options']);
             }
         }
