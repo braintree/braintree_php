@@ -273,7 +273,7 @@ final class Braintree_Transaction extends Braintree
     {
         return array(
             'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken',
-            'purchaseOrderNumber', 'recurring', 'shippingAddressId', 'taxAmount', 'taxExempt', 'type',
+            'purchaseOrderNumber', 'recurring', 'shippingAddressId', 'taxAmount', 'taxExempt', 'type', 'venmoSdkPaymentMethodCode',
             array('creditCard' =>
                 array('token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'),
             ),
@@ -302,6 +302,7 @@ final class Braintree_Transaction extends Braintree
                     'storeInVaultOnSuccess',
                     'submitForSettlement',
                     'addBillingAddressToPaymentMethod',
+                    'venmoSdkSession',
                     'storeShippingAddressInVault'),
             ),
             array('customFields' => array('_anyKey_')

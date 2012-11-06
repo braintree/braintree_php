@@ -421,7 +421,7 @@ class Braintree_CreditCard extends Braintree
 
     private static function baseOptions()
     {
-        return array('makeDefault', 'verificationMerchantAccountId', 'verifyCard');
+        return array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'venmoSdkSession');
     }
 
     private static function baseSignature($options)
