@@ -78,6 +78,9 @@ class Braintree_CreditCard extends Braintree
     const COMMERCIAL_NO = 'No';
     const COMMERCIAL_UNKNOWN = 'Unknown';
 
+    const COUNTRY_OF_ISSUANCE_UNKNOWN = "Unknown";
+    const ISSUING_BANK_UNKNOWN = "Unknown";
+
     public static function create($attribs)
     {
         Braintree_Util::verifyKeys(self::createSignature(), $attribs);
@@ -418,14 +421,14 @@ class Braintree_CreditCard extends Braintree
 
     private static function baseOptions()
     {
-        return array('makeDefault', 'verificationMerchantAccountId', 'verifyCard');
+        return array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'venmoSdkSession');
     }
 
     private static function baseSignature($options)
     {
          return array(
              'billingAddressId', 'cardholderName', 'cvv', 'number',
-             'expirationDate', 'expirationMonth', 'expirationYear', 'token',
+             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
              array('options' => $options),
              array(
                  'billingAddress' => array(
