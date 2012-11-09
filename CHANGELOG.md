@@ -1,3 +1,8 @@
+## 2.18.0
+
+* Adds country of issuance and issuing bank bin database fields
+* Adds params for Venmo SDK
+
 ## 2.17.0
 
 * Adds verification search
