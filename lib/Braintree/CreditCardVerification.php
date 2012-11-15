@@ -14,7 +14,6 @@ class Braintree_CreditCardVerification extends Braintree_Result_CreditCardVerifi
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = Braintree_CreditCardVerificationSearch::ids()->in($ids)->toparam();
-        /* var_dump($criteria); */
         $response = braintree_http::post('/verifications/advanced_search', array('search' => $criteria));
 
         return braintree_util::extractattributeasarray(
