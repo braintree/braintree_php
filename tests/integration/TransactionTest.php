@@ -9,6 +9,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => '100.00',
             'orderId' => '123',
+            'channel' => 'MyShoppingCartProvider',
             'creditCard' => array(
                 'number' => '5105105105105100',
                 'expirationDate' => '05/2011',
@@ -195,6 +196,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => '100.00',
             'orderId' => '123',
+            'channel' => 'MyShoppingCardProvider',
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => '5105105105105100',
@@ -254,6 +256,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('100.00', $transaction->amount);
       $this->assertEquals('USD', $transaction->currencyIsoCode);
       $this->assertEquals('123', $transaction->orderId);
+      $this->assertEquals('MyShoppingCardProvider', $transaction->channel);
       $this->assertEquals('MasterCard', $transaction->creditCardDetails->cardType);
       $this->assertEquals('1000', $transaction->processorResponseCode);
       $this->assertEquals('Approved', $transaction->processorResponseText);

@@ -166,6 +166,7 @@ class Braintree_Error_Codes
     const TRANSACTION_CANNOT_REFUND_UNLESS_SETTLED                              = '91506';
     const TRANSACTION_CANNOT_REFUND_WITH_SUSPENDED_MERCHANT_ACCOUNT             = '91538';
     const TRANSACTION_CANNOT_SUBMIT_FOR_SETTLEMENT                              = '91507';
+    const TRANSACTION_CHANNEL_IS_TOO_LONG                                       = '91550';
     const TRANSACTION_CREDIT_CARD_IS_REQUIRED                                   = '91508';
     const TRANSACTION_CUSTOMER_DEFAULT_PAYMENT_METHOD_CARD_TYPE_IS_NOT_ACCEPTED = '81509';
     const TRANSACTION_CUSTOMER_DOES_NOT_HAVE_CREDIT_CARD                        = '91511';
