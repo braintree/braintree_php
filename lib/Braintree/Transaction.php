@@ -263,7 +263,7 @@ final class Braintree_Transaction extends Braintree
 
     public static function cloneSignature()
     {
-        return array('amount', array('options' => array('submitForSettlement')));
+        return array('amount', 'channel', array('options' => array('submitForSettlement')));
     }
 
     /**

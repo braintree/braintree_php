@@ -9,7 +9,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => '100.00',
             'orderId' => '123',
-            'channel' => 'MyShoppingCartProvider',
             'creditCard' => array(
                 'number' => '5105105105105100',
                 'expirationDate' => '05/2011',
@@ -27,7 +26,14 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertTrue($result->success);
       $transaction = $result->transaction;
 
-      $cloneResult = Braintree_Transaction::cloneTransaction($transaction->id, array('amount' => '123.45', 'options' => array('submitForSettlement' => false)));
+      $cloneResult = Braintree_Transaction::cloneTransaction(
+          $transaction->id,
+          array(
+              'amount' => '123.45',
+              'channel' => 'MyShoppingCartProvider',
+              'options' => array('submitForSettlement' => false)
+          )
+      );
       Braintree_TestHelper::assertPrintable($cloneResult);
       $this->assertTrue($cloneResult->success);
       $cloneTransaction = $cloneResult->transaction;
@@ -36,6 +42,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('Andrew', $cloneTransaction->shippingDetails->firstName);
       $this->assertEquals('510510******5100', $cloneTransaction->creditCardDetails->maskedNumber);
       $this->assertEquals('authorized', $cloneTransaction->status);
+      $this->assertEquals('123.45', $cloneTransaction->amount);
+      $this->assertEquals('MyShoppingCartProvider', $cloneTransaction->channel);
     }
 
 
