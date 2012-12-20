@@ -150,7 +150,7 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
     function testVerifyKeys()
     {
         $signature = array(
-                'amount', 'customerId', 'orderId', 'paymentMethodToken', 'type',
+                'amount', 'customerId', 'orderId', 'channel', 'paymentMethodToken', 'type',
 
                 array('creditCard'   =>
                     array('token', 'cvv', 'expirationDate', 'number'),

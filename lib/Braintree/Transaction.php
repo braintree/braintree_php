@@ -29,6 +29,7 @@
  * Braintree_Transaction::saleNoValidate(array(
  *    'amount'      => '100.00',
  *    'orderId'    => '123',
+ *    'channel'    => 'MyShoppingCardProvider',
  *    'creditCard' => array(
  *         // if token is omitted, the gateway will generate a token
  *         'token' => 'credit_card_123',
@@ -262,7 +263,7 @@ final class Braintree_Transaction extends Braintree
 
     public static function cloneSignature()
     {
-        return array('amount', array('options' => array('submitForSettlement')));
+        return array('amount', 'channel', array('options' => array('submitForSettlement')));
     }
 
     /**
@@ -272,7 +273,7 @@ final class Braintree_Transaction extends Braintree
     public static function createSignature()
     {
         return array(
-            'amount', 'customerId', 'merchantAccountId', 'orderId', 'paymentMethodToken',
+            'amount', 'customerId', 'merchantAccountId', 'orderId', 'channel', 'paymentMethodToken',
             'purchaseOrderNumber', 'recurring', 'shippingAddressId', 'taxAmount', 'taxExempt', 'type', 'venmoSdkPaymentMethodCode',
             array('creditCard' =>
                 array('token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'),

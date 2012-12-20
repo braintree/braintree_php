@@ -26,7 +26,14 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertTrue($result->success);
       $transaction = $result->transaction;
 
-      $cloneResult = Braintree_Transaction::cloneTransaction($transaction->id, array('amount' => '123.45', 'options' => array('submitForSettlement' => false)));
+      $cloneResult = Braintree_Transaction::cloneTransaction(
+          $transaction->id,
+          array(
+              'amount' => '123.45',
+              'channel' => 'MyShoppingCartProvider',
+              'options' => array('submitForSettlement' => false)
+          )
+      );
       Braintree_TestHelper::assertPrintable($cloneResult);
       $this->assertTrue($cloneResult->success);
       $cloneTransaction = $cloneResult->transaction;
@@ -35,6 +42,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('Andrew', $cloneTransaction->shippingDetails->firstName);
       $this->assertEquals('510510******5100', $cloneTransaction->creditCardDetails->maskedNumber);
       $this->assertEquals('authorized', $cloneTransaction->status);
+      $this->assertEquals('123.45', $cloneTransaction->amount);
+      $this->assertEquals('MyShoppingCartProvider', $cloneTransaction->channel);
     }
 
 
@@ -195,6 +204,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => '100.00',
             'orderId' => '123',
+            'channel' => 'MyShoppingCardProvider',
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => '5105105105105100',
@@ -254,6 +264,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('100.00', $transaction->amount);
       $this->assertEquals('USD', $transaction->currencyIsoCode);
       $this->assertEquals('123', $transaction->orderId);
+      $this->assertEquals('MyShoppingCardProvider', $transaction->channel);
       $this->assertEquals('MasterCard', $transaction->creditCardDetails->cardType);
       $this->assertEquals('1000', $transaction->processorResponseCode);
       $this->assertEquals('Approved', $transaction->processorResponseText);
@@ -1359,6 +1370,89 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         Braintree_TestHelper::settle($transaction->id);
         return $transaction;
+    }
+
+    function testCardTypeIndicators()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => Braintree_CreditCardNumbers_CardTypeIndicators::PREPAID,
+                'expirationDate' => '05/12',
+            )
+        ));
+
+        $this->assertEquals(Braintree_CreditCard::PREPAID_YES, $transaction->creditCardDetails->prepaid);
+
+        $prepaid_card_transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => Braintree_CreditCardNumbers_CardTypeIndicators::COMMERCIAL,
+                'expirationDate' => '05/12',
+            )
+        ));
+
+        $this->assertEquals(Braintree_CreditCard::COMMERCIAL_YES, $prepaid_card_transaction->creditCardDetails->commercial);
+
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => Braintree_CreditCardNumbers_CardTypeIndicators::PAYROLL,
+                'expirationDate' => '05/12',
+            )
+        ));
+
+        $this->assertEquals(Braintree_CreditCard::PAYROLL_YES, $transaction->creditCardDetails->payroll);
+
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => Braintree_CreditCardNumbers_CardTypeIndicators::HEALTHCARE,
+                'expirationDate' => '05/12',
+            )
+        ));
+
+        $this->assertEquals(Braintree_CreditCard::HEALTHCARE_YES, $transaction->creditCardDetails->healthcare);
+
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => Braintree_CreditCardNumbers_CardTypeIndicators::DURBIN_REGULATED,
+                'expirationDate' => '05/12',
+            )
+        ));
+
+        $this->assertEquals(Braintree_CreditCard::DURBIN_REGULATED_YES, $transaction->creditCardDetails->durbinRegulated);
+
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => Braintree_CreditCardNumbers_CardTypeIndicators::DEBIT,
+                'expirationDate' => '05/12',
+            )
+        ));
+
+        $this->assertEquals(Braintree_CreditCard::DEBIT_YES, $transaction->creditCardDetails->debit);
+
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => Braintree_CreditCardNumbers_CardTypeIndicators::ISSUING_BANK,
+                'expirationDate' => '05/12',
+            )
+        ));
+
+        $this->assertEquals("NETWORK ONLY", $transaction->creditCardDetails->issuingBank);
+
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => Braintree_CreditCardNumbers_CardTypeIndicators::COUNTRY_OF_ISSUANCE,
+                'expirationDate' => '05/12',
+            )
+        ));
+
+        $this->assertEquals("USA", $transaction->creditCardDetails->countryOfIssuance);
     }
 
 }

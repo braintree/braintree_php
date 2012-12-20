@@ -1,7 +1,10 @@
+## 2.19.0
+
+* Adds channel field to transactions.
+
 ## 2.18.0
 
 * Adds country of issuance and issuing bank bin database fields
-* Adds params for Venmo SDK
 
 ## 2.17.0
 
