@@ -223,6 +223,7 @@ class Braintree_Error_Codes
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID                          = '91548';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                         = '91537';
     const TRANSACTION_REFUND_AMOUNT_IS_TOO_LARGE                                = '91521';
+    const TRANSACTION_SERVICE_FEE_IS_NOT_ALLOW_ON_CREDITS                       = '91552';
     const TRANSACTION_SETTLEMENT_AMOUNT_IS_LESS_THAN_SERVICE_FEE_AMOUNT         = '91551';
     const TRANSACTION_SETTLEMENT_AMOUNT_IS_TOO_LARGE                            = '91522';
     const TRANSACTION_SUBSCRIPTION_DOES_NOT_BELONG_TO_CUSTOMER                  = '91529';

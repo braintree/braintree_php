@@ -663,6 +663,24 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $transaction->merchantAccountId);
     }
 
+    function testCredit_withServiceFeeNotAllowed()
+    {
+        $result = Braintree_Transaction::credit(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'serviceFee' => array(
+                'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+                'amount' => '12.75'
+            )
+        ));
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_SERVICE_FEE_IS_NOT_ALLOW_ON_CREDITS, $errors[0]->code);
+    }
+
     function testSubmitForSettlement_nullAmount()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
