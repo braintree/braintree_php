@@ -142,6 +142,17 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('1.00', $transaction->serviceFee->amount);
     }
 
+    function testSale_withVenmoSdkPaymentMethodCode()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '10.00',
+            'venmoSdkPaymentMethodCode' => Braintree_Test_VenmoSdk::$visaPaymentMethodCode
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals("411111", $transaction->creditCardDetails->bin);
+    }
+
     function testSale_withLevel2Attributes()
     {
         $result = Braintree_Transaction::sale(array(

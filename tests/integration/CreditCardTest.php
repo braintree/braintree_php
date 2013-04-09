@@ -222,6 +222,17 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::ADDRESS_INCONSISTENT_COUNTRY, $errors[0]->code);
     }
 
+    function testCreate_withVenmoSdkPaymentMethodCode()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'venmoSdkPaymentMethodCode' => Braintree_Test_VenmoSdk::generateTestPaymentMethodCode("378734493671000")
+        ));
+        $this->assertTrue($result->success);
+        $this->assertEquals("378734", $result->creditCard->bin);
+    }
+
     function testCreateNoValidate_throwsIfValidationsFail()
     {
 
