@@ -1,3 +1,7 @@
+## 2.20.0
+
+* Fixed getting custom fields with valueForHtmlField. [Thanks to Miguel Manso for the fix.](https://github.com/mumia)
+
 ## 2.19.0
 
 * Adds channel field to transactions.
