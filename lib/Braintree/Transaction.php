@@ -164,6 +164,8 @@
  * @property-read array  $statusHistory array of StatusDetails objects
  * @property-read string $type transaction type
  * @property-read string $updatedAt transaction updated timestamp
+ * @property-read object $serviceFee service fees
+ * @property-read object $depositDetails populated when transaction is deposited
  *
  */
 
@@ -511,6 +513,13 @@ final class Braintree_Transaction extends Braintree
             );
         }
 
+        if (isset($transactionAttribs['depositDetails'])) {
+            $this->_set('depositDetails',
+                new Braintree_DepositDetails($transactionAttribs['depositDetails'])
+            );
+        }
+
+
         $statusHistory = array();
         foreach ($transactionAttribs['statusHistory'] AS $history) {
             $statusHistory[] = new Braintree_Transaction_StatusDetails($history);
@@ -587,6 +596,10 @@ final class Braintree_Transaction extends Braintree
         else {
             return Braintree_Customer::find($customerId);
         }
+    }
+
+    public function isDeposited() {
+        return $this->depositDetails->isValid();
     }
 
     /**
