@@ -940,19 +940,18 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
     }
 
-    function testFindExposesDepositDetails()
+    function testFindExposesDisbursementDetails()
     {
         $transaction = Braintree_Transaction::find("deposittransaction");
 
-        $this->assertEquals(true, $transaction->isDeposited());
+        $this->assertEquals(true, $transaction->isDisbursed());
 
-        $depositDetails = $transaction->depositDetails;
-        $this->assertEquals('100.00', $depositDetails->settlementAmount);
-        $this->assertEquals('USD', $depositDetails->settlementCurrencyIsoCode);
-        $this->assertEquals('1', $depositDetails->settlementCurrencyExchangeRate);
-        $this->assertEquals(false, $depositDetails->fundsHeld);
-        $this->assertEquals(new DateTime('2013-04-10'), $depositDetails->depositDate);
-        $this->assertEquals(new DateTime('2013-04-09 00:00:00'), $depositDetails->disbursedAt);
+        $disbursementDetails = $transaction->disbursementDetails;
+        $this->assertEquals('100.00', $disbursementDetails->settlementAmount);
+        $this->assertEquals('USD', $disbursementDetails->settlementCurrencyIsoCode);
+        $this->assertEquals('1', $disbursementDetails->settlementCurrencyExchangeRate);
+        $this->assertEquals(false, $disbursementDetails->fundsHeld);
+        $this->assertEquals(new DateTime('2013-04-10'), $disbursementDetails->disbursementDate);
     }
 
     function testSale_storeInVault()

@@ -668,10 +668,10 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($t_1500->id, $collection->firstItem()->id);
     }
 
-    private function runDepositDateSearchTests($depositDateString, $comparison)
+    private function runDisbursementDateSearchTests($disbursementDateString, $comparison)
     {
         $knownDepositId = "deposittransaction";
-        $now = new DateTime($depositDateString);
+        $now = new DateTime($disbursementDateString);
         $past = clone $now;
         $past->modify("-1 hour");
         $future = clone $now;
@@ -694,31 +694,31 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         return $collections;
     }
 
-    function test_rangeNode_depositDate_lessThanOrEqualTo()
+    function test_rangeNode_disbursementDate_lessThanOrEqualTo()
     {
         $compareLessThan = function($time) {
-            return Braintree_TransactionSearch::depositDate()->lessThanOrEqualTo($time);
+            return Braintree_TransactionSearch::disbursementDate()->lessThanOrEqualTo($time);
         };
-        $collection = $this->runDepositDateSearchTests("2013-04-10", $compareLessThan);
+        $collection = $this->runDisbursementDateSearchTests("2013-04-10", $compareLessThan);
 
         $this->assertEquals(0, $collection['past']->maximumCount());
         $this->assertEquals(1, $collection['now']->maximumCount());
         $this->assertEquals(1, $collection['future']->maximumCount());
     }
 
-    function test_rangeNode_depositDate_GreaterThanOrEqualTo()
+    function test_rangeNode_disbursementDate_GreaterThanOrEqualTo()
     {
         $comparison = function($time) {
-            return Braintree_TransactionSearch::depositDate()->GreaterThanOrEqualTo($time);
+            return Braintree_TransactionSearch::disbursementDate()->GreaterThanOrEqualTo($time);
         };
-        $collection = $this->runDepositDateSearchTests("2013-04-11", $comparison);
+        $collection = $this->runDisbursementDateSearchTests("2013-04-11", $comparison);
 
         $this->assertEquals(1, $collection['past']->maximumCount());
         $this->assertEquals(0, $collection['now']->maximumCount());
         $this->assertEquals(0, $collection['future']->maximumCount());
     }
 
-    function test_rangeNode_depositDate_between()
+    function test_rangeNode_disbursementDate_between()
     {
         $knownId = "deposittransaction";
 
@@ -732,33 +732,33 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::id()->is($knownId),
-            Braintree_TransactionSearch::depositDate()->between($past, $future)
+            Braintree_TransactionSearch::disbursementDate()->between($past, $future)
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::id()->is($knownId),
-            Braintree_TransactionSearch::depositDate()->between($now, $future)
+            Braintree_TransactionSearch::disbursementDate()->between($now, $future)
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::id()->is($knownId),
-            Braintree_TransactionSearch::depositDate()->between($past, $now)
+            Braintree_TransactionSearch::disbursementDate()->between($past, $now)
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::id()->is($knownId),
-            Braintree_TransactionSearch::depositDate()->between($future, $future2)
+            Braintree_TransactionSearch::disbursementDate()->between($future, $future2)
         ));
         $this->assertEquals(0, $collection->maximumCount());
     }
 
-    function test_rangeNode_depositDate_is()
+    function test_rangeNode_disbursementDate_is()
     {
         $knownId = "deposittransaction";
 
@@ -772,20 +772,20 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::id()->is($knownId),
-            Braintree_TransactionSearch::depositDate()->is($past)
+            Braintree_TransactionSearch::disbursementDate()->is($past)
         ));
         $this->assertEquals(0, $collection->maximumCount());
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::id()->is($knownId),
-            Braintree_TransactionSearch::depositDate()->is($now)
+            Braintree_TransactionSearch::disbursementDate()->is($now)
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::id()->is($knownId),
-            Braintree_TransactionSearch::depositDate()->is($future)
+            Braintree_TransactionSearch::disbursementDate()->is($future)
         ));
         $this->assertEquals(0, $collection->maximumCount());
     }

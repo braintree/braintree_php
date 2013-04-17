@@ -165,7 +165,7 @@
  * @property-read string $type transaction type
  * @property-read string $updatedAt transaction updated timestamp
  * @property-read object $serviceFee service fees
- * @property-read object $depositDetails populated when transaction is deposited
+ * @property-read object $disbursementDetails populated when transaction is disbursed
  *
  */
 
@@ -513,9 +513,9 @@ final class Braintree_Transaction extends Braintree
             );
         }
 
-        if (isset($transactionAttribs['depositDetails'])) {
-            $this->_set('depositDetails',
-                new Braintree_DepositDetails($transactionAttribs['depositDetails'])
+        if (isset($transactionAttribs['disbursementDetails'])) {
+            $this->_set('disbursementDetails',
+                new Braintree_DisbursementDetails($transactionAttribs['disbursementDetails'])
             );
         }
 
@@ -598,8 +598,8 @@ final class Braintree_Transaction extends Braintree
         }
     }
 
-    public function isDeposited() {
-        return $this->depositDetails->isValid();
+    public function isDisbursed() {
+        return $this->disbursementDetails->isValid();
     }
 
     /**
