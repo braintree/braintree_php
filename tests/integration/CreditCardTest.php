@@ -20,6 +20,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('05/2012', $result->creditCard->expirationDate);
         $this->assertEquals(1, preg_match('/\A\w{32}\z/', $result->creditCard->uniqueNumberIdentifier));
         $this->assertFalse($result->creditCard->isVenmoSdk());
+        $this->assertEquals(1, preg_match('/png/', $result->creditCard->imageUrl));
     }
 
     function testCreate_withDefault()

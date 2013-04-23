@@ -28,6 +28,7 @@
  * @property-read string $expirationDate
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
+ * @property-read string $imageUrl
  * @property-read string $last4
  * @property-read string $maskedNumber
  * @property-read string $token
