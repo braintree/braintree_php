@@ -19,6 +19,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Cardholder', $result->creditCard->cardholderName);
         $this->assertEquals('05/2012', $result->creditCard->expirationDate);
         $this->assertEquals(1, preg_match('/\A\w{32}\z/', $result->creditCard->uniqueNumberIdentifier));
+        $this->assertFalse($result->creditCard->isVenmoSdk());
     }
 
     function testCreate_withDefault()
@@ -231,6 +232,46 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
         $this->assertEquals("378734", $result->creditCard->bin);
+    }
+
+    function testCreate_with_invalid_venmoSdkPaymentMethodCode()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'venmoSdkPaymentMethodCode' => Braintree_Test_VenmoSdk::generateTestPaymentMethodCode("invalid-payment-method-code")
+        ));
+        $this->assertFalse($result->success);
+    }
+
+    function testCreate_with_venmoSdkSession()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'options' => array(
+                'venmoSdkSession' => Braintree_Test_VenmoSdk::getTestSession()
+            )
+        ));
+        $this->assertTrue($result->success);
+        $this->assertTrue($result->creditCard->isVenmoSdk());
+    }
+
+    function testCreate_with_invalidVenmoSdkSession()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'options' => array(
+                'venmoSdkSession' => Braintree_Test_VenmoSdk::getInvalidTestSession()
+            )
+        ));
+        $this->assertTrue($result->success);
+        $this->assertFalse($result->creditCard->isVenmoSdk());
     }
 
     function testCreateNoValidate_throwsIfValidationsFail()

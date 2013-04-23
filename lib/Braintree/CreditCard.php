@@ -370,6 +370,16 @@ class Braintree_CreditCard extends Braintree
         return $this->expired;
     }
 
+    /**
+     * checks whether the card is associated with venmo sdk
+     *
+     * @return boolean
+     */
+    public function isVenmoSdk()
+    {
+        return $this->venmoSdk;
+    }
+
     public static function delete($token)
     {
         self::_validateId($token);
