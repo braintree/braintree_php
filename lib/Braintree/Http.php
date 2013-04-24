@@ -61,10 +61,15 @@ class Braintree_Http
 
     private static function _doRequest($httpVerb, $path, $requestBody = null)
     {
+        return self::_doUrlRequest($httpVerb, Braintree_Configuration::merchantUrl() . $path, $requestBody);
+    }
+
+    public static function _doUrlRequest($httpVerb, $url, $requestBody = null)
+    {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
-        curl_setopt($curl, CURLOPT_URL, Braintree_Configuration::merchantUrl() . $path);
+        curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Accept: application/xml',
