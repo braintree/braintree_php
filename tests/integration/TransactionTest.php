@@ -126,7 +126,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     {
         $result = Braintree_Transaction::sale(array(
             'amount' => '10.00',
-            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultSubMerchantAccountId(),
             'creditCard' => array(
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
@@ -197,7 +197,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     {
         $result = Braintree_Transaction::sale(array(
             'amount' => '10.00',
-            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultSubMerchantAccountId(),
             'creditCard' => array(
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
@@ -712,7 +712,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
             'amount' => '10.00',
-            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultSubMerchantAccountId(),
             'creditCard' => array(
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
