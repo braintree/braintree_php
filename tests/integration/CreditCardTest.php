@@ -243,6 +243,9 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             'venmoSdkPaymentMethodCode' => Braintree_Test_VenmoSdk::generateTestPaymentMethodCode("invalid-payment-method-code")
         ));
         $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('creditCard')->onAttribute('venmoSdkPaymentMethodCode');
+        $this->assertEquals($errors[0]->code, Braintree_Error_Codes::CREDIT_CARD_INVALID_VENMO_SDK_PAYMENT_METHOD_CODE);
+
     }
 
     function testCreate_with_venmoSdkSession()
