@@ -14,6 +14,10 @@ class Braintree_Test_VenmoSdk
         return "stub-" . $number;
     }
 
+    public static function getInvalidPaymentMethodCode() {
+        return "stub-invalid-payment-method-code";
+    }
+
     public static function getTestSession() {
         return "stub-session";
     }
