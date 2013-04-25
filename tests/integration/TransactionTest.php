@@ -142,6 +142,62 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('1.00', $transaction->serviceFee->amount);
     }
 
+    function testSale_isInvalidIfServiceFeeMerchantIsASub()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '10.00',
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'serviceFee' => array(
+                'merchantAccountId' => Braintree_TestHelper::nonDefaultSubMerchantAccountId(),
+                'amount' => '1.00'
+            )
+        ));
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+        $serviceFeeErrors = $result->errors->forKey('transaction')->forKey('serviceFee')->onAttribute('merchantAccountId');
+        $this->assertEquals(Braintree_Error_Codes::SERVICE_FEE_MERCHANT_ACCOUNT_CANNOT_BE_A_SUB, $serviceFeeErrors[0]->code);
+    }
+
+    function testSale_isInvalidIfTransactionMerchantAccountIsNotSub()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '10.00',
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'serviceFee' => array(
+                'merchantAccountId' => Braintree_TestHelper::defaultMerchantAccountId(),
+                'amount' => '1.00'
+            )
+        ));
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+        $serviceFeeErrors = $result->errors->forKey('transaction')->forKey('serviceFee')->onAttribute('base');
+        $this->assertEquals(Braintree_Error_Codes::SERVICE_FEE_MASTER_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_SERVICE_FEES, $serviceFeeErrors[0]->code);
+    }
+
+    function testSale_isInvalidIfSubMerchantAccountHasNoServiceFee()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '10.00',
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultSubMerchantAccountId(),
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+        $serviceFeeErrors = $result->errors->forKey('transaction')->onAttribute('merchantAccountId');
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_SUB_MERCHANT_ACCOUNT_REQUIRES_SERVICE_FEE, $serviceFeeErrors[0]->code);
+    }
+
     function testSale_withVenmoSdkPaymentMethodCode()
     {
         $result = Braintree_Transaction::sale(array(
