@@ -179,7 +179,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $transaction = $result->transaction;
         $serviceFeeErrors = $result->errors->forKey('transaction')->forKey('serviceFee')->onAttribute('base');
-        $this->assertEquals(Braintree_Error_Codes::SERVICE_FEE_MASTER_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_SERVICE_FEES, $serviceFeeErrors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::SERVICE_FEE_MERCHANT_ACCOUNT_NOT_SUPPORTED, $serviceFeeErrors[0]->code);
     }
 
     function testSale_isInvalidIfSubMerchantAccountHasNoServiceFee()
