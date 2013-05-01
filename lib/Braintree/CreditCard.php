@@ -28,6 +28,7 @@
  * @property-read string $expirationDate
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
+ * @property-read string $imageUrl
  * @property-read string $last4
  * @property-read string $maskedNumber
  * @property-read string $token
@@ -368,6 +369,16 @@ class Braintree_CreditCard extends Braintree
     public function isExpired()
     {
         return $this->expired;
+    }
+
+    /**
+     * checks whether the card is associated with venmo sdk
+     *
+     * @return boolean
+     */
+    public function isVenmoSdk()
+    {
+        return $this->venmoSdk;
     }
 
     public static function delete($token)

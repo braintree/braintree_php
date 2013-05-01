@@ -13,6 +13,9 @@ class Braintree_Result_ErrorTest extends PHPUnit_Framework_TestCase
                 'billingAddress' => array(
                     'countryName' => 'invalid-country'
                 )
+            ),
+            'customFields' => array(
+                'store_me' => 'some custom value'
             )
         ));
         $this->assertEquals(false, $result->success);
@@ -20,6 +23,7 @@ class Braintree_Result_ErrorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $result->valueForHtmlField('customer[credit_card][number]'));
         $this->assertEquals('invalid-exp', $result->valueForHtmlField('customer[credit_card][expiration_date]'));
         $this->assertEquals('invalid-country', $result->valueForHtmlField('customer[credit_card][billing_address][country_name]'));
+        $this->assertEquals('some custom value', $result->valueForHtmlField('customer[custom_fields][store_me]'));
     }
 }
 ?>

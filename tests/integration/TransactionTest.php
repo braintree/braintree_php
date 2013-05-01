@@ -122,6 +122,16 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $transaction->recurring);
     }
 
+    function testSale_withVenmoSdkPaymentMethodCode()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '10.00',
+            'venmoSdkPaymentMethodCode' => Braintree_Test_VenmoSdk::$visaPaymentMethodCode
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals("411111", $transaction->creditCardDetails->bin);
+    }
 
     function testSale_withLevel2Attributes()
     {
@@ -852,6 +862,20 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
+    }
+
+    function testFindExposesDisbursementDetails()
+    {
+        $transaction = Braintree_Transaction::find("deposittransaction");
+
+        $this->assertEquals(true, $transaction->isDisbursed());
+
+        $disbursementDetails = $transaction->disbursementDetails;
+        $this->assertEquals('100.00', $disbursementDetails->settlementAmount);
+        $this->assertEquals('USD', $disbursementDetails->settlementCurrencyIsoCode);
+        $this->assertEquals('1', $disbursementDetails->settlementCurrencyExchangeRate);
+        $this->assertEquals(false, $disbursementDetails->fundsHeld);
+        $this->assertEquals(new DateTime('2013-04-10'), $disbursementDetails->disbursementDate);
     }
 
     function testSale_storeInVault()

@@ -43,6 +43,11 @@ class Braintree_TestHelper
         return 'sandbox_credit_card_non_default';
     }
 
+    public static function nonDefaultSubMerchantAccountId()
+    {
+        return 'sandbox_sub_merchant_account';
+    }
+
     public static function createViaTr($regularParams, $trParams)
     {
         $trData = Braintree_TransparentRedirect::transactionData(

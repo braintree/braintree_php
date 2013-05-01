@@ -164,6 +164,7 @@
  * @property-read array  $statusHistory array of StatusDetails objects
  * @property-read string $type transaction type
  * @property-read string $updatedAt transaction updated timestamp
+ * @property-read object $disbursementDetails populated when transaction is disbursed
  *
  */
 
@@ -308,7 +309,7 @@ final class Braintree_Transaction extends Braintree
             ),
             array('customFields' => array('_anyKey_')
             ),
-            array('descriptor' => array('name', 'phone')),
+            array('descriptor' => array('name', 'phone'))
         );
     }
 
@@ -504,6 +505,13 @@ final class Braintree_Transaction extends Braintree
                 )
             );
 
+        if (isset($transactionAttribs['disbursementDetails'])) {
+            $this->_set('disbursementDetails',
+                new Braintree_DisbursementDetails($transactionAttribs['disbursementDetails'])
+            );
+        }
+
+
         $statusHistory = array();
         foreach ($transactionAttribs['statusHistory'] AS $history) {
             $statusHistory[] = new Braintree_Transaction_StatusDetails($history);
@@ -580,6 +588,10 @@ final class Braintree_Transaction extends Braintree
         else {
             return Braintree_Customer::find($customerId);
         }
+    }
+
+    public function isDisbursed() {
+        return $this->disbursementDetails->isValid();
     }
 
     /**

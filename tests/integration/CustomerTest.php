@@ -93,6 +93,20 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, preg_match('/\A\w{32}\z/', $customer->creditCards[0]->uniqueNumberIdentifier));
     }
 
+    function testCreate_withVenmoSdkPaymentMethodCode()
+    {
+        $result = Braintree_Customer::create(array(
+            'firstName' => 'Bat',
+            'lastName' => 'Manderson',
+            'creditCard' => array(
+                'venmoSdkPaymentMethodCode' => Braintree_Test_VenmoSdk::$visaPaymentMethodCode
+            )
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals("411111", $customer->creditCards[0]->bin);
+    }
+
     function testCreate_blankCustomer()
     {
         $result = Braintree_Customer::create();

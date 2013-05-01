@@ -204,6 +204,29 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Braintree_TestHelper::includes($collection, $subscription_2));
     }
 
+    function testSearch_bogusMerchantAccountId()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $triallessPlan = Braintree_SubscriptionTestHelper::triallessPlan();
+
+        $rand_id = strval(rand());
+
+        $subscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $triallessPlan['id'],
+            'id' => strval(rand()) . '_subscription_' . $rand_id,
+            'price' => '11.38'
+        ))->subscription;
+
+        $collection = Braintree_Subscription::search(array(
+            Braintree_SubscriptionSearch::id()->endsWith('subscription_' . $rand_id),
+            Braintree_SubscriptionSearch::merchantAccountId()->in(array("bogus_merchant_account")),
+            Braintree_SubscriptionSearch::price()->is('11.38')
+        ));
+
+        $this->assertFalse(Braintree_TestHelper::includes($collection, $subscription));
+    }
+
     function testSearch_daysPastDue()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
