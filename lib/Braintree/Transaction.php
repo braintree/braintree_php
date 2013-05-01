@@ -164,6 +164,7 @@
  * @property-read array  $statusHistory array of StatusDetails objects
  * @property-read string $type transaction type
  * @property-read string $updatedAt transaction updated timestamp
+ * @property-read object $serviceFee service fees
  * @property-read object $disbursementDetails populated when transaction is disbursed
  *
  */
@@ -309,7 +310,8 @@ final class Braintree_Transaction extends Braintree
             ),
             array('customFields' => array('_anyKey_')
             ),
-            array('descriptor' => array('name', 'phone'))
+            array('descriptor' => array('name', 'phone')),
+            array('serviceFee' => array('merchantAccountId', 'amount'))
         );
     }
 
@@ -504,6 +506,12 @@ final class Braintree_Transaction extends Braintree
                 $transactionAttribs['descriptor']
                 )
             );
+
+        if (isset($transactionAttribs['serviceFee'])) {
+            $this->_set('serviceFee',
+                new Braintree_ServiceFee($transactionAttribs['serviceFee'])
+            );
+        }
 
         if (isset($transactionAttribs['disbursementDetails'])) {
             $this->_set('disbursementDetails',
