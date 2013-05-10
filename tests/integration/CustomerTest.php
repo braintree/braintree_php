@@ -138,6 +138,15 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('some custom value', $customFields['store_me']);
     }
 
+    function testCreate_withFraudParams()
+    {
+        $result = Braintree_Customer::create(array(
+            'firstName' => 'Mike',
+            'deviceSessionId' => 'abc123'
+        ));
+        $this->assertEquals(true, $result->success);
+    }
+
     function testCreate_withCreditCard()
     {
         $result = Braintree_Customer::create(array(
