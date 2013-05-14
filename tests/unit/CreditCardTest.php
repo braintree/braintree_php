@@ -34,7 +34,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     function testCreateSignature()
     {
         $expected = array(
-            'billingAddressId', 'cardholderName', 'cvv', 'number',
+            'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
             array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'venmoSdkSession', 'failOnDuplicatePaymentMethod')),
             array(
@@ -61,7 +61,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     function testUpdateSignature()
     {
         $expected = array(
-            'billingAddressId', 'cardholderName', 'cvv', 'number',
+            'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
             array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'venmoSdkSession')),
             array(
