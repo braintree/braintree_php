@@ -142,7 +142,13 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
     {
         $result = Braintree_Customer::create(array(
             'firstName' => 'Mike',
-            'deviceSessionId' => 'abc123'
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cvv' => '123',
+                'cardholderName' => 'Mike Jones',
+                'deviceSessionId' => 'abc123'
+            )
         ));
         $this->assertEquals(true, $result->success);
     }
