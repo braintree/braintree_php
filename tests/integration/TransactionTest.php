@@ -130,35 +130,11 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
             ),
-            'serviceFee' => array(
-                'merchantAccountId' => Braintree_TestHelper::defaultMerchantAccountId(),
-                'amount' => '1.00'
-            )
+            'serviceFeeAmount' => '1.00'
         ));
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $transaction->serviceFee->merchantAccountId);
-        $this->assertEquals('1.00', $transaction->serviceFee->amount);
-    }
-
-    function testSale_isInvalidIfServiceFeeMerchantIsASub()
-    {
-        $result = Braintree_Transaction::sale(array(
-            'amount' => '10.00',
-            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
-            'creditCard' => array(
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ),
-            'serviceFee' => array(
-                'merchantAccountId' => Braintree_TestHelper::nonDefaultSubMerchantAccountId(),
-                'amount' => '1.00'
-            )
-        ));
-        $this->assertFalse($result->success);
-        $transaction = $result->transaction;
-        $serviceFeeErrors = $result->errors->forKey('transaction')->forKey('serviceFee')->onAttribute('merchantAccountId');
-        $this->assertEquals(Braintree_Error_Codes::SERVICE_FEE_MERCHANT_ACCOUNT_CANNOT_BE_A_SUB, $serviceFeeErrors[0]->code);
+        $this->assertEquals('1.00', $transaction->serviceFeeAmount);
     }
 
     function testSale_isInvalidIfTransactionMerchantAccountIsNotSub()
@@ -170,15 +146,12 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
             ),
-            'serviceFee' => array(
-                'merchantAccountId' => Braintree_TestHelper::defaultMerchantAccountId(),
-                'amount' => '1.00'
-            )
+            'serviceFeeAmount' => '1.00'
         ));
         $this->assertFalse($result->success);
         $transaction = $result->transaction;
-        $serviceFeeErrors = $result->errors->forKey('transaction')->forKey('serviceFee')->onAttribute('base');
-        $this->assertEquals(Braintree_Error_Codes::SERVICE_FEE_MERCHANT_ACCOUNT_NOT_SUPPORTED, $serviceFeeErrors[0]->code);
+        $serviceFeeErrors = $result->errors->forKey('transaction')->onAttribute('serviceFeeAmount');
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_SERVICE_FEE_AMOUNT_NOT_ALLOWED_ON_MASTER_MERCHANT_ACCOUNT, $serviceFeeErrors[0]->code);
     }
 
     function testSale_isInvalidIfSubMerchantAccountHasNoServiceFee()
@@ -194,7 +167,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $transaction = $result->transaction;
         $serviceFeeErrors = $result->errors->forKey('transaction')->onAttribute('merchantAccountId');
-        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_SUB_MERCHANT_ACCOUNT_REQUIRES_SERVICE_FEE, $serviceFeeErrors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_SUB_MERCHANT_ACCOUNT_REQUIRES_SERVICE_FEE_AMOUNT, $serviceFeeErrors[0]->code);
     }
 
     function testSale_withVenmoSdkPaymentMethodCode()
@@ -257,14 +230,11 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
             ),
-            'serviceFee' => array(
-                'merchantAccountId' => Braintree_TestHelper::defaultMerchantAccountId(),
-                'amount' => '20.00'
-            )
+            'serviceFeeAmount' => '20.00'
         ));
         $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('transaction')->forKey('serviceFee')->onAttribute('amount');
-        $this->assertEquals(Braintree_Error_Codes::SERVICE_FEE_AMOUNT_IS_TOO_LARGE, $errors[0]->code);
+        $errors = $result->errors->forKey('transaction')->onAttribute('serviceFeeAmount');
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_SERVICE_FEE_AMOUNT_IS_TOO_LARGE, $errors[0]->code);
     }
 
     function testSale_withTooLongPurchaseOrderAttribute()
@@ -737,14 +707,11 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
             ),
-            'serviceFee' => array(
-                'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
-                'amount' => '12.75'
-            )
+            'serviceFeeAmount' => '12.75'
         ));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_SERVICE_FEE_IS_NOT_ALLOW_ON_CREDITS, $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_SERVICE_FEE_AMOUNT_IS_NOT_ALLOW_ON_CREDITS, $errors[0]->code);
     }
 
     function testSubmitForSettlement_nullAmount()
@@ -772,10 +739,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
             ),
-            'serviceFee' => array(
-                'merchantAccountId' => Braintree_TestHelper::defaultMerchantAccountId(),
-                'amount' => '5.00'
-            )
+            'serviceFeeAmount' => '5.00'
         ));
         $submitResult = Braintree_Transaction::submitForSettlement($transaction->id, '1.00');
         $errors = $submitResult->errors->forKey('transaction')->onAttribute('amount');
