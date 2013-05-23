@@ -438,7 +438,7 @@ class Braintree_CreditCard extends Braintree
     private static function baseSignature($options)
     {
          return array(
-             'billingAddressId', 'cardholderName', 'cvv', 'number',
+             'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
              'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
              array('options' => $options),
              array(

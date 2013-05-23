@@ -49,6 +49,20 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($card2->isDefault());
     }
 
+    function testCreate_withSecurityParams()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'deviceSessionId' => 'abc_123',
+            'cardholderName' => 'Cardholder',
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ));
+
+        $this->assertTrue($result->success);
+    }
+
     function testCreate_withExpirationMonthAndYear()
     {
         $customer = Braintree_Customer::createNoValidate();

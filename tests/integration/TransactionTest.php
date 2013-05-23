@@ -46,7 +46,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('MyShoppingCartProvider', $cloneTransaction->channel);
     }
 
-
     function testCloneTransactionAndSubmitForSettlement()
     {
         $result = Braintree_Transaction::sale(array(
@@ -1113,6 +1112,20 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertNull($transaction->vaultCreditCard());
         $this->assertNull($transaction->customerDetails->id);
         $this->assertNull($transaction->vaultCustomer());
+    }
+
+    function testSale_withFraudParams()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'deviceSessionId' => '123abc',
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            )
+        ));
+
+        $this->assertTrue($result->success);
     }
 
     function testSale_withDescriptor()

@@ -2,3 +2,4 @@
 /docs
 /tags
 composer.lock
+*.tgz

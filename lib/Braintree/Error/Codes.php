@@ -76,6 +76,7 @@ class Braintree_Error_Codes
     const CREDIT_CARD_NUMBER_MUST_BE_TEST_NUMBER                                        = '81717';
     const CREDIT_CARD_OPTIONS_UPDATE_EXISTING_TOKEN_IS_INVALID                          = '91723';
     const CREDIT_CARD_OPTIONS_VERIFICATION_MERCHANT_ACCOUNT_ID_IS_INVALID               = '91728';
+    const CREDIT_CARD_OPTIONS_UPDATE_EXISTING_TOKEN_NOT_ALLOWED                         = '91729';
     const CREDIT_CARD_PAYMENT_METHOD_CONFLICT                                           = '81725';
     const CREDIT_CARD_TOKEN_FORMAT_IS_INVALID                                           = '91718';
     const CREDIT_CARD_TOKEN_INVALID                                                     = '91718';
