@@ -154,7 +154,7 @@ class Braintree_CreditCard extends Braintree
     {
         $response = Braintree_Http::post("/payment_methods/all/expired", array('search' => array('ids' => $ids)));
 
-        return braintree_util::extractattributeasarray(
+        return Braintree_Util::extractattributeasarray(
             $response['paymentMethods'],
             'creditCard'
         );

@@ -36,7 +36,7 @@ class Braintree_Customer extends Braintree
 {
     public static function all()
     {
-        $response = braintree_http::post('/customers/advanced_search_ids');
+        $response = Braintree_Http::post('/customers/advanced_search_ids');
         $pager = array(
             'className' => __CLASS__,
             'classMethod' => 'fetch',
@@ -53,9 +53,9 @@ class Braintree_Customer extends Braintree
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = Braintree_CustomerSearch::ids()->in($ids)->toparam();
-        $response = braintree_http::post('/customers/advanced_search', array('search' => $criteria));
+        $response = Braintree_Http::post('/customers/advanced_search', array('search' => $criteria));
 
-        return braintree_util::extractattributeasarray(
+        return Braintree_Util::extractattributeasarray(
             $response['customers'],
             'customer'
         );
@@ -302,7 +302,7 @@ class Braintree_Customer extends Braintree
             $criteria[$term->name] = $term->toparam();
         }
 
-        $response = braintree_http::post('/customers/advanced_search_ids', array('search' => $criteria));
+        $response = Braintree_Http::post('/customers/advanced_search_ids', array('search' => $criteria));
         $pager = array(
             'className' => __CLASS__,
             'classMethod' => 'fetch',
