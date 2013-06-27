@@ -711,7 +711,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_SERVICE_FEE_AMOUNT_IS_NOT_ALLOW_ON_CREDITS, $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_SERVICE_FEE_IS_NOT_ALLOWED_ON_CREDITS, $errors[0]->code);
     }
 
     function testSubmitForSettlement_nullAmount()
