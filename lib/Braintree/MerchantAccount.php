@@ -2,7 +2,9 @@
 
 final class Braintree_MerchantAccount extends Braintree
 {
+    const STATUS_ACTIVE  = 'active';
     const STATUS_PENDING = 'pending';
+    const STATUS_SUSPENDED = 'suspended';
 
     public static function create($attribs)
     {

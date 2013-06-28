@@ -8,6 +8,8 @@ class Braintree_WebhookNotification extends Braintree
     const SUBSCRIPTION_TRIAL_ENDED = 'subscription_trial_ended';
     const SUBSCRIPTION_WENT_ACTIVE = 'subscription_went_active';
     const SUBSCRIPTION_WENT_PAST_DUE = 'subscription_went_past_due';
+    const SUB_MERCHANT_ACCOUNT_APPROVED = 'sub_merchant_account_approved';
+    const SUB_MERCHANT_ACCOUNT_DECLINED = 'sub_merchant_account_declined';
 
     public static function parse($signature, $payload)
     {
@@ -61,6 +63,13 @@ class Braintree_WebhookNotification extends Braintree
         $this->_attributes = $attributes;
         if (isset($attributes['subject']) && isset($attributes['subject']['subscription'])) {
             $this->_set('subscription', Braintree_Subscription::factory($attributes['subject']['subscription']));
+        }
+        if (isset($attributes['subject']) && isset($attributes['subject']['merchantAccount'])) {
+            $this->_set('merchantAccount', Braintree_MerchantAccount::factory($attributes['subject']['merchantAccount']));
+        }
+        if (isset($attributes['subject']) && isset($attributes['subject']['apiErrorResponse'])) {
+            $this->_set('errors', new Braintree_Result_Error($attributes['subject']['apiErrorResponse']));
+            $this->_set('message', $attributes['subject']['apiErrorResponse']['message']);
         }
     }
 }
