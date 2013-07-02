@@ -125,12 +125,12 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED, $webhookNotification->kind);
-        $this->assertEquals("sub_merchant_account_id", $webhookNotification->errors->merchantAccount->id);
-        $this->assertEquals(Braintree_MerchantAccount::STATUS_SUSPENDED, $webhookNotification->errors->merchantAccount->status);
-        $this->assertEquals("master_merchant_account_id", $webhookNotification->errors->merchantAccount->masterMerchantAccount->id);
-        $this->assertEquals(Braintree_MerchantAccount::STATUS_ACTIVE, $webhookNotification->errors->merchantAccount->masterMerchantAccount->status);
+        $this->assertEquals("sub_merchant_account_id", $webhookNotification->merchantAccount->id);
+        $this->assertEquals(Braintree_MerchantAccount::STATUS_SUSPENDED, $webhookNotification->merchantAccount->status);
+        $this->assertEquals("master_merchant_account_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
+        $this->assertEquals(Braintree_MerchantAccount::STATUS_ACTIVE, $webhookNotification->merchantAccount->masterMerchantAccount->status);
         $this->assertEquals("Applicant declined due to OFAC.", $webhookNotification->message);
-        $errors = $webhookNotification->errors->errors->forKey('merchantAccount')->onAttribute('base');
+        $errors = $webhookNotification->errors->forKey('merchantAccount')->onAttribute('base');
         $this->assertEquals(Braintree_Error_Codes::MERCHANT_ACCOUNT_APPLICANT_DETAILS_DECLINED_OFAC, $errors[0]->code);
     }
 }

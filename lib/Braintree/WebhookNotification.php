@@ -61,15 +61,24 @@ class Braintree_WebhookNotification extends Braintree
     protected function _initialize($attributes)
     {
         $this->_attributes = $attributes;
-        if (isset($attributes['subject']) && isset($attributes['subject']['subscription'])) {
+
+        if (isset($attributes['subject']['apiErrorResponse'])) {
+            $wrapperNode = $attributes['subject']['apiErrorResponse'];
+        } else {
+            $wrapperNode = $attributes['subject'];
+        }
+
+        if (isset($wrapperNode['subscription'])) {
             $this->_set('subscription', Braintree_Subscription::factory($attributes['subject']['subscription']));
         }
-        if (isset($attributes['subject']) && isset($attributes['subject']['merchantAccount'])) {
-            $this->_set('merchantAccount', Braintree_MerchantAccount::factory($attributes['subject']['merchantAccount']));
+
+        if (isset($wrapperNode['merchantAccount'])) {
+            $this->_set('merchantAccount', Braintree_MerchantAccount::factory($wrapperNode['merchantAccount']));
         }
-        if (isset($attributes['subject']) && isset($attributes['subject']['apiErrorResponse'])) {
-            $this->_set('errors', new Braintree_Result_Error($attributes['subject']['apiErrorResponse']));
-            $this->_set('message', $attributes['subject']['apiErrorResponse']['message']);
+
+        if (isset($wrapperNode['errors'])) {
+            $this->_set('errors', new Braintree_Error_ValidationErrorCollection($wrapperNode['errors']));
+            $this->_set('message', $wrapperNode['message']);
         }
     }
 }
