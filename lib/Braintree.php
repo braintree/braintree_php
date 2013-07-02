@@ -105,6 +105,7 @@ require_once('Braintree/EqualityNode.php');
 require_once('Braintree/Exception.php');
 require_once('Braintree/Http.php');
 require_once('Braintree/KeyValueNode.php');
+require_once('Braintree/MerchantAccount.php');
 require_once('Braintree/MultipleValueNode.php');
 require_once('Braintree/MultipleValueOrTextNode.php');
 require_once('Braintree/PartialMatchNode.php');
