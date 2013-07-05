@@ -36,6 +36,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $expected = array(
             'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
+            'bundledParams',
             array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'venmoSdkSession', 'failOnDuplicatePaymentMethod')),
             array(
                 'billingAddress' => array(
@@ -63,6 +64,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $expected = array(
             'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
+            'bundledParams',
             array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'venmoSdkSession')),
             array(
                 'billingAddress' => array(
