@@ -74,14 +74,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
     function testBuildsASampleNotificationForAMerchantAccountApprovedWebhook()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED, array(
-                "id" => "sub_merchant_account_id",
-                "status" => Braintree_MerchantAccount::STATUS_ACTIVE,
-                "master_merchant_account" => array(
-                    "id" => "master_merchant_account_id",
-                    "status" => Braintree_MerchantAccount::STATUS_ACTIVE
-                )
-            )
+            Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED,
+            "my_id"
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
@@ -90,33 +84,17 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED, $webhookNotification->kind);
-        $this->assertEquals("sub_merchant_account_id", $webhookNotification->merchantAccount->id);
+        $this->assertEquals("my_id", $webhookNotification->merchantAccount->id);
         $this->assertEquals(Braintree_MerchantAccount::STATUS_ACTIVE, $webhookNotification->merchantAccount->status);
-        $this->assertEquals("master_merchant_account_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
+        $this->assertEquals("master_ma_for_my_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
         $this->assertEquals(Braintree_MerchantAccount::STATUS_ACTIVE, $webhookNotification->merchantAccount->masterMerchantAccount->status);
     }
 
     function testBuildsASampleNotificationForAMerchantAccountDeclinedWebhook()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED, array(
-                "message" => "Applicant declined due to OFAC.",
-                "merchant_account" => array(
-                    "id" => "sub_merchant_account_id",
-                    "status" => Braintree_MerchantAccount::STATUS_SUSPENDED,
-                    "master_merchant_account" => array(
-                        "id" => "master_merchant_account_id",
-                        "status" => Braintree_MerchantAccount::STATUS_ACTIVE
-                    )
-                ),
-                "errors" => array(
-                    array(
-                        "attribute" => "base",
-                        "code" => "82621",
-                        "message" => "Applicant declined due to OFAC."
-                    )
-                )
-            )
+            Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED,
+            "my_id"
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
@@ -125,11 +103,11 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED, $webhookNotification->kind);
-        $this->assertEquals("sub_merchant_account_id", $webhookNotification->merchantAccount->id);
+        $this->assertEquals("my_id", $webhookNotification->merchantAccount->id);
         $this->assertEquals(Braintree_MerchantAccount::STATUS_SUSPENDED, $webhookNotification->merchantAccount->status);
-        $this->assertEquals("master_merchant_account_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
-        $this->assertEquals(Braintree_MerchantAccount::STATUS_ACTIVE, $webhookNotification->merchantAccount->masterMerchantAccount->status);
-        $this->assertEquals("Applicant declined due to OFAC.", $webhookNotification->message);
+        $this->assertEquals("master_ma_for_my_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
+        $this->assertEquals(Braintree_MerchantAccount::STATUS_SUSPENDED, $webhookNotification->merchantAccount->masterMerchantAccount->status);
+        $this->assertEquals("Credit score is too low", $webhookNotification->message);
         $errors = $webhookNotification->errors->forKey('merchantAccount')->onAttribute('base');
         $this->assertEquals(Braintree_Error_Codes::MERCHANT_ACCOUNT_APPLICANT_DETAILS_DECLINED_OFAC, $errors[0]->code);
     }

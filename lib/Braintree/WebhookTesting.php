@@ -1,13 +1,9 @@
 <?php
 class Braintree_WebhookTesting
 {
-    public static function sampleNotification($kind, $data)
+    public static function sampleNotification($kind, $id)
     {
-        if (is_string($data)) {
-            $data = array("id" => $data);
-        }
-
-        $payload = base64_encode(self::_sampleXml($kind, $data));
+        $payload = base64_encode(self::_sampleXml($kind, $id));
         $signature = Braintree_Configuration::publicKey() . "|" . Braintree_Digest::hexDigest($payload);
 
         return array(
@@ -16,17 +12,17 @@ class Braintree_WebhookTesting
         );
     }
 
-    private static function _sampleXml($kind, $data)
+    private static function _sampleXml($kind, $id)
     {
         switch ($kind) {
             case Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED:
-                $subjectXml = self::_merchantAccountSampleXml($data);
+                $subjectXml = self::_merchantAccountApprovedSampleXml($id);
                 break;
             case Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED:
-                $subjectXml = self::_merchantAccountDeclinedSampleXml($data);
+                $subjectXml = self::_merchantAccountDeclinedSampleXml($id);
                 break;
             default:
-                $subjectXml = self::_subscriptionSampleXml($data);
+                $subjectXml = self::_subscriptionSampleXml($id);
                 break;
         }
         $timestamp = self::_timestamp();
@@ -39,61 +35,54 @@ class Braintree_WebhookTesting
         ";
     }
 
-    private static function _merchantAccountSampleXml($data)
+    private static function _merchantAccountApprovedSampleXml($id)
     {
         return "
         <merchant_account>
-            <id>{$data["id"]}</id>
+            <id>{$id}</id>
             <master_merchant_account>
-                <id>{$data["master_merchant_account"]["id"]}</id>
-                <status>{$data["master_merchant_account"]["status"]}</status>
+                <id>master_ma_for_{$id}</id>
+                <status>active</status>
             </master_merchant_account>
-            <status>{$data["status"]}</status>
+            <status>active</status>
         </merchant_account>
         ";
     }
 
-    private static function _merchantAccountDeclinedSampleXml($data)
+    private static function _merchantAccountDeclinedSampleXml($id)
     {
-        $errorSampleXml = self::_errorsSampleXml($data['errors']);
-        $merchantAccountSampleXml = self::_merchantAccountSampleXml($data['merchant_account']);
         return "
         <api-error-response>
-            <message>{$data['message']}</message>
+            <message>Credit score is too low</message>
             <errors>
+                <errors type=\"array\"/>
+                    <merchant-account>
+                        <errors type=\"array\">
+                            <error>
+                                <code>82621</code>
+                                <message>Credit score is too low</message>
+                                <attribute type=\"symbol\">base</attribute>
+                            </error>
+                        </errors>
+                    </merchant-account>
+                </errors>
                 <merchant-account>
-                    <errors type='array'>
-                    {$errorSampleXml}
-                    </errors>
+                    <id>{$id}</id>
+                    <status>suspended</status>
+                    <master-merchant-account>
+                        <id>master_ma_for_{$id}</id>
+                        <status>suspended</status>
+                    </master-merchant-account>
                 </merchant-account>
-            </errors>
-            {$merchantAccountSampleXml}
         </api-error-response>
         ";
     }
 
-
-    private static function _errorsSampleXml($errors)
-    {
-        return implode("\n", array_map("self::_errorSampleXml", $errors));
-    }
-
-    private static function _errorSampleXml($error)
-    {
-        return "
-        <error>
-            <attribute>{$error["attribute"]}</attribute>
-            <code>{$error["code"]}</code>
-            <message>{$error["message"]}</message>
-        </error>
-        ";
-    }
-
-    private static function _subscriptionSampleXml($data)
+    private static function _subscriptionSampleXml($id)
     {
         return "
         <subscription>
-            <id>{$data["id"]}</id>
+            <id>{$id}</id>
             <transactions type=\"array\">
             </transactions>
             <add_ons type=\"array\">
