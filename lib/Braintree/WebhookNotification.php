@@ -10,6 +10,7 @@ class Braintree_WebhookNotification extends Braintree
     const SUBSCRIPTION_WENT_PAST_DUE = 'subscription_went_past_due';
     const SUB_MERCHANT_ACCOUNT_APPROVED = 'sub_merchant_account_approved';
     const SUB_MERCHANT_ACCOUNT_DECLINED = 'sub_merchant_account_declined';
+    const TRANSACTION_DISBURSED = 'transaction_disbursed';
 
     public static function parse($signature, $payload)
     {
@@ -74,6 +75,10 @@ class Braintree_WebhookNotification extends Braintree
 
         if (isset($wrapperNode['merchantAccount'])) {
             $this->_set('merchantAccount', Braintree_MerchantAccount::factory($wrapperNode['merchantAccount']));
+        }
+
+        if (isset($wrapperNode['transaction'])) {
+            $this->_set('transaction', Braintree_Transaction::factory($wrapperNode['transaction']));
         }
 
         if (isset($wrapperNode['errors'])) {

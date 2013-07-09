@@ -111,5 +111,23 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $errors = $webhookNotification->errors->forKey('merchantAccount')->onAttribute('base');
         $this->assertEquals(Braintree_Error_Codes::MERCHANT_ACCOUNT_APPLICANT_DETAILS_DECLINED_OFAC, $errors[0]->code);
     }
+
+    function testBuildsASampleNotificationForATransactionDisbursedWebhook()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::TRANSACTION_DISBURSED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            $sampleNotification['payload']
+        );
+
+        $this->assertEquals(Braintree_WebhookNotification::TRANSACTION_DISBURSED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->transaction->id);
+        $this->assertEquals(100, $webhookNotification->transaction->amount);
+        $this->assertNotNull($webhookNotification->transaction->disbursementDetails->disbursementDate);
+    }
 }
 ?>

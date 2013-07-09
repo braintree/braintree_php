@@ -21,6 +21,9 @@ class Braintree_WebhookTesting
             case Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED:
                 $subjectXml = self::_merchantAccountDeclinedSampleXml($id);
                 break;
+            case Braintree_WebhookNotification::TRANSACTION_DISBURSED:
+                $subjectXml = self::_transactionDisbursedSampleXml($id);
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -75,6 +78,19 @@ class Braintree_WebhookTesting
                     </master-merchant-account>
                 </merchant-account>
         </api-error-response>
+        ";
+    }
+
+    private static function _transactionDisbursedSampleXml($id)
+    {
+        return "
+        <transaction>
+            <id>${id}</id>
+            <amount>100</amount>
+            <disbursement-details>
+                <disbursement-date type=\"datetime\">2013-07-09T18:23:29Z</disbursement-date>
+            </disbursement-details>
+        </transaction>
         ";
     }
 
