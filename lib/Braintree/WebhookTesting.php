@@ -15,10 +15,10 @@ class Braintree_WebhookTesting
     private static function _sampleXml($kind, $id)
     {
         switch ($kind) {
-            case Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED:
+            case Braintree_WebhookNotification::MERCHANT_ACCOUNT_APPROVED:
                 $subjectXml = self::_merchantAccountApprovedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED:
+            case Braintree_WebhookNotification::MERCHANT_ACCOUNT_DECLINED:
                 $subjectXml = self::_merchantAccountDeclinedSampleXml($id);
                 break;
             case Braintree_WebhookNotification::TRANSACTION_DISBURSED:
