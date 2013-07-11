@@ -74,7 +74,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
     function testBuildsASampleNotificationForAMerchantAccountApprovedWebhook()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::MERCHANT_ACCOUNT_APPROVED,
+            Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED,
             "my_id"
         );
 
@@ -83,7 +83,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
             $sampleNotification['payload']
         );
 
-        $this->assertEquals(Braintree_WebhookNotification::MERCHANT_ACCOUNT_APPROVED, $webhookNotification->kind);
+        $this->assertEquals(Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED, $webhookNotification->kind);
         $this->assertEquals("my_id", $webhookNotification->merchantAccount->id);
         $this->assertEquals(Braintree_MerchantAccount::STATUS_ACTIVE, $webhookNotification->merchantAccount->status);
         $this->assertEquals("master_ma_for_my_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
@@ -93,7 +93,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
     function testBuildsASampleNotificationForAMerchantAccountDeclinedWebhook()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::MERCHANT_ACCOUNT_DECLINED,
+            Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED,
             "my_id"
         );
 
@@ -102,7 +102,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
             $sampleNotification['payload']
         );
 
-        $this->assertEquals(Braintree_WebhookNotification::MERCHANT_ACCOUNT_DECLINED, $webhookNotification->kind);
+        $this->assertEquals(Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED, $webhookNotification->kind);
         $this->assertEquals("my_id", $webhookNotification->merchantAccount->id);
         $this->assertEquals(Braintree_MerchantAccount::STATUS_SUSPENDED, $webhookNotification->merchantAccount->status);
         $this->assertEquals("master_ma_for_my_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
