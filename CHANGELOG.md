@@ -1,3 +1,7 @@
+## 2.21.0
+
+* Enable device data.
+
 ## 2.20.0
 
 * Fixed getting custom fields with valueForHtmlField. [Thanks to Miguel Manso for the fix.](https://github.com/mumia)
