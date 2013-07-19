@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Exception;
+
 /**
  * Raised when an unexpected error occurs
  *
@@ -6,6 +9,7 @@
  * @subpackage Exception
  * @copyright  2010 Braintree Payment Solutions
  */
+use Braintree\Exception;
 
 /**
  * Raised when an error occurs that the client library is not built to handle.
@@ -15,7 +19,7 @@
  * @subpackage Exception
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_Exception_Unexpected extends Braintree_Exception
+class Unexpected extends Exception
 {
 
 }

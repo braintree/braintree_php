@@ -1,13 +1,16 @@
 <?php
-class Braintree_AddOn extends Braintree_Modification
+
+namespace Braintree;
+
+class AddOn extends Modification
 {
     public static function all()
     {
-        $response = Braintree_Http::get('/add_ons');
+        $response = Http::get('/add_ons');
 
         $addOns = array("addOn" => $response['addOns']);
 
-        return Braintree_Util::extractAttributeAsArray(
+        return Util::extractAttributeAsArray(
             $addOns,
             'addOn'
         );

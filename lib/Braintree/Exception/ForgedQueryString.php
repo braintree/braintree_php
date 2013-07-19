@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Exception;
+
 /**
  * Raised when a suspected forged query string is present
  *
@@ -6,6 +9,7 @@
  * @subpackage Exception
  * @copyright  2010 Braintree Payment Solutions
  */
+use Braintree\Exception;
 
 /**
  * Raised from methods that confirm transparent request requests
@@ -17,7 +21,7 @@
  * @subpackage Exception
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_Exception_ForgedQueryString extends Braintree_Exception
+class ForgedQueryString extends Exception
 {
 
 }

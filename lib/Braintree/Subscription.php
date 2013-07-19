@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree;
+
 /**
  * Braintree Subscription module
  *
@@ -11,7 +14,7 @@
  * @package   Braintree
  * @copyright 2010 Braintree Payment Solutions
  */
-class Braintree_Subscription extends Braintree
+class Subscription extends Braintree
 {
     const ACTIVE = 'Active';
     const CANCELED = 'Canceled';
@@ -21,8 +24,8 @@ class Braintree_Subscription extends Braintree
 
     public static function create($attributes)
     {
-        Braintree_Util::verifyKeys(self::_createSignature(), $attributes);
-        $response = Braintree_Http::post('/subscriptions', array('subscription' => $attributes));
+        Util::verifyKeys(self::_createSignature(), $attributes);
+        $response = Http::post('/subscriptions', array('subscription' => $attributes));
         return self::_verifyGatewayResponse($response);
     }
 
@@ -42,14 +45,18 @@ class Braintree_Subscription extends Braintree
         self::_validateId($id);
 
         try {
-            $response = Braintree_Http::get('/subscriptions/' . $id);
+            $response = Http::get('/subscriptions/' . $id);
             return self::factory($response['subscription']);
-        } catch (Braintree_Exception_NotFound $e) {
-            throw new Braintree_Exception_NotFound('subscription with id ' . $id . ' not found');
+        } catch (Exception\NotFound $e) {
+            throw new Exception\NotFound('subscription with id ' . $id . ' not found');
         }
 
     }
 
+    /**
+     * @param IsNode[] $query
+     * @return ResourceCollection
+     */
     public static function search($query)
     {
         $criteria = array();
@@ -58,26 +65,31 @@ class Braintree_Subscription extends Braintree
         }
 
 
-        $response = braintree_http::post('/subscriptions/advanced_search_ids', array('search' => $criteria));
+        $response = Http::post('/subscriptions/advanced_search_ids', array('search' => $criteria));
         $pager = array(
             'className' => __CLASS__,
             'classMethod' => 'fetch',
             'methodArgs' => array($query)
             );
 
-        return new Braintree_ResourceCollection($response, $pager);
+        return new ResourceCollection($response, $pager);
     }
 
+    /**
+     * @param IsNode[] $query
+     * @param Int[] $ids
+     * @return object[]
+     */
     public static function fetch($query, $ids)
     {
         $criteria = array();
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
-        $criteria["ids"] = Braintree_SubscriptionSearch::ids()->in($ids)->toparam();
-        $response = Braintree_Http::post('/subscriptions/advanced_search', array('search' => $criteria));
+        $criteria["ids"] = SubscriptionSearch::ids()->in($ids)->toparam();
+        $response = Http::post('/subscriptions/advanced_search', array('search' => $criteria));
 
-        return Braintree_Util::extractAttributeAsArray(
+        return Util::extractAttributeAsArray(
             $response['subscriptions'],
             'subscription'
         );
@@ -85,8 +97,8 @@ class Braintree_Subscription extends Braintree
 
     public static function update($subscriptionId, $attributes)
     {
-        Braintree_Util::verifyKeys(self::_updateSignature(), $attributes);
-        $response = Braintree_Http::put(
+        Util::verifyKeys(self::_updateSignature(), $attributes);
+        $response = Http::put(
             '/subscriptions/' . $subscriptionId,
             array('subscription' => $attributes)
         );
@@ -95,13 +107,13 @@ class Braintree_Subscription extends Braintree
 
     public static function retryCharge($subscriptionId, $amount = null)
     {
-        $transaction_params = array('type' => Braintree_Transaction::SALE,
+        $transaction_params = array('type' => Transaction::SALE,
             'subscriptionId' => $subscriptionId);
         if (isset($amount)) {
             $transaction_params['amount'] = $amount;
         }
 
-        $response = Braintree_Http::post(
+        $response = Http::post(
             '/transactions',
             array('transaction' => $transaction_params));
         return self::_verifyGatewayResponse($response);
@@ -109,7 +121,7 @@ class Braintree_Subscription extends Braintree
 
     public static function cancel($subscriptionId)
     {
-        $response = Braintree_Http::put('/subscriptions/' . $subscriptionId . '/cancel');
+        $response = Http::put('/subscriptions/' . $subscriptionId . '/cancel');
         return self::_verifyGatewayResponse($response);
     }
 
@@ -179,7 +191,7 @@ class Braintree_Subscription extends Braintree
         $addOnArray = array();
         if (isset($attributes['addOns'])) {
             foreach ($attributes['addOns'] AS $addOn) {
-                $addOnArray[] = Braintree_AddOn::factory($addOn);
+                $addOnArray[] = AddOn::factory($addOn);
             }
         }
         $this->_attributes['addOns'] = $addOnArray;
@@ -187,19 +199,19 @@ class Braintree_Subscription extends Braintree
         $discountArray = array();
         if (isset($attributes['discounts'])) {
             foreach ($attributes['discounts'] AS $discount) {
-                $discountArray[] = Braintree_Discount::factory($discount);
+                $discountArray[] = Discount::factory($discount);
             }
         }
         $this->_attributes['discounts'] = $discountArray;
 
         if (isset($attributes['descriptor'])) {
-            $this->_set('descriptor', new Braintree_Descriptor($attributes['descriptor']));
+            $this->_set('descriptor', new Descriptor($attributes['descriptor']));
         }
 
         $transactionArray = array();
         if (isset($attributes['transactions'])) {
             foreach ($attributes['transactions'] AS $transaction) {
-                $transactionArray[] = Braintree_Transaction::factory($transaction);
+                $transactionArray[] = Transaction::factory($transaction);
             }
         }
         $this->_attributes['transactions'] = $transactionArray;
@@ -210,12 +222,12 @@ class Braintree_Subscription extends Braintree
      */
     private static function _validateId($id = null) {
         if (empty($id)) {
-           throw new InvalidArgumentException(
+           throw new \InvalidArgumentException(
                    'expected subscription id to be set'
                    );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                     $id . ' is an invalid subscription id.'
                     );
         }
@@ -226,18 +238,18 @@ class Braintree_Subscription extends Braintree
     private static function _verifyGatewayResponse($response)
     {
         if (isset($response['subscription'])) {
-            return new Braintree_Result_Successful(
+            return new Result\Successful(
                 self::factory($response['subscription'])
             );
         } else if (isset($response['transaction'])) {
-            // return a populated instance of Braintree_Transaction, for subscription retryCharge
-            return new Braintree_Result_Successful(
-                Braintree_Transaction::factory($response['transaction'])
+            // return a populated instance of Transaction, for subscription retryCharge
+            return new Result\Successful(
+                Transaction::factory($response['transaction'])
             );
         } else if (isset($response['apiErrorResponse'])) {
-            return new Braintree_Result_Error($response['apiErrorResponse']);
+            return new Result\Error($response['apiErrorResponse']);
         } else {
-            throw new Braintree_Exception_Unexpected(
+            throw new Exception\Unexpected(
             "Expected subscription, transaction, or apiErrorResponse"
             );
         }
@@ -250,7 +262,7 @@ class Braintree_Subscription extends Braintree
     public function  __toString()
     {
         return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) .']';
     }
 
 }

@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Exception;
+
 /**
  * Raised when authentication fails
  *
@@ -6,16 +9,17 @@
  * @subpackage Exception
  * @copyright  2010 Braintree Payment Solutions
  */
+use Braintree\Exception;
 
 /**
  * Raised when authentication fails.
- * This may be caused by an incorrect Braintree_Configuration
+ * This may be caused by an incorrect Configuration
  *
  * @package    Braintree
  * @subpackage Exception
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_Exception_Authentication extends Braintree_Exception
+class Authentication extends Exception
 {
     
 }

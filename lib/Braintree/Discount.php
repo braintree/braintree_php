@@ -1,13 +1,16 @@
 <?php
-class Braintree_Discount extends Braintree_Modification
+
+namespace Braintree;
+
+class Discount extends Modification
 {
     public static function all()
     {
-        $response = Braintree_Http::get('/discounts');
+        $response = Http::get('/discounts');
 
         $discounts = array("discount" => $response['discounts']);
 
-        return Braintree_Util::extractAttributeAsArray(
+        return Util::extractAttributeAsArray(
             $discounts,
             'discount'
         );

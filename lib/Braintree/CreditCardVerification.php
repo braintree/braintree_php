@@ -1,5 +1,8 @@
 <?php
-class Braintree_CreditCardVerification extends Braintree_Result_CreditCardVerification
+
+namespace Braintree;
+
+class CreditCardVerification extends Result\CreditCardVerification
 {
     public static function factory($attributes)
     {
@@ -7,21 +10,30 @@ class Braintree_CreditCardVerification extends Braintree_Result_CreditCardVerifi
         return $instance;
     }
 
+    /**
+     * @param IsNode[] $query
+     * @param Int[] $ids
+     * @return object[]
+     */
     public static function fetch($query, $ids)
     {
         $criteria = array();
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
-        $criteria["ids"] = Braintree_CreditCardVerificationSearch::ids()->in($ids)->toparam();
-        $response = braintree_http::post('/verifications/advanced_search', array('search' => $criteria));
+        $criteria["ids"] = CreditCardVerificationSearch::ids()->in($ids)->toparam();
+        $response = Http::post('/verifications/advanced_search', array('search' => $criteria));
 
-        return braintree_util::extractattributeasarray(
+        return Util::extractattributeasarray(
             $response['creditCardVerifications'],
             'verification'
         );
     }
 
+    /**
+     * @param IsNode[] $query
+     * @return ResourceCollection
+     */
     public static function search($query)
     {
         $criteria = array();
@@ -29,13 +41,13 @@ class Braintree_CreditCardVerification extends Braintree_Result_CreditCardVerifi
             $criteria[$term->name] = $term->toparam();
         }
 
-        $response = braintree_http::post('/verifications/advanced_search_ids', array('search' => $criteria));
+        $response = Http::post('/verifications/advanced_search_ids', array('search' => $criteria));
         $pager = array(
             'className' => __CLASS__,
             'classMethod' => 'fetch',
             'methodArgs' => array($query)
             );
 
-        return new Braintree_ResourceCollection($response, $pager);
+        return new ResourceCollection($response, $pager);
     }
 }

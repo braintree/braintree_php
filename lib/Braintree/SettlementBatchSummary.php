@@ -1,5 +1,8 @@
 <?php
-class Braintree_SettlementBatchSummary extends Braintree
+
+namespace Braintree;
+
+class SettlementBatchSummary extends Braintree
 {
     public static function generate($settlement_date, $groupByCustomField = NULL)
     {
@@ -9,7 +12,7 @@ class Braintree_SettlementBatchSummary extends Braintree
             $criteria['group_by_custom_field'] = $groupByCustomField;
         }
         $params = array('settlement_batch_summary' => $criteria);
-        $response = Braintree_Http::post('/settlement_batch_summary', $params);
+        $response = Http::post('/settlement_batch_summary', $params);
 
         if (isset($groupByCustomField))
         {
@@ -28,7 +31,7 @@ class Braintree_SettlementBatchSummary extends Braintree
 
         foreach ($records as $record)
         {
-            $camelized = Braintree_Util::delimiterToCamelCase($groupByCustomField);
+            $camelized = Util::delimiterToCamelCase($groupByCustomField);
             $record[$groupByCustomField] = $record[$camelized];
             unset($record[$camelized]);
             $updatedRecords[] = $record;
@@ -40,13 +43,13 @@ class Braintree_SettlementBatchSummary extends Braintree
     private static function _verifyGatewayResponse($response)
     {
         if (isset($response['settlementBatchSummary'])) {
-            return new Braintree_Result_Successful(
+            return new Result\Successful(
                 self::factory($response['settlementBatchSummary'])
             );
         } else if (isset($response['apiErrorResponse'])) {
-            return new Braintree_Result_Error($response['apiErrorResponse']);
+            return new Result\Error($response['apiErrorResponse']);
         } else {
-            throw new Braintree_Exception_Unexpected(
+            throw new Exception\Unexpected(
                 "Expected settlementBatchSummary or apiErrorResponse"
             );
         }

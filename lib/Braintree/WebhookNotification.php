@@ -1,5 +1,8 @@
 <?php
-class Braintree_WebhookNotification extends Braintree
+
+namespace Braintree;
+
+class WebhookNotification extends Braintree
 {
     const SUBSCRIPTION_CANCELED = 'subscription_canceled';
     const SUBSCRIPTION_CHARGED_SUCCESSFULLY = 'subscription_charged_successfully';
@@ -14,14 +17,14 @@ class Braintree_WebhookNotification extends Braintree
         self::_validateSignature($signature, $payload);
 
         $xml = base64_decode($payload);
-        $attributes = Braintree_Xml::buildArrayFromXml($xml);
+        $attributes = Xml::buildArrayFromXml($xml);
         return self::factory($attributes['notification']);
     }
 
     public static function verify($challenge)
     {
-        $publicKey = Braintree_Configuration::publicKey();
-        $digest = Braintree_Digest::hexDigest($challenge);
+        $publicKey = Configuration::publicKey();
+        $digest = Digest::hexDigest($challenge);
         return "{$publicKey}|{$digest}";
     }
 
@@ -37,7 +40,7 @@ class Braintree_WebhookNotification extends Braintree
         foreach ($signaturePairs as $pair)
         {
             $components = preg_split("/\|/", $pair);
-            if ($components[0] == Braintree_Configuration::publicKey()) {
+            if ($components[0] == Configuration::publicKey()) {
                 return $components[1];
             }
         }
@@ -50,9 +53,9 @@ class Braintree_WebhookNotification extends Braintree
         $signaturePairs = preg_split("/&/", $signature);
         $matchingSignature = self::_matchingSignature($signaturePairs);
 
-        $payloadSignature = Braintree_Digest::hexDigest($payload);
-        if (!Braintree_Digest::secureCompare($matchingSignature, $payloadSignature)) {
-            throw new Braintree_Exception_InvalidSignature("webhook notification signature invalid");
+        $payloadSignature = Digest::hexDigest($payload);
+        if (!Digest::secureCompare($matchingSignature, $payloadSignature)) {
+            throw new Exception\InvalidSignature("webhook notification signature invalid");
         }
     }
 
@@ -60,7 +63,7 @@ class Braintree_WebhookNotification extends Braintree
     {
         $this->_attributes = $attributes;
         if (isset($attributes['subject']) && isset($attributes['subject']['subscription'])) {
-            $this->_set('subscription', Braintree_Subscription::factory($attributes['subject']['subscription']));
+            $this->_set('subscription', Subscription::factory($attributes['subject']['subscription']));
         }
     }
 }

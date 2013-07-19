@@ -1,6 +1,9 @@
 <?php
 
-class Braintree_TextNode extends Braintree_PartialMatchNode
+namespace Braintree;
+
+
+class TextNode extends PartialMatchNode
 {
     function contains($value)
     {

@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Exception;
+
 /**
  * Raised when authorization fails
  *
@@ -6,6 +9,7 @@
  * @subpackage Exception
  * @copyright  2010 Braintree Payment Solutions
  */
+use Braintree\Exception;
 
 
 /**
@@ -17,7 +21,7 @@
  * @subpackage Exception
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_Exception_Authorization extends Braintree_Exception
+class Authorization extends Exception
 {
 
 }

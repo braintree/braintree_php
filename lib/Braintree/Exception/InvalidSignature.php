@@ -1,5 +1,10 @@
 <?php
-class Braintree_Exception_InvalidSignature extends Braintree_Exception
+
+namespace Braintree\Exception;
+
+use Braintree\Exception;
+
+class InvalidSignature extends Exception
 {
 
 }

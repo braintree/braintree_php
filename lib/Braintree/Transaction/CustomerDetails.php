@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Transaction;
+
 /**
  * Customer details from a transaction
  *
@@ -6,6 +9,7 @@
  * @subpackage Transaction
  * @copyright  2010 Braintree Payment Solutions
  */
+use Braintree\Instance;
 
 /**
  * Creates an instance of customer details as returned from a transaction
@@ -22,8 +26,8 @@
  * @property-read string $lastName
  * @property-read string $phone
  * @property-read string $website
- * @uses Braintree_Instance inherits methods
+ * @uses Instance inherits methods
  */
-class Braintree_Transaction_CustomerDetails extends Braintree_Instance
+class CustomerDetails extends Instance
 {
 }

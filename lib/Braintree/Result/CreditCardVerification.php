@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Result;
+
 /**
  * Braintree Credit Card Verification Result
  *
@@ -6,6 +9,7 @@
  * @subpackage Result
  * @copyright  2010 Braintree Payment Solutions
  */
+use Braintree\Util;
 
 /**
  * Braintree Credit Card Verification Result
@@ -25,7 +29,7 @@
  * @property-read string $status
  *
  */
-class Braintree_Result_CreditCardVerification
+class CreditCardVerification
 {
     // Status
     const FAILED                   = 'failed';
@@ -34,12 +38,6 @@ class Braintree_Result_CreditCardVerification
     const VERIFIED                 = 'verified';
 
     private $_attributes;
-    private $_avsErrorResponseCode;
-    private $_avsPostalCodeResponseCode;
-    private $_avsStreetAddressResponseCode;
-    private $_cvvResponseCode;
-    private $_gatewayRejectionReason;
-    private $_status;
 
     /**
      * @ignore
@@ -53,7 +51,7 @@ class Braintree_Result_CreditCardVerification
      * @ignore
      * @access protected
      * @param <type> $aAttribs array of properties to set - single level
-     * @return none
+     * @return void
      */
     private function _initializeFromArray($attributes)
     {
@@ -61,7 +59,7 @@ class Braintree_Result_CreditCardVerification
         foreach($attributes AS $name => $value) {
             $varName = "_$name";
             $this->$varName = $value;
-            // $this->$varName = Braintree_Util::delimiterToCamelCase($value, '_');
+            // $this->$varName = Util::delimiterToCamelCase($value, '_');
         }
     }
     /**
@@ -81,6 +79,6 @@ class Braintree_Result_CreditCardVerification
     public function  __toString()
     {
         return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) .']';
     }
 }

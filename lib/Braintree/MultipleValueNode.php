@@ -1,6 +1,9 @@
 <?php
 
-class Braintree_MultipleValueNode
+namespace Braintree;
+
+
+class MultipleValueNode
 {
     function __construct($name, $allowedValues = array())
     {
@@ -18,7 +21,7 @@ class Braintree_MultipleValueNode
 				$message .= ' ' . $bad_value;
 			}
 
-			throw new InvalidArgumentException($message);
+			throw new \InvalidArgumentException($message);
 		}
 
         $this->items = $values;

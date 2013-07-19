@@ -1,16 +1,19 @@
 <?php
-class Braintree_Plan extends Braintree
+
+namespace Braintree;
+
+class Plan extends Braintree
 {
     public static function all()
     {
-        $response = Braintree_Http::get('/plans');
-        if (key_exists('plans', $response)){
+        $response = Http::get('/plans');
+        if (array_key_exists('plans', $response)){
             $plans = array("plan" => $response['plans']);
         } else {
             $plans = array("plan" => array());
         }
 
-        return Braintree_Util::extractAttributeAsArray(
+        return Util::extractAttributeAsArray(
             $plans,
             'plan'
         );
@@ -31,7 +34,7 @@ class Braintree_Plan extends Braintree
         $addOnArray = array();
         if (isset($attributes['addOns'])) {
             foreach ($attributes['addOns'] AS $addOn) {
-                $addOnArray[] = Braintree_AddOn::factory($addOn);
+                $addOnArray[] = AddOn::factory($addOn);
             }
         }
         $this->_attributes['addOns'] = $addOnArray;
@@ -39,7 +42,7 @@ class Braintree_Plan extends Braintree
         $discountArray = array();
         if (isset($attributes['discounts'])) {
             foreach ($attributes['discounts'] AS $discount) {
-                $discountArray[] = Braintree_Discount::factory($discount);
+                $discountArray[] = Discount::factory($discount);
             }
         }
         $this->_attributes['discounts'] = $discountArray;
@@ -47,7 +50,7 @@ class Braintree_Plan extends Braintree
         $planArray = array();
         if (isset($attributes['plans'])) {
             foreach ($attributes['plans'] AS $plan) {
-                $planArray[] = Braintree_Plan::factory($plan);
+                $planArray[] = Plan::factory($plan);
             }
         }
         $this->_attributes['plans'] = $planArray;

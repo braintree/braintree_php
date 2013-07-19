@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Error;
+
 /**
  * error object returned as part of a validation error collection
  *
@@ -6,6 +9,7 @@
  * @subpackage Error
  * @copyright  2010 Braintree Payment Solutions
  */
+use Braintree\Util;
 
 /**
  * error object returned as part of a validation error collection
@@ -23,12 +27,8 @@
  * @property-read string $code
  * @property-read string $message
  */
-class Braintree_Error_Validation
+class Validation
 {
-   private $_attribute;
-   private $_code;
-   private $_message;
-
     /**
      * @ignore
      * @param array $attributes
@@ -42,13 +42,13 @@ class Braintree_Error_Validation
      * @ignore
      * @access protected
      * @param array $attributes array of properties to set - single level
-     * @return none
+     * @return void
      */
     private function _initializeFromArray($attributes)
     {
         foreach($attributes AS $name => $value) {
             $varName = "_$name";
-            $this->$varName = Braintree_Util::delimiterToCamelCase($value, '_');
+            $this->$varName = Util::delimiterToCamelCase($value, '_');
         }
     }
 
