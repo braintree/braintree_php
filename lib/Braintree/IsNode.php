@@ -1,6 +1,9 @@
 <?php
 
-class Braintree_IsNode
+namespace Braintree;
+
+
+class IsNode
 {
     function __construct($name)
     {

@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Result;
+
 /**
  * Braintree Successful Result
  *
@@ -6,6 +9,8 @@
  * @subpackage Result
  * @copyright  2010 Braintree Payment Solutions
  */
+use Braintree\Instance;
+use Braintree\Util;
 
 /**
  * Braintree Successful Result
@@ -13,16 +18,16 @@
  * A Successful Result will be returned from gateway methods when
  * validations pass. It will provide access to the created resource.
  *
- * For example, when creating a customer, Braintree_Result_Successful will
+ * For example, when creating a customer, Successful will
  * respond to <b>customer</b> like so:
  *
  * <code>
- * $result = Braintree_Customer::create(array('first_name' => "John"));
+ * $result = Customer::create(array('first_name' => "John"));
  * if ($result->success) {
- *     // Braintree_Result_Successful
+ *     // Successful
  *     echo "Created customer {$result->customer->id}";
  * } else {
- *     // Braintree_Result_Error
+ *     // Error
  * }
  * </code>
  *
@@ -31,7 +36,7 @@
  * @subpackage Result
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_Result_Successful extends Braintree_Instance
+class Successful extends Instance
 {
     /**
      *
@@ -46,13 +51,13 @@ class Braintree_Result_Successful extends Braintree_Instance
 
     /**
      * @ignore
-     * @param string $classToReturn name of class to instantiate
+     * @param null $objToReturn
      */
     public function __construct($objToReturn = null)
     {
         if(!empty($objToReturn)) {
             // get a lowercase direct name for the property
-            $property = Braintree_Util::cleanClassName(
+            $property = Util::cleanClassName(
                     get_class($objToReturn)
                     );
             // save the name for indirect access

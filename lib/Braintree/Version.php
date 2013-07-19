@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree;
+
 /**
  * Braintree Library Version
  *
@@ -11,7 +14,7 @@
  *
  * @copyright  2010 Braintree Payment Solutions
  */
-final class Braintree_Version
+final class Version
 {
     /**
      * class constants

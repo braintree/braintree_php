@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree;
+
 /**
  * Digest encryption module
  *
@@ -10,14 +13,14 @@
  *
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_Digest
+class Digest
 {
     public static function hexDigest($string)
     {
         if(function_exists('hash_hmac')) {
-            return self::_builtInHmacSha1($string, Braintree_Configuration::privateKey());
+            return self::_builtInHmacSha1($string, Configuration::privateKey());
         } else {
-            return self::_hmacSha1($string, Braintree_Configuration::privateKey());
+            return self::_hmacSha1($string, Configuration::privateKey());
         }
     }
 
@@ -27,9 +30,6 @@ class Braintree_Digest
             return false;
         }
 
-        $leftBytes = unpack("C*", $left);
-        $rightBytes = unpack("C*", $right);
-
         $result = 0;
         for ($i = 0; $i < strlen($left); $i++) {
             $result = $result | ($left[$i] ^ $right[$i]);
@@ -37,9 +37,9 @@ class Braintree_Digest
         return $result == 0;
     }
 
-    public static function _builtInHmacSha1($message, $key)
+    public static function _builtInHmacSha1($message)
     {
-        return hash_hmac('sha1', $message, sha1(Braintree_Configuration::privateKey(), true));
+        return hash_hmac('sha1', $message, sha1(Configuration::privateKey(), true));
     }
 
     public static function _hmacSha1($message, $key)

@@ -1,34 +1,37 @@
 <?php
-class Braintree_CreditCardVerificationSearch
+
+namespace Braintree;
+
+class CreditCardVerificationSearch
 {
-    static function id()                               { return new Braintree_TextNode('id'); }
-    static function creditCardCardholderName()                   { return new Braintree_TextNode('credit_card_cardholder_name'); }
+    static function id()                               { return new TextNode('id'); }
+    static function creditCardCardholderName()                   { return new TextNode('credit_card_cardholder_name'); }
 
-    static function creditCardExpirationDate()         { return new Braintree_EqualityNode('credit_card_expiration_date'); }
-    static function creditCardNumber()                 { return new Braintree_PartialMatchNode('credit_card_number'); }
+    static function creditCardExpirationDate()         { return new EqualityNode('credit_card_expiration_date'); }
+    static function creditCardNumber()                 { return new PartialMatchNode('credit_card_number'); }
 
-    static function ids()                              { return new Braintree_MultipleValueNode('ids'); }
+    static function ids()                              { return new MultipleValueNode('ids'); }
 
     static function creditCardCardType()
     {
-        return new Braintree_MultipleValueNode("credit_card_card_type", array(
-            Braintree_CreditCard::AMEX,
-            Braintree_CreditCard::CARTE_BLANCHE,
-            Braintree_CreditCard::CHINA_UNION_PAY,
-            Braintree_CreditCard::DINERS_CLUB_INTERNATIONAL,
-            Braintree_CreditCard::DISCOVER,
-            Braintree_CreditCard::JCB,
-            Braintree_CreditCard::LASER,
-            Braintree_CreditCard::MAESTRO,
-            Braintree_CreditCard::MASTER_CARD,
-            Braintree_CreditCard::SOLO,
-            Braintree_CreditCard::SWITCH_TYPE,
-            Braintree_CreditCard::VISA,
-            Braintree_CreditCard::UNKNOWN
+        return new MultipleValueNode("credit_card_card_type", array(
+            CreditCard::AMEX,
+            CreditCard::CARTE_BLANCHE,
+            CreditCard::CHINA_UNION_PAY,
+            CreditCard::DINERS_CLUB_INTERNATIONAL,
+            CreditCard::DISCOVER,
+            CreditCard::JCB,
+            CreditCard::LASER,
+            CreditCard::MAESTRO,
+            CreditCard::MASTER_CARD,
+            CreditCard::SOLO,
+            CreditCard::SWITCH_TYPE,
+            CreditCard::VISA,
+            CreditCard::UNKNOWN
         ));
     }
 
 
-    static function createdAt()                        { return new Braintree_RangeNode("created_at"); }
+    static function createdAt()                        { return new RangeNode("created_at"); }
 }
 

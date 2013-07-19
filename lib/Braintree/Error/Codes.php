@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Error;
+
 /**
  * validation Error codes and messages
  *
@@ -23,7 +26,7 @@
  * @category   Validation
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_Error_Codes
+class Codes
 {
     const ADDRESS_CANNOT_BE_BLANK                      = '81801';
     const ADDRESS_COMPANY_IS_TOO_LONG                  = '81802';

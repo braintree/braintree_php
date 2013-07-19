@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Test;
+
 /**
  * Credit card information used for testing purposes
  *
@@ -10,7 +13,7 @@
 /**
  * Credit card information used for testing purposes
  * 
- * The constants contained in the Braintree_Test_CreditCardNumbers class provide
+ * The constants contained in the CreditCardNumbers class provide
  * credit card numbers that should be used when working in the sandbox environment.
  * The sandbox will not accept any credit card numbers other than the ones listed below.
  *
@@ -18,7 +21,7 @@
  * @subpackage Test
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_Test_CreditCardNumbers
+class CreditCardNumbers
 {
     public static $amExes = array(
         '378282246310005',

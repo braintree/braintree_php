@@ -1,6 +1,9 @@
 <?php
 
-class Braintree_RangeNode
+namespace Braintree;
+
+
+class RangeNode
 {
     function __construct($name)
     {

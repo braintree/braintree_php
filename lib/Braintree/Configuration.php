@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree;
+
 /**
  *
  * Configuration registry
@@ -17,7 +20,7 @@
  *
  *  */
 
-class Braintree_Configuration extends Braintree
+class Configuration extends Braintree
 {
     /**
      * Braintree API version to use
@@ -71,30 +74,30 @@ class Braintree_Configuration extends Braintree
      * @access protected
      * @param string $key name of config setting
      * @param string $value value to set
-     * @throws InvalidArgumentException
-     * @throws Braintree_Exception_Configuration
+     * @throws \InvalidArgumentException
+     * @throws Exception\Configuration
      * @static
      * @return boolean
      */
     private static function validate($key=null, $value=null)
     {
         if (empty($key) && empty($value)) {
-             throw new InvalidArgumentException('nothing to validate');
+             throw new \InvalidArgumentException('nothing to validate');
         }
 
         if ($key === 'environment' &&
            !in_array($value, self::$_validEnvironments) ) {
-            throw new Braintree_Exception_Configuration('"' .
+            throw new Exception\Configuration('"' .
                                     $value . '" is not a valid environment.');
         }
 
         if (!isset(self::$_cache[$key])) {
-             throw new Braintree_Exception_Configuration($key .
+             throw new Exception\Configuration($key .
                                     ' is not a valid configuration setting.');
         }
 
         if (empty($value)) {
-             throw new InvalidArgumentException($key . ' cannot be empty.');
+             throw new \InvalidArgumentException($key . ' cannot be empty.');
         }
 
         return true;
@@ -114,7 +117,7 @@ class Braintree_Configuration extends Braintree
         // throw an exception if the value hasn't been set
         if (isset(self::$_cache[$key]) &&
            (empty(self::$_cache[$key]))) {
-            throw new Braintree_Exception_Configuration(
+            throw new Exception\Configuration(
                       $key.' needs to be set'
                       );
         }
@@ -216,9 +219,10 @@ class Braintree_Configuration extends Braintree
      * @access public
      * @static
      * @param none
+     * @throws Exception\SSLCaFileNotFound
      * @return string filepath
      */
-    public static function caFile($sslPath = NULL)
+    public static function caFile($sslPath = null)
     {
         $sslPath = $sslPath ? $sslPath : DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                    'ssl' . DIRECTORY_SEPARATOR;
@@ -242,7 +246,7 @@ class Braintree_Configuration extends Braintree
 
         if (!file_exists($caPath))
         {
-            throw new Braintree_Exception_SSLCaFileNotFound();
+            throw new Exception\SSLCaFileNotFound();
         }
 
         return $caPath;

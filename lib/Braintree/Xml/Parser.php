@@ -1,10 +1,15 @@
 <?php
 
+namespace Braintree\Xml;
+
+
 /**
  * Braintree XML Parser
  *
  * @copyright  2010 Braintree Payment Solutions
  */
+use Braintree\Util;
+
 /**
  * Parses incoming Xml into arrays using PHP's
  * built-in SimpleXML, and its extension via
@@ -12,7 +17,7 @@
  *
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_Xml_Parser
+class Parser
 {
 
     private static $_xmlRoot;
@@ -27,8 +32,8 @@ class Braintree_Xml_Parser
     public static function arrayFromXml($xml)
     {
         // SimpleXML provides the root information on construct
-        $iterator = new SimpleXMLIterator($xml);
-        $xmlRoot = Braintree_Util::delimiterToCamelCase($iterator->getName());
+        $iterator = new \SimpleXMLIterator($xml);
+        $xmlRoot = Util::delimiterToCamelCase($iterator->getName());
         $type = $iterator->attributes()->type;
 
         self::$_xmlRoot = $iterator->getName();
@@ -67,18 +72,19 @@ class Braintree_Xml_Parser
 
             // extract the parent element via xpath query
             $parentElement = $iterator->xpath($iterator->key() . '/..');
-            if ($parentElement[0] instanceof SimpleXMLIterator) {
+            $parentKey = null;
+            if ($parentElement[0] instanceof \SimpleXMLIterator) {
                 $parentElement = $parentElement[0];
-                $parentKey = Braintree_Util::delimiterToCamelCase($parentElement->getName());
+                $parentKey = Util::delimiterToCamelCase($parentElement->getName());
             } else {
                 $parentElement = null;
             }
 
 
             if ($parentKey == "customFields") {
-                $key = Braintree_Util::delimiterToUnderscore($iterator->key());
+                $key = Util::delimiterToUnderscore($iterator->key());
             } else {
-                $key = Braintree_Util::delimiterToCamelCase($iterator->key());
+                $key = Util::delimiterToCamelCase($iterator->key());
             }
 
             // process children recursively
@@ -139,7 +145,7 @@ class Braintree_Xml_Parser
                 return self::_timestampToUTC((string) $valueObj);
                 break;
             case 'date':
-                return new DateTime((string)$valueObj);
+                return new \DateTime((string)$valueObj);
                 break;
             case 'integer':
                 return (int) $valueObj;
@@ -151,7 +157,7 @@ class Braintree_Xml_Parser
                     return (bool) $value;
                 } else {
                     // look for the string "true", return false in all other cases
-                    return ($value != "true") ? FALSE : TRUE;
+                    return ($value != "true") ? false : true;
                 }
                 break;
             case 'array':
@@ -169,10 +175,10 @@ class Braintree_Xml_Parser
      */
     private static function _timestampToUTC($timestamp)
     {
-        $tz = new DateTimeZone('UTC');
+        $tz = new \DateTimeZone('UTC');
         // strangely DateTime requires an explicit set below
         // to show the proper time zone
-        $dateTime = new DateTime($timestamp, $tz);
+        $dateTime = new \DateTime($timestamp, $tz);
         $dateTime->setTimezone($tz);
         return $dateTime;
     }

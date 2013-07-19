@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree\Exception;
+
 /**
  * Raised from non-validating exceptions when validations fail
  *
@@ -6,6 +9,7 @@
  * @subpackage Exception
  * @copyright  2010 Braintree Payment Solutions
  */
+use Braintree\Exception;
 
 /**
  * Raised from non-validating methods when gateway validations fail.
@@ -14,7 +18,7 @@
  * @subpackage Exception
  * @copyright  2010 Braintree Payment Solutions
  */
-class Braintree_Exception_ValidationsFailed extends Braintree_Exception
+class ValidationsFailed extends Exception
 {
 
 }

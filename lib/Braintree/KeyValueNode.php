@@ -1,6 +1,9 @@
 <?php
 
-class Braintree_KeyValueNode
+namespace Braintree;
+
+
+class KeyValueNode
 {
     function __construct($name)
     {

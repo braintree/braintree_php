@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree;
+
 /**
  * Disbursement details from a transaction
  *
@@ -18,9 +21,9 @@
  * @property-read string $settlementCurrencyExchangeRate
  * @property-read string $settlementFundsHeld
  * @property-read string $disbursementDate
- * @uses Braintree_Instance inherits methods
+ * @uses Instance inherits methods
  */
-class Braintree_DisbursementDetails extends Braintree_Instance
+class DisbursementDetails extends Instance
 {
     protected $_attributes = array();
 

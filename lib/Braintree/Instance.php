@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree;
+
 /**
  * Braintree Class Instance template
  *
@@ -15,11 +18,13 @@
  * @copyright  2010 Braintree Payment Solutions
  * @abstract
  */
-abstract class Braintree_Instance
+abstract class Instance
 {
+    protected $_attributes = array();
+
     /**
      *
-     * @param array $aAttribs 
+     * @param $attributes
      */
     public function  __construct($attributes)
     {
@@ -32,7 +37,7 @@ abstract class Braintree_Instance
     /**
      * returns private/nonexistent instance properties
      * @access public
-     * @param var $name property name
+     * @param string $name property name
      * @return mixed contents of instance properties
      */
     public function __get($name)
@@ -48,11 +53,11 @@ abstract class Braintree_Instance
     /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
-     * @return var
+     * @return string
      */
     public function  __toString()
     {
-        $objOutput = Braintree_Util::implodeAssociativeArray($this->_attributes);
+        $objOutput = Util::implodeAssociativeArray($this->_attributes);
         return get_class($this) .'['.$objOutput.']';
     }
     /**
@@ -60,7 +65,7 @@ abstract class Braintree_Instance
      * @ignore
      * @access protected
      * @param <type> $aAttribs array of properties to set - single level
-     * @return none
+     * @return string
      */
     private function _initializeFromArray($attributes)
     {

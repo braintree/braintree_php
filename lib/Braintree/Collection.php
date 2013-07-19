@@ -1,4 +1,7 @@
 <?php
+
+namespace Braintree;
+
 /**
  * Braintree Generic collection
  *
@@ -18,7 +21,7 @@
  * @package   Braintree
  * @subpackage Utility
  */
-class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
+class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 {
     /**
      *
@@ -39,12 +42,12 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
      * Set index's value
      * @param integer $index
      * @param mixed $value
-     * @throws OutOfRangeException
+     * @throws \OutOfRangeException
      */
     public function set($index, $value)
     {
         if($index >= $this->count())
-            throw new OutOfRangeException('Index out of range');
+            throw new \OutOfRangeException('Index out of range');
 
         $this->_collection[$index] = $value;
     }
@@ -52,12 +55,12 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Remove a value from the collection
      * @param integer $index index to remove
-     * @throws OutOfRangeException if index is out of range
+     * @throws \OutOfRangeException if index is out of range
      */
     public function remove($index)
     {
         if($index >= $this->count())
-            throw new OutOfRangeException('Index out of range');
+            throw new \OutOfRangeException('Index out of range');
 
         array_splice($this->_collection, $index, 1);
     }
@@ -66,12 +69,12 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
      * Return value at index
      * @param integer $index
      * @return mixed
-     * @throws OutOfRangeException
+     * @throws \OutOfRangeException
      */
     public function get($index)
     {
         if($index >= $this->count())
-            throw new OutOfRangeException('Index out of range');
+            throw new \OutOfRangeException('Index out of range');
 
         return $this->_collection[$index];
     }
@@ -102,11 +105,11 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Return an iterator
      * Implements IteratorAggregate
-     * @return ArrayIterator
+     * @return \ArrayIterator
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->_collection);
+        return new \ArrayIterator($this->_collection);
     }
 
     /**
