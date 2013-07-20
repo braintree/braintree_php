@@ -398,7 +398,7 @@ final class Braintree_Transaction extends Braintree
             $criteria[$term->name] = $term->toparam();
         }
 
-        $response = braintree_http::post('/transactions/advanced_search_ids', array('search' => $criteria));
+        $response = Braintree_Http::post('/transactions/advanced_search_ids', array('search' => $criteria));
         $pager = array(
             'className' => __CLASS__,
             'classMethod' => 'fetch',
@@ -415,9 +415,9 @@ final class Braintree_Transaction extends Braintree
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = Braintree_TransactionSearch::ids()->in($ids)->toparam();
-        $response = braintree_http::post('/transactions/advanced_search', array('search' => $criteria));
+        $response = Braintree_Http::post('/transactions/advanced_search', array('search' => $criteria));
 
-        return braintree_util::extractattributeasarray(
+        return Braintree_Util::extractattributeasarray(
             $response['creditCardTransactions'],
             'transaction'
         );

@@ -58,7 +58,7 @@ class Braintree_Subscription extends Braintree
         }
 
 
-        $response = braintree_http::post('/subscriptions/advanced_search_ids', array('search' => $criteria));
+        $response = Braintree_Http::post('/subscriptions/advanced_search_ids', array('search' => $criteria));
         $pager = array(
             'className' => __CLASS__,
             'classMethod' => 'fetch',
