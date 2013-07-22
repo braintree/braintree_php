@@ -24,6 +24,9 @@ class Braintree_WebhookTesting
             case Braintree_WebhookNotification::TRANSACTION_DISBURSED:
                 $subjectXml = self::_transactionDisbursedSampleXml($id);
                 break;
+            case Braintree_WebhookNotification::PARTNER_USER_CREATED:
+                $subjectXml = self::_partnerUserCreatedSampleXml($id);
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -106,6 +109,19 @@ class Braintree_WebhookTesting
             <discounts type=\"array\">
             </discounts>
         </subscription>
+        ";
+    }
+
+    private static function _partnerUserCreatedSampleXml($id)
+    {
+        return "
+        <partner_credentials>
+          <id>{$id}</id>
+          <merchant_public_id>public_id</merchant_public_id>
+          <public_key>public_key</public_key>
+          <private_key>private_key</private_key>
+          <partner_user_id>abc123</partner_user_id>
+        </partner_credentials>
         ";
     }
 

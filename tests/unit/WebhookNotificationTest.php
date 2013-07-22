@@ -129,5 +129,25 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(100, $webhookNotification->transaction->amount);
         $this->assertNotNull($webhookNotification->transaction->disbursementDetails->disbursementDate);
     }
+
+    function testBuildsASampleNotificationForAPartnerUserCreatedWebhook()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::PARTNER_USER_CREATED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            $sampleNotification['payload']
+        );
+
+        $this->assertEquals(Braintree_WebhookNotification::PARTNER_USER_CREATED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->partnerCredentials->id);
+        $this->assertEquals("public_id", $webhookNotification->partnerCredentials->merchantPublicId);
+        $this->assertEquals("public_key", $webhookNotification->partnerCredentials->publicKey);
+        $this->assertEquals("private_key", $webhookNotification->partnerCredentials->privateKey);
+        $this->assertEquals("abc123", $webhookNotification->partnerCredentials->partnerUserId);
+    }
 }
 ?>
