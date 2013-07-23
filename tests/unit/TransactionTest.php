@@ -35,5 +35,12 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException');
         Braintree_Transaction::find('\t');
 	}
+
+    function testInitializationWithoutArguments()
+    {
+        $transaction = Braintree_Transaction::factory(array());
+
+        $this->assertInstanceOf('Braintree_Transaction', $transaction);
+    }
 }
 ?>

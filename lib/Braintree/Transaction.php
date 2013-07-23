@@ -475,36 +475,53 @@ final class Braintree_Transaction extends Braintree
     {
         $this->_attributes = $transactionAttribs;
 
-        $this->_set('creditCardDetails',
+        if (isset($transactionAttribs['creditCard'])) {
+            $this->_set('creditCardDetails',
                 new Braintree_Transaction_CreditCardDetails(
-                $transactionAttribs['creditCard']
+                    $transactionAttribs['creditCard']
                 )
             );
-        $this->_set('customerDetails',
+        }
+
+        if (isset($transactionAttribs['customer'])) {
+            $this->_set('customerDetails',
                 new Braintree_Transaction_CustomerDetails(
-                $transactionAttribs['customer']
+                    $transactionAttribs['customer']
                 )
             );
-        $this->_set('billingDetails',
+        }
+
+        if (isset($transactionAttribs['billing'])) {
+            $this->_set('billingDetails',
                 new Braintree_Transaction_AddressDetails(
-                $transactionAttribs['billing']
+                    $transactionAttribs['billing']
                 )
             );
-        $this->_set('shippingDetails',
+        }
+
+        if (isset($transactionAttribs['shipping'])) {
+            $this->_set('shippingDetails',
                 new Braintree_Transaction_AddressDetails(
-                $transactionAttribs['shipping']
+                    $transactionAttribs['shipping']
                 )
             );
-        $this->_set('subscriptionDetails',
+        }
+
+        if (isset($transactionAttribs['subscription'])) {
+            $this->_set('subscriptionDetails',
                 new Braintree_Transaction_SubscriptionDetails(
-                $transactionAttribs['subscription']
+                    $transactionAttribs['subscription']
                 )
             );
-        $this->_set('descriptor',
+        }
+
+        if (isset($transactionAttribs['descriptor'])) {
+            $this->_set('descriptor',
                 new Braintree_Descriptor(
-                $transactionAttribs['descriptor']
+                    $transactionAttribs['descriptor']
                 )
             );
+        }
 
         if (isset($transactionAttribs['disbursementDetails'])) {
             $this->_set('disbursementDetails',
@@ -512,13 +529,13 @@ final class Braintree_Transaction extends Braintree
             );
         }
 
-
         $statusHistory = array();
-        foreach ($transactionAttribs['statusHistory'] AS $history) {
-            $statusHistory[] = new Braintree_Transaction_StatusDetails($history);
+        if (isset($transactionAttribs['statusHistory'])) {
+            foreach ($transactionAttribs['statusHistory'] AS $history) {
+                $statusHistory[] = new Braintree_Transaction_StatusDetails($history);
+            }
         }
         $this->_set('statusHistory', $statusHistory);
-
 
         $addOnArray = array();
         if (isset($transactionAttribs['addOns'])) {
