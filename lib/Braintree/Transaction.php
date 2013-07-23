@@ -517,11 +517,12 @@ final class Braintree_Transaction extends Braintree
 
         if (isset($transactionAttribs['creditCard'])) {
             $this->_set('creditCardDetails',
-                    new Braintree_Transaction_CreditCardDetails(
-                        $transactionAttribs['creditCard']
-                    )
-                );
+                new Braintree_Transaction_CreditCardDetails(
+                    $transactionAttribs['creditCard']
+                )
+            );
         }
+
         if (isset($transactionAttribs['customer'])) {
             $this->_set('customerDetails',
                 new Braintree_Transaction_CustomerDetails(
@@ -529,6 +530,7 @@ final class Braintree_Transaction extends Braintree
                 )
             );
         }
+
         if (isset($transactionAttribs['billing'])) {
             $this->_set('billingDetails',
                 new Braintree_Transaction_AddressDetails(
@@ -536,6 +538,7 @@ final class Braintree_Transaction extends Braintree
                 )
             );
         }
+
         if (isset($transactionAttribs['shipping'])) {
             $this->_set('shippingDetails',
                 new Braintree_Transaction_AddressDetails(
@@ -543,6 +546,7 @@ final class Braintree_Transaction extends Braintree
                 )
             );
         }
+
         if (isset($transactionAttribs['subscription'])) {
             $this->_set('subscriptionDetails',
                 new Braintree_Transaction_SubscriptionDetails(
@@ -550,6 +554,7 @@ final class Braintree_Transaction extends Braintree
                 )
             );
         }
+
         if (isset($transactionAttribs['descriptor'])) {
             $this->_set('descriptor',
                 new Braintree_Descriptor(
@@ -563,7 +568,6 @@ final class Braintree_Transaction extends Braintree
                 new Braintree_DisbursementDetails($transactionAttribs['disbursementDetails'])
             );
         }
-
 
         $statusHistory = array();
         if (isset($transactionAttribs['statusHistory'])) {
