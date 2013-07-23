@@ -6,7 +6,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
     function testVerify()
     {
         $verificationString = Braintree_WebhookNotification::verify('verification_token');
-        $this->assertEquals('integration_public_key|c9f15b74b0d98635cd182c51e2703cffa83388c3', $verificationString);
+        $this->assertEquals('integration_public_key|1b0bcd1e59d260f28be85a6239c0dd01120ededc', $verificationString);
     }
 
     function testSampleNotificationReturnsAParsableNotification()

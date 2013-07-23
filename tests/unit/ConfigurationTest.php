@@ -25,7 +25,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
      /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage environment needs to be set
+     * @expectedExceptionMessage "invalid" is not a valid environment
      */
     function testSetInvalidEnvironment()
     {
@@ -147,7 +147,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
      /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage merchantId needs to be set.
+     * @expectedExceptionMessage merchantId needs to be set
      */
     function testMerchantId()
     {
@@ -155,7 +155,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
      /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage publicKey needs to be set.
+     * @expectedExceptionMessage publicKey needs to be set
      */
     function testPublicKey()
     {
@@ -163,7 +163,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
      /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage privateKey needs to be set.
+     * @expectedExceptionMessage privateKey needs to be set
      */
     function testPrivateKey()
     {
