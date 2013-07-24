@@ -221,10 +221,13 @@ class Braintree_Error_Codes
     const TRANSACTION_CANNOT_CLONE_TRANSACTION_WITH_VAULT_CREDIT_CARD           = '91540';
     const TRANSACTION_CANNOT_CLONE_UNSUCCESSFUL_TRANSACTION                     = '91542';
     const TRANSACTION_CANNOT_CLONE_VOICE_AUTHORIZATIONS                         = '91541';
+    const TRANSACTION_CANNOT_HOLD_FOR_ESCROW                                    = '91560';
     const TRANSACTION_CANNOT_REFUND_CREDIT                                      = '91505';
     const TRANSACTION_CANNOT_REFUND_UNLESS_SETTLED                              = '91506';
     const TRANSACTION_CANNOT_REFUND_WITH_PENDING_MERCHANT_ACCOUNT               = '91559';
     const TRANSACTION_CANNOT_REFUND_WITH_SUSPENDED_MERCHANT_ACCOUNT             = '91538';
+    const TRANSACTION_CANNOT_RELEASE_FROM_ESCROW                                = '91562';
+    const TRANSACTION_CANNOT_SUBMIT_FOR_RELEASE                                 = '91561';
     const TRANSACTION_CANNOT_SUBMIT_FOR_SETTLEMENT                              = '91507';
     const TRANSACTION_CHANNEL_IS_TOO_LONG                                       = '91550';
     const TRANSACTION_CREDIT_CARD_IS_REQUIRED                                   = '91508';

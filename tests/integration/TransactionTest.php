@@ -1134,6 +1134,132 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
+    function testSale_withHoldForEscrow()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultSubMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'holdForEscrow' => true
+            ),
+            'serviceFeeAmount' => '1.00'
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_ESCROW, $transaction->escrowStatus);
+    }
+
+    function testSale_withHoldForEscrowFailsForMasterMerchantAccount()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'holdForEscrow' => true
+            )
+        ));
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(
+            Braintree_Error_Codes::TRANSACTION_CANNOT_HOLD_FOR_ESCROW,
+            $errors[0]->code
+        );
+    }
+
+    function testHoldForEscrow_afterSale()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultSubMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'serviceFeeAmount' => '1.00'
+        ));
+        $result = Braintree_Transaction::holdForEscrow($result->transaction->id);
+        $this->assertTrue($result->success);
+        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_ESCROW, $result->transaction->escrowStatus);
+    }
+
+    function testHoldForEscrow_afterSaleFailsWithMasterMerchantAccount()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $result = Braintree_Transaction::holdForEscrow($result->transaction->id);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(
+            Braintree_Error_Codes::TRANSACTION_CANNOT_HOLD_FOR_ESCROW,
+            $errors[0]->code
+        );
+    }
+
+    function testSubmitForRelease_FromEscrow()
+    {
+        $transaction = $this->createEscrowedTransaction();
+        $result = Braintree_Transaction::submitForRelease($transaction->id);
+        $this->assertTrue($result->success);
+        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_RELEASE, $result->transaction->escrowStatus);
+    }
+
+    function testSubmitForRelease_fromEscrowFailsForTransactionsNotHeldInEscrow()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $result = Braintree_Transaction::submitForRelease($result->transaction->id);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(
+            Braintree_Error_Codes::TRANSACTION_CANNOT_SUBMIT_FOR_RELEASE,
+            $errors[0]->code
+        );
+    }
+
+    function testCancelRelease_fromEscrow()
+    {
+        $transaction = $this->createEscrowedTransaction();
+        $result = Braintree_Transaction::submitForRelease($transaction->id);
+        $result = Braintree_Transaction::cancelRelease($transaction->id);
+        $this->assertTrue($result->success);
+        $this->assertEquals(
+            Braintree_Transaction::HELD_IN_ESCROW,
+            $result->transaction->escrowStatus
+        );
+    }
+
+    function testCancelRelease_fromEscrowFailsIfTransactionNotSubmittedForRelease()
+    {
+        $transaction = $this->createEscrowedTransaction();
+        $result = Braintree_Transaction::cancelRelease($transaction->id);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(
+            Braintree_Error_Codes::TRANSACTION_CANNOT_RELEASE_FROM_ESCROW,
+            $errors[0]->code
+        );
+    }
+
     function testCreateFromTransparentRedirect()
     {
         Braintree_TestHelper::suppressDeprecationWarnings();
@@ -1503,6 +1629,24 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         Braintree_TestHelper::settle($transaction->id);
         return $transaction;
+    }
+
+    function createEscrowedTransaction()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultSubMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'holdForEscrow' => true
+            ),
+            'serviceFeeAmount' => '1.00'
+        ));
+        Braintree_TestHelper::escrow($result->transaction->id);
+        return $result->transaction;
     }
 
     function testCardTypeIndicators()

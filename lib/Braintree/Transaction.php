@@ -182,6 +182,12 @@ final class Braintree_Transaction extends Braintree
     const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
     const VOIDED                   = 'voided';
 
+    // Transaction Escrow Status
+    const SUBMITTED_FOR_ESCROW  = 'submitted_for_escrow';
+    const HELD_IN_ESCROW        = 'held_in_escrow';
+    const SUBMITTED_FOR_RELEASE = 'submitted_for_release';
+    const RELEASED              = 'released';
+
     // Transaction Types
     const SALE   = 'sale';
     const CREDIT = 'credit';
@@ -301,6 +307,7 @@ final class Braintree_Transaction extends Braintree
             ),
             array('options' =>
                 array(
+                    'holdForEscrow',
                     'storeInVault',
                     'storeInVaultOnSuccess',
                     'submitForSettlement',
@@ -460,6 +467,39 @@ final class Braintree_Transaction extends Braintree
     {
         $result = self::submitForSettlement($transactionId, $amount);
         return self::returnObjectOrThrowException(__CLASS__, $result);
+    }
+
+    public static function holdForEscrow($transactionId)
+    {
+        self::_validateId($transactionId);
+
+        $response = Braintree_Http::put(
+            '/transactions/' . $transactionId . '/hold_for_escrow',
+            array()
+        );
+        return self::_verifyGatewayResponse($response);
+    }
+
+    public static function submitForRelease($transactionId)
+    {
+        self::_validateId($transactionId);
+
+        $response = Braintree_Http::put(
+            '/transactions/' . $transactionId . '/submit_for_release',
+            array()
+        );
+        return self::_verifyGatewayResponse($response);
+    }
+
+    public static function cancelRelease($transactionId)
+    {
+        self::_validateId($transactionId);
+
+        $response = Braintree_Http::put(
+            '/transactions/' . $transactionId . '/cancel_release',
+            array()
+        );
+        return self::_verifyGatewayResponse($response);
     }
 
 

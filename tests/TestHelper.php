@@ -111,6 +111,12 @@ class Braintree_TestHelper
         Braintree_Http::put('/transactions/' . $transactionId . '/settle');
     }
 
+    public static function escrow($transactionId)
+    {
+        Braintree_Http::put('/transactions/' . $transactionId . '/escrow');
+    }
+
+
     public static function nowInEastern()
     {
         $eastern = new DateTimeZone('America/New_York');
