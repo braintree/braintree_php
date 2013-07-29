@@ -16,11 +16,13 @@ final class Braintree_MerchantAccount extends Braintree
     {
         $applicantDetailsAddressSignature = array('streetAddress', 'postalCode', 'locality', 'region');
         $applicantDetailsSignature = array(
+            'companyName',
             'firstName',
             'lastName',
             'email',
             'dateOfBirth',
             'ssn',
+            'taxId',
             'routingNumber',
             'accountNumber',
             array('address' => $applicantDetailsAddressSignature)

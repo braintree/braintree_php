@@ -6,6 +6,7 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
 
     private static $validParams = array(
       'applicantDetails' => array(
+        'companyName' => "Robot City",
         'firstName' => "Joe",
         'lastName' => "Bloggs",
         'email' => "joe@bloggs.com",
@@ -17,7 +18,8 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
         ),
         'dateOfBirth' => "10/9/1980",
         'ssn' => "123-000-1234",
-        'routingNumber' => "1234567890",
+        'taxId' => "123456789",
+        'routingNumber' => "122100024",
         'accountNumber' => "43759348798"
       ),
       'tosAccepted' => true,
