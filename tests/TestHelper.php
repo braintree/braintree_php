@@ -75,7 +75,7 @@ class Braintree_TestHelper
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         curl_close($curl);
-        preg_match('/Location: .*\?(.*)/', $response, $match);
+        preg_match('/Location: .*\?(.*)/i', $response, $match);
         return trim($match[1]);
     }
 
