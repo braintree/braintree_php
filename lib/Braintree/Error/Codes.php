@@ -85,6 +85,7 @@ class Braintree_Error_Codes
     const CREDIT_CARD_TOKEN_IS_REQUIRED                                                 = '91722';
     const CREDIT_CARD_TOKEN_IS_TOO_LONG                                                 = '91720';
     const CREDIT_CARD_VENMO_SDK_PAYMENT_METHOD_CODE_CARD_TYPE_IS_NOT_ACCEPTED           = '91726';
+    const CREDIT_CARD_VERIFICATION_NOT_SUPPORTED_ON_THIS_MERCHANT_ACCOUNT               = '91730';
 
     const CUSTOMER_COMPANY_IS_TOO_LONG       = '81601';
     const CUSTOMER_CUSTOM_FIELD_IS_INVALID   = '91602';
