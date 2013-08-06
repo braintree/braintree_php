@@ -1,3 +1,7 @@
+## 2.21.1
+
+* Fix casing issues with Braintree\_Http and Braintree\_Util references (thanks [steven-hadfield](https://github.com/steven-hadfield)!)
+
 ## 2.21.0
 
 * Enable device data.
