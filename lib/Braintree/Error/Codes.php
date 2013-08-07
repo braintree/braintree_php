@@ -224,6 +224,7 @@ class Braintree_Error_Codes
     const TRANSACTION_CANNOT_CLONE_UNSUCCESSFUL_TRANSACTION                     = '91542';
     const TRANSACTION_CANNOT_CLONE_VOICE_AUTHORIZATIONS                         = '91541';
     const TRANSACTION_CANNOT_HOLD_FOR_ESCROW                                    = '91560';
+    const TRANSACTION_CANNOT_PARTIALLY_REFUND_ESCROWED_TRANSACTION              = '91563';
     const TRANSACTION_CANNOT_REFUND_CREDIT                                      = '91505';
     const TRANSACTION_CANNOT_REFUND_UNLESS_SETTLED                              = '91506';
     const TRANSACTION_CANNOT_REFUND_WITH_PENDING_MERCHANT_ACCOUNT               = '91559';
