@@ -481,12 +481,12 @@ final class Braintree_Transaction extends Braintree
         return self::_verifyGatewayResponse($response);
     }
 
-    public static function submitForRelease($transactionId)
+    public static function releaseFromEscrow($transactionId)
     {
         self::_validateId($transactionId);
 
         $response = Braintree_Http::put(
-            '/transactions/' . $transactionId . '/submit_for_release',
+            '/transactions/' . $transactionId . '/release_from_escrow',
             array()
         );
         return self::_verifyGatewayResponse($response);

@@ -230,7 +230,7 @@ class Braintree_Error_Codes
     const TRANSACTION_CANNOT_REFUND_WITH_PENDING_MERCHANT_ACCOUNT               = '91559';
     const TRANSACTION_CANNOT_REFUND_WITH_SUSPENDED_MERCHANT_ACCOUNT             = '91538';
     const TRANSACTION_CANNOT_CANCEL_RELEASE                                     = '91562';
-    const TRANSACTION_CANNOT_SUBMIT_FOR_RELEASE                                 = '91561';
+    const TRANSACTION_CANNOT_RELEASE_FROM_ESCROW                                = '91561';
     const TRANSACTION_CANNOT_SUBMIT_FOR_SETTLEMENT                              = '91507';
     const TRANSACTION_CHANNEL_IS_TOO_LONG                                       = '91550';
     const TRANSACTION_CREDIT_CARD_IS_REQUIRED                                   = '91508';
