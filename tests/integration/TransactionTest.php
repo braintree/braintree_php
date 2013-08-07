@@ -1169,7 +1169,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('base');
         $this->assertEquals(
-            Braintree_Error_Codes::TRANSACTION_CANNOT_HOLD_FOR_ESCROW,
+            Braintree_Error_Codes::TRANSACTION_CANNOT_HOLD_IN_ESCROW,
             $errors[0]->code
         );
     }
@@ -1204,7 +1204,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('base');
         $this->assertEquals(
-            Braintree_Error_Codes::TRANSACTION_CANNOT_HOLD_FOR_ESCROW,
+            Braintree_Error_Codes::TRANSACTION_CANNOT_HOLD_IN_ESCROW,
             $errors[0]->code
         );
     }
