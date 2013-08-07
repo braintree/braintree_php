@@ -183,11 +183,11 @@ final class Braintree_Transaction extends Braintree
     const VOIDED                   = 'voided';
 
     // Transaction Escrow Status
-    const ESCROW_PENDING_TRANSACTION_SETTLEMENT = 'pending_transaction_settlement';
-    const ESCROW_HELD                           = 'held';
-    const ESCROW_RELEASE_PENDING                = 'release_pending';
-    const ESCROW_RELEASED                       = 'released';
-    const ESCROW_REFUNDED                       = 'refunded';
+    const ESCROW_HOLD_PENDING    = 'hold_pending';
+    const ESCROW_HELD            = 'held';
+    const ESCROW_RELEASE_PENDING = 'release_pending';
+    const ESCROW_RELEASED        = 'released';
+    const ESCROW_REFUNDED        = 'refunded';
 
     // Transaction Types
     const SALE   = 'sale';

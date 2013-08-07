@@ -1150,7 +1150,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals(Braintree_Transaction::ESCROW_PENDING_TRANSACTION_SETTLEMENT, $transaction->escrowStatus);
+        $this->assertEquals(Braintree_Transaction::ESCROW_HOLD_PENDING, $transaction->escrowStatus);
     }
 
     function testSale_withHoldForEscrowFailsForMasterMerchantAccount()
@@ -1187,7 +1187,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
         $result = Braintree_Transaction::holdInEscrow($result->transaction->id);
         $this->assertTrue($result->success);
-        $this->assertEquals(Braintree_Transaction::ESCROW_PENDING_TRANSACTION_SETTLEMENT, $result->transaction->escrowStatus);
+        $this->assertEquals(Braintree_Transaction::ESCROW_HOLD_PENDING, $result->transaction->escrowStatus);
     }
 
     function testHoldForEscrow_afterSaleFailsWithMasterMerchantAccount()
