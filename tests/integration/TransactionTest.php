@@ -1144,13 +1144,13 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             ),
             'options' => array(
-                'holdForEscrow' => true
+                'holdInEscrow' => true
             ),
             'serviceFeeAmount' => '1.00'
         ));
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_ESCROW, $transaction->escrowStatus);
+        $this->assertEquals(Braintree_Transaction::ESCROW_PENDING_TRANSACTION_SETTLEMENT, $transaction->escrowStatus);
     }
 
     function testSale_withHoldForEscrowFailsForMasterMerchantAccount()
@@ -1163,7 +1163,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             ),
             'options' => array(
-                'holdForEscrow' => true
+                'holdInEscrow' => true
             )
         ));
         $this->assertFalse($result->success);
@@ -1185,9 +1185,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             'serviceFeeAmount' => '1.00'
         ));
-        $result = Braintree_Transaction::holdForEscrow($result->transaction->id);
+        $result = Braintree_Transaction::holdInEscrow($result->transaction->id);
         $this->assertTrue($result->success);
-        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_ESCROW, $result->transaction->escrowStatus);
+        $this->assertEquals(Braintree_Transaction::ESCROW_PENDING_TRANSACTION_SETTLEMENT, $result->transaction->escrowStatus);
     }
 
     function testHoldForEscrow_afterSaleFailsWithMasterMerchantAccount()
@@ -1200,7 +1200,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             )
         ));
-        $result = Braintree_Transaction::holdForEscrow($result->transaction->id);
+        $result = Braintree_Transaction::holdInEscrow($result->transaction->id);
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('base');
         $this->assertEquals(
@@ -1214,7 +1214,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = $this->createEscrowedTransaction();
         $result = Braintree_Transaction::submitForRelease($transaction->id);
         $this->assertTrue($result->success);
-        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_RELEASE, $result->transaction->escrowStatus);
+        $this->assertEquals(Braintree_Transaction::ESCROW_RELEASE_PENDING, $result->transaction->escrowStatus);
     }
 
     function testSubmitForRelease_fromEscrowFailsForTransactionsNotHeldInEscrow()
@@ -1243,7 +1243,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::cancelRelease($transaction->id);
         $this->assertTrue($result->success);
         $this->assertEquals(
-            Braintree_Transaction::HELD_IN_ESCROW,
+            Braintree_Transaction::ESCROW_HELD,
             $result->transaction->escrowStatus
         );
     }
@@ -1641,7 +1641,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12'
             ),
             'options' => array(
-                'holdForEscrow' => true
+                'holdInEscrow' => true
             ),
             'serviceFeeAmount' => '1.00'
         ));
