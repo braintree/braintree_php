@@ -1255,7 +1255,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->onAttribute('base');
         $this->assertEquals(
-            Braintree_Error_Codes::TRANSACTION_CANNOT_RELEASE_FROM_ESCROW,
+            Braintree_Error_Codes::TRANSACTION_CANNOT_CANCEL_RELEASE,
             $errors[0]->code
         );
     }
