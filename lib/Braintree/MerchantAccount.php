@@ -20,6 +20,7 @@ final class Braintree_MerchantAccount extends Braintree
             'firstName',
             'lastName',
             'email',
+            'phone',
             'dateOfBirth',
             'ssn',
             'taxId',

@@ -10,6 +10,7 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
         'firstName' => "Joe",
         'lastName' => "Bloggs",
         'email' => "joe@bloggs.com",
+        'phone' => "555-555-5555",
         'address' => array(
           'streetAddress' => "123 Credibility St.",
           'postalCode' => "60606",
