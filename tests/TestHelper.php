@@ -75,7 +75,7 @@ class Braintree_TestHelper
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         curl_close($curl);
-        preg_match('/Location: .*\?(.*)/', $response, $match);
+        preg_match('/Location: .*\?(.*)/i', $response, $match);
         return trim($match[1]);
     }
 
@@ -110,6 +110,12 @@ class Braintree_TestHelper
     {
         Braintree_Http::put('/transactions/' . $transactionId . '/settle');
     }
+
+    public static function escrow($transactionId)
+    {
+        Braintree_Http::put('/transactions/' . $transactionId . '/escrow');
+    }
+
 
     public static function nowInEastern()
     {

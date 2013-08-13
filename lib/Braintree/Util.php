@@ -97,7 +97,8 @@ class Braintree_Util
             'Discount' => 'discount',
             'Plan' => 'plan',
             'Address' => 'address',
-            'SettlementBatchSummary' => 'settlementBatchSummary'
+            'SettlementBatchSummary' => 'settlementBatchSummary',
+            'MerchantAccount' => 'merchantAccount'
         );
 
         $name = str_replace('Braintree_', '', $name);
@@ -121,7 +122,8 @@ class Braintree_Util
             'discount' => 'Discount',
             'plan' => 'Plan',
             'address' => 'Address',
-            'settlementBatchSummary' => 'SettlementBatchSummary'
+            'settlementBatchSummary' => 'SettlementBatchSummary',
+            'merchantAccount' => 'MerchantAccount'
         );
 
         return 'Braintree_' . $responseKeysToClassNames[$name];

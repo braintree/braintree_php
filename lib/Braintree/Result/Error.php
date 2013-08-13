@@ -92,6 +92,12 @@ class Braintree_Result_Error extends Braintree
        } else {
            $this->_set('subscription', null);
        }
+
+       if(isset($response['merchantAccount'])) {
+           $this->_set('merchantAccount', Braintree_MerchantAccount::factory($response['merchantAccount']));
+       } else {
+           $this->_set('merchantAccount', null);
+       }
    }
 
    /**

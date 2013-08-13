@@ -1,3 +1,15 @@
+## 2.22.0
+
+* Adds holdInEscrow method
+* Add error codes for verification not supported error
+* Add companyName and taxId to merchant account create
+* Adds cancelRelease method
+* Adds releaseFromEscrow functionality
+* Adds phone to merchant account signature.
+* Adds merchant account phone error code.
+* Fix casing issues with Braintree\_Http and Braintree\_Util references (thanks [steven-hadfield](https://github.com/steven-hadfield)!)
+* Fixed transaction initialization arguments to be optional (thanks [karolsojko](https://github.com/karolsojko)!)
+
 ## 2.21.0
 
 * Enable device data.
