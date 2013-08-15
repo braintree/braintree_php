@@ -157,7 +157,7 @@ require_once('Braintree/Xml/Generator.php');
 require_once('Braintree/Xml/Parser.php');
 require_once('Braintree/CreditCardVerification.php');
 require_once('Braintree/CreditCardVerificationSearch.php');
-require_once('Braintree/PartnerCredentials.php');
+require_once('Braintree/PartnerUser.php');
 
 if (version_compare(PHP_VERSION, '5.2.1', '<')) {
     throw new Braintree_Exception('PHP version >= 5.2.1 required');

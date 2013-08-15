@@ -1,13 +1,14 @@
 <?php
 /**
- * Partner credentials that are created when a new partner user is created
+ * Partner User information that is generated when a partner is connected
+ * to or disconnected from a user.
  *
  * @package    Braintree
  * @copyright  2010 Braintree Payment Solutions
  */
 
 /**
- * Creates an instance of PartnerCredentials as returned from a transaction
+ * Creates an instance of PartnerUsers
  *
  *
  * @package    Braintree
@@ -19,7 +20,7 @@
  * @property-read string $partnerUserId
  * @uses Braintree_Instance inherits methods
  */
-class Braintree_PartnerCredentials extends Braintree
+class Braintree_PartnerUser extends Braintree
 {
     protected $_attributes = array();
 
