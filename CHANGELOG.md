@@ -1,3 +1,7 @@
+## 2.22.1
+
+* Adds missing test contstant to library namespace
+
 ## 2.22.0
 
 * Adds holdInEscrow method

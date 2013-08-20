@@ -143,11 +143,26 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(Braintree_WebhookNotification::PARTNER_USER_CREATED, $webhookNotification->kind);
-        $this->assertEquals("my_id", $webhookNotification->partnerCredentials->id);
-        $this->assertEquals("public_id", $webhookNotification->partnerCredentials->merchantPublicId);
-        $this->assertEquals("public_key", $webhookNotification->partnerCredentials->publicKey);
-        $this->assertEquals("private_key", $webhookNotification->partnerCredentials->privateKey);
-        $this->assertEquals("abc123", $webhookNotification->partnerCredentials->partnerUserId);
+        $this->assertEquals("public_id", $webhookNotification->partnerUser->merchantPublicId);
+        $this->assertEquals("public_key", $webhookNotification->partnerUser->publicKey);
+        $this->assertEquals("private_key", $webhookNotification->partnerUser->privateKey);
+        $this->assertEquals("abc123", $webhookNotification->partnerUser->partnerUserId);
+    }
+
+    function testBuildsASampleNotificationForAPartnerUserDeletedWebhook()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::PARTNER_USER_DELETED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            $sampleNotification['payload']
+        );
+
+        $this->assertEquals(Braintree_WebhookNotification::PARTNER_USER_DELETED, $webhookNotification->kind);
+        $this->assertEquals("abc123", $webhookNotification->partnerUser->partnerUserId);
     }
 }
 ?>

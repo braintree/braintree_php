@@ -27,6 +27,9 @@ class Braintree_WebhookTesting
             case Braintree_WebhookNotification::PARTNER_USER_CREATED:
                 $subjectXml = self::_partnerUserCreatedSampleXml($id);
                 break;
+            case Braintree_WebhookNotification::PARTNER_USER_DELETED:
+                $subjectXml = self::_partnerUserDeletedSampleXml($id);
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -115,13 +118,21 @@ class Braintree_WebhookTesting
     private static function _partnerUserCreatedSampleXml($id)
     {
         return "
-        <partner_credentials>
-          <id>{$id}</id>
+        <partner_user>
           <merchant_public_id>public_id</merchant_public_id>
           <public_key>public_key</public_key>
           <private_key>private_key</private_key>
           <partner_user_id>abc123</partner_user_id>
-        </partner_credentials>
+        </partner_user>
+        ";
+    }
+
+    private static function _partnerUserDeletedSampleXml($id)
+    {
+        return "
+        <partner_user>
+          <partner_user_id>abc123</partner_user_id>
+        </partner_user>
         ";
     }
 
