@@ -144,6 +144,7 @@ require_once('Braintree/Result/CreditCardVerification.php');
 require_once('Braintree/Result/Error.php');
 require_once('Braintree/Result/Successful.php');
 require_once('Braintree/Test/CreditCardNumbers.php');
+require_once('Braintree/Test/MerchantAccount.php');
 require_once('Braintree/Test/TransactionAmounts.php');
 require_once('Braintree/Test/VenmoSdk.php');
 require_once('Braintree/Transaction/AddressDetails.php');
