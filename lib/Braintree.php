@@ -115,7 +115,6 @@ require_once('Braintree/ResourceCollection.php');
 require_once('Braintree/SettlementBatchSummary.php');
 require_once('Braintree/Subscription.php');
 require_once('Braintree/SubscriptionSearch.php');
-require_once('Braintree/SubscriptionStatus.php');
 require_once('Braintree/TextNode.php');
 require_once('Braintree/Transaction.php');
 require_once('Braintree/TransactionSearch.php');
