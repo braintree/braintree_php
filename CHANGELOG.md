@@ -1,3 +1,7 @@
+## 2.22.2
+
+* Add Partner Merchant Declined webhook
+* use preg_callback_replace instead of preg_replace (thanks [jonthornton](https://github.com/jonthornton)!)
 ## 2.22.1
 
 * Adds missing test contstant to library namespace

@@ -13,6 +13,7 @@ class Braintree_WebhookNotification extends Braintree
     const TRANSACTION_DISBURSED = 'transaction_disbursed';
     const PARTNER_USER_CREATED = 'partner_user_created';
     const PARTNER_USER_DELETED = 'partner_user_deleted';
+    const PARTNER_MERCHANT_DECLINED = 'partner_merchant_declined';
 
     public static function parse($signature, $payload)
     {

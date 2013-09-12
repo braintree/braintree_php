@@ -164,5 +164,21 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_WebhookNotification::PARTNER_USER_DELETED, $webhookNotification->kind);
         $this->assertEquals("abc123", $webhookNotification->partnerUser->partnerUserId);
     }
+
+    function testBuildsASampleNotificationForAPartnerMerchantDeclinedWebhook()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::PARTNER_MERCHANT_DECLINED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            $sampleNotification['payload']
+        );
+
+        $this->assertEquals(Braintree_WebhookNotification::PARTNER_MERCHANT_DECLINED, $webhookNotification->kind);
+        $this->assertEquals("abc123", $webhookNotification->partnerUser->partnerUserId);
+    }
 }
 ?>

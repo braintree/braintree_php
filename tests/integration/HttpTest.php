@@ -34,7 +34,7 @@ class Braintree_HttpTest extends PHPUnit_Framework_TestCase
         try {
             Braintree_Configuration::environment('sandbox');
             $this->setExpectedException('Braintree_Exception_SSLCertificate');
-            Braintree_Http::_doUrlRequest('get', 'https://github.com/');
+            Braintree_Http::_doUrlRequest('get', 'https://braintreegateway.com/');
         } catch (Exception $e) {
             Braintree_Configuration::environment('development');
             throw $e;
