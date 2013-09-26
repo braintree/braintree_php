@@ -156,5 +156,13 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
     }
+
+    function test_throwsIfNoOperatorNodeGiven()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Operator must be provided');
+        Braintree_Customer::search(array(
+            Braintree_CustomerSearch::creditCardExpirationDate()
+        ));
+    }
 }
 ?>
