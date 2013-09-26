@@ -181,6 +181,7 @@ final class Braintree_Transaction extends Braintree
     const SETTLING                 = 'settling';
     const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
     const VOIDED                   = 'voided';
+    const UNRECOGNIZED             = 'unrecognized';
 
     // Transaction Escrow Status
     const ESCROW_HOLD_PENDING    = 'hold_pending';
@@ -195,18 +196,19 @@ final class Braintree_Transaction extends Braintree
 
     // Transaction Created Using
     const FULL_INFORMATION = 'full_information';
-    const TOKEN = 'token';
+    const TOKEN            = 'token';
 
     // Transaction Sources
-    const API = 'api';
+    const API           = 'api';
     const CONTROL_PANEL = 'control_panel';
-    const RECURRING = 'recurring';
+    const RECURRING     = 'recurring';
 
     // Gateway Rejection Reason
-    const AVS = 'avs';
-    const AVS_AND_CVV = 'avs_and_cvv';
-    const CVV = 'cvv';
-    const DUPLICATE = 'duplicate';
+    const AVS          = 'avs';
+    const AVS_AND_CVV  = 'avs_and_cvv';
+    const CVV          = 'cvv';
+    const DUPLICATE    = 'duplicate';
+    const FRAUD        = 'fraud';
 
     public static function cloneTransaction($transactionId, $attribs)
     {
