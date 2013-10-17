@@ -1100,6 +1100,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     {
         $result = Braintree_Transaction::sale(array(
             'deviceSessionId' => '123abc',
+            'fraudMerchantId' => '456',
             'amount' => '100.00',
             'creditCard' => array(
                 'number' => '5105105105105100',
