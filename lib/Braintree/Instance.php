@@ -46,6 +46,17 @@ abstract class Braintree_Instance
     }
 
     /**
+     * used by isset() and empty()
+     * @access public
+     * @param string $name property name
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        return array_key_exists($name, $this->_attributes);
+    }
+
+    /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
      * @return var
