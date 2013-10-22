@@ -409,13 +409,17 @@ final class Braintree_Transaction extends Braintree
         }
 
         $response = Braintree_Http::post('/transactions/advanced_search_ids', array('search' => $criteria));
-        $pager = array(
-            'className' => __CLASS__,
-            'classMethod' => 'fetch',
-            'methodArgs' => array($query)
-            );
+        if (array_key_exists('searchResults', $response)) {
+            $pager = array(
+                'className' => __CLASS__,
+                'classMethod' => 'fetch',
+                'methodArgs' => array($query)
+                );
 
-        return new Braintree_ResourceCollection($response, $pager);
+            return new Braintree_ResourceCollection($response, $pager);
+        } else {
+            throw new Braintree_Exception_DownForMaintenance();
+        }
     }
 
     public static function fetch($query, $ids)

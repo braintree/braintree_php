@@ -1252,7 +1252,7 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($transaction->id, $collection->firstItem()->id);
     }
 
-    function test_rangeNode_canSearchOnMulitpleStatuses()
+    function test_rangeNode_canSearchOnMultipleStatuses()
     {
         $transaction = Braintree_Transaction::sale(array(
             'amount' => '1000.00',
@@ -1301,5 +1301,14 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $unique_transaction_ids = array_unique(array_values($arr));
         $this->assertEquals($collection->maximumCount(), count($unique_transaction_ids));
     }
+
+    function test_handles_search_timeout()
+    {
+        $this->setExpectedException('Braintree_Exception_DownForMaintenance');
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::amount()->is('-5')
+        ));
+    }
+
 }
 ?>
