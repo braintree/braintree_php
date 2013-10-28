@@ -1,3 +1,6 @@
+## 2.23.0
+* Official Partnership support
+
 ## 2.22.2
 
 * Add Partner Merchant Declined webhook
