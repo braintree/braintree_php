@@ -55,6 +55,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $result = Braintree_CreditCard::create(array(
             'customerId' => $customer->id,
             'deviceSessionId' => 'abc_123',
+            'fraudMerchantId' => '456',
             'cardholderName' => 'Cardholder',
             'number' => '5105105105105100',
             'expirationDate' => '05/12'

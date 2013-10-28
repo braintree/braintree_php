@@ -151,6 +151,7 @@ class Braintree_Customer extends Braintree
         $signature = array(
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
+            'deviceSessionId', 'fraudMerchantId',
             array('creditCard' => $creditCardSignature),
             array('customFields' => array('_anyKey_')),
             );
@@ -174,6 +175,7 @@ class Braintree_Customer extends Braintree
         $signature = array(
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
+            'deviceSessionId', 'fraudMerchantId',
             array('creditCard' => $creditCardSignature),
             array('customFields' => array('_anyKey_')),
             );

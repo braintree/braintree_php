@@ -24,11 +24,11 @@ class Braintree_WebhookTesting
             case Braintree_WebhookNotification::TRANSACTION_DISBURSED:
                 $subjectXml = self::_transactionDisbursedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::PARTNER_USER_CREATED:
-                $subjectXml = self::_partnerUserCreatedSampleXml($id);
+            case Braintree_WebhookNotification::PARTNER_MERCHANT_CONNECTED:
+                $subjectXml = self::_partnerMerchantConnectedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::PARTNER_USER_DELETED:
-                $subjectXml = self::_partnerUserDeletedSampleXml($id);
+            case Braintree_WebhookNotification::PARTNER_MERCHANT_DISCONNECTED:
+                $subjectXml = self::_partnerMerchantDisconnectedSampleXml($id);
                 break;
             case Braintree_WebhookNotification::PARTNER_MERCHANT_DECLINED:
                 $subjectXml = self::_partnerMerchantDeclinedSampleXml($id);
@@ -118,33 +118,34 @@ class Braintree_WebhookTesting
         ";
     }
 
-    private static function _partnerUserCreatedSampleXml($id)
+    private static function _partnerMerchantConnectedSampleXml($id)
     {
         return "
-        <partner_user>
+        <partner_merchant>
           <merchant_public_id>public_id</merchant_public_id>
           <public_key>public_key</public_key>
           <private_key>private_key</private_key>
-          <partner_user_id>abc123</partner_user_id>
-        </partner_user>
+          <partner_merchant_id>abc123</partner_merchant_id>
+          <client_side_encryption_key>cse_key</client_side_encryption_key>
+        </partner_merchant>
         ";
     }
 
-    private static function _partnerUserDeletedSampleXml($id)
+    private static function _partnerMerchantDisconnectedSampleXml($id)
     {
         return "
-        <partner_user>
-          <partner_user_id>abc123</partner_user_id>
-        </partner_user>
+        <partner_merchant>
+          <partner_merchant_id>abc123</partner_merchant_id>
+        </partner_merchant>
         ";
     }
 
     private static function _partnerMerchantDeclinedSampleXml($id)
     {
         return "
-        <partner_user>
-          <partner_user_id>abc123</partner_user_id>
-        </partner_user>
+        <partner_merchant>
+          <partner_merchant_id>abc123</partner_merchant_id>
+        </partner_merchant>
         ";
     }
 

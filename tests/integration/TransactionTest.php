@@ -359,6 +359,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('MasterCard', $transaction->creditCardDetails->cardType);
       $this->assertEquals('1000', $transaction->processorResponseCode);
       $this->assertEquals('Approved', $transaction->processorResponseText);
+      $this->assertNull($transaction->voiceReferralNumber);
       $this->assertFalse($transaction->taxExempt);
 
       $this->assertEquals('M', $transaction->avsPostalCodeResponseCode);
@@ -1099,6 +1100,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     {
         $result = Braintree_Transaction::sale(array(
             'deviceSessionId' => '123abc',
+            'fraudMerchantId' => '456',
             'amount' => '100.00',
             'creditCard' => array(
                 'number' => '5105105105105100',
@@ -1557,6 +1559,21 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = $result->transaction;
 
         $this->assertEquals(Braintree_Transaction::CVV, $transaction->gatewayRejectionReason);
+    }
+
+    function testGatewayRejectionOnFraud()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '4000111111111511',
+                'expirationDate' => '05/17',
+                'cvv' => '333'
+            )
+        ));
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Transaction::FRAUD, $result->transaction->gatewayRejectionReason);
     }
 
     function testSnapshotPlanIdAddOnsAndDiscountsFromSubscription()
