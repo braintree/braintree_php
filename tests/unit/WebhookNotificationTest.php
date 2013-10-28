@@ -130,10 +130,10 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($webhookNotification->transaction->disbursementDetails->disbursementDate);
     }
 
-    function testBuildsASampleNotificationForAPartnerUserCreatedWebhook()
+    function testBuildsASampleNotificationForAPartnerMerchantConnectedWebhook()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::PARTNER_USER_CREATED,
+            Braintree_WebhookNotification::PARTNER_MERCHANT_CONNECTED,
             "my_id"
         );
 
@@ -142,17 +142,18 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
             $sampleNotification['payload']
         );
 
-        $this->assertEquals(Braintree_WebhookNotification::PARTNER_USER_CREATED, $webhookNotification->kind);
-        $this->assertEquals("public_id", $webhookNotification->partnerUser->merchantPublicId);
-        $this->assertEquals("public_key", $webhookNotification->partnerUser->publicKey);
-        $this->assertEquals("private_key", $webhookNotification->partnerUser->privateKey);
-        $this->assertEquals("abc123", $webhookNotification->partnerUser->partnerUserId);
+        $this->assertEquals(Braintree_WebhookNotification::PARTNER_MERCHANT_CONNECTED, $webhookNotification->kind);
+        $this->assertEquals("public_id", $webhookNotification->partnerMerchant->merchantPublicId);
+        $this->assertEquals("public_key", $webhookNotification->partnerMerchant->publicKey);
+        $this->assertEquals("private_key", $webhookNotification->partnerMerchant->privateKey);
+        $this->assertEquals("abc123", $webhookNotification->partnerMerchant->partnerMerchantId);
+        $this->assertEquals("cse_key", $webhookNotification->partnerMerchant->clientSideEncryptionKey);
     }
 
-    function testBuildsASampleNotificationForAPartnerUserDeletedWebhook()
+    function testBuildsASampleNotificationForAPartnerMerchantDisconnectedWebhook()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::PARTNER_USER_DELETED,
+            Braintree_WebhookNotification::PARTNER_MERCHANT_DISCONNECTED,
             "my_id"
         );
 
@@ -161,8 +162,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
             $sampleNotification['payload']
         );
 
-        $this->assertEquals(Braintree_WebhookNotification::PARTNER_USER_DELETED, $webhookNotification->kind);
-        $this->assertEquals("abc123", $webhookNotification->partnerUser->partnerUserId);
+        $this->assertEquals(Braintree_WebhookNotification::PARTNER_MERCHANT_DISCONNECTED, $webhookNotification->kind);
+        $this->assertEquals("abc123", $webhookNotification->partnerMerchant->partnerMerchantId);
     }
 
     function testBuildsASampleNotificationForAPartnerMerchantDeclinedWebhook()
@@ -178,7 +179,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(Braintree_WebhookNotification::PARTNER_MERCHANT_DECLINED, $webhookNotification->kind);
-        $this->assertEquals("abc123", $webhookNotification->partnerUser->partnerUserId);
+        $this->assertEquals("abc123", $webhookNotification->partnerMerchant->partnerMerchantId);
     }
 }
 ?>

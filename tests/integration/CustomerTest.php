@@ -165,7 +165,8 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
                 'expirationDate' => '05/12',
                 'cvv' => '123',
                 'cardholderName' => 'Mike Jones',
-                'deviceSessionId' => 'abc123'
+                'deviceSessionId' => 'abc123',
+                'fraudMerchantId' => '456'
             )
         ));
         $this->assertEquals(true, $result->success);

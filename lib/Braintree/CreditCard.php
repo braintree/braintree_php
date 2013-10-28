@@ -440,7 +440,7 @@ class Braintree_CreditCard extends Braintree
          return array(
              'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
              'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
-             'deviceData',
+             'deviceData', 'fraudMerchantId',
              array('options' => $options),
              array(
                  'billingAddress' => array(
