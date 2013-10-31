@@ -223,22 +223,10 @@ class Braintree_Configuration extends Braintree
         $sslPath = $sslPath ? $sslPath : DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                    'ssl' . DIRECTORY_SEPARATOR;
 
-        switch(self::environment()) {
-         case 'production':
-             $caPath = realpath(
-                 dirname(__FILE__) .
-                 $sslPath .  'www_braintreegateway_com.ca.crt'
-             );
-             break;
-         case 'qa':
-         case 'sandbox':
-         default:
-             $caPath = realpath(
-                 dirname(__FILE__) .
-                 $sslPath . 'sandbox_braintreegateway_com.ca.crt'
-             );
-             break;
-        }
+        $caPath = realpath(
+            dirname(__FILE__) .
+            $sslPath .  'api_braintreegateway_com.ca.crt'
+        );
 
         if (!file_exists($caPath))
         {
@@ -289,13 +277,13 @@ class Braintree_Configuration extends Braintree
     {
         switch(self::environment()) {
          case 'production':
-             $serverName = 'www.braintreegateway.com';
+             $serverName = 'api.braintreegateway.com';
              break;
          case 'qa':
              $serverName = 'qa.braintreegateway.com';
              break;
          case 'sandbox':
-             $serverName = 'sandbox.braintreegateway.com';
+             $serverName = 'api.sandbox.braintreegateway.com';
              break;
          case 'development':
          default:

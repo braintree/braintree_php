@@ -1,3 +1,6 @@
+## 2.23.1
+* Update configuration URLs
+
 ## 2.23.0
 * Official Partnership support
 

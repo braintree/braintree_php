@@ -118,11 +118,11 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
         Braintree_Configuration::environment('sandbox');
         $sn = Braintree_Configuration::serverName();
-        $this->assertEquals('sandbox.braintreegateway.com', $sn);
+        $this->assertEquals('api.sandbox.braintreegateway.com', $sn);
 
         Braintree_Configuration::environment('production');
         $sn = Braintree_Configuration::serverName();
-        $this->assertEquals('www.braintreegateway.com', $sn);
+        $this->assertEquals('api.braintreegateway.com', $sn);
 
         Braintree_Configuration::reset();
     }
@@ -132,7 +132,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::merchantId('abc123');
         Braintree_Configuration::environment('sandbox');
         $mu = Braintree_Configuration::merchantUrl();
-        $this->assertEquals('https://sandbox.braintreegateway.com:443/merchants/abc123', $mu);
+        $this->assertEquals('https://api.sandbox.braintreegateway.com:443/merchants/abc123', $mu);
 
         Braintree_Configuration::reset();
     }
@@ -141,7 +141,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         Braintree_Configuration::environment('sandbox');
         $bu = Braintree_Configuration::baseUrl();
-        $this->assertEquals('https://sandbox.braintreegateway.com:443', $bu);
+        $this->assertEquals('https://api.sandbox.braintreegateway.com:443', $bu);
 
         Braintree_Configuration::reset();
     }
