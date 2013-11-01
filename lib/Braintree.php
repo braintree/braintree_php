@@ -91,6 +91,7 @@ require_once('Braintree/Instance.php');
 
 require_once('Braintree/Address.php');
 require_once('Braintree/AddOn.php');
+require_once('Braintree/ClientApi/AuthorizationFingerprint.php');
 require_once('Braintree/Collection.php');
 require_once('Braintree/Configuration.php');
 require_once('Braintree/CreditCard.php');

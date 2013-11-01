@@ -21,6 +21,11 @@ class Braintree_Digest
         }
     }
 
+    public static function hexDigestSha256($string)
+    {
+        return hash_hmac('sha256', $string, hash('sha256', Braintree_Configuration::privateKey(), true));
+    }
+
     public static function secureCompare($left, $right)
     {
         if (strlen($left) != strlen($right)) {
