@@ -13,7 +13,7 @@ class Braintree_AuthorizationFingerprint
             "created_at" => $datetime->format('c')
         );
         $data = http_build_query(array_merge($params, $defaults), null, '&');
-        $hash = Braintree_Digest::hexDigestSha256($data);
+        $hash = Braintree_Digest::hexDigestSha256(Braintree_Configuration::privateKey(), $data);
         return "$hash|$data";
     }
 }

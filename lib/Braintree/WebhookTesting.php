@@ -4,7 +4,7 @@ class Braintree_WebhookTesting
     public static function sampleNotification($kind, $id)
     {
         $payload = base64_encode(self::_sampleXml($kind, $id));
-        $signature = Braintree_Configuration::publicKey() . "|" . Braintree_Digest::hexDigest($payload);
+        $signature = Braintree_Configuration::publicKey() . "|" . Braintree_Digest::hexDigest(Braintree_Configuration::privateKey(), $payload);
 
         return array(
             'signature' => $signature,

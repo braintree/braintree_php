@@ -320,7 +320,7 @@ class Braintree_TransparentRedirect
      */
     private static function _hash($string)
     {
-        return Braintree_Digest::hexDigest($string);
+        return Braintree_Digest::hexDigest(Braintree_Configuration::privateKey(), $string);
     }
 
 }
