@@ -12,8 +12,11 @@ class Braintree_AuthorizationFingerprint
             "public_key" => Braintree_Configuration::PublicKey(),
             "created_at" => $datetime->format('c')
         );
-        $data = http_build_query(array_merge($params, $defaults), null, '&');
-        $hash = Braintree_Digest::hexDigestSha256(Braintree_Configuration::privateKey(), $data);
-        return "$hash|$data";
+        $data = array_merge($params, $defaults);
+        $signatureService = new Braintree_SignatureService(
+            Braintree_Configuration::privateKey(),
+            "Braintree_Digest::hexDigestSha256"
+        );
+        return $signatureService->sign($data);
     }
 }
