@@ -14,26 +14,21 @@ class Braintree_HttpClientApi extends Braintree_Http
          return self::_doRequest('GET', $path);
     }
 
+    public static function post($path, $body)
+    {
+         return self::_doRequest('POST', $path, $body);
+    }
+
     public static function _doUrlRequest($httpVerb, $url, $requestBody = null)
     {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Accept: application/xml',
-            'Content-Type: application/xml',
-            'User-Agent: Braintree PHP Library ' . Braintree_Version::get(),
             'X-ApiVersion: ' . Braintree_Configuration::API_VERSION
         ));
         curl_setopt($curl, CURLOPT_USERPWD, Braintree_Configuration::publicKey() . ':' . Braintree_Configuration::privateKey());
-        // curl_setopt($curl, CURLOPT_VERBOSE, true);
-        if (Braintree_Configuration::sslOn()) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-            curl_setopt($curl, CURLOPT_CAINFO, Braintree_Configuration::caFile());
-        }
 
         if(!empty($requestBody)) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
@@ -43,11 +38,6 @@ class Braintree_HttpClientApi extends Braintree_Http
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
-        if (Braintree_Configuration::sslOn()) {
-            if ($httpStatus == 0) {
-                throw new Braintree_Exception_SSLCertificate();
-            }
-        }
         return array('status' => $httpStatus, 'body' => $response);
     }
 
@@ -74,5 +64,106 @@ class Braintree_AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertEquals(200, $response["status"]);
+    }
+
+    function test_GatewayRespectsVerifyCard()
+    {
+        $result = Braintree_Customer::create();
+        $this->assertTrue($result->success);
+        $customerId = $result->customer->id;
+
+        $fingerprint = Braintree_AuthorizationFingerprint::generate(array(
+            "customer_id" => $customerId,
+            "verifyCard" => true
+        ));
+
+        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', http_build_query(array(
+            "credit_card" => array(
+                "number" => "4000111111111115",
+                "expirationDate" => "11/2099"
+            ),
+            "authorization_fingerprint" => $fingerprint,
+            "session_identifier" => "fake_identifier",
+            "session_identifier_type" => "testing"
+        )));
+
+        $this->assertEquals(422, $response["status"]);
+    }
+
+    function test_GatewayRespectsFailOnDuplicatePaymentMethod()
+    {
+        $result = Braintree_Customer::create();
+        $this->assertTrue($result->success);
+        $customerId = $result->customer->id;
+
+        $fingerprint = Braintree_AuthorizationFingerprint::generate(array(
+            "customer_id" => $customerId,
+        ));
+
+        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', http_build_query(array(
+            "credit_card" => array(
+                "number" => "4242424242424242",
+                "expirationDate" => "11/2099"
+            ),
+            "authorization_fingerprint" => $fingerprint,
+            "session_identifier" => "fake_identifier",
+            "session_identifier_type" => "testing"
+        )));
+        $this->assertEquals(200, $response["status"]);
+
+        $fingerprint = Braintree_AuthorizationFingerprint::generate(array(
+            "customer_id" => $customerId,
+            "failOnDuplicatePaymentMethod" => true
+        ));
+
+        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', http_build_query(array(
+            "credit_card" => array(
+                "number" => "4242424242424242",
+                "expirationDate" => "11/2099"
+            ),
+            "authorization_fingerprint" => $fingerprint,
+            "session_identifier" => "fake_identifier",
+            "session_identifier_type" => "testing"
+        )));
+        $this->assertEquals(422, $response["status"]);
+    }
+
+    function test_GatewayRespectsMakeDefault()
+    {
+        $result = Braintree_Customer::create();
+        $this->assertTrue($result->success);
+        $customerId = $result->customer->id;
+
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customerId,
+            'number' => '4111111111111111',
+            'expirationDate' => '11/2099'
+        ));
+        $this->assertTrue($result->success);
+
+        $fingerprint = Braintree_AuthorizationFingerprint::generate(array(
+            "customer_id" => $customerId,
+            "makeDefault" => true
+        ));
+
+        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', http_build_query(array(
+            "credit_card" => array(
+                "number" => "4242424242424242",
+                "expirationDate" => "11/2099"
+            ),
+            "authorization_fingerprint" => $fingerprint,
+            "session_identifier" => "fake_identifier",
+            "session_identifier_type" => "testing"
+        )));
+
+        $this->assertEquals(200, $response["status"]);
+
+        $customer = Braintree_Customer::find($customerId);
+        $this->assertEquals(2, count($customer->creditCards));
+        foreach ($customer->creditCards as $creditCard) {
+            if ($creditCard->last4 == "4242") {
+                $this->assertTrue($creditCard->default);
+            }
+        }
     }
 }
