@@ -292,11 +292,12 @@ class Braintree_TransparentRedirect
             )
         );
         ksort($trDataParams);
+        $urlEncodedData = http_build_query($trDataParams, null, "&");
         $signatureService = new Braintree_SignatureService(
             Braintree_Configuration::privateKey(),
-            "Braintree_Digest::hexDigest"
+            "Braintree_Digest::hexDigestSha1"
         );
-        return $signatureService->sign($trDataParams);
+        return $signatureService->sign($urlEncodedData);
     }
 
     private static function _underscoreKeys($array)
@@ -322,7 +323,7 @@ class Braintree_TransparentRedirect
      */
     private static function _hash($string)
     {
-        return Braintree_Digest::hexDigest(Braintree_Configuration::privateKey(), $string);
+        return Braintree_Digest::hexDigestSha1(Braintree_Configuration::privateKey(), $string);
     }
 
 }

@@ -9,10 +9,9 @@ class Braintree_SignatureService
         $this->digest = $digest;
     }
 
-    public function sign($data)
+    public function sign($payload)
     {
-        $url_encoded_data = http_build_query($data, null, "&");
-        return $this->hash($url_encoded_data) . "|" . $url_encoded_data;
+        return $this->hash($payload) . "|" . $payload;
     }
 
     public function hash($data)

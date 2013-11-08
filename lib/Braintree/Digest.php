@@ -12,7 +12,7 @@
  */
 class Braintree_Digest
 {
-    public static function hexDigest($key, $string)
+    public static function hexDigestSha1($key, $string)
     {
         if(function_exists('hash_hmac')) {
             return self::_builtInHmacSha1($string, $key);

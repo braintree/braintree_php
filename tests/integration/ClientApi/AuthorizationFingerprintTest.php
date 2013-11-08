@@ -26,6 +26,7 @@ class Braintree_HttpClientApi extends Braintree_Http
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
             'X-ApiVersion: ' . Braintree_Configuration::API_VERSION
         ));
         curl_setopt($curl, CURLOPT_USERPWD, Braintree_Configuration::publicKey() . ':' . Braintree_Configuration::privateKey());
@@ -77,7 +78,7 @@ class Braintree_AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
             "verifyCard" => true
         ));
 
-        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', http_build_query(array(
+        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4000111111111115",
                 "expirationDate" => "11/2099"
@@ -100,7 +101,7 @@ class Braintree_AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
             "customer_id" => $customerId,
         ));
 
-        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', http_build_query(array(
+        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4242424242424242",
                 "expirationDate" => "11/2099"
@@ -116,7 +117,7 @@ class Braintree_AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
             "failOnDuplicatePaymentMethod" => true
         ));
 
-        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', http_build_query(array(
+        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4242424242424242",
                 "expirationDate" => "11/2099"
@@ -146,7 +147,7 @@ class Braintree_AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
             "makeDefault" => true
         ));
 
-        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', http_build_query(array(
+        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4242424242424242",
                 "expirationDate" => "11/2099"

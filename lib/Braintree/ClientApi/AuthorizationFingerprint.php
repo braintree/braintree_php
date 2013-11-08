@@ -29,10 +29,14 @@ class Braintree_AuthorizationFingerprint
         }
 
         $payload = array_merge($params, $defaults);
+        $payloadArray = array();
+        foreach($payload as $key => $value) {
+            $payloadArray[] = "$key=$value";
+        }
         $signatureService = new Braintree_SignatureService(
             Braintree_Configuration::privateKey(),
             "Braintree_Digest::hexDigestSha256"
         );
-        return $signatureService->sign($payload);
+        return $signatureService->sign(join("&", $payloadArray));
     }
 }
