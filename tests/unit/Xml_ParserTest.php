@@ -49,7 +49,7 @@ XML;
         date_default_timezone_set('UTC');
         $dateTime = new DateTime('2009-10-28T10:19:49', new DateTimeZone('UTC'));
         $this->assertEquals(array('root' => array('createdAt' => $dateTime)), $array);
-        $this->assertType('DateTime', $array['root']['createdAt']);
+        $this->assertInstanceOf('DateTime', $array['root']['createdAt']);
     }
 
     function testTypeCastsDates()

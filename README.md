@@ -47,6 +47,22 @@ The following PHP extensions are required:
 
     ?>
 
+## Testing
+
+### Unit tests
+
+To run unit tests install all the requirements with composer:
+
+```sh
+composer install --dev
+```
+
+Then run the unit tests by typing:
+
+```sh
+./bin/phpunit tests/unit/
+```
+
 ## Documentation
 
  * [Official documentation](http://www.braintreepayments.com/docs/php)
