@@ -2,9 +2,13 @@
 
 final class Braintree_MerchantAccount extends Braintree
 {
-    const STATUS_ACTIVE  = 'active';
+    const STATUS_ACTIVE = 'active';
     const STATUS_PENDING = 'pending';
     const STATUS_SUSPENDED = 'suspended';
+
+    const FUNDING_DESTINATION_BANK = 'bank';
+    const FUNDING_DESTINATION_EMAIL = 'email';
+    const FUNDING_DESTINATION_MOBILE_PHONE = 'mobile_phone';
 
     public static function create($attribs)
     {
@@ -50,12 +54,17 @@ final class Braintree_MerchantAccount extends Braintree
 
         $businessSignature = array(
             'dbaName',
-            'taxId'
+            'legalName',
+            'taxId',
+            array('address' => $addressSignature)
         );
 
         $fundingSignature = array(
             'routingNumber',
-            'accountNumber'
+            'accountNumber',
+            'destination',
+            'email',
+            'mobilePhone'
         );
 
         return array(
@@ -141,7 +150,7 @@ final class Braintree_MerchantAccount extends Braintree
 
         if (isset($merchantAccountAttribs['business'])) {
             $business = $merchantAccountAttribs['business'];
-            $this->_set('businessDetails', new Braintree_MerchantAccount_BusinessDetails($business));
+            $this->_set('businessDetails', Braintree_MerchantAccount_BusinessDetails::Factory($business));
         }
 
         if (isset($merchantAccountAttribs['funding'])) {

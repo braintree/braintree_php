@@ -109,7 +109,7 @@ require_once('Braintree/MerchantAccount.php');
 require_once('Braintree/MerchantAccount/BusinessDetails.php');
 require_once('Braintree/MerchantAccount/FundingDetails.php');
 require_once('Braintree/MerchantAccount/IndividualDetails.php');
-require_once('Braintree/MerchantAccount/IndividualDetails/AddressDetails.php');
+require_once('Braintree/MerchantAccount/AddressDetails.php');
 require_once('Braintree/MultipleValueNode.php');
 require_once('Braintree/MultipleValueOrTextNode.php');
 require_once('Braintree/PartialMatchNode.php');
