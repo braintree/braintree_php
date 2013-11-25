@@ -101,6 +101,43 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $this->assertequals('First', $customer->firstName);
     }
 
+    function testCreateTransactionWithServiceFeesFromTransparentRedirect()
+    {
+        $params = array(
+            'transaction' => array(
+                'customer' => array(
+                    'first_name' => 'First'
+                ),
+                'credit_card' => array(
+                    'number' => '5105105105105100',
+                    'expiration_date' => '05/12'
+                ),
+                'service_fee_amount' => '1.00',
+                'merchant_account_id' => Braintree_TestHelper::nonDefaultSubMerchantAccountId()
+            )
+        );
+        $trParams = array(
+            'transaction' => array(
+                'type' => Braintree_Transaction::SALE,
+                'amount' => '100.00'
+            )
+        );
+
+        $trData = Braintree_TransparentRedirect::transactionData(
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+        );
+
+        $queryString = Braintree_TestHelper::submitTrRequest(
+            Braintree_TransparentRedirect::url(),
+            $params,
+            $trData
+        );
+
+        $result = Braintree_TransparentRedirect::confirm($queryString);
+        $this->assertTrue($result->success);
+        $this->assertEquals('1.00', $result->transaction->serviceFeeAmount);
+    }
+
     function testCreateCustomerFromTransparentRedirect()
     {
         $params = array(
