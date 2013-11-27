@@ -166,12 +166,13 @@ class Braintree_Util
      * find capitals and convert to delimiter + lowercase
      *
      * @access public
-     * @param var $string
+     * @param string $string
+     * @param string $delimiter (optional, defaults to -)
      * @return var modified string
      */
     public static function camelCaseToDelimiter($string, $delimiter = '-')
     {
-        return strtolower(preg_replace('/([A-Z])/', '-\1', $string));
+        return strtolower(preg_replace('/([A-Z])/', "$delimiter\\1", $string));
     }
 
     /**
