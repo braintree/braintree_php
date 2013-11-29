@@ -213,4 +213,3 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
         Braintree_Util::verifyKeys($signature, $userKeys);
     }
 }
-?>

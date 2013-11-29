@@ -13,7 +13,7 @@
  * @package    Braintree
  * @subpackage Transaction
  * @copyright  2010 Braintree Payment Solutions
- * 
+ *
  * @property-read string $company
  * @property-read string $email
  * @property-read string $fax

@@ -17,4 +17,3 @@ class Braintree_MultipleValueNodeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array('firstValue', 'secondValue'), $node->toParam());
     }
 }
-

@@ -15,5 +15,3 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         Braintree_Subscription::find('\t');
     }
 }
-
-?>

@@ -72,4 +72,3 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         Braintree_Address::find('  ', '123');
     }
 }
-?>

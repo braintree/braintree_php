@@ -28,4 +28,3 @@ class Braintree_CustomerSearch
 
     static function createdAt()                        { return new Braintree_RangeNode("created_at"); }
 }
-

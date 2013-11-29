@@ -14,7 +14,7 @@
  * @package    Braintree
  * @subpackage Transaction
  * @copyright  2010 Braintree Payment Solutions
- * 
+ *
  * @property-read string $firstName
  * @property-read string $lastName
  * @property-read string $company

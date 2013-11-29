@@ -11,4 +11,3 @@ class Braintree_CreditCardNumbers_CardTypeIndicators {
     const ISSUING_BANK        = "4111111141010101";
     const COUNTRY_OF_ISSUANCE = "4111111111121102";
 }
-?>

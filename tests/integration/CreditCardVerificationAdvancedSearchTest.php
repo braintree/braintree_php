@@ -124,4 +124,3 @@ class Braintree_CreditCardVerificationAdvancedSearchTest extends PHPUnit_Framewo
         $this->assertEquals(0, $collection->maximumCount());
     }
 }
-?>

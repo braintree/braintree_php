@@ -87,4 +87,3 @@ class Braintree_MultipleValueNodeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Braintree_TestHelper::includes($collection, $canceledSubscription));
     }
 }
-

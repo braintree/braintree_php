@@ -17,5 +17,5 @@
  */
 class Braintree_Exception_Authentication extends Braintree_Exception
 {
-    
+
 }

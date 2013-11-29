@@ -124,5 +124,3 @@ class Braintree_TestHelper
         return $now->format('Y-m-d');
     }
 }
-
-?>

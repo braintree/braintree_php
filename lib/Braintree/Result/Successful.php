@@ -74,5 +74,5 @@ class Braintree_Result_Successful extends Braintree_Instance
        $returnObject = $this->_returnObjectName;
        return __CLASS__ . '['.$this->$returnObject->__toString().']';
    }
-    
+
 }

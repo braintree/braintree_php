@@ -82,5 +82,3 @@ class Braintree_SubscriptionTestHelper
         usort($modifications, array("Braintree_SubscriptionTestHelper", "compareModificationsById"));
     }
 }
-
-?>
