@@ -110,7 +110,7 @@ class Braintree_AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
             "session_identifier" => "fake_identifier",
             "session_identifier_type" => "testing"
         )));
-        $this->assertEquals(200, $response["status"]);
+        $this->assertEquals(201, $response["status"]);
 
         $fingerprint = Braintree_AuthorizationFingerprint::generate(array(
             "customer_id" => $customerId,
@@ -157,7 +157,7 @@ class Braintree_AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
             "session_identifier_type" => "testing"
         )));
 
-        $this->assertEquals(200, $response["status"]);
+        $this->assertEquals(201, $response["status"]);
 
         $customer = Braintree_Customer::find($customerId);
         $this->assertEquals(2, count($customer->creditCards));
