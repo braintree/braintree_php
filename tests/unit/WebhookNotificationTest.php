@@ -109,7 +109,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_MerchantAccount::STATUS_SUSPENDED, $webhookNotification->merchantAccount->masterMerchantAccount->status);
         $this->assertEquals("Credit score is too low", $webhookNotification->message);
         $errors = $webhookNotification->errors->forKey('merchantAccount')->onAttribute('base');
-        $this->assertEquals(Braintree_Error_Codes::MERCHANT_ACCOUNT_APPLICANT_DETAILS_DECLINED_OFAC, $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::MERCHANT_ACCOUNT_DECLINED_OFAC, $errors[0]->code);
     }
 
     function testBuildsASampleNotificationForATransactionDisbursedWebhook()
