@@ -14,19 +14,14 @@ class AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
 
     function testGenerate_optionallyTakesCustomerId()
     {
-        $fingerprint = Braintree_AuthorizationFingerprint::generate(array("customer_id" => 1));
+        $fingerprint = Braintree_AuthorizationFingerprint::generate(array("customerId" => 1));
         $this->assertContains("customer_id=1", $fingerprint);
     }
 
-    function testGenerate_cannotOverwriteDefaults()
+    function testErrorsWhenCreditCardOptionsGivenWithoutCustomerId()
     {
-        $fingerprint = Braintree_AuthorizationFingerprint::generate(array(
-            "merchant_id" => "bad_id",
-            "public_key" => "bad_key",
-            "created_at" => "bad_time"
-        ));
-        $this->assertNotContains("merchant_id=bad_id", $fingerprint);
-        $this->assertNotContains("public_key=bad_key", $fingerprint);
-        $this->assertNotContains("created_at=bad_time", $fingerprint);
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree_AuthorizationFingerprint::generate(array("makeDefault" => true));
     }
+
 }
