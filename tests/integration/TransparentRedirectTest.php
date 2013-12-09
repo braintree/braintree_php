@@ -295,4 +295,3 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("http://localhost:" . $developmentPort . "/merchants/integration_merchant_id/transparent_redirect_requests", $url);
     }
 }
-?>

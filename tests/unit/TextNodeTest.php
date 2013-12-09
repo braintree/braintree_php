@@ -38,4 +38,3 @@ class Braintree_TextNodeTest extends PHPUnit_Framework_TestCase
       $this->assertEquals(array('contains' => 'middle'), $node->toParam());
   }
 }
-

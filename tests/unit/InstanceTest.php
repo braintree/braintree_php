@@ -30,4 +30,3 @@ class Braintree_InstanceTest extends PHPUnit_Framework_TestCase
       $this->assertFalse(isset($transaction->creditCardDetails->cardType));
     }
 }
-?>

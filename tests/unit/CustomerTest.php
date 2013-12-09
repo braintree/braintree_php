@@ -37,4 +37,3 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         Braintree_Customer::find('\t');
     }
 }
-?>

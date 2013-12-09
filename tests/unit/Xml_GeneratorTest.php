@@ -85,4 +85,3 @@ XML;
         $this->assertEquals($expected, $xml);
     }
 }
-?>

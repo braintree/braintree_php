@@ -73,4 +73,3 @@ class Braintree_Error_ErrorCollectionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $result->errors->onHtmlField('customer[custom_fields][store_me]'));
     }
 }
-?>

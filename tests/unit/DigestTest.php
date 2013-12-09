@@ -57,4 +57,3 @@ class Braintree_DigestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('e8e99d0f45237d786d6bbaa7965c7808bbff1a91', $d);
     }
 }
-?>

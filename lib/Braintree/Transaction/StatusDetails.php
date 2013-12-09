@@ -12,7 +12,7 @@
  *
  * @package    Braintree
  * @copyright  2010 Braintree Payment Solutions
- * 
+ *
  * @property-read string $amount
  * @property-read string $status
  * @property-read string $timestamp

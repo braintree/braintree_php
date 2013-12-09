@@ -43,4 +43,3 @@ class Braintree_HttpTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::environment('development');
     }
 }
-?>

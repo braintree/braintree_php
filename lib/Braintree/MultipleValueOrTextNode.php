@@ -43,4 +43,3 @@ class Braintree_MultipleValueOrTextNode extends Braintree_MultipleValueNode
         return array_merge(parent::toParam(), $this->textNode->toParam());
     }
 }
-

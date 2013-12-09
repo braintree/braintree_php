@@ -44,8 +44,8 @@ class Braintree_Address extends Braintree
     public static function create($attribs)
     {
         Braintree_Util::verifyKeys(self::createSignature(), $attribs);
-        $customerId = isset($attribs['customerId']) ? 
-            $attribs['customerId'] : 
+        $customerId = isset($attribs['customerId']) ?
+            $attribs['customerId'] :
             null;
 
         self::_validateCustomerId($customerId);

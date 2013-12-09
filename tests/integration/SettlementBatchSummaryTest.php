@@ -72,4 +72,3 @@ class Braintree_SettlementBatchSummaryTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('store_me', $result->settlementBatchSummary->records[0]);
     }
 }
-?>

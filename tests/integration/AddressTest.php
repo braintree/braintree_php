@@ -270,4 +270,3 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Mexico', $address->countryName);
     }
 }
-?>

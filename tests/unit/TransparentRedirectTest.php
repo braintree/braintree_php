@@ -24,4 +24,3 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Europe/London', $zoneAfterCall);
     }
 }
-?>

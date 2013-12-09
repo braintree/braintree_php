@@ -39,5 +39,3 @@ class Braintree_DiscountTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($discountParams["numberOfBillingCycles"], $actualDiscount->numberOfBillingCycles);
     }
 }
-
-
