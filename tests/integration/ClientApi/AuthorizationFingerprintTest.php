@@ -1,57 +1,6 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../../TestHelper.php';
-
-class Braintree_HttpClientApi extends Braintree_Http
-{
-
-    private static function _doRequest($httpVerb, $path, $requestBody = null)
-    {
-        return self::_doUrlRequest($httpVerb, Braintree_Configuration::baseUrl() . $path, $requestBody);
-    }
-
-    public static function get($path)
-    {
-         return self::_doRequest('GET', $path);
-    }
-
-    public static function post($path, $body)
-    {
-         return self::_doRequest('POST', $path, $body);
-    }
-
-    public static function _doUrlRequest($httpVerb, $url, $requestBody = null)
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'X-ApiVersion: ' . Braintree_Configuration::API_VERSION
-        ));
-        curl_setopt($curl, CURLOPT_USERPWD, Braintree_Configuration::publicKey() . ':' . Braintree_Configuration::privateKey());
-
-        if(!empty($requestBody)) {
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
-        }
-
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($curl);
-        $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-        return array('status' => $httpStatus, 'body' => $response);
-    }
-
-    public static function get_cards($options) {
-        $encoded_fingerprint = urlencode($options["authorization_fingerprint"]);
-        $url = "/client_api/credit_cards.json?";
-        $url .= "authorizationFingerprint=" . $encoded_fingerprint;
-        $url .= "&sessionIdentifier=" . $options["session_identifier"];
-        $url .= "&sessionIdentifierType=" . $options["session_identifier_type"];
-
-        return Braintree_HttpClientApi::get($url);
-    }
-}
+require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
 
 class Braintree_AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
 {
