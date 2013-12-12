@@ -13,13 +13,9 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
     {
         $collection = Braintree_Customer::all();
         $this->assertTrue($collection->maximumCount() > 1);
-
-        $arr = array();
-        foreach($collection as $customer) {
-            array_push($arr, $customer->id);
-        }
-        $unique_customer_ids = array_unique(array_values($arr));
-        $this->assertEquals($collection->maximumCount(), count($unique_customer_ids));
+        $customer = $collection->firstItem();
+        $this->assertTrue(intval($customer->id) > 0);
+        $this->assertTrue($customer instanceof Braintree_Customer);
     }
 
     function testCreate()
