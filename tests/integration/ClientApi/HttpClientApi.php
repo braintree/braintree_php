@@ -5,7 +5,7 @@ class Braintree_HttpClientApi extends Braintree_Http
 
     private static function _doRequest($httpVerb, $path, $requestBody = null)
     {
-        return self::_doUrlRequest($httpVerb, Braintree_Configuration::baseUrl() . $path, $requestBody);
+        return self::_doUrlRequest($httpVerb, Braintree_Configuration::baseUrl() . "/merchants/" . Braintree_Configuration::merchantId() . $path, $requestBody);
     }
 
     public static function get($path)
