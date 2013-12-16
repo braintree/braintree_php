@@ -12,4 +12,11 @@ class Braintree_AddOn extends Braintree_Modification
             'addOn'
         );
     }
+
+    public static function factory($attributes)
+    {
+        $instance = new self();
+        $instance->_initialize($attributes);
+        return $instance;
+    }
 }
