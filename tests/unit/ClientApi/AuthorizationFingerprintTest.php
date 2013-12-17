@@ -10,6 +10,9 @@ class AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
         $this->assertContains("merchant_id=integration_merchant_id", $fingerprint);
         $this->assertContains("public_key=integration_public_key", $fingerprint);
         $this->assertContains("created_at=", $fingerprint);
+
+        $baseUrl = "http://localhost:3000/merchants/integration_merchant_id";
+        $this->assertContains("base_url=" . $baseUrl, $fingerprint);
     }
 
     function testGenerate_optionallyTakesCustomerId()
