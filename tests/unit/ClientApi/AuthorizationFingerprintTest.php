@@ -11,7 +11,7 @@ class AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
         $this->assertContains("public_key=integration_public_key", $fingerprint);
         $this->assertContains("created_at=", $fingerprint);
 
-        $baseUrl = "http://localhost:3000/merchants/integration_merchant_id";
+        $baseUrl = "http://localhost:". Braintree_Configuration::portNumber() ."/merchants/integration_merchant_id";
         $this->assertContains("base_url=" . $baseUrl, $fingerprint);
     }
 
