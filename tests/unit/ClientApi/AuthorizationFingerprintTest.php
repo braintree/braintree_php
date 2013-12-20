@@ -11,8 +11,10 @@ class AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
         $this->assertContains("public_key=integration_public_key", $fingerprint);
         $this->assertContains("created_at=", $fingerprint);
 
-        $baseUrl = "http://localhost:". Braintree_Configuration::portNumber() ."/merchants/integration_merchant_id";
-        $this->assertContains("base_url=" . $baseUrl, $fingerprint);
+        $clientApiUrl = "http://localhost:". Braintree_Configuration::portNumber() ."/merchants/integration_merchant_id/client_api";
+        $this->assertContains("client_api_url=" . $clientApiUrl, $fingerprint);
+
+        $this->assertContains("auth_url=http://auth.venmo.dev", $fingerprint);
     }
 
     function testGenerate_optionallyTakesCustomerId()

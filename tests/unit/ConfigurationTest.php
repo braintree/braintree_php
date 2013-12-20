@@ -127,6 +127,27 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::reset();
     }
 
+    function testAuthUrl()
+    {
+        Braintree_Configuration::environment('development');
+        $authUrl = Braintree_Configuration::authUrl();
+        $this->assertEquals('http://auth.venmo.dev:4567', $authUrl);
+
+        Braintree_Configuration::environment('qa');
+        $authUrl = Braintree_Configuration::authUrl();
+        $this->assertEquals('https://auth.qa.venmo.com', $authUrl);
+
+        Braintree_Configuration::environment('sandbox');
+        $authUrl = Braintree_Configuration::authUrl();
+        $this->assertEquals('https://auth.sandbox.venmo.com', $authUrl);
+
+        Braintree_Configuration::environment('production');
+        $authUrl = Braintree_Configuration::authUrl();
+        $this->assertEquals('https://auth.venmo.com', $authUrl);
+
+        Braintree_Configuration::reset();
+    }
+
     function testmerchantUrl()
     {
         Braintree_Configuration::merchantId('abc123');

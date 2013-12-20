@@ -12,7 +12,8 @@ class Braintree_AuthorizationFingerprint
             "merchant_id" => Braintree_Configuration::MerchantId(),
             "public_key" => Braintree_Configuration::PublicKey(),
             "created_at" => $datetime->format('c'),
-            "base_url" => Braintree_Configuration::merchantUrl()
+            "client_api_url" => Braintree_Configuration::merchantUrl() . "/client_api",
+            "auth_url" => Braintree_Configuration::authUrl()
         );
 
         if (array_key_exists("customerId", $params)) {
