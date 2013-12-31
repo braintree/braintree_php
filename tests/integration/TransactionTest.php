@@ -1767,5 +1767,3 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     }
 
 }
-?>
-

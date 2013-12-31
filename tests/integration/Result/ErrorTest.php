@@ -26,4 +26,3 @@ class Braintree_Result_ErrorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('some custom value', $result->valueForHtmlField('customer[custom_fields][store_me]'));
     }
 }
-?>

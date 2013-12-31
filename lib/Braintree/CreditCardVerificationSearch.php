@@ -31,4 +31,3 @@ class Braintree_CreditCardVerificationSearch
 
     static function createdAt()                        { return new Braintree_RangeNode("created_at"); }
 }
-

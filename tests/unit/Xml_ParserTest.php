@@ -519,4 +519,3 @@ XML;
         $this->assertEquals($array, $array2);
     }
 }
-?>

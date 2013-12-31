@@ -39,4 +39,3 @@ class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($addOnParams["numberOfBillingCycles"], $actualAddOn->numberOfBillingCycles);
     }
 }
-

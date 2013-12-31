@@ -157,4 +157,3 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($customer->id, $collection->firstItem()->id);
     }
 }
-?>

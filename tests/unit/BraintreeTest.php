@@ -35,4 +35,3 @@ class Braintree_BraintreeTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(empty($t->creditCard));
     }
 }
-?>

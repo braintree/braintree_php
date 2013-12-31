@@ -22,7 +22,7 @@ final class Braintree_Xml
     }
 
     /**
-     * 
+     *
      * @param string $xml
      * @return array
      */

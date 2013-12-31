@@ -69,5 +69,3 @@ class Braintree_Error_ValidationErrorCollectionTest extends PHPUnit_Framework_Te
         $this->assertEquals($expectedErrors, self::mapValidationErrorsToCodes($actualErrors));
     }
 }
-
-?>

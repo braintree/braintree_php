@@ -109,4 +109,3 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         Braintree_CreditCard::find('\t');
     }
 }
-?>

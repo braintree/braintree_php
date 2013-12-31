@@ -19,4 +19,3 @@ class Braintree_IsNode
         return $this->searchTerms;
     }
 }
-
