@@ -16,6 +16,16 @@ final class Braintree_MerchantAccount extends Braintree
         return self::_doCreate('/merchant_accounts/create_via_api', array('merchant_account' => $attribs));
     }
 
+    public static function find($merchant_account_id)
+    {
+        try {
+            $response = Braintree_Http::get('/merchant_accounts/' . $merchant_account_id);
+            return self::factory($response['merchantAccount']);
+        } catch (Braintree_Exception_NotFound $e) {
+            throw new Braintree_Exception_NotFound('merchant account with id ' . $merchant_account_id . ' not found');
+        }
+    }
+
     public static function update($merchant_account_id, $attributes)
     {
         Braintree_Util::verifyKeys(self::updateSignature(), $attributes);

@@ -117,6 +117,27 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $result->success);
     }
 
+    function testFind()
+    {
+        $params = array_merge(array(), self::$validParams);
+        $result = Braintree_MerchantAccount::create(self::$validParams);
+        $this->assertEquals(true, $result->success);
+        $this->assertEquals(Braintree_MerchantAccount::STATUS_PENDING, $result->merchantAccount->status);
+
+        $id = $result->merchantAccount->id;
+        $merchantAccount = Braintree_MerchantAccount::find($id);
+
+        $this->assertEquals(Braintree_MerchantAccount::STATUS_ACTIVE, $merchantAccount->status);
+        $this->assertEquals($params['individual']['firstName'], $merchantAccount->individualDetails->firstName);
+        $this->assertEquals($params['individual']['lastName'], $merchantAccount->individualDetails->lastName);
+    }
+
+    function testFind_throwsIfNotFound()
+    {
+        $this->setExpectedException('Braintree_Exception_NotFound', 'merchant account with id does-not-exist not found');
+        Braintree_MerchantAccount::find('does-not-exist');
+    }
+
     function testUpdate()
     {
         $params = array_merge(array(), self::$validParams);
