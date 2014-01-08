@@ -1,32 +1,32 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../../TestHelper.php';
 
-class AuthorizationFingerprintTest extends PHPUnit_Framework_TestCase
+class AuthorizationInfoTest extends PHPUnit_Framework_TestCase
 {
 
     function testGenerate_containsRequiredData()
     {
-        $fingerprint = Braintree_AuthorizationFingerprint::generate(array());
-        $this->assertContains("merchant_id=integration_merchant_id", $fingerprint);
+        $authInfo = json_decode(Braintree_AuthorizationInfo::generate(array()));
+        $fingerprint = $authInfo->fingerprint;
         $this->assertContains("public_key=integration_public_key", $fingerprint);
         $this->assertContains("created_at=", $fingerprint);
 
         $clientApiUrl = "http://localhost:". Braintree_Configuration::portNumber() ."/merchants/integration_merchant_id/client_api";
-        $this->assertContains("client_api_url=" . $clientApiUrl, $fingerprint);
+        $this->assertEquals($clientApiUrl, $authInfo->client_api_url);
 
-        $this->assertContains("auth_url=http://auth.venmo.dev", $fingerprint);
+        $this->assertEquals("http://auth.venmo.dev:4567", $authInfo->auth_url);
     }
 
     function testGenerate_optionallyTakesCustomerId()
     {
-        $fingerprint = Braintree_AuthorizationFingerprint::generate(array("customerId" => 1));
+        $fingerprint = json_decode(Braintree_AuthorizationInfo::generate(array("customerId" => 1)))->fingerprint;
         $this->assertContains("customer_id=1", $fingerprint);
     }
 
     function testErrorsWhenCreditCardOptionsGivenWithoutCustomerId()
     {
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_AuthorizationFingerprint::generate(array("makeDefault" => true));
+        Braintree_AuthorizationInfo::generate(array("makeDefault" => true));
     }
 
 }

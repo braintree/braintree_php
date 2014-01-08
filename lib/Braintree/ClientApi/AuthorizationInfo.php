@@ -1,6 +1,6 @@
 <?php
 
-class Braintree_AuthorizationFingerprint
+class Braintree_AuthorizationInfo
 {
 
     public static function generate($params=array())
@@ -9,11 +9,8 @@ class Braintree_AuthorizationFingerprint
         self::conditionallyVerifyKeys($params);
         $datetime = new DateTime();
         $defaults = array(
-            "merchant_id" => Braintree_Configuration::MerchantId(),
             "public_key" => Braintree_Configuration::PublicKey(),
-            "created_at" => $datetime->format('c'),
-            "client_api_url" => Braintree_Configuration::merchantUrl() . "/client_api",
-            "auth_url" => Braintree_Configuration::authUrl()
+            "created_at" => $datetime->format('c')
         );
 
         if (array_key_exists("customerId", $params)) {
@@ -45,7 +42,14 @@ class Braintree_AuthorizationFingerprint
             Braintree_Configuration::privateKey(),
             "Braintree_Digest::hexDigestSha256"
         );
-        return $signatureService->sign(join("&", $payloadArray));
+
+        $fingerprint = $signatureService->sign(join("&", $payloadArray));
+
+        return json_encode(array(
+            "fingerprint" => $fingerprint,
+            "client_api_url" => Braintree_Configuration::merchantUrl() . "/client_api",
+            "auth_url" => Braintree_Configuration::authUrl()
+        ));
     }
 
     public static function conditionallyVerifyKeys($params)

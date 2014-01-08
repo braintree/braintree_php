@@ -52,8 +52,8 @@ class Braintree_HttpClientApi extends Braintree_Http
     }
 
     public static function nonce_for_new_card($options) {
-        $fingerprint = Braintree_AuthorizationFingerprint::generate();
-        $options["authorization_fingerprint"] = $fingerprint;
+        $auth_info = json_decode(Braintree_AuthorizationInfo::generate());
+        $options["authorization_fingerprint"] = $auth_info->fingerprint;
         $options["session_identifier"] = "fake_identifier_" . rand();
         $options["session_identifier_type"] = "testing";
         $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode($options));
