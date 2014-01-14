@@ -7,6 +7,6 @@ class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
     {
         $addOn = \Braintree_AddOn::factory(array());
 
-        $this->assertInstanceOf('Braintree_AddOn', $addOn);
+        $this->assertType('Braintree_AddOn', $addOn);
     }
 }
