@@ -12,4 +12,11 @@ class Braintree_Discount extends Braintree_Modification
             'discount'
         );
     }
+
+    public static function factory($attributes)
+    {
+        $instance = new self();
+        $instance->_initialize($attributes);
+        return $instance;
+    }
 }
