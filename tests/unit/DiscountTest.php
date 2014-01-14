@@ -7,6 +7,6 @@ class Braintree_DiscountTest extends PHPUnit_Framework_TestCase
     {
         $discount = \Braintree_Discount::factory(array());
 
-        $this->assertInstanceOf('Braintree_Discount', $discount);
+        $this->assertType('Braintree_Discount', $discount);
     }
 }
