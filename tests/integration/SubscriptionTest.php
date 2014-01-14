@@ -348,11 +348,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($addOns[0]->quantity, 1);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[0]->neverExpires, true);
+        $this->assertEquals($addOns[0]->currentBillingCycle, 0);
 
         $this->assertEquals($addOns[1]->amount, "20.00");
         $this->assertEquals($addOns[1]->quantity, 1);
         $this->assertEquals($addOns[1]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[1]->neverExpires, true);
+        $this->assertEquals($addOns[1]->currentBillingCycle, 0);
 
         $this->assertEquals(2, sizeof($subscription->discounts));
         $discounts = $subscription->discounts;
@@ -362,11 +364,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($discounts[0]->quantity, 1);
         $this->assertEquals($discounts[0]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[0]->neverExpires, true);
+        $this->assertEquals($discounts[0]->currentBillingCycle, 0);
 
         $this->assertEquals($discounts[1]->amount, "7.00");
         $this->assertEquals($discounts[1]->quantity, 1);
         $this->assertEquals($discounts[1]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[1]->neverExpires, true);
+        $this->assertEquals($discounts[1]->currentBillingCycle, 0);
     }
 
     function testCreate_allowsOverridingInheritedAddOnsAndDiscounts()
@@ -412,11 +416,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($addOns[0]->quantity, 2);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, 5);
         $this->assertEquals($addOns[0]->neverExpires, false);
+        $this->assertEquals($addOns[0]->currentBillingCycle, 0);
 
         $this->assertEquals($addOns[1]->amount, "60.00");
         $this->assertEquals($addOns[1]->quantity, 4);
         $this->assertEquals($addOns[1]->numberOfBillingCycles, 9);
         $this->assertEquals($addOns[1]->neverExpires, false);
+        $this->assertEquals($addOns[1]->currentBillingCycle, 0);
 
         $this->assertEquals(2, sizeof($subscription->discounts));
         $discounts = $subscription->discounts;
@@ -426,11 +432,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($discounts[0]->quantity, 1);
         $this->assertEquals($discounts[0]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[0]->neverExpires, true);
+        $this->assertEquals($discounts[0]->currentBillingCycle, 0);
 
         $this->assertEquals($discounts[1]->amount, "15.00");
         $this->assertEquals($discounts[1]->quantity, 2);
         $this->assertEquals($discounts[1]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[1]->neverExpires, true);
+        $this->assertEquals($discounts[1]->currentBillingCycle, 0);
     }
 
     function testCreate_allowsRemovalOfInheritedAddOnsAndDiscounts()
@@ -456,6 +464,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($subscription->discounts[0]->quantity, 1);
         $this->assertEquals($subscription->discounts[0]->numberOfBillingCycles, null);
         $this->assertEquals($subscription->discounts[0]->neverExpires, true);
+        $this->assertEquals($subscription->discounts[0]->currentBillingCycle, 0);
     }
 
     function testCreate_allowsAddingNewAddOnsAndDiscounts()
@@ -499,6 +508,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($addOns[2]->neverExpires, true);
         $this->assertEquals($addOns[2]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[2]->quantity, 2);
+        $this->assertEquals($addOns[2]->currentBillingCycle, 0);
 
 
         $this->assertEquals(3, sizeof($subscription->discounts));
@@ -512,6 +522,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($discounts[1]->neverExpires, false);
         $this->assertEquals($discounts[1]->numberOfBillingCycles, 10);
         $this->assertEquals($discounts[1]->quantity, 3);
+        $this->assertEquals($discounts[1]->currentBillingCycle, 0);
 
         $this->assertEquals($discounts[2]->amount, "7.00");
     }
