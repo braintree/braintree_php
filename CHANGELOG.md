@@ -1,20 +1,30 @@
+## 2.25.1
+
+* Fix factories on AddOn and Discount (thanks [stewe](https://github.com/stewe))
+* Allow billingAddressId on transaction create
+
 ## 2.25.0
+
 * Merchant account find API
 
 ## 2.24.0
+
 * Merchant account update API
 * Merchant account create API v2
 
 ## 2.23.1
+
 * Update configuration URLs
 
 ## 2.23.0
+
 * Official Partnership support
 
 ## 2.22.2
 
 * Add Partner Merchant Declined webhook
 * use preg_callback_replace instead of preg_replace (thanks [jonthornton](https://github.com/jonthornton)!)
+
 ## 2.22.1
 
 * Adds missing test contstant to library namespace
