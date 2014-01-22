@@ -1,6 +1,6 @@
 <?php
 
-class Braintree_AuthorizationInfo
+class Braintree_ClientToken
 {
 
     public static function generate($params=array())
@@ -43,10 +43,10 @@ class Braintree_AuthorizationInfo
             "Braintree_Digest::hexDigestSha256"
         );
 
-        $fingerprint = $signatureService->sign(join("&", $payloadArray));
+        $authorizationFingerprint = $signatureService->sign(join("&", $payloadArray));
 
         return json_encode(array(
-            "fingerprint" => $fingerprint,
+            "authorization_fingerprint" => $authorizationFingerprint,
             "client_api_url" => Braintree_Configuration::merchantUrl() . "/client_api",
             "auth_url" => Braintree_Configuration::authUrl()
         ));
