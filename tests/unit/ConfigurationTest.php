@@ -131,7 +131,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         Braintree_Configuration::environment('development');
         $authUrl = Braintree_Configuration::authUrl();
-        $this->assertEquals('http://auth.venmo.dev:4567', $authUrl);
+        $this->assertEquals('http://auth.venmo.dev:9292', $authUrl);
 
         Braintree_Configuration::environment('qa');
         $authUrl = Braintree_Configuration::authUrl();

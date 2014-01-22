@@ -308,7 +308,7 @@ class Braintree_Configuration extends Braintree
              break;
          case 'development':
          default:
-             $serverName = 'http://auth.venmo.dev:4567';
+             $serverName = 'http://auth.venmo.dev:9292';
              break;
         }
 

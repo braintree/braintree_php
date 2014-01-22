@@ -14,7 +14,7 @@ class ClientTokenTest extends PHPUnit_Framework_TestCase
         $clientApiUrl = "http://localhost:". Braintree_Configuration::portNumber() ."/merchants/integration_merchant_id/client_api";
         $this->assertEquals($clientApiUrl, $clientToken->client_api_url);
 
-        $this->assertEquals("http://auth.venmo.dev:4567", $clientToken->auth_url);
+        $this->assertEquals("http://auth.venmo.dev:9292", $clientToken->auth_url);
     }
 
     function testGenerate_optionallyTakesCustomerId()
