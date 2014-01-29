@@ -7,7 +7,7 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
     function test_ClientTokenAuthorizesRequest()
     {
         $clientToken = Braintree_ClientToken::generate();
-        $authorizationFingerprint = json_decode($clientToken)->authorization_fingerprint;
+        $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
         $response = Braintree_HttpClientApi::get_cards(array(
             "authorization_fingerprint" => $authorizationFingerprint,
             "shared_customer_identifier" => "fake_identifier",
@@ -27,7 +27,7 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
             "customerId" => $customerId,
             "verifyCard" => true
         ));
-        $authorizationFingerprint = json_decode($clientToken)->authorization_fingerprint;
+        $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
         $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
             "credit_card" => array(
@@ -51,7 +51,7 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         $clientToken = Braintree_ClientToken::generate(array(
             "customerId" => $customerId,
         ));
-        $authorizationFingerprint = json_decode($clientToken)->authorization_fingerprint;
+        $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
         $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
             "credit_card" => array(
@@ -68,7 +68,7 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
             "customerId" => $customerId,
             "failOnDuplicatePaymentMethod" => true
         ));
-        $authorizationFingerprint = json_decode($clientToken)->authorization_fingerprint;
+        $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
         $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
             "credit_card" => array(
@@ -99,7 +99,7 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
             "customerId" => $customerId,
             "makeDefault" => true
         ));
-        $authorizationFingerprint = json_decode($clientToken)->authorization_fingerprint;
+        $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
         $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
             "credit_card" => array(

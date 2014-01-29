@@ -58,7 +58,7 @@ class Braintree_HttpClientApi extends Braintree_Http
             unset($options["customerId"]);
         }
         $clientToken = json_decode(Braintree_ClientToken::generate($clientTokenOptions));
-        $options["authorization_fingerprint"] = $clientToken->authorization_fingerprint;
+        $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
         $options["shared_customer_identifier"] = "fake_identifier_" . rand();
         $options["shared_customer_identifier_type"] = "testing";
         $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode($options));

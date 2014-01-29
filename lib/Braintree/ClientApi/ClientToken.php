@@ -46,9 +46,9 @@ class Braintree_ClientToken
         $authorizationFingerprint = $signatureService->sign(join("&", $payloadArray));
 
         return json_encode(array(
-            "authorization_fingerprint" => $authorizationFingerprint,
-            "client_api_url" => Braintree_Configuration::merchantUrl() . "/client_api",
-            "auth_url" => Braintree_Configuration::authUrl()
+            "authorizationFingerprint" => $authorizationFingerprint,
+            "clientApiUrl" => Braintree_Configuration::merchantUrl() . "/client_api",
+            "authUrl" => Braintree_Configuration::authUrl()
         ));
     }
 

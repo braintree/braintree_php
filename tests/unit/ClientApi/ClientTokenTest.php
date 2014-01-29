@@ -7,19 +7,19 @@ class ClientTokenTest extends PHPUnit_Framework_TestCase
     function testGenerate_containsRequiredData()
     {
         $clientToken = json_decode(Braintree_ClientToken::generate(array()));
-        $authorizationFingerprint = $clientToken->authorization_fingerprint;
+        $authorizationFingerprint = $clientToken->authorizationFingerprint;
         $this->assertContains("public_key=integration_public_key", $authorizationFingerprint);
         $this->assertContains("created_at=", $authorizationFingerprint);
 
         $clientApiUrl = "http://localhost:". Braintree_Configuration::portNumber() ."/merchants/integration_merchant_id/client_api";
-        $this->assertEquals($clientApiUrl, $clientToken->client_api_url);
+        $this->assertEquals($clientApiUrl, $clientToken->clientApiUrl);
 
-        $this->assertEquals("http://auth.venmo.dev:9292", $clientToken->auth_url);
+        $this->assertEquals("http://auth.venmo.dev:9292", $clientToken->authUrl);
     }
 
     function testGenerate_optionallyTakesCustomerId()
     {
-        $authorizationFingerprint = json_decode(Braintree_ClientToken::generate(array("customerId" => 1)))->authorization_fingerprint;
+        $authorizationFingerprint = json_decode(Braintree_ClientToken::generate(array("customerId" => 1)))->authorizationFingerprint;
         $this->assertContains("customer_id=1", $authorizationFingerprint);
     }
 
