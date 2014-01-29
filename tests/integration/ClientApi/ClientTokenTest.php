@@ -10,8 +10,8 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         $authorizationFingerprint = json_decode($clientToken)->authorization_fingerprint;
         $response = Braintree_HttpClientApi::get_cards(array(
             "authorization_fingerprint" => $authorizationFingerprint,
-            "session_identifier" => "fake_identifier",
-            "session_identifier_type" => "testing"
+            "shared_customer_identifier" => "fake_identifier",
+            "shared_customer_identifier_type" => "testing"
         ));
 
         $this->assertEquals(200, $response["status"]);
@@ -35,8 +35,8 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
                 "expirationDate" => "11/2099"
             ),
             "authorization_fingerprint" => $authorizationFingerprint,
-            "session_identifier" => "fake_identifier",
-            "session_identifier_type" => "testing"
+            "shared_customer_identifier" => "fake_identifier",
+            "shared_customer_identifier_type" => "testing"
         )));
 
         $this->assertEquals(422, $response["status"]);
@@ -59,8 +59,8 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
                 "expirationDate" => "11/2099"
             ),
             "authorization_fingerprint" => $authorizationFingerprint,
-            "session_identifier" => "fake_identifier",
-            "session_identifier_type" => "testing"
+            "shared_customer_identifier" => "fake_identifier",
+            "shared_customer_identifier_type" => "testing"
         )));
         $this->assertEquals(201, $response["status"]);
 
@@ -76,8 +76,8 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
                 "expirationDate" => "11/2099"
             ),
             "authorization_fingerprint" => $authorizationFingerprint,
-            "session_identifier" => "fake_identifier",
-            "session_identifier_type" => "testing"
+            "shared_customer_identifier" => "fake_identifier",
+            "shared_customer_identifier_type" => "testing"
         )));
         $this->assertEquals(422, $response["status"]);
     }
@@ -107,8 +107,8 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
                 "expirationDate" => "11/2099"
             ),
             "authorization_fingerprint" => $authorizationFingerprint,
-            "session_identifier" => "fake_identifier",
-            "session_identifier_type" => "testing"
+            "shared_customer_identifier" => "fake_identifier",
+            "shared_customer_identifier_type" => "testing"
         )));
 
         $this->assertEquals(201, $response["status"]);
