@@ -30,8 +30,8 @@
  * @copyright  2010 Braintree Payment Solutions
  *
  * @property-read array $params original passed params
- * @property-read object $errors Braintree_Error_ErrorCollection
- * @property-read object $creditCardVerification credit card verification data
+ * @property-read Braintree_Error_ErrorCollection $errors Braintree_Error_ErrorCollection
+ * @property-read Braintree_Result_CreditCardVerification $creditCardVerification credit card verification data
  */
 class Braintree_Result_Error extends Braintree
 {

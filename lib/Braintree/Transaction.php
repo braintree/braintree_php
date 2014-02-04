@@ -153,18 +153,18 @@
  * @property-read string $cvvResponseCode
  * @property-read string $id transaction id
  * @property-read string $amount transaction amount
- * @property-read object $billingDetails transaction billing address
+ * @property-read Braintree_Transaction_AddressDetails $billingDetails transaction billing address
  * @property-read string $createdAt transaction created timestamp
- * @property-read object $creditCardDetails transaction credit card info
- * @property-read object $customerDetails transaction customer info
+ * @property-read Braintree_Transaction_CreditCardDetails $creditCardDetails transaction credit card info
+ * @property-read Braintree_Transaction_CustomerDetails $customerDetails transaction customer info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
- * @property-read object $shippingDetails transaction shipping address
+ * @property-read Braintree_Transaction_AddressDetails $shippingDetails transaction shipping address
  * @property-read string $status transaction status
  * @property-read array  $statusHistory array of StatusDetails objects
  * @property-read string $type transaction type
  * @property-read string $updatedAt transaction updated timestamp
- * @property-read object $disbursementDetails populated when transaction is disbursed
+ * @property-read Braintree_DisbursementDetails $disbursementDetails populated when transaction is disbursed
  *
  */
 
@@ -220,7 +220,7 @@ final class Braintree_Transaction extends Braintree
      * @ignore
      * @access public
      * @param array $attribs
-     * @return object
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     private static function create($attribs)
     {
@@ -233,8 +233,8 @@ final class Braintree_Transaction extends Braintree
      * @ignore
      * @access public
      * @param array $attribs
-     * @return object
-     * @throws Braintree_Exception_ValidationError
+     * @return self
+     * @throws Braintree_Exception_ValidationsFailed
      */
     private static function createNoValidate($attribs)
     {
@@ -244,8 +244,8 @@ final class Braintree_Transaction extends Braintree
     /**
      *
      * @access public
-     * @param array $attribs
-     * @return object
+     * @param array $queryString
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public static function createFromTransparentRedirect($queryString)
     {
@@ -328,7 +328,7 @@ final class Braintree_Transaction extends Braintree
      *
      * @access public
      * @param array $attribs
-     * @return object
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public static function credit($attribs)
     {
@@ -339,8 +339,8 @@ final class Braintree_Transaction extends Braintree
      *
      * @access public
      * @param array $attribs
-     * @return object
-     * @throws Braintree_Exception_ValidationError
+     * @return self
+     * @throws Braintree_Exception_ValidationsFailed
      */
     public static function creditNoValidate($attribs)
     {
@@ -369,7 +369,7 @@ final class Braintree_Transaction extends Braintree
     /**
      * new sale
      * @param array $attribs
-     * @return array
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public static function sale($attribs)
     {
@@ -380,7 +380,7 @@ final class Braintree_Transaction extends Braintree
      * roughly equivalent to the ruby bang method
      * @access public
      * @param array $attribs
-     * @return array
+     * @return self
      * @throws Braintree_Exception_ValidationsFailed
      */
     public static function saleNoValidate($attribs)
@@ -397,9 +397,8 @@ final class Braintree_Transaction extends Braintree
      * For more detailed information and examples, see {@link http://www.braintreepayments.com/gateway/transaction-api#searching http://www.braintreepaymentsolutions.com/gateway/transaction-api}
      *
      * @param mixed $query search query
-     * @param array $options options such as page number
-     * @return object Braintree_ResourceCollection
-     * @throws InvalidArgumentException
+     * @return Braintree_ResourceCollection
+     * @throws Braintree_Exception_DownForMaintenance
      */
     public static function search($query)
     {
@@ -440,8 +439,8 @@ final class Braintree_Transaction extends Braintree
     /**
      * void a transaction by id
      *
-     * @param string $id transaction id
-     * @return object Braintree_Result_Successful|Braintree_Result_Error
+     * @param string $transactionId transaction id
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public static function void($transactionId)
     {
@@ -516,7 +515,7 @@ final class Braintree_Transaction extends Braintree
      * @ignore
      * @access protected
      * @param array $transactionAttribs array of transaction data
-     * @return none
+     * @return void
      */
     protected function _initialize($transactionAttribs)
     {
@@ -664,9 +663,9 @@ final class Braintree_Transaction extends Braintree
      * sends the create request to the gateway
      *
      * @ignore
-     * @param var $url
+     * @param string $url
      * @param array $params
-     * @return mixed
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public static function _doCreate($url, $params)
     {
@@ -678,7 +677,7 @@ final class Braintree_Transaction extends Braintree
     /**
      * verifies that a valid transaction id is being used
      * @ignore
-     * @param string transaction id
+     * @param string $id transaction id
      * @throws InvalidArgumentException
      */
     private static function _validateId($id = null) {
@@ -707,7 +706,7 @@ final class Braintree_Transaction extends Braintree
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      * @throws Braintree_Exception_Unexpected
      */
     private static function _verifyGatewayResponse($response)
@@ -731,7 +730,8 @@ final class Braintree_Transaction extends Braintree
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_Transaction
+     * @param array $attributes array of transaction data
+     * @return self instance of Braintree_Transaction
      */
     public static function factory($attributes)
     {

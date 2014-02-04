@@ -20,7 +20,7 @@
  * @category   Errors
  * @copyright  2010 Braintree Payment Solutions
  *
- * @property-read object $errors
+ * @property-read Braintree_Error_ValidationErrorCollection $errors
  */
 class Braintree_Error_ErrorCollection
 {

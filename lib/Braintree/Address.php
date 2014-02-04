@@ -39,7 +39,7 @@ class Braintree_Address extends Braintree
      *
      * @access public
      * @param  array  $attribs
-     * @return object Result, either Successful or Error
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public static function create($attribs)
     {
@@ -62,8 +62,8 @@ class Braintree_Address extends Braintree
      *
      * @access public
      * @param  array $attribs
-     * @return object
-     * @throws Braintree_Exception_ValidationError
+     * @return self
+     * @throws Braintree_Exception_ValidationsFailed
      */
     public static function createNoValidate($attribs)
     {
@@ -77,6 +77,7 @@ class Braintree_Address extends Braintree
      *
      * @param mixed $customerOrId
      * @param string $addressId
+     * @return Braintree_Result_Successful
      */
     public static function delete($customerOrId = null, $addressId = null)
     {
@@ -99,7 +100,7 @@ class Braintree_Address extends Braintree
      * @access public
      * @param mixed $customerOrId
      * @param string $addressId
-     * @return object Braintree_Address
+     * @return self
      * @throws Braintree_Exception_NotFound
      */
     public static function find($customerOrId, $addressId)
@@ -148,7 +149,7 @@ class Braintree_Address extends Braintree
      * @param array $attributes
      * @param mixed $customerOrId (only used in static call)
      * @param string $addressId (only used in static call)
-     * @return object Braintree_Result_Successful or Braintree_Result_Error
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public static function update($customerOrId, $addressId, $attributes)
     {
@@ -173,9 +174,10 @@ class Braintree_Address extends Braintree
      * customerOrId & addressId are not sent in object context.
      *
      * @access public
-     * @param array $transactionAttribs
-     * @param string $customerId
-     * @return object Braintree_Transaction
+     * @param array $attributes
+     * @param mixed $customerOrId (only used in static call)
+     * @param string $addressId (only used in static call)
+     * @return self
      * @throws Braintree_Exception_ValidationsFailed
      * @see Braintree_Address::update()
      */
@@ -213,7 +215,7 @@ class Braintree_Address extends Braintree
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
      * @ignore
-     * @return var
+     * @return string
      */
     public function  __toString()
     {
@@ -227,7 +229,7 @@ class Braintree_Address extends Braintree
      * @ignore
      * @access protected
      * @param array $addressAttribs array of address data
-     * @return none
+     * @return void
      */
     protected function _initialize($addressAttribs)
     {
@@ -296,7 +298,7 @@ class Braintree_Address extends Braintree
      * @ignore
      * @param string $url
      * @param array $params
-     * @return mixed
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     private static function _doCreate($url, $params)
     {
@@ -316,7 +318,7 @@ class Braintree_Address extends Braintree
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      * @throws Braintree_Exception_Unexpected
      */
     private static function _verifyGatewayResponse($response)
@@ -340,7 +342,8 @@ class Braintree_Address extends Braintree
      *  factory method: returns an instance of Braintree_Address
      *  to the requesting method, with populated properties
      * @ignore
-     * @return object instance of Braintree_Address
+     * @param array $attributes array of address data
+     * @return self instance of Braintree_Address
      */
     public static function factory($attributes)
     {

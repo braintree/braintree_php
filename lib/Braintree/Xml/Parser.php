@@ -43,7 +43,7 @@ class Braintree_Xml_Parser
      * processes SimpleXMLIterator objects recursively
      *
      * @access protected
-     * @param object $iterator
+     * @param Iterator $iterator
      * @return array xml converted to array
      */
     private static function _iteratorToArray($iterator)
@@ -121,7 +121,7 @@ class Braintree_Xml_Parser
 
     /**
      * typecast xml value based on attributes
-     * @param object $valueObj SimpleXMLElement
+     * @param SimpleXMLElement $valueObj SimpleXMLElement
      * @return mixed value for placing into array
      */
     private static function _typecastXmlValue($valueObj)
