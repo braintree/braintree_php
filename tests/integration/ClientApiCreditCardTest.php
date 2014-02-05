@@ -1,5 +1,5 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../../TestHelper.php';
+require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
 
 class Braintree_ClientApiCreditCardTest extends PHPUnit_Framework_TestCase

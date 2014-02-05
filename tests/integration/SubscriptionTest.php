@@ -1,7 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
-require_once realpath(dirname(__FILE__)) . '/ClientApi/HttpClientApi.php';
+require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
 
 class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 {
