@@ -24,6 +24,9 @@ class Braintree_WebhookTesting
             case Braintree_WebhookNotification::TRANSACTION_DISBURSED:
                 $subjectXml = self::_transactionDisbursedSampleXml($id);
                 break;
+            case Braintree_WebhookNotification::TRANSFER_EXCEPTION:
+                $subjectXml = self::_transferExceptionSampleXml($id);
+                break;
             case Braintree_WebhookNotification::PARTNER_MERCHANT_CONNECTED:
                 $subjectXml = self::_partnerMerchantConnectedSampleXml($id);
                 break;
@@ -100,6 +103,20 @@ class Braintree_WebhookTesting
                 <disbursement-date type=\"datetime\">2013-07-09T18:23:29Z</disbursement-date>
             </disbursement-details>
         </transaction>
+        ";
+    }
+
+    private static function _transferExceptionSampleXml($id)
+    {
+        return "
+        <transfer>
+            <merchant-account-id>abcdef</merchant-account-id>
+            <id>${id}</id>
+            <message>invalid_account_number</message>
+            <amount>100.00</amount>
+            <disbursement-date>2014-02-10</disbursement-date>
+            <follow-up-action>update</follow-up-action>
+        </transfer>
         ";
     }
 
