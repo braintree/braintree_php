@@ -2,54 +2,30 @@
 
 class Braintree_ClientToken
 {
-
     public static function generate($params=array())
     {
-
-        self::conditionallyVerifyKeys($params);
-        $datetime = new DateTime();
-        $defaults = array(
-            "public_key" => Braintree_Configuration::PublicKey(),
-            "created_at" => $datetime->format('c')
-        );
-
-        if (array_key_exists("customerId", $params)) {
-            $params["customer_id"] = $params["customerId"];
-            unset($params["customerId"]);
+        $generateParams = null;
+        if ($params) {
+            self::conditionallyVerifyKeys($params);
+            $generateParams = array("client_token" => $params);
         }
 
-        if (array_key_exists("makeDefault", $params)) {
-            $params["credit_card[options][make_default]"] = $params["makeDefault"];
-            unset($params["makeDefault"]);
-        }
+        return self::_doGenerate('/client_token', $generateParams);
+    }
 
-        if (array_key_exists("verifyCard", $params)) {
-            $params["credit_card[options][verify_card]"] = $params["verifyCard"];
-            unset($params["verifyCard"]);
-        }
+    /**
+     * sends the generate request to the gateway
+     *
+     * @ignore
+     * @param var $url
+     * @param array $params
+     * @return mixed
+     */
+    public static function _doGenerate($url, $params)
+    {
+        $response = Braintree_Http::post($url, $params);
 
-        if (array_key_exists("failOnDuplicatePaymentMethod", $params)) {
-            $params["credit_card[options][fail_on_duplicate_payment_method]"] = $params["failOnDuplicatePaymentMethod"];
-            unset($params["failOnDuplicatePaymentMethod"]);
-        }
-
-        $payload = array_merge($params, $defaults);
-        $payloadArray = array();
-        foreach($payload as $key => $value) {
-            $payloadArray[] = "$key=$value";
-        }
-        $signatureService = new Braintree_SignatureService(
-            Braintree_Configuration::privateKey(),
-            "Braintree_Digest::hexDigestSha256"
-        );
-
-        $authorizationFingerprint = $signatureService->sign(join("&", $payloadArray));
-
-        return json_encode(array(
-            "authorizationFingerprint" => $authorizationFingerprint,
-            "clientApiUrl" => Braintree_Configuration::merchantUrl() . "/client_api",
-            "authUrl" => Braintree_Configuration::authUrl()
-        ));
+        return self::_verifyGatewayResponse($response);
     }
 
     public static function conditionallyVerifyKeys($params)
@@ -63,12 +39,39 @@ class Braintree_ClientToken
 
     public static function generateWithCustomerIdSignature()
     {
-        return array( "customerId", "makeDefault", "verifyCard", "failOnDuplicatePaymentMethod" );
+        return array("customerId", "proxyMerchantId", array("options" => array("makeDefault", "verifyCard", "failOnDuplicatePaymentMethod")));
     }
 
     public static function generateWithoutCustomerIdSignature()
     {
-        return array();
-
+        return array("proxyMerchantId");
     }
+
+    /**
+     * generic method for validating incoming gateway responses
+     *
+     * If the request is successful, returns a client token string.
+     * Otherwise, throws an InvalidArgumentException with the error
+     * response from the Gateway or an HTTP status code exception.
+     *
+     * @ignore
+     * @param array $response gateway response values
+     * @return string client token
+     * @throws InvalidArgumentException | HTTP status code exception
+     */
+    private static function _verifyGatewayResponse($response)
+    {
+        if (isset($response['clientToken'])) {
+            return $response['clientToken']['value'];
+        } elseif (isset($response['apiErrorResponse'])) {
+            throw new InvalidArgumentException(
+                $response['apiErrorResponse']['message']
+            );
+        } else {
+            throw new Braintree_Exception_Unexpected(
+                "Expected clientToken or apiErrorResponse"
+            );
+        }
+    }
+
 }

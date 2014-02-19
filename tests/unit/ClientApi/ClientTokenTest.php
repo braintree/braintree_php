@@ -3,30 +3,15 @@ require_once realpath(dirname(__FILE__)) . '/../../TestHelper.php';
 
 class ClientTokenTest extends PHPUnit_Framework_TestCase
 {
-
-    function testGenerate_containsRequiredData()
-    {
-        $clientToken = json_decode(Braintree_ClientToken::generate(array()));
-        $authorizationFingerprint = $clientToken->authorizationFingerprint;
-        $this->assertContains("public_key=integration_public_key", $authorizationFingerprint);
-        $this->assertContains("created_at=", $authorizationFingerprint);
-
-        $clientApiUrl = "http://localhost:". Braintree_Configuration::portNumber() ."/merchants/integration_merchant_id/client_api";
-        $this->assertEquals($clientApiUrl, $clientToken->clientApiUrl);
-
-        $this->assertEquals("http://auth.venmo.dev:9292", $clientToken->authUrl);
-    }
-
-    function testGenerate_optionallyTakesCustomerId()
-    {
-        $authorizationFingerprint = json_decode(Braintree_ClientToken::generate(array("customerId" => 1)))->authorizationFingerprint;
-        $this->assertContains("customer_id=1", $authorizationFingerprint);
-    }
-
     function testErrorsWhenCreditCardOptionsGivenWithoutCustomerId()
     {
-        $this->setExpectedException('InvalidArgumentException');
-        Braintree_ClientToken::generate(array("makeDefault" => true));
+        $this->setExpectedException('InvalidArgumentException', 'invalid keys: options[makeDefault]');
+        Braintree_ClientToken::generate(array("options" => array("makeDefault" => true)));
     }
 
+    function testErrorsWhenInvalidArgumentIsSupplied()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'invalid keys: customrId');
+        Braintree_ClientToken::generate(array("customrId" => "1234"));
+    }
 }

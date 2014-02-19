@@ -25,7 +25,9 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
 
         $clientToken = Braintree_ClientToken::generate(array(
             "customerId" => $customerId,
-            "verifyCard" => true
+            "options" => array(
+                "verifyCard" => true
+            )
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
@@ -66,7 +68,9 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
 
         $clientToken = Braintree_ClientToken::generate(array(
             "customerId" => $customerId,
-            "failOnDuplicatePaymentMethod" => true
+            "options" => array(
+                "failOnDuplicatePaymentMethod" => true
+            )
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
@@ -97,7 +101,9 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
 
         $clientToken = Braintree_ClientToken::generate(array(
             "customerId" => $customerId,
-            "makeDefault" => true
+            "options" => array(
+                "makeDefault" => true
+            )
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
@@ -120,5 +126,14 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
                 $this->assertTrue($creditCard->default);
             }
         }
+    }
+
+    function test_GenerateRaisesExceptionOnGateway422()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'customer_id');
+
+        Braintree_ClientToken::generate(array(
+            "customerId" => "not_a_customer"
+        ));
     }
 }
