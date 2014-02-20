@@ -1,11 +1,11 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_TransferTest extends PHPUnit_Framework_TestCase
+class Braintree_DisbursementExceptionTest extends PHPUnit_Framework_TestCase
 {
     function testMerchantAccount()
     {
-        $transfer = Braintree_Transfer::factory(array(
+        $disbursementException = Braintree_DisbursementException::factory(array(
             "merchantAccountId" => "sandbox_sub_merchant_account",
             "id" => "123456",
             "message" => "invalid_account_number",
@@ -14,7 +14,7 @@ class Braintree_TransferTest extends PHPUnit_Framework_TestCase
             "followUpAction" => "update"
         ));
 
-        $merchantAccount = $transfer->merchantAccount();
+        $merchantAccount = $disbursementException->merchantAccount();
 
         $this->assertNotNull($merchantAccount);
         $this->assertEquals($merchantAccount->id, 'sandbox_sub_merchant_account');
@@ -22,7 +22,7 @@ class Braintree_TransferTest extends PHPUnit_Framework_TestCase
 
     function testMerchantAccountIsMemoized()
     {
-        $transfer = Braintree_Transfer::factory(array(
+        $disbursementException = Braintree_DisbursementException::factory(array(
             "merchantAccountId" => "sandbox_sub_merchant_account",
             "id" => "123456",
             "message" => "invalid_account_number",
@@ -31,15 +31,15 @@ class Braintree_TransferTest extends PHPUnit_Framework_TestCase
             "followUpAction" => "update"
         ));
 
-        $firstMerchantAccount = $transfer->merchantAccount();
-        $transfer->merchantAccountId = "non existent";
+        $firstMerchantAccount = $disbursementException->merchantAccount();
+        $disbursementException->merchantAccountId = "non existent";
 
-        $this->assertEquals($firstMerchantAccount, $transfer->merchantAccount());
+        $this->assertEquals($firstMerchantAccount, $disbursementException->merchantAccount());
     }
 
     function testTransactions()
     {
-        $transfer = Braintree_Transfer::factory(array(
+        $disbursementException = Braintree_DisbursementException::factory(array(
             "merchantAccountId" => "sandbox_sub_merchant_account",
             "id" => "123456",
             "message" => "invalid_account_number",
@@ -48,7 +48,7 @@ class Braintree_TransferTest extends PHPUnit_Framework_TestCase
             "followUpAction" => "update"
         ));
 
-        $transactions = $transfer->transactions();
+        $transactions = $disbursementException->transactions();
 
         $this->assertNotNull($transactions);
         $this->assertEquals(sizeOf($transactions), 1);

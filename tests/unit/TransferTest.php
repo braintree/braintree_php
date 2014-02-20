@@ -5,7 +5,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 {
     function testToString()
     {
-        $transfer = Braintree_Transfer::factory(array(
+        $disbursementException = Braintree_DisbursementException::factory(array(
             "merchantAccountId" => "sandbox_sub_merchant_account",
             "id" => "123456",
             "message" => "invalid_account_number",
@@ -14,6 +14,6 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             "followUpAction" => "update"
         ));
 
-       $this->assertEquals((string) $transfer, 'Braintree_Transfer[id=123456, merchantAccountId=sandbox_sub_merchant_account, message=invalid_account_number, amount=100.00, disbursementDate=Wednesday, 10-Apr-13 00:00:00 UTC, followUpAction=update]');
+       $this->assertEquals((string) $disbursementException, 'Braintree_DisbursementException[id=123456, merchantAccountId=sandbox_sub_merchant_account, message=invalid_account_number, amount=100.00, disbursementDate=Wednesday, 10-Apr-13 00:00:00 UTC, followUpAction=update]');
     }
 }

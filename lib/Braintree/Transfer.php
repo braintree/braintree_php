@@ -1,11 +1,11 @@
 <?php
-final class Braintree_Transfer extends Braintree
+final class Braintree_DisbursementException extends Braintree
 {
     private $_merchantAccount;
 
-    protected function _initialize($transferAttribs)
+    protected function _initialize($disbursementExceptionAttribs)
     {
-        $this->_attributes = $transferAttribs;
+        $this->_attributes = $disbursementExceptionAttribs;
         $this->_merchantAccount = NULL;
     }
 

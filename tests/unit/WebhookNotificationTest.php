@@ -130,10 +130,10 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($webhookNotification->transaction->disbursementDetails->disbursementDate);
     }
 
-    function testBuildsASampleNotificationForATransferExceptionWebhook()
+    function testBuildsASampleNotificationForADisbursementExceptionWebhook()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
-            Braintree_WebhookNotification::TRANSFER_EXCEPTION,
+            Braintree_WebhookNotification::DISBURSEMENT_EXCEPTION,
             "my_id"
         );
 
@@ -142,12 +142,12 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
             $sampleNotification['payload']
         );
 
-        $this->assertEquals(Braintree_WebhookNotification::TRANSFER_EXCEPTION, $webhookNotification->kind);
-        $this->assertEquals("my_id", $webhookNotification->transfer->id);
-        $this->assertEquals("abcdef", $webhookNotification->transfer->merchantAccountId);
-        $this->assertEquals(100.00, $webhookNotification->transfer->amount);
-        $this->assertEquals("2014-02-10", $webhookNotification->transfer->disbursementDate);
-        $this->assertEquals("update", $webhookNotification->transfer->followUpAction);
+        $this->assertEquals(Braintree_WebhookNotification::DISBURSEMENT_EXCEPTION, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->disbursementException->id);
+        $this->assertEquals("abcdef", $webhookNotification->disbursementException->merchantAccountId);
+        $this->assertEquals(100.00, $webhookNotification->disbursementException->amount);
+        $this->assertEquals("2014-02-10", $webhookNotification->disbursementException->disbursementDate);
+        $this->assertEquals("update", $webhookNotification->disbursementException->followUpAction);
     }
 
     function testBuildsASampleNotificationForAPartnerMerchantConnectedWebhook()
