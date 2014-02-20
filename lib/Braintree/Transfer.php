@@ -1,14 +1,22 @@
 <?php
 final class Braintree_Transfer extends Braintree
 {
+    private $_merchantAccount;
+
     protected function _initialize($transferAttribs)
     {
         $this->_attributes = $transferAttribs;
+        $this->_merchantAccount = NULL;
     }
 
     public function merchantAccount()
     {
-        return Braintree_MerchantAccount::find($this->merchantAccountId);
+        if(is_null($this->_merchantAccount))
+        {
+            $this->_merchantAccount = Braintree_MerchantAccount::find($this->merchantAccountId);
+        }
+
+        return $this->_merchantAccount;
     }
 
     public function transactions()

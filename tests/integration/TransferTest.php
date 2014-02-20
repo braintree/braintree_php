@@ -20,6 +20,23 @@ class Braintree_TransferTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($merchantAccount->id, 'sandbox_sub_merchant_account');
     }
 
+    function testMerchantAccountIsMemoized()
+    {
+        $transfer = Braintree_Transfer::factory(array(
+            "merchantAccountId" => "sandbox_sub_merchant_account",
+            "id" => "123456",
+            "message" => "invalid_account_number",
+            "amount" => "100.00",
+            "disbursementDate" => new DateTime("2013-04-10"),
+            "followUpAction" => "update"
+        ));
+
+        $firstMerchantAccount = $transfer->merchantAccount();
+        $transfer->merchantAccountId = "non existent";
+
+        $this->assertEquals($firstMerchantAccount, $transfer->merchantAccount());
+    }
+
     function testTransactions()
     {
         $transfer = Braintree_Transfer::factory(array(
