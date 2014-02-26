@@ -12,6 +12,7 @@ class Braintree_WebhookNotification extends Braintree
     const SUB_MERCHANT_ACCOUNT_DECLINED = 'sub_merchant_account_declined';
     const TRANSACTION_DISBURSED = 'transaction_disbursed';
     const DISBURSEMENT_EXCEPTION = 'disbursement_exception';
+    const DISBURSEMENT = 'disbursement';
     const PARTNER_MERCHANT_CONNECTED = 'partner_merchant_connected';
     const PARTNER_MERCHANT_DISCONNECTED = 'partner_merchant_disconnected';
     const PARTNER_MERCHANT_DECLINED = 'partner_merchant_declined';
@@ -85,8 +86,8 @@ class Braintree_WebhookNotification extends Braintree
             $this->_set('transaction', Braintree_Transaction::factory($wrapperNode['transaction']));
         }
 
-        if (isset($wrapperNode['disbursementException'])) {
-            $this->_set('disbursementException', Braintree_DisbursementException::factory($wrapperNode['disbursementException']));
+        if (isset($wrapperNode['disbursement'])) {
+            $this->_set('disbursement', Braintree_Disbursement::factory($wrapperNode['disbursement']));
         }
 
         if (isset($wrapperNode['partnerMerchant'])) {

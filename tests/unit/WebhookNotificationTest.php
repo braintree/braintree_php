@@ -143,11 +143,11 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(Braintree_WebhookNotification::DISBURSEMENT_EXCEPTION, $webhookNotification->kind);
-        $this->assertEquals("my_id", $webhookNotification->disbursementException->id);
-        $this->assertEquals("abcdef", $webhookNotification->disbursementException->merchantAccountId);
-        $this->assertEquals(100.00, $webhookNotification->disbursementException->amount);
-        $this->assertEquals("2014-02-10", $webhookNotification->disbursementException->disbursementDate);
-        $this->assertEquals("update", $webhookNotification->disbursementException->followUpAction);
+        $this->assertEquals("my_id", $webhookNotification->disbursement->id);
+        $this->assertEquals("abcdef", $webhookNotification->disbursement->merchantAccountId);
+        $this->assertEquals(100.00, $webhookNotification->disbursement->amount);
+        $this->assertEquals("2014-02-10", $webhookNotification->disbursement->disbursementDate);
+        $this->assertEquals("update", $webhookNotification->disbursement->followUpAction);
     }
 
     function testBuildsASampleNotificationForAPartnerMerchantConnectedWebhook()

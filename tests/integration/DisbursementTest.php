@@ -1,11 +1,11 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_DisbursementExceptionTest extends PHPUnit_Framework_TestCase
+class Braintree_DisbursementTest extends PHPUnit_Framework_TestCase
 {
     function testMerchantAccount()
     {
-        $disbursementException = Braintree_DisbursementException::factory(array(
+        $disbursement = Braintree_Disbursement::factory(array(
             "merchantAccountId" => "sandbox_sub_merchant_account",
             "id" => "123456",
             "message" => "invalid_account_number",
@@ -14,7 +14,7 @@ class Braintree_DisbursementExceptionTest extends PHPUnit_Framework_TestCase
             "followUpAction" => "update"
         ));
 
-        $merchantAccount = $disbursementException->merchantAccount();
+        $merchantAccount = $disbursement->merchantAccount();
 
         $this->assertNotNull($merchantAccount);
         $this->assertEquals($merchantAccount->id, 'sandbox_sub_merchant_account');
@@ -22,7 +22,7 @@ class Braintree_DisbursementExceptionTest extends PHPUnit_Framework_TestCase
 
     function testMerchantAccountIsMemoized()
     {
-        $disbursementException = Braintree_DisbursementException::factory(array(
+        $disbursement = Braintree_Disbursement::factory(array(
             "merchantAccountId" => "sandbox_sub_merchant_account",
             "id" => "123456",
             "message" => "invalid_account_number",
@@ -31,15 +31,15 @@ class Braintree_DisbursementExceptionTest extends PHPUnit_Framework_TestCase
             "followUpAction" => "update"
         ));
 
-        $firstMerchantAccount = $disbursementException->merchantAccount();
-        $disbursementException->merchantAccountId = "non existent";
+        $firstMerchantAccount = $disbursement->merchantAccount();
+        $disbursement->merchantAccountId = "non existent";
 
-        $this->assertEquals($firstMerchantAccount, $disbursementException->merchantAccount());
+        $this->assertEquals($firstMerchantAccount, $disbursement->merchantAccount());
     }
 
     function testTransactions()
     {
-        $disbursementException = Braintree_DisbursementException::factory(array(
+        $disbursement = Braintree_Disbursement::factory(array(
             "merchantAccountId" => "sandbox_sub_merchant_account",
             "id" => "123456",
             "message" => "invalid_account_number",
@@ -48,7 +48,7 @@ class Braintree_DisbursementExceptionTest extends PHPUnit_Framework_TestCase
             "followUpAction" => "update"
         ));
 
-        $transactions = $disbursementException->transactions();
+        $transactions = $disbursement->transactions();
 
         $this->assertNotNull($transactions);
         $this->assertEquals(sizeOf($transactions), 1);
