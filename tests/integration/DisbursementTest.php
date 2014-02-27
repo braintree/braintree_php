@@ -21,7 +21,7 @@ class Braintree_DisbursementTest extends PHPUnit_Framework_TestCase
             "disbursementDate" => new DateTime("2013-04-10"),
             "followUpAction" => "update",
             "retry" => false,
-            "success" => true
+            "success" => false
         ));
 
         $transactions = $disbursement->transactions();

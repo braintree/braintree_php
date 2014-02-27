@@ -150,7 +150,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("bank_rejected", $webhookNotification->disbursement->exceptionMessage);
         $this->assertEquals(100.00, $webhookNotification->disbursement->amount);
         $this->assertEquals("update_funding_information", $webhookNotification->disbursement->followUpAction);
-        $this->assertEquals("merchant_account_token", $webhookNotification->disbursement->merchantAccount()->id);
+        $this->assertEquals("merchant_account_token", $webhookNotification->disbursement->merchantAccount->id);
         $this->assertEquals(new DateTime("2014-02-10"), $webhookNotification->disbursement->disbursementDate);
         $this->assertEquals(array("asdfg", "qwert"), $webhookNotification->disbursement->transactionIds);
     }
@@ -175,7 +175,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(NULL, $webhookNotification->disbursement->exceptionMessage);
         $this->assertEquals(100.00, $webhookNotification->disbursement->amount);
         $this->assertEquals(NULL, $webhookNotification->disbursement->followUpAction);
-        $this->assertEquals("merchant_account_token", $webhookNotification->disbursement->merchantAccount()->id);
+        $this->assertEquals("merchant_account_token", $webhookNotification->disbursement->merchantAccount->id);
         $this->assertEquals(new DateTime("2014-02-10"), $webhookNotification->disbursement->disbursementDate);
         $this->assertEquals(array("asdfg", "qwert"), $webhookNotification->disbursement->transactionIds);
     }

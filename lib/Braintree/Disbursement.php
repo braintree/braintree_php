@@ -6,17 +6,13 @@ final class Braintree_Disbursement extends Braintree
     protected function _initialize($disbursementAttribs)
     {
         $this->_attributes = $disbursementAttribs;
-        $this->_merchantAccount = NULL;
-    }
+        $this->merchantAccountDetails = $disbursementAttribs['merchantAccount'];
 
-    public function merchantAccount()
-    {
-        if(is_null($this->_merchantAccount))
-        {
-            $this->_merchantAccount = Braintree_MerchantAccount::factory($this->merchantAccount);
+        if (isset($disbursementAttribs['merchantAccount'])) {
+            $this->_set('merchantAccount',
+                Braintree_MerchantAccount::factory($disbursementAttribs['merchantAccount'])
+            );
         }
-
-        return $this->_merchantAccount;
     }
 
     public function transactions()
@@ -38,7 +34,7 @@ final class Braintree_Disbursement extends Braintree
     public function  __toString()
     {
         $display = array(
-            'id', 'merchantAccount', 'exceptionMessage', 'amount',
+            'id', 'merchantAccountDetails', 'exceptionMessage', 'amount',
             'disbursementDate', 'followUpAction', 'retry', 'success',
             'transactionIds'
             );

@@ -103,7 +103,7 @@ class Braintree_WebhookTesting
             <id>${id}</id>
             <amount>100</amount>
             <disbursement-details>
-                <disbursement-date type=\"date\">2013-07-09T18:23:29Z</disbursement-date>
+                <disbursement-date type=\"date\">2013-07-09</disbursement-date>
             </disbursement-details>
         </transaction>
         ";
