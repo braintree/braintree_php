@@ -13,7 +13,7 @@ final class Braintree_Disbursement extends Braintree
     {
         if(is_null($this->_merchantAccount))
         {
-            $this->_merchantAccount = Braintree_MerchantAccount::find($this->merchantAccountId);
+            $this->_merchantAccount = Braintree_MerchantAccount::factory($this->merchantAccount);
         }
 
         return $this->_merchantAccount;
@@ -22,8 +22,7 @@ final class Braintree_Disbursement extends Braintree
     public function transactions()
     {
         $collection = Braintree_Transaction::search(array(
-            Braintree_TransactionSearch::merchantAccountId()->is($this->merchantAccountId),
-            Braintree_TransactionSearch::disbursementDate()->is($this->disbursementDate)
+            Braintree_TransactionSearch::ids()->in($this->transactionIds)
         ));
 
         return $collection;
@@ -39,8 +38,9 @@ final class Braintree_Disbursement extends Braintree
     public function  __toString()
     {
         $display = array(
-            'id', 'merchantAccountId', 'message', 'amount',
-            'disbursementDate', 'followUpAction'
+            'id', 'merchantAccount', 'exceptionMessage', 'amount',
+            'disbursementDate', 'followUpAction', 'retry', 'success',
+            'transactionIds'
             );
 
         $displayAttributes = array();

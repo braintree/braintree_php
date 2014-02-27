@@ -110,12 +110,23 @@ class Braintree_WebhookTesting
     {
         return "
         <disbursement>
-            <merchant-account-id>abcdef</merchant-account-id>
-            <id>${id}</id>
-            <message>invalid_account_number</message>
-            <amount>100.00</amount>
-            <disbursement-date>2014-02-10</disbursement-date>
-            <follow-up-action>update</follow-up-action>
+          <id>${id}</id>
+          <transaction-ids type=\"array\">
+            <item>asdfg</item>
+            <item>qwert</item>
+          </transaction-ids>
+          <success type=\"boolean\">false</success>
+          <retry type=\"boolean\">false</retry>
+          <merchant-account>
+            <id>merchant_account_token</id>
+            <currency-iso-code>USD</currency-iso-code>
+            <sub-merchant-account type=\"boolean\">false</sub-merchant-account>
+            <status>active</status>
+          </merchant-account>
+          <amount>100.00</amount>
+          <disbursement-date>2014-02-10</disbursement-date>
+          <exception-message>bank_rejected</exception-message>
+          <follow-up-action>update_funding_information</follow-up-action>
         </disbursement>
         ";
     }
