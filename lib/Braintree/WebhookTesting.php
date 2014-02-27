@@ -27,6 +27,9 @@ class Braintree_WebhookTesting
             case Braintree_WebhookNotification::DISBURSEMENT_EXCEPTION:
                 $subjectXml = self::_disbursementExceptionSampleXml($id);
                 break;
+            case Braintree_WebhookNotification::DISBURSEMENT:
+                $subjectXml = self::_disbursementSampleXml($id);
+                break;
             case Braintree_WebhookNotification::PARTNER_MERCHANT_CONNECTED:
                 $subjectXml = self::_partnerMerchantConnectedSampleXml($id);
                 break;
@@ -127,6 +130,31 @@ class Braintree_WebhookTesting
           <disbursement-date>2014-02-10</disbursement-date>
           <exception-message>bank_rejected</exception-message>
           <follow-up-action>update_funding_information</follow-up-action>
+        </disbursement>
+        ";
+    }
+
+    private static function _disbursementSampleXml($id)
+    {
+        return "
+        <disbursement>
+          <id>${id}</id>
+          <transaction-ids type=\"array\">
+            <item>asdfg</item>
+            <item>qwert</item>
+          </transaction-ids>
+          <success type=\"boolean\">true</success>
+          <retry type=\"boolean\">false</retry>
+          <merchant-account>
+            <id>merchant_account_token</id>
+            <currency-iso-code>USD</currency-iso-code>
+            <sub-merchant-account type=\"boolean\">false</sub-merchant-account>
+            <status>active</status>
+          </merchant-account>
+          <amount>100.00</amount>
+          <disbursement-date>2014-02-10</disbursement-date>
+          <exception-message nil=\"true\"/>
+          <follow-up-action nil=\"true\"/>
         </disbursement>
         ";
     }

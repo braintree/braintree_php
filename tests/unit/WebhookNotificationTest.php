@@ -155,6 +155,30 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array("asdfg", "qwert"), $webhookNotification->disbursement->transactionIds);
     }
 
+    function testBuildsASampleNotificationForADisbursementWebhook()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::DISBURSEMENT,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            $sampleNotification['payload']
+        );
+
+
+        $this->assertEquals(Braintree_WebhookNotification::DISBURSEMENT, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->disbursement->id);
+        $this->assertEquals(false, $webhookNotification->disbursement->retry);
+        $this->assertEquals(true, $webhookNotification->disbursement->success);
+        $this->assertEquals(NULL, $webhookNotification->disbursement->exceptionMessage);
+        $this->assertEquals(100.00, $webhookNotification->disbursement->amount);
+        $this->assertEquals(NULL, $webhookNotification->disbursement->followUpAction);
+        $this->assertEquals("merchant_account_token", $webhookNotification->disbursement->merchantAccount()->id);
+        $this->assertEquals("2014-02-10", $webhookNotification->disbursement->disbursementDate);
+        $this->assertEquals(array("asdfg", "qwert"), $webhookNotification->disbursement->transactionIds);
+    }
     function testBuildsASampleNotificationForAPartnerMerchantConnectedWebhook()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
