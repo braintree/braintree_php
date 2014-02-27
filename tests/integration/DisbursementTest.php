@@ -18,7 +18,7 @@ class Braintree_DisbursementTest extends PHPUnit_Framework_TestCase
             "transactionIds" => array("sub_merchant_transaction"),
             "exceptionMessage" => "invalid_account_number",
             "amount" => "100.00",
-            "disbursementDate" => "2013-04-10",
+            "disbursementDate" => new DateTime("2013-04-10"),
             "followUpAction" => "update",
             "retry" => false,
             "success" => true
