@@ -24,9 +24,7 @@ class Braintree_PlanTest extends PHPUnit_Framework_TestCase
             "name" => "php test plan",
             "numberOfBillingCycles" => "1",
             "price" => "1.00",
-            "trialDuration" => "3",
-            "trialDurationUnit" => "day",
-            "trialPeriod" => "true"
+            "trialPeriod" => "false"
         );
 
         Braintree_Http::post("/plans/create_plan_for_tests", array("plan" => $params));
@@ -67,9 +65,6 @@ class Braintree_PlanTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($params["name"], $actualPlan->name);
         $this->assertEquals($params["numberOfBillingCycles"], $actualPlan->numberOfBillingCycles);
         $this->assertEquals($params["price"], $actualPlan->price);
-        $this->assertEquals($params["trialDuration"], $actualPlan->trialDuration);
-        $this->assertEquals($params["trialDurationUnit"], $actualPlan->trialDurationUnit);
-        $this->assertEquals($params["trialPeriod"], $actualPlan->trialPeriod);
 
         $addOn = $actualPlan->addOns[0];
         $this->assertEquals($addOnParams["name"], $addOn->name);

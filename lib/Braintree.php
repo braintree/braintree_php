@@ -121,6 +121,7 @@ require_once('Braintree/Subscription.php');
 require_once('Braintree/SubscriptionSearch.php');
 require_once('Braintree/TextNode.php');
 require_once('Braintree/Transaction.php');
+require_once('Braintree/Disbursement.php');
 require_once('Braintree/TransactionSearch.php');
 require_once('Braintree/TransparentRedirect.php');
 require_once('Braintree/Util.php');

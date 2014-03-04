@@ -1015,6 +1015,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('USD', $disbursementDetails->settlementCurrencyIsoCode);
         $this->assertEquals('1', $disbursementDetails->settlementCurrencyExchangeRate);
         $this->assertEquals(false, $disbursementDetails->fundsHeld);
+        $this->assertEquals(true, $disbursementDetails->success);
         $this->assertEquals(new DateTime('2013-04-10'), $disbursementDetails->disbursementDate);
     }
 

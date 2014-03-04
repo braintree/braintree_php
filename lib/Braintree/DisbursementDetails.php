@@ -16,7 +16,8 @@
  * @property-read string $settlementAmount
  * @property-read string $settlementCurrencyIsoCode
  * @property-read string $settlementCurrencyExchangeRate
- * @property-read string $settlementFundsHeld
+ * @property-read string $fundsHeld
+ * @property-read string $success
  * @property-read string $disbursementDate
  * @uses Braintree_Instance inherits methods
  */
