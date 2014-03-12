@@ -53,7 +53,7 @@ class Braintree_Result_CreditCardVerification
      * @ignore
      * @access protected
      * @param <type> $aAttribs array of properties to set - single level
-     * @return none
+     * @return void
      */
     private function _initializeFromArray($attributes)
     {

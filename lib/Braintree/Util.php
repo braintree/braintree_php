@@ -49,6 +49,7 @@ class Braintree_Util
     /**
      * throws an exception based on the type of error
      * @param string $statusCode HTTP status code to throw exception from
+     * @param null|string $message
      * @throws Braintree_Exception multiple types depending on the error
      *
      */
@@ -134,6 +135,7 @@ class Braintree_Util
      *
      * @access public
      * @param string $string
+     * @param string $delimiter
      * @return string modified string
      */
     public static function delimiterToCamelCase($string, $delimiter = '[\-\_]')
@@ -166,8 +168,9 @@ class Braintree_Util
      * find capitals and convert to delimiter + lowercase
      *
      * @access public
-     * @param var $string
-     * @return var modified string
+     * @param string $string
+     * @param string $delimiter
+     * @return string modified string
      */
     public static function camelCaseToDelimiter($string, $delimiter = '-')
     {
@@ -187,6 +190,7 @@ class Braintree_Util
      * @param array $array associative array to implode
      * @param string $separator (optional, defaults to =)
      * @param string $glue (optional, defaults to ', ')
+     * @return bool
      */
     public static function implodeAssociativeArray($array, $separator = '=', $glue = ', ')
     {

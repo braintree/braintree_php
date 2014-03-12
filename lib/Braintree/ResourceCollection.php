@@ -38,8 +38,8 @@ class Braintree_ResourceCollection implements Iterator
      *
      * expects an array of attributes with literal keys
      *
-     * @param array $attributes
-     * @param array $pagerAttribs
+     * @param array $response
+     * @param array $pager
      */
     public function  __construct($response, $pager)
     {
@@ -128,7 +128,7 @@ class Braintree_ResourceCollection implements Iterator
     /**
      * requests the next page of results for the collection
      *
-     * @return none
+     * @return void
      */
     private function _getPage($ids)
     {

@@ -42,7 +42,7 @@ class Braintree_Error_Validation
      * @ignore
      * @access protected
      * @param array $attributes array of properties to set - single level
-     * @return none
+     * @return void
      */
     private function _initializeFromArray($attributes)
     {

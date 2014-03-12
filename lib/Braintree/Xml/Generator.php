@@ -17,7 +17,7 @@ class Braintree_Xml_Generator
      * arrays passed to this method should have a single root element
      * with an array as its value
      * @param array $aData the array of data
-     * @return var XML string
+     * @return string XML string
      */
     public static function arrayToXml($aData)
     {
@@ -50,9 +50,9 @@ class Braintree_Xml_Generator
      *
      * @access protected
      * @static
-     * @param object $writer XMLWriter object
+     * @param XMLWriter $writer XMLWriter object
      * @param array $aData contains attributes and values
-     * @return none
+     * @return void
      */
     private static function _createElementsFromArray(&$writer, $aData)
     {
@@ -119,8 +119,8 @@ class Braintree_Xml_Generator
     /**
      * converts datetime back to xml schema format
      * @access protected
-     * @param object $dateTime
-     * @return var XML schema formatted timestamp
+     * @param DateTime $dateTime
+     * @return string XML schema formatted timestamp
      */
     private static function _dateTimeToXmlTimestamp($dateTime)
     {
