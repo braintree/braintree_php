@@ -759,7 +759,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             "share" => true
         ));
 
-        $this->setExpectedException('Braintree_Exception_NotFound');
+        $this->setExpectedException('Braintree_Exception_NotFound', "not found");
         Braintree_CreditCard::fromNonce($nonce);
     }
 
@@ -776,7 +776,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         ));
 
         Braintree_CreditCard::fromNonce($nonce);
-        $this->setExpectedException('Braintree_Exception_NotFound');
+        $this->setExpectedException('Braintree_Exception_NotFound', "consumed");
         Braintree_CreditCard::fromNonce($nonce);
     }
 
@@ -807,7 +807,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $body = json_decode($response["body"]);
         $nonce = $body->creditCards[0]->nonce;
 
-        $this->setExpectedException('Braintree_Exception_NotFound');
+        $this->setExpectedException('Braintree_Exception_NotFound', "locked");
         Braintree_CreditCard::fromNonce($nonce);
     }
 

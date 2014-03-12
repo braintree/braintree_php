@@ -226,7 +226,7 @@ class Braintree_CreditCard extends Braintree
             return self::factory($response['creditCard']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound(
-                'credit card with nonce ' . $nonce . ' not found'
+                'credit card with nonce ' . $nonce . ' locked, consumed or not found'
             );
         }
 
