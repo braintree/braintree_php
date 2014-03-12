@@ -210,6 +210,28 @@ class Braintree_CreditCard extends Braintree
 
     }
 
+    /**
+     * Convert a payment method nonce to a credit card
+     *
+     * @access public
+     * @param string $nonce payment method nonce
+     * @return object Braintree_CreditCard
+     * @throws Braintree_Exception_NotFound
+     */
+    public static function fromNonce($nonce)
+    {
+        self::_validateId($nonce, "nonce");
+        try {
+            $response = Braintree_Http::get('/payment_methods/from_nonce/'.$nonce);
+            return self::factory($response['creditCard']);
+        } catch (Braintree_Exception_NotFound $e) {
+            throw new Braintree_Exception_NotFound(
+                'credit card with nonce ' . $nonce . ' not found'
+            );
+        }
+
+    }
+
    /**
      * create a credit on the card for the passed transaction
      *
@@ -518,21 +540,22 @@ class Braintree_CreditCard extends Braintree
     }
 
     /**
-     * verifies that a valid credit card token is being used
+     * verifies that a valid credit card identifier is being used
      * @ignore
-     * @param string $token
+     * @param string $identifier
+     * @param Optional $string $identifierType type of identifier supplied, default "token"
      * @throws InvalidArgumentException
      */
-    private static function _validateId($token = null)
+    private static function _validateId($identifier = null, $identifierType = "token")
     {
-        if (empty($token)) {
+        if (empty($identifier)) {
            throw new InvalidArgumentException(
                    'expected credit card id to be set'
                    );
         }
-        if (!preg_match('/^[0-9A-Za-z_-]+$/', $token)) {
+        if (!preg_match('/^[0-9A-Za-z_-]+$/', $identifier)) {
             throw new InvalidArgumentException(
-                    $token . ' is an invalid credit card id.'
+                    $identifier . ' is an invalid credit card ' . $identifierType . '.'
                     );
         }
     }
