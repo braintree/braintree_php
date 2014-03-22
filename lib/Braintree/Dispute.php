@@ -19,6 +19,7 @@ final class Braintree_Dispute extends Braintree_Instance
     protected $_attributes = array();
 
     /* Dispute Status */
+    const Open  = 'open';
     const WON  = 'won';
     const LOST = 'lost';
 
