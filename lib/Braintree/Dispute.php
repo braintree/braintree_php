@@ -52,7 +52,7 @@ final class Braintree_Dispute extends Braintree_Instance
     {
         $display = array(
             'amount', 'reason', 'status',
-            'receivedDate', 'currencyIsoCode'
+            'replyByDate', 'receivedDate', 'currencyIsoCode'
             );
 
         $displayAttributes = array();
