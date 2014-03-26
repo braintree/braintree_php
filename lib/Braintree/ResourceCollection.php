@@ -82,7 +82,7 @@ class Braintree_ResourceCollection implements Iterator
     }
 
     /**
-     * rewinds thtestIterateOverResultse collection to the first item when iterating with foreach
+     * rewinds the testIterateOverResults collection to the first item when iterating with foreach
      */
     public function rewind()
     {
