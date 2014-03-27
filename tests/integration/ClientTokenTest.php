@@ -128,6 +128,16 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    function test_ClientTokenAcceptsMerchantAccountId()
+    {
+        $clientToken = Braintree_ClientToken::generate(array(
+            'merchantAccountId' => 'my_merchant_account'
+        ));
+        $merchantAccountId = json_decode($clientToken)->merchantAccountId;
+
+        $this->assertEquals('my_merchant_account', $merchantAccountId);
+    }
+
     function test_GenerateRaisesExceptionOnGateway422()
     {
         $this->setExpectedException('InvalidArgumentException', 'customer_id');
