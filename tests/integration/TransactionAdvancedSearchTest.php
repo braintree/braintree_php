@@ -835,9 +835,9 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         };
         $collection = $this->rundisputeDateSearchTests("2014-03-01", $comparison);
 
-        $this->assertEquals(2, $collection['past']->maximumCount());
-        $this->assertEquals(2, $collection['now']->maximumCount());
-        $this->assertEquals(2, $collection['future']->maximumCount());
+        $this->assertEquals(1, $collection['past']->maximumCount());
+        $this->assertEquals(1, $collection['now']->maximumCount());
+        $this->assertEquals(1, $collection['future']->maximumCount());
     }
 
     function test_rangeNode_disputeDate_between()
