@@ -799,7 +799,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $options["shared_customer_identifier"] = $sharedCustomerIdentifier;
         $options["shared_customer_identifier_type"] = "testing";
 
-        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode($options));
+        $response = Braintree_HttpClientApi::post('/client_api/nonces.json', json_encode($options));
         $this->assertEquals(201, $response["status"]);
 
         unset($options["credit_card"]);
