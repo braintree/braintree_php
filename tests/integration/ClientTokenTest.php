@@ -31,7 +31,7 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
-        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
+        $response = Braintree_HttpClientApi::post('/client_api/nonces.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4000111111111115",
                 "expirationDate" => "11/2099"
@@ -55,7 +55,7 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
-        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
+        $response = Braintree_HttpClientApi::post('/client_api/nonces.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4242424242424242",
                 "expirationDate" => "11/2099"
@@ -74,7 +74,7 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
-        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
+        $response = Braintree_HttpClientApi::post('/client_api/nonces.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4242424242424242",
                 "expirationDate" => "11/2099"
@@ -107,7 +107,7 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
-        $response = Braintree_HttpClientApi::post('/client_api/credit_cards.json', json_encode(array(
+        $response = Braintree_HttpClientApi::post('/client_api/nonces.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4242424242424242",
                 "expirationDate" => "11/2099"
