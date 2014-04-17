@@ -1,7 +1,7 @@
 #!/bin/bash
 
-curl -sS https://getcomposer.org/installer | php
+curl -sS https://getcomposer.org/installer | php -d suhosin.executor.include.whitelist=phar
 
-php ./composer.phar install
+php -d suhosin.executor.include.whitelist=phar ./composer.phar install
 
 rake --trace
