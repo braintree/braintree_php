@@ -1263,11 +1263,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $threeDSecureToken = Braintree_TestHelper::create3DSVerification(
             Braintree_TestHelper::threeDSecureMerchantAccountId(),
             array(
-                'cardinalVerification' => array(
-                    'number' => '4111111111111111',
-                    'expirationMonth' => '05',
-                    'expirationYear' => '2009'
-                )
+                'number' => '4111111111111111',
+                'expirationMonth' => '05',
+                'expirationYear' => '2009'
             )
         );
         $result = Braintree_Transaction::sale(array(
@@ -1306,11 +1304,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $threeDSecureToken = Braintree_TestHelper::create3DSVerification(
             Braintree_TestHelper::threeDSecureMerchantAccountId(),
             array(
-                'cardinalVerification' => array(
-                    'number' => '4111111111111111',
-                    'expirationMonth' => '05',
-                    'expirationYear' => '2009'
-                )
+                'number' => '4111111111111111',
+                'expirationMonth' => '05',
+                'expirationYear' => '2009'
             )
         );
 

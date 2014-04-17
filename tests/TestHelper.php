@@ -121,8 +121,10 @@ class Braintree_TestHelper
 
     public static function create3DSVerification($merchantAccountId, $params)
     {
-        $response = Braintree_Http::post('/three_d_secure/create_test_3ds/' . $merchantAccountId, $params);
-        return $response['cardinalVerification']['publicId'];
+        $response = Braintree_Http::post('/three_d_secure/create_verification/' . $merchantAccountId, array(
+            'threeDSecureVerification' => $params
+        ));
+        return $response['threeDSecureVerification']['threeDSecureToken'];
     }
 
     public static function nowInEastern()
