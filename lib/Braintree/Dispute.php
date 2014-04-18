@@ -19,9 +19,12 @@ final class Braintree_Dispute extends Braintree_Instance
     protected $_attributes = array();
 
     /* Dispute Status */
-    const Open  = 'open';
+    const OPEN  = 'open';
     const WON  = 'won';
     const LOST = 'lost';
+
+    /* deprecated; for backwards compatibilty */
+    const Open  = 'open';
 
     /* Dispute Reason */
     const CANCELLED_RECURRING_TRANSACTION = "cancelled_recurring_transaction";
