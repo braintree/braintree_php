@@ -1,3 +1,12 @@
+## 2.27.0
+
+* Include Dispute information on Transaction
+* Search for Transactions disputed on a certain date
+
+## 2.26.0
+
+* Disbursement Webhooks
+
 ## 2.25.1
 
 * Fix factories on AddOn and Discount (thanks [stewe](https://github.com/stewe))

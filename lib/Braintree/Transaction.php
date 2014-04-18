@@ -165,6 +165,7 @@
  * @property-read string $type transaction type
  * @property-read string $updatedAt transaction updated timestamp
  * @property-read object $disbursementDetails populated when transaction is disbursed
+ * @property-read object $disputes populated when transaction is disputed
  *
  */
 
@@ -575,6 +576,15 @@ final class Braintree_Transaction extends Braintree
                 new Braintree_DisbursementDetails($transactionAttribs['disbursementDetails'])
             );
         }
+
+        $disputes = array();
+        if (isset($transactionAttribs['disputes'])) {
+            foreach ($transactionAttribs['disputes'] AS $dispute) {
+                $disputes[] = new Braintree_Dispute($dispute);
+            }
+        }
+
+        $this->_set('disputes', $disputes);
 
         $statusHistory = array();
         if (isset($transactionAttribs['statusHistory'])) {

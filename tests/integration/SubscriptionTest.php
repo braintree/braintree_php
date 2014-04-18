@@ -34,11 +34,11 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('12.34', $subscription->nextBillingPeriodAmount);
         $this->assertEquals('0.00', $subscription->balance);
         $this->assertEquals(1, $subscription->currentBillingCycle);
-        $this->assertType('DateTime', $subscription->firstBillingDate);
-        $this->assertType('DateTime', $subscription->nextBillingDate);
-        $this->assertType('DateTime', $subscription->billingPeriodStartDate);
-        $this->assertType('DateTime', $subscription->billingPeriodEndDate);
-        $this->assertType('DateTime', $subscription->paidThroughDate);
+        $this->assertInstanceOf('DateTime', $subscription->firstBillingDate);
+        $this->assertInstanceOf('DateTime', $subscription->nextBillingDate);
+        $this->assertInstanceOf('DateTime', $subscription->billingPeriodStartDate);
+        $this->assertInstanceOf('DateTime', $subscription->billingPeriodEndDate);
+        $this->assertInstanceOf('DateTime', $subscription->paidThroughDate);
     }
 
     function testCreate_withPaymentMethodNonce()
@@ -180,7 +180,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $subscription = $result->subscription;
         $this->assertEquals(1, sizeof($subscription->transactions));
         $transaction = $subscription->transactions[0];
-        $this->assertType('Braintree_Transaction', $transaction);
+        $this->assertInstanceOf('Braintree_Transaction', $transaction);
         $this->assertEquals($plan['price'], $transaction->amount);
         $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
         $this->assertEquals($subscription->id, $transaction->subscriptionId);

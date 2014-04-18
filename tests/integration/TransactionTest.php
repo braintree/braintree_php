@@ -1039,7 +1039,21 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('USD', $disbursementDetails->settlementCurrencyIsoCode);
         $this->assertEquals('1', $disbursementDetails->settlementCurrencyExchangeRate);
         $this->assertEquals(false, $disbursementDetails->fundsHeld);
+        $this->assertEquals(true, $disbursementDetails->success);
         $this->assertEquals(new DateTime('2013-04-10'), $disbursementDetails->disbursementDate);
+    }
+
+    function testFindExposesDisputes()
+    {
+        $transaction = Braintree_Transaction::find("disputedtransaction");
+
+        $dispute = $transaction->disputes[0];
+        $this->assertEquals('250.00', $dispute->amount);
+        $this->assertEquals('USD', $dispute->currencyIsoCode);
+        $this->assertEquals(Braintree_Dispute::FRAUD, $dispute->reason);
+        $this->assertEquals(Braintree_Dispute::WON, $dispute->status);
+        $this->assertEquals(new DateTime('2014-03-01'), $dispute->receivedDate);
+        $this->assertEquals(new DateTime('2014-03-21'), $dispute->replyByDate);
     }
 
     function testSale_storeInVault()

@@ -52,6 +52,7 @@ class Braintree_TransactionSearch
 	static function submittedForSettlementAt()   { return new Braintree_RangeNode("submittedForSettlementAt"); }
 	static function voidedAt()                   { return new Braintree_RangeNode("voidedAt"); }
 	static function disbursementDate()           { return new Braintree_RangeNode("disbursementDate"); }
+	static function disputeDate()                { return new Braintree_RangeNode("disputeDate"); }
 
     static function merchantAccountId()          { return new Braintree_MultipleValueNode("merchant_account_id"); }
 

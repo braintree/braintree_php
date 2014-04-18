@@ -790,6 +790,128 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $collection->maximumCount());
     }
 
+    private function rundisputeDateSearchTests($disputeDateString, $comparison)
+    {
+        $knowndisputedId = "disputedtransaction";
+        $now = new DateTime($disputeDateString);
+        $past = clone $now;
+        $past->modify("-1 hour");
+        $future = clone $now;
+        $future->modify("+1 hour");
+
+        $collections = array(
+            'future' => Braintree_Transaction::search(array(
+                Braintree_TransactionSearch::id()->is($knowndisputedId),
+                $comparison($future)
+            )),
+            'now' => Braintree_Transaction::search(array(
+                Braintree_TransactionSearch::id()->is($knowndisputedId),
+                $comparison($now)
+            )),
+            'past' => Braintree_Transaction::search(array(
+                Braintree_TransactionSearch::id()->is($knowndisputedId),
+                $comparison($past)
+            ))
+        );
+        return $collections;
+    }
+
+    function test_rangeNode_disputeDate_lessThanOrEqualTo()
+    {
+        $compareLessThan = function($time) {
+            return Braintree_TransactionSearch::disputeDate()->lessThanOrEqualTo($time);
+        };
+        $collection = $this->rundisputeDateSearchTests("2014-03-01", $compareLessThan);
+
+        $this->assertEquals(0, $collection['past']->maximumCount());
+        $this->assertEquals(1, $collection['now']->maximumCount());
+        $this->assertEquals(1, $collection['future']->maximumCount());
+    }
+
+    function test_rangeNode_disputeDate_GreaterThanOrEqualTo()
+    {
+        $comparison = function($time) {
+            return Braintree_TransactionSearch::disputeDate()->GreaterThanOrEqualTo($time);
+        };
+        $collection = $this->rundisputeDateSearchTests("2014-03-01", $comparison);
+
+        $this->assertEquals(1, $collection['past']->maximumCount());
+        $this->assertEquals(1, $collection['now']->maximumCount());
+        $this->assertEquals(1, $collection['future']->maximumCount());
+    }
+
+    function test_rangeNode_disputeDate_between()
+    {
+        $knownId = "disputedtransaction";
+
+        $now = new DateTime("2014-03-01");
+        $past = clone $now;
+        $past->modify("-1 day");
+        $future = clone $now;
+        $future->modify("+1 day");
+        $future2 = clone $now;
+        $future2->modify("+2 days");
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($knownId),
+            Braintree_TransactionSearch::disputeDate()->between($past, $future)
+        ));
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($knownId, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($knownId),
+            Braintree_TransactionSearch::disputeDate()->between($now, $future)
+        ));
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($knownId, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($knownId),
+            Braintree_TransactionSearch::disputeDate()->between($past, $now)
+        ));
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($knownId, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($knownId),
+            Braintree_TransactionSearch::disputeDate()->between($future, $future2)
+        ));
+        $this->assertEquals(0, $collection->maximumCount());
+    }
+
+    function test_rangeNode_disputeDate_is()
+    {
+        $knownId = "disputedtransaction";
+
+        $now = new DateTime("2014-03-01");
+        $past = clone $now;
+        $past->modify("-1 day");
+        $future = clone $now;
+        $future->modify("+1 day");
+        $future2 = clone $now;
+        $future2->modify("+2 days");
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($knownId),
+            Braintree_TransactionSearch::disputeDate()->is($past)
+        ));
+        $this->assertEquals(0, $collection->maximumCount());
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($knownId),
+            Braintree_TransactionSearch::disputeDate()->is($now)
+        ));
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($knownId, $collection->firstItem()->id);
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($knownId),
+            Braintree_TransactionSearch::disputeDate()->is($future)
+        ));
+        $this->assertEquals(0, $collection->maximumCount());
+    }
+
     function test_rangeNode_createdAt_lessThanOrEqualTo()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
