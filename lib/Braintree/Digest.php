@@ -36,8 +36,8 @@ class Braintree_Digest
         $rightBytes = unpack("C*", $right);
 
         $result = 0;
-        for ($i = 0; $i < strlen($left); $i++) {
-            $result = $result | ($left[$i] ^ $right[$i]);
+        for ($i = 1; $i <= count($leftBytes); $i++) {
+            $result = $result | ($leftBytes[$i] ^ $rightBytes[$i]);
         }
         return $result == 0;
     }

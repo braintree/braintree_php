@@ -41,6 +41,21 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    function testParsingModifiedPayloadRaisesError()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
+            'my_id'
+        );
+
+        $this->setExpectedException('Braintree_Exception_InvalidSignature');
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            "bad" . $sampleNotification['payload']
+        );
+    }
+
     function testParsingUnknownPublicKeyRaisesError()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
