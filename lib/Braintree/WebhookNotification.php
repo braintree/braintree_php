@@ -19,6 +19,9 @@ class Braintree_WebhookNotification extends Braintree
 
     public static function parse($signature, $payload)
     {
+        if (preg_match("/[^A-Za-z0-9+=\/\n]/", $payload) === 1) {
+            throw new Braintree_Exception_InvalidSignature("payload contains illegal characters");
+        }
         self::_validateSignature($signature, $payload);
 
         $xml = base64_decode($payload);
@@ -53,14 +56,22 @@ class Braintree_WebhookNotification extends Braintree
         return null;
     }
 
-    private static function _validateSignature($signature, $payload)
+    private static function _payloadMatches($signature, $payload)
     {
-        $signaturePairs = preg_split("/&/", $signature);
-        $matchingSignature = self::_matchingSignature($signaturePairs);
-
         $payloadSignature = Braintree_Digest::hexDigestSha1(Braintree_Configuration::privateKey(), $payload);
-        if (!Braintree_Digest::secureCompare($matchingSignature, $payloadSignature)) {
-            throw new Braintree_Exception_InvalidSignature("webhook notification signature invalid");
+        return Braintree_Digest::secureCompare($signature, $payloadSignature);
+    }
+
+    private static function _validateSignature($signatureString, $payload)
+    {
+        $signaturePairs = preg_split("/&/", $signatureString);
+        $signature = self::_matchingSignature($signaturePairs);
+        if (!$signature) {
+            throw new Braintree_Exception_InvalidSignature("no matching public key");
+        }
+
+        if (!(self::_payloadMatches($signature, $payload) || self::_payloadMatches($signature, $payload . "\n"))) {
+            throw new Braintree_Exception_InvalidSignature("signature does not match payload - one has been modified");
         }
     }
 
