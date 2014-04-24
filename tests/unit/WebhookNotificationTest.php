@@ -3,6 +3,12 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
 {
+    function teardown()
+    {
+        // Fix overwritten configuration in wrong key check:
+        integrationMerchantConfig();
+    }
+
     function testVerify()
     {
         $verificationString = Braintree_WebhookNotification::verify('verification_token');
@@ -33,11 +39,46 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
             'my_id'
         );
 
-        $this->setExpectedException('Braintree_Exception_InvalidSignature');
+        $this->setExpectedException('Braintree_Exception_InvalidSignature', 'signature does not match payload - one has been modified');
 
         $webhookNotification = Braintree_WebhookNotification::parse(
             $sampleNotification['signature'] . "bad",
             $sampleNotification['payload']
+        );
+    }
+
+    function testParsingWebhookWithWrongKeysRaisesError()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
+            'my_id'
+        );
+
+        Braintree_Configuration::environment('development');
+        Braintree_Configuration::merchantId('integration_merchant_id');
+        Braintree_Configuration::publicKey('wrong_public_key');
+        Braintree_Configuration::privateKey('wrong_private_key');
+
+        $this->setExpectedException('Braintree_Exception_InvalidSignature', 'no matching public key');
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            "bad" . $sampleNotification['payload']
+        );
+    }
+
+    function testParsingModifiedPayloadRaisesError()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
+            'my_id'
+        );
+
+        $this->setExpectedException('Braintree_Exception_InvalidSignature');
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            "bad" . $sampleNotification['payload']
         );
     }
 
@@ -68,6 +109,49 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $webhookNotification = Braintree_WebhookNotification::parse(
             "bad_signature",
             $sampleNotification['payload']
+        );
+    }
+
+    function testParsingInvalidCharactersRaisesError()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
+            'my_id'
+        );
+
+        $this->setExpectedException('Braintree_Exception_InvalidSignature', 'payload contains illegal characters');
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            "~*~*invalid*~*~"
+        );
+    }
+
+    function testParsingAllowsAllValidCharacters()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
+            'my_id'
+        );
+
+        $this->setExpectedException('Braintree_Exception_InvalidSignature', 'signature does not match payload - one has been modified');
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+=/\n"
+        );
+    }
+
+    function testParsingRetriesPayloadWithANewline()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
+            'my_id'
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            rtrim($sampleNotification['payload'])
         );
     }
 

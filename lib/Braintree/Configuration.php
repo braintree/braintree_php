@@ -294,6 +294,27 @@ class Braintree_Configuration extends Braintree
         return $serverName;
     }
 
+    public static function authUrl()
+    {
+        switch(self::environment()) {
+         case 'production':
+             $serverName = 'https://auth.venmo.com';
+             break;
+         case 'qa':
+             $serverName = 'https://auth.qa.venmo.com';
+             break;
+         case 'sandbox':
+             $serverName = 'https://auth.sandbox.venmo.com';
+             break;
+         case 'development':
+         default:
+             $serverName = 'http://auth.venmo.dev:9292';
+             break;
+        }
+
+        return $serverName;
+    }
+
     /**
      * returns boolean indicating SSL is on or off for this session,
      * depending on environment

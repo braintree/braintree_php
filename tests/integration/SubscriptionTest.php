@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
+require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
 
 class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 {
@@ -38,6 +39,31 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('DateTime', $subscription->billingPeriodStartDate);
         $this->assertInstanceOf('DateTime', $subscription->billingPeriodEndDate);
         $this->assertInstanceOf('DateTime', $subscription->paidThroughDate);
+    }
+
+    function testCreate_withPaymentMethodNonce()
+    {
+        $customerId = Braintree_Customer::create()->customer->id;
+        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+            "creditCard" => array(
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ),
+            "customerId" => $customerId,
+            "share" => true
+        ));
+        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
+        $result = Braintree_Subscription::create(array(
+            'paymentMethodNonce' => $nonce,
+            'planId' => $plan['id']
+        ));
+
+        $this->assertTrue($result->success);
+
+        $transaction = $result->subscription->transactions[0];
+        $this->assertEquals("411111", $transaction->creditCardDetails->bin);
+        $this->assertEquals("1111", $transaction->creditCardDetails->last4);
     }
 
     function testCreate_returnsTransactionWhenTransactionFails()
@@ -783,6 +809,39 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
         $this->assertEquals($newCreditCard->token, $result->subscription->paymentMethodToken);
+    }
+
+    function testUpdate_canUpdatePaymentMethodWithPaymentMethodNonce()
+    {
+        $oldCreditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
+        $subscription = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $oldCreditCard->token,
+            'price' => '54.99',
+            'planId' => $plan['id']
+        ))->subscription;
+
+        $customerId = Braintree_Customer::create()->customer->id;
+        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+            "creditCard" => array(
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ),
+            "customerId" => $oldCreditCard->customerId,
+            "share" => true
+        ));
+
+        $result = Braintree_Subscription::update($subscription->id, array(
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertTrue($result->success);
+
+        $newCreditCard = Braintree_CreditCard::find($result->subscription->paymentMethodToken);
+
+        $this->assertEquals("1111", $newCreditCard->last4);
+        $this->assertNotEquals($oldCreditCard->last4, $newCreditCard->last4);
     }
 
     function testUpdate_canUpdateAddOnsAndDiscounts()

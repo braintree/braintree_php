@@ -12,13 +12,18 @@
  */
 class Braintree_Digest
 {
-    public static function hexDigest($string)
+    public static function hexDigestSha1($key, $string)
     {
         if(function_exists('hash_hmac')) {
-            return self::_builtInHmacSha1($string, Braintree_Configuration::privateKey());
+            return self::_builtInHmacSha1($string, $key);
         } else {
-            return self::_hmacSha1($string, Braintree_Configuration::privateKey());
+            return self::_hmacSha1($string, $key);
         }
+    }
+
+    public static function hexDigestSha256($key, $string)
+    {
+        return hash_hmac('sha256', $string, hash('sha256', $key, true));
     }
 
     public static function secureCompare($left, $right)
@@ -31,15 +36,15 @@ class Braintree_Digest
         $rightBytes = unpack("C*", $right);
 
         $result = 0;
-        for ($i = 0; $i < strlen($left); $i++) {
-            $result = $result | ($left[$i] ^ $right[$i]);
+        for ($i = 1; $i <= count($leftBytes); $i++) {
+            $result = $result | ($leftBytes[$i] ^ $rightBytes[$i]);
         }
         return $result == 0;
     }
 
     public static function _builtInHmacSha1($message, $key)
     {
-        return hash_hmac('sha1', $message, sha1(Braintree_Configuration::privateKey(), true));
+        return hash_hmac('sha1', $message, sha1($key, true));
     }
 
     public static function _hmacSha1($message, $key)

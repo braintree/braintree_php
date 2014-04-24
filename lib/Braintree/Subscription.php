@@ -124,6 +124,7 @@ class Braintree_Subscription extends Braintree
                 'neverExpires',
                 'numberOfBillingCycles',
                 'paymentMethodToken',
+                'paymentMethodNonce',
                 'planId',
                 'price',
                 'trialDuration',
@@ -141,7 +142,7 @@ class Braintree_Subscription extends Braintree
         return array_merge(
             array(
                 'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
-                'id', 'neverExpires', 'price',
+                'paymentMethodNonce', 'id', 'neverExpires', 'price',
                 array('descriptor' => array('name', 'phone')),
                 array('options' => array('prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure')),
             ),
