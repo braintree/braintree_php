@@ -3,14 +3,14 @@
  * Braintree Utility methods
  * PHP version 5
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
  * Braintree Utility methods
  *
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Braintree_Util
 {

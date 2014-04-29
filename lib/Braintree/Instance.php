@@ -4,7 +4,7 @@
  *
  * @package    Braintree
  * @subpackage Utility
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -12,7 +12,7 @@
  *
  * @package    Braintree
  * @subpackage Utility
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  * @abstract
  */
 abstract class Braintree_Instance

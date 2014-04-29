@@ -4,7 +4,7 @@
  *
  * @package    Braintree
  * @subpackage Test
- * @copyright  2013 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Braintree_Test_MerchantAccount
 {
