@@ -580,7 +580,7 @@ final class Braintree_Transaction extends Braintree
         $disputes = array();
         if (isset($transactionAttribs['disputes'])) {
             foreach ($transactionAttribs['disputes'] AS $dispute) {
-                $disputes[] = new Braintree_Dispute($dispute);
+                $disputes[] = Braintree_Dispute::factory($dispute);
             }
         }
 
