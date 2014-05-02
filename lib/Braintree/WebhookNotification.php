@@ -97,6 +97,10 @@ class Braintree_WebhookNotification extends Braintree
             $this->_set('partnerMerchant', Braintree_PartnerMerchant::factory($wrapperNode['partnerMerchant']));
         }
 
+        if (isset($wrapperNode['dispute'])) {
+            $this->_set('dispute', Braintree_PartnerMerchant::factory($wrapperNode['dispute']));
+        }
+
         if (isset($wrapperNode['errors'])) {
             $this->_set('errors', new Braintree_Error_ValidationErrorCollection($wrapperNode['errors']));
             $this->_set('message', $wrapperNode['message']);
