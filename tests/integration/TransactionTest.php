@@ -329,7 +329,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             'customer' => array(
                 'firstName' => 'Dan',
                 'lastName' => 'Smith',
-                'company' => 'Braintree Payment Solutions',
+                'company' => 'Braintree',
                 'email' => 'dan@example.com',
                 'phone' => '419-555-1234',
                 'fax' => '419-555-1235',
@@ -392,7 +392,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals('Dan', $transaction->customerDetails->firstName);
       $this->assertEquals('Smith', $transaction->customerDetails->lastName);
-      $this->assertEquals('Braintree Payment Solutions', $transaction->customerDetails->company);
+      $this->assertEquals('Braintree', $transaction->customerDetails->company);
       $this->assertEquals('dan@example.com', $transaction->customerDetails->email);
       $this->assertEquals('419-555-1234', $transaction->customerDetails->phone);
       $this->assertEquals('419-555-1235', $transaction->customerDetails->fax);
@@ -1068,7 +1068,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             'customer' => array(
                 'firstName' => 'Dan',
                 'lastName' => 'Smith',
-                'company' => 'Braintree Payment Solutions',
+                'company' => 'Braintree',
                 'email' => 'dan@example.com',
                 'phone' => '419-555-1234',
                 'fax' => '419-555-1235',
@@ -1087,7 +1087,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $customer = $transaction->vaultCustomer();
         $this->assertEquals('Dan', $customer->firstName);
         $this->assertEquals('Smith', $customer->lastName);
-        $this->assertEquals('Braintree Payment Solutions', $customer->company);
+        $this->assertEquals('Braintree', $customer->company);
         $this->assertEquals('dan@example.com', $customer->email);
         $this->assertEquals('419-555-1234', $customer->phone);
         $this->assertEquals('419-555-1235', $customer->fax);
@@ -1106,7 +1106,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             'customer' => array(
                 'firstName' => 'Dan',
                 'lastName' => 'Smith',
-                'company' => 'Braintree Payment Solutions',
+                'company' => 'Braintree',
                 'email' => 'dan@example.com',
                 'phone' => '419-555-1234',
                 'fax' => '419-555-1235',
@@ -1125,7 +1125,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $customer = $transaction->vaultCustomer();
         $this->assertEquals('Dan', $customer->firstName);
         $this->assertEquals('Smith', $customer->lastName);
-        $this->assertEquals('Braintree Payment Solutions', $customer->company);
+        $this->assertEquals('Braintree', $customer->company);
         $this->assertEquals('dan@example.com', $customer->email);
         $this->assertEquals('419-555-1234', $customer->phone);
         $this->assertEquals('419-555-1235', $customer->fax);
@@ -1144,7 +1144,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             'customer' => array(
                 'firstName' => 'Dan',
                 'lastName' => 'Smith',
-                'company' => 'Braintree Payment Solutions',
+                'company' => 'Braintree',
                 'email' => 'dan@example.com',
                 'phone' => '419-555-1234',
                 'fax' => '419-555-1235',

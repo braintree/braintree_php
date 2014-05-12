@@ -4,7 +4,7 @@
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -42,7 +42,7 @@
  *     'id'    => 'customer_123',
  *     'firstName' => 'Dan',
  *     'lastName' => 'Smith',
- *     'company' => 'Braintree Payment Solutions',
+ *     'company' => 'Braintree',
  *     'email' => 'dan@example.com',
  *     'phone' => '419-555-1234',
  *     'fax' => '419-555-1235',
@@ -144,7 +144,7 @@
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  *
  * @property-read string $avsErrorResponseCode

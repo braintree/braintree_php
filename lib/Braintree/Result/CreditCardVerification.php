@@ -4,7 +4,7 @@
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -16,7 +16,7 @@
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $avsErrorResponseCode
  * @property-read string $avsPostalCodeResponseCode
