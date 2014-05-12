@@ -1,3 +1,8 @@
+## 2.27.2
+
+* Make webhook parsing more robust with newlines
+* Add messages to InvalidSignature exceptions
+
 ## 2.27.1
 
 * Updated secureCompare to correctly compare strings in consistent time
