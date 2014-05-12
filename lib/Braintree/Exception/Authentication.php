@@ -4,7 +4,7 @@
  *
  * @package    Braintree
  * @subpackage Exception
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -13,7 +13,7 @@
  *
  * @package    Braintree
  * @subpackage Exception
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Braintree_Exception_Authentication extends Braintree_Exception
 {

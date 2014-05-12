@@ -2,13 +2,13 @@
 /**
  * Digest encryption module
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
  * Digest creates an HMAC-SHA1 hash for encrypting messages
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Braintree_Digest
 {

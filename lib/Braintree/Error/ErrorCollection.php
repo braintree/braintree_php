@@ -6,7 +6,7 @@
  * @package    Braintree
  * @subpackage Errors
  * @category   Errors
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 
@@ -18,7 +18,7 @@
  * @package    Braintree
  * @subpackage Errors
  * @category   Errors
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read object $errors
  */

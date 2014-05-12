@@ -4,14 +4,14 @@
  *
  * @package    Braintree
  * @subpackage Transaction
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
  * Creates an instance of StatusDetails, as part of a transaction response
  *
  * @package    Braintree
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $amount
  * @property-read string $status
