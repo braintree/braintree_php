@@ -1,5 +1,6 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
 
 class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
 {
@@ -155,5 +156,33 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
+    }
+
+    function test_paypalAccountEmail()
+    {
+        altpayMerchantConfig();
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+            )
+        ));
+
+        $customerId = 'UNIQUE_CUSTOMER_ID-' . strval(rand());
+        $customerResult = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce,
+            'id' => $customerId
+        ));
+
+        $this->assertTrue($customerResult->success);
+
+        $customer = $customerResult->customer;
+
+        $collection = Braintree_Customer::search(array(
+            Braintree_CustomerSearch::id()->is($customer->id),
+            Braintree_CustomerSearch::paypalAccountEmail()->is('jane.doe@example.com')
+        ));
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($customer->id, $collection->firstItem()->id);
+        integrationMerchantConfig();
     }
 }
