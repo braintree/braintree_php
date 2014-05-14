@@ -69,4 +69,16 @@ class Braintree_HttpClientApi extends Braintree_Http
             return $body->nonce;
         }
     }
+
+    public static function nonceForPayPalAccount($options) {
+        $clientToken = json_decode(Braintree_ClientToken::generate());
+        $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
+        $response = Braintree_HttpClientApi::post('/client_api/v1/payment_methods/paypal_accounts.json', json_encode($options));
+        if ($response["status"] != 202) {
+            throw new Exception(var_dump($response));
+        } else {
+            $body = json_decode($response["body"], true);
+            return $body["paypalAccounts"][0]["nonce"];
+        }
+    }
 }

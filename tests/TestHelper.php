@@ -25,6 +25,14 @@ function testMerchantConfig()
     Braintree_Configuration::privateKey('test_private_key');
 }
 
+function altpayMerchantConfig()
+{
+    Braintree_Configuration::environment('development');
+    Braintree_Configuration::merchantId('altpay_merchant');
+    Braintree_Configuration::publicKey('altpay_merchant_public_key');
+    Braintree_Configuration::privateKey('altpay_merchant_private_key');
+}
+
 integrationMerchantConfig();
 
 date_default_timezone_set("UTC");

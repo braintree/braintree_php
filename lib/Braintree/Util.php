@@ -98,7 +98,8 @@ class Braintree_Util
             'Plan' => 'plan',
             'Address' => 'address',
             'SettlementBatchSummary' => 'settlementBatchSummary',
-            'MerchantAccount' => 'merchantAccount'
+            'MerchantAccount' => 'merchantAccount',
+            'PayPalAccount' => 'paypalAccount'
         );
 
         $name = str_replace('Braintree_', '', $name);
