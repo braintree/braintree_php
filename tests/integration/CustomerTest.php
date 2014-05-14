@@ -399,6 +399,41 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $customer = Braintree_Customer::createNoValidate(array('email' => 'invalid'));
     }
 
+    function testCreate_worksWithFuturePayPalNonce()
+    {
+        altpayMerchantConfig();
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+            )
+        ));
+
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertTrue($result->success);
+        integrationMerchantConfig();
+    }
+
+    function testCreate_doesNotWorkWithOnetimePayPalNonce()
+    {
+        // pending validation errors
+        altpayMerchantConfig();
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'access_token' => 'PAYPAL_ACCESS_TOKEN',
+            )
+        ));
+
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertFalse($result->success);
+        integrationMerchantConfig();
+    }
+
     function testDelete_deletesTheCustomer()
     {
         $result = Braintree_Customer::create(array());
@@ -621,6 +656,72 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $billingAddress = $result->customer->creditCards[0]->billingAddress;
         $this->assertEquals($address->id, $billingAddress->id);
         $this->assertEquals('Dan', $billingAddress->firstName);
+    }
+
+    function testUpdate_worksWithFuturePayPalNonce()
+    {
+        altpayMerchantConfig();
+        $customerResult = Braintree_Customer::create(array(
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'options' => array(
+                    'makeDefault' => true
+                )
+            )
+        ));
+        $paypalAccountToken = 'PAYPALToken-' . strval(rand());
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paypalAccountToken,
+                'options' => array(
+                    'makeDefault' => true
+                )
+            )
+        ));
+
+        $result = Braintree_Customer::update($customerResult->customer->id, array(
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
+
+        integrationMerchantConfig();
+    }
+
+    function testUpdate_doesNotWorkWithOnetimePayPalNonce()
+    {
+        // pending validation errors
+        altpayMerchantConfig();
+        $customerResult = Braintree_Customer::create(array(
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'options' => array(
+                    'makeDefault' => true
+                )
+            )
+        ));
+        $paypalAccountToken = 'PAYPALToken-' . strval(rand());
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'access_token' => 'PAYPAL_ACCESS_TOKEN',
+                'token' => $paypalAccountToken,
+                'options' => array(
+                    'makeDefault' => true
+                )
+            )
+        ));
+
+        $result = Braintree_Customer::update($customerResult->customer->id, array(
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertFalse($result->success);
+
+        integrationMerchantConfig();
     }
 
     function testUpdateNoValidate()
