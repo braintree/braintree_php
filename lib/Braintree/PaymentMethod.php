@@ -1,0 +1,147 @@
+<?php
+/**
+ * Braintree PaymentMethod module
+ *
+ * @package    Braintree
+ * @category   Resources
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
+ */
+
+/**
+ * Creates and manages Braintree PaymentMethods
+ *
+ * <b>== More information ==</b>
+ *
+ *
+ * @package    Braintree
+ * @category   Resources
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
+ *
+ */
+class Braintree_PaymentMethod extends Braintree
+{
+
+    public static function create($attribs)
+    {
+        Braintree_Util::verifyKeys(self::createSignature(), $attribs);
+        return self::_doCreate('/payment_methods', array('payment_method' => $attribs));
+    }
+
+    /**
+     * find a PaymentMethod by token
+     *
+     * @access public
+     * @param string $token payment method unique id
+     * @return object Braintree_CreditCard or Braintree_PayPalAccount
+     * @throws Braintree_Exception_NotFound
+     */
+    public static function find($token)
+    {
+        self::_validateId($token);
+        try {
+            $response = Braintree_Http::get('/payment_methods/any/'.$token);
+            if (isset($response['creditCard'])) {
+                return Braintree_CreditCard::factory($response['creditCard']);
+            } else if (isset($response['paypalAccount'])) {
+                return Braintree_PayPalAccount::factory($response['paypalAccount']);
+            }
+        } catch (Braintree_Exception_NotFound $e) {
+            throw new Braintree_Exception_NotFound(
+                'payment method with token ' . $token . ' not found'
+            );
+        }
+
+    }
+
+    public static function delete($token)
+    {
+        self::_validateId($token);
+        Braintree_Http::delete('/payment_methods/any/' . $token);
+        return new Braintree_Result_Successful();
+    }
+
+    private static function baseSignature($options)
+    {
+         return array(
+             'customerId', 'paymentMethodNonce',
+             array('options' => $options),
+         );
+    }
+
+    public static function createSignature()
+    {
+        $options = array('makeDefault', 'failOnDuplicatePaymentMethod');
+        $signature = self::baseSignature($options);
+        return $signature;
+    }
+
+    /**
+     * sends the create request to the gateway
+     *
+     * @ignore
+     * @param string $url
+     * @param array $params
+     * @return mixed
+     */
+    public static function _doCreate($url, $params)
+    {
+        $response = Braintree_Http::post($url, $params);
+
+        return self::_verifyGatewayResponse($response);
+    }
+
+    /**
+     * generic method for validating incoming gateway responses
+     *
+     * creates a new Braintree_CreditCard or Braintree_PayPalAccount object
+     * and encapsulates it inside a Braintree_Result_Successful object, or
+     * encapsulates a Braintree_Errors object inside a Result_Error
+     * alternatively, throws an Unexpected exception if the response is invalid.
+     *
+     * @ignore
+     * @param array $response gateway response values
+     * @return object Result_Successful or Result_Error
+     * @throws Braintree_Exception_Unexpected
+     */
+    private static function _verifyGatewayResponse($response)
+    {
+        if (isset($response['creditCard'])) {
+            // return a populated instance of Braintree_CreditCard
+            return new Braintree_Result_Successful(
+                    Braintree_CreditCard::factory($response['creditCard'])
+            );
+        } else if (isset($response['paypalAccount'])) {
+            // return a populated instance of Braintree_PayPalAccount
+            return new Braintree_Result_Successful(
+                    Braintree_PayPalAccount::factory($response['paypalAccount'])
+            );
+        } else if (isset($response['apiErrorResponse'])) {
+            return new Braintree_Result_Error($response['apiErrorResponse']);
+        } else {
+            throw new Braintree_Exception_Unexpected(
+            'Expected credit card, paypal account or apiErrorResponse'
+            );
+        }
+    }
+
+    /**
+     * verifies that a valid payment method identifier is being used
+     * @ignore
+     * @param string $identifier
+     * @param Optional $string $identifierType type of identifier supplied, default 'token'
+     * @throws InvalidArgumentException
+     */
+    private static function _validateId($identifier = null, $identifierType = 'token')
+    {
+        if (empty($identifier)) {
+           throw new InvalidArgumentException(
+                   'expected payment method id to be set'
+                   );
+        }
+        if (!preg_match('/^[0-9A-Za-z_-]+$/', $identifier)) {
+            throw new InvalidArgumentException(
+                    $identifier . ' is an invalid payment method ' . $identifierType . '.'
+                    );
+        }
+    }
+}

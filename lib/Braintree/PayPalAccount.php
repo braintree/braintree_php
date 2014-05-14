@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Braintree PayPalAccount module
@@ -23,12 +22,6 @@
  */
 class Braintree_PayPalAccount extends Braintree
 {
-
-    public static function create($attribs)
-    {
-        Braintree_Util::verifyKeys(self::createSignature(), $attribs);
-        return self::_doCreate('/payment_methods', array('payment_method' => $attribs));
-    }
 
     /**
      * find a paypalAccount by token
@@ -77,39 +70,9 @@ class Braintree_PayPalAccount extends Braintree
         return new Braintree_Result_Successful();
     }
 
-    private static function baseSignature($options)
-    {
-         return array(
-             'customerId', 'paymentMethodNonce',
-             array('options' => $options),
-         );
-    }
-
-    public static function createSignature()
-    {
-        $options = array('makeDefault', 'failOnDuplicatePaymentMethod');
-        $signature = self::baseSignature($options);
-        return $signature;
-    }
-
     public static function updateSignature()
     {
         return array('token');
-    }
-
-    /**
-     * sends the create request to the gateway
-     *
-     * @ignore
-     * @param string $url
-     * @param array $params
-     * @return mixed
-     */
-    public static function _doCreate($url, $params)
-    {
-        $response = Braintree_Http::post($url, $params);
-
-        return self::_verifyGatewayResponse($response);
     }
 
     /**

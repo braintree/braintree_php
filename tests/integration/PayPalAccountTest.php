@@ -1,32 +1,9 @@
-
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
 
 class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
 {
-    function testCreate()
-    {
-        altpayMerchantConfig();
-        $paymentMethodToken = 'PAYPALToken-' . strval(rand());
-        $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
-            'paypal_account' => array(
-                'consent_code' => 'PAYPAL_CONSENT_CODE',
-                'token' => $paymentMethodToken
-            )
-        ));
-
-        $result = Braintree_PayPalAccount::create(array(
-            'customerId' => $customer->id,
-            'paymentMethodNonce' => $nonce
-        ));
-
-        $this->assertSame('jane.doe@example.com', $result->paypalAccount->email);
-        $this->assertSame($paymentMethodToken, $result->paypalAccount->token);
-        integrationMerchantConfig();
-    }
-
     function testFind()
     {
         altpayMerchantConfig();
@@ -39,7 +16,7 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
             )
         ));
 
-        Braintree_PayPalAccount::create(array(
+        Braintree_PaymentMethod::create(array(
             'customerId' => $customer->id,
             'paymentMethodNonce' => $nonce
         ));
@@ -98,7 +75,7 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
             )
         ));
 
-        $createResult = Braintree_PayPalAccount::create(array(
+        $createResult = Braintree_PaymentMethod::create(array(
             'customerId' => $customer->id,
             'paymentMethodNonce' => $nonce
         ));
@@ -120,6 +97,7 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
 
     function testUpdate_handleErrors()
     {
+        // pending validation errors
         altpayMerchantConfig();
         $customer = Braintree_Customer::createNoValidate();
 
@@ -130,7 +108,7 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
                 'token' => $firstToken
             )
         ));
-        $firstPaypalAccount = Braintree_PayPalAccount::create(array(
+        $firstPaypalAccount = Braintree_PaymentMethod::create(array(
             'customerId' => $customer->id,
             'paymentMethodNonce' => $firstNonce
         ));
@@ -143,7 +121,7 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
                 'token' => $secondToken
             )
         ));
-        $secondPaypalAccount = Braintree_PayPalAccount::create(array(
+        $secondPaypalAccount = Braintree_PaymentMethod::create(array(
             'customerId' => $customer->id,
             'paymentMethodNonce' => $secondNonce
         ));
@@ -169,7 +147,7 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
             )
         ));
 
-        Braintree_PayPalAccount::create(array(
+        Braintree_PaymentMethod::create(array(
             'customerId' => $customer->id,
             'paymentMethodNonce' => $nonce
         ));

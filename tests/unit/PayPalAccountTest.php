@@ -10,12 +10,6 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
         $paypalAccount->foo;
     }
 
-    function testCreate_throwsIfInvalidKey()
-    {
-        $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalidKey');
-        Braintree_PayPalAccount::create(array('invalidKey' => 'foo'));
-    }
-
     function testIsDefault()
     {
         $paypalAccount = Braintree_PayPalAccount::factory(array('default' => true));
@@ -23,15 +17,6 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
 
         $paypalAccount = Braintree_PayPalAccount::factory(array('default' => false));
         $this->assertFalse($paypalAccount->isDefault());
-    }
-
-    function testCreateSignature()
-    {
-        $expected = array(
-            'customerId', 'paymentMethodNonce',
-            array('options' => array('makeDefault', 'failOnDuplicatePaymentMethod'))
-        );
-        $this->assertEquals($expected, Braintree_PayPalAccount::CreateSignature());
     }
 
     function testUpdateSignature()
