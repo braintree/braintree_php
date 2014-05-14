@@ -200,7 +200,7 @@ class Braintree_CreditCard extends Braintree
     {
         self::_validateId($token);
         try {
-            $response = Braintree_Http::get('/payment_methods/'.$token);
+            $response = Braintree_Http::get('/payment_methods/credit_card/'.$token);
             return self::factory($response['creditCard']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound(
@@ -318,7 +318,7 @@ class Braintree_CreditCard extends Braintree
     {
         Braintree_Util::verifyKeys(self::updateSignature(), $attributes);
         self::_validateId($token);
-        return self::_doUpdate('put', '/payment_methods/' . $token, array('creditCard' => $attributes));
+        return self::_doUpdate('put', '/payment_methods/credit_card/' . $token, array('creditCard' => $attributes));
     }
 
     /**
@@ -406,7 +406,7 @@ class Braintree_CreditCard extends Braintree
     public static function delete($token)
     {
         self::_validateId($token);
-        Braintree_Http::delete('/payment_methods/' . $token);
+        Braintree_Http::delete('/payment_methods/credit_card/' . $token);
         return new Braintree_Result_Successful();
     }
 
