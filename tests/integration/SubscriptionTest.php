@@ -620,6 +620,36 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
+    function testCreate_fromPayPalACcount()
+    {
+        // revise once transactions have been updated
+        altpayMerchantConfig();
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $customer = Braintree_Customer::createNoValidate();
+        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            )
+        ));
+
+        $paypalResult = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $subscriptionResult = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $paymentMethodToken,
+            'planId' => $plan['id']
+
+        ));
+        $this->assertTrue($subscriptionResult->success);
+        $transaction = $subscriptionResult->subscription->transactions[0];
+        // $this->assertEquals('jane.doe@example.com', $transaction->paypalDetails->payerEmail);
+        integrationMerchantConfig();
+    }
+
     function testValidationErrors_hasValidationErrorsOnId()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
