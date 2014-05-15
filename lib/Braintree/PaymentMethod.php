@@ -44,6 +44,8 @@ class Braintree_PaymentMethod extends Braintree
                 return Braintree_CreditCard::factory($response['creditCard']);
             } else if (isset($response['paypalAccount'])) {
                 return Braintree_PayPalAccount::factory($response['paypalAccount']);
+            } else if (is_array($response)) {
+                return Braintree_UnknownPaymentMethod::factory($response);
             }
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound(
@@ -117,6 +119,8 @@ class Braintree_PaymentMethod extends Braintree
             );
         } else if (isset($response['apiErrorResponse'])) {
             return new Braintree_Result_Error($response['apiErrorResponse']);
+        } else if (is_array($response)) {
+            return Braintree_UnknownPaymentMethod::factory($response);
         } else {
             throw new Braintree_Exception_Unexpected(
             'Expected credit card, paypal account or apiErrorResponse'
