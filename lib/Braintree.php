@@ -156,6 +156,7 @@ require_once('Braintree/Test/TransactionAmounts.php');
 require_once('Braintree/Test/VenmoSdk.php');
 require_once('Braintree/Transaction/AddressDetails.php');
 require_once('Braintree/Transaction/CreditCardDetails.php');
+require_once('Braintree/Transaction/PayPalDetails.php');
 require_once('Braintree/Transaction/CustomerDetails.php');
 require_once('Braintree/Transaction/StatusDetails.php');
 require_once('Braintree/Transaction/SubscriptionDetails.php');

@@ -622,7 +622,6 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 
     function testCreate_fromPayPalACcount()
     {
-        // revise once transactions have been updated
         altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
@@ -646,7 +645,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($subscriptionResult->success);
         $transaction = $subscriptionResult->subscription->transactions[0];
-        // $this->assertEquals('jane.doe@example.com', $transaction->paypalDetails->payerEmail);
+        $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         integrationMerchantConfig();
     }
 

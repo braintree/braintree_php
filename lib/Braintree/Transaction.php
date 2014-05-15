@@ -156,6 +156,7 @@
  * @property-read object $billingDetails transaction billing address
  * @property-read string $createdAt transaction created timestamp
  * @property-read object $creditCardDetails transaction credit card info
+ * @property-read object $paypalDetails transaction paypal account info
  * @property-read object $customerDetails transaction customer info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
@@ -219,7 +220,7 @@ final class Braintree_Transaction extends Braintree
 
     /**
      * @ignore
-     * @access public
+     * @access private
      * @param array $attribs
      * @return object
      */
@@ -232,7 +233,7 @@ final class Braintree_Transaction extends Braintree
     /**
      *
      * @ignore
-     * @access public
+     * @access private
      * @param array $attribs
      * @return object
      * @throws Braintree_Exception_ValidationError
@@ -527,6 +528,14 @@ final class Braintree_Transaction extends Braintree
             $this->_set('creditCardDetails',
                 new Braintree_Transaction_CreditCardDetails(
                     $transactionAttribs['creditCard']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['paypal'])) {
+            $this->_set('paypalDetails',
+                new Braintree_Transaction_PayPalDetails(
+                    $transactionAttribs['paypal']
                 )
             );
         }
