@@ -1,5 +1,6 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
 
 class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
 {
@@ -1432,4 +1433,33 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    function testHandlesPayPalAccounts()
+    {
+        altpayMerchantConfig();
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'access_token' => 'PAYPAL_ACCESS_TOKEN'
+            )
+        ));
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
+        ));
+
+        $this->assertTrue($result->success);
+        $paypalDetails = $result->transaction->paypalDetails;
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::paypalPaymentId()->is($paypalDetails->paymentId),
+            Braintree_TransactionSearch::paypalSaleId()->is($paypalDetails->saleId),
+            Braintree_TransactionSearch::paypalPayerEmail()->is($paypalDetails->payerEmail)
+        ));
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($result->transaction->id, $collection->firstItem()->id);
+
+        integrationMerchantConfig();
+    }
 }
