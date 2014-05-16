@@ -649,6 +649,48 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         integrationMerchantConfig();
     }
 
+    function testCreate_fromPayPalACcountDoesNotWorkWithFutureNonce()
+    {
+        altpayMerchantConfig();
+        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE'
+            )
+        ));
+
+        $subscriptionResult = Braintree_Subscription::create(array(
+            'paymentMethodNonce' => $nonce,
+            'planId' => $plan['id']
+
+        ));
+        $this->assertFalse($subscriptionResult->success);
+        $errors = $subscriptionResult->errors->forKey('subscription')->errors;
+        $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_PAYMENT_METHOD_NONCE_IS_INVALID, $errors[0]->code);
+        integrationMerchantConfig();
+    }
+
+    function testCreate_fromPayPalACcountDoesNotWorkWithOnetimeNonce()
+    {
+        altpayMerchantConfig();
+        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'access_token' => 'PAYPAL_ACCESS_TOKEN'
+            )
+        ));
+
+        $subscriptionResult = Braintree_Subscription::create(array(
+            'paymentMethodNonce' => $nonce,
+            'planId' => $plan['id']
+
+        ));
+        $this->assertFalse($subscriptionResult->success);
+        $errors = $subscriptionResult->errors->forKey('subscription')->errors;
+        $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_PAYMENT_METHOD_NONCE_IS_INVALID, $errors[0]->code);
+        integrationMerchantConfig();
+    }
+
     function testValidationErrors_hasValidationErrorsOnId()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
