@@ -97,7 +97,6 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
 
     function testUpdate_handleErrors()
     {
-        // pending validation errors
         altpayMerchantConfig();
         $customer = Braintree_Customer::createNoValidate();
 
@@ -132,6 +131,8 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertFalse($updateResult->success);
+        $errors = $updateResult->errors->forKey('paypalAccount')->errors;
+        $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_TOKEN_IS_IN_USE, $errors[0]->code);
         integrationMerchantConfig();
     }
 

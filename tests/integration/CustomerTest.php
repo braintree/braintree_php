@@ -418,7 +418,6 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testCreate_doesNotWorkWithOnetimePayPalNonce()
     {
-        // pending validation errors
         altpayMerchantConfig();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -431,6 +430,8 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('customer')->forKey('paypalAccount')->errors;
+        $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT, $errors[0]->code);
         integrationMerchantConfig();
     }
 
@@ -693,7 +694,6 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testUpdate_doesNotWorkWithOnetimePayPalNonce()
     {
-        // pending validation errors
         altpayMerchantConfig();
         $customerResult = Braintree_Customer::create(array(
             'creditCard' => array(
@@ -720,6 +720,8 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('customer')->forKey('paypalAccount')->errors;
+        $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT, $errors[0]->code);
 
         integrationMerchantConfig();
     }

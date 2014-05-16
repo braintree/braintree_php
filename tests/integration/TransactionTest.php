@@ -1978,7 +1978,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreate_withPayPalHandlesBadUnvalidatedNonces()
     {
-        // pending validation errors
         altpayMerchantConfig();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -1997,12 +1996,13 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('paypalAccount')->errors;
+        $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CANNOT_HAVE_BOTH_ACCESS_TOKEN_AND_CONSENT_CODE, $errors[0]->code);
         integrationMerchantConfig();
     }
 
     function testCreate_withPayPalHandlesNonExistentNonces()
     {
-        // pending validation errors
         $this->setExpectedException('Braintree_Exception_Authorization');
         Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
@@ -2153,7 +2153,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testRefund_withPayPalFailsifAlreadyRefunded()
     {
-        // pending validation errors
         altpayMerchantConfig();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2177,13 +2176,14 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($firstRefund->success);
         $secondRefund = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertFalse($secondRefund->success);
+        $errors = $secondRefund->errors->forKey('transaction')->errors;
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_HAS_ALREADY_BEEN_REFUNDED, $errors[0]->code);
 
         integrationMerchantConfig();
     }
 
     function testRefund_withPayPalFailsIfNotSettled()
     {
-        // pending validation errors
         altpayMerchantConfig();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2204,6 +2204,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->errors;
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_CANNOT_REFUND_UNLESS_SETTLED, $errors[0]->code);
 
         integrationMerchantConfig();
     }
