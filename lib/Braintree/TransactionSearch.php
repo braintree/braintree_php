@@ -35,7 +35,7 @@ class Braintree_TransactionSearch
 	static function shippingRegion()             { return new Braintree_TextNode('shipping_region'); }
 	static function shippingStreetAddress()      { return new Braintree_TextNode('shipping_street_address'); }
 	static function paypalPaymentId()            { return new Braintree_TextNode('paypal_payment_id'); }
-	static function paypalSaleId()               { return new Braintree_TextNode('paypal_sale_id'); }
+	static function paypalAuthorizationId()      { return new Braintree_TextNode('paypal_authorization_id'); }
 	static function paypalPayerEmail()           { return new Braintree_TextNode('paypal_payer_email'); }
 
 	static function creditCardExpirationDate()   { return new Braintree_EqualityNode('credit_card_expiration_date'); }

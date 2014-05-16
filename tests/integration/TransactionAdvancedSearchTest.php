@@ -1453,7 +1453,7 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
         $collection = Braintree_Transaction::search(array(
             Braintree_TransactionSearch::paypalPaymentId()->is($paypalDetails->paymentId),
-            Braintree_TransactionSearch::paypalSaleId()->is($paypalDetails->saleId),
+            Braintree_TransactionSearch::paypalAuthorizationId()->is($paypalDetails->authorizationId),
             Braintree_TransactionSearch::paypalPayerEmail()->is($paypalDetails->payerEmail)
         ));
 
