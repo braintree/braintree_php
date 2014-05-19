@@ -16,9 +16,6 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $payerEmail
- * @property-read string $payerId
- * @property-read string $payerFirstName
- * @property-read string $payerLastName
  * @property-read string $paymentId
  * @property-read string $authorizationId
  * @property-read string $token
