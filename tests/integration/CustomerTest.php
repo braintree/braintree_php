@@ -402,11 +402,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
     function testCreate_worksWithFuturePayPalNonce()
     {
         altpayMerchantConfig();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
-            'paypal_account' => array(
-                'consent_code' => 'PAYPAL_CONSENT_CODE',
-            )
-        ));
+        $nonce = Braintree_Test_Nonces::$paypalFuturePayment;
 
         $result = Braintree_Customer::create(array(
             'paymentMethodNonce' => $nonce
@@ -419,11 +415,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
     function testCreate_doesNotWorkWithOnetimePayPalNonce()
     {
         altpayMerchantConfig();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
-            'paypal_account' => array(
-                'access_token' => 'PAYPAL_ACCESS_TOKEN',
-            )
-        ));
+        $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $result = Braintree_Customer::create(array(
             'paymentMethodNonce' => $nonce

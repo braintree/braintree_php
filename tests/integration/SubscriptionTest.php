@@ -653,11 +653,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
     {
         altpayMerchantConfig();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
-            'paypal_account' => array(
-                'consent_code' => 'PAYPAL_CONSENT_CODE'
-            )
-        ));
+        $nonce = Braintree_Test_Nonces::$paypalFuturePayment;
 
         $subscriptionResult = Braintree_Subscription::create(array(
             'paymentMethodNonce' => $nonce,
@@ -674,11 +670,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
     {
         altpayMerchantConfig();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
-            'paypal_account' => array(
-                'access_token' => 'PAYPAL_ACCESS_TOKEN'
-            )
-        ));
+        $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $subscriptionResult = Braintree_Subscription::create(array(
             'paymentMethodNonce' => $nonce,
