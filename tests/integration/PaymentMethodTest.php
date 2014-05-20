@@ -52,7 +52,6 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
     function testCreate_fromUnvalidatedFuturePaypalAccountNonce()
     {
-        altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
@@ -69,12 +68,10 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('jane.doe@example.com', $result->paypalAccount->email);
         $this->assertSame($paymentMethodToken, $result->paypalAccount->token);
-        integrationMerchantConfig();
     }
 
     function testCreate_doesNotWorkForUnvalidatedOnetimePaypalAccountNonce()
     {
-        altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
@@ -92,12 +89,10 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('paypalAccount')->errors;
         $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT, $errors[0]->code);
-        integrationMerchantConfig();
     }
 
     function testCreate_handlesValidationErrorsForPayPalAccounts()
     {
-        altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
@@ -115,7 +110,6 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $errors = $result->errors->forKey('paypalAccount')->errors;
         $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT, $errors[0]->code);
         $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CONSENT_CODE_OR_ACCESS_TOKEN_IS_REQUIRED, $errors[1]->code);
-        integrationMerchantConfig();
     }
 
     function testFind_returnsCreditCards()
@@ -164,7 +158,6 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
     function testFind_returnsPayPalAccounts()
     {
-        altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
@@ -183,7 +176,6 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('jane.doe@example.com', $foundPayPalAccount->email);
         $this->assertSame($paymentMethodToken, $foundPayPalAccount->token);
-        integrationMerchantConfig();
     }
 
     function testFind_throwsIfCannotBeFound()
@@ -213,7 +205,6 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
     function testDelete_worksWithPayPalAccounts()
     {
-        altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
@@ -233,7 +224,6 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_PaymentMethod::find($paymentMethodToken);
-        integrationMerchantConfig();
     }
 
 }

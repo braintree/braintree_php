@@ -160,7 +160,6 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
     function test_paypalAccountEmail()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
@@ -183,6 +182,5 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
-        integrationMerchantConfig();
     }
 }

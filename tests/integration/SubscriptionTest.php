@@ -622,7 +622,6 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 
     function testCreate_fromPayPalACcount()
     {
-        altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
@@ -646,12 +645,10 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($subscriptionResult->success);
         $transaction = $subscriptionResult->subscription->transactions[0];
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
-        integrationMerchantConfig();
     }
 
     function testCreate_fromPayPalACcountDoesNotWorkWithFutureNonce()
     {
-        altpayMerchantConfig();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $nonce = Braintree_Test_Nonces::$paypalFuturePayment;
 
@@ -663,12 +660,10 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($subscriptionResult->success);
         $errors = $subscriptionResult->errors->forKey('subscription')->errors;
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_PAYMENT_METHOD_NONCE_IS_INVALID, $errors[0]->code);
-        integrationMerchantConfig();
     }
 
     function testCreate_fromPayPalACcountDoesNotWorkWithOnetimeNonce()
     {
-        altpayMerchantConfig();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
@@ -680,7 +675,6 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($subscriptionResult->success);
         $errors = $subscriptionResult->errors->forKey('subscription')->errors;
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_PAYMENT_METHOD_NONCE_IS_INVALID, $errors[0]->code);
-        integrationMerchantConfig();
     }
 
     function testValidationErrors_hasValidationErrorsOnId()

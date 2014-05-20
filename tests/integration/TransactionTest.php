@@ -1834,21 +1834,30 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreate_withVaultedPayPal()
     {
-        altpayMerchantConfig();
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $customer = Braintree_Customer::createNoValidate();
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            )
+        ));
+
+        Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce
+        ));
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
-            'paymentMethodToken' => 'PAYPAL_ACCOUNT',
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account'
+            'paymentMethodToken' => $paymentMethodToken,
         ));
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
-        integrationMerchantConfig();
     }
 
     function testCreate_withFuturePayPal()
     {
-        altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -1860,7 +1869,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account'
         ));
 
         $this->assertTrue($result->success);
@@ -1868,12 +1876,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_PaymentMethod::find($paymentMethodToken);
-        integrationMerchantConfig();
     }
 
     function testCreate_withFuturePayPalAndVault()
     {
-        altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -1885,7 +1891,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'storeInVault' => true
             )
@@ -1896,12 +1901,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $foundPayPalAccount = Braintree_PaymentMethod::find($paymentMethodToken);
         $this->assertEquals($paymentMethodToken, $foundPayPalAccount->token);
-        integrationMerchantConfig();
     }
 
     function testCreate_withOnetimePayPal()
     {
-        altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -1913,7 +1916,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account'
         ));
 
         $this->assertTrue($result->success);
@@ -1921,12 +1923,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_PaymentMethod::find($paymentMethodToken);
-        integrationMerchantConfig();
     }
 
     function testCreate_withOnetimePayPalAndDoesNotVault()
     {
-        altpayMerchantConfig();
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -1938,7 +1938,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'storeInVault' => true
             )
@@ -1949,17 +1948,14 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_PaymentMethod::find($paymentMethodToken);
-        integrationMerchantConfig();
     }
 
     function testCreate_withPayPalAndSubmitForSettlement()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
@@ -1968,12 +1964,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
-        integrationMerchantConfig();
     }
 
     function testCreate_withPayPalHandlesBadUnvalidatedNonces()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'access_token' => 'PAYPAL_ACCESS_TOKEN',
@@ -1984,7 +1978,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
@@ -1993,33 +1986,29 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->forKey('paypalAccount')->errors;
         $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CANNOT_HAVE_BOTH_ACCESS_TOKEN_AND_CONSENT_CODE, $errors[0]->code);
-        integrationMerchantConfig();
     }
 
     function testCreate_withPayPalHandlesNonExistentNonces()
     {
-        $this->setExpectedException('Braintree_Exception_Authorization');
-        Braintree_Transaction::sale(array(
+        $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => 'NON_EXISTENT_NONCE',
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
         ));
-
-        integrationMerchantConfig();
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->errors;
+        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_PAYMENT_METHOD_NONCE_UNKNOWN, $errors[0]->code);
     }
 
     function testVoid_withPayPal()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
@@ -2028,36 +2017,30 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $voided_transaction = Braintree_Transaction::voidNoValidate($result->transaction->id);
         $this->assertEquals(Braintree_Transaction::VOIDED, $voided_transaction->status);
-        integrationMerchantConfig();
     }
 
     function testVoid_failsOnDeclinedPayPal()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$decline,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
         ));
         $this->setExpectedException('Braintree_Exception_ValidationsFailed');
         Braintree_Transaction::voidNoValidate($result->transaction->id);
-        integrationMerchantConfig();
     }
 
     function testRefund_withPayPal()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $transactionResult = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
@@ -2069,19 +2052,15 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($result->success);
         $this->assertEquals($result->transaction->type, Braintree_Transaction::CREDIT);
-
-        integrationMerchantConfig();
     }
 
     function testRefund_withPayPalAssignsRefundId()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $transactionResult = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
@@ -2096,19 +2075,15 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $refundTransaction = $result->transaction;
         $updatedOriginalTransaction = Braintree_Transaction::find($originalTransaction->id);
         $this->assertEquals($refundTransaction->id, $updatedOriginalTransaction->refundId);
-
-        integrationMerchantConfig();
     }
 
     function testRefund_withPayPalAssignsRefundedTransactionId()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $transactionResult = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
@@ -2122,19 +2097,15 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $refundTransaction = $result->transaction;
         $this->assertEquals($refundTransaction->refundedTransactionId, $originalTransaction->id);
-
-        integrationMerchantConfig();
     }
 
     function testRefund_withPayPalFailsifAlreadyRefunded()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $transactionResult = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
@@ -2149,19 +2120,15 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($secondRefund->success);
         $errors = $secondRefund->errors->forKey('transaction')->errors;
         $this->assertEquals(Braintree_Error_Codes::TRANSACTION_HAS_ALREADY_BEEN_REFUNDED, $errors[0]->code);
-
-        integrationMerchantConfig();
     }
 
     function testRefund_withPayPalFailsIfNotSettled()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $transactionResult = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
@@ -2173,19 +2140,15 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('transaction')->errors;
         $this->assertEquals(Braintree_Error_Codes::TRANSACTION_CANNOT_REFUND_UNLESS_SETTLED, $errors[0]->code);
-
-        integrationMerchantConfig();
     }
 
     function testRefund_partialWithPayPal()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $transactionResult = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
@@ -2202,18 +2165,15 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $this->assertEquals($result->transaction->type, Braintree_Transaction::CREDIT);
         $this->assertEquals($result->transaction->amount, $transactionResult->transaction->amount / 2);
-        integrationMerchantConfig();
     }
 
     function testRefund_multiplePartialWithPayPal()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $transactionResult = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'merchantAccountId' => 'altpay_merchant_paypal_merchant_account',
             'options' => array(
                 'submitForSettlement' => true
             )
@@ -2245,7 +2205,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             $expectedRefundIds,
             $updatedOriginalTransaction->refundIds
         );
-        integrationMerchantConfig();
     }
 
 }

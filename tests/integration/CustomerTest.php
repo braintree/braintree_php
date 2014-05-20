@@ -401,7 +401,6 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testCreate_worksWithFuturePayPalNonce()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalFuturePayment;
 
         $result = Braintree_Customer::create(array(
@@ -409,12 +408,10 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($result->success);
-        integrationMerchantConfig();
     }
 
     function testCreate_doesNotWorkWithOnetimePayPalNonce()
     {
-        altpayMerchantConfig();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $result = Braintree_Customer::create(array(
@@ -424,7 +421,6 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('customer')->forKey('paypalAccount')->errors;
         $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT, $errors[0]->code);
-        integrationMerchantConfig();
     }
 
     function testDelete_deletesTheCustomer()
@@ -653,7 +649,6 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testUpdate_worksWithFuturePayPalNonce()
     {
-        altpayMerchantConfig();
         $customerResult = Braintree_Customer::create(array(
             'creditCard' => array(
                 'number' => '5105105105105100',
@@ -681,12 +676,10 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
 
-        integrationMerchantConfig();
     }
 
     function testUpdate_doesNotWorkWithOnetimePayPalNonce()
     {
-        altpayMerchantConfig();
         $customerResult = Braintree_Customer::create(array(
             'creditCard' => array(
                 'number' => '5105105105105100',
@@ -715,7 +708,6 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $errors = $result->errors->forKey('customer')->forKey('paypalAccount')->errors;
         $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT, $errors[0]->code);
 
-        integrationMerchantConfig();
     }
 
     function testUpdateNoValidate()
