@@ -329,6 +329,8 @@ class Braintree_Error_Codes
     const TRANSACTION_TAX_AMOUNT_CANNOT_BE_NEGATIVE                             = '81534';
     const TRANSACTION_TAX_AMOUNT_FORMAT_IS_INVALID                              = '81535';
     const TRANSACTION_TAX_AMOUNT_IS_TOO_LARGE                                   = '81536';
+    const TRANSACTION_THREE_D_SECURE_TOKEN_IS_INVALID                           = '91568';
+    const TRANSACTION_THREE_D_SECURE_TRANSACTION_DATA_DOESNT_MATCH_VERIFY       = '91570';
     const TRANSACTION_TYPE_IS_INVALID                                           = '91523';
     const TRANSACTION_TYPE_IS_REQUIRED                                          = '91524';
     const TRANSACTION_UNSUPPORTED_VOICE_AUTHORIZATION                           = '91539';
