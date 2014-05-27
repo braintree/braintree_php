@@ -301,6 +301,11 @@ class Braintree_Customer extends Braintree
     {
         $criteria = array();
         foreach ($query as $term) {
+            $result = $term->toparam();
+            if(is_null($result) || empty($result)) {
+                throw new InvalidArgumentException('Operator must be provided');
+            }
+
             $criteria[$term->name] = $term->toparam();
         }
 
