@@ -35,6 +35,7 @@ class Braintree_Configuration extends Braintree
                     'merchantId'    => '',
                     'publicKey'     => '',
                     'privateKey'    => '',
+                    'timeout'       => 60,
                    );
     /**
      *
@@ -61,6 +62,7 @@ class Braintree_Configuration extends Braintree
             'merchantId'  => '',
             'publicKey' => '',
             'privateKey' => '',
+            'timeout' => 60,
         );
     }
 
@@ -163,6 +165,11 @@ class Braintree_Configuration extends Braintree
     }
 
     public static function privateKey($value = null)
+    {
+        return self::setOrGet(__FUNCTION__, $value);
+    }
+        
+    public static function timeout($value = null)
     {
         return self::setOrGet(__FUNCTION__, $value);
     }
