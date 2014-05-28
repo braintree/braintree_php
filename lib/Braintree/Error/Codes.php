@@ -54,6 +54,7 @@ class Braintree_Error_Codes
 
     const CREDIT_CARD_BILLING_ADDRESS_CONFLICT                                          = '91701';
     const CREDIT_CARD_BILLING_ADDRESS_ID_IS_INVALID                                     = '91702';
+    const CREDIT_CARD_CANNOT_UPDATE_CARD_USING_PAYMENT_METHOD_NONCE                     = '91735';
     const CREDIT_CARD_CARDHOLDER_NAME_IS_TOO_LONG                                       = '81723';
     const CREDIT_CARD_CREDIT_CARD_TYPE_IS_NOT_ACCEPTED                                  = '81703';
     const CREDIT_CARD_CREDIT_CARD_TYPE_IS_NOT_ACCEPTED_BY_SUBSCRIPTION_MERCHANT_ACCOUNT = '81718';
@@ -78,6 +79,10 @@ class Braintree_Error_Codes
     const CREDIT_CARD_OPTIONS_VERIFICATION_MERCHANT_ACCOUNT_ID_IS_INVALID               = '91728';
     const CREDIT_CARD_OPTIONS_UPDATE_EXISTING_TOKEN_NOT_ALLOWED                         = '91729';
     const CREDIT_CARD_PAYMENT_METHOD_CONFLICT                                           = '81725';
+    const CREDIT_CARD_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED                    = '91734';
+    const CREDIT_CARD_PAYMENT_METHOD_NONCE_CONSUMED                                     = '91731';
+    const CREDIT_CARD_PAYMENT_METHOD_NONCE_LOCKED                                       = '91733';
+    const CREDIT_CARD_PAYMENT_METHOD_NONCE_UNKNOWN                                      = '91732';
     const CREDIT_CARD_TOKEN_FORMAT_IS_INVALID                                           = '91718';
     const CREDIT_CARD_TOKEN_INVALID                                                     = '91718';
     const CREDIT_CARD_TOKEN_IS_IN_USE                                                   = '91719';
@@ -205,6 +210,17 @@ class Braintree_Error_Codes
     const MERCHANT_ACCOUNT_FUNDING_EMAIL_IS_INVALID = '82681';
     const MERCHANT_ACCOUNT_FUNDING_MOBILE_PHONE_IS_REQUIRED = '82682';
     const MERCHANT_ACCOUNT_FUNDING_MOBILE_PHONE_IS_INVALID = '82683';
+
+    const PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT       = '82902';
+    const PAYPAL_ACCOUNT_CANNOT_HAVE_BOTH_ACCESS_TOKEN_AND_CONSENT_CODE = '82903';
+    const PAYPAL_ACCOUNT_CONSENT_CODE_OR_ACCESS_TOKEN_IS_REQUIRED       = '82901';
+    const PAYPAL_ACCOUNT_CUSTOMER_ID_IS_REQUIRED_FOR_VAULTING           = '82905';
+    const PAYPAL_ACCOUNT_PAYMENT_METHOD_NONCE_CONSUMED                  = '92907';
+    const PAYPAL_ACCOUNT_PAYMENT_METHOD_NONCE_LOCKED                    = '92909';
+    const PAYPAL_ACCOUNT_PAYMENT_METHOD_NONCE_UNKNOWN                   = '92908';
+    const PAYPAL_ACCOUNT_PAYPAL_ACCOUNTS_ARE_NOT_ACCEPTED               = '82904';
+    const PAYPAL_ACCOUNT_PAYPAL_COMMUNICATION_ERROR                     = '92910';
+    const PAYPAL_ACCOUNT_TOKEN_IS_IN_USE                                = '92906';
 
     const SETTLEMENT_BATCH_SUMMARY_SETTLEMENT_DATE_IS_INVALID  = '82302';
     const SETTLEMENT_BATCH_SUMMARY_SETTLEMENT_DATE_IS_REQUIRED = '82301';
