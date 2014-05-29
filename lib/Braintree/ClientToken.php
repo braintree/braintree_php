@@ -39,12 +39,12 @@ class Braintree_ClientToken
 
     public static function generateWithCustomerIdSignature()
     {
-        return array("customerId", "proxyMerchantId", array("options" => array("makeDefault", "verifyCard", "failOnDuplicatePaymentMethod")), "merchantAccountId");
+        return array("version", "customerId", "proxyMerchantId", array("options" => array("makeDefault", "verifyCard", "failOnDuplicatePaymentMethod")), "merchantAccountId");
     }
 
     public static function generateWithoutCustomerIdSignature()
     {
-        return array("proxyMerchantId", "merchantAccountId");
+        return array("version", "proxyMerchantId", "merchantAccountId");
     }
 
     /**
