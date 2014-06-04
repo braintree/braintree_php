@@ -85,3 +85,10 @@ abstract class Braintree
     }
 }
 
+/* This is a hack to detect if an autoloader is currently available.
+ * If we can't load this little class, this means we need to setup our
+ * own PSR-0 autoloader. */
+if (!class_exists ('Braintree_Version')) {
+    require_once (dirname (__FILE__) . 'loader.php');
+}
+

@@ -5,7 +5,7 @@ set_include_path(
   realpath(dirname(__FILE__)) . '/../lib'
 );
 
-require_once "loader.php";
+require_once "Braintree.php";
 require_once "Braintree/CreditCardNumbers/CardTypeIndicators.php";
 require_once "Braintree/CreditCardDefaults.php";
 
