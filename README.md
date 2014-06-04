@@ -20,7 +20,7 @@ The following PHP extensions are required:
 ```php
 <?php
 
-require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
+require_once 'PATH_TO_BRAINTREE/lib/loader.php';
 
 Braintree_Configuration::environment('sandbox');
 Braintree_Configuration::merchantId('your_merchant_id');
