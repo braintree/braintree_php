@@ -4,7 +4,7 @@
  *
  *  PHP version 5
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 
@@ -39,7 +39,7 @@ abstract class Braintree_Serializable
  *
  * Provides methods to child classes. This class cannot be instantiated.
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 abstract class Braintree extends Braintree_Serializable
 {

@@ -2,14 +2,14 @@
 /**
  * Braintree Library Version
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
  * stores version information about the Braintree library
  *
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 final class Braintree_Version
 {
@@ -18,7 +18,7 @@ final class Braintree_Version
      */
     const MAJOR = 2;
     const MINOR = 27;
-    const TINY = 1;
+    const TINY = 2;
 
     /**
      * @ignore

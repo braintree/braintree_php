@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * @package   Braintree
- * @copyright 2010 Braintree Payment Solutions
+ * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
 /**
  * Creates and manages Braintree Addresses
@@ -15,7 +15,7 @@
  * as the shipping address when creating a Transaction.
  *
  * @package   Braintree
- * @copyright 2010 Braintree Payment Solutions
+ * @copyright 2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $company
  * @property-read string $countryName

@@ -4,7 +4,7 @@
  * to or disconnected from a user.
  *
  * @package    Braintree
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -12,7 +12,7 @@
  *
  *
  * @package    Braintree
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $merchantPublicId
  * @property-read string $publicKey
