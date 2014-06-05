@@ -15,7 +15,7 @@
  * @copyright  2010 Braintree Payment Solutions
  * @abstract
  */
-abstract class Braintree_Instance
+abstract class Braintree_Instance extends Braintree_Serializable
 {
     /**
      *
