@@ -2201,10 +2201,10 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $updatedOriginalTransaction = Braintree_Transaction::find($originalTransaction->id);
         $expectedRefundIds = array($secondRefundTransaction->id, $firstRefundTransaction->id);
 
-        $this->assertEquals(
-            $expectedRefundIds,
-            $updatedOriginalTransaction->refundIds
-        );
+        $updatedRefundIds = $updatedOriginalTransaction->refundIds;
+
+        $this->assertTrue(in_array($expectedRefundIds[0],$updatedRefundIds));
+        $this->assertTrue(in_array($expectedRefundIds[1],$updatedRefundIds));
     }
 
 }
