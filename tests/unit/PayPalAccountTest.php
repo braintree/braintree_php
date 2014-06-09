@@ -19,14 +19,6 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($paypalAccount->isDefault());
     }
 
-    function testUpdateSignature()
-    {
-        $expected = array(
-            'token'
-        );
-        $this->assertEquals($expected, Braintree_PayPalAccount::UpdateSignature());
-    }
-
     function testErrorsOnFindWithBlankArgument()
     {
         $this->setExpectedException('InvalidArgumentException');

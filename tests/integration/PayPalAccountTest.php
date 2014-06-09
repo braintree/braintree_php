@@ -91,6 +91,37 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
 
     }
 
+    function testUpdateAndMakeDefault()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+
+        $creditCardResult = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ));
+        $this->assertTrue($creditCardResult->success);
+
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE'
+            )
+        ));
+
+        $createResult = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($createResult->success);
+
+        $updateResult = Braintree_PayPalAccount::update($createResult->paymentMethod->token, array(
+            'options' => array('makeDefault' => true)
+        ));
+
+        $this->assertTrue($updateResult->success);
+        $this->assertTrue($updateResult->paypalAccount->isDefault());
+    }
+
     function testUpdate_handleErrors()
     {
         $customer = Braintree_Customer::createNoValidate();

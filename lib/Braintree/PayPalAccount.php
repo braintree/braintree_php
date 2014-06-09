@@ -72,7 +72,10 @@ class Braintree_PayPalAccount extends Braintree
 
     public static function updateSignature()
     {
-        return array('token');
+        return array(
+            'token',
+            array('options' => array('makeDefault'))
+        );
     }
 
     /**
