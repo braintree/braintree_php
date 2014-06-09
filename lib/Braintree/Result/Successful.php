@@ -48,21 +48,23 @@ class Braintree_Result_Successful extends Braintree_Instance
      * @ignore
      * @param string $classToReturn name of class to instantiate
      */
-    public function __construct($objToReturn = null)
+    public function __construct($objToReturn = null, $propertyName = null)
     {
         if(!empty($objToReturn)) {
-            // get a lowercase direct name for the property
-            $property = Braintree_Util::cleanClassName(
+
+            if(empty($propertyName)) {
+                $propertyName = Braintree_Util::cleanClassName(
                     get_class($objToReturn)
-                    );
+                );
+            }
+
             // save the name for indirect access
-            $this->_returnObjectName = $property;
+            $this->_returnObjectName = $propertyName;
 
             // create the property!
-            $this->$property = $objToReturn;
+            $this->$propertyName = $objToReturn;
         }
     }
-
 
    /**
     *

@@ -21,9 +21,9 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
             'paymentMethodNonce' => $nonce
         ));
 
-        $this->assertSame('411111', $result->creditCard->bin);
-        $this->assertSame('1111', $result->creditCard->last4);
-        $this->assertNotNull($result->creditCard->token);
+        $this->assertSame('411111', $result->paymentMethod->bin);
+        $this->assertSame('1111', $result->paymentMethod->last4);
+        $this->assertNotNull($result->paymentMethod->token);
     }
 
     function testCreate_fromUnvalidatedCreditCardNonce()
@@ -45,9 +45,9 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
             'paymentMethodNonce' => $nonce
         ));
 
-        $this->assertSame('411111', $result->creditCard->bin);
-        $this->assertSame('1111', $result->creditCard->last4);
-        $this->assertNotNull($result->creditCard->token);
+        $this->assertSame('411111', $result->paymentMethod->bin);
+        $this->assertSame('1111', $result->paymentMethod->last4);
+        $this->assertNotNull($result->paymentMethod->token);
     }
 
     function testCreate_fromUnvalidatedFuturePaypalAccountNonce()
@@ -66,8 +66,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
             'paymentMethodNonce' => $nonce
         ));
 
-        $this->assertSame('jane.doe@example.com', $result->paypalAccount->email);
-        $this->assertSame($paymentMethodToken, $result->paypalAccount->token);
+        $this->assertSame('jane.doe@example.com', $result->paymentMethod->email);
+        $this->assertSame($paymentMethodToken, $result->paymentMethod->token);
     }
 
     function testCreate_doesNotWorkForUnvalidatedOnetimePaypalAccountNonce()
@@ -143,7 +143,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
             )
         ));
 
-        $card2 = $result->creditCard;
+        $card2 = $result->paymentMethod;
         $card1 = Braintree_CreditCard::find($card1->token);
         $this->assertFalse($card1->isDefault());
         $this->assertTrue($card2->isDefault());
@@ -172,7 +172,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
             'token' => $secondToken
         ));
 
-        $card = $result->creditCard;
+        $card = $result->paymentMethod;
         $this->assertEquals($secondToken, $card->token);
     }
 

@@ -110,12 +110,14 @@ class Braintree_PaymentMethod extends Braintree
         if (isset($response['creditCard'])) {
             // return a populated instance of Braintree_CreditCard
             return new Braintree_Result_Successful(
-                    Braintree_CreditCard::factory($response['creditCard'])
+                Braintree_CreditCard::factory($response['creditCard']),
+                "paymentMethod"
             );
         } else if (isset($response['paypalAccount'])) {
             // return a populated instance of Braintree_PayPalAccount
             return new Braintree_Result_Successful(
-                    Braintree_PayPalAccount::factory($response['paypalAccount'])
+                Braintree_PayPalAccount::factory($response['paypalAccount']),
+                "paymentMethod"
             );
         } else if (isset($response['apiErrorResponse'])) {
             return new Braintree_Result_Error($response['apiErrorResponse']);
