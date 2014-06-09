@@ -239,6 +239,7 @@ class Braintree_Error_Codes
     const PAYPAL_ACCOUNT_PAYMENT_METHOD_NONCE_LOCKED                    = '92909';
     const PAYPAL_ACCOUNT_PAYMENT_METHOD_NONCE_UNKNOWN                   = '92908';
     const PAYPAL_ACCOUNT_PAYPAL_ACCOUNTS_ARE_NOT_ACCEPTED               = '82904';
+    const PAYPAL_ACCOUNT_PAYPAL_COMMUNICATION_ERROR                     = '92910';
     const PAYPAL_ACCOUNT_TOKEN_IS_IN_USE                                = '92906';
 
     const SEPA_BANK_ACCOUNT_ACCOUNT_HOLDER_NAME_IS_REQUIRED = '93003';
@@ -392,6 +393,7 @@ class Braintree_Error_Codes
     const TRANSACTION_TAX_AMOUNT_CANNOT_BE_NEGATIVE                             = '81534';
     const TRANSACTION_TAX_AMOUNT_FORMAT_IS_INVALID                              = '81535';
     const TRANSACTION_TAX_AMOUNT_IS_TOO_LARGE                                   = '81536';
+
     const TRANSACTION_THREE_D_SECURE_AUTHENTICATION_FAILED                      = '81571';
     const TRANSACTION_THREE_D_SECURE_TOKEN_IS_INVALID                           = '91568';
     const TRANSACTION_THREE_D_SECURE_TRANSACTION_DATA_DOESNT_MATCH_VERIFY       = '91570';

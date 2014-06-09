@@ -1258,6 +1258,75 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    function testSale_withThreeDSecureToken()
+    {
+        $threeDSecureToken = Braintree_TestHelper::create3DSVerification(
+            Braintree_TestHelper::threeDSecureMerchantAccountId(),
+            array(
+                'number' => '4111111111111111',
+                'expirationMonth' => '05',
+                'expirationYear' => '2009'
+            )
+        );
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/09'
+            ),
+            'threeDSecureToken' => $threeDSecureToken
+        ));
+        $this->assertTrue($result->success);
+    }
+
+    function testSale_returnsErrorIfThreeDSecureToken()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/09'
+            ),
+            'threeDSecureToken' => NULL
+        ));
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('threeDSecureToken');
+        $this->assertEquals(
+            Braintree_Error_Codes::TRANSACTION_THREE_D_SECURE_TOKEN_IS_INVALID,
+            $errors[0]->code
+        );
+    }
+
+    function testSale_returnsErrorIf3dsLookupDataDoesNotMatchTransactionData()
+    {
+        $threeDSecureToken = Braintree_TestHelper::create3DSVerification(
+            Braintree_TestHelper::threeDSecureMerchantAccountId(),
+            array(
+                'number' => '4111111111111111',
+                'expirationMonth' => '05',
+                'expirationYear' => '2009'
+            )
+        );
+
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ),
+            'threeDSecureToken' => $threeDSecureToken
+        ));
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('threeDSecureToken');
+        $this->assertEquals(
+            Braintree_Error_Codes::TRANSACTION_THREE_D_SECURE_TRANSACTION_DATA_DOESNT_MATCH_VERIFY,
+            $errors[0]->code
+        );
+    }
+
     function testHoldInEscrow_afterSale()
     {
         $result = Braintree_Transaction::sale(array(
