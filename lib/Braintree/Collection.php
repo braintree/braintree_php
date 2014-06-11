@@ -4,20 +4,14 @@
  *
  * PHP Version 5
  *
- * @package   Braintree
- * @subpackage Utility
- * @copyright 2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
- * Generic Collection class
- *
  * Based on Generic Collection class from:
  * {@link http://codeutopia.net/code/library/CU/Collection.php}
  *
  * @package   Braintree
  * @subpackage Utility
+ * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
+
 class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
 {
     /**

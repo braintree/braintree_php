@@ -1,13 +1,6 @@
 <?php
 /**
  * Braintree Customer module
- *
- * @package    Braintree
- * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * Creates and manages Customers
  *
  * <b>== More information ==</b>

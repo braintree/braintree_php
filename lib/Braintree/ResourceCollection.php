@@ -1,13 +1,6 @@
 <?php
 /**
  * Braintree ResourceCollection
- *
- * @package    Braintree
- * @subpackage Utility
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * ResourceCollection is a container object for result data
  *
  * stores and retrieves search results and aggregate data
