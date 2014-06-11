@@ -1,13 +1,6 @@
 <?php
 /**
  * Braintree CreditCard module
- *
- * @package    Braintree
- * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * Creates and manages Braintree CreditCards
  *
  * <b>== More information ==</b>

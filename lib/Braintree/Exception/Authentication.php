@@ -1,13 +1,5 @@
 <?php
 /**
- * Raised when authentication fails
- *
- * @package    Braintree
- * @subpackage Exception
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * Raised when authentication fails.
  * This may be caused by an incorrect Braintree_Configuration
  *

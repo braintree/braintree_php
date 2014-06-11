@@ -1,11 +1,4 @@
 <?php
-/**
- * Transaction amounts used for testing purposes
- *
- * @package    Braintree
- * @subpackage Test
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
 
 /**
  * Transaction amounts used for testing purposes

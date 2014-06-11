@@ -1,15 +1,6 @@
 <?php
 /**
  * Braintree Class Instance template
- *
- * @package    Braintree
- * @subpackage Utility
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
- * abstract instance template for various objects
- *
  * @package    Braintree
  * @subpackage Utility
  * @copyright  2014 Braintree, a division of PayPal, Inc.

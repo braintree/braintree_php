@@ -6,12 +6,6 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
-/**
- * Braintree Utility methods
- *
- *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
 class Braintree_Util
 {
     /**
