@@ -70,6 +70,25 @@ class Braintree_PayPalAccount extends Braintree
         return new Braintree_Result_Successful();
     }
 
+    /**
+     * create a new sale for the current PayPal account
+     *
+     * @param string $token
+     * @param array $transactionAttribs
+     * @return object Braintree_Result_Successful or Braintree_Result_Error
+     * @see Braintree_Transaction::sale()
+     */
+    public static function sale($token, $transactionAttribs)
+    {
+        self::_validateId($token);
+        return Braintree_Transaction::sale(
+            array_merge(
+                $transactionAttribs,
+                array('paymentMethodToken' => $token)
+            )
+        );
+    }
+
     public static function updateSignature()
     {
         return array(

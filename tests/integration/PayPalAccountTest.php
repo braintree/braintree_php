@@ -182,4 +182,21 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_PayPalAccount::find($paymentMethodToken);
     }
+
+    function testSale_createsASaleUsingGivenToken()
+    {
+        $nonce = Braintree_Test_Nonces::$paypalFuturePayment;
+        $customer = Braintree_Customer::createNoValidate(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $paypalAccount = $customer->paypalAccounts[0];
+
+        $result = Braintree_PayPalAccount::sale($paypalAccount->token, array(
+            'amount' => '100.00'
+        ));
+        $this->assertTrue($result->success);
+        $this->assertEquals('100.00', $result->transaction->amount);
+        $this->assertEquals($customer->id, $result->transaction->customerDetails->id);
+        $this->assertEquals($paypalAccount->token, $result->transaction->paypalDetails->token);
+    }
 }
