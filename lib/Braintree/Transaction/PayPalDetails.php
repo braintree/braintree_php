@@ -19,6 +19,7 @@
  * @property-read string $paymentId
  * @property-read string $authorizationId
  * @property-read string $token
+ * @property-read string $imageUrl
  * @uses Braintree_Instance inherits methods
  */
 class Braintree_Transaction_PayPalDetails extends Braintree_Instance
