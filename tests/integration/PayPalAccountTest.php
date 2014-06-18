@@ -20,10 +20,11 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
             'paymentMethodNonce' => $nonce
         ));
 
-        $foundPaypalAccount = Braintree_PayPalAccount::find($paymentMethodToken);
+        $foundPayPalAccount = Braintree_PayPalAccount::find($paymentMethodToken);
 
-        $this->assertSame('jane.doe@example.com', $foundPaypalAccount->email);
-        $this->assertSame($paymentMethodToken, $foundPaypalAccount->token);
+        $this->assertSame('jane.doe@example.com', $foundPayPalAccount->email);
+        $this->assertSame($paymentMethodToken, $foundPayPalAccount->token);
+        $this->assertNotNull($foundPayPalAccount->imageUrl);
     }
 
     function testFind_doesNotReturnIncorrectPaymentMethodType()

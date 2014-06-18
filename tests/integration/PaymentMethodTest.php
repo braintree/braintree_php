@@ -24,6 +24,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame('411111', $result->paymentMethod->bin);
         $this->assertSame('1111', $result->paymentMethod->last4);
         $this->assertNotNull($result->paymentMethod->token);
+        $this->assertNotNull($result->paymentMethod->imageUrl);
     }
 
     function testCreate_fromUnvalidatedCreditCardNonce()

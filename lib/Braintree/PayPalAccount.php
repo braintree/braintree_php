@@ -19,6 +19,7 @@
  *
  * @property-read string $email
  * @property-read string $token
+ * @property-read string $image_url
  */
 class Braintree_PayPalAccount extends Braintree
 {
