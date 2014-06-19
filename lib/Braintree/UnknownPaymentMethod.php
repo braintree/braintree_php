@@ -18,6 +18,7 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $token
+ * @property-read string $imageUrl
  */
 class Braintree_UnknownPaymentMethod extends Braintree
 {
@@ -59,6 +60,7 @@ class Braintree_UnknownPaymentMethod extends Braintree
     protected function _initialize($unknownPaymentMethodAttribs)
     {
         // set the attributes
+        $this->imageUrl = 'https://assets.braintreegateway.com/payment_method_logo/unknown.png';
         $this->_attributes = $unknownPaymentMethodAttribs;
     }
 
