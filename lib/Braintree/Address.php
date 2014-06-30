@@ -1,13 +1,7 @@
 <?php
 /**
  * Braintree Address module
- *
  * PHP Version 5
- *
- * @package   Braintree
- * @copyright 2014 Braintree, a division of PayPal, Inc.
- */
-/**
  * Creates and manages Braintree Addresses
  *
  * An Address belongs to a Customer. It can be associated to a

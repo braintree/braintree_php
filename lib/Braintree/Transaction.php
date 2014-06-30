@@ -1,13 +1,6 @@
 <?php
 /**
  * Braintree Transaction processor
- *
- * @package    Braintree
- * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * Creates and manages transactions
  *
  * At minimum, an amount, credit card number, and

@@ -1,13 +1,7 @@
 <?php
 /**
  * Braintree Library Version
- *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * stores version information about the Braintree library
- *
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */

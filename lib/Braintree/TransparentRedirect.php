@@ -3,13 +3,6 @@
 
 /**
  * Braintree Transparent Redirect module
- *
- * @package    Braintree
- * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * Static class providing methods to build Transparent Redirect urls
  *
  * The TransparentRedirect module provides methods to build the tr_data param

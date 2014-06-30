@@ -1,6 +1,9 @@
 <?php
 /**
+ * Braintree PHP Library
+ *
  * Braintree base class and initialization
+ * Provides methods to child classes. This class cannot be instantiated.
  *
  *  PHP version 5
  *
@@ -10,13 +13,6 @@
 
 set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__)));
 
-/**
- * Braintree PHP Library
- *
- * Provides methods to child classes. This class cannot be instantiated.
- *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
 abstract class Braintree
 {
     /**

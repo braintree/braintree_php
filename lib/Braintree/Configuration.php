@@ -8,15 +8,6 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
-/**
- * acts as a registry for config data.
- *
- *
- * @package    Braintree
- * @subpackage Utility
- *
- *  */
-
 class Braintree_Configuration extends Braintree
 {
     /**

@@ -1,13 +1,5 @@
 <?php
 /**
- * Address details from a transaction
- *
- * @package    Braintree
- * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * Creates an instance of AddressDetails as returned from a transaction
  *
  *

@@ -2,14 +2,6 @@
 /**
  * Braintree Successful Result
  *
- * @package    Braintree
- * @subpackage Result
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
- * Braintree Successful Result
- *
  * A Successful Result will be returned from gateway methods when
  * validations pass. It will provide access to the created resource.
  *
