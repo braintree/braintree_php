@@ -57,7 +57,7 @@ class Braintree_HttpClientApi extends Braintree_Http
             $clientTokenOptions["customerId"] = $options["customerId"];
             unset($options["customerId"]);
         }
-        $clientToken = json_decode(Braintree_ClientToken::generate($clientTokenOptions));
+        $clientToken = json_decode(Braintree_TestHelper::decodedClientToken($clientTokenOptions));
         $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
         $options["shared_customer_identifier"] = "fake_identifier_" . rand();
         $options["shared_customer_identifier_type"] = "testing";
@@ -71,7 +71,7 @@ class Braintree_HttpClientApi extends Braintree_Http
     }
 
     public static function nonceForPayPalAccount($options) {
-        $clientToken = json_decode(Braintree_ClientToken::generate());
+        $clientToken = json_decode(Braintree_TestHelper::decodedClientToken());
         $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
         $response = Braintree_HttpClientApi::post('/client_api/v1/payment_methods/paypal_accounts.json', json_encode($options));
         if ($response["status"] == 201 || $response["status"] == 202) {

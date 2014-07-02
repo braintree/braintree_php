@@ -133,4 +133,9 @@ class Braintree_TestHelper
         $now = new DateTime('now', $eastern);
         return $now->format('Y-m-d');
     }
+
+    public static function decodedClientToken($params=array()) {
+        $encodedClientToken = Braintree_ClientToken::generate($params);
+        return base64_decode($encodedClientToken);
+    }
 }

@@ -784,7 +784,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     {
         $customer = Braintree_Customer::createNoValidate();
         $clientTokenOptions = array();
-        $clientToken = json_decode(Braintree_ClientToken::generate($clientTokenOptions));
+        $clientToken = json_decode(Braintree_TestHelper::decodedClientToken($clientTokenOptions));
         $sharedCustomerIdentifier = "fake_identifier_" . rand();
 
         $options = array(
