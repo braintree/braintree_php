@@ -70,6 +70,27 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('47.00', $transaction->amount);
     }
 
+    function testCreateTransactionReturnsPaymentInstrumentType()
+    {
+        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+            "creditCard" => array(
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ),
+            "share" => true
+        ));
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '47.00',
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_PaymentInstrumentType::CREDIT_CARD, $transaction->paymentInstrumentType);
+    }
+
     function testCloneTransactionAndSubmitForSettlement()
     {
         $result = Braintree_Transaction::sale(array(
@@ -1947,6 +1968,26 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_PaymentMethod::find($paymentMethodToken);
+    }
+
+    function testCreate_withPayPalReturnsPaymentInstrumentType()
+    {
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            )
+        ));
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_PaymentInstrumentType::PAYPAL_ACCOUNT, $transaction->paymentInstrumentType);
     }
 
     function testCreate_withFuturePayPalAndVault()
