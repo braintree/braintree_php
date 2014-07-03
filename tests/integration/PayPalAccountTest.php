@@ -44,6 +44,21 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
         Braintree_PayPalAccount::find($creditCardToken);
     }
 
+    function test_PayPalAccountExposesTimestamps()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree_Test_Nonces::$paypalFuturePayment
+        ));
+        $this->assertTrue($result->success);
+
+        $foundPayPalAccount = Braintree_PayPalAccount::find($result->paymentMethod->token);
+
+        $this->assertNotNull($result->paymentMethod->createdAt);
+        $this->assertNotNull($result->paymentMethod->updatedAt);
+    }
+
     function testFind_throwsIfCannotBeFound()
     {
         $this->setExpectedException('Braintree_Exception_NotFound');
