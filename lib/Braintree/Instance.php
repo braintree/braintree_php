@@ -17,6 +17,8 @@
  */
 abstract class Braintree_Instance
 {
+    protected $_attributes = array();
+
     /**
      *
      * @param array $aAttribs

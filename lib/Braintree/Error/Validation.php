@@ -25,9 +25,9 @@
  */
 class Braintree_Error_Validation
 {
-   private $_attribute;
-   private $_code;
-   private $_message;
+    private $_attribute;
+    private $_code;
+    private $_message;
 
     /**
      * @ignore
@@ -60,5 +60,13 @@ class Braintree_Error_Validation
     {
         $varName = "_$name";
         return isset($this->$varName) ? $this->$varName : null;
+    }
+
+    /**
+     * Allow introspection of the existence of private 'read-only' properties.
+     */
+    public function  __isset($name)
+    {
+        return ($this->__get($name) !== null);
     }
 }
