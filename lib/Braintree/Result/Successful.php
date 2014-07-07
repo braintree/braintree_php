@@ -42,6 +42,8 @@ class Braintree_Result_Successful extends Braintree_Instance
      */
     public function __construct($objToReturn = null, $propertyName = null)
     {
+        $this->_attributes = array();
+
         if(!empty($objToReturn)) {
 
             if(empty($propertyName)) {
