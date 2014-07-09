@@ -55,6 +55,7 @@ class Braintree_Error_Codes
     const CLIENT_TOKEN_FAIL_ON_DUPLICATE_PAYMENT_METHOD_REQUIRES_CUSTOMER_ID = '92803';
     const CLIENT_TOKEN_MAKE_DEFAULT_REQUIRES_CUSTOMER_ID                     = '92801';
     const CLIENT_TOKEN_PROXY_MERCHANT_DOES_NOT_EXIST                         = '92805';
+    const CLIENT_TOKEN_UNSUPPORTED_VERSION                                   = '92806';
     const CLIENT_TOKEN_VERIFY_CARD_REQUIRES_CUSTOMER_ID                      = '92802';
 
     const CREDIT_CARD_BILLING_ADDRESS_CONFLICT                                          = '91701';
@@ -67,6 +68,7 @@ class Braintree_Error_Codes
     const CREDIT_CARD_CUSTOMER_ID_IS_REQUIRED                                           = '91704';
     const CREDIT_CARD_CVV_IS_INVALID                                                    = '81707';
     const CREDIT_CARD_CVV_IS_REQUIRED                                                   = '81706';
+    const CREDIT_CARD_CVV_VERIFICATION_FAILED                                           = '81736';
     const CREDIT_CARD_DUPLICATE_CARD_EXISTS                                             = '81724';
     const CREDIT_CARD_EXPIRATION_DATE_CONFLICT                                          = '91708';
     const CREDIT_CARD_EXPIRATION_DATE_IS_INVALID                                        = '81710';
@@ -88,6 +90,7 @@ class Braintree_Error_Codes
     const CREDIT_CARD_PAYMENT_METHOD_NONCE_CONSUMED                                     = '91731';
     const CREDIT_CARD_PAYMENT_METHOD_NONCE_LOCKED                                       = '91733';
     const CREDIT_CARD_PAYMENT_METHOD_NONCE_UNKNOWN                                      = '91732';
+    const CREDIT_CARD_POSTAL_CODE_VERIFICATION_FAILED                                   = '81737';
     const CREDIT_CARD_TOKEN_FORMAT_IS_INVALID                                           = '91718';
     const CREDIT_CARD_TOKEN_INVALID                                                     = '91718';
     const CREDIT_CARD_TOKEN_IS_IN_USE                                                   = '91719';
@@ -123,6 +126,14 @@ class Braintree_Error_Codes
     const DESCRIPTOR_INTERNATIONAL_NAME_FORMAT_IS_INVALID  = '92204';
     const DESCRIPTOR_DYNAMIC_DESCRIPTORS_DISABLED          = '92203';
     const DESCRIPTOR_INTERNATIONAL_PHONE_FORMAT_IS_INVALID = '92205';
+
+    const INDUSTRY_DATA_INDUSTRY_TYPE_IS_INVALID                         = '93401';
+    const INDUSTRY_DATA_LODGING_EMPTY_DATA                               = '93402';
+    const INDUSTRY_DATA_LODGING_FOLIO_NUMBER_IS_INVALID                  = '93403';
+    const INDUSTRY_DATA_LODGING_CHECK_IN_DATE_IS_INVALID                 = '93404';
+    const INDUSTRY_DATA_LODGING_CHECK_OUT_DATE_IS_INVALID                = '93405';
+    const INDUSTRY_DATA_LODGING_CHECK_OUT_DATE_MUST_FOLLOW_CHECK_IN_DATE = '93406';
+    const INDUSTRY_DATA_LODGING_UNKNOWN_DATA_FIELD                       = '93407';
 
     const MERCHANT_ACCOUNT_ID_FORMAT_IS_INVALID                         = '82603';
     const MERCHANT_ACCOUNT_ID_IS_IN_USE                                 = '82604';
@@ -216,6 +227,7 @@ class Braintree_Error_Codes
     const MERCHANT_ACCOUNT_FUNDING_MOBILE_PHONE_IS_REQUIRED = '82682';
     const MERCHANT_ACCOUNT_FUNDING_MOBILE_PHONE_IS_INVALID = '82683';
 
+    const PAYMENT_METHOD_CANNOT_FORWARD_PAYMENT_METHOD_TYPE = '93106';
     const PAYMENT_METHOD_CUSTOMER_ID_IS_INVALID             = '93105';
     const PAYMENT_METHOD_CUSTOMER_ID_IS_REQUIRED            = '93104';
     const PAYMENT_METHOD_NONCE_IS_INVALID                   = '93102';
@@ -330,12 +342,14 @@ class Braintree_Error_Codes
     const TRANSACTION_CANNOT_HOLD_IN_ESCROW                                     = '91560';
     const TRANSACTION_CANNOT_PARTIALLY_REFUND_ESCROWED_TRANSACTION              = '91563';
     const TRANSACTION_CANNOT_REFUND_CREDIT                                      = '91505';
+    const TRANSACTION_CANNOT_REFUND_SETTLING_TRANSACTION                        = '91574';
     const TRANSACTION_CANNOT_REFUND_UNLESS_SETTLED                              = '91506';
     const TRANSACTION_CANNOT_REFUND_WITH_PENDING_MERCHANT_ACCOUNT               = '91559';
     const TRANSACTION_CANNOT_REFUND_WITH_SUSPENDED_MERCHANT_ACCOUNT             = '91538';
     const TRANSACTION_CANNOT_CANCEL_RELEASE                                     = '91562';
     const TRANSACTION_CANNOT_RELEASE_FROM_ESCROW                                = '91561';
     const TRANSACTION_CANNOT_SUBMIT_FOR_SETTLEMENT                              = '91507';
+    const TRANSACTION_CANNOT_SIMULATE_SETTLEMENT                                = '91575';
     const TRANSACTION_CHANNEL_IS_TOO_LONG                                       = '91550';
     const TRANSACTION_CREDIT_CARD_IS_REQUIRED                                   = '91508';
     const TRANSACTION_CUSTOMER_DEFAULT_PAYMENT_METHOD_CARD_TYPE_IS_NOT_ACCEPTED = '81509';
@@ -353,6 +367,7 @@ class Braintree_Error_Codes
     const TRANSACTION_OPTIONS_USE_BILLING_FOR_SHIPPING_DISABLED                 = '91572';
     const TRANSACTION_OPTIONS_VAULT_IS_DISABLED                                 = '91525';
     const TRANSACTION_ORDER_ID_IS_TOO_LONG                                      = '91501';
+    const TRANSACTION_PAYMENT_INSTRUMENT_NOT_SUPPORTED_BY_MERCHANT_ACCOUNT      = '91577';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT                                   = '91515';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT_WITH_VENMO_SDK                    = '91549';
     const TRANSACTION_PAYMENT_METHOD_DOES_NOT_BELONG_TO_CUSTOMER                = '91516';
@@ -363,6 +378,7 @@ class Braintree_Error_Codes
     const TRANSACTION_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED            = '91567';
     const TRANSACTION_PAYMENT_METHOD_TOKEN_CARD_TYPE_IS_NOT_ACCEPTED            = '91517';
     const TRANSACTION_PAYMENT_METHOD_TOKEN_IS_INVALID                           = '91518';
+    const TRANSACTION_PAYPAL_NOT_ENABLED                                        = '91576';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_CANNOT_BE_SET                = '91519';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_IS_INVALID                   = '81520';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_CREDITS                        = '91546';
