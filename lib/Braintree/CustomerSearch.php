@@ -18,6 +18,7 @@ class Braintree_CustomerSearch
     static function lastName()                         { return new Braintree_TextNode('last_name'); }
     static function paymentMethodToken()               { return new Braintree_TextNode('payment_method_token'); }
     static function paymentMethodTokenWithDuplicates() { return new Braintree_IsNode('payment_method_token_with_duplicates'); }
+    static function paypalAccountEmail()               { return new Braintree_IsNode('paypal_account_email'); }
     static function phone()                            { return new Braintree_TextNode('phone'); }
     static function website()                          { return new Braintree_TextNode('website'); }
 

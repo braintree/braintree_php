@@ -2,14 +2,6 @@
 /**
  * Braintree Successful Result
  *
- * @package    Braintree
- * @subpackage Result
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
- * Braintree Successful Result
- *
  * A Successful Result will be returned from gateway methods when
  * validations pass. It will provide access to the created resource.
  *
@@ -48,21 +40,25 @@ class Braintree_Result_Successful extends Braintree_Instance
      * @ignore
      * @param string $classToReturn name of class to instantiate
      */
-    public function __construct($objToReturn = null)
+    public function __construct($objToReturn = null, $propertyName = null)
     {
+        $this->_attributes = array();
+
         if(!empty($objToReturn)) {
-            // get a lowercase direct name for the property
-            $property = Braintree_Util::cleanClassName(
+
+            if(empty($propertyName)) {
+                $propertyName = Braintree_Util::cleanClassName(
                     get_class($objToReturn)
-                    );
+                );
+            }
+
             // save the name for indirect access
-            $this->_returnObjectName = $property;
+            $this->_returnObjectName = $propertyName;
 
             // create the property!
-            $this->$property = $objToReturn;
+            $this->$propertyName = $objToReturn;
         }
     }
-
 
    /**
     *

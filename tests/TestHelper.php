@@ -46,6 +46,11 @@ class Braintree_TestHelper
         return 'sandbox_sub_merchant_account';
     }
 
+    public static function threeDSecureMerchantAccountId()
+    {
+        return 'three_d_secure_merchant_account';
+    }
+
     public static function createViaTr($regularParams, $trParams)
     {
         $trData = Braintree_TransparentRedirect::transactionData(
@@ -114,11 +119,23 @@ class Braintree_TestHelper
         Braintree_Http::put('/transactions/' . $transactionId . '/escrow');
     }
 
+    public static function create3DSVerification($merchantAccountId, $params)
+    {
+        $response = Braintree_Http::post('/three_d_secure/create_verification/' . $merchantAccountId, array(
+            'threeDSecureVerification' => $params
+        ));
+        return $response['threeDSecureVerification']['threeDSecureToken'];
+    }
 
     public static function nowInEastern()
     {
         $eastern = new DateTimeZone('America/New_York');
         $now = new DateTime('now', $eastern);
         return $now->format('Y-m-d');
+    }
+
+    public static function decodedClientToken($params=array()) {
+        $encodedClientToken = Braintree_ClientToken::generate($params);
+        return base64_decode($encodedClientToken);
     }
 }

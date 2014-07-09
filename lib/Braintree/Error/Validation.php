@@ -1,14 +1,6 @@
 <?php
 /**
  * error object returned as part of a validation error collection
- *
- * @package    Braintree
- * @subpackage Error
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
- * error object returned as part of a validation error collection
  * provides read-only access to $attribute, $code, and $message
  *
  * <b>== More information ==</b>
