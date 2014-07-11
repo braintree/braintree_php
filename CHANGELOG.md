@@ -1,3 +1,16 @@
+## 2.28.0
+* Adds support for v.zero SDKs.
+
+## 2.27.2
+
+* Make webhook parsing more robust with newlines
+* Add messages to InvalidSignature exceptions
+
+## 2.27.1
+
+* Updated secureCompare to correctly compare strings in consistent time
+* Add better error messages around webhook verification
+
 ## 2.27.0
 
 * Include Dispute information on Transaction

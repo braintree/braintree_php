@@ -11,6 +11,11 @@ namespace :test do
   task :integration do
     run_php_tests("tests/integration")
   end
+
+  desc "run a single test file"
+  task :single_test, :file_path do |t, args|
+    run_php_test_file(args[:file_path])
+  end
 end
 
 def run_php_test_file(file_path)

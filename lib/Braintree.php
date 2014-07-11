@@ -1,22 +1,18 @@
 <?php
 /**
+ * Braintree PHP Library
+ *
  * Braintree base class and initialization
+ * Provides methods to child classes. This class cannot be instantiated.
  *
  *  PHP version 5
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 
 set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__)));
 
-/**
- * Braintree PHP Library
- *
- * Provides methods to child classes. This class cannot be instantiated.
- *
- * @copyright  2010 Braintree Payment Solutions
- */
 abstract class Braintree
 {
     /**
@@ -155,8 +151,10 @@ require_once('Braintree/Test/CreditCardNumbers.php');
 require_once('Braintree/Test/MerchantAccount.php');
 require_once('Braintree/Test/TransactionAmounts.php');
 require_once('Braintree/Test/VenmoSdk.php');
+require_once('Braintree/Test/Nonces.php');
 require_once('Braintree/Transaction/AddressDetails.php');
 require_once('Braintree/Transaction/CreditCardDetails.php');
+require_once('Braintree/Transaction/PayPalDetails.php');
 require_once('Braintree/Transaction/CustomerDetails.php');
 require_once('Braintree/Transaction/StatusDetails.php');
 require_once('Braintree/Transaction/SubscriptionDetails.php');
@@ -167,6 +165,9 @@ require_once('Braintree/Xml/Parser.php');
 require_once('Braintree/CreditCardVerification.php');
 require_once('Braintree/CreditCardVerificationSearch.php');
 require_once('Braintree/PartnerMerchant.php');
+require_once('Braintree/PayPalAccount.php');
+require_once('Braintree/PaymentMethod.php');
+require_once('Braintree/UnknownPaymentMethod.php');
 
 if (version_compare(PHP_VERSION, '5.2.1', '<')) {
     throw new Braintree_Exception('PHP version >= 5.2.1 required');

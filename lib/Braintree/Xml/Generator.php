@@ -2,14 +2,14 @@
 /**
  * PHP version 5
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
  * Generates XML output from arrays using PHP's
  * built-in XMLWriter
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Braintree_Xml_Generator
 {

@@ -2,15 +2,6 @@
 /**
  *
  * Error handler
- *
- * @package    Braintree
- * @subpackage Errors
- * @category   Errors
- * @copyright  2010 Braintree Payment Solutions
- */
-
-
-/**
  * Handles validation errors
  *
  * Contains a read-only property $error which is a ValidationErrorCollection
@@ -18,7 +9,7 @@
  * @package    Braintree
  * @subpackage Errors
  * @category   Errors
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read object $errors
  */

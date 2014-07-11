@@ -3,14 +3,14 @@
 /**
  * Braintree XML Parser
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 /**
  * Parses incoming Xml into arrays using PHP's
  * built-in SimpleXML, and its extension via
  * Iterator, SimpleXMLIterator
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Braintree_Xml_Parser
 {

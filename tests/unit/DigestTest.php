@@ -3,6 +3,22 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_DigestTest extends PHPUnit_Framework_TestCase
 {
+
+    function testSecureCompareReturnsTrueForMatches()
+    {
+        $this->assertTrue(Braintree_Digest::secureCompare("a_string", "a_string"));
+    }
+
+    function testSecureCompareReturnsFalseForDifferentLengths()
+    {
+        $this->assertFalse(Braintree_Digest::secureCompare("a_string", "a_string_that_is_longer"));
+    }
+
+    function testSecureCompareReturnsFalseForNonmatchingSameLengthStrings()
+    {
+        $this->assertFalse(Braintree_Digest::secureCompare("a_string", "a_strong"));
+    }
+
     function testHexDigestSha1()
     {
         $key = str_repeat(chr(0xaa),80);

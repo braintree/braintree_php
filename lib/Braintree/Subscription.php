@@ -9,7 +9,7 @@
  * PHP Version 5
  *
  * @package   Braintree
- * @copyright 2010 Braintree Payment Solutions
+ * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
 class Braintree_Subscription extends Braintree
 {

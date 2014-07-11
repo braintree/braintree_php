@@ -3,7 +3,7 @@ class Braintree_WebhookTesting
 {
     public static function sampleNotification($kind, $id)
     {
-        $payload = base64_encode(self::_sampleXml($kind, $id));
+        $payload = base64_encode(self::_sampleXml($kind, $id)) . "\n";
         $signature = Braintree_Configuration::publicKey() . "|" . Braintree_Digest::hexDigestSha1(Braintree_Configuration::privateKey(), $payload);
 
         return array(
@@ -243,31 +243,31 @@ class Braintree_WebhookTesting
     private static function _partnerMerchantConnectedSampleXml($id)
     {
         return "
-        <partner_merchant>
-          <merchant_public_id>public_id</merchant_public_id>
-          <public_key>public_key</public_key>
-          <private_key>private_key</private_key>
-          <partner_merchant_id>abc123</partner_merchant_id>
-          <client_side_encryption_key>cse_key</client_side_encryption_key>
-        </partner_merchant>
+        <partner-merchant>
+          <merchant-public-id>public_id</merchant-public-id>
+          <public-key>public_key</public-key>
+          <private-key>private_key</private-key>
+          <partner-merchant-id>abc123</partner-merchant-id>
+          <client-side-encryption-key>cse_key</client-side-encryption-key>
+        </partner-merchant>
         ";
     }
 
     private static function _partnerMerchantDisconnectedSampleXml($id)
     {
         return "
-        <partner_merchant>
-          <partner_merchant_id>abc123</partner_merchant_id>
-        </partner_merchant>
+        <partner-merchant>
+          <partner-merchant-id>abc123</partner-merchant-id>
+        </partner-merchant>
         ";
     }
 
     private static function _partnerMerchantDeclinedSampleXml($id)
     {
         return "
-        <partner_merchant>
-          <partner_merchant_id>abc123</partner_merchant_id>
-        </partner_merchant>
+        <partner-merchant>
+          <partner-merchant-id>abc123</partner-merchant-id>
+        </partner-merchant>
         ";
     }
 

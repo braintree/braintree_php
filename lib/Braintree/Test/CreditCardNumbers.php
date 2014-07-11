@@ -1,11 +1,4 @@
 <?php
-/**
- * Credit card information used for testing purposes
- *
- * @package    Braintree
- * @subpackage Test
- * @copyright  2010 Braintree Payment Solutions
- */
 
 /**
  * Credit card information used for testing purposes
@@ -16,7 +9,7 @@
  *
  * @package    Braintree
  * @subpackage Test
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Braintree_Test_CreditCardNumbers
 {

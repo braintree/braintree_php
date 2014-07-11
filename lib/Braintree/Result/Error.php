@@ -2,14 +2,6 @@
 /**
  * Braintree Error Result
  *
- * @package    Braintree
- * @subpackage Result
- * @copyright  2010 Braintree Payment Solutions
- */
-
-/**
- * Braintree Error Result
- *
  * An Error Result will be returned from gateway methods when
  * the gateway responds with an error. It will provide access
  * to the original request.
@@ -27,7 +19,7 @@
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read array $params original passed params
  * @property-read object $errors Braintree_Error_ErrorCollection

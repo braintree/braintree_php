@@ -1,17 +1,11 @@
 <?php
 /**
  * Disbursement details from a transaction
- *
- * @package    Braintree
- * @copyright  2010 Braintree Payment Solutions
- */
-
-/**
  * Creates an instance of DisbursementDetails as returned from a transaction
  *
  *
  * @package    Braintree
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $settlementAmount
  * @property-read string $settlementCurrencyIsoCode

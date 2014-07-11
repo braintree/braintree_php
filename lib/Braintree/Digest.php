@@ -1,14 +1,9 @@
 <?php
 /**
  * Digest encryption module
- *
- * @copyright  2010 Braintree Payment Solutions
- */
-
-/**
  * Digest creates an HMAC-SHA1 hash for encrypting messages
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Braintree_Digest
 {
@@ -36,8 +31,8 @@ class Braintree_Digest
         $rightBytes = unpack("C*", $right);
 
         $result = 0;
-        for ($i = 0; $i < strlen($left); $i++) {
-            $result = $result | ($left[$i] ^ $right[$i]);
+        for ($i = 1; $i <= count($leftBytes); $i++) {
+            $result = $result | ($leftBytes[$i] ^ $rightBytes[$i]);
         }
         return $result == 0;
     }

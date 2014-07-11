@@ -2,21 +2,13 @@
 /**
  * Braintree Credit Card Verification Result
  *
- * @package    Braintree
- * @subpackage Result
- * @copyright  2010 Braintree Payment Solutions
- */
-
-/**
- * Braintree Credit Card Verification Result
- *
  * This object is returned as part of an Error Result; it provides
  * access to the credit card verification data from the gateway
  *
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $avsErrorResponseCode
  * @property-read string $avsPostalCodeResponseCode

@@ -5,17 +5,8 @@
  *
  * @package    Braintree
  * @subpackage Utility
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-
-/**
- * acts as a registry for config data.
- *
- *
- * @package    Braintree
- * @subpackage Utility
- *
- *  */
 
 class Braintree_Configuration extends Braintree
 {
@@ -23,7 +14,7 @@ class Braintree_Configuration extends Braintree
      * Braintree API version to use
      * @access public
      */
-     const API_VERSION =  3;
+     const API_VERSION =  4;
 
     /**
      * @var array array of config properties

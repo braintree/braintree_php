@@ -1,13 +1,6 @@
 <?php
 /**
  * Braintree ResourceCollection
- *
- * @package    Braintree
- * @subpackage Utility
- * @copyright  2010 Braintree Payment Solutions
- */
-
-/**
  * ResourceCollection is a container object for result data
  *
  * stores and retrieves search results and aggregate data
@@ -23,7 +16,7 @@
  *
  * @package    Braintree
  * @subpackage Utility
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Braintree_ResourceCollection implements Iterator
 {

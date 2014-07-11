@@ -2,14 +2,9 @@
 /**
  * Braintree Xml parser and generator
  * PHP version 5
- *
- * @copyright  2010 Braintree Payment Solutions
- */
-
-/**
  * superclass for Braintree XML parsing and generation
  *
- * @copyright  2010 Braintree Payment Solutions
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 final class Braintree_Xml
 {
