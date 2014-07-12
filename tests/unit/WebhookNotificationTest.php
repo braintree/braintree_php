@@ -3,7 +3,7 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
 {
-    function teardown()
+    function setUp()
     {
         // Fix overwritten configuration in wrong key check:
         integrationMerchantConfig();

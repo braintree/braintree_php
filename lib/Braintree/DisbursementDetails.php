@@ -17,8 +17,6 @@
  */
 class Braintree_DisbursementDetails extends Braintree_Instance
 {
-    protected $_attributes = array();
-
     function isValid() {
         return !is_null($this->disbursementDate);
     }
