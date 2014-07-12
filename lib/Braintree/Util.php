@@ -6,12 +6,6 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
-/**
- * Braintree Utility methods
- *
- *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
 class Braintree_Util
 {
     /**
@@ -98,7 +92,8 @@ class Braintree_Util
             'Plan' => 'plan',
             'Address' => 'address',
             'SettlementBatchSummary' => 'settlementBatchSummary',
-            'MerchantAccount' => 'merchantAccount'
+            'MerchantAccount' => 'merchantAccount',
+            'PayPalAccount' => 'paypalAccount'
         );
 
         $name = str_replace('Braintree_', '', $name);

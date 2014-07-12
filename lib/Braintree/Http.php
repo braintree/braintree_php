@@ -1,11 +1,6 @@
 <?php
 /**
  * Braintree HTTP Client
- *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * processes Http requests using curl
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.

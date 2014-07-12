@@ -399,6 +399,30 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $customer = Braintree_Customer::createNoValidate(array('email' => 'invalid'));
     }
 
+    function testCreate_worksWithFuturePayPalNonce()
+    {
+        $nonce = Braintree_Test_Nonces::$paypalFuturePayment;
+
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertTrue($result->success);
+    }
+
+    function testCreate_doesNotWorkWithOnetimePayPalNonce()
+    {
+        $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
+
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('customer')->forKey('paypalAccount')->errors;
+        $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT, $errors[0]->code);
+    }
+
     function testDelete_deletesTheCustomer()
     {
         $result = Braintree_Customer::create(array());
@@ -621,6 +645,69 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $billingAddress = $result->customer->creditCards[0]->billingAddress;
         $this->assertEquals($address->id, $billingAddress->id);
         $this->assertEquals('Dan', $billingAddress->firstName);
+    }
+
+    function testUpdate_worksWithFuturePayPalNonce()
+    {
+        $customerResult = Braintree_Customer::create(array(
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'options' => array(
+                    'makeDefault' => true
+                )
+            )
+        ));
+        $paypalAccountToken = 'PAYPALToken-' . strval(rand());
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paypalAccountToken,
+                'options' => array(
+                    'makeDefault' => true
+                )
+            )
+        ));
+
+        $result = Braintree_Customer::update($customerResult->customer->id, array(
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
+
+    }
+
+    function testUpdate_doesNotWorkWithOnetimePayPalNonce()
+    {
+        $customerResult = Braintree_Customer::create(array(
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'options' => array(
+                    'makeDefault' => true
+                )
+            )
+        ));
+        $paypalAccountToken = 'PAYPALToken-' . strval(rand());
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'access_token' => 'PAYPAL_ACCESS_TOKEN',
+                'token' => $paypalAccountToken,
+                'options' => array(
+                    'makeDefault' => true
+                )
+            )
+        ));
+
+        $result = Braintree_Customer::update($customerResult->customer->id, array(
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('customer')->forKey('paypalAccount')->errors;
+        $this->assertEquals(Braintree_Error_Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT, $errors[0]->code);
+
     }
 
     function testUpdateNoValidate()
