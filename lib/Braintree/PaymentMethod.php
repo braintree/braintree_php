@@ -115,21 +115,6 @@ class Braintree_PaymentMethod extends Braintree
     }
 
     /**
-     * sends the update request to the gateway
-     *
-     * @ignore
-     * @param string $url
-     * @param array $params
-     * @return mixed
-     */
-    public static function _doUpdate($url, $params)
-    {
-        $response = Braintree_Http::put($url, $params);
-
-        return self::_verifyGatewayResponse($response);
-    }
-
-    /**
      * generic method for validating incoming gateway responses
      *
      * creates a new Braintree_CreditCard or Braintree_PayPalAccount object
