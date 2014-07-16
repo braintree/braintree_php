@@ -51,7 +51,7 @@ if ($result->success) {
 
 ## Documentation
 
- * [Official documentation](http://www.braintreepayments.com/docs/php)
+ * [Official documentation](https://developers.braintreepayments.com/javascript+php)
 
 ## Open Source Attribution
 

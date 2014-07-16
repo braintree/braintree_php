@@ -55,6 +55,32 @@ class Braintree_PaymentMethod extends Braintree
 
     }
 
+    /**
+     * update a PaymentMethod by token, first by deleteing the previous payment
+     * method then by creating a new one with the same token
+     *
+     * @access public
+     * @param string $token payment method unique id
+     * @param array $attribs payment method attributes to update
+     * @return object Braintree_CreditCard or Braintree_PayPalAccount
+     * @throws Braintree_Exception_NotFound
+     */
+    public static function update($token, $attribs)
+    {
+        self::_validateId($token);
+        try {
+            $delete_result = self::delete($token);
+            if (!$delete_result->success) {
+                return $delete_result;
+            }
+        } catch (Braintree_Exception_NotFound $e) {
+
+        }
+
+        $attribs['token'] = $token;
+        return self::create($attribs);
+    }
+
     public static function delete($token)
     {
         self::_validateId($token);

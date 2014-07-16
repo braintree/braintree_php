@@ -291,4 +291,44 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         Braintree_PaymentMethod::find($paymentMethodToken);
     }
 
+
+    /**
+     * @group update
+     */
+    function testUpdate_removeExistingByTokenAndCreateReplacement()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $card1 = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ))->creditCard;
+
+        $token = $card1->token;
+
+        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+            'credit_card' => array(
+                'number' => '4111111111111111',
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
+                'options' => array(
+                    'validate' => false
+                )
+            )
+        ));
+
+        $result = Braintree_PaymentMethod::update($token, array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $card2 = $result->paymentMethod;
+        $this->assertEquals($token, $card2->token);
+        $this->assertEquals('411111', $card2->bin);
+        $this->assertEquals('1111', $card2->last4);
+        $this->assertEquals('11/2099', $card2->expirationDate);
+
+    }
+
 }
