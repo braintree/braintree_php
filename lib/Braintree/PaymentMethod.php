@@ -87,7 +87,7 @@ class Braintree_PaymentMethod extends Braintree
     private static function baseSignature($options)
     {
          return array(
-             'customerId', 'paymentMethodNonce', 'token', 'cardholderName',
+             'customerId', 'paymentMethodNonce', 'token',
              array('options' => $options),
          );
     }
