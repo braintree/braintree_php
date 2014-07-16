@@ -55,6 +55,28 @@ class Braintree_PaymentMethod extends Braintree
 
     }
 
+    /**
+     * update a PaymentMethod by token, first by deleteing the previous payment
+     * method then by creating a new one with the same token
+     *
+     * @access public
+     * @param string $token payment method unique id
+     * @param array $attribs payment method attributes to update
+     * @return object Braintree_CreditCard or Braintree_PayPalAccount
+     * @throws Braintree_Exception_NotFound
+     */
+    public static function update($token, $attribs)
+    {
+        self::_validateId($token);
+        $delete_result = self::delete($token);
+        if ($delete_result->success) {
+            $attribs['token'] = $token;
+            Braintree_Util::verifyKeys(self::createSignature(), $attribs);
+            return self::_doCreate('/payment_methods', array('payment_method' => $attribs));
+        }
+        return $delete_result;
+    }
+
     public static function delete($token)
     {
         self::_validateId($token);
@@ -65,7 +87,7 @@ class Braintree_PaymentMethod extends Braintree
     private static function baseSignature($options)
     {
          return array(
-             'customerId', 'paymentMethodNonce', 'token',
+             'customerId', 'paymentMethodNonce', 'token', 'cardholderName',
              array('options' => $options),
          );
     }
@@ -88,6 +110,21 @@ class Braintree_PaymentMethod extends Braintree
     public static function _doCreate($url, $params)
     {
         $response = Braintree_Http::post($url, $params);
+
+        return self::_verifyGatewayResponse($response);
+    }
+
+    /**
+     * sends the update request to the gateway
+     *
+     * @ignore
+     * @param string $url
+     * @param array $params
+     * @return mixed
+     */
+    public static function _doUpdate($url, $params)
+    {
+        $response = Braintree_Http::put($url, $params);
 
         return self::_verifyGatewayResponse($response);
     }
