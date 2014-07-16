@@ -68,13 +68,17 @@ class Braintree_PaymentMethod extends Braintree
     public static function update($token, $attribs)
     {
         self::_validateId($token);
-        $delete_result = self::delete($token);
-        if ($delete_result->success) {
-            $attribs['token'] = $token;
-            Braintree_Util::verifyKeys(self::createSignature(), $attribs);
-            return self::_doCreate('/payment_methods', array('payment_method' => $attribs));
+        try {
+            $delete_result = self::delete($token);
+            if (!$delete_result->success) {
+                return $delete_result;
+            }
+        } catch (Braintree_Exception_NotFound $e) {
+
         }
-        return $delete_result;
+
+        $attribs['token'] = $token;
+        return self::create($attribs);
     }
 
     public static function delete($token)
