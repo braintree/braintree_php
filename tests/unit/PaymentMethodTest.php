@@ -13,7 +13,12 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     {
         $expected = array(
             'customerId', 'paymentMethodNonce', 'token', 'billingAddressId',
-            array('options' => array('makeDefault', 'failOnDuplicatePaymentMethod')),
+            array('options' => array(
+                'makeDefault',
+                'verifyCard',
+                'failOnDuplicatePaymentMethod',
+                'verificationMerchantAccountId'
+            )),
             array('billingAddress' => Braintree_Address::createSignature())
         );
         $this->assertEquals($expected, Braintree_PaymentMethod::CreateSignature());
