@@ -177,6 +177,60 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($secondToken, $card->token);
     }
 
+    function testCreate_respectsVerifyCardAndVerificationMerchantAccountIdWhenIncludedOutsideOfTheNonce()
+    {
+        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+            'credit_card' => array(
+                'number' => '4000111111111115',
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
+            )
+        ));
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'options' => array(
+                'verifyCard' => 'true',
+                'verificationMerchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId()
+            )
+        ));
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Result_CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
+        $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
+        $this->assertEquals(Braintree_TestHelper::nonDefaultMerchantAccountId(), $result->creditCardVerification->merchantAccountId);
+    }
+
+    function testCreate_respectsFailOnDuplicatePaymentMethodWhenIncludedOutsideTheNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => Braintree_Test_CreditCardNumbers::$visa,
+            'expirationDate' => "05/2012"
+        ));
+        $this->assertTrue($result->success);
+
+        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+            'credit_card' => array(
+                'number' => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => "05/2012"
+            )
+        ));
+        $updateResult = Braintree_PaymentMethod::create(array(
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'options' => array(
+                'failOnDuplicatePaymentMethod' => 'true',
+            )
+        ));
+
+        $this->assertFalse($updateResult->success);
+        $this->assertEquals("81724", $updateResult->errors->deepAll()[0]->code);
+    }
+
     function testCreate_allowsPassingABillingAddressOutsideOfTheNonce()
     {
         $customer = Braintree_Customer::createNoValidate();

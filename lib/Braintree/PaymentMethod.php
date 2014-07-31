@@ -83,7 +83,12 @@ class Braintree_PaymentMethod extends Braintree
 
     public static function createSignature()
     {
-        $options = array('makeDefault', 'failOnDuplicatePaymentMethod');
+        $options = array(
+            'makeDefault',
+            'verifyCard',
+            'failOnDuplicatePaymentMethod',
+            'verificationMerchantAccountId'
+        );
         $signature = self::baseSignature($options);
         return $signature;
     }
