@@ -363,6 +363,30 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Tables', $foundCreditCard->billingAddress->lastName);
     }
 
+    function testCreate_doesNotReturnAnErrorIfCreditCardOptionsArePresentForAPaypalNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $originalToken = 'paypal-account-' . strval(rand());
+        $nonce = Braintree_HttpClientApi::nonceForPaypalAccount(array(
+            'paypalAccount' => array(
+                'consentCode' => 'consent-code',
+                'token' => $originalToken
+            )
+        ));
+
+        $result = Braintree_PaymentMethod::create(array(
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'options' => array(
+                'verifyCard' => 'true',
+                'failOnDuplicatePaymentMethod' => 'true',
+                'verificationMerchantAccountId' => 'Not a Real Merchant Account Id'
+            )
+        ));
+
+        $this->assertTrue($result->success);
+    }
+
     function testCreate_ignoresPassedBillingAddressParamsForPaypalAccount()
     {
         $nonce = Braintree_HttpClientApi::nonceForPaypalAccount(array(
