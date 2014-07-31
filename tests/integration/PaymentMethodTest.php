@@ -177,6 +177,62 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($secondToken, $card->token);
     }
 
+    function testCreate_allowsPassingABillingAddressIdOutsideOfTheNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+            'credit_card' => array(
+                'number' => '4111111111111111',
+                'expirationMonth' => '12',
+                'expirationYear' => '2020',
+                'options' => array(
+                    'validate' => false
+                )
+            )
+        ));
+
+        $address = Braintree_Address::create(array(
+            'customerId' => $customer->id,
+            'firstName' => 'Bobby',
+            'lastName' => 'Tables'
+        ))->address;
+        $result = Braintree_PaymentMethod::create(array(
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'billingAddressId' => $address->id
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertTrue(is_a($result->paymentMethod,'Braintree_CreditCard'));
+        $token = $result->paymentMethod->token;
+
+        $foundCreditCard = Braintree_CreditCard::find($token);
+        $this->assertTrue(NULL != $foundCreditCard);
+        $this->assertEquals('Bobby', $foundCreditCard->billingAddress->firstName);
+        $this->assertEquals('Tables', $foundCreditCard->billingAddress->lastName);
+    }
+
+    function testCreate_ignoresPassedBillingAddressIdForPaypalAccount()
+    {
+        $nonce = Braintree_HttpClientApi::nonceForPaypalAccount(array(
+            'paypalAccount' => array(
+                'consentCode' => 'PAYPAL_CONSENT_CODE',
+            )
+        ));
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'billingAddressId' => 'address_id'
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertTrue(is_a($result->paymentMethod,'Braintree_PaypalAccount'));
+        $token = $result->paymentMethod->token;
+
+        $foundPaypalAccount = Braintree_PaypalAccount::find($token);
+        $this->assertTrue(NULL != $foundPaypalAccount);
+    }
     function testFind_returnsCreditCards()
     {
         $paymentMethodToken = 'CREDIT_CARD_TOKEN-' . strval(rand());
