@@ -70,13 +70,15 @@ class Braintree_PaymentMethod extends Braintree
 
     private static function baseSignature($options)
     {
-         return array(
-             'customerId',
-             'paymentMethodNonce',
-             'token',
-             'billingAddressId',
-             array('options' => $options),
-         );
+        $billingAddressSignature = Braintree_Address::createSignature();
+        return array(
+            'customerId',
+            'paymentMethodNonce',
+            'token',
+            'billingAddressId',
+            array('options' => $options),
+            array('billingAddress' => $billingAddressSignature)
+        );
     }
 
     public static function createSignature()

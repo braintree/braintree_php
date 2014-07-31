@@ -177,6 +177,103 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($secondToken, $card->token);
     }
 
+    function testCreate_allowsPassingABillingAddressOutsideOfTheNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+            'credit_card' => array(
+                'number' => '4111111111111111',
+                'expirationMonth' => '12',
+                'expirationYear' => '2020',
+                'options' => array(
+                    'validate' => false
+                )
+            )
+        ));
+
+        $result = Braintree_PaymentMethod::create(array(
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'billingAddress' => array(
+                'streetAddress' => '123 Abc Way'
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertTrue(is_a($result->paymentMethod,'Braintree_CreditCard'));
+        $token = $result->paymentMethod->token;
+
+        $foundCreditCard = Braintree_CreditCard::find($token);
+        $this->assertTrue(NULL != $foundCreditCard);
+        $this->assertEquals('123 Abc Way', $foundCreditCard->billingAddress->streetAddress);
+    }
+
+    function testCreate_overridesTheBillingAddressInTheNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+            'credit_card' => array(
+                'number' => '4111111111111111',
+                'expirationMonth' => '12',
+                'expirationYear' => '2020',
+                'options' => array(
+                    'validate' => false
+                ),
+                'billingAddress' => array(
+                    'streetAddress' => '456 Xyz Way'
+                )
+            )
+        ));
+
+        $result = Braintree_PaymentMethod::create(array(
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'billingAddress' => array(
+                'streetAddress' => '123 Abc Way'
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertTrue(is_a($result->paymentMethod,'Braintree_CreditCard'));
+        $token = $result->paymentMethod->token;
+
+        $foundCreditCard = Braintree_CreditCard::find($token);
+        $this->assertTrue(NULL != $foundCreditCard);
+        $this->assertEquals('123 Abc Way', $foundCreditCard->billingAddress->streetAddress);
+    }
+
+    function testCreate_doesNotOverrideTheBillingAddressForAVaultedCreditCard()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+            'customerId' => $customer->id,
+            'credit_card' => array(
+                'number' => '4111111111111111',
+                'expirationMonth' => '12',
+                'expirationYear' => '2020',
+                'billingAddress' => array(
+                    'streetAddress' => '456 Xyz Way'
+                )
+            )
+        ));
+
+        $result = Braintree_PaymentMethod::create(array(
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'billingAddress' => array(
+                'streetAddress' => '123 Abc Way'
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertTrue(is_a($result->paymentMethod,'Braintree_CreditCard'));
+        $token = $result->paymentMethod->token;
+
+        $foundCreditCard = Braintree_CreditCard::find($token);
+        $this->assertTrue(NULL != $foundCreditCard);
+        $this->assertEquals('456 Xyz Way', $foundCreditCard->billingAddress->streetAddress);
+    }
+
     function testCreate_allowsPassingABillingAddressIdOutsideOfTheNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
@@ -212,6 +309,30 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Tables', $foundCreditCard->billingAddress->lastName);
     }
 
+    function testCreate_ignoresPassedBillingAddressParamsForPaypalAccount()
+    {
+        $nonce = Braintree_HttpClientApi::nonceForPaypalAccount(array(
+            'paypalAccount' => array(
+                'consentCode' => 'PAYPAL_CONSENT_CODE',
+            )
+        ));
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'billingAddress' => array(
+                'streetAddress' => '123 Abc Way'
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertTrue(is_a($result->paymentMethod,'Braintree_PaypalAccount'));
+        $token = $result->paymentMethod->token;
+
+        $foundPaypalAccount = Braintree_PaypalAccount::find($token);
+        $this->assertTrue(NULL != $foundPaypalAccount);
+    }
+
     function testCreate_ignoresPassedBillingAddressIdForPaypalAccount()
     {
         $nonce = Braintree_HttpClientApi::nonceForPaypalAccount(array(
@@ -233,6 +354,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $foundPaypalAccount = Braintree_PaypalAccount::find($token);
         $this->assertTrue(NULL != $foundPaypalAccount);
     }
+
     function testFind_returnsCreditCards()
     {
         $paymentMethodToken = 'CREDIT_CARD_TOKEN-' . strval(rand());
