@@ -228,7 +228,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertFalse($updateResult->success);
-        $this->assertEquals("81724", $updateResult->errors->deepAll()[0]->code);
+        $resultErrors = $updateResult->errors->deepAll();
+        $this->assertEquals("81724", $resultErrors[0]->code);
     }
 
     function testCreate_allowsPassingABillingAddressOutsideOfTheNonce()
@@ -748,7 +749,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertFalse($updateResult->success);
-        $this->assertEquals("Credit card number must be 12-19 digits.", $updateResult->errors->forKey('creditCard')->onAttribute('number')[0]->message);
+        $numberErrors = $updateResult->errors->forKey('creditCard')->onAttribute('number');
+        $this->assertEquals("Credit card number must be 12-19 digits.", $numberErrors[0]->message);
     }
 
     function testUpdate_canUpdateTheDefault()
@@ -895,7 +897,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertFalse($updateResult->success);
-        $this->assertEquals("92906", $updateResult->errors->deepAll()[0]->code);
+        $resultErrors = $updateResult->errors->deepAll();
+        $this->assertEquals("92906", $resultErrors[0]->code);
 
     }
 

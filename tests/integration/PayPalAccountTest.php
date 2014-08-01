@@ -97,15 +97,16 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
 
         $token = $result->paymentMethod->token;
+        $triallessPlan = Braintree_SubscriptionTestHelper::triallessPlan();
 
         $subscription1 = Braintree_Subscription::create(array(
             'paymentMethodToken' => $token,
-            'planId' => Braintree_SubscriptionTestHelper::triallessPlan()['id']
+            'planId' => $triallessPlan['id']
         ))->subscription;
 
         $subscription2 = Braintree_Subscription::create(array(
             'paymentMethodToken' => $token,
-            'planId' => Braintree_SubscriptionTestHelper::triallessPlan()['id']
+            'planId' => $triallessPlan['id']
         ))->subscription;
 
         $paypalAccount = Braintree_PayPalAccount::find($token);
