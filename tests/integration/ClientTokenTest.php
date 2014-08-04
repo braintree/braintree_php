@@ -29,7 +29,7 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         $encodedClientToken = Braintree_ClientToken::generate();
         $clientToken = base64_decode($encodedClientToken);
         $version = json_decode($clientToken)->version;
-        $this->assertEquals("2", $version);
+        $this->assertEquals(2, $version);
     }
 
     function test_GatewayRespectsVerifyCard()
