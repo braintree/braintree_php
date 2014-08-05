@@ -1075,6 +1075,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Dispute::WON, $dispute->status);
         $this->assertEquals(new DateTime('2014-03-01'), $dispute->receivedDate);
         $this->assertEquals(new DateTime('2014-03-21'), $dispute->replyByDate);
+        $this->assertEquals("disputedtransaction", $dispute->transactionDetails->id);
+        $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
     }
 
     function testSale_storeInVault()

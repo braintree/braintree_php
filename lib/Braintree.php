@@ -95,6 +95,7 @@ require_once('Braintree/Customer.php');
 require_once('Braintree/CustomerSearch.php');
 require_once('Braintree/DisbursementDetails.php');
 require_once('Braintree/Dispute.php');
+require_once('Braintree/Dispute/TransactionDetails.php');
 require_once('Braintree/Descriptor.php');
 require_once('Braintree/Digest.php');
 require_once('Braintree/Discount.php');

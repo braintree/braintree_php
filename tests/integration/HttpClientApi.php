@@ -43,7 +43,7 @@ class Braintree_HttpClientApi extends Braintree_Http
 
     public static function get_cards($options) {
         $encoded_fingerprint = urlencode($options["authorization_fingerprint"]);
-        $url = "/client_api/nonces.json?";
+        $url = "/client_api/v1/payment_methods.json?";
         $url .= "authorizationFingerprint=" . $encoded_fingerprint;
         $url .= "&sharedCustomerIdentifier=" . $options["shared_customer_identifier"];
         $url .= "&sharedCustomerIdentifierType=" . $options["shared_customer_identifier_type"];
@@ -61,10 +61,10 @@ class Braintree_HttpClientApi extends Braintree_Http
         $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
         $options["shared_customer_identifier"] = "fake_identifier_" . rand();
         $options["shared_customer_identifier_type"] = "testing";
-        $response = Braintree_HttpClientApi::post('/client_api/nonces.json', json_encode($options));
+        $response = Braintree_HttpClientApi::post('/client_api/v1/payment_methods/credit_cards.json', json_encode($options));
         if ($response["status"] == 201 || $response["status"] == 202) {
             $body = json_decode($response["body"]);
-            return $body->nonce;
+            return $body->creditCards[0]->nonce;
         } else {
             throw new Exception(var_dump($response));
         }

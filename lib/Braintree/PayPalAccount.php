@@ -200,6 +200,15 @@ class Braintree_PayPalAccount extends Braintree
     {
         // set the attributes
         $this->_attributes = $paypalAccountAttribs;
+
+        $subscriptionArray = array();
+        if (isset($paypalAccountAttribs['subscriptions'])) {
+            foreach ($paypalAccountAttribs['subscriptions'] AS $subscription) {
+                $subscriptionArray[] = Braintree_Subscription::factory($subscription);
+            }
+        }
+
+        $this->_set('subscriptions', $subscriptionArray);
     }
 
     /**

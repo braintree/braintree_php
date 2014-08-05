@@ -12,16 +12,19 @@
  * @property-read string $reason
  * @property-read string $status
  * @property-read string $disbursementDate
- * @uses Braintree_Instance inherits methods
+ * @property-read object $transactionDetails
  */
-final class Braintree_Dispute extends Braintree_Instance
+final class Braintree_Dispute extends Braintree
 {
     protected $_attributes = array();
 
     /* Dispute Status */
-    const Open  = 'open';
+    const OPEN  = 'open';
     const WON  = 'won';
     const LOST = 'lost';
+
+    /* deprecated; for backwards compatibilty */
+    const Open  = 'open';
 
     /* Dispute Reason */
     const CANCELLED_RECURRING_TRANSACTION = "cancelled_recurring_transaction";
@@ -39,6 +42,12 @@ final class Braintree_Dispute extends Braintree_Instance
     protected function _initialize($disputeAttribs)
     {
         $this->_attributes = $disputeAttribs;
+
+        if (isset($disputeAttribs['transaction'])) {
+            $this->_set('transactionDetails',
+                new Braintree_Dispute_TransactionDetails($disputeAttribs['transaction'])
+            );
+        }
     }
 
     public static function factory($attributes)
