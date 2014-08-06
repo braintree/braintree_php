@@ -21,3 +21,7 @@ end
 def run_php_test_suite(test_suite)
   sh "./vendor/bin/phpunit --testsuite #{test_suite}"
 end
+
+def run_php_test_file(test_file)
+  sh "./vendor/bin/phpunit #{test_file}"
+end

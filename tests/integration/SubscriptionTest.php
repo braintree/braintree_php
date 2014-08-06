@@ -604,7 +604,11 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 
     function testCreate_withDescriptorValidation()
     {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
         $result = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
             'descriptor' => array(
                 'name' => 'xxxxxx',
                 'phone' => 'xxxx'
