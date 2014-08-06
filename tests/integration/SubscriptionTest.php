@@ -590,16 +590,19 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             'planId' => $plan['id'],
             'descriptor' => array(
                 'name' => '123*123456789012345678',
-                'phone' => '3334445555'
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
             )
         ));
         $this->assertTrue($result->success);
         $subscription = $result->subscription;
         $this->assertEquals('123*123456789012345678', $subscription->descriptor->name);
         $this->assertEquals('3334445555', $subscription->descriptor->phone);
+        $this->assertEquals('ebay.com', $subscription->descriptor->url);
         $transaction = $subscription->transactions[0];
         $this->assertEquals('123*123456789012345678', $transaction->descriptor->name);
         $this->assertEquals('3334445555', $transaction->descriptor->phone);
+        $this->assertEquals('ebay.com', $transaction->descriptor->url);
     }
 
     function testCreate_withDescriptorValidation()
@@ -611,7 +614,8 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             'planId' => $plan['id'],
             'descriptor' => array(
                 'name' => 'xxxxxx',
-                'phone' => 'xxxx'
+                'phone' => 'xxxx',
+                'url' => '12345678901234'
             )
         ));
         $this->assertFalse($result->success);
@@ -622,6 +626,9 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 
         $errors = $result->errors->forKey('subscription')->forKey('descriptor')->onAttribute('phone');
         $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('subscription')->forKey('descriptor')->onAttribute('url');
+        $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_URL_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
     function testCreate_fromPayPalACcount()

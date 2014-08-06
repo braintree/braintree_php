@@ -126,6 +126,7 @@ class Braintree_Error_Codes
     const DESCRIPTOR_INTERNATIONAL_NAME_FORMAT_IS_INVALID  = '92204';
     const DESCRIPTOR_DYNAMIC_DESCRIPTORS_DISABLED          = '92203';
     const DESCRIPTOR_INTERNATIONAL_PHONE_FORMAT_IS_INVALID = '92205';
+    const DESCRIPTOR_URL_FORMAT_IS_INVALID                 = '92206';
 
     const INDUSTRY_DATA_INDUSTRY_TYPE_IS_INVALID                         = '93401';
     const INDUSTRY_DATA_LODGING_EMPTY_DATA                               = '93402';

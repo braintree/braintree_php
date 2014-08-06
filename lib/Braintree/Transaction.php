@@ -332,7 +332,7 @@ final class Braintree_Transaction extends Braintree
             ),
             array('customFields' => array('_anyKey_')
             ),
-            array('descriptor' => array('name', 'phone'))
+            array('descriptor' => array('name', 'phone', 'url'))
         );
     }
 
