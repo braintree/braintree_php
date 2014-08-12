@@ -2131,10 +2131,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
-            'paymentMethodNonce' => $nonce,
-            'options' => array(
-                'submitForSettlement' => true
-            )
+            'paymentMethodNonce' => $nonce
         ));
 
         $this->assertTrue($result->success);
@@ -2148,10 +2145,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$decline,
-            'paymentMethodNonce' => $nonce,
-            'options' => array(
-                'submitForSettlement' => true
-            )
+            'paymentMethodNonce' => $nonce
         ));
         $this->setExpectedException('Braintree_Exception_ValidationsFailed');
         Braintree_Transaction::voidNoValidate($result->transaction->id);
