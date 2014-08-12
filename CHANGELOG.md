@@ -1,4 +1,7 @@
- ## 2.29.0
+## 2.30.0
+* Add descriptor url support
+
+## 2.29.0
 * Allow credit card verification options to be passed outside of the nonce for PaymentMethod.create
 * Allow billing_address parameters and billing_address_id to be passed outside of the nonce for PaymentMethod.create
 * Add Subscriptions to paypal accounts

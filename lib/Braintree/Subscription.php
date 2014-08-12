@@ -130,7 +130,7 @@ class Braintree_Subscription extends Braintree
                 'trialDuration',
                 'trialDurationUnit',
                 'trialPeriod',
-                array('descriptor' => array('name', 'phone')),
+                array('descriptor' => array('name', 'phone', 'url')),
                 array('options' => array('doNotInheritAddOnsOrDiscounts', 'startImmediately')),
             ),
             self::_addOnDiscountSignature()
@@ -143,7 +143,7 @@ class Braintree_Subscription extends Braintree
             array(
                 'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
                 'paymentMethodNonce', 'id', 'neverExpires', 'price',
-                array('descriptor' => array('name', 'phone')),
+                array('descriptor' => array('name', 'phone', 'url')),
                 array('options' => array('prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure')),
             ),
             self::_addOnDiscountSignature()

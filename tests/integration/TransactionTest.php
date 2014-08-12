@@ -1209,13 +1209,15 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             'descriptor' => array(
                 'name' => '123*123456789012345678',
-                'phone' => '3334445555'
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
             )
         ));
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals('123*123456789012345678', $transaction->descriptor->name);
         $this->assertEquals('3334445555', $transaction->descriptor->phone);
+        $this->assertEquals('ebay.com', $transaction->descriptor->url);
     }
 
     function testSale_withDescriptorValidation()
@@ -1228,7 +1230,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             'descriptor' => array(
                 'name' => 'badcompanyname12*badproduct12',
-                'phone' => '%bad4445555'
+                'phone' => '%bad4445555',
+                'url' => '12345678901234'
             )
         ));
         $this->assertFalse($result->success);
@@ -1239,6 +1242,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('phone');
         $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('url');
+        $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_URL_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
     function testSale_withHoldInEscrow()
@@ -2125,10 +2131,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
-            'paymentMethodNonce' => $nonce,
-            'options' => array(
-                'submitForSettlement' => true
-            )
+            'paymentMethodNonce' => $nonce
         ));
 
         $this->assertTrue($result->success);
@@ -2142,10 +2145,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$decline,
-            'paymentMethodNonce' => $nonce,
-            'options' => array(
-                'submitForSettlement' => true
-            )
+            'paymentMethodNonce' => $nonce
         ));
         $this->setExpectedException('Braintree_Exception_ValidationsFailed');
         Braintree_Transaction::voidNoValidate($result->transaction->id);
