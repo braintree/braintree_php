@@ -119,6 +119,8 @@ class Braintree_Subscription extends Braintree
             array(
                 'billingDayOfMonth',
                 'firstBillingDate',
+                'createdAt',
+                'updatedAt',
                 'id',
                 'merchantAccountId',
                 'neverExpires',

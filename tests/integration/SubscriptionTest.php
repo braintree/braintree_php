@@ -39,6 +39,8 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('DateTime', $subscription->billingPeriodStartDate);
         $this->assertInstanceOf('DateTime', $subscription->billingPeriodEndDate);
         $this->assertInstanceOf('DateTime', $subscription->paidThroughDate);
+        $this->assertInstanceOf('DateTime', $subscription->updatedAt);
+        $this->assertInstanceOf('DateTime', $subscription->createdAt);
     }
 
     function testCreate_withPaymentMethodNonce()
