@@ -333,7 +333,7 @@ final class Braintree_Transaction extends Braintree
             array('customFields' => array('_anyKey_')
             ),
             array('descriptor' => array('name', 'phone', 'url')),
-            array('paypalAccount' => array('payeeEmail', 'bnCode'))
+            array('paypalAccount' => array('payeeEmail'))
         );
     }
 
