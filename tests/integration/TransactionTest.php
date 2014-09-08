@@ -2358,4 +2358,43 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(in_array($expectedRefundIds[1],$updatedRefundIds));
     }
 
+    function testPayPalSettlementDeclineTransaction()
+    {
+        $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
+
+        $transactionResult = Braintree_Transaction::sale(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'options' => array(
+                'submitForSettlement' => true
+            )
+        ));
+
+        $this->assertTrue($transactionResult->success);
+        $originalTransaction = $transactionResult->transaction;
+        Braintree_TestHelper::settlementDecline($originalTransaction->id);
+
+        $foundTransaction = Braintree_Transaction::find($originalTransaction->id);
+        $this->assertEquals($foundTransaction->status, Braintree_Transaction::SETTLEMENT_DECLINED);
+    }
+
+    function testPayPalSettlementPendingTransaction()
+    {
+        $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
+
+        $transactionResult = Braintree_Transaction::sale(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'options' => array(
+                'submitForSettlement' => true
+            )
+        ));
+
+        $this->assertTrue($transactionResult->success);
+        $originalTransaction = $transactionResult->transaction;
+        Braintree_TestHelper::settlementPending($originalTransaction->id);
+
+        $foundTransaction = Braintree_Transaction::find($originalTransaction->id);
+        $this->assertEquals($foundTransaction->status, Braintree_Transaction::SETTLEMENT_PENDING);
+    }
 }
