@@ -2360,11 +2360,20 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testIncludeProcessorSettlementResponseForSettlementDeclinedTransaction()
     {
-        $collection = Braintree_Transaction::search(array(
-            Braintree_TransactionSearch::status()->is(Braintree_Transaction::SETTLEMENT_DECLINED)
+        $result = Braintree_Transaction::sale(array(
+            "paymentMethodNonce" => Braintree_Test_Nonces::$paypalFuturePayment,
+            "amount" => "100",
+            "options" => array(
+                "submitForSettlement" => true
+            )
         ));
 
-        $inline_transaction = Braintree_Transaction::find($collection->firstItem()->id);
+        $this->assertTrue($result->success);
+
+        $transaction = $result->transaction;
+        Braintree_TestHelper::settlementDecline($transaction->id);
+
+        $inline_transaction = Braintree_Transaction::find($transaction->id);
         $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_DECLINED);
         $this->assertEquals($inline_transaction->processorSettlementResponseCode, "4001");
         $this->assertEquals($inline_transaction->processorSettlementResponseText, "Settlement Declined");
@@ -2372,11 +2381,20 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testIncludeProcessorSettlementResponseForSettlementPendingTransaction()
     {
-        $collection = Braintree_Transaction::search(array(
-            Braintree_TransactionSearch::status()->is(Braintree_Transaction::SETTLEMENT_PENDING)
+        $result = Braintree_Transaction::sale(array(
+            "paymentMethodNonce" => Braintree_Test_Nonces::$paypalFuturePayment,
+            "amount" => "100",
+            "options" => array(
+                "submitForSettlement" => true
+            )
         ));
 
-        $inline_transaction = Braintree_Transaction::find($collection->firstItem()->id);
+        $this->assertTrue($result->success);
+
+        $transaction = $result->transaction;
+        Braintree_TestHelper::settlementPending($transaction->id);
+
+        $inline_transaction = Braintree_Transaction::find($transaction->id);
         $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_PENDING);
         $this->assertEquals($inline_transaction->processorSettlementResponseCode, "4002");
         $this->assertEquals($inline_transaction->processorSettlementResponseText, "Settlement Pending");
