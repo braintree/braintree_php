@@ -12,7 +12,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     function testCreateSignature()
     {
         $expected = array(
-            'customerId', 'paymentMethodNonce', 'token', 'billingAddressId',
+            'customerId', 'paymentMethodNonce', 'token', 'billingAddressId', 'deviceData',
             array('options' => array(
                 'makeDefault',
                 'verifyCard',

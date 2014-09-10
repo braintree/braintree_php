@@ -177,6 +177,8 @@ final class Braintree_Transaction extends Braintree
     const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
     const VOIDED                   = 'voided';
     const UNRECOGNIZED             = 'unrecognized';
+    const SETTLEMENT_DECLINED      = 'settlement_declined';
+    const SETTLEMENT_PENDING       = 'settlement_pending';
 
     // Transaction Escrow Status
     const ESCROW_HOLD_PENDING    = 'hold_pending';
@@ -332,7 +334,8 @@ final class Braintree_Transaction extends Braintree
             ),
             array('customFields' => array('_anyKey_')
             ),
-            array('descriptor' => array('name', 'phone', 'url'))
+            array('descriptor' => array('name', 'phone', 'url')),
+            array('paypalAccount' => array('payeeEmail'))
         );
     }
 

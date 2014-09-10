@@ -114,6 +114,16 @@ class Braintree_TestHelper
         Braintree_Http::put('/transactions/' . $transactionId . '/settle');
     }
 
+    public static function settlementDecline($transactionId)
+    {
+        Braintree_Http::put('/transactions/' . $transactionId . '/settlement_decline');
+    }
+
+    public static function settlementPending($transactionId)
+    {
+        Braintree_Http::put('/transactions/' . $transactionId . '/settlement_pending');
+    }
+
     public static function escrow($transactionId)
     {
         Braintree_Http::put('/transactions/' . $transactionId . '/escrow');

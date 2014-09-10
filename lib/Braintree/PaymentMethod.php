@@ -76,6 +76,7 @@ class Braintree_PaymentMethod extends Braintree
             'paymentMethodNonce',
             'token',
             'billingAddressId',
+            'deviceData',
             array('options' => $options),
             array('billingAddress' => $billingAddressSignature)
         );

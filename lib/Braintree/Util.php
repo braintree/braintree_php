@@ -49,25 +49,25 @@ class Braintree_Util
     public static function throwStatusCodeException($statusCode, $message=null)
     {
         switch($statusCode) {
-         case 401:
+        case 401:
             throw new Braintree_Exception_Authentication();
             break;
-         case 403:
-             throw new Braintree_Exception_Authorization($message);
+        case 403:
+            throw new Braintree_Exception_Authorization($message);
             break;
-         case 404:
-             throw new Braintree_Exception_NotFound();
+        case 404:
+            throw new Braintree_Exception_NotFound();
             break;
-         case 426:
-             throw new Braintree_Exception_UpgradeRequired();
+        case 426:
+            throw new Braintree_Exception_UpgradeRequired();
             break;
-         case 500:
-             throw new Braintree_Exception_ServerError();
+        case 500:
+            throw new Braintree_Exception_ServerError();
             break;
-         case 503:
-             throw new Braintree_Exception_DownForMaintenance();
+        case 503:
+            throw new Braintree_Exception_DownForMaintenance();
             break;
-         default:
+        default:
             throw new Braintree_Exception_Unexpected('Unexpected HTTP_RESPONSE #'.$statusCode);
             break;
         }
