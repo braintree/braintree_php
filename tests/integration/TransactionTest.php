@@ -1075,6 +1075,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Dispute::WON, $dispute->status);
         $this->assertEquals(new DateTime('2014-03-01'), $dispute->receivedDate);
         $this->assertEquals(new DateTime('2014-03-21'), $dispute->replyByDate);
+        $this->assertEquals("disputedtransaction", $dispute->transactionDetails->id);
+        $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
     }
 
     function testSale_storeInVault()
@@ -1207,13 +1209,15 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             'descriptor' => array(
                 'name' => '123*123456789012345678',
-                'phone' => '3334445555'
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
             )
         ));
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals('123*123456789012345678', $transaction->descriptor->name);
         $this->assertEquals('3334445555', $transaction->descriptor->phone);
+        $this->assertEquals('ebay.com', $transaction->descriptor->url);
     }
 
     function testSale_withDescriptorValidation()
@@ -1226,7 +1230,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             'descriptor' => array(
                 'name' => 'badcompanyname12*badproduct12',
-                'phone' => '%bad4445555'
+                'phone' => '%bad4445555',
+                'url' => '12345678901234'
             )
         ));
         $this->assertFalse($result->success);
@@ -1237,6 +1242,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('phone');
         $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('url');
+        $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_URL_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
     function testSale_withHoldInEscrow()
@@ -1945,6 +1953,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = $result->transaction;
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
     }
 
     function testCreate_withFuturePayPal()
@@ -1966,6 +1975,35 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = $result->transaction;
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
+        $this->setExpectedException('Braintree_Exception_NotFound');
+        Braintree_PaymentMethod::find($paymentMethodToken);
+    }
+
+    function testCreate_withPayeeEmail()
+    {
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            )
+        ));
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'paypalAccount' => array(
+                'payeeEmail' => 'payee@example.com'
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
+        $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
+        $this->assertNotNull($transaction->paypalDetails->payeeEmail);
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_PaymentMethod::find($paymentMethodToken);
     }
@@ -1988,6 +2026,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals(Braintree_PaymentInstrumentType::PAYPAL_ACCOUNT, $transaction->paymentInstrumentType);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
     }
 
     function testCreate_withFuturePayPalAndVault()
@@ -2012,6 +2051,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = $result->transaction;
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
         $foundPayPalAccount = Braintree_PaymentMethod::find($paymentMethodToken);
         $this->assertEquals($paymentMethodToken, $foundPayPalAccount->token);
     }
@@ -2035,6 +2075,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = $result->transaction;
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_PaymentMethod::find($paymentMethodToken);
     }
@@ -2061,6 +2102,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = $result->transaction;
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_PaymentMethod::find($paymentMethodToken);
     }
@@ -2123,10 +2165,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
-            'paymentMethodNonce' => $nonce,
-            'options' => array(
-                'submitForSettlement' => true
-            )
+            'paymentMethodNonce' => $nonce
         ));
 
         $this->assertTrue($result->success);
@@ -2140,10 +2179,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $result = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$decline,
-            'paymentMethodNonce' => $nonce,
-            'options' => array(
-                'submitForSettlement' => true
-            )
+            'paymentMethodNonce' => $nonce
         ));
         $this->setExpectedException('Braintree_Exception_ValidationsFailed');
         Braintree_Transaction::voidNoValidate($result->transaction->id);
@@ -2322,4 +2358,45 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(in_array($expectedRefundIds[1],$updatedRefundIds));
     }
 
+    function testIncludeProcessorSettlementResponseForSettlementDeclinedTransaction()
+    {
+        $result = Braintree_Transaction::sale(array(
+            "paymentMethodNonce" => Braintree_Test_Nonces::$paypalFuturePayment,
+            "amount" => "100",
+            "options" => array(
+                "submitForSettlement" => true
+            )
+        ));
+
+        $this->assertTrue($result->success);
+
+        $transaction = $result->transaction;
+        Braintree_TestHelper::settlementDecline($transaction->id);
+
+        $inline_transaction = Braintree_Transaction::find($transaction->id);
+        $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_DECLINED);
+        $this->assertEquals($inline_transaction->processorSettlementResponseCode, "4001");
+        $this->assertEquals($inline_transaction->processorSettlementResponseText, "Settlement Declined");
+    }
+
+    function testIncludeProcessorSettlementResponseForSettlementPendingTransaction()
+    {
+        $result = Braintree_Transaction::sale(array(
+            "paymentMethodNonce" => Braintree_Test_Nonces::$paypalFuturePayment,
+            "amount" => "100",
+            "options" => array(
+                "submitForSettlement" => true
+            )
+        ));
+
+        $this->assertTrue($result->success);
+
+        $transaction = $result->transaction;
+        Braintree_TestHelper::settlementPending($transaction->id);
+
+        $inline_transaction = Braintree_Transaction::find($transaction->id);
+        $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_PENDING);
+        $this->assertEquals($inline_transaction->processorSettlementResponseCode, "4002");
+        $this->assertEquals($inline_transaction->processorSettlementResponseText, "Settlement Pending");
+    }
 }

@@ -55,6 +55,12 @@ class Braintree_PaymentMethod extends Braintree
 
     }
 
+    public static function update($token, $attribs)
+    {
+        Braintree_Util::verifyKeys(self::updateSignature(), $attribs);
+        return self::_doUpdate('/payment_methods/any/' . $token, array('payment_method' => $attribs));
+    }
+
     public static function delete($token)
     {
         self::_validateId($token);
@@ -64,17 +70,60 @@ class Braintree_PaymentMethod extends Braintree
 
     private static function baseSignature($options)
     {
-         return array(
-             'customerId', 'paymentMethodNonce', 'token',
-             array('options' => $options),
-         );
+        $billingAddressSignature = Braintree_Address::createSignature();
+        return array(
+            'customerId',
+            'paymentMethodNonce',
+            'token',
+            'billingAddressId',
+            'deviceData',
+            array('options' => $options),
+            array('billingAddress' => $billingAddressSignature)
+        );
     }
 
     public static function createSignature()
     {
-        $options = array('makeDefault', 'failOnDuplicatePaymentMethod');
+        $options = array(
+            'makeDefault',
+            'verifyCard',
+            'failOnDuplicatePaymentMethod',
+            'verificationMerchantAccountId'
+        );
         $signature = self::baseSignature($options);
         return $signature;
+    }
+
+    public static function updateSignature()
+    {
+        $billingAddressSignature = Braintree_Address::updateSignature();
+        array_push($billingAddressSignature, array(
+            'options' => array(
+                'updateExisting'
+            )
+        ));
+        return array(
+            'billingAddressId',
+            'cardholderName',
+            'cvv',
+            'deviceSessionId',
+            'expirationDate',
+            'expirationMonth',
+            'expirationYear',
+            'number',
+            'token',
+            'venmoSdkPaymentMethodCode',
+            'deviceData',
+            'fraudMerchantId',
+            'paymentMethodNonce',
+            array('options' => array(
+                'makeDefault',
+                'verificationMerchantAccountId',
+                'verifyCard',
+                'venmoSdkSession'
+            )),
+            array('billingAddress' => $billingAddressSignature)
+        );
     }
 
     /**
@@ -88,6 +137,21 @@ class Braintree_PaymentMethod extends Braintree
     public static function _doCreate($url, $params)
     {
         $response = Braintree_Http::post($url, $params);
+
+        return self::_verifyGatewayResponse($response);
+    }
+
+    /**
+     * sends the update request to the gateway
+     *
+     * @ignore
+     * @param string $url
+     * @param array $params
+     * @return mixed
+     */
+    public static function _doUpdate($url, $params)
+    {
+        $response = Braintree_Http::put($url, $params);
 
         return self::_verifyGatewayResponse($response);
     }

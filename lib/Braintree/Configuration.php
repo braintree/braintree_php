@@ -271,7 +271,7 @@ class Braintree_Configuration extends Braintree
              $serverName = 'api.braintreegateway.com';
              break;
          case 'qa':
-             $serverName = 'qa.braintreegateway.com';
+             $serverName = 'gateway.qa.braintreepayments.com';
              break;
          case 'sandbox':
              $serverName = 'api.sandbox.braintreegateway.com';

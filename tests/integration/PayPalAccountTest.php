@@ -1,5 +1,6 @@
 <?php
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
 
 class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
@@ -75,6 +76,44 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException', '@ is an invalid paypal account token');
         Braintree_PayPalAccount::find('@');
+    }
+
+    function testFind_returnsSubscriptionsAssociatedWithAPaypalAccount()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $paymentMethodToken = 'paypal-account-' . strval(rand());
+
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'consent-code',
+                'token' => $paymentMethodToken
+            )
+        ));
+
+        $result = Braintree_PaymentMethod::create(array(
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id
+        ));
+        $this->assertTrue($result->success);
+
+        $token = $result->paymentMethod->token;
+        $triallessPlan = Braintree_SubscriptionTestHelper::triallessPlan();
+
+        $subscription1 = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $token,
+            'planId' => $triallessPlan['id']
+        ))->subscription;
+
+        $subscription2 = Braintree_Subscription::create(array(
+            'paymentMethodToken' => $token,
+            'planId' => $triallessPlan['id']
+        ))->subscription;
+
+        $paypalAccount = Braintree_PayPalAccount::find($token);
+        $getIds = function($sub) { return $sub->id; };
+        $subIds = array_map($getIds, $paypalAccount->subscriptions);
+        $this->assertTrue(in_array($subscription1->id, $subIds));
+        $this->assertTrue(in_array($subscription2->id, $subIds));
     }
 
     function testUpdate()

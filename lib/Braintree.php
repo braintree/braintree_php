@@ -95,6 +95,7 @@ require_once('Braintree/Customer.php');
 require_once('Braintree/CustomerSearch.php');
 require_once('Braintree/DisbursementDetails.php');
 require_once('Braintree/Dispute.php');
+require_once('Braintree/Dispute/TransactionDetails.php');
 require_once('Braintree/Descriptor.php');
 require_once('Braintree/Digest.php');
 require_once('Braintree/Discount.php');
@@ -166,6 +167,7 @@ require_once('Braintree/CreditCardVerificationSearch.php');
 require_once('Braintree/PartnerMerchant.php');
 require_once('Braintree/PayPalAccount.php');
 require_once('Braintree/PaymentMethod.php');
+require_once('Braintree/PaymentInstrumentType.php');
 require_once('Braintree/UnknownPaymentMethod.php');
 
 if (version_compare(PHP_VERSION, '5.2.1', '<')) {
