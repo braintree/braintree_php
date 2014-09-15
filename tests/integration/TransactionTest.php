@@ -2008,6 +2008,35 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         Braintree_PaymentMethod::find($paymentMethodToken);
     }
 
+    function testCreate_withPayeeEmailInOptions()
+    {
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            )
+        ));
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'paypalAccount' => array(),
+            'options' => array(
+                'payeeEmail' => 'payee@example.com'
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
+        $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
+        $this->assertNotNull($transaction->paypalDetails->payeeEmail);
+        $this->setExpectedException('Braintree_Exception_NotFound');
+        Braintree_PaymentMethod::find($paymentMethodToken);
+    }
+
     function testCreate_withPayPalReturnsPaymentInstrumentType()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
