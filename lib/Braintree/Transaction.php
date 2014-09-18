@@ -153,6 +153,7 @@
  * @property-read object $customerDetails transaction customer info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
+ * @property-read string $processorProvidedResponse raw response from processor
  * @property-read object $shippingDetails transaction shipping address
  * @property-read string $status transaction status
  * @property-read array  $statusHistory array of StatusDetails objects
