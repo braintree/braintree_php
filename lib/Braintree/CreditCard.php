@@ -44,9 +44,9 @@ class Braintree_CreditCard extends Braintree
     const VISA = 'Visa';
     const UNKNOWN = 'Unknown';
 
-	// Credit card origination location
-	const INTERNATIONAL = "international";
-	const US            = "us";
+    // Credit card origination location
+    const INTERNATIONAL = "international";
+    const US            = "us";
 
     const PREPAID_YES = 'Yes';
     const PREPAID_NO = 'No';
@@ -75,6 +75,11 @@ class Braintree_CreditCard extends Braintree
     const COUNTRY_OF_ISSUANCE_UNKNOWN = "Unknown";
     const ISSUING_BANK_UNKNOWN = "Unknown";
 
+    /**
+     * @param  array $attribs
+     * @throws Braintree_Exception_Unexpected
+     * @return Braintree_Result_Error|Braintree_Result_Successful
+     */
     public static function create($attribs)
     {
         Braintree_Util::verifyKeys(self::createSignature(), $attribs);
@@ -87,20 +92,22 @@ class Braintree_CreditCard extends Braintree
      *
      * @access public
      * @param array $attribs
-     * @return object
-     * @throws Braintree_Exception_ValidationError
+     * @return Braintree_CreditCard
+     * @throws Braintree_Exception_ValidationsFailed
      */
     public static function createNoValidate($attribs)
     {
         $result = self::create($attribs);
         return self::returnObjectOrThrowException(__CLASS__, $result);
     }
+    
     /**
      * create a customer from a TransparentRedirect operation
      *
      * @access public
-     * @param array $attribs
-     * @return object
+     * @param  string  $queryString
+     * @throws Braintree_Exception_Unexpected
+     * @return Braintree_Result_Error|Braintree_Result_Successful
      */
     public static function createFromTransparentRedirect($queryString)
     {
@@ -117,7 +124,6 @@ class Braintree_CreditCard extends Braintree
     /**
      *
      * @access public
-     * @param none
      * @return string
      */
     public static function createCreditCardUrl()
@@ -129,7 +135,7 @@ class Braintree_CreditCard extends Braintree
 
     /**
      * returns a ResourceCollection of expired credit cards
-     * @return object ResourceCollection
+     * @return Braintree_ResourceCollection
      */
     public static function expired()
     {
@@ -143,6 +149,10 @@ class Braintree_CreditCard extends Braintree
         return new Braintree_ResourceCollection($response, $pager);
     }
 
+    /**
+     * @param array $ids
+     * @return array
+     */
     public static function fetchExpired($ids)
     {
         $response = Braintree_Http::post("/payment_methods/all/expired", array('search' => array('ids' => $ids)));
@@ -155,7 +165,9 @@ class Braintree_CreditCard extends Braintree
     /**
      * returns a ResourceCollection of credit cards expiring between start/end
      *
-     * @return object ResourceCollection
+     * @param int $startDate
+     * @param int $endDate
+     * @return Braintree_ResourceCollection
      */
     public static function expiringBetween($startDate, $endDate)
     {
@@ -170,6 +182,12 @@ class Braintree_CreditCard extends Braintree
         return new Braintree_ResourceCollection($response, $pager);
     }
 
+    /**
+     * @param int $startDate
+     * @param int $endDate
+     * @param array $ids
+     * @return array
+     */
     public static function fetchExpiring($startDate, $endDate, $ids)
     {
         $queryPath = '/payment_methods/all/expiring?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
@@ -182,11 +200,11 @@ class Braintree_CreditCard extends Braintree
     }
 
     /**
-     * find a creditcard by token
+     * find a credit card by token
      *
      * @access public
      * @param string $token credit card unique id
-     * @return object Braintree_CreditCard
+     * @return Braintree_CreditCard
      * @throws Braintree_Exception_NotFound
      */
     public static function find($token)
@@ -208,7 +226,7 @@ class Braintree_CreditCard extends Braintree
      *
      * @access public
      * @param string $nonce payment method nonce
-     * @return object Braintree_CreditCard
+     * @return Braintree_CreditCard
      * @throws Braintree_Exception_NotFound
      */
     public static function fromNonce($nonce)
@@ -225,12 +243,13 @@ class Braintree_CreditCard extends Braintree
 
     }
 
-   /**
+    /**
      * create a credit on the card for the passed transaction
      *
      * @access public
-     * @param array $attribs
-     * @return object Braintree_Result_Successful or Braintree_Result_Error
+     * @param string  $token
+     * @param array   $transactionAttribs
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public static function credit($token, $transactionAttribs)
     {
@@ -249,9 +268,10 @@ class Braintree_CreditCard extends Braintree
      * returns a Braintree_Transaction object on success
      *
      * @access public
-     * @param array $attribs
-     * @return object Braintree_Transaction
-     * @throws Braintree_Exception_ValidationError
+     * @param string  $token
+     * @param array   $transactionAttribs
+     * @throws Braintree_Exception_ValidationsFailed
+     * @return Braintree_Transaction
      */
     public static function creditNoValidate($token, $transactionAttribs)
     {
@@ -264,7 +284,7 @@ class Braintree_CreditCard extends Braintree
      *
      * @param string $token
      * @param array $transactionAttribs
-     * @return object Braintree_Result_Successful or Braintree_Result_Error
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      * @see Braintree_Transaction::sale()
      */
     public static function sale($token, $transactionAttribs)
@@ -284,9 +304,9 @@ class Braintree_CreditCard extends Braintree
      * returns a Braintree_Transaction object on success
      *
      * @access public
-     * @param array $transactionAttribs
      * @param string $token
-     * @return object Braintree_Transaction
+     * @param array $transactionAttribs
+     * @return Braintree_Transaction
      * @throws Braintree_Exception_ValidationsFailed
      * @see Braintree_Transaction::sale()
      */
@@ -297,7 +317,7 @@ class Braintree_CreditCard extends Braintree
     }
 
     /**
-     * updates the creditcard record
+     * updates the credit card record
      *
      * if calling this method in static context, $token
      * is the 2nd attribute. $token is not sent in object context.
@@ -305,7 +325,7 @@ class Braintree_CreditCard extends Braintree
      * @access public
      * @param array $attributes
      * @param string $token (optional)
-     * @return object Braintree_Result_Successful or Braintree_Result_Error
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public static function update($token, $attributes)
     {
@@ -315,7 +335,7 @@ class Braintree_CreditCard extends Braintree
     }
 
     /**
-     * update a creditcard record, assuming validations will pass
+     * update a credit card record, assuming validations will pass
      *
      * if calling this method in static context, $token
      * is the 2nd attribute. $token is not sent in object context.
@@ -324,7 +344,7 @@ class Braintree_CreditCard extends Braintree
      * @access public
      * @param array $attributes
      * @param string $token
-     * @return object Braintree_CreditCard
+     * @return Braintree_CreditCard
      * @throws Braintree_Exception_ValidationsFailed
      */
     public static function updateNoValidate($token, $attributes)
@@ -335,7 +355,6 @@ class Braintree_CreditCard extends Braintree
     /**
      *
      * @access public
-     * @param none
      * @return string
      */
     public static function updateCreditCardUrl()
@@ -349,8 +368,8 @@ class Braintree_CreditCard extends Braintree
      * update a customer from a TransparentRedirect operation
      *
      * @access public
-     * @param array $attribs
-     * @return object
+     * @param string $queryString
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public static function updateFromTransparentRedirect($queryString)
     {
@@ -396,6 +415,10 @@ class Braintree_CreditCard extends Braintree
         return $this->venmoSdk;
     }
 
+    /**
+     * @param string $token
+     * @return Braintree_Result_Successful
+     */
     public static function delete($token)
     {
         self::_validateId($token);
@@ -408,7 +431,7 @@ class Braintree_CreditCard extends Braintree
      *
      * @access protected
      * @param array $creditCardAttribs array of creditcard data
-     * @return none
+     * @return void
      */
     protected function _initialize($creditCardAttribs)
     {
@@ -437,7 +460,7 @@ class Braintree_CreditCard extends Braintree
      * returns false if comparing object is not a Braintree_CreditCard,
      * or is a Braintree_CreditCard with a different id
      *
-     * @param object $otherCreditCard customer to compare against
+     * @param Braintree_CreditCard $otherCreditCard customer to compare against
      * @return boolean
      */
     public function isEqual($otherCreditCard)
@@ -445,11 +468,13 @@ class Braintree_CreditCard extends Braintree
         return !($otherCreditCard instanceof Braintree_CreditCard) ? false : $this->token === $otherCreditCard->token;
     }
 
+    /** @return array */
     private static function baseOptions()
     {
         return array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'venmoSdkSession');
     }
 
+    /** @return array */
     private static function baseSignature($options)
     {
          return array(
@@ -476,6 +501,7 @@ class Braintree_CreditCard extends Braintree
          );
     }
 
+    /** @return array */
     public static function createSignature()
     {
         $options = self::baseOptions();
@@ -485,6 +511,7 @@ class Braintree_CreditCard extends Braintree
         return $signature;
     }
 
+    /** @return array */
     public static function updateSignature()
     {
          $signature = self::baseSignature(self::baseOptions());
@@ -536,7 +563,7 @@ class Braintree_CreditCard extends Braintree
      * verifies that a valid credit card identifier is being used
      * @ignore
      * @param string $identifier
-     * @param Optional $string $identifierType type of identifier supplied, default "token"
+     * @param string $identifierType optional type of identifier supplied, default "token"
      * @throws InvalidArgumentException
      */
     private static function _validateId($identifier = null, $identifierType = "token")
@@ -557,9 +584,10 @@ class Braintree_CreditCard extends Braintree
      * sends the update request to the gateway
      *
      * @ignore
+     * @param string $httpVerb
      * @param string $url
      * @param array $params
-     * @return mixed
+     * @return Result_Successful|Result_Error
      */
     private static function _doUpdate($httpVerb, $url, $params)
     {
@@ -577,7 +605,7 @@ class Braintree_CreditCard extends Braintree
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
+     * @return Result_Successful|Result_Error
      * @throws Braintree_Exception_Unexpected
      */
     private static function _verifyGatewayResponse($response)
@@ -601,7 +629,8 @@ class Braintree_CreditCard extends Braintree
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_CreditCard
+     * @param array $attributes
+     * @return Braintree_CreditCard
      */
     public static function factory($attributes)
     {
