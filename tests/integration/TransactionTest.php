@@ -1740,21 +1740,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Transaction::FRAUD, $result->transaction->gatewayRejectionReason);
     }
 
-    function testGatewayRejectionOnApplicationIncomplete()
-    {
-        $result = Braintree_Transaction::sale(array(
-            'amount' => Braintree_Test_TransactionAmounts::$application_incomplete,
-            'creditCard' => array(
-                'number' => '4111111111111111',
-                'expirationDate' => '05/17',
-                'cvv' => '200'
-            )
-        ));
-
-        $this->assertFalse($result->success);
-        $this->assertEquals(Braintree_Transaction::APPLICATION_INCOMPLETE, $result->transaction->gatewayRejectionReason);
-    }
-
     function testSnapshotPlanIdAddOnsAndDiscountsFromSubscription()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();

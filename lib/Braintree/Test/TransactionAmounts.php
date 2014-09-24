@@ -12,7 +12,6 @@
  */
 class Braintree_Test_TransactionAmounts
 {
-   public static $application_incomplete = '5001.00';
-   public static $authorize              = '1000.00';
-   public static $decline                = '2000.00';
+   public static $authorize = '1000.00';
+   public static $decline   = '2000.00';
 }
