@@ -1,13 +1,6 @@
 <?php
 /**
  * Braintree Transaction processor
- *
- * @package    Braintree
- * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * Creates and manages transactions
  *
  * At minimum, an amount, credit card number, and
@@ -156,9 +149,11 @@
  * @property-read object $billingDetails transaction billing address
  * @property-read string $createdAt transaction created timestamp
  * @property-read object $creditCardDetails transaction credit card info
+ * @property-read object $paypalDetails transaction paypal account info
  * @property-read object $customerDetails transaction customer info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
+ * @property-read string $additionalProcessorResponse raw response from processor
  * @property-read object $shippingDetails transaction shipping address
  * @property-read string $status transaction status
  * @property-read array  $statusHistory array of StatusDetails objects
@@ -183,6 +178,8 @@ final class Braintree_Transaction extends Braintree
     const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
     const VOIDED                   = 'voided';
     const UNRECOGNIZED             = 'unrecognized';
+    const SETTLEMENT_DECLINED      = 'settlement_declined';
+    const SETTLEMENT_PENDING       = 'settlement_pending';
 
     // Transaction Escrow Status
     const ESCROW_HOLD_PENDING    = 'hold_pending';
@@ -219,7 +216,7 @@ final class Braintree_Transaction extends Braintree
 
     /**
      * @ignore
-     * @access public
+     * @access private
      * @param array $attribs
      * @return object
      */
@@ -232,7 +229,7 @@ final class Braintree_Transaction extends Braintree
     /**
      *
      * @ignore
-     * @access public
+     * @access private
      * @param array $attribs
      * @return object
      * @throws Braintree_Exception_ValidationError
@@ -284,9 +281,26 @@ final class Braintree_Transaction extends Braintree
     public static function createSignature()
     {
         return array(
-            'amount', 'customerId', 'merchantAccountId', 'orderId', 'channel', 'paymentMethodToken', 'deviceSessionId',
-            'purchaseOrderNumber', 'recurring', 'shippingAddressId', 'taxAmount', 'taxExempt', 'type', 'venmoSdkPaymentMethodCode',
-            'serviceFeeAmount', 'deviceData', 'fraudMerchantId', 'billingAddressId', 'paymentMethodNonce',
+            'amount',
+            'billingAddressId',
+            'channel',
+            'customerId',
+            'deviceData',
+            'deviceSessionId',
+            'fraudMerchantId',
+            'merchantAccountId',
+            'orderId',
+            'paymentMethodNonce',
+            'paymentMethodToken',
+            'purchaseOrderNumber',
+            'recurring',
+            'serviceFeeAmount',
+            'shippingAddressId',
+            'taxAmount',
+            'taxExempt',
+            'threeDSecureToken',
+            'type',
+            'venmoSdkPaymentMethodCode',
             array('creditCard' =>
                 array('token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'),
             ),
@@ -317,11 +331,13 @@ final class Braintree_Transaction extends Braintree
                     'submitForSettlement',
                     'addBillingAddressToPaymentMethod',
                     'venmoSdkSession',
-                    'storeShippingAddressInVault'),
+                    'storeShippingAddressInVault',
+                    'payeeEmail'),
             ),
             array('customFields' => array('_anyKey_')
             ),
-            array('descriptor' => array('name', 'phone'))
+            array('descriptor' => array('name', 'phone', 'url')),
+            array('paypalAccount' => array('payeeEmail'))
         );
     }
 
@@ -531,6 +547,14 @@ final class Braintree_Transaction extends Braintree
             );
         }
 
+        if (isset($transactionAttribs['paypal'])) {
+            $this->_set('paypalDetails',
+                new Braintree_Transaction_PayPalDetails(
+                    $transactionAttribs['paypal']
+                )
+            );
+        }
+
         if (isset($transactionAttribs['customer'])) {
             $this->_set('customerDetails',
                 new Braintree_Transaction_CustomerDetails(
@@ -580,7 +604,7 @@ final class Braintree_Transaction extends Braintree
         $disputes = array();
         if (isset($transactionAttribs['disputes'])) {
             foreach ($transactionAttribs['disputes'] AS $dispute) {
-                $disputes[] = new Braintree_Dispute($dispute);
+                $disputes[] = Braintree_Dispute::factory($dispute);
             }
         }
 

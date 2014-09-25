@@ -3,9 +3,8 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
 {
-    function teardown()
+    function setup()
     {
-        // Fix overwritten configuration in wrong key check:
         integrationMerchantConfig();
     }
 
@@ -212,6 +211,57 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("my_id", $webhookNotification->transaction->id);
         $this->assertEquals(100, $webhookNotification->transaction->amount);
         $this->assertNotNull($webhookNotification->transaction->disbursementDetails->disbursementDate);
+    }
+
+    function testBuildsASampleNotificationForADisputeOpenedWebhook()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::DISPUTE_OPENED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            $sampleNotification['payload']
+        );
+
+        $this->assertEquals(Braintree_WebhookNotification::DISPUTE_OPENED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->dispute->id);
+        $this->assertEquals(Braintree_Dispute::OPEN, $webhookNotification->dispute->status);
+    }
+
+    function testBuildsASampleNotificationForADisputeLostWebhook()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::DISPUTE_LOST,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            $sampleNotification['payload']
+        );
+
+        $this->assertEquals(Braintree_WebhookNotification::DISPUTE_LOST, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->dispute->id);
+        $this->assertEquals(Braintree_Dispute::LOST, $webhookNotification->dispute->status);
+    }
+
+    function testBuildsASampleNotificationForADisputeWonWebhook()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::DISPUTE_WON,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['signature'],
+            $sampleNotification['payload']
+        );
+
+        $this->assertEquals(Braintree_WebhookNotification::DISPUTE_WON, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->dispute->id);
+        $this->assertEquals(Braintree_Dispute::WON, $webhookNotification->dispute->status);
     }
 
     function testBuildsASampleNotificationForADisbursementExceptionWebhook()

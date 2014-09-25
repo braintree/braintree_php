@@ -2,13 +2,16 @@
 
 class Braintree_ClientToken
 {
+    const DEFAULT_VERSION = 2;
+
     public static function generate($params=array())
     {
-        $generateParams = null;
-        if ($params) {
-            self::conditionallyVerifyKeys($params);
-            $generateParams = array("client_token" => $params);
+        if (!array_key_exists("version", $params)) {
+            $params["version"] = Braintree_ClientToken::DEFAULT_VERSION;
         }
+
+        self::conditionallyVerifyKeys($params);
+        $generateParams = array("client_token" => $params);
 
         return self::_doGenerate('/client_token', $generateParams);
     }
@@ -39,12 +42,12 @@ class Braintree_ClientToken
 
     public static function generateWithCustomerIdSignature()
     {
-        return array("customerId", "proxyMerchantId", array("options" => array("makeDefault", "verifyCard", "failOnDuplicatePaymentMethod")));
+        return array("version", "customerId", "proxyMerchantId", array("options" => array("makeDefault", "verifyCard", "failOnDuplicatePaymentMethod")), "merchantAccountId");
     }
 
     public static function generateWithoutCustomerIdSignature()
     {
-        return array("proxyMerchantId");
+        return array("version", "proxyMerchantId", "merchantAccountId");
     }
 
     /**

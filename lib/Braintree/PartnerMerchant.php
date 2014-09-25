@@ -3,13 +3,7 @@
  * Partner Merchant information that is generated when a partner is connected
  * to or disconnected from a user.
  *
- * @package    Braintree
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * Creates an instance of PartnerMerchants
- *
  *
  * @package    Braintree
  * @copyright  2014 Braintree, a division of PayPal, Inc.

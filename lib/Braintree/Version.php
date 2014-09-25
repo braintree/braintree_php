@@ -1,13 +1,7 @@
 <?php
 /**
  * Braintree Library Version
- *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * stores version information about the Braintree library
- *
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
@@ -17,8 +11,8 @@ final class Braintree_Version
      * class constants
      */
     const MAJOR = 2;
-    const MINOR = 27;
-    const TINY = 2;
+    const MINOR = 32;
+    const TINY = 0;
 
     /**
      * @ignore

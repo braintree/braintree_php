@@ -39,6 +39,15 @@ class Braintree_WebhookTesting
             case Braintree_WebhookNotification::PARTNER_MERCHANT_DECLINED:
                 $subjectXml = self::_partnerMerchantDeclinedSampleXml($id);
                 break;
+            case Braintree_WebhookNotification::DISPUTE_OPENED:
+                $subjectXml = self::_disputeOpenedSampleXml($id);
+                break;
+            case Braintree_WebhookNotification::DISPUTE_LOST:
+                $subjectXml = self::_disputeLostSampleXml($id);
+                break;
+            case Braintree_WebhookNotification::DISPUTE_WON:
+                $subjectXml = self::_disputeWonSampleXml($id);
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -156,6 +165,63 @@ class Braintree_WebhookTesting
           <exception-message nil=\"true\"/>
           <follow-up-action nil=\"true\"/>
         </disbursement>
+        ";
+    }
+
+    private static function _disputeOpenedSampleXml($id)
+    {
+        return "
+        <dispute>
+          <amount>250.00</amount>
+          <currency-iso-code>USD</currency-iso-code>
+          <received-date type=\"date\">2014-03-01</received-date>
+          <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <status>open</status>
+          <reason>fraud</reason>
+          <id>${id}</id>
+          <transaction>
+            <id>${id}</id>
+            <amount>250.00</amount>
+          </transaction>
+        </dispute>
+        ";
+    }
+
+    private static function _disputeLostSampleXml($id)
+    {
+        return "
+        <dispute>
+          <amount>250.00</amount>
+          <currency-iso-code>USD</currency-iso-code>
+          <received-date type=\"date\">2014-03-01</received-date>
+          <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <status>lost</status>
+          <reason>fraud</reason>
+          <id>${id}</id>
+          <transaction>
+            <id>${id}</id>
+            <amount>250.00</amount>
+          </transaction>
+        </dispute>
+        ";
+    }
+
+    private static function _disputeWonSampleXml($id)
+    {
+        return "
+        <dispute>
+          <amount>250.00</amount>
+          <currency-iso-code>USD</currency-iso-code>
+          <received-date type=\"date\">2014-03-01</received-date>
+          <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <status>won</status>
+          <reason>fraud</reason>
+          <id>${id}</id>
+          <transaction>
+            <id>${id}</id>
+            <amount>250.00</amount>
+          </transaction>
+        </dispute>
         ";
     }
 

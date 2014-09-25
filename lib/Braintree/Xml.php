@@ -2,11 +2,6 @@
 /**
  * Braintree Xml parser and generator
  * PHP version 5
- *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * superclass for Braintree XML parsing and generation
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.

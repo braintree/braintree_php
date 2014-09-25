@@ -1,15 +1,7 @@
 <?php
 /**
  * CreditCard details from a transaction
- *
- * @package    Braintree
- * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
-
-/**
  * creates an instance of CreditCardDetails
- *
  *
  * @package    Braintree
  * @subpackage Transaction

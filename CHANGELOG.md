@@ -1,3 +1,26 @@
+## 2.32.0
+* Add additionalProcessorResponse to Transaction
+
+## 2.31.1
+* Allow payee_email to be passed in options params for Transaction create
+
+## 2.31.0
+* Added paypal specific fields to transaction calls               
+* Added SettlementPending, SettlementDeclined transaction statuses
+
+## 2.30.0
+* Add descriptor url support
+
+## 2.29.0
+* Allow credit card verification options to be passed outside of the nonce for PaymentMethod.create
+* Allow billing_address parameters and billing_address_id to be passed outside of the nonce for PaymentMethod.create
+* Add Subscriptions to paypal accounts
+* Add PaymentMethod.update
+* Add fail_on_duplicate_payment_method option to PaymentMethod.create
+
+## 2.28.0
+* Adds support for v.zero SDKs.
+
 ## 2.27.2
 
 * Make webhook parsing more robust with newlines
