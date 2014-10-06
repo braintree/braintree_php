@@ -50,7 +50,8 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
       'funding' => array(
         'routingNumber' => "122100024",
         'accountNumber' => "43759348798",
-        'destination' => Braintree_MerchantAccount::FUNDING_DESTINATION_BANK
+        'destination' => Braintree_MerchantAccount::FUNDING_DESTINATION_BANK,
+        'descriptor' => 'Joes Bloggs MI',
       ),
       'tosAccepted' => true,
       'masterMerchantAccountId' => "sandbox_master_merchant_account"
@@ -164,6 +165,7 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
         $params["funding"]["email"] = "check@this.com";
         $params["funding"]["mobilePhone"] = "1234567890";
         $params["funding"]["destination"] = Braintree_MerchantAccount::FUNDING_DESTINATION_BANK;
+        $params["funding"]["descriptor"] = "Joes Bloggs FL";
 
         $result = Braintree_MerchantAccount::update("sandbox_sub_merchant_account", $params);
         $this->assertEquals(true, $result->success);
@@ -193,6 +195,7 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("check@this.com", $updatedMerchantAccount->fundingDetails->email);
         $this->assertEquals("1234567890", $updatedMerchantAccount->fundingDetails->mobilePhone);
         $this->assertEquals(Braintree_MerchantAccount::FUNDING_DESTINATION_BANK, $updatedMerchantAccount->fundingDetails->destination);
+        $this->assertEquals("Joes Bloggs FL", $updatedMerchantAccount->fundingDetails->descriptor);
     }
 
     function testUpdateDoesNotRequireAllFields()
