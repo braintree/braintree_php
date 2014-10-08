@@ -186,10 +186,13 @@ class Braintree_PaymentMethod extends Braintree
         } else if (isset($response['apiErrorResponse'])) {
             return new Braintree_Result_Error($response['apiErrorResponse']);
         } else if (is_array($response)) {
-            return Braintree_UnknownPaymentMethod::factory($response);
+            return new Braintree_Result_Successful(
+                Braintree_UnknownPaymentMethod::factory($response),
+                "paymentMethod"
+            );
         } else {
             throw new Braintree_Exception_Unexpected(
-            'Expected credit card, paypal account or apiErrorResponse'
+            'Expected payment method or apiErrorResponse'
             );
         }
     }

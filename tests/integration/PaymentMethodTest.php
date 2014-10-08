@@ -27,6 +27,18 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($result->paymentMethod->imageUrl);
     }
 
+    function testCreate_fromFakePayPalNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => 'fake-apple-pay-visa-nonce'
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertNotNull($result->paymentMethod->token);
+    }
+
     function testCreate_fromUnvalidatedCreditCardNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
