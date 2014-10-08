@@ -70,6 +70,23 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('47.00', $transaction->amount);
     }
 
+    function testCreateTransactionUsingFakeApplePayNonce()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '47.00',
+            'paymentMethodNonce' => Braintree_Test_Nonces::$applePayAmEx
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('47.00', $transaction->amount);
+        $applePayDetails = $transaction->applePayCardDetails;
+        $this->assertSame(Braintree_ApplePayCard::AMEX, $applePayDetails->cardType);
+        $this->assertTrue(intval($applePayDetails->expirationMonth) > 0);
+        $this->assertTrue(intval($applePayDetails->expirationYear) > 0);
+        $this->assertNotNull($applePayDetails->cardholderName);
+    }
+
     function testCreateTransactionReturnsPaymentInstrumentType()
     {
         $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(

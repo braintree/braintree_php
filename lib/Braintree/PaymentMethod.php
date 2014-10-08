@@ -183,6 +183,12 @@ class Braintree_PaymentMethod extends Braintree
                 Braintree_PayPalAccount::factory($response['paypalAccount']),
                 "paymentMethod"
             );
+        } else if (isset($response['applePayCard'])) {
+            // return a populated instance of Braintree_ApplePayCard
+            return new Braintree_Result_Successful(
+                Braintree_ApplePayCard::factory($response['applePayCard']),
+                "paymentMethod"
+            );
         } else if (isset($response['apiErrorResponse'])) {
             return new Braintree_Result_Error($response['apiErrorResponse']);
         } else if (is_array($response)) {

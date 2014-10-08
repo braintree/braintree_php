@@ -43,6 +43,25 @@ class Braintree_Error_Codes
     const ADDRESS_LOCALITY_IS_INVALID                  = '91824';
     const ADDRESS_FIRST_NAME_IS_INVALID                = '91819';
 
+    const APPLE_PAY_CARDS_ARE_NOT_ACCEPTED                                  = "83501";
+    const APPLE_PAY_CUSTOMER_ID_IS_REQUIRED_FOR_VAULTING                    = "83502";
+    const APPLE_PAY_TOKEN_IS_IN_USE                                         = "93503";
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_CONSUMED                           = "93504";
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_UNKNOWN                            = "93505";
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_UNLOCKED                           = "93506";
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED          = "83518";
+    const APPLE_PAY_CANNOT_UPDATE_APPLE_PAY_CARD_USING_PAYMENT_METHOD_NONCE = "93507";
+    const APPLE_PAY_NUMBER_IS_REQUIRED                                      = "93508";
+    const APPLE_PAY_EXPIRATION_MONTH_IS_REQUIRED                            = "93509";
+    const APPLE_PAY_EXPIRATION_YEAR_IS_REQUIRED                             = "93510";
+    const APPLE_PAY_CRYPTOGRAM_IS_REQUIRED                                  = "93511";
+    const APPLE_PAY_DECRYPTION_FAILED                                       = "83512";
+    const APPLE_PAY_DISABLED                                                = "93513";
+    const APPLE_PAY_MERCHANT_NOT_CONFIGURED                                 = "93514";
+    const APPLE_PAY_MERCHANT_KEYS_ALREADY_CONFIGURED                        = "93515";
+    const APPLE_PAY_MERCHANT_KEYS_NOT_CONFIGURED                            = "93516";
+    const APPLE_PAY_CERTIFICATE_INVALID                                     = "93517";
+
     const AUTHORIZATION_FINGERPRINT_INVALID_CREATED_AT                   = '93204';
     const AUTHORIZATION_FINGERPRINT_INVALID_FORMAT                       = '93202';
     const AUTHORIZATION_FINGERPRINT_INVALID_PUBLIC_KEY                   = '93205';

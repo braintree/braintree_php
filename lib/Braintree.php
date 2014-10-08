@@ -87,6 +87,7 @@ require_once('Braintree/Instance.php');
 
 require_once('Braintree/Address.php');
 require_once('Braintree/AddOn.php');
+require_once('Braintree/ApplePayCard.php');
 require_once('Braintree/ClientToken.php');
 require_once('Braintree/Collection.php');
 require_once('Braintree/Configuration.php');
@@ -153,6 +154,7 @@ require_once('Braintree/Test/TransactionAmounts.php');
 require_once('Braintree/Test/VenmoSdk.php');
 require_once('Braintree/Test/Nonces.php');
 require_once('Braintree/Transaction/AddressDetails.php');
+require_once('Braintree/Transaction/ApplePayCardDetails.php');
 require_once('Braintree/Transaction/CreditCardDetails.php');
 require_once('Braintree/Transaction/PayPalDetails.php');
 require_once('Braintree/Transaction/CustomerDetails.php');

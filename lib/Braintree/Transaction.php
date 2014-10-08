@@ -148,6 +148,7 @@
  * @property-read string $amount transaction amount
  * @property-read object $billingDetails transaction billing address
  * @property-read string $createdAt transaction created timestamp
+ * @property-read object $applePayCardDetails transaction Apple Pay card info
  * @property-read object $creditCardDetails transaction credit card info
  * @property-read object $paypalDetails transaction paypal account info
  * @property-read object $customerDetails transaction customer info
@@ -538,6 +539,14 @@ final class Braintree_Transaction extends Braintree
     protected function _initialize($transactionAttribs)
     {
         $this->_attributes = $transactionAttribs;
+
+        if (isset($transactionAttribs['applePay'])) {
+            $this->_set('applePayCardDetails',
+                new Braintree_Transaction_ApplePayCardDetails(
+                    $transactionAttribs['applePay']
+                )
+            );
+        }
 
         if (isset($transactionAttribs['creditCard'])) {
             $this->_set('creditCardDetails',
