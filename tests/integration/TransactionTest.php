@@ -2150,7 +2150,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
+        $this->assertEquals(Braintree_Transaction::SETTLING, $transaction->status);
     }
 
     function testCreate_withPayPalHandlesBadUnvalidatedNonces()
@@ -2310,9 +2310,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transactionResult = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'options' => array(
-                'submitForSettlement' => true
-            )
         ));
 
         $this->assertTrue($transactionResult->success);
