@@ -74,7 +74,8 @@ final class Braintree_MerchantAccount extends Braintree
             'accountNumber',
             'destination',
             'email',
-            'mobilePhone'
+            'mobilePhone',
+            'descriptor',
         );
 
         return array(
