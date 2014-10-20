@@ -780,37 +780,6 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         Braintree_CreditCard::fromNonce($nonce);
     }
 
-    function testFromNonce_ReturnsErrorWhenNonceIsLocked()
-    {
-        $customer = Braintree_Customer::createNoValidate();
-        $clientTokenOptions = array();
-        $clientToken = json_decode(Braintree_TestHelper::decodedClientToken($clientTokenOptions));
-        $sharedCustomerIdentifier = "fake_identifier_" . rand();
-
-        $options = array(
-            "credit_card" => array(
-                "number" => "4009348888881881",
-                "expirationMonth" => "11",
-                "expirationYear" => "2099"
-            ),
-            "share" => true
-        );
-        $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
-        $options["shared_customer_identifier"] = $sharedCustomerIdentifier;
-        $options["shared_customer_identifier_type"] = "testing";
-
-        $response = Braintree_HttpClientApi::post('/client_api/v1/payment_methods/credit_cards.json', json_encode($options));
-        $this->assertEquals(201, $response["status"]);
-
-        unset($options["credit_card"]);
-        $response = Braintree_HttpClientApi::get_cards($options);
-        $body = json_decode($response["body"]);
-        $nonce = $body->paymentMethods[0]->nonce;
-
-        $this->setExpectedException('Braintree_Exception_NotFound', "locked");
-        Braintree_CreditCard::fromNonce($nonce);
-    }
-
     function testUpdate()
     {
         $customer = Braintree_Customer::createNoValidate();
