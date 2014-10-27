@@ -12,6 +12,7 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read array  $addresses
+ * @property-read array  $applePayCards
  * @property-read string $company
  * @property-read string $createdAt
  * @property-read array  $creditCards
@@ -428,6 +429,15 @@ class Braintree_Customer extends Braintree
             }
         }
         $this->_set('paypalAccounts', $paypalAccountArray);
+
+        // map each applePayCard into its own object
+        $applePayCardArray = array();
+        if (isset($customerAttribs['applePayCards'])) {
+            foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
+                $applePayCardArray[] = Braintree_applePayCard::factory($applePayCard);
+            }
+        }
+        $this->_set('applePayCards', $applePayCardArray);
     }
 
     /**
@@ -459,7 +469,7 @@ class Braintree_Customer extends Braintree
      */
     public function paymentMethods()
     {
-        return array_merge($this->creditCards, $this->paypalAccounts);
+        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards);
     }
 
     /**

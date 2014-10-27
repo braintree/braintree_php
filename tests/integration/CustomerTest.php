@@ -64,6 +64,18 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertSame("1111", $result->customer->creditCards[0]->last4);
     }
 
+    function testCreateCustomerWithApplePayCard()
+    {
+        $nonce = Braintree_Test_Nonces::$applePayVisa;
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $this->assertNotNull($customer->applePayCards[0]);
+        $this->assertNotNull($customer->paymentMethods()[0]);
+    }
+
     function testCreate_withUnicode()
     {
         $result = Braintree_Customer::create(array(
