@@ -518,6 +518,25 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame($paymentMethodToken, $foundPayPalAccount->token);
     }
 
+    function testFind_returnsApplePayCards()
+    {
+        $paymentMethodToken = 'APPLE_PAY-' . strval(rand());
+        $customer = Braintree_Customer::createNoValidate();
+        $nonce = Braintree_Test_Nonces::$applePayVisa;
+        Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'token' => $paymentMethodToken
+        ));
+
+        $foundApplePayCard = Braintree_PaymentMethod::find($paymentMethodToken);
+
+        $this->assertSame($paymentMethodToken, $foundApplePayCard->token);
+        $this->assertInstanceOf('Braintree_ApplePayCard', $foundApplePayCard);
+        $this->assertTrue(intval($foundApplePayCard->expirationMonth) > 0);
+        $this->assertTrue(intval($foundApplePayCard->expirationYear) > 0);
+    }
+
     function testFind_throwsIfCannotBeFound()
     {
         $this->setExpectedException('Braintree_Exception_NotFound');
