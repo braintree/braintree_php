@@ -384,10 +384,12 @@ final class Braintree_Transaction extends Braintree
         }
 
     }
+    
     /**
      * new sale
      * @param array $attribs
-     * @return array
+     * @return Braintree_Result_Successful|Braintree_Result_Error
+     * @throws Braintree_Exception_Unexpected
      */
     public static function sale($attribs)
     {
