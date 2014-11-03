@@ -667,6 +667,8 @@ final class Braintree_Transaction extends Braintree
 
     public static function refund($transactionId, $amount = null)
     {
+        self::_validateId($transactionId);
+
         $params = array('transaction' => array('amount' => $amount));
         $response = Braintree_Http::post('/transactions/' . $transactionId . '/refund', $params);
         return self::_verifyGatewayResponse($response);
