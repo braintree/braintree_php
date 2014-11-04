@@ -26,4 +26,5 @@ class Braintree_Test_Nonces
    public static $applePayVisa = "fake-apple-pay-visa-nonce";
    public static $applePayMasterCard = "fake-apple-pay-visa-nonce";
    public static $applePayAmEx = "fake-apple-pay-amex-nonce";
+   public static $abstractTransactable = "fake-abstract-transactable-nonce";
 }
