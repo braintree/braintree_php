@@ -22,8 +22,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
         $this->assertEquals(Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE, $webhookNotification->kind);
@@ -41,8 +41,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Braintree_Exception_InvalidSignature', 'signature does not match payload - one has been modified');
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'] . "bad",
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'] . "bad",
+            $sampleNotification['bt_payload']
         );
     }
 
@@ -61,8 +61,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Braintree_Exception_InvalidSignature', 'no matching public key');
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            "bad" . $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            "bad" . $sampleNotification['bt_payload']
         );
     }
 
@@ -76,8 +76,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Braintree_Exception_InvalidSignature');
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            "bad" . $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            "bad" . $sampleNotification['bt_payload']
         );
     }
 
@@ -91,8 +91,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Braintree_Exception_InvalidSignature');
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            "bad" . $sampleNotification['signature'],
-            $sampleNotification['payload']
+            "bad" . $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
     }
 
@@ -107,7 +107,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
 
         $webhookNotification = Braintree_WebhookNotification::parse(
             "bad_signature",
-            $sampleNotification['payload']
+            $sampleNotification['bt_payload']
         );
     }
 
@@ -121,7 +121,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Braintree_Exception_InvalidSignature', 'payload contains illegal characters');
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
+            $sampleNotification['bt_signature'],
             "~*~*invalid*~*~"
         );
     }
@@ -136,7 +136,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Braintree_Exception_InvalidSignature', 'signature does not match payload - one has been modified');
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
+            $sampleNotification['bt_signature'],
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+=/\n"
         );
     }
@@ -149,8 +149,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            rtrim($sampleNotification['payload'])
+            $sampleNotification['bt_signature'],
+            rtrim($sampleNotification['bt_payload'])
         );
     }
 
@@ -162,8 +162,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
         $this->assertEquals(Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED, $webhookNotification->kind);
@@ -181,8 +181,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
         $this->assertEquals(Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED, $webhookNotification->kind);
@@ -203,8 +203,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
         $this->assertEquals(Braintree_WebhookNotification::TRANSACTION_DISBURSED, $webhookNotification->kind);
@@ -221,8 +221,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
         $this->assertEquals(Braintree_WebhookNotification::DISPUTE_OPENED, $webhookNotification->kind);
@@ -238,8 +238,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
         $this->assertEquals(Braintree_WebhookNotification::DISPUTE_LOST, $webhookNotification->kind);
@@ -255,8 +255,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
         $this->assertEquals(Braintree_WebhookNotification::DISPUTE_WON, $webhookNotification->kind);
@@ -272,8 +272,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
 
@@ -297,8 +297,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
 
@@ -321,8 +321,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
         $this->assertEquals(Braintree_WebhookNotification::PARTNER_MERCHANT_CONNECTED, $webhookNotification->kind);
@@ -341,8 +341,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
         $this->assertEquals(Braintree_WebhookNotification::PARTNER_MERCHANT_DISCONNECTED, $webhookNotification->kind);
@@ -357,8 +357,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
 
         $webhookNotification = Braintree_WebhookNotification::parse(
-            $sampleNotification['signature'],
-            $sampleNotification['payload']
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
         );
 
         $this->assertEquals(Braintree_WebhookNotification::PARTNER_MERCHANT_DECLINED, $webhookNotification->kind);

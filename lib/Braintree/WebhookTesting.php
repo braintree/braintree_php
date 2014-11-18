@@ -7,8 +7,8 @@ class Braintree_WebhookTesting
         $signature = Braintree_Configuration::publicKey() . "|" . Braintree_Digest::hexDigestSha1(Braintree_Configuration::privateKey(), $payload);
 
         return array(
-            'signature' => $signature,
-            'payload' => $payload
+            'bt_signature' => $signature,
+            'bt_payload' => $payload
         );
     }
 
