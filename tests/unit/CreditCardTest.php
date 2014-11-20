@@ -108,4 +108,28 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException');
         Braintree_CreditCard::find('\t');
     }
+
+    function testVerificationIsLatestVerification()
+    {
+        $creditCard = Braintree_CreditCard::factory(
+            array(
+                'verifications' => array(
+                    array(
+                        'id' => '123',
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121212')
+                    ),
+                    array(
+                        'id' => '932',
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121215')
+                    ),
+                    array(
+                        'id' => '456',
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121213')
+                    )
+                )
+            )
+        );
+
+        $this->assertEquals('932', $creditCard->verification->id);
+    }
 }

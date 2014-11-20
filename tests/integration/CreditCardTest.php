@@ -158,6 +158,20 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_CreditCard::PREPAID_UNKNOWN, $result->creditCardVerification->creditCard["prepaid"]);
     }
 
+    function testCreate_withCardVerificationReturnsVerificationWithRiskData()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2011',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertTrue($result->success);
+        $this->assertNotNull($result->creditCard->verification->riskData);
+        $this->assertNotNull($result->creditCard->verification->riskData->decision);
+    }
+
     function testCreate_withCardVerificationAndOverriddenAmount()
     {
         $customer = Braintree_Customer::createNoValidate();

@@ -167,6 +167,22 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
     }
 
+    function testSaleWithRiskData()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertNotNull($transaction->riskData);
+        $this->assertNotNull($transaction->riskData->decision);
+    }
+
     function testRecurring()
     {
         $result = Braintree_Transaction::sale(array(

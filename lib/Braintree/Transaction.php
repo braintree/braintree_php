@@ -664,6 +664,10 @@ final class Braintree_Transaction extends Braintree
             }
         }
         $this->_set('discounts', $discountArray);
+
+        if(isset($transactionAttribs['riskData'])) {
+            $this->_set('riskData', Braintree_RiskData::factory($transactionAttribs['riskData']));
+        }
     }
 
     /**

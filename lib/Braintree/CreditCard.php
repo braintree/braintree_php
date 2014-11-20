@@ -431,6 +431,18 @@ class Braintree_CreditCard extends Braintree
         $this->_set('billingAddress', $billingAddress);
         $this->_set('expirationDate', $this->expirationMonth . '/' . $this->expirationYear);
         $this->_set('maskedNumber', $this->bin . '******' . $this->last4);
+
+        if(isset($creditCardAttribs['verifications']) && count($creditCardAttribs['verifications']) > 0) {
+            $verifications = $creditCardAttribs['verifications'];
+            usort($verifications, array($this, '_compareCreatedAtOnVerifications'));
+
+            $this->_set('verification', Braintree_CreditCardVerification::factory($verifications[0]));
+        }
+    }
+
+    private function _compareCreatedAtOnVerifications($verificationAttrib1, $verificationAttrib2)
+    {
+        return ($verificationAttrib2['createdAt'] < $verificationAttrib1['createdAt']) ? -1 : 1;
     }
 
     /**

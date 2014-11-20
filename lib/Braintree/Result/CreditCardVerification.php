@@ -40,6 +40,7 @@ class Braintree_Result_CreditCardVerification
     {
         $this->_initializeFromArray($attributes);
     }
+
     /**
      * initializes instance properties from the keys/values of an array
      * @ignore
@@ -49,13 +50,18 @@ class Braintree_Result_CreditCardVerification
      */
     private function _initializeFromArray($attributes)
     {
+        if(isset($attributes['riskData']))
+        {
+            $attributes['riskData'] = Braintree_RiskData::factory($attributes['riskData']);
+        }
+
         $this->_attributes = $attributes;
         foreach($attributes AS $name => $value) {
             $varName = "_$name";
             $this->$varName = $value;
-            // $this->$varName = Braintree_Util::delimiterToCamelCase($value, '_');
         }
     }
+
     /**
      *
      * @ignore
