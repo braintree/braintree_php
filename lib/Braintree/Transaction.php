@@ -343,7 +343,23 @@ final class Braintree_Transaction extends Braintree
             ),
             array('descriptor' => array('name', 'phone', 'url')),
             array('paypalAccount' => array('payeeEmail')),
-            array('industry' => array('industryType', array('data' => array('folioNumber', 'checkInDate', 'checkOutDate', 'travelPackage', 'departureDate', 'lodgingCheckInDate', 'lodgingCheckOutDate', 'lodgingName'))))
+            array('industry' =>
+                array('industryType',
+                    array('data' =>
+                        array(
+                            'folioNumber',
+                            'checkInDate',
+                            'checkOutDate',
+                            'travelPackage',
+                            'departureDate',
+                            'lodgingCheckInDate',
+                            'lodgingCheckOutDate',
+                            'lodgingName',
+                            'roomRate'
+                        )
+                    )
+                )
+            )
         );
     }
 

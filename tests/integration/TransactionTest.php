@@ -2458,6 +2458,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                     'folioNumber' => 'aaa',
                     'checkInDate' => '2014-07-07',
                     'checkOutDate' => '2014-07-09',
+                    'roomRate' => '239.00'
                 )
             )
         ));
@@ -2478,6 +2479,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
                     'folioNumber' => 'aaa',
                     'checkInDate' => '2014-07-07',
                     'checkOutDate' => '2014-06-09',
+                    'roomRate' => '239.00'
                 )
             )
         ));
