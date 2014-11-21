@@ -388,10 +388,11 @@ final class Braintree_Transaction extends Braintree
     }
 
 
-    /**
-     * @access public
-     *
-     */
+	/**
+	 * @param string $id
+	 * @throws Braintree_Exception_NotFound
+	 * @return Braintree_Transaction
+	 */
     public static function find($id)
     {
         self::_validateId($id);
