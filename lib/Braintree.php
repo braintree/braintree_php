@@ -116,6 +116,7 @@ require_once('Braintree/PartialMatchNode.php');
 require_once('Braintree/Plan.php');
 require_once('Braintree/RangeNode.php');
 require_once('Braintree/ResourceCollection.php');
+require_once('Braintree/RiskData.php');
 require_once('Braintree/SettlementBatchSummary.php');
 require_once('Braintree/SignatureService.php');
 require_once('Braintree/Subscription.php');

@@ -167,6 +167,22 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
     }
 
+    function testSaleWithRiskData()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertNotNull($transaction->riskData);
+        $this->assertNotNull($transaction->riskData->decision);
+    }
+
     function testRecurring()
     {
         $result = Braintree_Transaction::sale(array(
@@ -2442,5 +2458,99 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_PENDING);
         $this->assertEquals($inline_transaction->processorSettlementResponseCode, "4002");
         $this->assertEquals($inline_transaction->processorSettlementResponseText, "Settlement Pending");
+    }
+
+    function testSale_withLodgingIndustryData()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'industry' => array(
+                'industryType' => Braintree_Transaction::LODGING_INDUSTRY,
+                'data' => array(
+                    'folioNumber' => 'aaa',
+                    'checkInDate' => '2014-07-07',
+                    'checkOutDate' => '2014-07-09',
+                    'roomRate' => '239.00'
+                )
+            )
+        ));
+        $this->assertTrue($result->success);
+    }
+
+    function testSale_withLodgingIndustryDataValidation()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'industry' => array(
+                'industryType' => Braintree_Transaction::LODGING_INDUSTRY,
+                'data' => array(
+                    'folioNumber' => 'aaa',
+                    'checkInDate' => '2014-07-07',
+                    'checkOutDate' => '2014-06-09',
+                    'roomRate' => '239.00'
+                )
+            )
+        ));
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $errors = $result->errors->forKey('transaction')->forKey('industry')->onAttribute('checkOutDate');
+        $this->assertEquals(Braintree_Error_Codes::INDUSTRY_DATA_LODGING_CHECK_OUT_DATE_MUST_FOLLOW_CHECK_IN_DATE, $errors[0]->code);
+    }
+
+    function testSale_withTravelCruiseIndustryData()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'industry' => array(
+                'industryType' => Braintree_Transaction::TRAVEL_AND_CRUISE_INDUSTRY,
+                'data' => array(
+                    'travelPackage' => 'flight',
+                    'departureDate' => '2014-07-07',
+                    'lodgingCheckInDate' => '2014-07-09',
+                    'lodgingCheckOutDate' => '2014-07-10',
+                    'lodgingName' => 'Disney',
+                )
+            )
+        ));
+        $this->assertTrue($result->success);
+    }
+
+    function testSale_withTravelCruiseIndustryDataValidation()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'industry' => array(
+                'industryType' => Braintree_Transaction::TRAVEL_AND_CRUISE_INDUSTRY,
+                'data' => array(
+                    'travelPackage' => 'invalid',
+                    'departureDate' => '2014-07-07',
+                    'lodgingCheckInDate' => '2014-07-09',
+                    'lodgingCheckOutDate' => '2014-07-10',
+                    'lodgingName' => 'Disney',
+                )
+            )
+        ));
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $errors = $result->errors->forKey('transaction')->forKey('industry')->onAttribute('travelPackage');
+        $this->assertEquals(Braintree_Error_Codes::INDUSTRY_DATA_TRAVEL_CRUISE_TRAVEL_PACKAGE_IS_INVALID, $errors[0]->code);
     }
 }

@@ -209,6 +209,10 @@ final class Braintree_Transaction extends Braintree
     const DUPLICATE    = 'duplicate';
     const FRAUD        = 'fraud';
 
+    // Industry Types
+    const LODGING_INDUSTRY           = 'lodging';
+    const TRAVEL_AND_CRUISE_INDUSTRY = 'travel_cruise';
+
     public static function cloneTransaction($transactionId, $attribs)
     {
         Braintree_Util::verifyKeys(self::cloneSignature(), $attribs);
@@ -338,7 +342,24 @@ final class Braintree_Transaction extends Braintree
             array('customFields' => array('_anyKey_')
             ),
             array('descriptor' => array('name', 'phone', 'url')),
-            array('paypalAccount' => array('payeeEmail'))
+            array('paypalAccount' => array('payeeEmail')),
+            array('industry' =>
+                array('industryType',
+                    array('data' =>
+                        array(
+                            'folioNumber',
+                            'checkInDate',
+                            'checkOutDate',
+                            'travelPackage',
+                            'departureDate',
+                            'lodgingCheckInDate',
+                            'lodgingCheckOutDate',
+                            'lodgingName',
+                            'roomRate'
+                        )
+                    )
+                )
+            )
         );
     }
 
@@ -643,6 +664,10 @@ final class Braintree_Transaction extends Braintree
             }
         }
         $this->_set('discounts', $discountArray);
+
+        if(isset($transactionAttribs['riskData'])) {
+            $this->_set('riskData', Braintree_RiskData::factory($transactionAttribs['riskData']));
+        }
     }
 
     /**
@@ -667,6 +692,8 @@ final class Braintree_Transaction extends Braintree
 
     public static function refund($transactionId, $amount = null)
     {
+        self::_validateId($transactionId);
+
         $params = array('transaction' => array('amount' => $amount));
         $response = Braintree_Http::post('/transactions/' . $transactionId . '/refund', $params);
         return self::_verifyGatewayResponse($response);

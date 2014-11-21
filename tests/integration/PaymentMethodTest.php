@@ -89,6 +89,19 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame($paymentMethodToken, $result->paymentMethod->token);
     }
 
+    function testCreate_fromAbstractPaymentMethodNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+
+        $result = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree_Test_Nonces::$abstractTransactable
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertNotNull($result->paymentMethod->token);
+    }
+
     function testCreate_doesNotWorkForUnvalidatedOnetimePaypalAccountNonce()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
@@ -516,6 +529,41 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('jane.doe@example.com', $foundPayPalAccount->email);
         $this->assertSame($paymentMethodToken, $foundPayPalAccount->token);
+    }
+
+    function testFind_returnsApplePayCards()
+    {
+        $paymentMethodToken = 'APPLE_PAY-' . strval(rand());
+        $customer = Braintree_Customer::createNoValidate();
+        $nonce = Braintree_Test_Nonces::$applePayVisa;
+        Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'token' => $paymentMethodToken
+        ));
+
+        $foundApplePayCard = Braintree_PaymentMethod::find($paymentMethodToken);
+
+        $this->assertSame($paymentMethodToken, $foundApplePayCard->token);
+        $this->assertInstanceOf('Braintree_ApplePayCard', $foundApplePayCard);
+        $this->assertTrue(intval($foundApplePayCard->expirationMonth) > 0);
+        $this->assertTrue(intval($foundApplePayCard->expirationYear) > 0);
+    }
+
+    function testFind_returnsAbstractPaymentMethods()
+    {
+        $paymentMethodToken = 'ABSTRACT-' . strval(rand());
+        $customer = Braintree_Customer::createNoValidate();
+        $nonce = Braintree_test_Nonces::$abstractTransactable;
+        Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'token' => $paymentMethodToken
+        ));
+
+        $foundPaymentMethod = Braintree_PaymentMethod::find($paymentMethodToken);
+
+        $this->assertSame($paymentMethodToken, $foundPaymentMethod-> token);
     }
 
     function testFind_throwsIfCannotBeFound()

@@ -44,6 +44,8 @@ class Braintree_PaymentMethod extends Braintree
                 return Braintree_CreditCard::factory($response['creditCard']);
             } else if (isset($response['paypalAccount'])) {
                 return Braintree_PayPalAccount::factory($response['paypalAccount']);
+            } else if (isset($response['applePayCard'])) {
+                return Braintree_ApplePayCard::factory($response['applePayCard']);
             } else if (is_array($response)) {
                 return Braintree_UnknownPaymentMethod::factory($response);
             }
