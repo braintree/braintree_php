@@ -340,7 +340,8 @@ final class Braintree_Transaction extends Braintree
                     'payeeEmail',
                     array('paypal' =>
                         array(
-                            'payeeEmail'
+                            'payeeEmail',
+                            'customField'
                         )
                     )
                 ),
