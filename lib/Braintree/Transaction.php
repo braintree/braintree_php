@@ -337,7 +337,13 @@ final class Braintree_Transaction extends Braintree
                     'addBillingAddressToPaymentMethod',
                     'venmoSdkSession',
                     'storeShippingAddressInVault',
-                    'payeeEmail'),
+                    'payeeEmail',
+                    array('paypal' =>
+                        array(
+                            'payeeEmail'
+                        )
+                    )
+                ),
             ),
             array('customFields' => array('_anyKey_')
             ),
