@@ -37,6 +37,7 @@ final class Braintree_Dispute extends Braintree
     const PRODUCT_NOT_RECEIVED            = "product_not_received";
     const PRODUCT_UNSATISFACTORY          = "product_unsatisfactory";
     const TRANSACTION_AMOUNT_DIFFERS      = "transaction_amount_differs";
+    const RETRIEVAL                       = "retrieval";
 
 
     protected function _initialize($disputeAttribs)
