@@ -379,7 +379,7 @@ final class Braintree_Transaction extends Braintree
      * @access public
      * @param array $attribs
      * @return object
-     * @throws Braintree_Exception_ValidationError
+     * @throws Braintree_Exception_ValidationsFailed
      */
     public static function creditNoValidate($attribs)
     {
@@ -391,6 +391,9 @@ final class Braintree_Transaction extends Braintree
     /**
      * @access public
      *
+     * @param string $id
+     * @return Braintree_Transaction
+     * @throws Braintree_Exception_NotFound
      */
     public static function find($id)
     {
@@ -408,7 +411,7 @@ final class Braintree_Transaction extends Braintree
     /**
      * new sale
      * @param array $attribs
-     * @return array
+     * @return Braintree_Transaction
      */
     public static function sale($attribs)
     {
@@ -734,7 +737,7 @@ final class Braintree_Transaction extends Braintree
      * sends the create request to the gateway
      *
      * @ignore
-     * @param var $url
+     * @param string $url
      * @param array $params
      * @return mixed
      */
