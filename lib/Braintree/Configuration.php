@@ -140,22 +140,22 @@ class Braintree_Configuration extends Braintree
      */
     public static function environment($value = null)
     {
-        return self::setOrGet(__FUNCTION__, $value);
+        return self::setOrGet(__FUNCTION__, trim($value));
     }
 
     public static function merchantId($value = null)
     {
-        return self::setOrGet(__FUNCTION__, $value);
+        return self::setOrGet(__FUNCTION__, trim($value));
     }
 
     public static function publicKey($value = null)
     {
-        return self::setOrGet(__FUNCTION__, $value);
+        return self::setOrGet(__FUNCTION__, trim($value));
     }
 
     public static function privateKey($value = null)
     {
-        return self::setOrGet(__FUNCTION__, $value);
+        return self::setOrGet(__FUNCTION__, trim($value));
     }
     /**#@-*/
 
