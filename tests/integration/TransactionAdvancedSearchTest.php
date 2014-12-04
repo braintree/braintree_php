@@ -539,7 +539,8 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             'paymentMethodToken' => $creditCard->token,
             'options' => array('submitForSettlement' => true)
         ));
-        Braintree_Http::put('/transactions/' . $sale->id . '/settle');
+        $http = Braintree_Configuration::$global->http();
+        $http->put('/transactions/' . $sale->id . '/settle');
         $refund = Braintree_Transaction::refund($sale->id)->transaction;
 
         $credit = Braintree_Transaction::creditNoValidate(array(
@@ -594,7 +595,8 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             'paymentMethodToken' => $creditCard->token,
             'options' => array('submitForSettlement' => true)
         ));
-        Braintree_Http::put('/transactions/' . $sale->id . '/settle');
+        $http = Braintree_Configuration::$global->http();
+        $http->put('/transactions/' . $sale->id . '/settle');
         $refund = Braintree_Transaction::refund($sale->id)->transaction;
 
         $credit = Braintree_Transaction::creditNoValidate(array(
@@ -1287,7 +1289,8 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             )
         ));
 
-        Braintree_Http::put('/transactions/' . $transaction->id . '/settle');
+        $http = Braintree_Configuration::$global->http();
+        $http->put('/transactions/' . $transaction->id . '/settle');
         $transaction = Braintree_Transaction::find($transaction->id);
 
         $twenty_min_ago = date_create("now -20 minutes", new DateTimeZone("UTC"));
@@ -1435,7 +1438,8 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
     function testHandlesPayPalAccounts()
     {
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'access_token' => 'PAYPAL_ACCESS_TOKEN'
             )

@@ -56,7 +56,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             ),
             'customerId'
         );
-        $this->assertEquals($expected, Braintree_CreditCard::CreateSignature());
+        $this->assertEquals($expected, Braintree_CreditCardGateway::createSignature());
     }
 
     function testUpdateSignature()
@@ -88,7 +88,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
                 ),
             ),
         );
-        $this->assertEquals($expected, Braintree_CreditCard::UpdateSignature());
+        $this->assertEquals($expected, Braintree_CreditCardGateway::updateSignature());
     }
 
     function testErrorsOnFindWithBlankArgument()

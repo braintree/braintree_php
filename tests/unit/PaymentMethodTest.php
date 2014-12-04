@@ -19,9 +19,9 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
                 'failOnDuplicatePaymentMethod',
                 'verificationMerchantAccountId'
             )),
-            array('billingAddress' => Braintree_Address::createSignature())
+            array('billingAddress' => Braintree_AddressGateway::createSignature())
         );
-        $this->assertEquals($expected, Braintree_PaymentMethod::CreateSignature());
+        $this->assertEquals($expected, Braintree_PaymentMethodGateway::createSignature());
     }
 
     function testErrorsOnFindWithBlankArgument()

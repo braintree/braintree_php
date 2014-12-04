@@ -8,7 +8,8 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
     {
         $clientToken = Braintree_TestHelper::decodedClientToken();
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
-        $response = Braintree_HttpClientApi::get_cards(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $response = $http->get_cards(array(
             "authorization_fingerprint" => $authorizationFingerprint,
             "shared_customer_identifier" => "fake_identifier",
             "shared_customer_identifier_type" => "testing"
@@ -32,6 +33,20 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, $version);
     }
 
+    function testGateway_VersionDefaultsToTwo()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $encodedClientToken = $gateway->clientToken()->generate();
+        $clientToken = base64_decode($encodedClientToken);
+        $version = json_decode($clientToken)->version;
+        $this->assertEquals(2, $version);
+    }
+
     function test_GatewayRespectsVerifyCard()
     {
         $result = Braintree_Customer::create();
@@ -46,7 +61,8 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
-        $response = Braintree_HttpClientApi::post('/client_api/v1/payment_methods/credit_cards.json', json_encode(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $response = $http->post('/client_api/v1/payment_methods/credit_cards.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4000111111111115",
                 "expirationDate" => "11/2099"
@@ -70,7 +86,8 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
-        $response = Braintree_HttpClientApi::post('/client_api/v1/payment_methods/credit_cards.json', json_encode(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $response = $http->post('/client_api/v1/payment_methods/credit_cards.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4242424242424242",
                 "expirationDate" => "11/2099"
@@ -89,7 +106,8 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
-        $response = Braintree_HttpClientApi::post('/client_api/v1/payment_methods/credit_cards.json', json_encode(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $response = $http->post('/client_api/v1/payment_methods/credit_cards.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4242424242424242",
                 "expirationDate" => "11/2099"
@@ -122,7 +140,8 @@ class Braintree_ClientTokenTest extends PHPUnit_Framework_TestCase
         ));
         $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
 
-        $response = Braintree_HttpClientApi::post('/client_api/v1/payment_methods/credit_cards.json', json_encode(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $response = $http->post('/client_api/v1/payment_methods/credit_cards.json', json_encode(array(
             "credit_card" => array(
                 "number" => "4242424242424242",
                 "expirationDate" => "11/2099"

@@ -43,10 +43,37 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('DateTime', $subscription->createdAt);
     }
 
+    function testGatewayCreate_whenSuccessful()
+    {
+        $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
+        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
+
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $result = $gateway->subscription()->create(array(
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id']
+
+        ));
+        Braintree_TestHelper::assertPrintable($result);
+        $this->assertTrue($result->success);
+        $subscription = $result->subscription;
+        $this->assertEquals($creditCard->token, $subscription->paymentMethodToken);
+        $this->assertEquals(0, $subscription->failureCount);
+        $this->assertEquals($plan['id'], $subscription->planId);
+        $this->assertEquals(Braintree_TestHelper::defaultMerchantAccountId(), $subscription->merchantAccountId);
+        $this->assertEquals(Braintree_Subscription::ACTIVE, $subscription->status);
+    }
+
     function testCreate_withPaymentMethodNonce()
     {
         $customerId = Braintree_Customer::create()->customer->id;
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             "creditCard" => array(
                 "number" => "4111111111111111",
                 "expirationMonth" => "11",
@@ -638,7 +665,8 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paymentMethodToken
@@ -892,7 +920,8 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         ))->subscription;
 
         $customerId = Braintree_Customer::create()->customer->id;
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             "creditCard" => array(
                 "number" => "4111111111111111",
                 "expirationMonth" => "11",
@@ -1128,7 +1157,8 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
     function testRetryCharge_WithoutAmount()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
-        Braintree_Http::put('/subscriptions/' . $subscription->id . '/make_past_due');
+        $http = Braintree_Configuration::$global->http();
+        $http->put('/subscriptions/' . $subscription->id . '/make_past_due');
 
         $result = Braintree_Subscription::retryCharge($subscription->id);
 
@@ -1144,7 +1174,8 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
     function testRetryCharge_WithAmount()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
-        Braintree_Http::put('/subscriptions/' . $subscription->id . '/make_past_due');
+        $http = Braintree_Configuration::$global->http();
+        $http->put('/subscriptions/' . $subscription->id . '/make_past_due');
 
         $result = Braintree_Subscription::retryCharge($subscription->id, 1000);
 

@@ -8,7 +8,8 @@ class Braintree_HttpTest extends PHPUnit_Framework_TestCase
         try {
             Braintree_Configuration::environment('production');
             $this->setExpectedException('Braintree_Exception_Authentication');
-            Braintree_Http::get('/');
+            $http = Braintree_Configuration::$global->http();
+            $http->get('/');
         } catch (Exception $e) {
             Braintree_Configuration::environment('development');
             throw $e;
@@ -21,7 +22,8 @@ class Braintree_HttpTest extends PHPUnit_Framework_TestCase
         try {
             Braintree_Configuration::environment('sandbox');
             $this->setExpectedException('Braintree_Exception_Authentication');
-            Braintree_Http::get('/');
+            $http = Braintree_Configuration::$global->http();
+            $http->get('/');
         } catch (Exception $e) {
             Braintree_Configuration::environment('development');
             throw $e;
@@ -34,8 +36,9 @@ class Braintree_HttpTest extends PHPUnit_Framework_TestCase
         try {
             Braintree_Configuration::environment('sandbox');
             $this->setExpectedException('Braintree_Exception_SSLCertificate');
+            $http = Braintree_Configuration::$global->http();
             //ip address of api.braintreegateway.com
-            Braintree_Http::_doUrlRequest('get', '204.109.13.121');
+            $http->_doUrlRequest('get', '204.109.13.121');
         } catch (Exception $e) {
             Braintree_Configuration::environment('development');
             throw $e;

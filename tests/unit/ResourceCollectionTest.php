@@ -3,11 +3,11 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_TestResource
 {
-    static function lookup($id) {
+    public function lookup($id) {
         return Braintree_ResourceCollectionTest::$values[intval($id)];
     }
 
-    static function fetch($ids)
+    public function fetch($ids)
     {
 
         return array_map("Braintree_TestResource::lookup", $ids);
@@ -28,9 +28,10 @@ class Braintree_ResourceCollectionTest extends PHPUnit_Framework_TestCase
             )
         );
 
+        $object = new Braintree_TestResource();
         $pager = array(
-            'className' => 'Braintree_TestResource',
-            'classMethod' => 'fetch',
+            'object' => $object,
+            'method' => 'fetch',
             'methodArgs' => array()
         );
 
@@ -58,9 +59,10 @@ class Braintree_ResourceCollectionTest extends PHPUnit_Framework_TestCase
             )
         );
 
+        $object = new Braintree_TestResource();
         $pager = array(
-            'className' => 'Braintree_TestResource',
-            'classMethod' => 'fetch',
+            'object' => $object,
+            'method' => 'fetch',
             'methodArgs' => array()
         );
 

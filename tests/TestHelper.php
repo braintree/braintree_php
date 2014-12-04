@@ -111,27 +111,32 @@ class Braintree_TestHelper
 
     public static function settle($transactionId)
     {
-        Braintree_Http::put('/transactions/' . $transactionId . '/settle');
+        $http = Braintree_Configuration::$global->http();
+        $http->put('/transactions/' . $transactionId . '/settle');
     }
 
     public static function settlementDecline($transactionId)
     {
-        Braintree_Http::put('/transactions/' . $transactionId . '/settlement_decline');
+        $http = Braintree_Configuration::$global->http();
+        $http->put('/transactions/' . $transactionId . '/settlement_decline');
     }
 
     public static function settlementPending($transactionId)
     {
-        Braintree_Http::put('/transactions/' . $transactionId . '/settlement_pending');
+        $http = Braintree_Configuration::$global->http();
+        $http->put('/transactions/' . $transactionId . '/settlement_pending');
     }
 
     public static function escrow($transactionId)
     {
-        Braintree_Http::put('/transactions/' . $transactionId . '/escrow');
+        $http = Braintree_Configuration::$global->http();
+        $http->put('/transactions/' . $transactionId . '/escrow');
     }
 
     public static function create3DSVerification($merchantAccountId, $params)
     {
-        $response = Braintree_Http::post('/three_d_secure/create_verification/' . $merchantAccountId, array(
+        $http = Braintree_Configuration::$global->http();
+        $response = $http->post('/three_d_secure/create_verification/' . $merchantAccountId, array(
             'threeDSecureVerification' => $params
         ));
         return $response['threeDSecureVerification']['threeDSecureToken'];
