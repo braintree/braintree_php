@@ -22,11 +22,13 @@ class Braintree_PaymentMethodGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
 
@@ -48,7 +50,8 @@ class Braintree_PaymentMethodGateway
     {
         $this->_validateId($token);
         try {
-            $response = $this->_config->http()->get('/payment_methods/any/'.$token);
+            $path = $this->_config->merchantPath() . '/payment_methods/any/' . $token;
+            $response = $this->_http->get($path);
             if (isset($response['creditCard'])) {
                 return Braintree_CreditCard::factory($response['creditCard']);
             } else if (isset($response['paypalAccount'])) {
@@ -75,7 +78,8 @@ class Braintree_PaymentMethodGateway
     public function delete($token)
     {
         $this->_validateId($token);
-        $this->_config->http()->delete('/payment_methods/any/' . $token);
+        $path = $this->_config->merchantPath() . '/payment_methods/any/' . $token;
+        $this->_http->delete($path);
         return new Braintree_Result_Successful();
     }
 
@@ -141,13 +145,14 @@ class Braintree_PaymentMethodGateway
      * sends the create request to the gateway
      *
      * @ignore
-     * @param string $url
+     * @param string $subPath
      * @param array $params
      * @return mixed
      */
-    public function _doCreate($url, $params)
+    public function _doCreate($subPath, $params)
     {
-        $response = $this->_config->http()->post($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }
@@ -156,13 +161,14 @@ class Braintree_PaymentMethodGateway
      * sends the update request to the gateway
      *
      * @ignore
-     * @param string $url
+     * @param string $subPath
      * @param array $params
      * @return mixed
      */
-    public function _doUpdate($url, $params)
+    public function _doUpdate($subPath, $params)
     {
-        $response = $this->_config->http()->put($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->put($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }

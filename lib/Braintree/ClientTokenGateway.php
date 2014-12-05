@@ -4,11 +4,13 @@ class Braintree_ClientTokenGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
     public function generate($params=array())
@@ -31,9 +33,10 @@ class Braintree_ClientTokenGateway
      * @param array $params
      * @return mixed
      */
-    public function _doGenerate($url, $params)
+    public function _doGenerate($subPath, $params)
     {
-        $response = $this->_config->http()->post($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }

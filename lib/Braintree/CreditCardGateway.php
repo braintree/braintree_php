@@ -16,11 +16,13 @@ class Braintree_CreditCardGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
     public function create($attribs)
@@ -71,7 +73,7 @@ class Braintree_CreditCardGateway
     public function createCreditCardUrl()
     {
         trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
-        return $this->_config->merchantUrl() .
+        return $this->_config->baseUrl() . $this->_config->merchantPath() .
                 '/payment_methods/all/create_via_transparent_redirect_request';
     }
 
@@ -81,7 +83,8 @@ class Braintree_CreditCardGateway
      */
     public function expired()
     {
-        $response = $this->_config->http()->post("/payment_methods/all/expired_ids");
+        $path = $this->_config->merchantPath() . '/payment_methods/all/expired_ids';
+        $response = $this->_http->post($path);
         $pager = array(
             'object' => $this,
             'method' => 'fetchExpired',
@@ -93,7 +96,8 @@ class Braintree_CreditCardGateway
 
     public function fetchExpired($ids)
     {
-        $response = $this->_config->http()->post("/payment_methods/all/expired", array('search' => array('ids' => $ids)));
+        $path = $this->_config->merchantPath() . "/payment_methods/all/expired";
+        $response = $this->_http->post($path, array('search' => array('ids' => $ids)));
 
         return Braintree_Util::extractattributeasarray(
             $response['paymentMethods'],
@@ -107,8 +111,8 @@ class Braintree_CreditCardGateway
      */
     public function expiringBetween($startDate, $endDate)
     {
-        $queryPath = '/payment_methods/all/expiring_ids?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
-        $response = $this->_config->http()->post($queryPath);
+        $queryPath = $this->_config->merchantPath() . '/payment_methods/all/expiring_ids?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
+        $response = $this->_http->post($queryPath);
         $pager = array(
             'object' => $this,
             'method' => 'fetchExpiring',
@@ -120,8 +124,8 @@ class Braintree_CreditCardGateway
 
     public function fetchExpiring($startDate, $endDate, $ids)
     {
-        $queryPath = '/payment_methods/all/expiring?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
-        $response = $this->_config->http()->post($queryPath, array('search' => array('ids' => $ids)));
+        $queryPath = $this->_config->merchantPath() . '/payment_methods/all/expiring?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
+        $response = $this->_http->post($queryPath, array('search' => array('ids' => $ids)));
 
         return Braintree_Util::extractAttributeAsArray(
             $response['paymentMethods'],
@@ -141,7 +145,8 @@ class Braintree_CreditCardGateway
     {
         $this->_validateId($token);
         try {
-            $response = $this->_config->http()->get('/payment_methods/credit_card/'.$token);
+            $path = $this->_config->merchantPath() . '/payment_methods/credit_card/' . $token;
+            $response = $this->_http->get($path);
             return Braintree_CreditCard::factory($response['creditCard']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound(
@@ -163,7 +168,8 @@ class Braintree_CreditCardGateway
     {
         $this->_validateId($nonce, "nonce");
         try {
-            $response = $this->_config->http()->get('/payment_methods/from_nonce/'.$nonce);
+            $path = $this->_config->merchantPath() . '/payment_methods/from_nonce/' . $nonce;
+            $response = $this->_http->get($path);
             return Braintree_CreditCard::factory($response['creditCard']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound(
@@ -289,7 +295,7 @@ class Braintree_CreditCardGateway
     public function updateCreditCardUrl()
     {
         trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
-        return $this->_config->merchantUrl() .
+        return $this->_config->baseUrl() . $this->_config->merchantPath() .
                 '/payment_methods/all/update_via_transparent_redirect_request';
     }
 
@@ -316,7 +322,8 @@ class Braintree_CreditCardGateway
     public function delete($token)
     {
         $this->_validateId($token);
-        $this->_config->http()->delete('/payment_methods/credit_card/' . $token);
+        $path = $this->_config->merchantPath() . '/payment_methods/credit_card/' . $token;
+        $this->_http->delete($path);
         return new Braintree_Result_Successful();
     }
 
@@ -385,13 +392,14 @@ class Braintree_CreditCardGateway
      * sends the create request to the gateway
      *
      * @ignore
-     * @param string $url
+     * @param string $subPath
      * @param array $params
      * @return mixed
      */
-    public function _doCreate($url, $params)
+    public function _doCreate($subPath, $params)
     {
-        $response = $this->_config->http()->post($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }
@@ -425,9 +433,10 @@ class Braintree_CreditCardGateway
      * @param array $params
      * @return mixed
      */
-    private function _doUpdate($httpVerb, $url, $params)
+    private function _doUpdate($httpVerb, $subPath, $params)
     {
-        $response = $this->_config->http()->$httpVerb($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->$httpVerb($fullPath, $params);
         return $this->_verifyGatewayResponse($response);
     }
 

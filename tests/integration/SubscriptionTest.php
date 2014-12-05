@@ -1157,8 +1157,9 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
     function testRetryCharge_WithoutAmount()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
-        $http = Braintree_Configuration::$global->http();
-        $http->put('/subscriptions/' . $subscription->id . '/make_past_due');
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . '/subscriptions/' . $subscription->id . '/make_past_due';
+        $http->put($path);
 
         $result = Braintree_Subscription::retryCharge($subscription->id);
 
@@ -1174,8 +1175,9 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
     function testRetryCharge_WithAmount()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
-        $http = Braintree_Configuration::$global->http();
-        $http->put('/subscriptions/' . $subscription->id . '/make_past_due');
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . '/subscriptions/' . $subscription->id . '/make_past_due';
+        $http->put($path);
 
         $result = Braintree_Subscription::retryCharge($subscription->id, 1000);
 

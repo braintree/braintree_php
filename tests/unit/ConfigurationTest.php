@@ -141,14 +141,6 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('https://auth.venmo.com', $authUrl);
     }
 
-    function testmerchantUrl()
-    {
-        $this->config->setMerchantId('abc123');
-        $this->config->setEnvironment('sandbox');
-        $mu = $this->config->merchantUrl();
-        $this->assertEquals('https://api.sandbox.braintreegateway.com:443/merchants/abc123', $mu);
-    }
-
     function testBaseUrl()
     {
         $this->config->setEnvironment('sandbox');

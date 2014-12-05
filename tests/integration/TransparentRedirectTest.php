@@ -9,8 +9,9 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $trData = Braintree_TransparentRedirect::createCustomerData(
             array("redirectUrl" => "http://www.example.com?foo=bar")
         );
+        $config = Braintree_Configuration::$global;
         $queryString = Braintree_TestHelper::submitTrRequest(
-            Braintree_Configuration::$global->merchantUrl() . '/test/maintenance',
+            $config->baseUrl() . $config->merchantPath() . '/test/maintenance',
             array(),
             $trData
         );
@@ -24,8 +25,9 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $trData = Braintree_TransparentRedirect::createCustomerData(
             array("redirectUrl" => "http://www.example.com")
         );
+        $config = Braintree_Configuration::$global;
         $queryString = Braintree_TestHelper::submitTrRequest(
-            Braintree_Configuration::$global->merchantUrl() . '/test/maintenance',
+            $config->baseUrl() . $config->merchantPath() . '/test/maintenance',
             array(),
             $trData
         );

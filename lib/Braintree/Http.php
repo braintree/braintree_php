@@ -63,7 +63,7 @@ class Braintree_Http
 
     private function _doRequest($httpVerb, $path, $requestBody = null)
     {
-        return $this->_doUrlRequest($httpVerb, $this->_config->merchantUrl() . $path, $requestBody);
+        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . $path, $requestBody);
     }
 
     public function _doUrlRequest($httpVerb, $url, $requestBody = null)

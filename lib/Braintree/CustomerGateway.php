@@ -15,16 +15,19 @@ class Braintree_CustomerGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
     public function all()
     {
-        $response = $this->_config->http()->post('/customers/advanced_search_ids');
+        $path = $this->_config->merchantPath() . '/customers/advanced_search_ids';
+        $response = $this->_http->post($path);
         $pager = array(
             'object' => $this,
             'method' => 'fetch',
@@ -41,7 +44,8 @@ class Braintree_CustomerGateway
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = Braintree_CustomerSearch::ids()->in($ids)->toparam();
-        $response = $this->_config->http()->post('/customers/advanced_search', array('search' => $criteria));
+        $path = $this->_config->merchantPath() . '/customers/advanced_search';
+        $response = $this->_http->post($path, array('search' => $criteria));
 
         return Braintree_Util::extractattributeasarray(
             $response['customers'],
@@ -122,7 +126,7 @@ class Braintree_CustomerGateway
     public function createCustomerUrl()
     {
         trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
-        return $this->_config->merchantUrl() .
+        return $this->_config->baseUrl() . $this->_config->merchantPath() .
                 '/customers/all/create_via_transparent_redirect_request';
     }
 
@@ -183,7 +187,8 @@ class Braintree_CustomerGateway
     {
         $this->_validateId($id);
         try {
-            $response = $this->_config->http()->get('/customers/'.$id);
+            $path = $this->_config->merchantPath() . '/customers/' . $id;
+            $response = $this->_http->get($path);
             return Braintree_Customer::factory($response['customer']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound(
@@ -234,7 +239,8 @@ class Braintree_CustomerGateway
     public function delete($customerId)
     {
         $this->_validateId($customerId);
-        $this->_config->http()->delete('/customers/' . $customerId);
+        $path = $this->_config->merchantPath() . '/customers/' . $customerId;
+        $this->_http->delete($path);
         return new Braintree_Result_Successful();
     }
 
@@ -297,7 +303,8 @@ class Braintree_CustomerGateway
             $criteria[$term->name] = $term->toparam();
         }
 
-        $response = $this->_config->http()->post('/customers/advanced_search_ids', array('search' => $criteria));
+        $path = $this->_config->merchantPath() . '/customers/advanced_search_ids';
+        $response = $this->_http->post($path, array('search' => $criteria));
         $pager = array(
             'object' => $this,
             'method' => 'fetch',
@@ -356,7 +363,7 @@ class Braintree_CustomerGateway
     public function updateCustomerUrl()
     {
         trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
-        return $this->_config->merchantUrl() .
+        return $this->_config->baseUrl() . $this->_config->merchantPath() .
                 '/customers/all/update_via_transparent_redirect_request';
     }
 
@@ -506,13 +513,14 @@ class Braintree_CustomerGateway
      * sends the create request to the gateway
      *
      * @ignore
-     * @param string $url
+     * @param string $subPath
      * @param array $params
      * @return mixed
      */
-    public function _doCreate($url, $params)
+    public function _doCreate($subPath, $params)
     {
-        $response = $this->_config->http()->post($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }
@@ -543,13 +551,14 @@ class Braintree_CustomerGateway
      * sends the update request to the gateway
      *
      * @ignore
-     * @param string $url
+     * @param string $subPath
      * @param array $params
      * @return mixed
      */
-    private function _doUpdate($httpVerb, $url, $params)
+    private function _doUpdate($httpVerb, $subPath, $params)
     {
-        $response = $this->_config->http()->$httpVerb($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->$httpVerb($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }

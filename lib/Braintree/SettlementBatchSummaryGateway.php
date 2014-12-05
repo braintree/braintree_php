@@ -3,11 +3,13 @@ class Braintree_SettlementBatchSummaryGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
     public function generate($settlement_date, $groupByCustomField = NULL)
@@ -18,7 +20,8 @@ class Braintree_SettlementBatchSummaryGateway
             $criteria['group_by_custom_field'] = $groupByCustomField;
         }
         $params = array('settlement_batch_summary' => $criteria);
-        $response = $this->_config->http()->post('/settlement_batch_summary', $params);
+        $path = $this->_config->merchantPath() . '/settlement_batch_summary';
+        $response = $this->_http->post($path, $params);
 
         if (isset($groupByCustomField))
         {

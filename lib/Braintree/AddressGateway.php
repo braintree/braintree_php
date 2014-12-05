@@ -15,11 +15,13 @@ class Braintree_AddressGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
 
@@ -71,9 +73,8 @@ class Braintree_AddressGateway
     {
         $this->_validateId($addressId);
         $customerId = $this->_determineCustomerId($customerOrId);
-        $this->_config->http()->delete(
-            '/customers/' . $customerId . '/addresses/' . $addressId
-        );
+        $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
+        $this->_http->delete($path);
         return new Braintree_Result_Successful();
     }
 
@@ -98,9 +99,8 @@ class Braintree_AddressGateway
         $this->_validateId($addressId);
 
         try {
-            $response = $this->_config->http()->get(
-                '/customers/' . $customerId . '/addresses/' . $addressId
-            );
+            $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
+            $response = $this->_http->get($path);
             return Braintree_Address::factory($response['address']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound(
@@ -131,10 +131,8 @@ class Braintree_AddressGateway
         $customerId = $this->_determineCustomerId($customerOrId);
         Braintree_Util::verifyKeys(self::updateSignature(), $attributes);
 
-        $response = $this->_config->http()->put(
-            '/customers/' . $customerId . '/addresses/' . $addressId,
-            array('address' => $attributes)
-        );
+        $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
+        $response = $this->_http->put($path, array('address' => $attributes));
 
         return $this->_verifyGatewayResponse($response);
 
@@ -243,13 +241,14 @@ class Braintree_AddressGateway
     /**
      * sends the create request to the gateway
      * @ignore
-     * @param string $url
+     * @param string $subPath
      * @param array $params
      * @return mixed
      */
-    private function _doCreate($url, $params)
+    private function _doCreate($subPath, $params)
     {
-        $response = $this->_config->http()->post($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
 

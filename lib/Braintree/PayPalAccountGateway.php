@@ -21,11 +21,13 @@ class Braintree_PayPalAccountGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
 
@@ -41,7 +43,8 @@ class Braintree_PayPalAccountGateway
     {
         $this->_validateId($token);
         try {
-            $response = $this->_config->http()->get('/payment_methods/paypal_account/'.$token);
+            $path = $this->_config->merchantPath() . '/payment_methods/paypal_account/' . $token;
+            $response = $this->_http->get($path);
             return Braintree_PayPalAccount::factory($response['paypalAccount']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound(
@@ -72,7 +75,8 @@ class Braintree_PayPalAccountGateway
     public function delete($token)
     {
         $this->_validateId($token);
-        $this->_config->http()->delete('/payment_methods/paypal_account/' . $token);
+        $path = $this->_config->merchantPath() . '/payment_methods/paypal_account/' . $token;
+        $this->_http->delete($path);
         return new Braintree_Result_Successful();
     }
 
@@ -107,13 +111,14 @@ class Braintree_PayPalAccountGateway
      * sends the update request to the gateway
      *
      * @ignore
-     * @param string $url
+     * @param string $subPath
      * @param array $params
      * @return mixed
      */
-    private function _doUpdate($httpVerb, $url, $params)
+    private function _doUpdate($httpVerb, $subPath, $params)
     {
-        $response = $this->_config->http()->$httpVerb($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->$httpVerb($fullPath, $params);
         return $this->_verifyGatewayResponse($response);
     }
 

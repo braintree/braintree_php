@@ -4,11 +4,13 @@ final class Braintree_MerchantAccountGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
     public function create($attribs)
@@ -20,7 +22,8 @@ final class Braintree_MerchantAccountGateway
     public function find($merchant_account_id)
     {
         try {
-            $response = $this->_config->http()->get('/merchant_accounts/' . $merchant_account_id);
+            $path = $this->_config->merchantPath() . '/merchant_accounts/' . $merchant_account_id;
+            $response = $this->_http->get($path);
             return Braintree_MerchantAccount::factory($response['merchantAccount']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound('merchant account with id ' . $merchant_account_id . ' not found');
@@ -114,16 +117,18 @@ final class Braintree_MerchantAccountGateway
         );
     }
 
-    public function _doCreate($url, $params)
+    public function _doCreate($subPath, $params)
     {
-        $response = $this->_config->http()->post($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }
 
-    private function _doUpdate($url, $params)
+    private function _doUpdate($subPath, $params)
     {
-        $response = $this->_config->http()->put($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->put($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }

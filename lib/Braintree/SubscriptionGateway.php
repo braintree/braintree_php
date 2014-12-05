@@ -15,17 +15,20 @@ class Braintree_SubscriptionGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
     public function create($attributes)
     {
         Braintree_Util::verifyKeys(self::_createSignature(), $attributes);
-        $response = $this->_config->http()->post('/subscriptions', array('subscription' => $attributes));
+        $path = $this->_config->merchantPath() . '/subscriptions';
+        $response = $this->_http->post($path, array('subscription' => $attributes));
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -34,7 +37,8 @@ class Braintree_SubscriptionGateway
         $this->_validateId($id);
 
         try {
-            $response = $this->_config->http()->get('/subscriptions/' . $id);
+            $path = $this->_config->merchantPath() . '/subscriptions/' . $id;
+            $response = $this->_http->get($path);
             return Braintree_Subscription::factory($response['subscription']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound('subscription with id ' . $id . ' not found');
@@ -50,7 +54,8 @@ class Braintree_SubscriptionGateway
         }
 
 
-        $response = $this->_config->http()->post('/subscriptions/advanced_search_ids', array('search' => $criteria));
+        $path = $this->_config->merchantPath() . '/subscriptions/advanced_search_ids';
+        $response = $this->_http->post($path, array('search' => $criteria));
         $pager = array(
             'object' => $this,
             'method' => 'fetch',
@@ -67,7 +72,8 @@ class Braintree_SubscriptionGateway
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = Braintree_SubscriptionSearch::ids()->in($ids)->toparam();
-        $response = $this->_config->http()->post('/subscriptions/advanced_search', array('search' => $criteria));
+        $path = $this->_config->merchantPath() . '/subscriptions/advanced_search';
+        $response = $this->_http->post($path, array('search' => $criteria));
 
         return Braintree_Util::extractAttributeAsArray(
             $response['subscriptions'],
@@ -78,10 +84,8 @@ class Braintree_SubscriptionGateway
     public function update($subscriptionId, $attributes)
     {
         Braintree_Util::verifyKeys(self::_updateSignature(), $attributes);
-        $response = $this->_config->http()->put(
-            '/subscriptions/' . $subscriptionId,
-            array('subscription' => $attributes)
-        );
+        $path = $this->_config->merchantPath() . '/subscriptions/' . $subscriptionId;
+        $response = $this->_http->put($path, array('subscription' => $attributes));
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -93,15 +97,15 @@ class Braintree_SubscriptionGateway
             $transaction_params['amount'] = $amount;
         }
 
-        $response = $this->_config->http()->post(
-            '/transactions',
-            array('transaction' => $transaction_params));
+        $path = $this->_config->merchantPath() . '/transactions';
+        $response = $this->_http->post($path, array('transaction' => $transaction_params));
         return $this->_verifyGatewayResponse($response);
     }
 
     public function cancel($subscriptionId)
     {
-        $response = $this->_config->http()->put('/subscriptions/' . $subscriptionId . '/cancel');
+        $path = $this->_config->merchantPath() . '/subscriptions/' . $subscriptionId . '/cancel';
+        $response = $this->_http->put($path);
         return $this->_verifyGatewayResponse($response);
     }
 

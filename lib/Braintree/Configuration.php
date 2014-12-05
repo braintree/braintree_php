@@ -55,11 +55,6 @@ class Braintree_Configuration
         return new Braintree_Gateway(self::$global);
     }
 
-    public function http()
-    {
-        return new Braintree_Http($this);
-    }
-
     /**
      *
      * @access protected
@@ -166,19 +161,6 @@ class Braintree_Configuration
     public function setPrivateKey($value)
     {
         $this->_privateKey = $value;
-    }
-
-    /**
-     * returns the full merchant URL based on config values
-     *
-     * @access public
-     * @param none
-     * @return string merchant URL
-     */
-    public function merchantUrl()
-    {
-        return $this->baseUrl() .
-               $this->merchantPath();
     }
 
     /**

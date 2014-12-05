@@ -17,11 +17,13 @@ final class Braintree_TransactionGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
     public function cloneTransaction($transactionId, $attribs)
@@ -81,7 +83,7 @@ final class Braintree_TransactionGateway
     public function createTransactionUrl()
     {
         trigger_error("DEPRECATED: Please use Braintree_TransparentRedirectRequest::url", E_USER_NOTICE);
-        return $this->_config->merchantUrl() .
+        return $this->_config->baseUrl() . $this->_config->merchantPath() .
                 '/transactions/all/create_via_transparent_redirect_request';
     }
 
@@ -214,7 +216,8 @@ final class Braintree_TransactionGateway
     {
         $this->_validateId($id);
         try {
-            $response = $this->_config->http()->get('/transactions/'.$id);
+            $path = $this->_config->merchantPath() . '/transactions/' . $id;
+            $response = $this->_http->get($path);
             return Braintree_Transaction::factory($response['transaction']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound(
@@ -265,7 +268,8 @@ final class Braintree_TransactionGateway
             $criteria[$term->name] = $term->toparam();
         }
 
-        $response = $this->_config->http()->post('/transactions/advanced_search_ids', array('search' => $criteria));
+        $path = $this->_config->merchantPath() . '/transactions/advanced_search_ids';
+        $response = $this->_http->post($path, array('search' => $criteria));
         if (array_key_exists('searchResults', $response)) {
             $pager = array(
                 'object' => $this,
@@ -286,7 +290,8 @@ final class Braintree_TransactionGateway
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = Braintree_TransactionSearch::ids()->in($ids)->toparam();
-        $response = $this->_config->http()->post('/transactions/advanced_search', array('search' => $criteria));
+        $path = $this->_config->merchantPath() . '/transactions/advanced_search';
+        $response = $this->_http->post($path, array('search' => $criteria));
 
         return Braintree_Util::extractattributeasarray(
             $response['creditCardTransactions'],
@@ -304,7 +309,8 @@ final class Braintree_TransactionGateway
     {
         $this->_validateId($transactionId);
 
-        $response = $this->_config->http()->put('/transactions/'. $transactionId . '/void');
+        $path = $this->_config->merchantPath() . '/transactions/'. $transactionId . '/void';
+        $response = $this->_http->put($path);
         return $this->_verifyGatewayResponse($response);
     }
     /**
@@ -320,10 +326,8 @@ final class Braintree_TransactionGateway
     {
         $this->_validateId($transactionId);
 
-        $response = $this->_config->http()->put(
-             '/transactions/'. $transactionId . '/submit_for_settlement',
-             array( 'transaction' => array( 'amount' => $amount))
-        );
+        $path = $this->_config->merchantPath() . '/transactions/'. $transactionId . '/submit_for_settlement';
+        $response = $this->_http->put($path, array('transaction' => array('amount' => $amount)));
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -337,10 +341,8 @@ final class Braintree_TransactionGateway
     {
         $this->_validateId($transactionId);
 
-        $response = $this->_config->http()->put(
-            '/transactions/' . $transactionId . '/hold_in_escrow',
-            array()
-        );
+        $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/hold_in_escrow';
+        $response = $this->_http->put($path, array());
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -348,10 +350,8 @@ final class Braintree_TransactionGateway
     {
         $this->_validateId($transactionId);
 
-        $response = $this->_config->http()->put(
-            '/transactions/' . $transactionId . '/release_from_escrow',
-            array()
-        );
+        $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/release_from_escrow';
+        $response = $this->_http->put($path, array());
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -359,10 +359,8 @@ final class Braintree_TransactionGateway
     {
         $this->_validateId($transactionId);
 
-        $response = $this->_config->http()->put(
-            '/transactions/' . $transactionId . '/cancel_release',
-            array()
-        );
+        $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/cancel_release';
+        $response = $this->_http->put($path, array());
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -371,7 +369,8 @@ final class Braintree_TransactionGateway
         self::_validateId($transactionId);
 
         $params = array('transaction' => array('amount' => $amount));
-        $response = $this->_config->http()->post('/transactions/' . $transactionId . '/refund', $params);
+        $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/refund';
+        $response = $this->_http->post($path, $params);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -379,13 +378,14 @@ final class Braintree_TransactionGateway
      * sends the create request to the gateway
      *
      * @ignore
-     * @param var $url
+     * @param var $subPath
      * @param array $params
      * @return mixed
      */
-    public function _doCreate($url, $params)
+    public function _doCreate($subPath, $params)
     {
-        $response = $this->_config->http()->post($url, $params);
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }

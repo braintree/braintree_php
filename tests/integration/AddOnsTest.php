@@ -17,8 +17,9 @@ class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
             "numberOfBillingCycles" => "1"
         );
 
-        $http = Braintree_Configuration::$global->http();
-        $http->post("/modifications/create_modification_for_tests", array("modification" => $addOnParams));
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
+        $http->post($path, array("modification" => $addOnParams));
 
         $addOns = Braintree_AddOn::all();
 
@@ -54,8 +55,9 @@ class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
             "numberOfBillingCycles" => "1"
         );
 
-        $http = Braintree_Configuration::$global->http();
-        $http->post("/modifications/create_modification_for_tests", array("modification" => $addOnParams));
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
+        $http->post($path, array("modification" => $addOnParams));
 
         $gateway = new Braintree_Gateway(array(
             'environment' => 'development',

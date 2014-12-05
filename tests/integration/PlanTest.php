@@ -27,8 +27,9 @@ class Braintree_PlanTest extends PHPUnit_Framework_TestCase
             "trialPeriod" => "false"
         );
 
-        $http = Braintree_Configuration::$global->http();
-        $http->post("/plans/create_plan_for_tests", array("plan" => $params));
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . "/plans/create_plan_for_tests";
+        $http->post($path, array("plan" => $params));
 
         $addOnParams = array (
             "kind" => "add_on",
@@ -37,8 +38,9 @@ class Braintree_PlanTest extends PHPUnit_Framework_TestCase
             "name" => "add_on_name"
         );
 
-        $http = Braintree_Configuration::$global->http();
-        $http->post("/modifications/create_modification_for_tests", array("modification" => $addOnParams));
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
+        $http->post($path, array("modification" => $addOnParams));
 
         $discountParams = array (
             "kind" => "discount",
@@ -47,8 +49,9 @@ class Braintree_PlanTest extends PHPUnit_Framework_TestCase
             "name" => "discount_name"
         );
 
-        $http = Braintree_Configuration::$global->http();
-        $http->post("/modifications/create_modification_for_tests", array("modification" => $discountParams));
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
+        $http->post($path, array("modification" => $discountParams));
 
         $plans = Braintree_Plan::all();
 
@@ -91,8 +94,9 @@ class Braintree_PlanTest extends PHPUnit_Framework_TestCase
             "trialPeriod" => "false"
         );
 
-        $http = Braintree_Configuration::$global->http();
-        $http->post("/plans/create_plan_for_tests", array("plan" => $params));
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . "/plans/create_plan_for_tests";
+        $http->post($path, array("plan" => $params));
 
         $gateway = new Braintree_Gateway(array(
             'environment' => 'development',

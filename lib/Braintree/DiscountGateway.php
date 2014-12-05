@@ -3,16 +3,19 @@ class Braintree_DiscountGateway
 {
     private $_gateway;
     private $_config;
+    private $_http;
 
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
     public function all()
     {
-        $response = $this->_config->http()->get('/discounts');
+        $path = $this->_config->merchantPath() . '/discounts';
+        $response = $this->_http->get($path);
 
         $discounts = array("discount" => $response['discounts']);
 

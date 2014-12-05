@@ -109,7 +109,7 @@ class Braintree_TransparentRedirectGateway
 
     public function url()
     {
-        return $this->_config->merchantUrl() . "/transparent_redirect_requests";
+        return $this->_config->baseUrl() . $this->_config->merchantPath() . "/transparent_redirect_requests";
     }
 
     /**
