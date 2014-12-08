@@ -68,6 +68,7 @@ abstract class Braintree
 require_once('Braintree/Modification.php');
 require_once('Braintree/Instance.php');
 
+require_once('Braintree/AccessToken.php');
 require_once('Braintree/Address.php');
 require_once('Braintree/AddressGateway.php');
 require_once('Braintree/AddOn.php');
@@ -98,6 +99,7 @@ require_once('Braintree/MerchantAccount/IndividualDetails.php');
 require_once('Braintree/MerchantAccount/AddressDetails.php');
 require_once('Braintree/MultipleValueNode.php');
 require_once('Braintree/MultipleValueOrTextNode.php');
+require_once('Braintree/OAuthGateway.php');
 require_once('Braintree/PartialMatchNode.php');
 require_once('Braintree/Plan.php');
 require_once('Braintree/RangeNode.php');

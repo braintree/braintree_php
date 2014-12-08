@@ -200,4 +200,49 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
         Braintree_Configuration::$global->assertValid();
     }
+
+    function testValidWithOAuthClientCredentials()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'development$integration_oauth_client_id',
+            'clientSecret' => 'development$integration_oauth_client_secret'
+        ));
+
+        $config->assertValidForOAuth();
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage clientSecret needs to be set.
+     */
+    function testInvalidWithOAuthClientCredentials()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'development$integration_oauth_client_id'
+        ));
+
+        $config->assertValidForOAuth();
+    }
+
+    function testDetectEnvironmentFromClientId()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'development$integration_oauth_client_id',
+            'clientSecret' => 'development$integration_oauth_client_secret'
+        ));
+
+        $this->assertEquals('development', $config->getEnvironment());
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Mismatched credential environments: clientId environment is sandbox and clientSecret environment is development
+     */
+    function testDetectEnvironmentFromClientIdFail()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'sandbox$integration_oauth_client_id',
+            'clientSecret' => 'development$integration_oauth_client_secret'
+        ));
+    }
 }

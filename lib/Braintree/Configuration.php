@@ -32,13 +32,32 @@ class Braintree_Configuration
             if ($kind == 'merchantId') {
                 $this->setMerchantId($value);
             }
-            if ($kind == 'publicKey') {
+            if ($kind == 'publicKey' || $kind == 'clientId') {
                 $this->setPublicKey($value);
             }
-            if ($kind == 'privateKey') {
+            if ($kind == 'privateKey' || $kind == 'clientSecret') {
                 $this->setPrivateKey($value);
             }
         }
+        if (isset($attribs['clientId'])) {
+            $clientIdEnvironment = $this->_extractEnvironmentFromClient($attribs['clientId']);
+            if (!isset($attribs['clientSecret'])) {
+                throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
+            } else {
+                $clientSecretEnvironment = $this->_extractEnvironmentFromClient($attribs['clientSecret']);
+            }
+            if ($clientIdEnvironment != $clientSecretEnvironment) {
+                throw new Braintree_Exception_Configuration(
+                    'Mismatched credential environments: clientId environment is ' . $clientIdEnvironment .
+                    ' and clientSecret environment is ' . $clientSecretEnvironment);
+            } else {
+                $this->setEnvironment($clientIdEnvironment);
+            }
+        }
+    }
+
+    private function _extractEnvironmentFromClient($clientId) {
+        return explode('$', $clientId)[0];
     }
 
     /**
@@ -118,6 +137,14 @@ class Braintree_Configuration
         }
     }
 
+    public function assertValidForOAuth()
+    {
+        if (empty($this->_publicKey)) {
+            throw new Braintree_Exception_Configuration('clientId needs to be set.');
+        } else if (empty($this->_privateKey)) {
+            throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
+        }
+    }
 
     public function getEnvironment()
     {
