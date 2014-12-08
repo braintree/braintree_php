@@ -80,7 +80,7 @@ class Braintree_Http
             'X-ApiVersion: ' . Braintree_Configuration::API_VERSION
         ));
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, $this->_config->publicKey() . ':' . $this->_config->privateKey());
+        curl_setopt($curl, CURLOPT_USERPWD, $this->_config->getPublicKey() . ':' . $this->_config->getPrivateKey());
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
         if ($this->_config->sslOn()) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);

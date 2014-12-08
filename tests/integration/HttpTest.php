@@ -45,4 +45,18 @@ class Braintree_HttpTest extends PHPUnit_Framework_TestCase
         }
         Braintree_Configuration::environment('development');
     }
+
+    function testAuthorizationWithConfig()
+    {
+        $config = new Braintree_Configuration(array(
+            'environment' => 'development',
+            'merchant_id' => 'integration_merchant_id',
+            'publicKey' => 'badPublicKey',
+            'privateKey' => 'badPrivateKey'
+        ));
+
+        $http = new Braintree_Http($config);
+        $result = $http->_doUrlRequest('GET', $config->baseUrl() . '/merchants/integration_merchant_id/customers');
+        $this->assertEquals(401, $result['status']);
+    }
 }
