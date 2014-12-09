@@ -204,8 +204,8 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testValidWithOAuthClientCredentials()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'development$integration_oauth_client_id',
-            'clientSecret' => 'development$integration_oauth_client_secret'
+            'clientId' => 'client_id$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
 
         $config->assertValidForOAuth();
@@ -218,7 +218,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testInvalidWithOAuthClientCredentials()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'development$integration_oauth_client_id'
+            'clientId' => 'client_id$development$integration_oauth_client_id'
         ));
 
         $config->assertValidForOAuth();
@@ -227,8 +227,8 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testDetectEnvironmentFromClientId()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'development$integration_oauth_client_id',
-            'clientSecret' => 'development$integration_oauth_client_secret'
+            'clientId' => 'client_id$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
 
         $this->assertEquals('development', $config->getEnvironment());
@@ -241,8 +241,20 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testDetectEnvironmentFromClientIdFail()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'sandbox$integration_oauth_client_id',
-            'clientSecret' => 'development$integration_oauth_client_secret'
+            'clientId' => 'client_id$sandbox$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+        ));
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Value passed for clientId is not a clientId
+     */
+    function testClientIdTypeFail()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_secret$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
     }
 }

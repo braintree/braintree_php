@@ -32,32 +32,64 @@ class Braintree_Configuration
             if ($kind == 'merchantId') {
                 $this->setMerchantId($value);
             }
-            if ($kind == 'publicKey' || $kind == 'clientId') {
+            if ($kind == 'publicKey') {
                 $this->setPublicKey($value);
             }
-            if ($kind == 'privateKey' || $kind == 'clientSecret') {
+            if ($kind == 'privateKey') {
                 $this->setPrivateKey($value);
             }
         }
+
         if (isset($attribs['clientId'])) {
-            $clientIdEnvironment = $this->_extractEnvironmentFromClient($attribs['clientId']);
-            if (!isset($attribs['clientSecret'])) {
-                throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
-            } else {
-                $clientSecretEnvironment = $this->_extractEnvironmentFromClient($attribs['clientSecret']);
-            }
-            if ($clientIdEnvironment != $clientSecretEnvironment) {
-                throw new Braintree_Exception_Configuration(
-                    'Mismatched credential environments: clientId environment is ' . $clientIdEnvironment .
-                    ' and clientSecret environment is ' . $clientSecretEnvironment);
-            } else {
-                $this->setEnvironment($clientIdEnvironment);
-            }
+            $this->_oAuthCredentialsConfig($attribs);
         }
     }
 
-    private function _extractEnvironmentFromClient($clientId) {
-        return explode('$', $clientId)[0];
+    private function _oAuthCredentialsConfig($attribs) {
+        $clientIdExploded = explode('$', $attribs['clientId']);
+        if (sizeof($clientIdExploded) != 3) {
+            throw new Braintree_Exception_Configuration('Incorrect clientId format. Expected: type$environment$token');
+        }
+
+        $clientIdConfig = array(
+            'wantedType' => 'client_id',
+            'gotType' => $clientIdExploded[0],
+            'environment' => $clientIdExploded[1],
+            'token' => $clientIdExploded[2],
+        );
+
+        if ($clientIdConfig['wantedType'] != $clientIdConfig['gotType']) {
+            throw new Braintree_Exception_Configuration('Value passed for clientId is not a clientId');
+        }
+
+        if (empty($attribs['clientSecret'])) {
+            throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
+        }
+        $clientSecretExploded = explode('$', $attribs['clientSecret']);
+        if (sizeof($clientSecretExploded) != 3) {
+            throw new Braintree_Exception_Configuration('Incorrect clientSecret format. Expected: type$environment$token');
+        }
+
+        $clientSecretConfig = array(
+            'wantedType' => 'client_secret',
+            'gotType' => $clientSecretExploded[0],
+            'environment' => $clientSecretExploded[1],
+            'token' => $clientSecretExploded[2],
+        );
+
+        if ($clientSecretConfig['wantedType'] != $clientSecretConfig['gotType']) {
+            throw new Braintree_Exception_Configuration('Value passed for clientSecret is not a clientSecret');
+        }
+
+        if ($clientIdConfig['environment'] != $clientSecretConfig['environment']) {
+            throw new Braintree_Exception_Configuration(
+                'Mismatched credential environments: clientId environment is ' . $clientIdConfig['environment'].
+                ' and clientSecret environment is ' . $clientSecretConfig['environment']);
+        }
+
+        $this->setEnvironment($clientIdConfig['environment']);
+        $this->setPublicKey($attribs['clientId']);
+        $this->setPrivateKey($attribs['clientSecret']);
     }
 
     /**
@@ -141,8 +173,6 @@ class Braintree_Configuration
     {
         if (empty($this->_publicKey)) {
             throw new Braintree_Exception_Configuration('clientId needs to be set.');
-        } else if (empty($this->_privateKey)) {
-            throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
         }
     }
 
