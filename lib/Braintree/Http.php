@@ -79,8 +79,14 @@ class Braintree_Http
             'User-Agent: Braintree PHP Library ' . Braintree_Version::get(),
             'X-ApiVersion: ' . Braintree_Configuration::API_VERSION
         ));
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, $this->_config->getPublicKey() . ':' . $this->_config->getPrivateKey());
+        if ($this->_config->isAccessToken()) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Authorization: Bearer ' . $this->_config->getAccessToken()
+            ));
+        } else {
+            curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($curl, CURLOPT_USERPWD, $this->_config->getPublicKey() . ':' . $this->_config->getPrivateKey());
+        }
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
         if ($this->_config->sslOn()) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);

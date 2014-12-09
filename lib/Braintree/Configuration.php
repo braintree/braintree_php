@@ -16,6 +16,7 @@ class Braintree_Configuration
     private $_merchantId = null;
     private $_publicKey = null;
     private $_privateKey = null;
+    private $_accessToken = null;
 
     /**
      * Braintree API version to use
@@ -42,6 +43,10 @@ class Braintree_Configuration
 
         if (isset($attribs['clientId'])) {
             $this->_oAuthCredentialsConfig($attribs);
+        }
+
+        if (isset($attribs['accessToken'])) {
+            $this->_accessTokenCredentialConfig($attribs['accessToken']);
         }
     }
 
@@ -90,6 +95,29 @@ class Braintree_Configuration
         $this->setEnvironment($clientIdConfig['environment']);
         $this->setPublicKey($attribs['clientId']);
         $this->setPrivateKey($attribs['clientSecret']);
+    }
+
+    private function _accessTokenCredentialConfig($accessToken) {
+        $accessTokenExploded = explode('$', $accessToken);
+        if (sizeof($accessTokenExploded) != 4) {
+            throw new Braintree_Exception_Configuration('Incorrect accessToken syntax. Expected: type$environment$merchant_id$token');
+        }
+
+        $accessTokenConfig = array(
+            'wantedType' => 'access_token',
+            'gotType' => $accessTokenExploded[0],
+            'environment' => $accessTokenExploded[1],
+            'merchantId' => $accessTokenExploded[2],
+            'token' => $accessTokenExploded[3],
+        );
+
+        if ($accessTokenConfig['wantedType'] != $accessTokenConfig['gotType']) {
+            throw new Braintree_Exception_Configuration('Value passed for accessToken is not an accessToken');
+        }
+
+        $this->setEnvironment($accessTokenConfig['environment']);
+        $this->setMerchantId($accessTokenConfig['merchantId']);
+        $this->setAccessToken($accessToken);
     }
 
     /**
@@ -162,10 +190,14 @@ class Braintree_Configuration
             throw new Braintree_Exception_Configuration('environment needs to be set.');
         } else if (empty($this->_merchantId)) {
             throw new Braintree_Exception_Configuration('merchantId needs to be set.');
-        } else if (empty($this->_publicKey)) {
-            throw new Braintree_Exception_Configuration('publicKey needs to be set.');
-        } else if (empty($this->_privateKey)) {
-            throw new Braintree_Exception_Configuration('privateKey needs to be set.');
+        }
+
+        if (empty($this->_accessToken)) {
+            if (empty($this->_publicKey)) {
+                throw new Braintree_Exception_Configuration('publicKey needs to be set.');
+            } else if (empty($this->_privateKey)) {
+                throw new Braintree_Exception_Configuration('privateKey needs to be set.');
+            }
         }
     }
 
@@ -220,6 +252,20 @@ class Braintree_Configuration
         $this->_privateKey = $value;
     }
 
+    public function getAccessToken()
+    {
+        return $this->_accessToken;
+    }
+
+    public function setAccessToken($value)
+    {
+        $this->_accessToken = $value;
+    }
+
+    public function isAccessToken()
+    {
+        return !empty($this->_accessToken);
+    }
     /**
      * returns the base braintree gateway URL based on config values
      *

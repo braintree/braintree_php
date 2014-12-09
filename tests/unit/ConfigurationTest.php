@@ -257,4 +257,35 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
     }
+
+    function testValidWithAccessToken()
+    {
+        $config = new Braintree_Configuration(array(
+            'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
+        ));
+
+        $config->assertValid();
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Value passed for accessToken is not an accessToken
+     */
+    function testInvalidAccessTokenType()
+    {
+        $config = new Braintree_Configuration(array(
+            'accessToken' => 'client_id$development$integration_merchant_id$integration_oauth_access_token',
+        ));
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Incorrect accessToken syntax. Expected: type$environment$merchant_id$token
+     */
+    function testInvalidAccessTokenSyntax()
+    {
+        $config = new Braintree_Configuration(array(
+            'accessToken' => 'client_id$development$integration_oauth_client_id',
+        ));
+    }
 }
