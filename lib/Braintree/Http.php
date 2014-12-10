@@ -73,20 +73,19 @@ class Braintree_Http
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        $headers = array(
             'Accept: application/xml',
             'Content-Type: application/xml',
             'User-Agent: Braintree PHP Library ' . Braintree_Version::get(),
             'X-ApiVersion: ' . Braintree_Configuration::API_VERSION
-        ));
+        );
         if ($this->_config->isAccessToken()) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                'Authorization: Bearer ' . $this->_config->getAccessToken()
-            ));
+            $headers[] = 'Authorization: Bearer ' . $this->_config->getAccessToken();
         } else {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_USERPWD, $this->_config->getPublicKey() . ':' . $this->_config->getPrivateKey());
         }
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
         if ($this->_config->sslOn()) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);

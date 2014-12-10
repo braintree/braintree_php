@@ -42,82 +42,20 @@ class Braintree_Configuration
         }
 
         if (isset($attribs['clientId'])) {
-            $this->_oAuthCredentialsConfig($attribs);
+            $clientConfig = Braintree_CredentialsParser::parseClientCredentials($attribs);
+
+            $this->setEnvironment($clientConfig['environment']);
+            $this->setPublicKey($clientConfig['clientId']);
+            $this->setPrivateKey($clientConfig['clientSecret']);
         }
 
         if (isset($attribs['accessToken'])) {
-            $this->_accessTokenCredentialConfig($attribs['accessToken']);
+            $accessTokenConfig = Braintree_CredentialsParser::parseAccessToken($attribs['accessToken']);
+
+            $this->setEnvironment($accessTokenConfig['environment']);
+            $this->setMerchantId($accessTokenConfig['merchantId']);
+            $this->setAccessToken($attribs['accessToken']);
         }
-    }
-
-    private function _oAuthCredentialsConfig($attribs) {
-        $clientIdExploded = explode('$', $attribs['clientId']);
-        if (sizeof($clientIdExploded) != 3) {
-            throw new Braintree_Exception_Configuration('Incorrect clientId format. Expected: type$environment$token');
-        }
-
-        $clientIdConfig = array(
-            'wantedType' => 'client_id',
-            'gotType' => $clientIdExploded[0],
-            'environment' => $clientIdExploded[1],
-            'token' => $clientIdExploded[2],
-        );
-
-        if ($clientIdConfig['wantedType'] != $clientIdConfig['gotType']) {
-            throw new Braintree_Exception_Configuration('Value passed for clientId is not a clientId');
-        }
-
-        if (empty($attribs['clientSecret'])) {
-            throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
-        }
-        $clientSecretExploded = explode('$', $attribs['clientSecret']);
-        if (sizeof($clientSecretExploded) != 3) {
-            throw new Braintree_Exception_Configuration('Incorrect clientSecret format. Expected: type$environment$token');
-        }
-
-        $clientSecretConfig = array(
-            'wantedType' => 'client_secret',
-            'gotType' => $clientSecretExploded[0],
-            'environment' => $clientSecretExploded[1],
-            'token' => $clientSecretExploded[2],
-        );
-
-        if ($clientSecretConfig['wantedType'] != $clientSecretConfig['gotType']) {
-            throw new Braintree_Exception_Configuration('Value passed for clientSecret is not a clientSecret');
-        }
-
-        if ($clientIdConfig['environment'] != $clientSecretConfig['environment']) {
-            throw new Braintree_Exception_Configuration(
-                'Mismatched credential environments: clientId environment is ' . $clientIdConfig['environment'].
-                ' and clientSecret environment is ' . $clientSecretConfig['environment']);
-        }
-
-        $this->setEnvironment($clientIdConfig['environment']);
-        $this->setPublicKey($attribs['clientId']);
-        $this->setPrivateKey($attribs['clientSecret']);
-    }
-
-    private function _accessTokenCredentialConfig($accessToken) {
-        $accessTokenExploded = explode('$', $accessToken);
-        if (sizeof($accessTokenExploded) != 4) {
-            throw new Braintree_Exception_Configuration('Incorrect accessToken syntax. Expected: type$environment$merchant_id$token');
-        }
-
-        $accessTokenConfig = array(
-            'wantedType' => 'access_token',
-            'gotType' => $accessTokenExploded[0],
-            'environment' => $accessTokenExploded[1],
-            'merchantId' => $accessTokenExploded[2],
-            'token' => $accessTokenExploded[3],
-        );
-
-        if ($accessTokenConfig['wantedType'] != $accessTokenConfig['gotType']) {
-            throw new Braintree_Exception_Configuration('Value passed for accessToken is not an accessToken');
-        }
-
-        $this->setEnvironment($accessTokenConfig['environment']);
-        $this->setMerchantId($accessTokenConfig['merchantId']);
-        $this->setAccessToken($accessToken);
     }
 
     /**
