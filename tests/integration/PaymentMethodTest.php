@@ -7,7 +7,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     function testCreate_fromVaultedCreditCardNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             'credit_card' => array(
                 'number' => '4111111111111111',
                 'expirationMonth' => '11',
@@ -17,6 +18,36 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         ));
 
         $result = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertSame('411111', $result->paymentMethod->bin);
+        $this->assertSame('1111', $result->paymentMethod->last4);
+        $this->assertNotNull($result->paymentMethod->token);
+        $this->assertNotNull($result->paymentMethod->imageUrl);
+    }
+
+    function testGatewayCreate_fromVaultedCreditCardNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
+            'credit_card' => array(
+                'number' => '4111111111111111',
+                'expirationMonth' => '11',
+                'expirationYear' => '2099'
+            ),
+            'share' => true
+        ));
+
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $result = $gateway->paymentMethod()->create(array(
             'customerId' => $customer->id,
             'paymentMethodNonce' => $nonce
         ));
@@ -48,7 +79,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     function testCreate_fromUnvalidatedCreditCardNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             'credit_card' => array(
                 'number' => '4111111111111111',
                 'expirationMonth' => '11',
@@ -73,7 +105,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paymentMethodToken
@@ -106,7 +139,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'access_token' => 'PAYPAL_ACCESS_TOKEN',
                 'token' => $paymentMethodToken
@@ -127,7 +161,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'token' => $paymentMethodToken
             )
@@ -156,7 +191,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($card1->isDefault());
 
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             'credit_card' => array(
                 'number' => '4111111111111111',
                 'expirationMonth' => '11',
@@ -186,7 +222,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $customer = Braintree_Customer::createNoValidate();
         $firstToken = 'FIRST_TOKEN-' . strval(rand());
         $secondToken = 'SECOND_TOKEN-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             'credit_card' => array(
                 'token' => $firstToken,
                 'number' => '4111111111111111',
@@ -210,7 +247,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
     function testCreate_respectsVerifyCardAndVerificationMerchantAccountIdWhenIncludedOutsideOfTheNonce()
     {
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             'credit_card' => array(
                 'number' => '4000111111111115',
                 'expirationMonth' => '11',
@@ -244,7 +282,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
 
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             'credit_card' => array(
                 'number' => Braintree_Test_CreditCardNumbers::$visa,
                 'expirationDate' => "05/2012"
@@ -266,7 +305,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     function testCreate_allowsPassingABillingAddressOutsideOfTheNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             'credit_card' => array(
                 'number' => '4111111111111111',
                 'expirationMonth' => '12',
@@ -297,7 +337,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     function testCreate_overridesTheBillingAddressInTheNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             'credit_card' => array(
                 'number' => '4111111111111111',
                 'expirationMonth' => '12',
@@ -331,7 +372,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     function testCreate_doesNotOverrideTheBillingAddressForAVaultedCreditCard()
     {
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             'customerId' => $customer->id,
             'credit_card' => array(
                 'number' => '4111111111111111',
@@ -363,7 +405,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     function testCreate_allowsPassingABillingAddressIdOutsideOfTheNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             'credit_card' => array(
                 'number' => '4111111111111111',
                 'expirationMonth' => '12',
@@ -399,7 +442,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     {
         $customer = Braintree_Customer::createNoValidate();
         $originalToken = 'paypal-account-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPaypalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPaypalAccount(array(
             'paypalAccount' => array(
                 'consentCode' => 'consent-code',
                 'token' => $originalToken
@@ -421,7 +465,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
     function testCreate_ignoresPassedBillingAddressParamsForPaypalAccount()
     {
-        $nonce = Braintree_HttpClientApi::nonceForPaypalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPaypalAccount(array(
             'paypalAccount' => array(
                 'consentCode' => 'PAYPAL_CONSENT_CODE',
             )
@@ -445,7 +490,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
     function testCreate_ignoresPassedBillingAddressIdForPaypalAccount()
     {
-        $nonce = Braintree_HttpClientApi::nonceForPaypalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPaypalAccount(array(
             'paypalAccount' => array(
                 'consentCode' => 'PAYPAL_CONSENT_CODE',
             )
@@ -513,7 +559,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paymentMethodToken
@@ -859,7 +906,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $customer = Braintree_Customer::createNoValidate();
         $originalToken = 'paypal-account-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'consent-code',
                 'token' => $originalToken
@@ -902,7 +950,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($creditCardResult->success);
         $creditCard = $creditCardResult->creditCard;
 
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'consent-code',
             )
@@ -931,7 +980,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $firstToken = 'paypal-account-' . strval(rand());
         $secondToken = 'paypal-account-' . strval(rand());
 
-        $firstNonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $firstNonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'consent-code',
                 'token' => $firstToken
@@ -944,7 +994,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($firstResult->success);
         $firstPaypalAccount = $firstResult->paymentMethod;
 
-        $secondNonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $secondNonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'consent-code',
                 'token' => $secondToken
@@ -991,7 +1042,8 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paymentMethodToken

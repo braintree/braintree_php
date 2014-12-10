@@ -111,29 +111,37 @@ class Braintree_TestHelper
 
     public static function settle($transactionId)
     {
-        Braintree_Http::put('/transactions/' . $transactionId . '/settle');
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . '/transactions/' . $transactionId . '/settle';
+        $http->put($path);
     }
 
     public static function settlementDecline($transactionId)
     {
-        Braintree_Http::put('/transactions/' . $transactionId . '/settlement_decline');
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . '/transactions/' . $transactionId . '/settlement_decline';
+        $http->put($path);
     }
 
     public static function settlementPending($transactionId)
     {
-        Braintree_Http::put('/transactions/' . $transactionId . '/settlement_pending');
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . '/transactions/' . $transactionId . '/settlement_pending';
+        $http->put($path);
     }
 
     public static function escrow($transactionId)
     {
-        Braintree_Http::put('/transactions/' . $transactionId . '/escrow');
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . '/transactions/' . $transactionId . '/escrow';
+        $http->put($path);
     }
 
     public static function create3DSVerification($merchantAccountId, $params)
     {
-        $response = Braintree_Http::post('/three_d_secure/create_verification/' . $merchantAccountId, array(
-            'threeDSecureVerification' => $params
-        ));
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . '/three_d_secure/create_verification/' . $merchantAccountId;
+        $response = $http->post($path, array('threeDSecureVerification' => $params));
         return $response['threeDSecureVerification']['threeDSecureToken'];
     }
 

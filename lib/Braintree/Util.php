@@ -74,6 +74,23 @@ class Braintree_Util
     }
 
     /**
+     *
+     * @param string $className
+     * @param object $resultObj
+     * @return object returns the passed object if successful
+     * @throws Braintree_Exception_ValidationsFailed
+     */
+    public static function returnObjectOrThrowException($className, $resultObj)
+    {
+        $resultObjName = Braintree_Util::cleanClassName($className);
+        if ($resultObj->success) {
+            return $resultObj->$resultObjName;
+        } else {
+            throw new Braintree_Exception_ValidationsFailed();
+        }
+    }
+
+    /**
      * removes the Braintree_ header from a classname
      *
      * @param string $name Braintree_ClassName
@@ -83,17 +100,29 @@ class Braintree_Util
     {
         $classNamesToResponseKeys = array(
             'CreditCard' => 'creditCard',
+            'CreditCardGateway' => 'creditCard',
             'Customer' => 'customer',
+            'CustomerGateway' => 'customer',
             'Subscription' => 'subscription',
+            'SubscriptionGateway' => 'subscription',
             'Transaction' => 'transaction',
+            'TransactionGateway' => 'transaction',
             'CreditCardVerification' => 'verification',
+            'CreditCardVerificationGateway' => 'verification',
             'AddOn' => 'addOn',
+            'AddOnGateway' => 'addOn',
             'Discount' => 'discount',
+            'DiscountGateway' => 'discount',
             'Plan' => 'plan',
+            'PlanGateway' => 'plan',
             'Address' => 'address',
+            'AddressGateway' => 'address',
             'SettlementBatchSummary' => 'settlementBatchSummary',
+            'SettlementBatchSummaryGateway' => 'settlementBatchSummary',
             'MerchantAccount' => 'merchantAccount',
-            'PayPalAccount' => 'paypalAccount'
+            'MerchantAccountGateway' => 'merchantAccount',
+            'PayPalAccount' => 'paypalAccount',
+            'PayPalAccountGateway' => 'paypalAccount'
         );
 
         $name = str_replace('Braintree_', '', $name);

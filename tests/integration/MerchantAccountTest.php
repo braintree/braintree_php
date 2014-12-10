@@ -66,6 +66,21 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("sandbox_master_merchant_account", $merchantAccount->masterMerchantAccount->id);
     }
 
+    function testGatewayCreate()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $result = $gateway->merchantAccount()->create(self::$validParams);
+        $this->assertEquals(true, $result->success);
+        $merchantAccount = $result->merchantAccount;
+        $this->assertEquals(Braintree_MerchantAccount::STATUS_PENDING, $merchantAccount->status);
+        $this->assertEquals("sandbox_master_merchant_account", $merchantAccount->masterMerchantAccount->id);
+    }
+
     function testCreateWithDeprecatedParameters()
     {
         Braintree_TestHelper::suppressDeprecationWarnings();

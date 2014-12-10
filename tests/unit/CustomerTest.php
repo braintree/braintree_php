@@ -12,8 +12,8 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testUpdateSignature_doesNotAlterOptionsInCreditCardUpdateSignature()
     {
-        Braintree_Customer::updateSignature();
-        foreach(Braintree_CreditCard::updateSignature() AS $key => $value) {
+        Braintree_CustomerGateway::updateSignature();
+        foreach(Braintree_CreditCardGateway::updateSignature() AS $key => $value) {
             if(is_array($value) and array_key_exists('options', $value)) {
                 $this->assertEquals(array(
                     'makeDefault',

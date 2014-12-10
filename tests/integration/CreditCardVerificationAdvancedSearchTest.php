@@ -48,6 +48,22 @@ class Braintree_CreditCardVerificationAdvancedSearchTest extends PHPUnit_Framewo
         }
     }
 
+    function testGateway_searchEmpty()
+    {
+        $query = array();
+        $query[] = Braintree_CreditCardVerificationSearch::creditCardCardholderName()->is('Not Found');
+
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $collection = $gateway->creditCardVerification()->search($query);
+
+        $this->assertEquals(0, $collection->maximumCount());
+    }
+
     function test_createdAt()
     {
         $result = Braintree_Customer::create(array(

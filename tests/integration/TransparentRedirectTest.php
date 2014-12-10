@@ -9,8 +9,9 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $trData = Braintree_TransparentRedirect::createCustomerData(
             array("redirectUrl" => "http://www.example.com?foo=bar")
         );
+        $config = Braintree_Configuration::$global;
         $queryString = Braintree_TestHelper::submitTrRequest(
-            Braintree_Configuration::merchantUrl() . '/test/maintenance',
+            $config->baseUrl() . $config->merchantPath() . '/test/maintenance',
             array(),
             $trData
         );
@@ -24,8 +25,9 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $trData = Braintree_TransparentRedirect::createCustomerData(
             array("redirectUrl" => "http://www.example.com")
         );
+        $config = Braintree_Configuration::$global;
         $queryString = Braintree_TestHelper::submitTrRequest(
-            Braintree_Configuration::merchantUrl() . '/test/maintenance',
+            $config->baseUrl() . $config->merchantPath() . '/test/maintenance',
             array(),
             $trData
         );
@@ -95,6 +97,55 @@ class Braintree_TransparentRedirectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('5100', $creditCard->last4);
         $this->assertEquals('US', $creditCard->customerLocation);
         $this->assertEquals('MasterCard', $creditCard->cardType);
+        $this->assertEquals('05/2012', $creditCard->expirationDate);
+        $this->assertEquals('510510******5100', $creditCard->maskedNumber);
+        $customer = $result->transaction->customerDetails;
+        $this->assertequals('First', $customer->firstName);
+    }
+
+    function testGatewayCreateTransactionFromTransparentRedirect()
+    {
+        $params = array(
+            'transaction' => array(
+                'customer' => array(
+                    'first_name' => 'First'
+                ),
+                'credit_card' => array(
+                    'number' => '5105105105105100',
+                    'expiration_date' => '05/12'
+                )
+            )
+        );
+        $trParams = array(
+            'transaction' => array(
+                'type' => Braintree_Transaction::SALE,
+                'amount' => '100.00'
+            )
+        );
+
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $trData = $gateway->transparentRedirect()->transactionData(
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+        );
+
+        $queryString = Braintree_TestHelper::submitTrRequest(
+            $gateway->transparentRedirect()->url(),
+            $params,
+            $trData
+        );
+
+        $result = $gateway->transparentRedirect()->confirm($queryString);
+        $this->assertTrue($result->success);
+        $this->assertEquals('100.00', $result->transaction->amount);
+        $this->assertEquals(Braintree_Transaction::SALE, $result->transaction->type);
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $result->transaction->status);
+        $creditCard = $result->transaction->creditCardDetails;
+        $this->assertEquals('US', $creditCard->customerLocation);
         $this->assertEquals('05/2012', $creditCard->expirationDate);
         $this->assertEquals('510510******5100', $creditCard->maskedNumber);
         $customer = $result->transaction->customerDetails;

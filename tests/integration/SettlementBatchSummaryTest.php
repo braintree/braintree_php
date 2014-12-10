@@ -16,6 +16,20 @@ class Braintree_SettlementBatchSummaryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($result->settlementBatchSummary->records));
     }
 
+    function testGatewayGenerate_returnsAnEmptyCollectionWhenThereIsNoData()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $result = $gateway->settlementBatchSummary()->generate('2000-01-01');
+
+        $this->assertTrue($result->success);
+        $this->assertEquals(0, count($result->settlementBatchSummary->records));
+    }
+
     function testGenerate_returnsAnErrorIfTheDateCanNotBeParsed()
     {
         $result = Braintree_SettlementBatchSummary::generate('OMG NOT A DATE');

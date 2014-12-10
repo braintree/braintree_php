@@ -42,9 +42,29 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($customer->merchantId);
     }
 
+    function testGatewayCreate()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $result = $gateway->customer()->create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals('Mike', $customer->firstName);
+        $this->assertEquals('Jones', $customer->lastName);
+        $this->assertNotNull($customer->merchantId);
+    }
+
     function testCreateCustomerWithCardUsingNonce()
     {
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             "creditCard" => array(
                 "number" => "4111111111111111",
                 "expirationMonth" => "11",
@@ -671,7 +691,8 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
             )
         ));
         $paypalAccountToken = 'PAYPALToken-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paypalAccountToken,
@@ -702,7 +723,8 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
             )
         ));
         $paypalAccountToken = 'PAYPALToken-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'access_token' => 'PAYPAL_ACCESS_TOKEN',
                 'token' => $paypalAccountToken,

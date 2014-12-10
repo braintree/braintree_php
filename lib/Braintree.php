@@ -64,28 +64,12 @@ abstract class Braintree
     {
         $this->_attributes[$key] = $value;
     }
-
-    /**
-     *
-     * @param string $className
-     * @param object $resultObj
-     * @return object returns the passed object if successful
-     * @throws Braintree_Exception_ValidationsFailed
-     */
-    public static function returnObjectOrThrowException($className, $resultObj)
-    {
-        $resultObjName = Braintree_Util::cleanClassName($className);
-        if ($resultObj->success) {
-            return $resultObj->$resultObjName;
-        } else {
-            throw new Braintree_Exception_ValidationsFailed();
-        }
-    }
 }
 require_once('Braintree/Modification.php');
 require_once('Braintree/Instance.php');
 
 require_once('Braintree/Address.php');
+require_once('Braintree/AddressGateway.php');
 require_once('Braintree/AddOn.php');
 require_once('Braintree/ApplePayCard.php');
 require_once('Braintree/ClientToken.php');
@@ -93,6 +77,7 @@ require_once('Braintree/Collection.php');
 require_once('Braintree/Configuration.php');
 require_once('Braintree/CreditCard.php');
 require_once('Braintree/Customer.php');
+require_once('Braintree/CustomerGateway.php');
 require_once('Braintree/CustomerSearch.php');
 require_once('Braintree/DisbursementDetails.php');
 require_once('Braintree/Dispute.php');
@@ -103,6 +88,7 @@ require_once('Braintree/Discount.php');
 require_once('Braintree/IsNode.php');
 require_once('Braintree/EqualityNode.php');
 require_once('Braintree/Exception.php');
+require_once('Braintree/Gateway.php');
 require_once('Braintree/Http.php');
 require_once('Braintree/KeyValueNode.php');
 require_once('Braintree/MerchantAccount.php');
@@ -188,3 +174,5 @@ function requireDependencies() {
 }
 
 requireDependencies();
+Braintree_Configuration::reset();
+Braintree_TransparentRedirectGateway::init();

@@ -212,4 +212,22 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
 
         Braintree_Util::verifyKeys($signature, $userKeys);
     }
+
+    /**
+     * @expectedException Braintree_Exception_ValidationsFailed
+     */
+    function testReturnException()
+    {
+        $this->success = false;
+        Braintree_Util::returnObjectOrThrowException('Braintree_Transaction', $this);
+    }
+
+    function testReturnObject()
+    {
+        $this->success = true;
+        $this->transaction = new stdClass();
+        $t = Braintree_Util::returnObjectOrThrowException('Braintree_Transaction', $this);
+        $this->assertInternalType('object', $t);
+    }
+
 }
