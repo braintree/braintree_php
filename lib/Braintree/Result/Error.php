@@ -96,7 +96,7 @@ class Braintree_Result_Error extends Braintree
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
      * @ignore
-     * @return var
+     * @return string
      */
     public function  __toString()
     {

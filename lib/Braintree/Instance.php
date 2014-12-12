@@ -50,7 +50,7 @@ abstract class Braintree_Instance
     /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
-     * @return var
+     * @return string
      */
     public function  __toString()
     {
@@ -62,7 +62,7 @@ abstract class Braintree_Instance
      * @ignore
      * @access protected
      * @param <type> $aAttribs array of properties to set - single level
-     * @return none
+     * @return void
      */
     private function _initializeFromArray($attributes)
     {
