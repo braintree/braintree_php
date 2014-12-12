@@ -279,3 +279,4 @@ class Braintree_TransparentRedirectGateway
         return Braintree_Digest::hexDigestSha1($this->_config->privateKey(), $string);
     }
 }
+Braintree_TransparentRedirectGateway::init();
