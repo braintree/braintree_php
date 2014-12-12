@@ -1,3 +1,6 @@
+## 2.35.1
+* Bugfix for auto loading files
+
 ## 2.35.0
 * Allow PayPal fields in transaction.options.paypal
 * Add error code constants
