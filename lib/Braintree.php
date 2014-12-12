@@ -187,5 +187,3 @@ function requireDependencies() {
 }
 
 requireDependencies();
-Braintree_Configuration::reset();
-Braintree_TransparentRedirectGateway::init();
