@@ -34,7 +34,8 @@ class Braintree_UnknownPaymentMethod extends Braintree
     public static function factory($attributes)
     {
         $instance = new self();
-        $instance->_initialize(array_shift(array_values($attributes)));
+        $values = array_values($attributes);
+        $instance->_initialize(array_shift($values));
         return $instance;
     }
 

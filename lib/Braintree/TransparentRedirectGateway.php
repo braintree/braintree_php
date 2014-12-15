@@ -33,7 +33,7 @@ class Braintree_TransparentRedirectGateway
      * create signatures for different call types
      * @ignore
      */
-    public function init()
+    public static function init()
     {
 
         self::$_createCustomerSignature = array(
