@@ -13,7 +13,7 @@ class Braintree_HttpClientApi extends Braintree_Http
          return $this->_doRequest('GET', $path);
     }
 
-    public function post($path, $body)
+    public function post($path, $body = null)
     {
          return $this->_doRequest('POST', $path, $body);
     }
