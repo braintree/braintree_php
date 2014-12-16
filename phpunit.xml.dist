@@ -8,6 +8,10 @@
          stopOnFailure="false"
          syntaxCheck="false">
 
+    <php>
+      <ini name="error_reporting" value="32767"/>
+    </php>
+
     <testsuites>
         <testsuite name="unit">
           <directory>./tests/unit</directory>
