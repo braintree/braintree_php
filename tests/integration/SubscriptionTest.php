@@ -41,6 +41,11 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('DateTime', $subscription->paidThroughDate);
         $this->assertInstanceOf('DateTime', $subscription->updatedAt);
         $this->assertInstanceOf('DateTime', $subscription->createdAt);
+
+        $this->assertEquals('12.34', $subscription->statusHistory[0]->price);
+        $this->assertEquals('0.00', $subscription->statusHistory[0]->balance);
+        $this->assertEquals(Braintree_Subscription::ACTIVE, $subscription->statusHistory[0]->status);
+        $this->assertEquals(Braintree_Subscription::API, $subscription->statusHistory[0]->subscriptionSource);
     }
 
     function testGatewayCreate_whenSuccessful()
