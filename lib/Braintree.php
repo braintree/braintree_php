@@ -115,6 +115,7 @@ require_once('Braintree/SignatureService.php');
 require_once('Braintree/Subscription.php');
 require_once('Braintree/SubscriptionGateway.php');
 require_once('Braintree/SubscriptionSearch.php');
+require_once('Braintree/Subscription/StatusDetails.php');
 require_once('Braintree/TextNode.php');
 require_once('Braintree/Transaction.php');
 require_once('Braintree/TransactionGateway.php');

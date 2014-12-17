@@ -19,6 +19,11 @@ class Braintree_Subscription extends Braintree
     const PAST_DUE = 'Past Due';
     const PENDING = 'Pending';
 
+    // Subscription Sources
+    const API           = 'api';
+    const CONTROL_PANEL = 'control_panel';
+    const RECURRING     = 'recurring';
+
     /**
      * @ignore
      */
@@ -57,6 +62,14 @@ class Braintree_Subscription extends Braintree
             $this->_set('descriptor', new Braintree_Descriptor($attributes['descriptor']));
         }
 
+        $statusHistory = array();
+        if (isset($attributes['statusHistory'])) {
+            foreach ($attributes['statusHistory'] AS $history) {
+                $statusHistory[] = new Braintree_Subscription_StatusDetails($history);
+            }
+        }
+        $this->_attributes['statusHistory'] = $statusHistory;
+
         $transactionArray = array();
         if (isset($attributes['transactions'])) {
             foreach ($attributes['transactions'] AS $transaction) {
@@ -72,8 +85,17 @@ class Braintree_Subscription extends Braintree
      */
     public function  __toString()
     {
+        $excludedAttributes = array('statusHistory');
+
+        $displayAttributes = array();
+        foreach($this->_attributes as $key => $val) {
+            if (!in_array($key, $excludedAttributes)) {
+                $displayAttributes[$key] = $val;
+            }
+        }
+
         return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+                Braintree_Util::attributesToString($displayAttributes) .']';
     }
 
 

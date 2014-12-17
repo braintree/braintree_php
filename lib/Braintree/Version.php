@@ -12,7 +12,7 @@ final class Braintree_Version
      */
     const MAJOR = 2;
     const MINOR = 35;
-    const TINY = 1;
+    const TINY = 2;
 
     /**
      * @ignore
