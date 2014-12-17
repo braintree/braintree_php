@@ -1,3 +1,7 @@
+## 2.35.2
+* Fix E_STRICT errors
+* Expose subscription status details
+
 ## 2.35.1
 * Bugfix for auto loading files
 
