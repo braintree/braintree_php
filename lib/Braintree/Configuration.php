@@ -41,20 +41,14 @@ class Braintree_Configuration
             }
         }
 
-        if (isset($attribs['clientId'])) {
-            $clientConfig = Braintree_CredentialsParser::parseClientCredentials($attribs);
+        if (isset($attribs['clientId']) || isset($attribs['accessToken'])) {
+            $parsedCredentials = new Braintree_CredentialsParser($attribs);
 
-            $this->setEnvironment($clientConfig['environment']);
-            $this->setPublicKey($clientConfig['clientId']);
-            $this->setPrivateKey($clientConfig['clientSecret']);
-        }
-
-        if (isset($attribs['accessToken'])) {
-            $accessTokenConfig = Braintree_CredentialsParser::parseAccessToken($attribs['accessToken']);
-
-            $this->setEnvironment($accessTokenConfig['environment']);
-            $this->setMerchantId($accessTokenConfig['merchantId']);
-            $this->setAccessToken($attribs['accessToken']);
+            $this->setEnvironment($parsedCredentials->getEnvironment());
+            $this->setMerchantId($parsedCredentials->getMerchantId());
+            $this->setPublicKey($parsedCredentials->getClientId());
+            $this->setPrivateKey($parsedCredentials->getClientSecret());
+            $this->setAccessToken($parsedCredentials->getAccessToken());
         }
     }
 

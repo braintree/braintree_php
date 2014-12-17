@@ -76,6 +76,7 @@ require_once('Braintree/ApplePayCard.php');
 require_once('Braintree/ClientToken.php');
 require_once('Braintree/Collection.php');
 require_once('Braintree/Configuration.php');
+require_once('Braintree/CredentialsParser.php');
 require_once('Braintree/CreditCard.php');
 require_once('Braintree/Customer.php');
 require_once('Braintree/CustomerGateway.php');
