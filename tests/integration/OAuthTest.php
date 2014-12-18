@@ -5,11 +5,11 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 {
     function testCreateAccessToken()
     {
-        $gateway = new Braintree_OAuthGateway(array(
+        $gateway = new Braintree_Gateway(array(
             'clientId' => 'client_id$development$integration_oauth_client_id',
             'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
-        $result = $gateway->createAccessToken(array(
+        $result = $gateway->oauth()->createAccessToken(array(
             'code' => 'integration_oauth_auth_code_' . rand(0,299)
         ));
 
@@ -20,11 +20,11 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 
     function testCreateAccessTokenFail()
     {
-        $gateway = new Braintree_OAuthGateway(array(
+        $gateway = new Braintree_Gateway(array(
             'clientId' => 'client_id$development$integration_oauth_client_id',
             'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
-        $result = $gateway->createAccessToken(array(
+        $result = $gateway->oauth()->createAccessToken(array(
             'code' => 'bad_code'
         ));
 

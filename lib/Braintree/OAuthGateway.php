@@ -9,17 +9,16 @@
  */
 class Braintree_OAuthGateway
 {
+    private $_gateway;
     private $_config;
     private $_http;
 
-    public function __construct($config)
+    public function __construct($gateway)
     {
-        $this->config = $config;
-        if (is_array($config)) {
-            $config = new Braintree_Configuration($config);
-        }
-        $config->assertValidForOAuth();
-        $this->_http = new Braintree_Http($config);
+        $this->_gateway = $gateway;
+        $this->_config = $gateway->config;
+        $this->_config->assertValidForOAuth();
+        $this->_http = new Braintree_Http($gateway->config);
     }
 
     public function createAccessToken($params)
