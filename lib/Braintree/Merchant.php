@@ -1,13 +1,6 @@
 <?php
-/**
- * Braintree AccessToken module
- *
- * @package    Braintree
- * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- *
- */
-class Braintree_AccessToken extends Braintree
+
+final class Braintree_Merchant extends Braintree
 {
     protected function _initialize($attribs)
     {
@@ -22,7 +15,7 @@ class Braintree_AccessToken extends Braintree
     }
 
     /**
-     * returns a string representation of the access token
+     * returns a string representation of the merchant
      * @return string
      */
     public function  __toString()

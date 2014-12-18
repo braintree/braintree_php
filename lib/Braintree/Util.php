@@ -120,6 +120,8 @@ class Braintree_Util
             'AddressGateway' => 'address',
             'SettlementBatchSummary' => 'settlementBatchSummary',
             'SettlementBatchSummaryGateway' => 'settlementBatchSummary',
+            'Merchant' => 'merchant',
+            'MerchantGateway' => 'merchant',
             'MerchantAccount' => 'merchantAccount',
             'MerchantAccountGateway' => 'merchantAccount',
             'PayPalAccount' => 'paypalAccount',

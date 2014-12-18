@@ -53,6 +53,11 @@ class Braintree_Gateway
         return new Braintree_DiscountGateway($this);
     }
 
+    public function merchant()
+    {
+        return new Braintree_MerchantGateway($this);
+    }
+
     public function merchantAccount()
     {
         return new Braintree_MerchantAccountGateway($this);

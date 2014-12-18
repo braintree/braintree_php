@@ -34,26 +34,26 @@ class Braintree_Result_Successful extends Braintree_Instance
      *
      * @var string stores the internal name of the object providing access to
      */
-    private $_returnObjectName;
+    private $_returnObjectNames;
 
     /**
      * @ignore
      * @param string $classToReturn name of class to instantiate
      */
-    public function __construct($objToReturn = null, $propertyName = null)
+    public function __construct($objsToReturn = array(), $propertyNames = array())
     {
+        // Sanitize arguments (preserves backwards compatiility)
+        if(!is_array($objsToReturn)) { $objsToReturn = array($objsToReturn); }
+        if(!is_array($propertyNames)) { $propertyNames = array($propertyNames); }
+
+        $objects = $this->_mapPropertyNamesToObjsToReturn($propertyNames, $objsToReturn);
         $this->_attributes = array();
+        $this->_returnObjectNames = array();
 
-        if(!empty($objToReturn)) {
-
-            if(empty($propertyName)) {
-                $propertyName = Braintree_Util::cleanClassName(
-                    get_class($objToReturn)
-                );
-            }
+        foreach ($objects as $propertyName => $objToReturn) {
 
             // save the name for indirect access
-            $this->_returnObjectName = $propertyName;
+            array_push($this->_returnObjectNames, $propertyName);
 
             // create the property!
             $this->$propertyName = $objToReturn;
@@ -67,8 +67,20 @@ class Braintree_Result_Successful extends Braintree_Instance
     */
    public function __toString()
    {
-       $returnObject = $this->_returnObjectName;
-       return __CLASS__ . '['.$this->$returnObject->__toString().']';
+       $objects = array();
+       foreach ($this->_returnObjectNames as $returnObjectName) {
+           array_push($objects, $this->$returnObjectName);
+       }
+       return __CLASS__ . '[' . implode(', ', $objects) . ']';
    }
 
+   private function _mapPropertyNamesToObjsToReturn($propertyNames, $objsToReturn) {
+       if(count($objsToReturn) != count($propertyNames)) {
+           $propertyNames = array();
+           foreach ($objsToReturn as $obj) {
+               array_push($propertyNames, Braintree_Util::cleanClassName(get_class($obj)));
+           }
+       }
+       return array_combine($propertyNames, $objsToReturn);
+   }
 }
