@@ -99,7 +99,6 @@ class Braintree_Util
     public static function cleanClassName($name)
     {
         $classNamesToResponseKeys = array(
-            'AccessToken' => 'accessToken',
             'CreditCard' => 'creditCard',
             'CreditCardGateway' => 'creditCard',
             'Customer' => 'customer',
@@ -124,6 +123,7 @@ class Braintree_Util
             'MerchantGateway' => 'merchant',
             'MerchantAccount' => 'merchantAccount',
             'MerchantAccountGateway' => 'merchantAccount',
+            'OAuthCredentials' => 'credentials',
             'PayPalAccount' => 'paypalAccount',
             'PayPalAccountGateway' => 'paypalAccount'
         );

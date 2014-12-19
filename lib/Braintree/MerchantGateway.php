@@ -26,8 +26,8 @@ final class Braintree_MerchantGateway
             // return a populated instance of Braintree_merchant
             return new Braintree_Result_Successful(array(
                 Braintree_Merchant::factory($response['response']['merchant']),
-                Braintree_AccessToken::factory($response['response']['credentials']),
-            ), array('merchant', 'credentials'));
+                Braintree_OAuthCredentials::factory($response['response']['credentials']),
+            ));
         } else if (isset($response['apiErrorResponse'])) {
             return new Braintree_Result_Error($response['apiErrorResponse']);
         } else {

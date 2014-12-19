@@ -1,13 +1,13 @@
 <?php
 /**
- * Braintree AccessToken module
+ * Braintree OAuthCredentials module
  *
  * @package    Braintree
  * @category   Resources
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  */
-class Braintree_AccessToken extends Braintree
+class Braintree_OAuthCredentials extends Braintree
 {
     protected function _initialize($attribs)
     {

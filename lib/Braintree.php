@@ -68,7 +68,7 @@ abstract class Braintree
 require_once('Braintree/Modification.php');
 require_once('Braintree/Instance.php');
 
-require_once('Braintree/AccessToken.php');
+require_once('Braintree/OAuthCredentials.php');
 require_once('Braintree/Address.php');
 require_once('Braintree/AddressGateway.php');
 require_once('Braintree/AddOn.php');

@@ -35,13 +35,13 @@ class Braintree_OAuthGateway
                 // $errors = array('errors' => array($response['accessToken']));
                 // return new Braintree_Result_Error($errors);
                 $failure = new Braintree_Result_Successful(
-                        Braintree_AccessToken::factory($response['accessToken'])
+                        Braintree_OAuthCredentials::factory($response['accessToken'])
                 );
                 $failure->success = false;
                 return $failure;
             } else {
                 return new Braintree_Result_Successful(
-                        Braintree_AccessToken::factory($response['accessToken'])
+                        Braintree_OAuthCredentials::factory($response['accessToken'])
                 );
             }
         } else {
