@@ -14,7 +14,7 @@ class Braintree_AccessToken extends Braintree
         $this->_attributes = $attribs;
     }
 
-    public function factory($attributes)
+    public static function factory($attributes)
     {
         $instance = new self();
         $instance->_initialize($attributes);

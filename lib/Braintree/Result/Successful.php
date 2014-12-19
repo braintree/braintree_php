@@ -42,9 +42,9 @@ class Braintree_Result_Successful extends Braintree_Instance
      */
     public function __construct($objsToReturn = array(), $propertyNames = array())
     {
-        // Sanitize arguments (preserves backwards compatiility)
-        if(!is_array($objsToReturn)) { $objsToReturn = array($objsToReturn); }
-        if(!is_array($propertyNames)) { $propertyNames = array($propertyNames); }
+        // Sanitize arguments (preserves backwards compatibility)
+        if (!is_array($objsToReturn)) { $objsToReturn = array($objsToReturn); }
+        if (!is_array($propertyNames)) { $propertyNames = array($propertyNames); }
 
         $objects = $this->_mapPropertyNamesToObjsToReturn($propertyNames, $objsToReturn);
         $this->_attributes = array();

@@ -97,6 +97,8 @@ require_once('Braintree/Exception.php');
 require_once('Braintree/Gateway.php');
 require_once('Braintree/Http.php');
 require_once('Braintree/KeyValueNode.php');
+require_once('Braintree/Merchant.php');
+require_once('Braintree/MerchantGateway.php');
 require_once('Braintree/MerchantAccount.php');
 require_once('Braintree/MerchantAccountGateway.php');
 require_once('Braintree/MerchantAccount/BusinessDetails.php');

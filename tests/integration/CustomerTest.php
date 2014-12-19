@@ -63,7 +63,6 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testCreateWithAccessToken()
     {
-        $this->markTestIncomplete('gateway authenticate with access token incomplete');
         $gateway = new Braintree_Gateway(array(
             'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
         ));
