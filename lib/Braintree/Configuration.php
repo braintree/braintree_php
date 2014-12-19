@@ -361,3 +361,4 @@ class Braintree_Configuration
         error_log('[Braintree] ' . $message);
     }
 }
+Braintree_Configuration::reset();

@@ -34,7 +34,7 @@ class Braintree_TransparentRedirectGateway
      * create signatures for different call types
      * @ignore
      */
-    public function init()
+    public static function init()
     {
 
         self::$_createCustomerSignature = array(
@@ -280,3 +280,4 @@ class Braintree_TransparentRedirectGateway
         return Braintree_Digest::hexDigestSha1($this->_config->privateKey(), $string);
     }
 }
+Braintree_TransparentRedirectGateway::init();

@@ -1,3 +1,15 @@
+## 2.35.2
+* Fix E_STRICT errors
+* Expose subscription status details
+
+## 2.35.1
+* Bugfix for auto loading files
+
+## 2.35.0
+* Allow PayPal fields in transaction.options.paypal
+* Add error code constants
+* Internal refactoring
+
 ## 2.34.0
 * Add risk_data to Transaction and Verification with Kount decision and id
 * Add verification_amount an option when creating a credit card

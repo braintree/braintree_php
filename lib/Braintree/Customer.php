@@ -243,7 +243,7 @@ class Braintree_Customer extends Braintree
      * @ignore
      * @return object instance of Braintree_Customer
      */
-    public function factory($attributes)
+    public static function factory($attributes)
     {
         $instance = new Braintree_Customer();
         $instance->_initialize($attributes);
