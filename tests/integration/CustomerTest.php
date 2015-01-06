@@ -96,6 +96,19 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($customer->paymentMethods()[0]);
     }
 
+    function testCreateCustomerWithCoinbase()
+    {
+        $nonce = Braintree_Test_Nonces::$coinbase;
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $this->assertNotNull($customer->coinbaseAccounts[0]);
+        $this->assertNotNull($customer->paymentMethods()[0]);
+    }
+
+
     function testCreate_withUnicode()
     {
         $result = Braintree_Customer::create(array(

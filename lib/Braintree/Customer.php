@@ -16,6 +16,7 @@
  * @property-read string $company
  * @property-read string $createdAt
  * @property-read array  $creditCards
+ * @property-read array  $coinbaseAccounts
  * @property-read array  $paypalAccounts
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $email
@@ -148,6 +149,15 @@ class Braintree_Customer extends Braintree
         }
         $this->_set('creditCards', $creditCardArray);
 
+        // map each coinbaseAccount into its own object
+        $coinbaseAccountArray = array();
+        if (isset($customerAttribs['coinbaseAccounts'])) {
+            foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
+                $coinbaseAccountArray[] = Braintree_CoinbaseAccount::factory($coinbaseAccount);
+            }
+        }
+        $this->_set('coinbaseAccounts', $coinbaseAccountArray);
+
         // map each paypalAccount into its own object
         $paypalAccountArray = array();
         if (isset($customerAttribs['paypalAccounts'])) {
@@ -196,7 +206,7 @@ class Braintree_Customer extends Braintree
      */
     public function paymentMethods()
     {
-        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards);
+        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts);
     }
 
     /**

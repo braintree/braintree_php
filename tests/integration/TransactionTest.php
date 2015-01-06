@@ -118,6 +118,18 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($applePayDetails->cardholderName);
     }
 
+    function testCreateTransactionUsingFakeCoinbaseNonce()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '17.00',
+            'paymentMethodNonce' => Braintree_Test_Nonces::$coinbase
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertNotNull($transaction->coinbaseDetails);
+    }
+
     function testCreateTransactionReturnsPaymentInstrumentType()
     {
         $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);

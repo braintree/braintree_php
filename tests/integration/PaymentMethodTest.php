@@ -58,7 +58,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($result->paymentMethod->imageUrl);
     }
 
-    function testCreate_fromFakePayPalNonce()
+    function testCreate_fromFakeApplePayNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
         $result = Braintree_PaymentMethod::create(array(
@@ -596,6 +596,22 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(intval($foundApplePayCard->expirationMonth) > 0);
         $this->assertTrue(intval($foundApplePayCard->expirationYear) > 0);
     }
+
+    function testFind_returnsCoinbaseAccounts()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree_Test_Nonces::$coinbase
+        ));
+
+        $this->assertTrue($result->success);
+        $coinbaseAccount = $result->paymentMethod;
+        $this->assertNotNull($coinbaseAccount->token);
+        $foundCoinbaseAccount = Braintree_PaymentMethod::find($coinbaseAccount->token);
+        $this->assertInstanceOf('Braintree_CoinbaseAccount', $foundCoinbaseAccount);
+    }
+
 
     function testFind_returnsAbstractPaymentMethods()
     {
