@@ -50,4 +50,19 @@ class Braintree_OAuthGateway
             );
         }
     }
+
+    public function connectUrl($params = array())
+    {
+        $query = array('client_id' => $this->_config->getPublicKey());
+        if (array_key_exists('merchantId', $params)) {
+            $query['merchant_id'] = $params['merchantId'];
+        }
+        if (array_key_exists('redirectUri', $params)) {
+            $query['redirect_uri'] = $params['redirectUri'];
+        }
+        if (array_key_exists('scopes', $params)) {
+            $query['scopes'] = $params['scopes'];
+        }
+        return $this->_config->baseUrl() . '/oauth/connect?' . http_build_query($query);
+    }
 }
