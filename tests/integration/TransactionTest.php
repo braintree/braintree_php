@@ -128,6 +128,9 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertNotNull($transaction->coinbaseDetails);
+        $this->assertNotNull($transaction->coinbaseDetails->userId);
+        $this->assertNotNull($transaction->coinbaseDetails->userName);
+        $this->assertNotNull($transaction->coinbaseDetails->userEmail);
     }
 
     function testCreateTransactionReturnsPaymentInstrumentType()

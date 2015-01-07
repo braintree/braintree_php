@@ -105,6 +105,9 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $customer = $result->customer;
         $this->assertNotNull($customer->coinbaseAccounts[0]);
+        $this->assertNotNull($customer->coinbaseAccounts[0]->userId);
+        $this->assertNotNull($customer->coinbaseAccounts[0]->userName);
+        $this->assertNotNull($customer->coinbaseAccounts[0]->userEmail);
         $this->assertNotNull($customer->paymentMethods()[0]);
     }
 

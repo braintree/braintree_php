@@ -610,6 +610,9 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($coinbaseAccount->token);
         $foundCoinbaseAccount = Braintree_PaymentMethod::find($coinbaseAccount->token);
         $this->assertInstanceOf('Braintree_CoinbaseAccount', $foundCoinbaseAccount);
+        $this->assertNotNull($foundCoinbaseAccount->userId);
+        $this->assertNotNull($foundCoinbaseAccount->userName);
+        $this->assertNotNull($foundCoinbaseAccount->userEmail);
     }
 
 

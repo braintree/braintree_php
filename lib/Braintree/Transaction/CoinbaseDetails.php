@@ -15,10 +15,10 @@
  * @subpackage Transaction
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
- * @property-read string $payerEmail
- * @property-read string $paymentId
- * @property-read string $authorizationId
  * @property-read string $token
+ * @property-read string $userId
+ * @property-read string $userName
+ * @property-read string $userEmail
  * @property-read string $imageUrl
  * @uses Braintree_Instance inherits methods
  */
