@@ -34,25 +34,25 @@ class Braintree_CredentialsParser
 
     public function parse()
     {
+        $environments = array();
         if (!empty($this->_clientId)) {
-            $this->_parseClientCredentials();
-        } else {
-            $this->_parseAccessToken();
+            $environments[] = array('clientId', $this->_parseClientCredential('clientId', $this->_clientId, 'client_id'));
+            $environments[] = array('clientSecret', $this->_parseClientCredential('clientSecret', $this->_clientSecret, 'client_secret'));
         }
-    }
-
-    private function _parseClientCredentials()
-    {
-        $clientIdEnvironment = $this->_parseClientCredential('clientId', $this->_clientId, 'client_id');
-        $clientSecretEnvironment = $this->_parseClientCredential('clientSecret', $this->_clientSecret, 'client_secret');
-
-        if ($clientIdEnvironment != $clientSecretEnvironment) {
-            throw new Braintree_Exception_Configuration(
-                'Mismatched credential environments: clientId environment is ' . $clientIdEnvironment .
-                ' and clientSecret environment is ' . $clientSecretEnvironment);
+        if (!empty($this->_accessToken)) {
+            $environments[] = array('accessToken', $this->_parseAccessToken());
         }
 
-        $this->_environment = $clientIdEnvironment;
+        $checkEnv = $environments[0];
+        foreach ($environments as $env) {
+            if ($env[1] !== $checkEnv[1]) {
+                throw new Braintree_Exception_Configuration(
+                    'Mismatched credential environments: ' . $checkEnv[0] . ' environment is ' . $checkEnv[1] .
+                    ' and ' . $env[0] . ' environment is ' . $env[1]);
+            }
+        }
+
+        $this->_environment = $checkEnv[1];
     }
 
     private function _parseClientCredential($credentialType, $value, $expectedValuePrefix)
@@ -92,8 +92,8 @@ class Braintree_CredentialsParser
             throw new Braintree_Exception_Configuration('Value passed for accessToken is not an accessToken');
         }
 
-        $this->_environment = $environment;
         $this->_merchantId = $merchantId;
+        return $environment;
     }
 
     public function getClientId()

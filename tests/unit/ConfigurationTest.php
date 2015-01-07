@@ -288,4 +288,32 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'accessToken' => 'client_id$development$integration_oauth_client_id',
         ));
     }
+
+    function testValidWithOAuthClientCredentialsAndAccessToken()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_id$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret',
+            'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
+        ));
+
+        $config->assertValid();
+        $config->assertValidForOAuth();
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Mismatched credential environments: clientId environment is development and accessToken environment is sandbox
+     */
+    function testInvalidEnvironmentWithOAuthClientCredentialsAndAccessToken()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_id$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret',
+            'accessToken' => 'access_token$sandbox$integration_merchant_id$integration_oauth_access_token',
+        ));
+
+        $config->assertValid();
+        $config->assertValidForOAuth();
+    }
 }
