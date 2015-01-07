@@ -53,15 +53,18 @@ class Braintree_OAuthGateway
 
     public function connectUrl($params = array())
     {
-        $query = array('client_id' => $this->_config->getPublicKey());
-        if (array_key_exists('merchantId', $params)) {
+        $query = array('client_id' => $this->_config->getClientId());
+        if (isset($params['merchantId'])) {
             $query['merchant_id'] = $params['merchantId'];
         }
-        if (array_key_exists('redirectUri', $params)) {
+        if (isset($params['redirectUri'])) {
             $query['redirect_uri'] = $params['redirectUri'];
         }
-        if (array_key_exists('scopes', $params)) {
+        if (isset($params['scopes'])) {
             $query['scopes'] = $params['scopes'];
+        }
+        if (isset($params['state'])) {
+            $query['state'] = $params['state'];
         }
         return $this->_config->baseUrl() . '/oauth/connect?' . http_build_query($query);
     }

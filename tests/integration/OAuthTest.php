@@ -44,6 +44,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
             'merchantId' => 'foo_merchant_id',
             'redirectUri' => 'http://bar.example.com',
             'scopes' => 'read_write',
+            'state' => 'baz_state',
         ));
 
         $components = parse_url($url);
@@ -56,6 +57,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('client_id$development$integration_oauth_client_id', $query['client_id']);
         $this->assertEquals('http://bar.example.com', $query['redirect_uri']);
         $this->assertEquals('read_write', $query['scopes']);
+        $this->assertEquals('baz_state', $query['state']);
     }
 
     function testBuildConnectUrlWithoutOptionalParams()
@@ -70,8 +72,8 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         parse_str($queryString, $query);
 
         $this->assertEquals('client_id$development$integration_oauth_client_id', $query['client_id']);
-        $this->assertFalse(array_key_exists('merchant_id', $query));
-        $this->assertFalse(array_key_exists('redirect_uri', $query));
-        $this->assertFalse(array_key_exists('scopes', $query));
+        $this->assertArrayNotHasKey('merchant_id', $query);
+        $this->assertArrayNotHasKey('redirect_uri', $query);
+        $this->assertArrayNotHasKey('scopes', $query);
     }
 }

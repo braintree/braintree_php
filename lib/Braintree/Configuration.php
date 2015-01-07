@@ -169,12 +169,22 @@ class Braintree_Configuration
         return $this->_publicKey;
     }
 
+    public function getClientId()
+    {
+        return $this->_publicKey;
+    }
+
     public function setPublicKey($value)
     {
         $this->_publicKey = $value;
     }
 
     public function getPrivateKey()
+    {
+        return $this->_privateKey;
+    }
+
+    public function getClientSecret()
     {
         return $this->_privateKey;
     }
