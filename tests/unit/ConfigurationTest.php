@@ -49,44 +49,44 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     function testMerchantPath()
     {
-        $this->config->_setMerchantId('abc123');
+        $this->config->setMerchantId('abc123');
         $mp = $this->config->merchantPath();
         $this->assertEquals('/merchants/abc123', $mp);
     }
 
     function testCaFile()
     {
-        $this->config->_setEnvironment('development');
+        $this->config->setEnvironment('development');
         $this->setExpectedException('Braintree_Exception_SSLCaFileNotFound');
         $this->config->caFile('/does/not/exist/');
     }
 
     function testSSLOn()
     {
-        $this->config->_setEnvironment('development');
+        $this->config->setEnvironment('development');
         $on = $this->config->sslOn();
         $this->assertFalse($on);
 
-        $this->config->_setEnvironment('sandbox');
+        $this->config->setEnvironment('sandbox');
         $on = $this->config->sslOn();
         $this->assertTrue($on);
 
-        $this->config->_setEnvironment('production');
+        $this->config->setEnvironment('production');
         $on = $this->config->sslOn();
         $this->assertTrue($on);
     }
 
     function testPortNumber()
     {
-        $this->config->_setEnvironment('development');
+        $this->config->setEnvironment('development');
         $pn = $this->config->portNumber();
         $this->assertEquals(getenv("GATEWAY_PORT") ? getenv("GATEWAY_PORT") : 3000, $pn);
 
-        $this->config->_setEnvironment('sandbox');
+        $this->config->setEnvironment('sandbox');
         $pn = $this->config->portNumber();
         $this->assertEquals(443, $pn);
 
-        $this->config->_setEnvironment('production');
+        $this->config->setEnvironment('production');
         $pn = $this->config->portNumber();
         $this->assertEquals(443, $pn);
     }
@@ -94,56 +94,56 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     function testProtocol()
     {
-        $this->config->_setEnvironment('development');
+        $this->config->setEnvironment('development');
         $p = $this->config->protocol();
         $this->assertEquals('http', $p);
 
-        $this->config->_setEnvironment('sandbox');
+        $this->config->setEnvironment('sandbox');
         $p = $this->config->protocol();
         $this->assertEquals('https', $p);
 
-        $this->config->_setEnvironment('production');
+        $this->config->setEnvironment('production');
         $p = $this->config->protocol();
         $this->assertEquals('https', $p);
     }
 
     function testServerName()
     {
-        $this->config->_setEnvironment('development');
+        $this->config->setEnvironment('development');
         $sn = $this->config->serverName();
         $this->assertEquals('localhost', $sn);
 
-        $this->config->_setEnvironment('sandbox');
+        $this->config->setEnvironment('sandbox');
         $sn = $this->config->serverName();
         $this->assertEquals('api.sandbox.braintreegateway.com', $sn);
 
-        $this->config->_setEnvironment('production');
+        $this->config->setEnvironment('production');
         $sn = $this->config->serverName();
         $this->assertEquals('api.braintreegateway.com', $sn);
     }
 
     function testAuthUrl()
     {
-        $this->config->_setEnvironment('development');
+        $this->config->setEnvironment('development');
         $authUrl = $this->config->authUrl();
         $this->assertEquals('http://auth.venmo.dev:9292', $authUrl);
 
-        $this->config->_setEnvironment('qa');
+        $this->config->setEnvironment('qa');
         $authUrl = $this->config->authUrl();
         $this->assertEquals('https://auth.qa.venmo.com', $authUrl);
 
-        $this->config->_setEnvironment('sandbox');
+        $this->config->setEnvironment('sandbox');
         $authUrl = $this->config->authUrl();
         $this->assertEquals('https://auth.sandbox.venmo.com', $authUrl);
 
-        $this->config->_setEnvironment('production');
+        $this->config->setEnvironment('production');
         $authUrl = $this->config->authUrl();
         $this->assertEquals('https://auth.venmo.com', $authUrl);
     }
 
     function testBaseUrl()
     {
-        $this->config->_setEnvironment('sandbox');
+        $this->config->setEnvironment('sandbox');
         $bu = $this->config->baseUrl();
         $this->assertEquals('https://api.sandbox.braintreegateway.com:443', $bu);
     }
@@ -159,7 +159,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::publicKey('integration_public_key');
         Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertHasCredentials('accessTokenOrKeys');
+        Braintree_Configuration::$global->assertHasAccessTokenOrKeys();
     }
      /**
      * @expectedException Braintree_Exception_Configuration
@@ -172,7 +172,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::publicKey('integration_public_key');
         Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertHasCredentials('accessTokenOrKeys');
+        Braintree_Configuration::$global->assertHasAccessTokenOrKeys();
     }
      /**
      * @expectedException Braintree_Exception_Configuration
@@ -185,7 +185,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         //Braintree_Configuration::publicKey('integration_public_key');
         Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertHasCredentials('accessTokenOrKeys');
+        Braintree_Configuration::$global->assertHasAccessTokenOrKeys();
     }
      /**
      * @expectedException Braintree_Exception_Configuration
@@ -198,7 +198,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::publicKey('integration_public_key');
         //Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertHasCredentials('accessTokenOrKeys');
+        Braintree_Configuration::$global->assertHasAccessTokenOrKeys();
     }
 
     function testValidWithOAuthClientCredentials()
@@ -208,7 +208,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
 
-        $config->assertHasCredentials('clientId', 'clientSecret');
+        $config->assertHasClientCredentials();
     }
 
      /**
@@ -221,7 +221,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'clientId' => 'client_id$development$integration_oauth_client_id'
         ));
 
-        $config->assertHasCredentials('clientId', 'clientSecret');
+        $config->assertHasClientCredentials();
     }
 
     function testDetectEnvironmentFromClientId()
@@ -264,7 +264,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
         ));
 
-        $config->assertHasCredentials('accessTokenOrKeys');
+        $config->assertHasAccessTokenOrKeys();
     }
 
      /**
@@ -309,7 +309,8 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
         ));
 
-        $config->assertHasCredentials('clientId', 'clientSecret', 'accessTokenOrKeys');
+        $config->assertHasClientCredentials();
+        $config->assertHasAccessTokenOrKeys();
     }
 
      /**

@@ -10,7 +10,7 @@ final class Braintree_MerchantGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
-        $this->_config->assertHasCredentials(array('clientId', 'clientSecret'));
+        $this->_config->assertHasClientCredentials();
         $this->_http = new Braintree_Http($gateway->config);
     }
 

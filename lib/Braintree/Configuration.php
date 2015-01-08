@@ -76,7 +76,7 @@ class Braintree_Configuration
             return self::$global->getEnvironment();
         }
         Braintree_CredentialsParser::assertValidEnvironment($value);
-        self::$global->_setEnvironment($value);
+        self::$global->setEnvironment($value);
     }
 
     public static function merchantId($value=null)
@@ -84,7 +84,7 @@ class Braintree_Configuration
         if (empty($value)) {
             return self::$global->getMerchantId();
         }
-        self::$global->_setMerchantId($value);
+        self::$global->setMerchantId($value);
     }
 
     public static function publicKey($value=null)
@@ -92,7 +92,7 @@ class Braintree_Configuration
         if (empty($value)) {
             return self::$global->getPublicKey();
         }
-        self::$global->_setPublicKey($value);
+        self::$global->setPublicKey($value);
     }
 
     public static function privateKey($value=null)
@@ -100,29 +100,41 @@ class Braintree_Configuration
         if (empty($value)) {
             return self::$global->getPrivateKey();
         }
-        self::$global->_setPrivateKey($value);
+        self::$global->setPrivateKey($value);
     }
 
-    public function assertHasCredentials(/* ...$credentials */)
+    public function assertHasAccessTokenOrKeys()
     {
-        foreach (func_get_args() as $credential) {
-            if ($credential == 'clientId' && empty($this->_publicKey)) {
-                throw new Braintree_Exception_Configuration('clientId needs to be set.');
+        if (empty($this->_accessToken)) {
+            if (empty($this->_environment)) {
+                throw new Braintree_Exception_Configuration('environment needs to be set.');
+            } else if (empty($this->_merchantId)) {
+                throw new Braintree_Exception_Configuration('merchantId needs to be set.');
+            } else if (empty($this->_publicKey)) {
+                throw new Braintree_Exception_Configuration('publicKey needs to be set.');
+            } else if (empty($this->_privateKey)) {
+                throw new Braintree_Exception_Configuration('privateKey needs to be set.');
             }
-            if ($credential == 'clientSecret' && empty($this->_privateKey)) {
-                throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
-            }
-            if ($credential == 'accessTokenOrKeys' && empty($this->_accessToken)) {
-                if (empty($this->_environment)) {
-                    throw new Braintree_Exception_Configuration('environment needs to be set.');
-                } else if (empty($this->_merchantId)) {
-                    throw new Braintree_Exception_Configuration('merchantId needs to be set.');
-                } else if (empty($this->_publicKey)) {
-                    throw new Braintree_Exception_Configuration('publicKey needs to be set.');
-                } else if (empty($this->_privateKey)) {
-                    throw new Braintree_Exception_Configuration('privateKey needs to be set.');
-                }
-            }
+        }
+    }
+
+    public function assertHasClientCredentials()
+    {
+        $this->assertHasClientId();
+        $this->assertHasClientSecret();
+    }
+
+    public function assertHasClientId()
+    {
+        if (empty($this->_publicKey)) {
+            throw new Braintree_Exception_Configuration('clientId needs to be set.');
+        }
+    }
+
+    public function assertHasClientSecret()
+    {
+        if (empty($this->_privateKey)) {
+            throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
         }
     }
 
@@ -132,9 +144,9 @@ class Braintree_Configuration
     }
 
     /**
-     * @access protected
+     * Do not use this method directly. Pass in the environment to the constructor.
      */
-    public function _setEnvironment($value)
+    public function setEnvironment($value)
     {
         $this->_environment = $value;
     }
@@ -145,9 +157,9 @@ class Braintree_Configuration
     }
 
     /**
-     * @access protected
+     * Do not use this method directly. Pass in the merchantId to the constructor.
      */
-    public function _setMerchantId($value)
+    public function setMerchantId($value)
     {
         $this->_merchantId = $value;
     }
@@ -163,9 +175,9 @@ class Braintree_Configuration
     }
 
     /**
-     * @access protected
+     * Do not use this method directly. Pass in the publicKey to the constructor.
      */
-    public function _setPublicKey($value)
+    public function setPublicKey($value)
     {
         $this->_publicKey = $value;
     }
@@ -181,9 +193,9 @@ class Braintree_Configuration
     }
 
     /**
-     * @access protected
+     * Do not use this method directly. Pass in the privateKey to the constructor.
      */
-    public function _setPrivateKey($value)
+    public function setPrivateKey($value)
     {
         $this->_privateKey = $value;
     }
