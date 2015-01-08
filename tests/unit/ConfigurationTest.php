@@ -208,7 +208,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
 
-        $config->assertValidForOAuth();
+        $config->assertHasCredentials(array('clientId', 'clientSecret'));
     }
 
      /**
@@ -221,7 +221,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'clientId' => 'client_id$development$integration_oauth_client_id'
         ));
 
-        $config->assertValidForOAuth();
+        $config->assertHasCredentials(array('clientId', 'clientSecret'));
     }
 
     function testDetectEnvironmentFromClientId()
@@ -289,6 +289,18 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage "invalid" is not a valid environment.
+     */
+    function testInvalidAccessTokenEnvironment()
+    {
+        $config = new Braintree_Configuration(array(
+            'accessToken' => 'access_token$invalid$integration_merchant_id$integration_oauth_access_token',
+        ));
+    }
+
+
     function testValidWithOAuthClientCredentialsAndAccessToken()
     {
         $config = new Braintree_Configuration(array(
@@ -298,7 +310,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         ));
 
         $config->assertValid();
-        $config->assertValidForOAuth();
+        $config->assertHasCredentials(array('clientId', 'clientSecret'));
     }
 
      /**
@@ -312,8 +324,5 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'clientSecret' => 'client_secret$development$integration_oauth_client_secret',
             'accessToken' => 'access_token$sandbox$integration_merchant_id$integration_oauth_access_token',
         ));
-
-        $config->assertValid();
-        $config->assertValidForOAuth();
     }
 }

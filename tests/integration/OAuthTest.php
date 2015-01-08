@@ -3,6 +3,20 @@ require_once __DIR__ . '/../TestHelper.php';
 
 class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 {
+    /**
+    * @expectedException Braintree_Exception_Configuration
+    * @expectedExceptionMessage clientSecret needs to be set.
+    */
+    function testAssertsHasCredentials()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'clientId' => 'client_id$development$integration_oauth_client_id'
+        ));
+        $gateway->oauth()->createAccessToken(array(
+            'code' => 'integration_oauth_auth_code_' . rand(0,299)
+        ));
+    }
+
     function testCreateAccessToken()
     {
         $gateway = new Braintree_Gateway(array(

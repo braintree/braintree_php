@@ -20,4 +20,19 @@ class Braintree_MerchantTest extends PHPUnit_Framework_TestCase
         $credentials = $result->credentials;
         $this->assertNotNull($credentials->token);
     }
+
+    /**
+    * @expectedException Braintree_Exception_Configuration
+    * @expectedExceptionMessage clientId needs to be set.
+    */
+    function testAssertsHasCredentials()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+        ));
+        $gateway->merchant()->create(array(
+            'email' => 'name@email.com',
+            'countryCodeAlpha3' => 'USA',
+        ));
+    }
 }

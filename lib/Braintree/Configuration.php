@@ -133,10 +133,15 @@ class Braintree_Configuration
         }
     }
 
-    public function assertValidForOAuth()
+    public function assertHasCredentials($credentials)
     {
-        if (empty($this->_publicKey)) {
-            throw new Braintree_Exception_Configuration('clientId needs to be set.');
+        foreach ($credentials as $credential) {
+            if ($credential == 'clientId' && empty($this->_publicKey)) {
+                throw new Braintree_Exception_Configuration('clientId needs to be set.');
+            }
+            if ($credential == 'clientSecret' && empty($this->_privateKey)) {
+                throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
+            }
         }
     }
 

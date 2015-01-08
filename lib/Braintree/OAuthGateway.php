@@ -17,12 +17,13 @@ class Braintree_OAuthGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
-        $this->_config->assertValidForOAuth();
         $this->_http = new Braintree_Http($gateway->config);
     }
 
     public function createAccessToken($params)
     {
+        $this->_config->assertHasCredentials(array('clientId', 'clientSecret'));
+
         $response = $this->_http->post('/oauth/access_tokens', array('accessToken' => $params));
         return $this->_verifyGatewayResponse($response);
     }
@@ -53,6 +54,8 @@ class Braintree_OAuthGateway
 
     public function connectUrl($params = array())
     {
+        $this->_config->assertHasCredentials(array('clientId'));
+
         $query = array('client_id' => $this->_config->getClientId());
         if (isset($params['merchantId'])) {
             $query['merchant_id'] = $params['merchantId'];

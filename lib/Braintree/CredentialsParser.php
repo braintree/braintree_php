@@ -37,6 +37,8 @@ class Braintree_CredentialsParser
         $environments = array();
         if (!empty($this->_clientId)) {
             $environments[] = array('clientId', $this->_parseClientCredential('clientId', $this->_clientId, 'client_id'));
+        }
+        if (!empty($this->_clientSecret)) {
             $environments[] = array('clientSecret', $this->_parseClientCredential('clientSecret', $this->_clientSecret, 'client_secret'));
         }
         if (!empty($this->_accessToken)) {
@@ -57,9 +59,6 @@ class Braintree_CredentialsParser
 
     private function _parseClientCredential($credentialType, $value, $expectedValuePrefix)
     {
-        if (empty($value)) {
-            throw new Braintree_Exception_Configuration($credentialType . ' needs to be set.');
-        }
         $explodedCredential = explode('$', $value);
         if (sizeof($explodedCredential) != 3) {
             throw new Braintree_Exception_Configuration('Incorrect ' . $credentialType . ' format. Expected: type$environment$token');

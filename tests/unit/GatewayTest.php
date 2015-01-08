@@ -31,16 +31,6 @@ class Braintree_GatewayTest extends PHPUnit_Framework_TestCase
         $gateway->addOn();
     }
 
-    /**
-    * @expectedException Braintree_Exception_Configuration
-    * @expectedExceptionMessage clientId needs to be set.
-    */
-    function testOAuthConfigGetsAssertedValid()
-    {
-        $gateway = new Braintree_Gateway(array());
-        $gateway->oauth();
-    }
-
     function testConstructWithArrayOfCredentials()
     {
         $gateway = new Braintree_Gateway(array(
