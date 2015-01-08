@@ -28,6 +28,7 @@ class Braintree_Configuration
     {
         foreach ($attribs as $kind => $value) {
             if ($kind == 'environment') {
+                Braintree_CredentialsParser::assertValidEnvironment($value);
                 $this->setEnvironment($value);
             }
             if ($kind == 'merchantId') {
@@ -66,29 +67,12 @@ class Braintree_Configuration
         return new Braintree_Gateway(self::$global);
     }
 
-    /**
-     *
-     * @access protected
-     * @static
-     * @var array valid environments, used for validation
-     */
-    private static $_validEnvironments = array(
-                    'development',
-                    'sandbox',
-                    'production',
-                    'qa',
-                    );
-
-    /**
-     * resets configuration to default
-     * @access public
-     * @static
-     */
     public static function environment($value=null)
     {
         if (empty($value)) {
             return self::$global->getEnvironment();
         }
+        Braintree_CredentialsParser::assertValidEnvironment($value);
         self::$global->setEnvironment($value);
     }
 
@@ -152,10 +136,6 @@ class Braintree_Configuration
 
     public function setEnvironment($value)
     {
-        if (!in_array($value, self::$_validEnvironments)) {
-            throw new Braintree_Exception_Configuration('"' .
-                                    $value . '" is not a valid environment.');
-        }
         $this->_environment = $value;
     }
 

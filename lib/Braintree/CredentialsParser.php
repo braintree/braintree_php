@@ -32,6 +32,20 @@ class Braintree_CredentialsParser
         $this->parse();
     }
 
+    /**
+     *
+     * @access protected
+     * @static
+     * @var array valid environments, used for validation
+     */
+    private static $_validEnvironments = array(
+        'development',
+        'sandbox',
+        'production',
+        'qa',
+    );
+
+
     public function parse()
     {
         $environments = array();
@@ -54,7 +68,15 @@ class Braintree_CredentialsParser
             }
         }
 
+        self::assertValidEnvironment($checkEnv[1]);
         $this->_environment = $checkEnv[1];
+    }
+
+    public static function assertValidEnvironment($environment) {
+        if (!in_array($environment, self::$_validEnvironments)) {
+            throw new Braintree_Exception_Configuration('"' .
+                                    $environment . '" is not a valid environment.');
+        }
     }
 
     private function _parseClientCredential($credentialType, $value, $expectedValuePrefix)
