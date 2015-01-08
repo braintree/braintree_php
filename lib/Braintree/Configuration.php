@@ -100,31 +100,25 @@ class Braintree_Configuration
         self::$global->setPrivateKey($value);
     }
 
-    public function assertValid()
+    public function assertHasCredentials(/* ...$credentials */)
     {
-        if (empty($this->_environment)) {
-            throw new Braintree_Exception_Configuration('environment needs to be set.');
-        } else if (empty($this->_merchantId)) {
-            throw new Braintree_Exception_Configuration('merchantId needs to be set.');
-        }
-
-        if (empty($this->_accessToken)) {
-            if (empty($this->_publicKey)) {
-                throw new Braintree_Exception_Configuration('publicKey needs to be set.');
-            } else if (empty($this->_privateKey)) {
-                throw new Braintree_Exception_Configuration('privateKey needs to be set.');
-            }
-        }
-    }
-
-    public function assertHasCredentials($credentials)
-    {
-        foreach ($credentials as $credential) {
+        foreach (func_get_args() as $credential) {
             if ($credential == 'clientId' && empty($this->_publicKey)) {
                 throw new Braintree_Exception_Configuration('clientId needs to be set.');
             }
             if ($credential == 'clientSecret' && empty($this->_privateKey)) {
                 throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
+            }
+            if ($credential == 'accessTokenOrKeys' && empty($this->_accessToken)) {
+                if (empty($this->_environment)) {
+                    throw new Braintree_Exception_Configuration('environment needs to be set.');
+                } else if (empty($this->_merchantId)) {
+                    throw new Braintree_Exception_Configuration('merchantId needs to be set.');
+                } else if (empty($this->_publicKey)) {
+                    throw new Braintree_Exception_Configuration('publicKey needs to be set.');
+                } else if (empty($this->_privateKey)) {
+                    throw new Braintree_Exception_Configuration('privateKey needs to be set.');
+                }
             }
         }
     }

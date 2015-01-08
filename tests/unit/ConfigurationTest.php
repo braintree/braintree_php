@@ -159,7 +159,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::publicKey('integration_public_key');
         Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertValid();
+        Braintree_Configuration::$global->assertHasCredentials('accessTokenOrKeys');
     }
      /**
      * @expectedException Braintree_Exception_Configuration
@@ -172,7 +172,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::publicKey('integration_public_key');
         Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertValid();
+        Braintree_Configuration::$global->assertHasCredentials('accessTokenOrKeys');
     }
      /**
      * @expectedException Braintree_Exception_Configuration
@@ -185,7 +185,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         //Braintree_Configuration::publicKey('integration_public_key');
         Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertValid();
+        Braintree_Configuration::$global->assertHasCredentials('accessTokenOrKeys');
     }
      /**
      * @expectedException Braintree_Exception_Configuration
@@ -198,7 +198,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::publicKey('integration_public_key');
         //Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertValid();
+        Braintree_Configuration::$global->assertHasCredentials('accessTokenOrKeys');
     }
 
     function testValidWithOAuthClientCredentials()
@@ -208,7 +208,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
 
-        $config->assertHasCredentials(array('clientId', 'clientSecret'));
+        $config->assertHasCredentials('clientId', 'clientSecret');
     }
 
      /**
@@ -221,7 +221,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'clientId' => 'client_id$development$integration_oauth_client_id'
         ));
 
-        $config->assertHasCredentials(array('clientId', 'clientSecret'));
+        $config->assertHasCredentials('clientId', 'clientSecret');
     }
 
     function testDetectEnvironmentFromClientId()
@@ -264,7 +264,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
         ));
 
-        $config->assertValid();
+        $config->assertHasCredentials('accessTokenOrKeys');
     }
 
      /**
@@ -309,8 +309,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
         ));
 
-        $config->assertValid();
-        $config->assertHasCredentials(array('clientId', 'clientSecret'));
+        $config->assertHasCredentials('clientId', 'clientSecret', 'accessTokenOrKeys');
     }
 
      /**

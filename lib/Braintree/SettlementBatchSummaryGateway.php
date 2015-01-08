@@ -9,7 +9,7 @@ class Braintree_SettlementBatchSummaryGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
-        $this->_config->assertValid();
+        $this->_config->assertHasCredentials('accessTokenOrKeys');
         $this->_http = new Braintree_Http($gateway->config);
     }
 
