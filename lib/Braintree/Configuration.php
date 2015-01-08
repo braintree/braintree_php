@@ -43,6 +43,9 @@ class Braintree_Configuration
         }
 
         if (isset($attribs['clientId']) || isset($attribs['accessToken'])) {
+            if (isset($attribs['environment']) || isset($attribs['merchantId']) || isset($attribs['publicKey']) || isset($attribs['privateKey'])) {
+                throw new Braintree_Exception_Configuration('Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId).');
+            }
             $parsedCredentials = new Braintree_CredentialsParser($attribs);
 
             $this->_environment = $parsedCredentials->getEnvironment();

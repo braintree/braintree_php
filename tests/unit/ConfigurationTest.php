@@ -324,4 +324,20 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
             'accessToken' => 'access_token$sandbox$integration_merchant_id$integration_oauth_access_token',
         ));
     }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId).
+     */
+    function testCannotMixKeysWithOAuthCredentials()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_id$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret',
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+    }
 }
