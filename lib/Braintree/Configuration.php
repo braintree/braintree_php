@@ -29,27 +29,27 @@ class Braintree_Configuration
         foreach ($attribs as $kind => $value) {
             if ($kind == 'environment') {
                 Braintree_CredentialsParser::assertValidEnvironment($value);
-                $this->setEnvironment($value);
+                $this->_environment = $value;
             }
             if ($kind == 'merchantId') {
-                $this->setMerchantId($value);
+                $this->_merchantId = $value;
             }
             if ($kind == 'publicKey') {
-                $this->setPublicKey($value);
+                $this->_publicKey = $value;
             }
             if ($kind == 'privateKey') {
-                $this->setPrivateKey($value);
+                $this->_privateKey = $value;
             }
         }
 
         if (isset($attribs['clientId']) || isset($attribs['accessToken'])) {
             $parsedCredentials = new Braintree_CredentialsParser($attribs);
 
-            $this->setEnvironment($parsedCredentials->getEnvironment());
-            $this->setMerchantId($parsedCredentials->getMerchantId());
-            $this->setPublicKey($parsedCredentials->getClientId());
-            $this->setPrivateKey($parsedCredentials->getClientSecret());
-            $this->setAccessToken($parsedCredentials->getAccessToken());
+            $this->_environment = $parsedCredentials->getEnvironment();
+            $this->_merchantId = $parsedCredentials->getMerchantId();
+            $this->_publicKey = $parsedCredentials->getClientId();
+            $this->_privateKey = $parsedCredentials->getClientSecret();
+            $this->_accessToken = $parsedCredentials->getAccessToken();
         }
     }
 
@@ -73,7 +73,7 @@ class Braintree_Configuration
             return self::$global->getEnvironment();
         }
         Braintree_CredentialsParser::assertValidEnvironment($value);
-        self::$global->setEnvironment($value);
+        self::$global->_setEnvironment($value);
     }
 
     public static function merchantId($value=null)
@@ -81,7 +81,7 @@ class Braintree_Configuration
         if (empty($value)) {
             return self::$global->getMerchantId();
         }
-        self::$global->setMerchantId($value);
+        self::$global->_setMerchantId($value);
     }
 
     public static function publicKey($value=null)
@@ -89,7 +89,7 @@ class Braintree_Configuration
         if (empty($value)) {
             return self::$global->getPublicKey();
         }
-        self::$global->setPublicKey($value);
+        self::$global->_setPublicKey($value);
     }
 
     public static function privateKey($value=null)
@@ -97,7 +97,7 @@ class Braintree_Configuration
         if (empty($value)) {
             return self::$global->getPrivateKey();
         }
-        self::$global->setPrivateKey($value);
+        self::$global->_setPrivateKey($value);
     }
 
     public function assertHasCredentials(/* ...$credentials */)
@@ -128,7 +128,10 @@ class Braintree_Configuration
         return $this->_environment;
     }
 
-    public function setEnvironment($value)
+    /**
+     * @access protected
+     */
+    public function _setEnvironment($value)
     {
         $this->_environment = $value;
     }
@@ -138,7 +141,10 @@ class Braintree_Configuration
         return $this->_merchantId;
     }
 
-    public function setMerchantId($value)
+    /**
+     * @access protected
+     */
+    public function _setMerchantId($value)
     {
         $this->_merchantId = $value;
     }
@@ -153,7 +159,10 @@ class Braintree_Configuration
         return $this->_publicKey;
     }
 
-    public function setPublicKey($value)
+    /**
+     * @access protected
+     */
+    public function _setPublicKey($value)
     {
         $this->_publicKey = $value;
     }
@@ -168,7 +177,10 @@ class Braintree_Configuration
         return $this->_privateKey;
     }
 
-    public function setPrivateKey($value)
+    /**
+     * @access protected
+     */
+    public function _setPrivateKey($value)
     {
         $this->_privateKey = $value;
     }
@@ -176,11 +188,6 @@ class Braintree_Configuration
     public function getAccessToken()
     {
         return $this->_accessToken;
-    }
-
-    public function setAccessToken($value)
-    {
-        $this->_accessToken = $value;
     }
 
     public function isAccessToken()

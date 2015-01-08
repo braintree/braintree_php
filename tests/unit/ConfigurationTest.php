@@ -49,44 +49,44 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     function testMerchantPath()
     {
-        $this->config->setMerchantId('abc123');
+        $this->config->_setMerchantId('abc123');
         $mp = $this->config->merchantPath();
         $this->assertEquals('/merchants/abc123', $mp);
     }
 
     function testCaFile()
     {
-        $this->config->setEnvironment('development');
+        $this->config->_setEnvironment('development');
         $this->setExpectedException('Braintree_Exception_SSLCaFileNotFound');
         $this->config->caFile('/does/not/exist/');
     }
 
     function testSSLOn()
     {
-        $this->config->setEnvironment('development');
+        $this->config->_setEnvironment('development');
         $on = $this->config->sslOn();
         $this->assertFalse($on);
 
-        $this->config->setEnvironment('sandbox');
+        $this->config->_setEnvironment('sandbox');
         $on = $this->config->sslOn();
         $this->assertTrue($on);
 
-        $this->config->setEnvironment('production');
+        $this->config->_setEnvironment('production');
         $on = $this->config->sslOn();
         $this->assertTrue($on);
     }
 
     function testPortNumber()
     {
-        $this->config->setEnvironment('development');
+        $this->config->_setEnvironment('development');
         $pn = $this->config->portNumber();
         $this->assertEquals(getenv("GATEWAY_PORT") ? getenv("GATEWAY_PORT") : 3000, $pn);
 
-        $this->config->setEnvironment('sandbox');
+        $this->config->_setEnvironment('sandbox');
         $pn = $this->config->portNumber();
         $this->assertEquals(443, $pn);
 
-        $this->config->setEnvironment('production');
+        $this->config->_setEnvironment('production');
         $pn = $this->config->portNumber();
         $this->assertEquals(443, $pn);
     }
@@ -94,56 +94,56 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     function testProtocol()
     {
-        $this->config->setEnvironment('development');
+        $this->config->_setEnvironment('development');
         $p = $this->config->protocol();
         $this->assertEquals('http', $p);
 
-        $this->config->setEnvironment('sandbox');
+        $this->config->_setEnvironment('sandbox');
         $p = $this->config->protocol();
         $this->assertEquals('https', $p);
 
-        $this->config->setEnvironment('production');
+        $this->config->_setEnvironment('production');
         $p = $this->config->protocol();
         $this->assertEquals('https', $p);
     }
 
     function testServerName()
     {
-        $this->config->setEnvironment('development');
+        $this->config->_setEnvironment('development');
         $sn = $this->config->serverName();
         $this->assertEquals('localhost', $sn);
 
-        $this->config->setEnvironment('sandbox');
+        $this->config->_setEnvironment('sandbox');
         $sn = $this->config->serverName();
         $this->assertEquals('api.sandbox.braintreegateway.com', $sn);
 
-        $this->config->setEnvironment('production');
+        $this->config->_setEnvironment('production');
         $sn = $this->config->serverName();
         $this->assertEquals('api.braintreegateway.com', $sn);
     }
 
     function testAuthUrl()
     {
-        $this->config->setEnvironment('development');
+        $this->config->_setEnvironment('development');
         $authUrl = $this->config->authUrl();
         $this->assertEquals('http://auth.venmo.dev:9292', $authUrl);
 
-        $this->config->setEnvironment('qa');
+        $this->config->_setEnvironment('qa');
         $authUrl = $this->config->authUrl();
         $this->assertEquals('https://auth.qa.venmo.com', $authUrl);
 
-        $this->config->setEnvironment('sandbox');
+        $this->config->_setEnvironment('sandbox');
         $authUrl = $this->config->authUrl();
         $this->assertEquals('https://auth.sandbox.venmo.com', $authUrl);
 
-        $this->config->setEnvironment('production');
+        $this->config->_setEnvironment('production');
         $authUrl = $this->config->authUrl();
         $this->assertEquals('https://auth.venmo.com', $authUrl);
     }
 
     function testBaseUrl()
     {
-        $this->config->setEnvironment('sandbox');
+        $this->config->_setEnvironment('sandbox');
         $bu = $this->config->baseUrl();
         $this->assertEquals('https://api.sandbox.braintreegateway.com:443', $bu);
     }
