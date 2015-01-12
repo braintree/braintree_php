@@ -113,6 +113,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('47.00', $transaction->amount);
         $applePayDetails = $transaction->applePayCardDetails;
         $this->assertSame(Braintree_ApplePayCard::AMEX, $applePayDetails->cardType);
+        $this->assertContains("AmEx ", $applePayDetails->paymentInstrumentName);
         $this->assertTrue(intval($applePayDetails->expirationMonth) > 0);
         $this->assertTrue(intval($applePayDetails->expirationYear) > 0);
         $this->assertNotNull($applePayDetails->cardholderName);

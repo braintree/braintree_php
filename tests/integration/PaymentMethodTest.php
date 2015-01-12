@@ -70,6 +70,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $applePayCard = $result->paymentMethod;
         $this->assertNotNull($applePayCard->token);
         $this->assertSame(Braintree_ApplePayCard::VISA, $applePayCard->cardType);
+        $this->assertContains("Visa ", $applePayCard->paymentInstrumentName);
         $this->assertTrue($applePayCard->default);
         $this->assertContains('apple_pay', $applePayCard->imageUrl);
         $this->assertTrue(intval($applePayCard->expirationMonth) > 0);

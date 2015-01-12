@@ -16,6 +16,7 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $cardType
+ * @property-read string $paymentInstrumentName
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
  * @property-read string $cardholderName
