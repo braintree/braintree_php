@@ -203,11 +203,12 @@ final class Braintree_Transaction extends Braintree
     const RECURRING     = 'recurring';
 
     // Gateway Rejection Reason
-    const AVS          = 'avs';
-    const AVS_AND_CVV  = 'avs_and_cvv';
-    const CVV          = 'cvv';
-    const DUPLICATE    = 'duplicate';
-    const FRAUD        = 'fraud';
+    const AVS            = 'avs';
+    const AVS_AND_CVV    = 'avs_and_cvv';
+    const CVV            = 'cvv';
+    const DUPLICATE      = 'duplicate';
+    const FRAUD          = 'fraud';
+    const THREE_D_SECURE = 'three_d_secure';
 
     // Industry Types
     const LODGING_INDUSTRY           = 'lodging';
