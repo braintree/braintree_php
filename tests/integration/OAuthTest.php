@@ -29,7 +29,9 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, $result->success);
         $credentials = $result->credentials;
-        $this->assertNotNull($credentials->token);
+        $this->assertNotNull($credentials->accessToken);
+        $this->assertEquals('bearer', $credentials->tokenType);
+        $this->assertNotNull($credentials->expiresAt);
     }
 
     function testCreateAccessTokenFail()
@@ -45,7 +47,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $result->success);
         $credentials = $result->credentials;
         $this->assertEquals('invalid_grant', $credentials->error);
-        $this->assertEquals('code not found', $credentials->message);
+        $this->assertEquals('code not found', $credentials->errorDescription);
     }
 
     function testBuildConnectUrl()
@@ -57,7 +59,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $url = $gateway->oauth()->connectUrl(array(
             'merchantId' => 'foo_merchant_id',
             'redirectUri' => 'http://bar.example.com',
-            'scopes' => 'read_write',
+            'scope' => 'read_write',
             'state' => 'baz_state',
         ));
 
@@ -70,7 +72,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo_merchant_id', $query['merchant_id']);
         $this->assertEquals('client_id$development$integration_oauth_client_id', $query['client_id']);
         $this->assertEquals('http://bar.example.com', $query['redirect_uri']);
-        $this->assertEquals('read_write', $query['scopes']);
+        $this->assertEquals('read_write', $query['scope']);
         $this->assertEquals('baz_state', $query['state']);
     }
 
@@ -88,6 +90,6 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('client_id$development$integration_oauth_client_id', $query['client_id']);
         $this->assertArrayNotHasKey('merchant_id', $query);
         $this->assertArrayNotHasKey('redirect_uri', $query);
-        $this->assertArrayNotHasKey('scopes', $query);
+        $this->assertArrayNotHasKey('scope', $query);
     }
 }

@@ -30,24 +30,24 @@ class Braintree_OAuthGateway
 
     private function _verifyGatewayResponse($response)
     {
-        if (isset($response['accessToken'])) {
-            if (isset($response['accessToken']['error'])) {
+        if (isset($response['credentials'])) {
+            if (isset($response['credentials']['error'])) {
                 // TODO: Fix Error Handling
                 // $errors = array('errors' => array($response['accessToken']));
                 // return new Braintree_Result_Error($errors);
                 $failure = new Braintree_Result_Successful(
-                        Braintree_OAuthCredentials::factory($response['accessToken'])
+                        Braintree_OAuthCredentials::factory($response['credentials'])
                 );
                 $failure->success = false;
                 return $failure;
             } else {
                 return new Braintree_Result_Successful(
-                        Braintree_OAuthCredentials::factory($response['accessToken'])
+                        Braintree_OAuthCredentials::factory($response['credentials'])
                 );
             }
         } else {
             throw new Braintree_Exception_Unexpected(
-                "Expected accessToken or apiErrorResponse"
+                "Expected credentials or apiErrorResponse"
             );
         }
     }
@@ -63,8 +63,8 @@ class Braintree_OAuthGateway
         if (isset($params['redirectUri'])) {
             $query['redirect_uri'] = $params['redirectUri'];
         }
-        if (isset($params['scopes'])) {
-            $query['scopes'] = $params['scopes'];
+        if (isset($params['scope'])) {
+            $query['scope'] = $params['scope'];
         }
         if (isset($params['state'])) {
             $query['state'] = $params['state'];

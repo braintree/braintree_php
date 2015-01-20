@@ -18,7 +18,7 @@ class Braintree_MerchantTest extends PHPUnit_Framework_TestCase
         $merchant = $result->merchant;
         $this->assertNotNull($merchant->id);
         $credentials = $result->credentials;
-        $this->assertNotNull($credentials->token);
+        $this->assertNotNull($credentials->accessToken);
     }
 
     /**
