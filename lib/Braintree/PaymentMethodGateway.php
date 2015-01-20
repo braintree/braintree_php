@@ -57,6 +57,8 @@ class Braintree_PaymentMethodGateway
                 return Braintree_CreditCard::factory($response['creditCard']);
             } else if (isset($response['paypalAccount'])) {
                 return Braintree_PayPalAccount::factory($response['paypalAccount']);
+            } else if (isset($response['coinbaseAccount'])) {
+                return Braintree_CoinbaseAccount::factory($response['coinbaseAccount']);
             } else if (isset($response['applePayCard'])) {
                 return Braintree_ApplePayCard::factory($response['applePayCard']);
             } else if (is_array($response)) {
@@ -199,6 +201,12 @@ class Braintree_PaymentMethodGateway
             // return a populated instance of Braintree_PayPalAccount
             return new Braintree_Result_Successful(
                 Braintree_PayPalAccount::factory($response['paypalAccount']),
+                "paymentMethod"
+            );
+        } else if (isset($response['coinbaseAccount'])) {
+            // return a populated instance of Braintree_CoinbaseAccount
+            return new Braintree_Result_Successful(
+                Braintree_CoinbaseAccount::factory($response['coinbaseAccount']),
                 "paymentMethod"
             );
         } else if (isset($response['applePayCard'])) {

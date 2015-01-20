@@ -150,6 +150,7 @@
  * @property-read string $createdAt transaction created timestamp
  * @property-read object $applePayCardDetails transaction Apple Pay card info
  * @property-read object $creditCardDetails transaction credit card info
+ * @property-read object $coinbaseDetails transaction Coinbase account info
  * @property-read object $paypalDetails transaction paypal account info
  * @property-read object $customerDetails transaction customer info
  * @property-read array  $customFields custom fields passed with the request
@@ -237,6 +238,14 @@ final class Braintree_Transaction extends Braintree
             $this->_set('creditCardDetails',
                 new Braintree_Transaction_CreditCardDetails(
                     $transactionAttribs['creditCard']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['coinbaseAccount'])) {
+            $this->_set('coinbaseDetails',
+                new Braintree_Transaction_CoinbaseDetails(
+                    $transactionAttribs['coinbaseAccount']
                 )
             );
         }

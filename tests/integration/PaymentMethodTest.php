@@ -58,7 +58,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($result->paymentMethod->imageUrl);
     }
 
-    function testCreate_fromFakePayPalNonce()
+    function testCreate_fromFakeApplePayNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
         $result = Braintree_PaymentMethod::create(array(
@@ -70,6 +70,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $applePayCard = $result->paymentMethod;
         $this->assertNotNull($applePayCard->token);
         $this->assertSame(Braintree_ApplePayCard::VISA, $applePayCard->cardType);
+        $this->assertContains("Visa ", $applePayCard->paymentInstrumentName);
         $this->assertTrue($applePayCard->default);
         $this->assertContains('apple_pay', $applePayCard->imageUrl);
         $this->assertTrue(intval($applePayCard->expirationMonth) > 0);
@@ -596,6 +597,25 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(intval($foundApplePayCard->expirationMonth) > 0);
         $this->assertTrue(intval($foundApplePayCard->expirationYear) > 0);
     }
+
+    function testFind_returnsCoinbaseAccounts()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree_Test_Nonces::$coinbase
+        ));
+
+        $this->assertTrue($result->success);
+        $coinbaseAccount = $result->paymentMethod;
+        $this->assertNotNull($coinbaseAccount->token);
+        $foundCoinbaseAccount = Braintree_PaymentMethod::find($coinbaseAccount->token);
+        $this->assertInstanceOf('Braintree_CoinbaseAccount', $foundCoinbaseAccount);
+        $this->assertNotNull($foundCoinbaseAccount->userId);
+        $this->assertNotNull($foundCoinbaseAccount->userName);
+        $this->assertNotNull($foundCoinbaseAccount->userEmail);
+    }
+
 
     function testFind_returnsAbstractPaymentMethods()
     {
