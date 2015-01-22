@@ -61,6 +61,38 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
             'redirectUri' => 'http://bar.example.com',
             'scope' => 'read_write',
             'state' => 'baz_state',
+            'user' => array(
+                'country' => 'USA',
+                'email' => 'foo@example.com',
+                'firstName' => 'Bob',
+                'lastName' => 'Jones',
+                'phone' => '555-555-5555',
+                'dobYear' => '1970',
+                'dobMonth' => '01',
+                'dobDay' => '01',
+                'streetAddress' => '222 W Merchandise Mart',
+                'locality' => 'Chicago',
+                'region' => 'IL',
+                'postalCode' => '60606',
+                'website' => 'http://example.com',
+            ),
+            'business' => array(
+                'name' => '14 Ladders',
+                'registeredAs' => '14.0 Ladders',
+                'industry' => 'Ladders',
+                'description' => 'We sell the best ladders',
+                'streetAddress' => '111 N Canal',
+                'locality' => 'Chicago',
+                'region' => 'IL',
+                'postalCode' => '60606',
+                'country' => 'USA',
+                'annualVolumeAmount' => '1000000',
+                'averageTransactionAmount' => '100',
+                'maximumTransactionAmount' => '10000',
+                'shipPhysicalGoods' => 'Yes',
+                'fulfillmentCompletedIn' => '3 hours',
+                'currency' => 'USD',
+            ),
         ));
 
         $components = parse_url($url);
@@ -74,6 +106,36 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://bar.example.com', $query['redirect_uri']);
         $this->assertEquals('read_write', $query['scope']);
         $this->assertEquals('baz_state', $query['state']);
+
+        $this->assertEquals('USA', $query['user']['country']);
+        $this->assertEquals('foo@example.com', $query['user']['email']);
+        $this->assertEquals('Bob', $query['user']['first_name']);
+        $this->assertEquals('Jones', $query['user']['last_name']);
+        $this->assertEquals('555-555-5555', $query['user']['phone']);
+        $this->assertEquals('1970', $query['user']['dob_year']);
+        $this->assertEquals('01', $query['user']['dob_month']);
+        $this->assertEquals('01', $query['user']['dob_day']);
+        $this->assertEquals('222 W Merchandise Mart', $query['user']['street_address']);
+        $this->assertEquals('Chicago', $query['user']['locality']);
+        $this->assertEquals('IL', $query['user']['region']);
+        $this->assertEquals('60606', $query['user']['postal_code']);
+        $this->assertEquals('http://example.com', $query['user']['website']);
+
+        $this->assertEquals('14 Ladders', $query['business']['name']);
+        $this->assertEquals('14.0 Ladders', $query['business']['registered_as']);
+        $this->assertEquals('Ladders', $query['business']['industry']);
+        $this->assertEquals('We sell the best ladders', $query['business']['description']);
+        $this->assertEquals('111 N Canal', $query['business']['street_address']);
+        $this->assertEquals('Chicago', $query['business']['locality']);
+        $this->assertEquals('IL', $query['business']['region']);
+        $this->assertEquals('60606', $query['business']['postal_code']);
+        $this->assertEquals('USA', $query['business']['country']);
+        $this->assertEquals('1000000', $query['business']['annual_volume_amount']);
+        $this->assertEquals('100', $query['business']['average_transaction_amount']);
+        $this->assertEquals('10000', $query['business']['maximum_transaction_amount']);
+        $this->assertEquals('Yes', $query['business']['ship_physical_goods']);
+        $this->assertEquals('3 hours', $query['business']['fulfillment_completed_in']);
+        $this->assertEquals('USD', $query['business']['currency']);
     }
 
     function testBuildConnectUrlWithoutOptionalParams()
