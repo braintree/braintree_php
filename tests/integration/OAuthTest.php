@@ -12,19 +12,20 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $gateway = new Braintree_Gateway(array(
             'clientId' => 'client_id$development$integration_oauth_client_id'
         ));
-        $gateway->oauth()->createAccessToken(array(
+        $gateway->oauth()->createTokenFromCode(array(
             'code' => 'integration_oauth_auth_code_' . rand(0,299)
         ));
     }
 
-    function testCreateAccessToken()
+    function testCreateTokenFromCode()
     {
         $gateway = new Braintree_Gateway(array(
             'clientId' => 'client_id$development$integration_oauth_client_id',
             'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
-        $result = $gateway->oauth()->createAccessToken(array(
-            'code' => 'integration_oauth_auth_code_' . rand(0,299)
+        $result = $gateway->oauth()->createTokenFromCode(array(
+            'code' => 'integration_oauth_auth_code_' . rand(0,299),
+            'scope' => 'read_write',
         ));
 
         $this->assertEquals(true, $result->success);
@@ -34,14 +35,15 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($credentials->expiresAt);
     }
 
-    function testCreateAccessTokenFail()
+    function testCreateTokenFromCodeFail()
     {
         $gateway = new Braintree_Gateway(array(
             'clientId' => 'client_id$development$integration_oauth_client_id',
             'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
-        $result = $gateway->oauth()->createAccessToken(array(
-            'code' => 'bad_code'
+        $result = $gateway->oauth()->createTokenFromCode(array(
+            'code' => 'bad_code',
+            'scope' => 'read_write',
         ));
 
         $this->assertEquals(false, $result->success);

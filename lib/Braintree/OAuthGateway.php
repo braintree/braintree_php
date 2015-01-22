@@ -17,14 +17,15 @@ class Braintree_OAuthGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Braintree_HttpOAuth($gateway->config);
     }
 
-    public function createAccessToken($params)
+    public function createTokenFromCode($params)
     {
         $this->_config->assertHasClientCredentials();
 
-        $response = $this->_http->post('/oauth/access_tokens', array('accessToken' => $params));
+        $params['grantType'] = "authorization_code";
+        $response = $this->_http->post('/oauth/access_tokens', $params);
         return $this->_verifyGatewayResponse($response);
     }
 
