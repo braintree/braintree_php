@@ -28,7 +28,7 @@ class Braintree_HttpOAuth
     {
         $response = $this->_doRequest('GET', $path);
         if($response['status'] === 200) {
-            return Braintree_Xml::buildArrayFromXml($response['body']);
+            return Braintree_Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
         } else {
             Braintree_Util::throwStatusCodeException($response['status']);
         }
@@ -36,13 +36,11 @@ class Braintree_HttpOAuth
 
     public function post($path, $params = null)
     {
-        $urlString = http_build_query($params);
-        $urlUnderScored = Braintree_Util::camelCaseToDelimiter($urlString, '_');
-        $response = $this->_doRequest('POST', $path, $urlUnderScored);
+        $body = http_build_query(Braintree_Util::camelCaseToDelimiterArray($params, '_'));
+        $response = $this->_doRequest('POST', $path, $body);
         $responseCode = $response['status'];
-        var_dump($response['body']);
         if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
-            return Braintree_Xml::buildArrayFromXml($response['body']);
+            return Braintree_Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
         } else {
             Braintree_Util::throwStatusCodeException($responseCode);
         }
@@ -50,12 +48,11 @@ class Braintree_HttpOAuth
 
     public function put($path, $params = null)
     {
-        $urlString = http_build_query($params);
-        $urlUnderScored = Braintree_Util::camelCaseToDelimiter($urlString, '_');
-        $response = $this->_doRequest('PUT', $path, $urlUnderScored);
+        $body = http_build_query(Braintree_Util::camelCaseToDelimiterArray($params, '_'));
+        $response = $this->_doRequest('PUT', $path, $body);
         $responseCode = $response['status'];
         if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
-            return Braintree_Xml::buildArrayFromXml($response['body']);
+            return Braintree_Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
         } else {
             Braintree_Util::throwStatusCodeException($responseCode);
         }
@@ -63,7 +60,6 @@ class Braintree_HttpOAuth
 
     private function _doRequest($httpVerb, $path, $requestBody = null)
     {
-        var_dump($requestBody);
         return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . $path, $requestBody);
     }
 
@@ -75,15 +71,15 @@ class Braintree_HttpOAuth
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
         $headers = array(
-            'Accept: application/xml',
+            'Accept: application/json',
             'Content-Type: application/x-www-form-urlencoded',
             'User-Agent: Braintree PHP Library ' . Braintree_Version::get(),
             'X-ApiVersion: ' . Braintree_Configuration::API_VERSION
         );
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, $this->_config->getPublicKey() . ':' . $this->_config->getPrivateKey());
+        curl_setopt($curl, CURLOPT_USERPWD, $this->_config->getClientId() . ':' . $this->_config->getClientSecret());
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_VERBOSE, true);
+        // curl_setopt($curl, CURLOPT_VERBOSE, true);
         if ($this->_config->sslOn()) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);

@@ -31,26 +31,9 @@ class Braintree_OAuthGateway
 
     private function _verifyGatewayResponse($response)
     {
-        if (isset($response['credentials'])) {
-            if (isset($response['credentials']['error'])) {
-                // TODO: Fix Error Handling
-                // $errors = array('errors' => array($response['accessToken']));
-                // return new Braintree_Result_Error($errors);
-                $failure = new Braintree_Result_Successful(
-                        Braintree_OAuthCredentials::factory($response['credentials'])
-                );
-                $failure->success = false;
-                return $failure;
-            } else {
-                return new Braintree_Result_Successful(
-                        Braintree_OAuthCredentials::factory($response['credentials'])
-                );
-            }
-        } else {
-            throw new Braintree_Exception_Unexpected(
-                "Expected credentials or apiErrorResponse"
-            );
-        }
+        $result = Braintree_OAuthCredentials::factory($response);
+        $result->success = !isset($response['error']);
+        return $result;
     }
 
     public function connectUrl($params = array())

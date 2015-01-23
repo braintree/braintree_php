@@ -29,10 +29,9 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertEquals(true, $result->success);
-        $credentials = $result->credentials;
-        $this->assertNotNull($credentials->accessToken);
-        $this->assertEquals('bearer', $credentials->tokenType);
-        $this->assertNotNull($credentials->expiresAt);
+        $this->assertNotNull($result->accessToken);
+        $this->assertEquals('bearer', $result->tokenType);
+        $this->assertNotNull($result->expiresAt);
     }
 
     function testCreateTokenFromCodeFail()
@@ -47,9 +46,8 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertEquals(false, $result->success);
-        $credentials = $result->credentials;
-        $this->assertEquals('invalid_grant', $credentials->error);
-        $this->assertEquals('code not found', $credentials->errorDescription);
+        $this->assertEquals('invalid_grant', $result->error);
+        $this->assertEquals('code not found', $result->errorDescription);
     }
 
     function testBuildConnectUrl()
