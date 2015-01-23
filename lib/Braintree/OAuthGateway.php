@@ -29,6 +29,15 @@ class Braintree_OAuthGateway
         return $this->_verifyGatewayResponse($response);
     }
 
+    public function createTokenFromRefreshToken($params)
+    {
+        $this->_config->assertHasClientCredentials();
+
+        $params['grantType'] = "refresh_token";
+        $response = $this->_http->post('/oauth/access_tokens', $params);
+        return $this->_verifyGatewayResponse($response);
+    }
+
     private function _verifyGatewayResponse($response)
     {
         $result = Braintree_OAuthCredentials::factory($response);
