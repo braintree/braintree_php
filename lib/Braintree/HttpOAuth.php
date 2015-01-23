@@ -5,7 +5,7 @@
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_HttpOAuth
+class Braintree_HttpOAuth extends Braintree_HttpBase
 {
     protected $_config;
 
@@ -58,47 +58,19 @@ class Braintree_HttpOAuth
         }
     }
 
-    private function _doRequest($httpVerb, $path, $requestBody = null)
+    protected function _getHeaders()
     {
-        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . $path, $requestBody);
-    }
-
-    public function _doUrlRequest($httpVerb, $url, $requestBody = null)
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
-        $headers = array(
+        return array(
             'Accept: application/json',
             'Content-Type: application/x-www-form-urlencoded',
-            'User-Agent: Braintree PHP Library ' . Braintree_Version::get(),
-            'X-ApiVersion: ' . Braintree_Configuration::API_VERSION
         );
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, $this->_config->getClientId() . ':' . $this->_config->getClientSecret());
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        // curl_setopt($curl, CURLOPT_VERBOSE, true);
-        if ($this->_config->sslOn()) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-            curl_setopt($curl, CURLOPT_CAINFO, $this->_config->caFile());
-        }
+    }
 
-        if(!empty($requestBody)) {
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
-        }
-
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($curl);
-        $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-        if ($this->_config->sslOn()) {
-            if ($httpStatus == 0) {
-                throw new Braintree_Exception_SSLCertificate();
-            }
-        }
-        return array('status' => $httpStatus, 'body' => $response);
+    protected function _getAuthorization()
+    {
+        return array(
+            'user' => $this->_config->getClientId(),
+            'password' => $this->_config->getClientSecret(),
+        );
     }
 }
