@@ -99,7 +99,6 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
                 'locality' => 'Chicago',
                 'region' => 'IL',
                 'postalCode' => '60606',
-                'website' => 'http://example.com',
             ),
             'business' => array(
                 'name' => '14 Ladders',
@@ -114,9 +113,10 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
                 'annualVolumeAmount' => '1000000',
                 'averageTransactionAmount' => '100',
                 'maximumTransactionAmount' => '10000',
-                'shipPhysicalGoods' => 'Yes',
-                'fulfillmentCompletedIn' => '3 hours',
+                'shipPhysicalGoods' => true,
+                'fulfillmentCompletedIn' => 7,
                 'currency' => 'USD',
+                'website' => 'http://example.com',
             ),
         ));
 
@@ -144,7 +144,6 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Chicago', $query['user']['locality']);
         $this->assertEquals('IL', $query['user']['region']);
         $this->assertEquals('60606', $query['user']['postal_code']);
-        $this->assertEquals('http://example.com', $query['user']['website']);
 
         $this->assertEquals('14 Ladders', $query['business']['name']);
         $this->assertEquals('14.0 Ladders', $query['business']['registered_as']);
@@ -158,9 +157,10 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('1000000', $query['business']['annual_volume_amount']);
         $this->assertEquals('100', $query['business']['average_transaction_amount']);
         $this->assertEquals('10000', $query['business']['maximum_transaction_amount']);
-        $this->assertEquals('Yes', $query['business']['ship_physical_goods']);
-        $this->assertEquals('3 hours', $query['business']['fulfillment_completed_in']);
+        $this->assertEquals(true, $query['business']['ship_physical_goods']);
+        $this->assertEquals(7, $query['business']['fulfillment_completed_in']);
         $this->assertEquals('USD', $query['business']['currency']);
+        $this->assertEquals('http://example.com', $query['business']['website']);
     }
 
     function testBuildConnectUrlWithoutOptionalParams()
