@@ -19,6 +19,7 @@
  * @property-read string $imageUrl
  * @property-read string $last4
  * @property-read string $token
+ * @property-read string $paymentInstrumentName
  * @property-read string $updatedAt
  */
 class Braintree_ApplePayCard extends Braintree

@@ -1,3 +1,7 @@
+## 2.36.0
+* Surface Apple Pay payment instrument name in responses
+* Support Coinbase payment instruments
+
 ## 2.35.2
 * Fix E_STRICT errors
 * Expose subscription status details
