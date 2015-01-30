@@ -1,3 +1,7 @@
+## 2.37.0
+* Add 3D Secure transaction fields
+* Add ability to create nonce from vaulted payment methods
+
 ## 2.36.0
 * Surface Apple Pay payment instrument name in responses
 * Support Coinbase payment instruments
