@@ -64,6 +64,11 @@ class Braintree_Gateway
         return new Braintree_PaymentMethodGateway($this);
     }
 
+    public function paymentMethodNonce()
+    {
+        return new Braintree_PaymentMethodNonceGateway($this);
+    }
+
     public function payPalAccount()
     {
         return new Braintree_PayPalAccountGateway($this);

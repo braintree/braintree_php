@@ -1382,6 +1382,34 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    function testSale_withThreeDSecureOptionRequired()
+    {
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
+            "creditCard" => array(
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            )
+        ));
+
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/09'
+            ),
+            'options' => array(
+                'three_d_secure' => array(
+                    'required' => true
+                )
+            )
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Transaction::THREE_D_SECURE, $result->transaction->gatewayRejectionReason);
+    }
+
     function testSale_withThreeDSecureToken()
     {
         $threeDSecureToken = Braintree_TestHelper::create3DSVerification(
