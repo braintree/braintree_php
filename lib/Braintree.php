@@ -172,6 +172,8 @@ require_once('Braintree/PayPalAccount.php');
 require_once('Braintree/PayPalAccountGateway.php');
 require_once('Braintree/PaymentMethod.php');
 require_once('Braintree/PaymentMethodGateway.php');
+require_once('Braintree/PaymentMethodNonce.php');
+require_once('Braintree/PaymentMethodNonceGateway.php');
 require_once('Braintree/PaymentInstrumentType.php');
 require_once('Braintree/UnknownPaymentMethod.php');
 

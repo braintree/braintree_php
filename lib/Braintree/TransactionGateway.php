@@ -151,6 +151,9 @@ final class Braintree_TransactionGateway
                     'venmoSdkSession',
                     'storeShippingAddressInVault',
                     'payeeEmail',
+                    array('three_d_secure' =>
+                        array('required')
+                    ),
                     array('paypal' =>
                         array(
                             'payeeEmail',
