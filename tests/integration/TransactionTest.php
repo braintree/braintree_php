@@ -1174,6 +1174,20 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
     }
 
+    function testFindExposesPayPalDetails()
+    {
+        $transaction = Braintree_Transaction::find("settledtransaction");
+        $this->assertNotNull($transaction->paypalDetails->debugId);
+        $this->assertNotNull($transaction->paypalDetails->payerEmail);
+        $this->assertNotNull($transaction->paypalDetails->authorizationId);
+        $this->assertNotNull($transaction->paypalDetails->payerId);
+        $this->assertNotNull($transaction->paypalDetails->payerFirstName);
+        $this->assertNotNull($transaction->paypalDetails->payerLastName);
+        $this->assertNotNull($transaction->paypalDetails->sellerProtectionStatus);
+        $this->assertNotNull($transaction->paypalDetails->captureId);
+        $this->assertNotNull($transaction->paypalDetails->refundId);
+    }
+
     function testSale_storeInVault()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
