@@ -533,6 +533,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
       $this->assertEquals('05', $transaction->creditCardDetails->expirationMonth);
       $this->assertEquals('2011', $transaction->creditCardDetails->expirationYear);
+      $this->assertNotNull($transaction->creditCardDetails->imageUrl);
     }
 
     function testSale_withCustomFields()
