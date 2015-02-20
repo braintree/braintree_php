@@ -58,6 +58,7 @@ class Braintree_OAuthGateway
 
     private function signUrl($url)
     {
-        return $url . '&signature=' . hash_hmac('sha1', $url, $this->_config->getClientSecret());
+        $key = hash('sha256', $this->_config->getClientSecret(), true);
+        return $url . '&signature=' . hash_hmac('sha256', $url, $key) . '&algorithm=SHA256';
     }
 }

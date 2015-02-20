@@ -161,7 +161,20 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(7, $query['business']['fulfillment_completed_in']);
         $this->assertEquals('USD', $query['business']['currency']);
         $this->assertEquals('http://example.com', $query['business']['website']);
-        $this->assertEquals('6eca3389f8a1e8d935f32595e68c7557c7d3eb05', $query['signature']);
+        $this->assertEquals('d82177aab039ea77e46abf9d58ca67abb88b37eafa551daf43fe630a972e9257', $query['signature']);
+        $this->assertEquals('SHA256', $query['algorithm']);
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($curl);
+        $responseStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+
+        $this->assertEquals(302, $responseStatus);
     }
 
     function testBuildConnectUrlWithoutOptionalParams()
