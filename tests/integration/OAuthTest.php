@@ -161,6 +161,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(7, $query['business']['fulfillment_completed_in']);
         $this->assertEquals('USD', $query['business']['currency']);
         $this->assertEquals('http://example.com', $query['business']['website']);
+        $this->assertEquals('6eca3389f8a1e8d935f32595e68c7557c7d3eb05', $query['signature']);
     }
 
     function testBuildConnectUrlWithoutOptionalParams()

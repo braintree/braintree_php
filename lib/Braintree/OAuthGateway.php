@@ -47,10 +47,17 @@ class Braintree_OAuthGateway
 
     public function connectUrl($params = array())
     {
-        $this->_config->assertHasClientId();
+        $this->_config->assertHasClientCredentials();
 
         $query = Braintree_Util::camelCaseToDelimiterArray($params, '_');
         $query['client_id'] = $this->_config->getClientId();
-        return $this->_config->baseUrl() . '/oauth/connect?' . http_build_query($query);
+        $url = $this->_config->baseUrl() . '/oauth/connect?' . http_build_query($query);
+
+        return $this->signUrl($url);
+    }
+
+    private function signUrl($url)
+    {
+        return $url . '&signature=' . hash_hmac('sha1', $url, $this->_config->getClientSecret());
     }
 }
