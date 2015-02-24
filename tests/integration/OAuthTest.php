@@ -82,7 +82,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
             'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
         ));
         $url = $gateway->oauth()->connectUrl(array(
-            'merchantId' => 'foo_merchant_id',
+            'merchantId' => 'integration_merchant_id',
             'redirectUri' => 'http://bar.example.com',
             'scope' => 'read_write',
             'state' => 'baz_state',
@@ -126,7 +126,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('localhost', $components['host']);
         $this->assertEquals('/oauth/connect', $components['path']);
-        $this->assertEquals('foo_merchant_id', $query['merchant_id']);
+        $this->assertEquals('integration_merchant_id', $query['merchant_id']);
         $this->assertEquals('client_id$development$integration_oauth_client_id', $query['client_id']);
         $this->assertEquals('http://bar.example.com', $query['redirect_uri']);
         $this->assertEquals('read_write', $query['scope']);
@@ -161,7 +161,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(7, $query['business']['fulfillment_completed_in']);
         $this->assertEquals('USD', $query['business']['currency']);
         $this->assertEquals('http://example.com', $query['business']['website']);
-        $this->assertEquals('d82177aab039ea77e46abf9d58ca67abb88b37eafa551daf43fe630a972e9257', $query['signature']);
+        $this->assertEquals('0020b5d7855fc6664531ac051209bd1a2dc9d2530e4693cd3411c94bf4ac2f23', $query['signature']);
         $this->assertEquals('SHA256', $query['algorithm']);
 
         $curl = curl_init();
