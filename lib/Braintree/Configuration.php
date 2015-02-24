@@ -218,9 +218,16 @@ class Braintree_Configuration
      */
     public function baseUrl()
     {
-        return $this->protocol() . '://' .
-                  $this->serverName() . ':' .
-                  $this->portNumber();
+        static $defaultPorts = array(
+            'http' => 80,
+            'https' => 443,
+        );
+
+        if ($this->portNumber() === $defaultPorts[$this->protocol()]) {
+            return sprintf('%s://%s', $this->protocol(), $this->serverName());
+        } else {
+            return sprintf('%s://%s:%d', $this->protocol(), $this->serverName(), $this->portNumber());
+        }
     }
 
     /**
