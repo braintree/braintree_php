@@ -11,8 +11,8 @@ final class Braintree_Version
      * class constants
      */
     const MAJOR = 2;
-    const MINOR = 35;
-    const TINY = 2;
+    const MINOR = 38;
+    const TINY = 0;
 
     /**
      * @ignore
@@ -28,6 +28,6 @@ final class Braintree_Version
      */
     public static function get()
     {
-        return self::MAJOR.'.'.self::MINOR.'.'.self::TINY;
+        return self::MAJOR.'.'.self::MINOR.'.'.self::TINY.'-beta.1';
     }
 }
