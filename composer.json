@@ -1,5 +1,5 @@
 {
-    "name": "braintree/braintree_php",
+    "name": "eusonlito/braintree_php",
     "type": "library",
     "description": "Braintree PHP Client Library",
     "license": "MIT",
@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=5.2.1",
+        "php": ">=5.3",
         "ext-curl": "*",
         "ext-dom": "*",
         "ext-hash": "*",
@@ -22,8 +22,8 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "psr-0": {
-            "Braintree": "lib"
+        "psr-4": {
+            "Braintree\\": "src/Braintree"
         }
     }
 }
