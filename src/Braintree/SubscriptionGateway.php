@@ -43,7 +43,7 @@ class SubscriptionGateway
             $path = $this->_config->merchantPath() . '/subscriptions/' . $id;
             $response = $this->_http->get($path);
             return Subscription::factory($response['subscription']);
-        } catch (Braintree\Exception\NotFound $e) {
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound('subscription with id ' . $id . ' not found');
         }
 

@@ -183,20 +183,19 @@ class CustomerGateway
      *
      * @access public
      * @param string id customer Id
-     * @return object Customer
-     * @throws Exception\NotFound
+     * @return object Customer|boolean false
      */
     public function find($id)
     {
         $this->_validateId($id);
+
         try {
             $path = $this->_config->merchantPath() . '/customers/' . $id;
             $response = $this->_http->get($path);
+
             return Customer::factory($response['customer']);
-        } catch (Braintree\Exception\NotFound $e) {
-            throw new Exception\NotFound(
-            'customer with id ' . $id . ' not found'
-            );
+        } catch (Exception\NotFound $e) {
+            return false;
         }
 
     }

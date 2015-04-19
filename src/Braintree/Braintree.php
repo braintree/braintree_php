@@ -15,6 +15,8 @@ function checkBraintreeDependencies()
     }
 }
 
+checkBraintreeDependencies();
+
 /**
  * Braintree PHP Library
  *

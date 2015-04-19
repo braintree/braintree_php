@@ -1,5 +1,7 @@
 <?php namespace Braintree;
 
+use Iterator;
+
 /**
  * Braintree ResourceCollection
  * ResourceCollection is a container object for result data

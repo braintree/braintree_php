@@ -66,7 +66,7 @@ class PaymentMethodGateway
             } else if (is_array($response)) {
                 return UnknownPaymentMethod::factory($response);
             }
-        } catch (Braintree\Exception\NotFound $e) {
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
                 'payment method with token ' . $token . ' not found'
             );

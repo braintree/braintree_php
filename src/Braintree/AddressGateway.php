@@ -105,7 +105,7 @@ class AddressGateway
             $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
             $response = $this->_http->get($path);
             return Address::factory($response['address']);
-        } catch (Braintree\Exception\NotFound $e) {
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
             'address for customer ' . $customerId .
                 ' with id ' . $addressId . ' not found.'

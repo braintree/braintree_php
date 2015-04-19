@@ -151,7 +151,7 @@ class CreditCardGateway
             $path = $this->_config->merchantPath() . '/payment_methods/credit_card/' . $token;
             $response = $this->_http->get($path);
             return CreditCard::factory($response['creditCard']);
-        } catch (Braintree\Exception\NotFound $e) {
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
                 'credit card with token ' . $token . ' not found'
             );
@@ -174,7 +174,7 @@ class CreditCardGateway
             $path = $this->_config->merchantPath() . '/payment_methods/from_nonce/' . $nonce;
             $response = $this->_http->get($path);
             return CreditCard::factory($response['creditCard']);
-        } catch (Braintree\Exception\NotFound $e) {
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
                 'credit card with nonce ' . $nonce . ' locked, consumed or not found'
             );

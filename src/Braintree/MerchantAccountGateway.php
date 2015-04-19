@@ -25,7 +25,7 @@ final class MerchantAccountGateway
             $path = $this->_config->merchantPath() . '/merchant_accounts/' . $merchant_account_id;
             $response = $this->_http->get($path);
             return MerchantAccount::factory($response['merchantAccount']);
-        } catch (Braintree\Exception\NotFound $e) {
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound('merchant account with id ' . $merchant_account_id . ' not found');
         }
     }

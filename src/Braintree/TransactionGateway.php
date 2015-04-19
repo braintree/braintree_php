@@ -225,7 +225,7 @@ final class TransactionGateway
             $path = $this->_config->merchantPath() . '/transactions/' . $id;
             $response = $this->_http->get($path);
             return Transaction::factory($response['transaction']);
-        } catch (Braintree\Exception\NotFound $e) {
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
             'transaction with id ' . $id . ' not found'
             );

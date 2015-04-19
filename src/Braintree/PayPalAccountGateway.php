@@ -49,7 +49,7 @@ class PayPalAccountGateway
             $path = $this->_config->merchantPath() . '/payment_methods/paypal_account/' . $token;
             $response = $this->_http->get($path);
             return PayPalAccount::factory($response['paypalAccount']);
-        } catch (Braintree\Exception\NotFound $e) {
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
                 'paypal account with token ' . $token . ' not found'
             );
