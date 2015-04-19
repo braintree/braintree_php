@@ -5,8 +5,8 @@ use Braintree\Transaction;
 use Braintree\Subscription;
 use Braintree\MerchantAccount;
 use Braintree\Util;
-use Error\ErrorCollection;
-use Result\CreditCardVerification;
+use Braintree\Error\ErrorCollection;
+use Braintree\Result\CreditCardVerification;
 
 /**
  * Braintree Error Result

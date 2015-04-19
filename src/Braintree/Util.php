@@ -129,6 +129,8 @@ class Util
             'PayPalAccountGateway' => 'paypalAccount'
         );
 
+        $name = str_replace(__NAMESPACE__.'\\', '', $name);
+
         return $classNamesToResponseKeys[$name];
     }
 
@@ -152,6 +154,8 @@ class Util
             'settlementBatchSummary' => 'SettlementBatchSummary',
             'merchantAccount' => 'MerchantAccount'
         );
+
+        $name = str_replace(__NAMESPACE__.'\\', '', $name);
 
         return (string)$responseKeysToClassNames[$name];
     }
