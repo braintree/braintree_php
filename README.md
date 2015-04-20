@@ -17,7 +17,7 @@ The following PHP extensions are required:
 
 ## Composer install
 
-```"braintree/braintree_php" : "dev-master"```
+```"eusonlito/braintree_php" : "dev-master"```
 
 ## Quick Start Example
 
