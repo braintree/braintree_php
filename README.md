@@ -1,10 +1,10 @@
 # Braintree PHP Client Library
 
-The Braintree PHP library provides integration access to the Braintree Gateway.
+The Braintree PHP library provides integration access to the Braintree Gateway. Updated original to support Namespaces and PSR-4 load.
 
 ## Dependencies
 
-PHP version >= 5.2.1 required.
+PHP version >= 5.3 required.
 
 The following PHP extensions are required:
 
@@ -15,19 +15,23 @@ The following PHP extensions are required:
 * SimpleXML
 * xmlwriter
 
+## Composer install
+
+```"braintree/braintree_php" : "dev-master"```
+
 ## Quick Start Example
 
 ```php
 <?php
 
-require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
+require_once '/braintree/folder/src/autoload.php';
 
-Braintree_Configuration::environment('sandbox');
-Braintree_Configuration::merchantId('your_merchant_id');
-Braintree_Configuration::publicKey('your_public_key');
-Braintree_Configuration::privateKey('your_private_key');
+Braintree\Configuration::environment('sandbox');
+Braintree\Configuration::merchantId('your_merchant_id');
+Braintree\Configuration::publicKey('your_public_key');
+Braintree\Configuration::privateKey('your_private_key');
 
-$result = Braintree_Transaction::sale(array(
+$result = Braintree\Transaction::sale(array(
     'amount' => '1000.00',
     'creditCard' => array(
         'number' => '5105105105105100',
