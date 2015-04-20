@@ -31,6 +31,8 @@ checkBraintreeDependencies();
  */
 abstract class Braintree
 {
+    protected $_attributes = array();
+
     /**
      * @ignore
      * don't permit an explicit call of the constructor!
