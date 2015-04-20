@@ -26,6 +26,7 @@ The following PHP extensions are required:
 
 require_once '/braintree/folder/src/autoload.php';
 
+Braintree\Configuration::reset();
 Braintree\Configuration::environment('sandbox');
 Braintree\Configuration::merchantId('your_merchant_id');
 Braintree\Configuration::publicKey('your_public_key');

@@ -5,7 +5,7 @@ spl_autoload_register(function ($className)
         return;
     }
 
-    $fileName = dirname(__DIR__).'/src/Braintree';
+    $fileName = dirname(__DIR__).'/src/';
 
     if ($lastNsPos = strripos($className, '\\')) {
         $namespace = substr($className, 0, $lastNsPos);
@@ -13,7 +13,7 @@ spl_autoload_register(function ($className)
         $fileName  .= str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
     }
 
-    $fileName .= '.php';
+    $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
     if (is_file($fileName)) {
         require $fileName;
