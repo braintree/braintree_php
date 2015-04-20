@@ -1,7 +1,9 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
- * Braintree Subscription module
+ * Braintree Subscription module.
  *
  * <b>== More information ==</b>
  *
@@ -9,7 +11,6 @@
  *
  * PHP Version 5
  *
- * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
 class Subscription extends Braintree
@@ -45,7 +46,7 @@ class Subscription extends Braintree
 
         $addOnArray = array();
         if (isset($attributes['addOns'])) {
-            foreach ($attributes['addOns'] AS $addOn) {
+            foreach ($attributes['addOns'] as $addOn) {
                 $addOnArray[] = AddOn::factory($addOn);
             }
         }
@@ -53,7 +54,7 @@ class Subscription extends Braintree
 
         $discountArray = array();
         if (isset($attributes['discounts'])) {
-            foreach ($attributes['discounts'] AS $discount) {
+            foreach ($attributes['discounts'] as $discount) {
                 $discountArray[] = Discount::factory($discount);
             }
         }
@@ -65,7 +66,7 @@ class Subscription extends Braintree
 
         $statusHistory = array();
         if (isset($attributes['statusHistory'])) {
-            foreach ($attributes['statusHistory'] AS $history) {
+            foreach ($attributes['statusHistory'] as $history) {
                 $statusHistory[] = new Subscription\StatusDetails($history);
             }
         }
@@ -73,7 +74,7 @@ class Subscription extends Braintree
 
         $transactionArray = array();
         if (isset($attributes['transactions'])) {
-            foreach ($attributes['transactions'] AS $transaction) {
+            foreach ($attributes['transactions'] as $transaction) {
                 $transactionArray[] = Transaction::factory($transaction);
             }
         }
@@ -81,24 +82,24 @@ class Subscription extends Braintree
     }
 
     /**
-     * returns a string representation of the customer
+     * returns a string representation of the customer.
+     *
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         $excludedAttributes = array('statusHistory');
 
         $displayAttributes = array();
-        foreach($this->_attributes as $key => $val) {
+        foreach ($this->_attributes as $key => $val) {
             if (!in_array($key, $excludedAttributes)) {
                 $displayAttributes[$key] = $val;
             }
         }
 
-        return __CLASS__ . '[' .
-                Util::attributesToString($displayAttributes) .']';
+        return __CLASS__.'['.
+                Util::attributesToString($displayAttributes).']';
     }
-
 
     // static methods redirecting to gateway
 

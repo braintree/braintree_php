@@ -1,32 +1,33 @@
-<?php namespace Braintree;
+<?php
 
-use Countable, IteratorAggregate, ArrayAccess;
+namespace Braintree;
+
+use Countable;
+use IteratorAggregate;
+use ArrayAccess;
 use OutOfRangeException;
 use ArrayIterator;
 
 /**
- * Braintree Generic collection
+ * Braintree Generic collection.
  *
  * PHP Version 5
  *
  * Based on Generic Collection class from:
  * {@link http://codeutopia.net/code/library/CU/Collection.php}
  *
- * @package   Braintree
- * @subpackage Utility
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
-
 class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
     /**
-     *
-     * @var array $_collection collection storage
+     * @var array collection storage
      */
     protected $_collection = array();
 
     /**
-     * Add a value into the collection
+     * Add a value into the collection.
+     *
      * @param string $value
      */
     public function add($value)
@@ -35,72 +36,86 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * Set index's value
-     * @param integer $index
+     * Set index's value.
+     *
+     * @param int   $index
      * @param mixed $value
+     *
      * @throws OutOfRangeException
      */
     public function set($index, $value)
     {
-        if($index >= $this->count())
+        if ($index >= $this->count()) {
             throw new OutOfRangeException('Index out of range');
+        }
 
         $this->_collection[$index] = $value;
     }
 
     /**
-     * Remove a value from the collection
-     * @param integer $index index to remove
+     * Remove a value from the collection.
+     *
+     * @param int $index index to remove
+     *
      * @throws OutOfRangeException if index is out of range
      */
     public function remove($index)
     {
-        if($index >= $this->count())
+        if ($index >= $this->count()) {
             throw new OutOfRangeException('Index out of range');
+        }
 
         array_splice($this->_collection, $index, 1);
     }
 
     /**
-     * Return value at index
-     * @param integer $index
+     * Return value at index.
+     *
+     * @param int $index
+     *
      * @return mixed
+     *
      * @throws OutOfRangeException
      */
     public function get($index)
     {
-        if($index >= $this->count())
+        if ($index >= $this->count()) {
             throw new OutOfRangeException('Index out of range');
+        }
 
         return $this->_collection[$index];
     }
 
     /**
-     * Determine if index exists
-     * @param integer $index
-     * @return boolean
+     * Determine if index exists.
+     *
+     * @param int $index
+     *
+     * @return bool
      */
     public function exists($index)
     {
-        if($index >= $this->count())
+        if ($index >= $this->count()) {
             return false;
+        }
 
         return true;
     }
     /**
      * Return count of items in collection
-     * Implements countable
-     * @return integer
+     * Implements countable.
+     *
+     * @return int
      */
     public function count()
     {
         return count($this->_collection);
     }
 
-
     /**
      * Return an iterator
-     * Implements IteratorAggregate
+     * Implements IteratorAggregate.
+     *
      * @return ArrayIterator
      */
     public function getIterator()
@@ -110,9 +125,11 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Set offset to value
-     * Implements ArrayAccess
+     * Implements ArrayAccess.
+     *
      * @see set
-     * @param integer $offset
+     *
+     * @param int   $offset
      * @param mixed $value
      */
     public function offsetSet($offset, $value)
@@ -122,9 +139,11 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Unset offset
-     * Implements ArrayAccess
+     * Implements ArrayAccess.
+     *
      * @see remove
-     * @param integer $offset
+     *
+     * @param int $offset
      */
     public function offsetUnset($offset)
     {
@@ -133,9 +152,12 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * get an offset's value
-     * Implements ArrayAccess
+     * Implements ArrayAccess.
+     *
      * @see get
-     * @param integer $offset
+     *
+     * @param int $offset
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -145,14 +167,16 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Determine if offset exists
-     * Implements ArrayAccess
+     * Implements ArrayAccess.
+     *
      * @see exists
-     * @param integer $offset
-     * @return boolean
+     *
+     * @param int $offset
+     *
+     * @return bool
      */
     public function offsetExists($offset)
     {
         return $this->exists($offset);
     }
-
 }

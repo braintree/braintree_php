@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class Plan extends Braintree
 {
@@ -16,7 +18,7 @@ class Plan extends Braintree
 
         $addOnArray = array();
         if (isset($attributes['addOns'])) {
-            foreach ($attributes['addOns'] AS $addOn) {
+            foreach ($attributes['addOns'] as $addOn) {
                 $addOnArray[] = AddOn::factory($addOn);
             }
         }
@@ -24,7 +26,7 @@ class Plan extends Braintree
 
         $discountArray = array();
         if (isset($attributes['discounts'])) {
-            foreach ($attributes['discounts'] AS $discount) {
+            foreach ($attributes['discounts'] as $discount) {
                 $discountArray[] = Discount::factory($discount);
             }
         }
@@ -32,13 +34,12 @@ class Plan extends Braintree
 
         $planArray = array();
         if (isset($attributes['plans'])) {
-            foreach ($attributes['plans'] AS $plan) {
-                $planArray[] = Plan::factory($plan);
+            foreach ($attributes['plans'] as $plan) {
+                $planArray[] = self::factory($plan);
             }
         }
         $this->_attributes['plans'] = $planArray;
     }
-
 
     // static methods redirecting to gateway
 

@@ -1,4 +1,6 @@
-<?php namespace Braintree\Exception;
+<?php
+
+namespace Braintree\Exception;
 
 use Braintree\Exception;
 
@@ -8,11 +10,8 @@ use Braintree\Exception;
  * the attempted action according to the roles assigned to the user
  * who owns the API key.
  *
- * @package    Braintree
- * @subpackage Exception
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Authorization extends Exception
 {
-
 }

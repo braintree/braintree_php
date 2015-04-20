@@ -1,4 +1,6 @@
-<?php namespace Braintree\Xml;
+<?php
+
+namespace Braintree\Xml;
 
 use DateTime;
 use DateTimeZone;
@@ -6,27 +8,27 @@ use SimpleXMLIterator;
 use Braintree\Util;
 
 /**
- * Braintree XML Parser
+ * Braintree XML Parser.
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 /**
  * Parses incoming Xml into arrays using PHP's
  * built-in SimpleXML, and its extension via
- * Iterator, SimpleXMLIterator
+ * Iterator, SimpleXMLIterator.
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Parser
 {
-
     private static $_xmlRoot;
     private static $_responseType;
 
     /**
-     * sets up the SimpleXMLIterator and starts the parsing
-     * @access public
+     * sets up the SimpleXMLIterator and starts the parsing.
+     *
      * @param string $xml
+     *
      * @return array array mapped to the passed xml
      */
     public static function arrayFromXml($xml)
@@ -41,14 +43,13 @@ class Parser
 
         // return the mapped array with the root element as the header
         return array($xmlRoot => self::_iteratorToArray($iterator));
-
     }
 
     /**
-     * processes SimpleXMLIterator objects recursively
+     * processes SimpleXMLIterator objects recursively.
      *
-     * @access protected
      * @param object $iterator
+     *
      * @return array xml converted to array
      */
     private static function _iteratorToArray($iterator)
@@ -63,7 +64,6 @@ class Parser
             return self::_typecastXmlValue($iterator);
         }
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
-
             $tmpArray = null;
             $value = null;
 
@@ -71,7 +71,7 @@ class Parser
             $attributeType = $iterator->attributes()->type;
 
             // extract the parent element via xpath query
-            $parentElement = $iterator->xpath($iterator->key() . '/..');
+            $parentElement = $iterator->xpath($iterator->key().'/..');
             if ($parentElement[0] instanceof SimpleXMLIterator) {
                 $parentElement = $parentElement[0];
                 $parentKey = Util::delimiterToCamelCase($parentElement->getName());
@@ -79,8 +79,7 @@ class Parser
                 $parentElement = null;
             }
 
-
-            if ($parentKey == "customFields") {
+            if ($parentKey == 'customFields') {
                 $key = Util::delimiterToUnderscore($iterator->key());
             } else {
                 $key = Util::delimiterToCamelCase($iterator->key());
@@ -108,8 +107,8 @@ class Parser
             if (isset($parentElement) &&
                 ($parentElement->attributes()->type == 'collection') &&
                 $iterator->hasChildren()) {
-              $xmlArray[$key][] = $output;
-              continue;
+                $xmlArray[$key][] = $output;
+                continue;
             }
 
             // if the element was an array type, output to a numbered key
@@ -125,8 +124,10 @@ class Parser
     }
 
     /**
-     * typecast xml value based on attributes
+     * typecast xml value based on attributes.
+     *
      * @param object $valueObj SimpleXMLElement
+     *
      * @return mixed value for placing into array
      */
     private static function _typecastXmlValue($valueObj)
@@ -135,7 +136,7 @@ class Parser
         $attribs = $valueObj->attributes();
         // the element is null, so jump out here
         if (isset($attribs->nil) && $attribs->nil) {
-            return null;
+            return;
         }
         // switch on the type attribute
         // switch works even if $attribs->type isn't set
@@ -144,7 +145,7 @@ class Parser
                 return self::_timestampToUTC((string) $valueObj);
                 break;
             case 'date':
-                return new DateTime((string)$valueObj);
+                return new DateTime((string) $valueObj);
                 break;
             case 'integer':
                 return (int) $valueObj;
@@ -152,11 +153,11 @@ class Parser
             case 'boolean':
                 $value =  (string) $valueObj;
                 // look for a number inside the string
-                if(is_numeric($value)) {
+                if (is_numeric($value)) {
                     return (bool) $value;
                 } else {
                     // look for the string "true", return false in all other cases
-                    return ($value != "true") ? FALSE : TRUE;
+                    return ($value != 'true') ? false : true;
                 }
                 break;
             case 'array':
@@ -164,12 +165,13 @@ class Parser
             default:
                 return (string) $valueObj;
         }
-
     }
 
     /**
-     * convert xml timestamps into DateTime
+     * convert xml timestamps into DateTime.
+     *
      * @param string $timestamp
+     *
      * @return string UTC formatted datetime string
      */
     private static function _timestampToUTC($timestamp)
@@ -179,6 +181,7 @@ class Parser
         // to show the proper time zone
         $dateTime = new DateTime($timestamp, $tz);
         $dateTime->setTimezone($tz);
+
         return $dateTime;
     }
 }

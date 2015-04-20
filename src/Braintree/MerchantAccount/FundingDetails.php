@@ -1,6 +1,6 @@
-<?php namespace Braintree\MerchantAccount;
+<?php
 
-use Braintree\Instante;
+namespace Braintree\MerchantAccount;
 
 final class FundingDetails extends Instance
 {

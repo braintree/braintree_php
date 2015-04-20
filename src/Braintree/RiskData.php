@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class RiskData extends Braintree
 {
@@ -16,13 +18,13 @@ class RiskData extends Braintree
     }
 
     /**
-     * returns a string representation of the risk data
+     * returns a string representation of the risk data.
+     *
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.
+                Util::attributesToString($this->_attributes).']';
     }
-
 }

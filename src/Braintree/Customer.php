@@ -1,15 +1,17 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
  * Braintree Customer module
- * Creates and manages Customers
+ * Creates and manages Customers.
  *
  * <b>== More information ==</b>
  *
  * For more detailed information on Customers, see {@link http://www.braintreepayments.com/gateway/customer-api http://www.braintreepaymentsolutions.com/gateway/customer-api}
  *
- * @package    Braintree
  * @category   Resources
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read array  $addresses
@@ -119,11 +121,12 @@ class Customer extends Braintree
     /* instance methods */
 
     /**
-     * sets instance properties from an array of values
+     * sets instance properties from an array of values.
      *
      * @ignore
-     * @access protected
+     *
      * @param array $customerAttribs array of customer data
+     *
      * @return none
      */
     protected function _initialize($customerAttribs)
@@ -134,8 +137,7 @@ class Customer extends Braintree
         // map each address into its own object
         $addressArray = array();
         if (isset($customerAttribs['addresses'])) {
-
-            foreach ($customerAttribs['addresses'] AS $address) {
+            foreach ($customerAttribs['addresses'] as $address) {
                 $addressArray[] = Address::factory($address);
             }
         }
@@ -144,7 +146,7 @@ class Customer extends Braintree
         // map each creditCard into its own object
         $creditCardArray = array();
         if (isset($customerAttribs['creditCards'])) {
-            foreach ($customerAttribs['creditCards'] AS $creditCard) {
+            foreach ($customerAttribs['creditCards'] as $creditCard) {
                 $creditCardArray[] = CreditCard::factory($creditCard);
             }
         }
@@ -153,7 +155,7 @@ class Customer extends Braintree
         // map each coinbaseAccount into its own object
         $coinbaseAccountArray = array();
         if (isset($customerAttribs['coinbaseAccounts'])) {
-            foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
+            foreach ($customerAttribs['coinbaseAccounts'] as $coinbaseAccount) {
                 $coinbaseAccountArray[] = CoinbaseAccount::factory($coinbaseAccount);
             }
         }
@@ -162,7 +164,7 @@ class Customer extends Braintree
         // map each paypalAccount into its own object
         $paypalAccountArray = array();
         if (isset($customerAttribs['paypalAccounts'])) {
-            foreach ($customerAttribs['paypalAccounts'] AS $paypalAccount) {
+            foreach ($customerAttribs['paypalAccounts'] as $paypalAccount) {
                 $paypalAccountArray[] = PayPalAccount::factory($paypalAccount);
             }
         }
@@ -171,7 +173,7 @@ class Customer extends Braintree
         // map each applePayCard into its own object
         $applePayCardArray = array();
         if (isset($customerAttribs['applePayCards'])) {
-            foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
+            foreach ($customerAttribs['applePayCards'] as $applePayCard) {
                 $applePayCardArray[] = applePayCard::factory($applePayCard);
             }
         }
@@ -179,29 +181,31 @@ class Customer extends Braintree
     }
 
     /**
-     * returns a string representation of the customer
+     * returns a string representation of the customer.
+     *
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.
+                Util::attributesToString($this->_attributes).']';
     }
 
     /**
      * returns false if comparing object is not a Customer,
-     * or is a Customer with a different id
+     * or is a Customer with a different id.
      *
      * @param object $otherCust customer to compare against
-     * @return boolean
+     *
+     * @return bool
      */
     public function isEqual($otherCust)
     {
-        return !($otherCust instanceof Customer) ? false : $this->id === $otherCust->id;
+        return !($otherCust instanceof self) ? false : $this->id === $otherCust->id;
     }
 
     /**
-     * returns an array containt all of the customer's payment methods
+     * returns an array containt all of the customer's payment methods.
      *
      * @return array
      */
@@ -211,13 +215,14 @@ class Customer extends Braintree
     }
 
     /**
-     * returns the customer's default payment method
+     * returns the customer's default payment method.
      *
      * @return object CreditCard or PayPalAccount
      */
     public function defaultPaymentMethod()
     {
         $defaultPaymentMethods = array_filter($this->paymentMethods(), 'Braintree\Customer::_defaultPaymentMethodFilter');
+
         return current($defaultPaymentMethods);
     }
 
@@ -229,7 +234,6 @@ class Customer extends Braintree
     /* private class properties  */
 
     /**
-     * @access protected
      * @var array registry of customer data
      */
     protected $_attributes = array(
@@ -249,15 +253,17 @@ class Customer extends Braintree
 
     /**
      *  factory method: returns an instance of Customer
-     *  to the requesting method, with populated properties
+     *  to the requesting method, with populated properties.
      *
      * @ignore
+     *
      * @return object instance of Customer
      */
     public static function factory($attributes)
     {
-        $instance = new Customer();
+        $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 }

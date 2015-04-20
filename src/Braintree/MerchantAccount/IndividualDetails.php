@@ -1,6 +1,6 @@
-<?php namespace Braintree\MerchantAccount;
+<?php
 
-use Braintree\Instante;
+namespace Braintree\MerchantAccount;
 
 final class IndividualDetails extends Braintree
 {
@@ -16,6 +16,7 @@ final class IndividualDetails extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 }

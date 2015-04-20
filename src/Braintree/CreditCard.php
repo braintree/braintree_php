@@ -1,16 +1,18 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
  * Braintree CreditCard module
- * Creates and manages Braintree CreditCards
+ * Creates and manages Braintree CreditCards.
  *
  * <b>== More information ==</b>
  *
  * For more detailed information on CreditCards, see {@link http://www.braintreepayments.com/gateway/credit-card-api http://www.braintreepaymentsolutions.com/gateway/credit-card-api}<br />
  * For more detailed information on CreditCard verifications, see {@link http://www.braintreepayments.com/gateway/credit-card-verification-api http://www.braintreepaymentsolutions.com/gateway/credit-card-verification-api}
  *
- * @package    Braintree
  * @category   Resources
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $billingAddress
@@ -45,9 +47,9 @@ class CreditCard extends Braintree
     const VISA = 'Visa';
     const UNKNOWN = 'Unknown';
 
-	// Credit card origination location
-	const INTERNATIONAL = "international";
-	const US            = "us";
+    // Credit card origination location
+    const INTERNATIONAL = 'international';
+    const US            = 'us';
 
     const PREPAID_YES = 'Yes';
     const PREPAID_NO = 'No';
@@ -73,14 +75,14 @@ class CreditCard extends Braintree
     const COMMERCIAL_NO = 'No';
     const COMMERCIAL_UNKNOWN = 'Unknown';
 
-    const COUNTRY_OF_ISSUANCE_UNKNOWN = "Unknown";
-    const ISSUING_BANK_UNKNOWN = "Unknown";
+    const COUNTRY_OF_ISSUANCE_UNKNOWN = 'Unknown';
+    const ISSUING_BANK_UNKNOWN = 'Unknown';
 
     /* instance methods */
     /**
-     * returns false if default is null or false
+     * returns false if default is null or false.
      *
-     * @return boolean
+     * @return bool
      */
     public function isDefault()
     {
@@ -88,9 +90,9 @@ class CreditCard extends Braintree
     }
 
     /**
-     * checks whether the card is expired based on the current date
+     * checks whether the card is expired based on the current date.
      *
-     * @return boolean
+     * @return bool
      */
     public function isExpired()
     {
@@ -98,9 +100,9 @@ class CreditCard extends Braintree
     }
 
     /**
-     * checks whether the card is associated with venmo sdk
+     * checks whether the card is associated with venmo sdk.
      *
-     * @return boolean
+     * @return bool
      */
     public function isVenmoSdk()
     {
@@ -108,10 +110,10 @@ class CreditCard extends Braintree
     }
 
     /**
-     * sets instance properties from an array of values
+     * sets instance properties from an array of values.
      *
-     * @access protected
      * @param array $creditCardAttribs array of creditcard data
+     *
      * @return none
      */
     protected function _initialize($creditCardAttribs)
@@ -126,17 +128,17 @@ class CreditCard extends Braintree
 
         $subscriptionArray = array();
         if (isset($creditCardAttribs['subscriptions'])) {
-            foreach ($creditCardAttribs['subscriptions'] AS $subscription) {
+            foreach ($creditCardAttribs['subscriptions'] as $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
 
         $this->_set('subscriptions', $subscriptionArray);
         $this->_set('billingAddress', $billingAddress);
-        $this->_set('expirationDate', $this->expirationMonth . '/' . $this->expirationYear);
-        $this->_set('maskedNumber', $this->bin . '******' . $this->last4);
+        $this->_set('expirationDate', $this->expirationMonth.'/'.$this->expirationYear);
+        $this->_set('maskedNumber', $this->bin.'******'.$this->last4);
 
-        if(isset($creditCardAttribs['verifications']) && count($creditCardAttribs['verifications']) > 0) {
+        if (isset($creditCardAttribs['verifications']) && count($creditCardAttribs['verifications']) > 0) {
             $verifications = $creditCardAttribs['verifications'];
             usort($verifications, array($this, '_compareCreatedAtOnVerifications'));
 
@@ -151,32 +153,35 @@ class CreditCard extends Braintree
 
     /**
      * returns false if comparing object is not a CreditCard,
-     * or is a CreditCard with a different id
+     * or is a CreditCard with a different id.
      *
      * @param object $otherCreditCard customer to compare against
-     * @return boolean
+     *
+     * @return bool
      */
     public function isEqual($otherCreditCard)
     {
-        return !($otherCreditCard instanceof CreditCard) ? false : $this->token === $otherCreditCard->token;
+        return !($otherCreditCard instanceof self) ? false : $this->token === $otherCreditCard->token;
     }
 
     /**
      * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
+     * ClassName[property=value, property=value].
+     *
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.
+                Util::attributesToString($this->_attributes).']';
     }
 
     /**
      *  factory method: returns an instance of CreditCard
-     *  to the requesting method, with populated properties
+     *  to the requesting method, with populated properties.
      *
      * @ignore
+     *
      * @return object instance of CreditCard
      */
     public static function factory($attributes)
@@ -190,9 +195,9 @@ class CreditCard extends Braintree
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
+
         return $instance;
     }
-
 
     // static methods redirecting to gateway
 

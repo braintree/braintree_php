@@ -1,8 +1,9 @@
-<?php namespace Braintree\Error;
+<?php
+
+namespace Braintree\Error;
 
 /**
- *
- * Validation Error codes and messages
+ * Validation Error codes and messages.
  *
  * ErrorCodes class provides constants for validation errors.
  * The constants should be used to check for a specific validation
@@ -10,9 +11,8 @@
  * The error messages returned from the server may change;
  * but the codes will remain the same.
  *
- * @package    Braintree
- * @subpackage Errors
  * @category   Validation
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Codes
@@ -44,24 +44,24 @@ class Codes
     const ADDRESS_LOCALITY_IS_INVALID                  = '91824';
     const ADDRESS_FIRST_NAME_IS_INVALID                = '91819';
 
-    const APPLE_PAY_CARDS_ARE_NOT_ACCEPTED                                  = "83501";
-    const APPLE_PAY_CUSTOMER_ID_IS_REQUIRED_FOR_VAULTING                    = "83502";
-    const APPLE_PAY_TOKEN_IS_IN_USE                                         = "93503";
-    const APPLE_PAY_PAYMENT_METHOD_NONCE_CONSUMED                           = "93504";
-    const APPLE_PAY_PAYMENT_METHOD_NONCE_UNKNOWN                            = "93505";
-    const APPLE_PAY_PAYMENT_METHOD_NONCE_UNLOCKED                           = "93506";
-    const APPLE_PAY_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED          = "83518";
-    const APPLE_PAY_CANNOT_UPDATE_APPLE_PAY_CARD_USING_PAYMENT_METHOD_NONCE = "93507";
-    const APPLE_PAY_NUMBER_IS_REQUIRED                                      = "93508";
-    const APPLE_PAY_EXPIRATION_MONTH_IS_REQUIRED                            = "93509";
-    const APPLE_PAY_EXPIRATION_YEAR_IS_REQUIRED                             = "93510";
-    const APPLE_PAY_CRYPTOGRAM_IS_REQUIRED                                  = "93511";
-    const APPLE_PAY_DECRYPTION_FAILED                                       = "83512";
-    const APPLE_PAY_DISABLED                                                = "93513";
-    const APPLE_PAY_MERCHANT_NOT_CONFIGURED                                 = "93514";
-    const APPLE_PAY_MERCHANT_KEYS_ALREADY_CONFIGURED                        = "93515";
-    const APPLE_PAY_MERCHANT_KEYS_NOT_CONFIGURED                            = "93516";
-    const APPLE_PAY_CERTIFICATE_INVALID                                     = "93517";
+    const APPLE_PAY_CARDS_ARE_NOT_ACCEPTED                                  = '83501';
+    const APPLE_PAY_CUSTOMER_ID_IS_REQUIRED_FOR_VAULTING                    = '83502';
+    const APPLE_PAY_TOKEN_IS_IN_USE                                         = '93503';
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_CONSUMED                           = '93504';
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_UNKNOWN                            = '93505';
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_UNLOCKED                           = '93506';
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED          = '83518';
+    const APPLE_PAY_CANNOT_UPDATE_APPLE_PAY_CARD_USING_PAYMENT_METHOD_NONCE = '93507';
+    const APPLE_PAY_NUMBER_IS_REQUIRED                                      = '93508';
+    const APPLE_PAY_EXPIRATION_MONTH_IS_REQUIRED                            = '93509';
+    const APPLE_PAY_EXPIRATION_YEAR_IS_REQUIRED                             = '93510';
+    const APPLE_PAY_CRYPTOGRAM_IS_REQUIRED                                  = '93511';
+    const APPLE_PAY_DECRYPTION_FAILED                                       = '83512';
+    const APPLE_PAY_DISABLED                                                = '93513';
+    const APPLE_PAY_MERCHANT_NOT_CONFIGURED                                 = '93514';
+    const APPLE_PAY_MERCHANT_KEYS_ALREADY_CONFIGURED                        = '93515';
+    const APPLE_PAY_MERCHANT_KEYS_NOT_CONFIGURED                            = '93516';
+    const APPLE_PAY_CERTIFICATE_INVALID                                     = '93517';
     const APPLE_PAY_CERTIFICATE_MISMATCH                                    = '93519';
     const APPLE_PAY_INVALID_TOKEN                                           = '83520';
     const APPLE_PAY_PRIVATE_KEY_MISMATCH                                    = '93521';
@@ -164,12 +164,12 @@ class Codes
     const INDUSTRY_DATA_LODGING_CHECK_OUT_DATE_IS_INVALID                = '93405';
     const INDUSTRY_DATA_LODGING_CHECK_OUT_DATE_MUST_FOLLOW_CHECK_IN_DATE = '93406';
     const INDUSTRY_DATA_LODGING_UNKNOWN_DATA_FIELD                       = '93407';
-    const INDUSTRY_DATA_TRAVEL_CRUISE_EMPTY_DATA                         = "93408";
-    const INDUSTRY_DATA_TRAVEL_CRUISE_UNKNOWN_DATA_FIELD                 = "93409";
-    const INDUSTRY_DATA_TRAVEL_CRUISE_TRAVEL_PACKAGE_IS_INVALID          = "93410";
-    const INDUSTRY_DATA_TRAVEL_CRUISE_DEPARTURE_DATE_IS_INVALID          = "93411";
-    const INDUSTRY_DATA_TRAVEL_CRUISE_LODGING_CHECK_IN_DATE_IS_INVALID   = "93412";
-    const INDUSTRY_DATA_TRAVEL_CRUISE_LODGING_CHECK_OUT_DATE_IS_INVALID  = "93413";
+    const INDUSTRY_DATA_TRAVEL_CRUISE_EMPTY_DATA                         = '93408';
+    const INDUSTRY_DATA_TRAVEL_CRUISE_UNKNOWN_DATA_FIELD                 = '93409';
+    const INDUSTRY_DATA_TRAVEL_CRUISE_TRAVEL_PACKAGE_IS_INVALID          = '93410';
+    const INDUSTRY_DATA_TRAVEL_CRUISE_DEPARTURE_DATE_IS_INVALID          = '93411';
+    const INDUSTRY_DATA_TRAVEL_CRUISE_LODGING_CHECK_IN_DATE_IS_INVALID   = '93412';
+    const INDUSTRY_DATA_TRAVEL_CRUISE_LODGING_CHECK_OUT_DATE_IS_INVALID  = '93413';
 
     const MERCHANT_ACCOUNT_ID_FORMAT_IS_INVALID                         = '82603';
     const MERCHANT_ACCOUNT_ID_IS_IN_USE                                 = '82604';
@@ -310,43 +310,43 @@ class Codes
     const SETTLEMENT_BATCH_SUMMARY_SETTLEMENT_DATE_IS_REQUIRED = '82301';
     const SETTLEMENT_BATCH_SUMMARY_CUSTOM_FIELD_IS_INVALID     = '82303';
 
-	const SUBSCRIPTION_BILLING_DAY_OF_MONTH_CANNOT_BE_UPDATED                     = '91918';
-	const SUBSCRIPTION_BILLING_DAY_OF_MONTH_IS_INVALID                            = '91914';
-	const SUBSCRIPTION_BILLING_DAY_OF_MONTH_MUST_BE_NUMERIC                       = '91913';
-	const SUBSCRIPTION_CANNOT_ADD_DUPLICATE_ADDON_OR_DISCOUNT                     = '91911';
-	const SUBSCRIPTION_CANNOT_EDIT_CANCELED_SUBSCRIPTION                          = '81901';
-	const SUBSCRIPTION_CANNOT_EDIT_EXPIRED_SUBSCRIPTION                           = '81910';
-	const SUBSCRIPTION_CANNOT_EDIT_PRICE_CHANGING_FIELDS_ON_PAST_DUE_SUBSCRIPTION = '91920';
-	const SUBSCRIPTION_FIRST_BILLING_DATE_CANNOT_BE_IN_THE_PAST                   = '91916';
-	const SUBSCRIPTION_FIRST_BILLING_DATE_CANNOT_BE_UPDATED                       = '91919';
-	const SUBSCRIPTION_FIRST_BILLING_DATE_IS_INVALID                              = '91915';
-	const SUBSCRIPTION_ID_IS_IN_USE                                               = '81902';
-	const SUBSCRIPTION_INCONSISTENT_NUMBER_OF_BILLING_CYCLES                      = '91908';
-	const SUBSCRIPTION_INCONSISTENT_START_DATE                                    = '91917';
-	const SUBSCRIPTION_INVALID_REQUEST_FORMAT                                     = '91921';
-	const SUBSCRIPTION_MERCHANT_ACCOUNT_ID_IS_INVALID                             = '91901';
-	const SUBSCRIPTION_MISMATCH_CURRENCY_ISO_CODE                                 = '91923';
-	const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_CANNOT_BE_BLANK                   = '91912';
-	const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_IS_TOO_SMALL                      = '91909';
-	const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_MUST_BE_GREATER_THAN_ZERO         = '91907';
-	const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_MUST_BE_NUMERIC                   = '91906';
-	const SUBSCRIPTION_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED             = '91924';
-	const SUBSCRIPTION_PAYMENT_METHOD_NONCE_IS_INVALID                            = '91925';
-	const SUBSCRIPTION_PAYMENT_METHOD_NONCE_NOT_ASSOCIATED_WITH_CUSTOMER          = '91926';
-	const SUBSCRIPTION_PAYMENT_METHOD_NONCE_UNVAULTED_CARD_IS_NOT_ACCEPTED        = '91927';
-	const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_CARD_TYPE_IS_NOT_ACCEPTED             = '91902';
-	const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_IS_INVALID                            = '91903';
-	const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_NOT_ASSOCIATED_WITH_CUSTOMER          = '91905';
-	const SUBSCRIPTION_PLAN_BILLING_FREQUENCY_CANNOT_BE_UPDATED                   = '91922';
-	const SUBSCRIPTION_PLAN_ID_IS_INVALID                                         = '91904';
-	const SUBSCRIPTION_PRICE_CANNOT_BE_BLANK                                      = '81903';
-	const SUBSCRIPTION_PRICE_FORMAT_IS_INVALID                                    = '81904';
-	const SUBSCRIPTION_PRICE_IS_TOO_LARGE                                         = '81923';
-	const SUBSCRIPTION_STATUS_IS_CANCELED                                         = '81905';
-	const SUBSCRIPTION_TOKEN_FORMAT_IS_INVALID                                    = '81906';
-	const SUBSCRIPTION_TRIAL_DURATION_FORMAT_IS_INVALID                           = '81907';
-	const SUBSCRIPTION_TRIAL_DURATION_IS_REQUIRED                                 = '81908';
-	const SUBSCRIPTION_TRIAL_DURATION_UNIT_IS_INVALID                             = '81909';
+    const SUBSCRIPTION_BILLING_DAY_OF_MONTH_CANNOT_BE_UPDATED                     = '91918';
+    const SUBSCRIPTION_BILLING_DAY_OF_MONTH_IS_INVALID                            = '91914';
+    const SUBSCRIPTION_BILLING_DAY_OF_MONTH_MUST_BE_NUMERIC                       = '91913';
+    const SUBSCRIPTION_CANNOT_ADD_DUPLICATE_ADDON_OR_DISCOUNT                     = '91911';
+    const SUBSCRIPTION_CANNOT_EDIT_CANCELED_SUBSCRIPTION                          = '81901';
+    const SUBSCRIPTION_CANNOT_EDIT_EXPIRED_SUBSCRIPTION                           = '81910';
+    const SUBSCRIPTION_CANNOT_EDIT_PRICE_CHANGING_FIELDS_ON_PAST_DUE_SUBSCRIPTION = '91920';
+    const SUBSCRIPTION_FIRST_BILLING_DATE_CANNOT_BE_IN_THE_PAST                   = '91916';
+    const SUBSCRIPTION_FIRST_BILLING_DATE_CANNOT_BE_UPDATED                       = '91919';
+    const SUBSCRIPTION_FIRST_BILLING_DATE_IS_INVALID                              = '91915';
+    const SUBSCRIPTION_ID_IS_IN_USE                                               = '81902';
+    const SUBSCRIPTION_INCONSISTENT_NUMBER_OF_BILLING_CYCLES                      = '91908';
+    const SUBSCRIPTION_INCONSISTENT_START_DATE                                    = '91917';
+    const SUBSCRIPTION_INVALID_REQUEST_FORMAT                                     = '91921';
+    const SUBSCRIPTION_MERCHANT_ACCOUNT_ID_IS_INVALID                             = '91901';
+    const SUBSCRIPTION_MISMATCH_CURRENCY_ISO_CODE                                 = '91923';
+    const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_CANNOT_BE_BLANK                   = '91912';
+    const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_IS_TOO_SMALL                      = '91909';
+    const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_MUST_BE_GREATER_THAN_ZERO         = '91907';
+    const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_MUST_BE_NUMERIC                   = '91906';
+    const SUBSCRIPTION_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED             = '91924';
+    const SUBSCRIPTION_PAYMENT_METHOD_NONCE_IS_INVALID                            = '91925';
+    const SUBSCRIPTION_PAYMENT_METHOD_NONCE_NOT_ASSOCIATED_WITH_CUSTOMER          = '91926';
+    const SUBSCRIPTION_PAYMENT_METHOD_NONCE_UNVAULTED_CARD_IS_NOT_ACCEPTED        = '91927';
+    const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_CARD_TYPE_IS_NOT_ACCEPTED             = '91902';
+    const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_IS_INVALID                            = '91903';
+    const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_NOT_ASSOCIATED_WITH_CUSTOMER          = '91905';
+    const SUBSCRIPTION_PLAN_BILLING_FREQUENCY_CANNOT_BE_UPDATED                   = '91922';
+    const SUBSCRIPTION_PLAN_ID_IS_INVALID                                         = '91904';
+    const SUBSCRIPTION_PRICE_CANNOT_BE_BLANK                                      = '81903';
+    const SUBSCRIPTION_PRICE_FORMAT_IS_INVALID                                    = '81904';
+    const SUBSCRIPTION_PRICE_IS_TOO_LARGE                                         = '81923';
+    const SUBSCRIPTION_STATUS_IS_CANCELED                                         = '81905';
+    const SUBSCRIPTION_TOKEN_FORMAT_IS_INVALID                                    = '81906';
+    const SUBSCRIPTION_TRIAL_DURATION_FORMAT_IS_INVALID                           = '81907';
+    const SUBSCRIPTION_TRIAL_DURATION_IS_REQUIRED                                 = '81908';
+    const SUBSCRIPTION_TRIAL_DURATION_UNIT_IS_INVALID                             = '81909';
 
     const SUBSCRIPTION_MODIFICATION_AMOUNT_CANNOT_BE_BLANK                             = '92003';
     const SUBSCRIPTION_MODIFICATION_AMOUNT_IS_INVALID                                  = '92002';

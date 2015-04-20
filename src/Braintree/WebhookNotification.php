@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class WebhookNotification extends Braintree
 {
@@ -24,12 +26,13 @@ class WebhookNotification extends Braintree
     public static function parse($signature, $payload)
     {
         if (preg_match("/[^A-Za-z0-9+=\/\n]/", $payload) === 1) {
-            throw new Exception\InvalidSignature("payload contains illegal characters");
+            throw new Exception\InvalidSignature('payload contains illegal characters');
         }
         self::_validateSignature($signature, $payload);
 
         $xml = base64_decode($payload);
         $attributes = Xml::buildArrayFromXml($xml);
+
         return self::factory($attributes['notification']);
     }
 
@@ -37,6 +40,7 @@ class WebhookNotification extends Braintree
     {
         $publicKey = Configuration::publicKey();
         $digest = Digest::hexDigestSha1(Braintree\Configuration::privateKey(), $challenge);
+
         return "{$publicKey}|{$digest}";
     }
 
@@ -44,38 +48,39 @@ class WebhookNotification extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 
     private static function _matchingSignature($signaturePairs)
     {
-        foreach ($signaturePairs as $pair)
-        {
+        foreach ($signaturePairs as $pair) {
             $components = preg_split("/\|/", $pair);
             if ($components[0] == Configuration::publicKey()) {
                 return $components[1];
             }
         }
 
-        return null;
+        return;
     }
 
     private static function _payloadMatches($signature, $payload)
     {
         $payloadSignature = Digest::hexDigestSha1(Braintree\Configuration::privateKey(), $payload);
+
         return Digest::secureCompare($signature, $payloadSignature);
     }
 
     private static function _validateSignature($signatureString, $payload)
     {
-        $signaturePairs = preg_split("/&/", $signatureString);
+        $signaturePairs = preg_split('/&/', $signatureString);
         $signature = self::_matchingSignature($signaturePairs);
         if (!$signature) {
-            throw new Exception\InvalidSignature("no matching public key");
+            throw new Exception\InvalidSignature('no matching public key');
         }
 
-        if (!(self::_payloadMatches($signature, $payload) || self::_payloadMatches($signature, $payload . "\n"))) {
-            throw new Exception\InvalidSignature("signature does not match payload - one has been modified");
+        if (!(self::_payloadMatches($signature, $payload) || self::_payloadMatches($signature, $payload."\n"))) {
+            throw new Exception\InvalidSignature('signature does not match payload - one has been modified');
         }
     }
 

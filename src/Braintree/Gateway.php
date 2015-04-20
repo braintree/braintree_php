@@ -1,10 +1,12 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
- * Braintree Gateway module
+ * Braintree Gateway module.
  *
- * @package    Braintree
  * @category   Resources
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Gateway

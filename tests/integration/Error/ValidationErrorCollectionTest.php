@@ -1,17 +1,18 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../../TestHelper.php';
+
+require_once realpath(dirname(__FILE__)).'/../../TestHelper.php';
 
 class Braintree_Error_ValidationErrorCollectionTest extends PHPUnit_Framework_TestCase
 {
-
-    function mapValidationErrorsToCodes($validationErrors)
+    public function mapValidationErrorsToCodes($validationErrors)
     {
         $codes = array_map(create_function('$validationError', 'return $validationError->code;'), $validationErrors);
         sort($codes);
+
         return $codes;
     }
 
-    function test_shallowAll_givesAllErrorsShallowly()
+    public function test_shallowAll_givesAllErrorsShallowly()
     {
         $result = Braintree_Customer::create(array(
             'email' => 'invalid',
@@ -19,9 +20,9 @@ class Braintree_Error_ValidationErrorCollectionTest extends PHPUnit_Framework_Te
                 'number' => '1234123412341234',
                 'expirationDate' => 'invalid',
                 'billingAddress' => array(
-                    'countryName' => 'invalid'
-                )
-            )
+                    'countryName' => 'invalid',
+                ),
+            ),
         ));
 
         $this->assertEquals(array(), $result->errors->shallowAll());
@@ -32,13 +33,13 @@ class Braintree_Error_ValidationErrorCollectionTest extends PHPUnit_Framework_Te
 
         $expectedCreditCardErrors = array(
             Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_INVALID,
-            Braintree_Error_Codes::CREDIT_CARD_NUMBER_IS_INVALID
+            Braintree_Error_Codes::CREDIT_CARD_NUMBER_IS_INVALID,
         );
         $actualCreditCardErrors = $result->errors->forKey('customer')->forKey('creditCard')->shallowAll();
         $this->assertEquals($expectedCreditCardErrors, self::mapValidationErrorsToCodes($actualCreditCardErrors));
     }
 
-    function test_deepAll_givesAllErrorsDeeply()
+    public function test_deepAll_givesAllErrorsDeeply()
     {
         $result = Braintree_Customer::create(array(
             'email' => 'invalid',
@@ -46,16 +47,16 @@ class Braintree_Error_ValidationErrorCollectionTest extends PHPUnit_Framework_Te
                 'number' => '1234123412341234',
                 'expirationDate' => 'invalid',
                 'billingAddress' => array(
-                    'countryName' => 'invalid'
-                )
-            )
+                    'countryName' => 'invalid',
+                ),
+            ),
         ));
 
         $expectedErrors = array(
             Braintree_Error_Codes::CUSTOMER_EMAIL_IS_INVALID,
             Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_INVALID,
             Braintree_Error_Codes::CREDIT_CARD_NUMBER_IS_INVALID,
-            Braintree_Error_Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED
+            Braintree_Error_Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED,
         );
         $actualErrors = $result->errors->deepAll();
         $this->assertEquals($expectedErrors, self::mapValidationErrorsToCodes($actualErrors));
@@ -63,7 +64,7 @@ class Braintree_Error_ValidationErrorCollectionTest extends PHPUnit_Framework_Te
         $expectedErrors = array(
             Braintree_Error_Codes::CREDIT_CARD_EXPIRATION_DATE_IS_INVALID,
             Braintree_Error_Codes::CREDIT_CARD_NUMBER_IS_INVALID,
-            Braintree_Error_Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED
+            Braintree_Error_Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED,
         );
         $actualErrors = $result->errors->forKey('customer')->forKey('creditCard')->deepAll();
         $this->assertEquals($expectedErrors, self::mapValidationErrorsToCodes($actualErrors));

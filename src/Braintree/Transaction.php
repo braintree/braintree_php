@@ -1,8 +1,10 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
  * Braintree Transaction processor
- * Creates and manages transactions
+ * Creates and manages transactions.
  *
  * At minimum, an amount, credit card number, and
  * credit card expiration date are required.
@@ -136,10 +138,9 @@
  *
  * For more detailed information on Transactions, see {@link http://www.braintreepayments.com/gateway/transaction-api http://www.braintreepaymentsolutions.com/gateway/transaction-api}
  *
- * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $avsErrorResponseCode
  * @property-read string $avsPostalCodeResponseCode
@@ -164,9 +165,7 @@
  * @property-read string $updatedAt transaction updated timestamp
  * @property-read object $disbursementDetails populated when transaction is disbursed
  * @property-read object $disputes populated when transaction is disputed
- *
  */
-
 final class Transaction extends Braintree
 {
     // Transaction Status
@@ -217,11 +216,12 @@ final class Transaction extends Braintree
     const TRAVEL_AND_CRUISE_INDUSTRY = 'travel_cruise';
 
     /**
-     * sets instance properties from an array of values
+     * sets instance properties from an array of values.
      *
      * @ignore
-     * @access protected
+     *
      * @param array $transactionAttribs array of transaction data
+     *
      * @return none
      */
     protected function _initialize($transactionAttribs)
@@ -308,7 +308,7 @@ final class Transaction extends Braintree
 
         $disputes = array();
         if (isset($transactionAttribs['disputes'])) {
-            foreach ($transactionAttribs['disputes'] AS $dispute) {
+            foreach ($transactionAttribs['disputes'] as $dispute) {
                 $disputes[] = Dispute::factory($dispute);
             }
         }
@@ -317,7 +317,7 @@ final class Transaction extends Braintree
 
         $statusHistory = array();
         if (isset($transactionAttribs['statusHistory'])) {
-            foreach ($transactionAttribs['statusHistory'] AS $history) {
+            foreach ($transactionAttribs['statusHistory'] as $history) {
                 $statusHistory[] = new Transaction\StatusDetails($history);
             }
         }
@@ -326,7 +326,7 @@ final class Transaction extends Braintree
 
         $addOnArray = array();
         if (isset($transactionAttribs['addOns'])) {
-            foreach ($transactionAttribs['addOns'] AS $addOn) {
+            foreach ($transactionAttribs['addOns'] as $addOn) {
                 $addOnArray[] = AddOn::factory($addOn);
             }
         }
@@ -334,35 +334,37 @@ final class Transaction extends Braintree
 
         $discountArray = array();
         if (isset($transactionAttribs['discounts'])) {
-            foreach ($transactionAttribs['discounts'] AS $discount) {
+            foreach ($transactionAttribs['discounts'] as $discount) {
                 $discountArray[] = Discount::factory($discount);
             }
         }
         $this->_set('discounts', $discountArray);
 
-        if(isset($transactionAttribs['riskData'])) {
+        if (isset($transactionAttribs['riskData'])) {
             $this->_set('riskData', RiskData::factory($transactionAttribs['riskData']));
         }
     }
 
     /**
-     * returns a string representation of the transaction
+     * returns a string representation of the transaction.
+     *
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         // array of attributes to print
         $display = array(
             'id', 'type', 'amount', 'status',
-            'createdAt', 'creditCardDetails', 'customerDetails'
+            'createdAt', 'creditCardDetails', 'customerDetails',
             );
 
         $displayAttributes = array();
-        foreach ($display AS $attrib) {
+        foreach ($display as $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
-        return __CLASS__ . '[' .
-                Util::attributesToString($displayAttributes) .']';
+
+        return __CLASS__.'['.
+                Util::attributesToString($displayAttributes).']';
     }
 
     public function isEqual($otherTx)
@@ -374,9 +376,8 @@ final class Transaction extends Braintree
     {
         $token = $this->creditCardDetails->token;
         if (empty($token)) {
-            return null;
-        }
-        else {
+            return;
+        } else {
             return CreditCard::find($token);
         }
     }
@@ -385,31 +386,32 @@ final class Transaction extends Braintree
     {
         $customerId = $this->customerDetails->id;
         if (empty($customerId)) {
-            return null;
-        }
-        else {
+            return;
+        } else {
             return Customer::find($customerId);
         }
     }
 
-    public function isDisbursed() {
+    public function isDisbursed()
+    {
         return $this->disbursementDetails->isValid();
     }
 
     /**
      *  factory method: returns an instance of Transaction
-     *  to the requesting method, with populated properties
+     *  to the requesting method, with populated properties.
      *
      * @ignore
+     *
      * @return object instance of Transaction
      */
     public static function factory($attributes)
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
-
 
     // static methods redirecting to gateway
 

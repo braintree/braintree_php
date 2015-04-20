@@ -1,10 +1,12 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 use Iterator;
 
 /**
  * Braintree ResourceCollection
- * ResourceCollection is a container object for result data
+ * ResourceCollection is a container object for result data.
  *
  * stores and retrieves search results and aggregate data
  *
@@ -17,8 +19,6 @@ use Iterator;
  * }
  * </code>
  *
- * @package    Braintree
- * @subpackage Utility
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class ResourceCollection implements Iterator
@@ -30,22 +30,22 @@ class ResourceCollection implements Iterator
     private $_pager;
 
     /**
-     * set up the resource collection
+     * set up the resource collection.
      *
      * expects an array of attributes with literal keys
      *
      * @param array $attributes
      * @param array $pagerAttribs
      */
-    public function  __construct($response, $pager)
+    public function __construct($response, $pager)
     {
-        $this->_pageSize = $response["searchResults"]["pageSize"];
-        $this->_ids = $response["searchResults"]["ids"];
+        $this->_pageSize = $response['searchResults']['pageSize'];
+        $this->_ids = $response['searchResults']['ids'];
         $this->_pager = $pager;
     }
 
     /**
-     * returns the current item when iterating with foreach
+     * returns the current item when iterating with foreach.
      */
     public function current()
     {
@@ -53,7 +53,7 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * returns the first item in the collection
+     * returns the first item in the collection.
      *
      * @return mixed
      */
@@ -61,16 +61,17 @@ class ResourceCollection implements Iterator
     {
         $ids = $this->_ids;
         $page = $this->_getPage(array($ids[0]));
+
         return $page[0];
     }
 
     public function key()
     {
-        return null;
+        return;
     }
 
     /**
-     * advances to the next item in the collection when iterating with foreach
+     * advances to the next item in the collection when iterating with foreach.
      */
     public function next()
     {
@@ -78,7 +79,7 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * rewinds the testIterateOverResults collection to the first item when iterating with foreach
+     * rewinds the testIterateOverResults collection to the first item when iterating with foreach.
      */
     public function rewind()
     {
@@ -87,7 +88,7 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * returns whether the current item is valid when iterating with foreach
+     * returns whether the current item is valid when iterating with foreach.
      */
     public function valid()
     {
@@ -109,12 +110,9 @@ class ResourceCollection implements Iterator
 
     private function _getNextPage()
     {
-        if (empty($this->_ids))
-        {
+        if (empty($this->_ids)) {
             $this->_items = array();
-        }
-        else
-        {
+        } else {
             $this->_items = $this->_getPage(array_slice($this->_ids, $this->_batchIndex, $this->_pageSize));
             $this->_batchIndex += $this->_pageSize;
             $this->_index = 0;
@@ -122,7 +120,7 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * requests the next page of results for the collection
+     * requests the next page of results for the collection.
      *
      * @return none
      */

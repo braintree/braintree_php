@@ -1,13 +1,14 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class ClientToken
 {
     const DEFAULT_VERSION = 2;
 
-
     // static methods redirecting to gateway
 
-    public static function generate($params=array())
+    public static function generate($params = array())
     {
         return Configuration::gateway()->clientToken()->generate($params);
     }

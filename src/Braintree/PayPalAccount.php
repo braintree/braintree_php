@@ -1,21 +1,23 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
- * Braintree PayPalAccount module
+ * Braintree PayPalAccount module.
  *
- * @package    Braintree
  * @category   Resources
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
- * Manages Braintree PayPalAccounts
+ * Manages Braintree PayPalAccounts.
  *
  * <b>== More information ==</b>
  *
  *
- * @package    Braintree
  * @category   Resources
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $email
@@ -26,24 +28,26 @@ class PayPalAccount extends Braintree
 {
     /**
      *  factory method: returns an instance of PayPalAccount
-     *  to the requesting method, with populated properties
+     *  to the requesting method, with populated properties.
      *
      * @ignore
+     *
      * @return object instance of PayPalAccount
      */
     public static function factory($attributes)
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 
     /* instance methods */
 
     /**
-     * returns false if default is null or false
+     * returns false if default is null or false.
      *
-     * @return boolean
+     * @return bool
      */
     public function isDefault()
     {
@@ -51,10 +55,10 @@ class PayPalAccount extends Braintree
     }
 
     /**
-     * sets instance properties from an array of values
+     * sets instance properties from an array of values.
      *
-     * @access protected
      * @param array $paypalAccountAttribs array of paypalAccount data
+     *
      * @return none
      */
     protected function _initialize($paypalAccountAttribs)
@@ -64,7 +68,7 @@ class PayPalAccount extends Braintree
 
         $subscriptionArray = array();
         if (isset($paypalAccountAttribs['subscriptions'])) {
-            foreach ($paypalAccountAttribs['subscriptions'] AS $subscription) {
+            foreach ($paypalAccountAttribs['subscriptions'] as $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
@@ -74,15 +78,15 @@ class PayPalAccount extends Braintree
 
     /**
      * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
+     * ClassName[property=value, property=value].
+     *
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.
+                Util::attributesToString($this->_attributes).']';
     }
-
 
     // static methods redirecting to gateway
 

@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class AddOnGateway
 {
@@ -15,10 +17,10 @@ class AddOnGateway
 
     public function all()
     {
-        $path = $this->_config->merchantPath() . '/add_ons';
+        $path = $this->_config->merchantPath().'/add_ons';
         $response = $this->_http->get($path);
 
-        $addOns = array("addOn" => $response['addOns']);
+        $addOns = array('addOn' => $response['addOns']);
 
         return Util::extractAttributeAsArray(
             $addOns,

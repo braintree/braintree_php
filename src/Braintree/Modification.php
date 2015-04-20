@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class Modification extends Braintree
 {
@@ -8,7 +10,7 @@ class Modification extends Braintree
 
         $addOnArray = array();
         if (isset($attributes['addOns'])) {
-            foreach ($attributes['addOns'] AS $addOn) {
+            foreach ($attributes['addOns'] as $addOn) {
                 $addOnArray[] = addOn::factory($addOn);
             }
         }
@@ -19,6 +21,7 @@ class Modification extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 }

@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class SettlementBatchSummaryGateway
 {
@@ -13,19 +15,17 @@ class SettlementBatchSummaryGateway
         $this->_http = new Http($gateway->config);
     }
 
-    public function generate($settlement_date, $groupByCustomField = NULL)
+    public function generate($settlement_date, $groupByCustomField = null)
     {
         $criteria = array('settlement_date' => $settlement_date);
-        if (isset($groupByCustomField))
-        {
+        if (isset($groupByCustomField)) {
             $criteria['group_by_custom_field'] = $groupByCustomField;
         }
         $params = array('settlement_batch_summary' => $criteria);
-        $path = $this->_config->merchantPath() . '/settlement_batch_summary';
+        $path = $this->_config->merchantPath().'/settlement_batch_summary';
         $response = $this->_http->post($path, $params);
 
-        if (isset($groupByCustomField))
-        {
+        if (isset($groupByCustomField)) {
             $response['settlementBatchSummary']['records'] = $this->_underscoreCustomField(
                 $groupByCustomField,
                 $response['settlementBatchSummary']['records']
@@ -39,8 +39,7 @@ class SettlementBatchSummaryGateway
     {
         $updatedRecords = array();
 
-        foreach ($records as $record)
-        {
+        foreach ($records as $record) {
             $camelized = Util::delimiterToCamelCase($groupByCustomField);
             $record[$groupByCustomField] = $record[$camelized];
             unset($record[$camelized]);
@@ -56,11 +55,11 @@ class SettlementBatchSummaryGateway
             return new Result\Successful(
                 SettlementBatchSummary::factory($response['settlementBatchSummary'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-                "Expected settlementBatchSummary or apiErrorResponse"
+                'Expected settlementBatchSummary or apiErrorResponse'
             );
         }
     }

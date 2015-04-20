@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 final class Disbursement extends Braintree
 {
@@ -19,7 +21,7 @@ final class Disbursement extends Braintree
     public function transactions()
     {
         $collection = Transaction::search(array(
-            TransactionSearch::ids()->in($this->transactionIds)
+            TransactionSearch::ids()->in($this->transactionIds),
         ));
 
         return $collection;
@@ -29,22 +31,24 @@ final class Disbursement extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 
-    public function  __toString()
+    public function __toString()
     {
         $display = array(
             'id', 'merchantAccountDetails', 'exceptionMessage', 'amount',
             'disbursementDate', 'followUpAction', 'retry', 'success',
-            'transactionIds'
+            'transactionIds',
             );
 
         $displayAttributes = array();
-        foreach ($display AS $attrib) {
+        foreach ($display as $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
-        return __CLASS__ . '[' .
-                Util::attributesToString($displayAttributes) .']';
+
+        return __CLASS__.'['.
+                Util::attributesToString($displayAttributes).']';
     }
 }

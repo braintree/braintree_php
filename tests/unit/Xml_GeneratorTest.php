@@ -1,9 +1,10 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+
+require_once realpath(dirname(__FILE__)).'/../TestHelper.php';
 
 class Braintree_Xml_GeneratorTest extends PHPUnit_Framework_TestCase
 {
-    function testSetsTypeAttributeForBooleans()
+    public function testSetsTypeAttributeForBooleans()
     {
         $expected = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -14,12 +15,12 @@ class Braintree_Xml_GeneratorTest extends PHPUnit_Framework_TestCase
 
 XML;
         $xml = Braintree_Xml::buildXmlFromArray(array(
-            'root' => array('yes' => true, 'no' => false)
+            'root' => array('yes' => true, 'no' => false),
         ));
         $this->assertEquals($expected, $xml);
     }
 
-    function testCreatesArrays()
+    public function testCreatesArrays()
     {
         $expected = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -32,12 +33,12 @@ XML;
 
 XML;
         $xml = Braintree_Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => array('foo', 'bar'))
+            'root' => array('stuff' => array('foo', 'bar')),
         ));
         $this->assertEquals($expected, $xml);
     }
 
-    function testCreatesArraysWithBooleans()
+    public function testCreatesArraysWithBooleans()
     {
         $expected = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -50,12 +51,12 @@ XML;
 
 XML;
         $xml = Braintree_Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => array(true, false))
+            'root' => array('stuff' => array(true, false)),
         ));
         $this->assertEquals($expected, $xml);
     }
 
-    function testHandlesEmptyArrays()
+    public function testHandlesEmptyArrays()
     {
         $expected = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -65,12 +66,12 @@ XML;
 
 XML;
         $xml = Braintree_Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => array())
+            'root' => array('stuff' => array()),
         ));
         $this->assertEquals($expected, $xml);
     }
 
-    function testEscapingSpecialChars()
+    public function testEscapingSpecialChars()
     {
         $expected = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -80,7 +81,7 @@ XML;
 
 XML;
         $xml = Braintree_Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => '<>&\'"')
+            'root' => array('stuff' => '<>&\'"'),
         ));
         $this->assertEquals($expected, $xml);
     }

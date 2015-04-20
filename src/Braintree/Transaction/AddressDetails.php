@@ -1,13 +1,13 @@
-<?php namespace Braintree\Transaction;
+<?php
+
+namespace Braintree\Transaction;
 
 use Braintree\Instance;
 
 /**
- * Creates an instance of AddressDetails as returned from a transaction
+ * Creates an instance of AddressDetails as returned from a transaction.
  *
  *
- * @package    Braintree
- * @subpackage Transaction
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $firstName
@@ -19,6 +19,7 @@ use Braintree\Instance;
  * @property-read string $region
  * @property-read string $postalCode
  * @property-read string $countryName
+ *
  * @uses Instance inherits methods
  */
 class AddressDetails extends Instance

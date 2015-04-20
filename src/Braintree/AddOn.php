@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class AddOn extends Modification
 {
@@ -6,9 +8,9 @@ class AddOn extends Modification
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
-
 
     // static methods redirecting to gateway
 

@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 use InvalidArgumentException;
 
@@ -15,29 +17,31 @@ class ClientTokenGateway
         $this->_http = new Http($gateway->config);
     }
 
-    public function generate($params=array())
+    public function generate($params = array())
     {
-        if (!array_key_exists("version", $params)) {
-            $params["version"] = ClientToken::DEFAULT_VERSION;
+        if (!array_key_exists('version', $params)) {
+            $params['version'] = ClientToken::DEFAULT_VERSION;
         }
 
         $this->conditionallyVerifyKeys($params);
-        $generateParams = array("client_token" => $params);
+        $generateParams = array('client_token' => $params);
 
         return $this->_doGenerate('/client_token', $generateParams);
     }
 
     /**
-     * sends the generate request to the gateway
+     * sends the generate request to the gateway.
      *
      * @ignore
-     * @param var $url
+     *
+     * @param var   $url
      * @param array $params
+     *
      * @return mixed
      */
     public function _doGenerate($subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath() . $subPath;
+        $fullPath = $this->_config->merchantPath().$subPath;
         $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
@@ -45,7 +49,7 @@ class ClientTokenGateway
 
     public function conditionallyVerifyKeys($params)
     {
-        if (array_key_exists("customerId", $params)) {
+        if (array_key_exists('customerId', $params)) {
             Util::verifyKeys($this->generateWithCustomerIdSignature(), $params);
         } else {
             Util::verifyKeys($this->generateWithoutCustomerIdSignature(), $params);
@@ -54,24 +58,27 @@ class ClientTokenGateway
 
     public function generateWithCustomerIdSignature()
     {
-        return array("version", "customerId", "proxyMerchantId", array("options" => array("makeDefault", "verifyCard", "failOnDuplicatePaymentMethod")), "merchantAccountId");
+        return array('version', 'customerId', 'proxyMerchantId', array('options' => array('makeDefault', 'verifyCard', 'failOnDuplicatePaymentMethod')), 'merchantAccountId');
     }
 
     public function generateWithoutCustomerIdSignature()
     {
-        return array("version", "proxyMerchantId", "merchantAccountId");
+        return array('version', 'proxyMerchantId', 'merchantAccountId');
     }
 
     /**
-     * generic method for validating incoming gateway responses
+     * generic method for validating incoming gateway responses.
      *
      * If the request is successful, returns a client token string.
      * Otherwise, throws an InvalidArgumentException with the error
      * response from the Gateway or an HTTP status code exception.
      *
      * @ignore
+     *
      * @param array $response gateway response values
+     *
      * @return string client token
+     *
      * @throws InvalidArgumentException | HTTP status code exception
      */
     private function _verifyGatewayResponse($response)
@@ -84,9 +91,8 @@ class ClientTokenGateway
             );
         } else {
             throw new Exception\Unexpected(
-                "Expected clientToken or apiErrorResponse"
+                'Expected clientToken or apiErrorResponse'
             );
         }
     }
-
 }

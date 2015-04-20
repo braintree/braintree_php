@@ -1,16 +1,17 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+
+require_once realpath(dirname(__FILE__)).'/../TestHelper.php';
 
 class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
 {
-    function testGet_givesErrorIfInvalidProperty()
+    public function testGet_givesErrorIfInvalidProperty()
     {
         $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree_PayPalAccount: foo');
         $paypalAccount = Braintree_PayPalAccount::factory(array());
         $paypalAccount->foo;
     }
 
-    function testIsDefault()
+    public function testIsDefault()
     {
         $paypalAccount = Braintree_PayPalAccount::factory(array('default' => true));
         $this->assertTrue($paypalAccount->isDefault());
@@ -19,19 +20,19 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($paypalAccount->isDefault());
     }
 
-    function testErrorsOnFindWithBlankArgument()
+    public function testErrorsOnFindWithBlankArgument()
     {
         $this->setExpectedException('InvalidArgumentException');
         Braintree_PayPalAccount::find('');
     }
 
-    function testErrorsOnFindWithWhitespaceArgument()
+    public function testErrorsOnFindWithWhitespaceArgument()
     {
         $this->setExpectedException('InvalidArgumentException');
         Braintree_PayPalAccount::find('  ');
     }
 
-    function testErrorsOnFindWithWhitespaceCharacterArgument()
+    public function testErrorsOnFindWithWhitespaceCharacterArgument()
     {
         $this->setExpectedException('InvalidArgumentException');
         Braintree_PayPalAccount::find('\t');

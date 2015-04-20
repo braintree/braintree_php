@@ -1,15 +1,16 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+
+require_once realpath(dirname(__FILE__)).'/../TestHelper.php';
 
 class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 {
-    function testCreate_throwsIfInvalidKey()
+    public function testCreate_throwsIfInvalidKey()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalidKey');
         Braintree_PaymentMethod::create(array('invalidKey' => 'foo'));
     }
 
-    function testCreateSignature()
+    public function testCreateSignature()
     {
         $expected = array(
             'customerId', 'paymentMethodNonce', 'token', 'billingAddressId', 'deviceData',
@@ -17,26 +18,26 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
                 'makeDefault',
                 'verifyCard',
                 'failOnDuplicatePaymentMethod',
-                'verificationMerchantAccountId'
+                'verificationMerchantAccountId',
             )),
-            array('billingAddress' => Braintree_AddressGateway::createSignature())
+            array('billingAddress' => Braintree_AddressGateway::createSignature()),
         );
         $this->assertEquals($expected, Braintree_PaymentMethodGateway::createSignature());
     }
 
-    function testErrorsOnFindWithBlankArgument()
+    public function testErrorsOnFindWithBlankArgument()
     {
         $this->setExpectedException('InvalidArgumentException');
         Braintree_PaymentMethod::find('');
     }
 
-    function testErrorsOnFindWithWhitespaceArgument()
+    public function testErrorsOnFindWithWhitespaceArgument()
     {
         $this->setExpectedException('InvalidArgumentException');
         Braintree_PaymentMethod::find('  ');
     }
 
-    function testErrorsOnFindWithWhitespaceCharacterArgument()
+    public function testErrorsOnFindWithWhitespaceCharacterArgument()
     {
         $this->setExpectedException('InvalidArgumentException');
         Braintree_PaymentMethod::find('\t');

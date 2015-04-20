@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class CreditCardVerificationGateway
 {
@@ -19,8 +21,8 @@ class CreditCardVerificationGateway
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
-        $criteria["ids"] = CreditCardVerificationSearch::ids()->in($ids)->toparam();
-        $path = $this->_config->merchantPath() . '/verifications/advanced_search';
+        $criteria['ids'] = CreditCardVerificationSearch::ids()->in($ids)->toparam();
+        $path = $this->_config->merchantPath().'/verifications/advanced_search';
         $response = $this->_http->post($path, array('search' => $criteria));
 
         return Util::extractattributeasarray(
@@ -36,12 +38,12 @@ class CreditCardVerificationGateway
             $criteria[$term->name] = $term->toparam();
         }
 
-        $path = $this->_config->merchantPath() . '/verifications/advanced_search_ids';
+        $path = $this->_config->merchantPath().'/verifications/advanced_search_ids';
         $response = $this->_http->post($path, array('search' => $criteria));
         $pager = array(
             'object' => $this,
             'method' => 'fetch',
-            'methodArgs' => array($query)
+            'methodArgs' => array($query),
             );
 
         return new ResourceCollection($response, $pager);

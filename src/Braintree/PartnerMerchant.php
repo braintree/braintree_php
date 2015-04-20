@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
  * Partner Merchant information that is generated when a partner is connected
@@ -6,7 +8,6 @@
  *
  * Creates an instance of PartnerMerchants
  *
- * @package    Braintree
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $merchantPublicId
@@ -14,6 +15,7 @@
  * @property-read string $privateKey
  * @property-read string $clientSideEncryptionKey
  * @property-read string $partnerMerchantId
+ *
  * @uses Instance inherits methods
  */
 class PartnerMerchant extends Braintree

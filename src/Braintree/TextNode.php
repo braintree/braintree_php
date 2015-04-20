@@ -1,10 +1,13 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class TextNode extends PartialMatchNode
 {
-    function contains($value)
+    public function contains($value)
     {
-        $this->searchTerms["contains"] = strval($value);
+        $this->searchTerms['contains'] = strval($value);
+
         return $this;
     }
 }

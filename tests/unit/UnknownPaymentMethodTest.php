@@ -1,15 +1,16 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+
+require_once realpath(dirname(__FILE__)).'/../TestHelper.php';
 
 class Braintree_UnknownPaymentMethodTest extends PHPUnit_Framework_TestCase
 {
-    function testHandlesUnknownPaymentMethodResponses()
+    public function testHandlesUnknownPaymentMethodResponses()
     {
         $response = array(
             'unkownPaymentMethod' => array(
                 'token' => 'SOME_TOKEN',
-                'default' => true
-            )
+                'default' => true,
+            ),
         );
         $unknownPaymentMethodObject = Braintree_UnknownPaymentMethod::factory($response);
         $this->assertEquals('SOME_TOKEN', $unknownPaymentMethodObject->token);
@@ -17,4 +18,3 @@ class Braintree_UnknownPaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('https://assets.braintreegateway.com/payment_method_logo/unknown.png', $unknownPaymentMethodObject->imageUrl);
     }
 }
-

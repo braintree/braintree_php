@@ -1,4 +1,6 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 function checkBraintreeDependencies()
 {
@@ -8,9 +10,9 @@ function checkBraintreeDependencies()
 
     $requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
 
-    foreach ($requiredExtensions AS $ext) {
+    foreach ($requiredExtensions as $ext) {
         if (!extension_loaded($ext)) {
-            throw new Exception('The Braintree library requires the ' . $ext . ' extension.');
+            throw new Exception('The Braintree library requires the '.$ext.' extension.');
         }
     }
 }
@@ -18,7 +20,7 @@ function checkBraintreeDependencies()
 checkBraintreeDependencies();
 
 /**
- * Braintree PHP Library
+ * Braintree PHP Library.
  *
  * Braintree base class and initialization
  * Provides methods to child classes. This class cannot be instantiated.
@@ -27,7 +29,6 @@ checkBraintreeDependencies();
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-
 abstract class Braintree
 {
     /**
@@ -47,28 +48,31 @@ abstract class Braintree
     }
 
     /**
-     * returns private/nonexistent instance properties
+     * returns private/nonexistent instance properties.
+     *
      * @ignore
-     * @access public
+     *
      * @param string $name property name
+     *
      * @return mixed contents of instance properties
      */
     public function __get($name)
     {
         if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
-        }
-        else {
-            trigger_error('Undefined property on ' . get_class($this) . ': ' . $name, E_USER_NOTICE);
-            return null;
+        } else {
+            trigger_error('Undefined property on '.get_class($this).': '.$name, E_USER_NOTICE);
+
+            return;
         }
     }
 
     /**
-     * used by isset() and empty()
-     * @access public
+     * used by isset() and empty().
+     *
      * @param string $name property name
-     * @return boolean
+     *
+     * @return bool
      */
     public function __isset($name)
     {

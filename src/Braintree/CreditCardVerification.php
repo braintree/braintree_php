@@ -1,13 +1,15 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class CreditCardVerification extends Result_CreditCardVerification
 {
     public static function factory($attributes)
     {
         $instance = new self($attributes);
+
         return $instance;
     }
-
 
     // static methods redirecting to gateway
 

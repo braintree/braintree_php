@@ -1,25 +1,26 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
-require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
-require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
+
+require_once realpath(dirname(__FILE__)).'/../TestHelper.php';
+require_once realpath(dirname(__FILE__)).'/SubscriptionTestHelper.php';
+require_once realpath(dirname(__FILE__)).'/HttpClientApi.php';
 
 class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
 {
-    function testCreate_doesNotAcceptBadAttributes()
+    public function testCreate_doesNotAcceptBadAttributes()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad');
         $result = Braintree_Subscription::create(array(
-            'bad' => 'value'
+            'bad' => 'value',
         ));
     }
 
-    function testCreate_whenSuccessful()
+    public function testCreate_whenSuccessful()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
 
         ));
         Braintree_TestHelper::assertPrintable($result);
@@ -48,7 +49,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Subscription::API, $subscription->statusHistory[0]->subscriptionSource);
     }
 
-    function testGatewayCreate_whenSuccessful()
+    public function testGatewayCreate_whenSuccessful()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
@@ -57,11 +58,11 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
-            'privateKey' => 'integration_private_key'
+            'privateKey' => 'integration_private_key',
         ));
         $result = $gateway->subscription()->create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
 
         ));
         Braintree_TestHelper::assertPrintable($result);
@@ -74,40 +75,40 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Subscription::ACTIVE, $subscription->status);
     }
 
-    function testCreate_withPaymentMethodNonce()
+    public function testCreate_withPaymentMethodNonce()
     {
         $customerId = Braintree_Customer::create()->customer->id;
         $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
         $nonce = $http->nonce_for_new_card(array(
-            "creditCard" => array(
-                "number" => "4111111111111111",
-                "expirationMonth" => "11",
-                "expirationYear" => "2099"
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
             ),
-            "customerId" => $customerId,
-            "share" => true
+            'customerId' => $customerId,
+            'share' => true,
         ));
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodNonce' => $nonce,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ));
 
         $this->assertTrue($result->success);
 
         $transaction = $result->subscription->transactions[0];
-        $this->assertEquals("411111", $transaction->creditCardDetails->bin);
-        $this->assertEquals("1111", $transaction->creditCardDetails->last4);
+        $this->assertEquals('411111', $transaction->creditCardDetails->bin);
+        $this->assertEquals('1111', $transaction->creditCardDetails->last4);
     }
 
-    function testCreate_returnsTransactionWhenTransactionFails()
+    public function testCreate_returnsTransactionWhenTransactionFails()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'price' => Braintree_Test_TransactionAmounts::$decline
+            'price' => Braintree_Test_TransactionAmounts::$decline,
 
         ));
         Braintree_TestHelper::assertPrintable($result);
@@ -115,7 +116,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->transaction->status);
     }
 
-    function testCreate_canSetTheId()
+    public function testCreate_canSetTheId()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $newId = strval(rand());
@@ -123,7 +124,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'id' => $newId
+            'id' => $newId,
         ));
 
         $this->assertTrue($result->success);
@@ -131,14 +132,14 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($newId, $subscription->id);
     }
 
-    function testCreate_canSetTheMerchantAccountId()
+    public function testCreate_canSetTheMerchantAccountId()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId()
+            'merchantAccountId' => Braintree_TestHelper::nonDefaultMerchantAccountId(),
         ));
 
         $this->assertTrue($result->success);
@@ -146,7 +147,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_TestHelper::nonDefaultMerchantAccountId(), $subscription->merchantAccountId);
     }
 
-    function testCreate_trialPeriodDefaultsToPlanWithoutTrial()
+    public function testCreate_trialPeriodDefaultsToPlanWithoutTrial()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
@@ -160,7 +161,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertNull($subscription->trialDurationUnit);
     }
 
-    function testCreate_trialPeriondDefaultsToPlanWithTrial()
+    public function testCreate_trialPeriondDefaultsToPlanWithTrial()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::trialPlan();
@@ -174,7 +175,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('day', $subscription->trialDurationUnit);
     }
 
-    function testCreate_alterPlanTrialPeriod()
+    public function testCreate_alterPlanTrialPeriod()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::trialPlan();
@@ -182,7 +183,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
             'trialDuration' => 5,
-            'trialDurationUnit' => 'month'
+            'trialDurationUnit' => 'month',
         ));
         $subscription = $result->subscription;
         $this->assertTrue($subscription->trialPeriod);
@@ -190,7 +191,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('month', $subscription->trialDurationUnit);
     }
 
-    function testCreate_removePlanTrialPeriod()
+    public function testCreate_removePlanTrialPeriod()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::trialPlan();
@@ -203,7 +204,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($subscription->trialPeriod);
     }
 
-    function testCreate_createsATransactionIfNoTrialPeriod()
+    public function testCreate_createsATransactionIfNoTrialPeriod()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
@@ -220,7 +221,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($subscription->id, $transaction->subscriptionId);
     }
 
-    function testCreate_doesNotCreateTransactionIfTrialPeriod()
+    public function testCreate_doesNotCreateTransactionIfTrialPeriod()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::trialPlan();
@@ -232,7 +233,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, sizeof($subscription->transactions));
     }
 
-    function testCreate_returnsATransactionWithSubscriptionBillingPeriod()
+    public function testCreate_returnsATransactionWithSubscriptionBillingPeriod()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
@@ -246,69 +247,69 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($subscription->billingPeriodEndDate, $transaction->subscriptionDetails->billingPeriodEndDate);
     }
 
-    function testCreate_priceCanBeOverriden()
+    public function testCreate_priceCanBeOverriden()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::trialPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'price' => '2.00'
+            'price' => '2.00',
         ));
         $subscription = $result->subscription;
         $this->assertEquals('2.00', $subscription->price);
     }
 
-    function testCreate_billingDayOfMonthIsInheritedFromPlan()
+    public function testCreate_billingDayOfMonthIsInheritedFromPlan()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ));
         $subscription = $result->subscription;
         $this->assertEquals(5, $subscription->billingDayOfMonth);
     }
 
-    function testCreate_billingDayOfMonthCanBeOverriden()
+    public function testCreate_billingDayOfMonthCanBeOverriden()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'billingDayOfMonth' => 14
+            'billingDayOfMonth' => 14,
         ));
         $subscription = $result->subscription;
         $this->assertEquals(14, $subscription->billingDayOfMonth);
     }
 
-    function testCreate_billingDayOfMonthCanBeOverridenWithStartImmediately()
+    public function testCreate_billingDayOfMonthCanBeOverridenWithStartImmediately()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'options' => array('startImmediately' => true)
+            'options' => array('startImmediately' => true),
         ));
         $subscription = $result->subscription;
         $this->assertEquals(1, sizeof($subscription->transactions));
     }
 
-    function testCreate_firstBillingDateCanBeSet()
+    public function testCreate_firstBillingDateCanBeSet()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
 
-        $tomorrow = new DateTime("now + 1 day");
-        $tomorrow->setTime(0,0,0);
+        $tomorrow = new DateTime('now + 1 day');
+        $tomorrow->setTime(0, 0, 0);
 
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'firstBillingDate' => $tomorrow
+            'firstBillingDate' => $tomorrow,
         ));
 
         $subscription = $result->subscription;
@@ -316,18 +317,18 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Subscription::PENDING, $result->subscription->status);
     }
 
-    function testCreate_firstBillingDateInThePast()
+    public function testCreate_firstBillingDateInThePast()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::billingDayOfMonthPlan();
 
-        $past = new DateTime("now - 3 days");
-        $past->setTime(0,0,0);
+        $past = new DateTime('now - 3 days');
+        $past->setTime(0, 0, 0);
 
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'firstBillingDate' => $past
+            'firstBillingDate' => $past,
         ));
 
         $this->assertFalse($result->success);
@@ -335,13 +336,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_FIRST_BILLING_DATE_CANNOT_BE_IN_THE_PAST, $errors[0]->code);
     }
 
-    function testCreate_numberOfBillingCyclesCanBeOverridden()
+    public function testCreate_numberOfBillingCyclesCanBeOverridden()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::trialPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ));
         $subscription = $result->subscription;
         $this->assertEquals($plan['numberOfBillingCycles'], $subscription->numberOfBillingCycles);
@@ -349,20 +350,20 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Subscription::create(array(
             'numberOfBillingCycles' => '10',
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ));
         $subscription = $result->subscription;
         $this->assertEquals(10, $subscription->numberOfBillingCycles);
         $this->assertFalse($subscription->neverExpires);
     }
 
-    function testCreate_numberOfBillingCyclesCanBeOverriddenToNeverExpire()
+    public function testCreate_numberOfBillingCyclesCanBeOverriddenToNeverExpire()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::trialPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ));
         $subscription = $result->subscription;
         $this->assertEquals($plan['numberOfBillingCycles'], $subscription->numberOfBillingCycles);
@@ -370,28 +371,28 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Subscription::create(array(
             'neverExpires' => true,
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ));
         $subscription = $result->subscription;
         $this->assertNull($subscription->numberOfBillingCycles);
         $this->assertTrue($subscription->neverExpires);
     }
 
-    function testCreate_doesNotInheritAddOnsAndDiscountsWhenDoNotInheritAddOnsOrDiscountsIsSet()
+    public function testCreate_doesNotInheritAddOnsAndDiscountsWhenDoNotInheritAddOnsOrDiscountsIsSet()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'options' => array('doNotInheritAddOnsOrDiscounts' => true)
+            'options' => array('doNotInheritAddOnsOrDiscounts' => true),
         ));
         $subscription = $result->subscription;
         $this->assertEquals(0, sizeof($subscription->addOns));
         $this->assertEquals(0, sizeof($subscription->discounts));
     }
 
-    function testCreate_inheritsAddOnsAndDiscountsFromPlanByDefault()
+    public function testCreate_inheritsAddOnsAndDiscountsFromPlanByDefault()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
@@ -404,13 +405,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $addOns = $subscription->addOns;
         Braintree_SubscriptionTestHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->amount, "10.00");
+        $this->assertEquals($addOns[0]->amount, '10.00');
         $this->assertEquals($addOns[0]->quantity, 1);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[0]->neverExpires, true);
         $this->assertEquals($addOns[0]->currentBillingCycle, 0);
 
-        $this->assertEquals($addOns[1]->amount, "20.00");
+        $this->assertEquals($addOns[1]->amount, '20.00');
         $this->assertEquals($addOns[1]->quantity, 1);
         $this->assertEquals($addOns[1]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[1]->neverExpires, true);
@@ -420,20 +421,20 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $discounts = $subscription->discounts;
         Braintree_SubscriptionTestHelper::sortModificationsById($discounts);
 
-        $this->assertEquals($discounts[0]->amount, "11.00");
+        $this->assertEquals($discounts[0]->amount, '11.00');
         $this->assertEquals($discounts[0]->quantity, 1);
         $this->assertEquals($discounts[0]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[0]->neverExpires, true);
         $this->assertEquals($discounts[0]->currentBillingCycle, 0);
 
-        $this->assertEquals($discounts[1]->amount, "7.00");
+        $this->assertEquals($discounts[1]->amount, '7.00');
         $this->assertEquals($discounts[1]->quantity, 1);
         $this->assertEquals($discounts[1]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[1]->neverExpires, true);
         $this->assertEquals($discounts[1]->currentBillingCycle, 0);
     }
 
-    function testCreate_allowsOverridingInheritedAddOnsAndDiscounts()
+    public function testCreate_allowsOverridingInheritedAddOnsAndDiscounts()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
@@ -446,14 +447,14 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
                         'amount' => '50.00',
                         'existingId' => 'increase_10',
                         'quantity' => 2,
-                        'numberOfBillingCycles' => 5
+                        'numberOfBillingCycles' => 5,
                     ),
                     array(
                         'amount' => '60.00',
                         'existingId' => 'increase_20',
                         'quantity' => 4,
-                        'numberOfBillingCycles' => 9
-                    )
+                        'numberOfBillingCycles' => 9,
+                    ),
                 ),
             ),
             'discounts' => array(
@@ -462,23 +463,23 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
                         'amount' => '15.00',
                         'existingId' => 'discount_7',
                         'quantity' => 2,
-                        'neverExpires' => true
-                    )
-                )
-            )
+                        'neverExpires' => true,
+                    ),
+                ),
+            ),
         ));
         $subscription = $result->subscription;
         $this->assertEquals(2, sizeof($subscription->addOns));
         $addOns = $subscription->addOns;
         Braintree_SubscriptionTestHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->amount, "50.00");
+        $this->assertEquals($addOns[0]->amount, '50.00');
         $this->assertEquals($addOns[0]->quantity, 2);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, 5);
         $this->assertEquals($addOns[0]->neverExpires, false);
         $this->assertEquals($addOns[0]->currentBillingCycle, 0);
 
-        $this->assertEquals($addOns[1]->amount, "60.00");
+        $this->assertEquals($addOns[1]->amount, '60.00');
         $this->assertEquals($addOns[1]->quantity, 4);
         $this->assertEquals($addOns[1]->numberOfBillingCycles, 9);
         $this->assertEquals($addOns[1]->neverExpires, false);
@@ -488,20 +489,20 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $discounts = $subscription->discounts;
         Braintree_SubscriptionTestHelper::sortModificationsById($discounts);
 
-        $this->assertEquals($discounts[0]->amount, "11.00");
+        $this->assertEquals($discounts[0]->amount, '11.00');
         $this->assertEquals($discounts[0]->quantity, 1);
         $this->assertEquals($discounts[0]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[0]->neverExpires, true);
         $this->assertEquals($discounts[0]->currentBillingCycle, 0);
 
-        $this->assertEquals($discounts[1]->amount, "15.00");
+        $this->assertEquals($discounts[1]->amount, '15.00');
         $this->assertEquals($discounts[1]->quantity, 2);
         $this->assertEquals($discounts[1]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[1]->neverExpires, true);
         $this->assertEquals($discounts[1]->currentBillingCycle, 0);
     }
 
-    function testCreate_allowsRemovalOfInheritedAddOnsAndDiscounts()
+    public function testCreate_allowsRemovalOfInheritedAddOnsAndDiscounts()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
@@ -509,25 +510,25 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
             'addOns' => array(
-                'remove' => array('increase_10', 'increase_20')
+                'remove' => array('increase_10', 'increase_20'),
             ),
             'discounts' => array(
-                'remove' => array('discount_7')
-            )
+                'remove' => array('discount_7'),
+            ),
         ));
         $subscription = $result->subscription;
         $this->assertEquals(0, sizeof($subscription->addOns));
 
         $this->assertEquals(1, sizeof($subscription->discounts));
 
-        $this->assertEquals($subscription->discounts[0]->amount, "11.00");
+        $this->assertEquals($subscription->discounts[0]->amount, '11.00');
         $this->assertEquals($subscription->discounts[0]->quantity, 1);
         $this->assertEquals($subscription->discounts[0]->numberOfBillingCycles, null);
         $this->assertEquals($subscription->discounts[0]->neverExpires, true);
         $this->assertEquals($subscription->discounts[0]->currentBillingCycle, 0);
     }
 
-    function testCreate_allowsAddingNewAddOnsAndDiscounts()
+    public function testCreate_allowsAddingNewAddOnsAndDiscounts()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
@@ -540,7 +541,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
                         'inheritedFromId' => 'increase_30',
                         'amount' => '35.00',
                         'neverExpires' => true,
-                        'quantity' => 2
+                        'quantity' => 2,
                     ),
                 ),
             ),
@@ -550,10 +551,10 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
                         'inheritedFromId' => 'discount_15',
                         'amount' => '15.50',
                         'numberOfBillingCycles' => 10,
-                        'quantity' => 3
-                    )
-                )
-            )
+                        'quantity' => 3,
+                    ),
+                ),
+            ),
         ));
 
         $subscription = $result->subscription;
@@ -561,33 +562,32 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $addOns = $subscription->addOns;
         Braintree_SubscriptionTestHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->amount, "10.00");
-        $this->assertEquals($addOns[1]->amount, "20.00");
-        $this->assertEquals($addOns[2]->id, "increase_30");
-        $this->assertEquals($addOns[2]->amount, "35.00");
+        $this->assertEquals($addOns[0]->amount, '10.00');
+        $this->assertEquals($addOns[1]->amount, '20.00');
+        $this->assertEquals($addOns[2]->id, 'increase_30');
+        $this->assertEquals($addOns[2]->amount, '35.00');
         $this->assertEquals($addOns[2]->neverExpires, true);
         $this->assertEquals($addOns[2]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[2]->quantity, 2);
         $this->assertEquals($addOns[2]->currentBillingCycle, 0);
 
-
         $this->assertEquals(3, sizeof($subscription->discounts));
         $discounts = $subscription->discounts;
         Braintree_SubscriptionTestHelper::sortModificationsById($discounts);
 
-        $this->assertEquals($discounts[0]->amount, "11.00");
+        $this->assertEquals($discounts[0]->amount, '11.00');
 
-        $this->assertEquals($discounts[1]->amount, "15.50");
-        $this->assertEquals($discounts[1]->id, "discount_15");
+        $this->assertEquals($discounts[1]->amount, '15.50');
+        $this->assertEquals($discounts[1]->id, 'discount_15');
         $this->assertEquals($discounts[1]->neverExpires, false);
         $this->assertEquals($discounts[1]->numberOfBillingCycles, 10);
         $this->assertEquals($discounts[1]->quantity, 3);
         $this->assertEquals($discounts[1]->currentBillingCycle, 0);
 
-        $this->assertEquals($discounts[2]->amount, "7.00");
+        $this->assertEquals($discounts[2]->amount, '7.00');
     }
 
-    function testCreate_properlyParsesValidationErrorsForArrays()
+    public function testCreate_properlyParsesValidationErrorsForArrays()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
@@ -603,9 +603,9 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
                     array(
                         'existingId' => 'increase_20',
                         'quantity' => -10,
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ));
 
         $this->assertFalse($result->success);
@@ -615,7 +615,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_MODIFICATION_QUANTITY_IS_INVALID, $errors[0]->code);
     }
 
-    function testCreate_withDescriptor()
+    public function testCreate_withDescriptor()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
@@ -625,8 +625,8 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             'descriptor' => array(
                 'name' => '123*123456789012345678',
                 'phone' => '3334445555',
-                'url' => 'ebay.com'
-            )
+                'url' => 'ebay.com',
+            ),
         ));
         $this->assertTrue($result->success);
         $subscription = $result->subscription;
@@ -639,7 +639,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('ebay.com', $transaction->descriptor->url);
     }
 
-    function testCreate_withDescriptorValidation()
+    public function testCreate_withDescriptorValidation()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
@@ -649,8 +649,8 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             'descriptor' => array(
                 'name' => 'xxxxxx',
                 'phone' => 'xxxx',
-                'url' => '12345678901234'
-            )
+                'url' => '12345678901234',
+            ),
         ));
         $this->assertFalse($result->success);
         $subscription = $result->subscription;
@@ -665,27 +665,27 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::DESCRIPTOR_URL_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
-    function testCreate_fromPayPalACcount()
+    public function testCreate_fromPayPalACcount()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
         $customer = Braintree_Customer::createNoValidate();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
-                'token' => $paymentMethodToken
-            )
+                'token' => $paymentMethodToken,
+            ),
         ));
 
         $paypalResult = Braintree_PaymentMethod::create(array(
             'customerId' => $customer->id,
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
         ));
 
         $subscriptionResult = Braintree_Subscription::create(array(
             'paymentMethodToken' => $paymentMethodToken,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
 
         ));
         $this->assertTrue($subscriptionResult->success);
@@ -693,14 +693,14 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
     }
 
-    function testCreate_fromPayPalACcountDoesNotWorkWithFutureNonce()
+    public function testCreate_fromPayPalACcountDoesNotWorkWithFutureNonce()
     {
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $nonce = Braintree_Test_Nonces::$paypalFuturePayment;
 
         $subscriptionResult = Braintree_Subscription::create(array(
             'paymentMethodNonce' => $nonce,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
 
         ));
         $this->assertFalse($subscriptionResult->success);
@@ -708,14 +708,14 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_PAYMENT_METHOD_NONCE_IS_INVALID, $errors[0]->code);
     }
 
-    function testCreate_fromPayPalACcountDoesNotWorkWithOnetimeNonce()
+    public function testCreate_fromPayPalACcountDoesNotWorkWithOnetimeNonce()
     {
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $nonce = Braintree_Test_Nonces::$paypalOneTimePayment;
 
         $subscriptionResult = Braintree_Subscription::create(array(
             'paymentMethodNonce' => $nonce,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
 
         ));
         $this->assertFalse($subscriptionResult->success);
@@ -723,27 +723,27 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_PAYMENT_METHOD_NONCE_IS_INVALID, $errors[0]->code);
     }
 
-    function testValidationErrors_hasValidationErrorsOnId()
+    public function testValidationErrors_hasValidationErrorsOnId()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'id' => 'invalid token'
+            'id' => 'invalid token',
         ));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('subscription')->onAttribute('id');
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_TOKEN_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
-    function testFind()
+    public function testFind()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $result = Braintree_Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ));
         $this->assertTrue($result->success);
         $subscription = Braintree_Subscription::find($result->subscription->id);
@@ -751,14 +751,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($plan['id'], $subscription->planId);
     }
 
-    function testFind_throwsIfNotFound()
+    public function testFind_throwsIfNotFound()
     {
         $this->setExpectedException('Braintree_Exception_NotFound', 'subscription with id does-not-exist not found');
         Braintree_Subscription::find('does-not-exist');
-
     }
 
-    function testUpdate_whenSuccessful()
+    public function testUpdate_whenSuccessful()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $newId = strval(rand());
@@ -766,7 +765,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $result = Braintree_Subscription::update($subscription->id, array(
             'id' => $newId,
             'price' => '999.99',
-            'planId' => $newPlan['id']
+            'planId' => $newPlan['id'],
         ));
         $this->assertTrue($result->success);
         $this->assertEquals($newId, $result->subscription->id);
@@ -774,39 +773,39 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('999.99', $result->subscription->price);
     }
 
-    function testUpdate_doesNotAcceptBadAttributes()
+    public function testUpdate_doesNotAcceptBadAttributes()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad');
         $result = Braintree_Subscription::update('id', array(
-            'bad' => 'value'
+            'bad' => 'value',
         ));
     }
 
-    function testUpdate_canUpdateNumberOfBillingCycles()
+    public function testUpdate_canUpdateNumberOfBillingCycles()
     {
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $this->assertEquals($plan['numberOfBillingCycles'], $subscription->numberOfBillingCycles);
 
         $updatedSubscription = Braintree_Subscription::update($subscription->id, array(
-            'numberOfBillingCycles' => 15
+            'numberOfBillingCycles' => 15,
         ))->subscription;
         $this->assertEquals(15, $updatedSubscription->numberOfBillingCycles);
     }
 
-    function testUpdate_canUpdateNumberOfBillingCyclesToNeverExpire()
+    public function testUpdate_canUpdateNumberOfBillingCyclesToNeverExpire()
     {
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $this->assertEquals($plan['numberOfBillingCycles'], $subscription->numberOfBillingCycles);
 
         $updatedSubscription = Braintree_Subscription::update($subscription->id, array(
-            'neverExpires' => true
+            'neverExpires' => true,
         ))->subscription;
         $this->assertNull($updatedSubscription->numberOfBillingCycles);
     }
 
-    function testUpdate_createsTransactionOnProration()
+    public function testUpdate_createsTransactionOnProration()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $result = Braintree_Subscription::update($subscription->id, array(
@@ -816,48 +815,48 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
     }
 
-    function testUpdate_createsProratedTransactionWhenFlagIsPassedTrue()
+    public function testUpdate_createsProratedTransactionWhenFlagIsPassedTrue()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $result = Braintree_Subscription::update($subscription->id, array(
             'price' => $subscription->price + 1,
-            'options' => array('prorateCharges' => true)
+            'options' => array('prorateCharges' => true),
         ));
         $this->assertTrue($result->success);
         $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
     }
 
-    function testUpdate_createsProratedTransactionWhenFlagIsPassedFalse()
+    public function testUpdate_createsProratedTransactionWhenFlagIsPassedFalse()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $result = Braintree_Subscription::update($subscription->id, array(
             'price' => $subscription->price + 1,
-            'options' => array('prorateCharges' => false)
+            'options' => array('prorateCharges' => false),
         ));
         $this->assertTrue($result->success);
         $this->assertEquals(sizeof($subscription->transactions), sizeof($result->subscription->transactions));
     }
 
-    function testUpdate_DoesNotUpdateSubscriptionWhenProrationTransactionFailsAndRevertIsTrue()
+    public function testUpdate_DoesNotUpdateSubscriptionWhenProrationTransactionFailsAndRevertIsTrue()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $result = Braintree_Subscription::update($subscription->id, array(
             'price' => $subscription->price + 2100,
-            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => true)
+            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => true),
         ));
         $this->assertFalse($result->success);
         $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
         $this->assertEquals(Braintree_Transaction::PROCESSOR_DECLINED, $result->subscription->transactions[0]->status);
-        $this->assertEquals("0.00", $result->subscription->balance);
+        $this->assertEquals('0.00', $result->subscription->balance);
         $this->assertEquals($subscription->price, $result->subscription->price);
     }
 
-    function testUpdate_UpdatesSubscriptionWhenProrationTransactionFailsAndRevertIsFalse()
+    public function testUpdate_UpdatesSubscriptionWhenProrationTransactionFailsAndRevertIsFalse()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $result = Braintree_Subscription::update($subscription->id, array(
             'price' => $subscription->price + 2100,
-            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => false)
+            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => false),
         ));
         $this->assertTrue($result->success);
         $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
@@ -866,13 +865,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($subscription->price + 2100, $result->subscription->price);
     }
 
-    function testUpdate_invalidSubscriptionId()
+    public function testUpdate_invalidSubscriptionId()
     {
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_Subscription::update('does-not-exist', array());
     }
 
-    function testUpdate_validationErrors()
+    public function testUpdate_validationErrors()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $result = Braintree_Subscription::update($subscription->id, array('price' => ''));
@@ -881,7 +880,7 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_PRICE_CANNOT_BE_BLANK, $errors[0]->code);
     }
 
-    function testUpdate_cannotUpdateCanceledSubscription()
+    public function testUpdate_cannotUpdateCanceledSubscription()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         Braintree_Subscription::cancel($subscription->id);
@@ -891,71 +890,71 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_CANNOT_EDIT_CANCELED_SUBSCRIPTION, $errors[0]->code);
     }
 
-    function testUpdate_canUpdatePaymentMethodToken()
+    public function testUpdate_canUpdatePaymentMethodToken()
     {
         $oldCreditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $subscription = Braintree_Subscription::create(array(
             'paymentMethodToken' => $oldCreditCard->token,
             'price' => '54.99',
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ))->subscription;
 
         $newCreditCard = Braintree_CreditCard::createNoValidate(array(
             'number' => '5105105105105100',
             'expirationDate' => '05/2010',
-            'customerId' => $oldCreditCard->customerId
+            'customerId' => $oldCreditCard->customerId,
         ));
 
         $result = Braintree_Subscription::update($subscription->id, array(
-            'paymentMethodToken' => $newCreditCard->token
+            'paymentMethodToken' => $newCreditCard->token,
         ));
         $this->assertTrue($result->success);
         $this->assertEquals($newCreditCard->token, $result->subscription->paymentMethodToken);
     }
 
-    function testUpdate_canUpdatePaymentMethodWithPaymentMethodNonce()
+    public function testUpdate_canUpdatePaymentMethodWithPaymentMethodNonce()
     {
         $oldCreditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
         $subscription = Braintree_Subscription::create(array(
             'paymentMethodToken' => $oldCreditCard->token,
             'price' => '54.99',
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ))->subscription;
 
         $customerId = Braintree_Customer::create()->customer->id;
         $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
         $nonce = $http->nonce_for_new_card(array(
-            "creditCard" => array(
-                "number" => "4111111111111111",
-                "expirationMonth" => "11",
-                "expirationYear" => "2099"
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
             ),
-            "customerId" => $oldCreditCard->customerId,
-            "share" => true
+            'customerId' => $oldCreditCard->customerId,
+            'share' => true,
         ));
 
         $result = Braintree_Subscription::update($subscription->id, array(
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
         ));
 
         $this->assertTrue($result->success);
 
         $newCreditCard = Braintree_CreditCard::find($result->subscription->paymentMethodToken);
 
-        $this->assertEquals("1111", $newCreditCard->last4);
+        $this->assertEquals('1111', $newCreditCard->last4);
         $this->assertNotEquals($oldCreditCard->last4, $newCreditCard->last4);
     }
 
-    function testUpdate_canUpdateAddOnsAndDiscounts()
+    public function testUpdate_canUpdateAddOnsAndDiscounts()
     {
         $oldCreditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
         $subscription = Braintree_Subscription::create(array(
             'paymentMethodToken' => $oldCreditCard->token,
             'price' => '54.99',
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ))->subscription;
 
         $result = Braintree_Subscription::update($subscription->id, array(
@@ -965,14 +964,14 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
                         'amount' => '99.99',
                         'existingId' => 'increase_10',
                         'quantity' => 99,
-                        'numberOfBillingCycles' => 99
+                        'numberOfBillingCycles' => 99,
                     ),
                     array(
                         'amount' => '22.22',
                         'existingId' => 'increase_20',
                         'quantity' => 22,
-                        'neverExpires' => true
-                    )
+                        'neverExpires' => true,
+                    ),
                 ),
             ),
             'discounts' => array(
@@ -981,8 +980,8 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
                         'amount' => '33.33',
                         'existingId' => 'discount_11',
                         'quantity' => 33,
-                        'numberOfBillingCycles' => 33
-                    )
+                        'numberOfBillingCycles' => 33,
+                    ),
                 ),
             ),
         ));
@@ -993,14 +992,14 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $addOns = $subscription->addOns;
         Braintree_SubscriptionTestHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->id, "increase_10");
-        $this->assertEquals($addOns[0]->amount, "99.99");
+        $this->assertEquals($addOns[0]->id, 'increase_10');
+        $this->assertEquals($addOns[0]->amount, '99.99');
         $this->assertEquals($addOns[0]->neverExpires, false);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, 99);
         $this->assertEquals($addOns[0]->quantity, 99);
 
-        $this->assertEquals($addOns[1]->id, "increase_20");
-        $this->assertEquals($addOns[1]->amount, "22.22");
+        $this->assertEquals($addOns[1]->id, 'increase_20');
+        $this->assertEquals($addOns[1]->amount, '22.22');
         $this->assertEquals($addOns[1]->neverExpires, true);
         $this->assertEquals($addOns[1]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[1]->quantity, 22);
@@ -1009,21 +1008,21 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $discounts = $subscription->discounts;
         Braintree_SubscriptionTestHelper::sortModificationsById($discounts);
 
-        $this->assertEquals($discounts[0]->id, "discount_11");
-        $this->assertEquals($discounts[0]->amount, "33.33");
+        $this->assertEquals($discounts[0]->id, 'discount_11');
+        $this->assertEquals($discounts[0]->amount, '33.33');
         $this->assertEquals($discounts[0]->neverExpires, false);
         $this->assertEquals($discounts[0]->numberOfBillingCycles, 33);
         $this->assertEquals($discounts[0]->quantity, 33);
     }
 
-    function testUpdate_canAddAndRemoveAddOnsAndDiscounts()
+    public function testUpdate_canAddAndRemoveAddOnsAndDiscounts()
     {
         $oldCreditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
         $subscription = Braintree_Subscription::create(array(
             'paymentMethodToken' => $oldCreditCard->token,
             'price' => '54.99',
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ))->subscription;
 
         $result = Braintree_Subscription::update($subscription->id, array(
@@ -1033,18 +1032,18 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
                         'amount' => '33.33',
                         'inheritedFromId' => 'increase_30',
                         'quantity' => 33,
-                        'numberOfBillingCycles' => 33
-                    )
+                        'numberOfBillingCycles' => 33,
+                    ),
                 ),
-                'remove' => array('increase_10', 'increase_20')
+                'remove' => array('increase_10', 'increase_20'),
             ),
             'discounts' => array(
                 'add' => array(
                     array(
                         'inheritedFromId' => 'discount_15',
-                    )
+                    ),
                 ),
-                'remove' => array('discount_7')
+                'remove' => array('discount_7'),
             ),
         ));
         $this->assertTrue($result->success);
@@ -1054,8 +1053,8 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $addOns = $subscription->addOns;
         Braintree_SubscriptionTestHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->id, "increase_30");
-        $this->assertEquals($addOns[0]->amount, "33.33");
+        $this->assertEquals($addOns[0]->id, 'increase_30');
+        $this->assertEquals($addOns[0]->amount, '33.33');
         $this->assertEquals($addOns[0]->neverExpires, false);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, 33);
         $this->assertEquals($addOns[0]->quantity, 33);
@@ -1064,37 +1063,37 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $discounts = $subscription->discounts;
         Braintree_SubscriptionTestHelper::sortModificationsById($discounts);
 
-        $this->assertEquals($discounts[0]->id, "discount_11");
-        $this->assertEquals($discounts[1]->id, "discount_15");
-        $this->assertEquals($discounts[1]->amount, "15.00");
+        $this->assertEquals($discounts[0]->id, 'discount_11');
+        $this->assertEquals($discounts[1]->id, 'discount_15');
+        $this->assertEquals($discounts[1]->amount, '15.00');
         $this->assertEquals($discounts[1]->neverExpires, true);
         $this->assertNull($discounts[1]->numberOfBillingCycles);
         $this->assertEquals($discounts[1]->quantity, 1);
     }
 
-    function testUpdate_canReplaceEntireSetOfAddonsAndDiscounts()
+    public function testUpdate_canReplaceEntireSetOfAddonsAndDiscounts()
     {
         $oldCreditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::addOnDiscountPlan();
         $subscription = Braintree_Subscription::create(array(
             'paymentMethodToken' => $oldCreditCard->token,
             'price' => '54.99',
-            'planId' => $plan['id']
+            'planId' => $plan['id'],
         ))->subscription;
 
         $result = Braintree_Subscription::update($subscription->id, array(
             'addOns' => array(
                 'add' => array(
                     array('inheritedFromId' => 'increase_30'),
-                    array('inheritedFromId' => 'increase_20')
-                )
+                    array('inheritedFromId' => 'increase_20'),
+                ),
             ),
             'discounts' => array(
                 'add' => array(
-                    array('inheritedFromId' => 'discount_15')
-                )
+                    array('inheritedFromId' => 'discount_15'),
+                ),
             ),
-            'options' => array('replaceAllAddOnsAndDiscounts' => true)
+            'options' => array('replaceAllAddOnsAndDiscounts' => true),
         ));
         $this->assertTrue($result->success);
         $subscription = $result->subscription;
@@ -1103,16 +1102,16 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $addOns = $subscription->addOns;
         Braintree_SubscriptionTestHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->id, "increase_20");
-        $this->assertEquals($addOns[1]->id, "increase_30");
+        $this->assertEquals($addOns[0]->id, 'increase_20');
+        $this->assertEquals($addOns[1]->id, 'increase_30');
 
         $this->assertEquals(1, sizeof($subscription->discounts));
         $discounts = $subscription->discounts;
 
-        $this->assertEquals($discounts[0]->id, "discount_15");
+        $this->assertEquals($discounts[0]->id, 'discount_15');
     }
 
-    function testUpdate_withDescriptor()
+    public function testUpdate_withDescriptor()
     {
         $creditCard = Braintree_SubscriptionTestHelper::createCreditCard();
         $plan = Braintree_SubscriptionTestHelper::triallessPlan();
@@ -1121,21 +1120,21 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
             'planId' => $plan['id'],
             'descriptor' => array(
                 'name' => '123*123456789012345678',
-                'phone' => '3334445555'
-            )
+                'phone' => '3334445555',
+            ),
         ))->subscription;
         $result = Braintree_Subscription::update($subscription->id, array(
             'descriptor' => array(
                 'name' => '999*9999999',
-                'phone' => '8887776666'
-            )
+                'phone' => '8887776666',
+            ),
         ));
         $updatedSubscription = $result->subscription;
         $this->assertEquals('999*9999999', $updatedSubscription->descriptor->name);
         $this->assertEquals('8887776666', $updatedSubscription->descriptor->phone);
     }
 
-    function testCancel_returnsSuccessIfCanceled()
+    public function testCancel_returnsSuccessIfCanceled()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $result = Braintree_Subscription::cancel($subscription->id);
@@ -1143,13 +1142,13 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Subscription::CANCELED, $result->subscription->status);
     }
 
-    function testCancel_throwsErrorIfRecordNotFound()
+    public function testCancel_throwsErrorIfRecordNotFound()
     {
         $this->setExpectedException('Braintree_Exception_NotFound');
         Braintree_Subscription::cancel('non-existing-id');
     }
 
-    function testCancel_returnsErrorIfCancelingCanceledSubscription()
+    public function testCancel_returnsErrorIfCancelingCanceledSubscription()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         Braintree_Subscription::cancel($subscription->id);
@@ -1159,11 +1158,11 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Error_Codes::SUBSCRIPTION_STATUS_IS_CANCELED, $errors[0]->code);
     }
 
-    function testRetryCharge_WithoutAmount()
+    public function testRetryCharge_WithoutAmount()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . '/subscriptions/' . $subscription->id . '/make_past_due';
+        $path = Braintree_Configuration::$global->merchantPath().'/subscriptions/'.$subscription->id.'/make_past_due';
         $http->put($path);
 
         $result = Braintree_Subscription::retryCharge($subscription->id);
@@ -1177,11 +1176,11 @@ class Braintree_SubscriptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
     }
 
-    function testRetryCharge_WithAmount()
+    public function testRetryCharge_WithAmount()
     {
         $subscription = Braintree_SubscriptionTestHelper::createSubscription();
         $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . '/subscriptions/' . $subscription->id . '/make_past_due';
+        $path = Braintree_Configuration::$global->merchantPath().'/subscriptions/'.$subscription->id.'/make_past_due';
         $http->put($path);
 
         $result = Braintree_Subscription::retryCharge($subscription->id, 1000);

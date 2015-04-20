@@ -1,9 +1,10 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../../TestHelper.php';
+
+require_once realpath(dirname(__FILE__)).'/../../TestHelper.php';
 
 class Braintree_Result_ErrorTest extends PHPUnit_Framework_TestCase
 {
-    function testValueForHtmlField()
+    public function testValueForHtmlField()
     {
         $result = Braintree_Customer::create(array(
             'email' => 'invalid-email',
@@ -11,12 +12,12 @@ class Braintree_Result_ErrorTest extends PHPUnit_Framework_TestCase
                 'number' => 'invalid-number',
                 'expirationDate' => 'invalid-exp',
                 'billingAddress' => array(
-                    'countryName' => 'invalid-country'
-                )
+                    'countryName' => 'invalid-country',
+                ),
             ),
             'customFields' => array(
-                'store_me' => 'some custom value'
-            )
+                'store_me' => 'some custom value',
+            ),
         ));
         $this->assertEquals(false, $result->success);
         $this->assertEquals('invalid-email', $result->valueForHtmlField('customer[email]'));

@@ -1,15 +1,16 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
  * Braintree Address module
  * PHP Version 5
- * Creates and manages Braintree Addresses
+ * Creates and manages Braintree Addresses.
  *
  * An Address belongs to a Customer. It can be associated to a
  * CreditCard as the billing address. It can also be used
  * as the shipping address when creating a Transaction.
  *
- * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $company
@@ -30,36 +31,40 @@ class Address extends Braintree
 {
     /**
      * returns false if comparing object is not a Address,
-     * or is a Address with a different id
+     * or is a Address with a different id.
      *
      * @param object $other address to compare against
-     * @return boolean
+     *
+     * @return bool
      */
     public function isEqual($other)
     {
-        return !($other instanceof Address) ?
+        return !($other instanceof self) ?
             false :
             ($this->id === $other->id && $this->customerId === $other->customerId);
     }
 
     /**
      * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
+     * ClassName[property=value, property=value].
+     *
      * @ignore
+     *
      * @return var
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.
+                Util::attributesToString($this->_attributes).']';
     }
 
     /**
-     * sets instance properties from an array of values
+     * sets instance properties from an array of values.
      *
      * @ignore
-     * @access protected
+     *
      * @param array $addressAttribs array of address data
+     *
      * @return none
      */
     protected function _initialize($addressAttribs)
@@ -70,18 +75,19 @@ class Address extends Braintree
 
     /**
      *  factory method: returns an instance of Address
-     *  to the requesting method, with populated properties
+     *  to the requesting method, with populated properties.
+     *
      * @ignore
+     *
      * @return object instance of Address
      */
     public static function factory($attributes)
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
-
     }
-
 
     // static methods redirecting to gateway
 

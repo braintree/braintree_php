@@ -1,17 +1,19 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 use InvalidArgumentException;
 
 /**
  * Braintree CustomerGateway module
- * Creates and manages Customers
+ * Creates and manages Customers.
  *
  * <b>== More information ==</b>
  *
  * For more detailed information on Customers, see {@link http://www.braintreepayments.com/gateway/customer-api http://www.braintreepaymentsolutions.com/gateway/customer-api}
  *
- * @package    Braintree
  * @category   Resources
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class CustomerGateway
@@ -29,12 +31,12 @@ class CustomerGateway
 
     public function all()
     {
-        $path = $this->_config->merchantPath() . '/customers/advanced_search_ids';
+        $path = $this->_config->merchantPath().'/customers/advanced_search_ids';
         $response = $this->_http->post($path);
         $pager = array(
             'object' => $this,
             'method' => 'fetch',
-            'methodArgs' => array(array())
+            'methodArgs' => array(array()),
             );
 
         return new ResourceCollection($response, $pager);
@@ -46,8 +48,8 @@ class CustomerGateway
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
-        $criteria["ids"] = CustomerSearch::ids()->in($ids)->toparam();
-        $path = $this->_config->merchantPath() . '/customers/advanced_search';
+        $criteria['ids'] = CustomerSearch::ids()->in($ids)->toparam();
+        $path = $this->_config->merchantPath().'/customers/advanced_search';
         $response = $this->_http->post($path, array('search' => $criteria));
 
         return Util::extractattributeasarray(
@@ -77,43 +79,47 @@ class CustomerGateway
      *   }
      * </code>
      *
-     * @access public
      * @param array $attribs
+     *
      * @return object Result, either Successful or Error
      */
     public function create($attribs = array())
     {
         Util::verifyKeys(self::createSignature(), $attribs);
+
         return $this->_doCreate('/customers', array('customer' => $attribs));
     }
 
     /**
      * attempts the create operation assuming all data will validate
-     * returns a Customer object instead of a Result
+     * returns a Customer object instead of a Result.
      *
-     * @access public
      * @param array $attribs
+     *
      * @return object
+     *
      * @throws Exception\ValidationError
      */
     public function createNoValidate($attribs = array())
     {
         $result = $this->create($attribs);
+
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
     /**
-     * create a customer from a TransparentRedirect operation
+     * create a customer from a TransparentRedirect operation.
      *
-     * @access public
      * @param array $attribs
+     *
      * @return object
      */
     public function createFromTransparentRedirect($queryString)
     {
-        trigger_error("DEPRECATED: Please use TransparentRedirectRequest::confirm", E_USER_NOTICE);
+        trigger_error('DEPRECATED: Please use TransparentRedirectRequest::confirm', E_USER_NOTICE);
         $params = TransparentRedirect::parseAndValidateQueryString(
                 $queryString
                 );
+
         return $this->_doCreate(
                 '/customers/all/confirm_transparent_redirect_request',
                 array('id' => $params['id'])
@@ -121,26 +127,25 @@ class CustomerGateway
     }
 
     /**
-     *
-     * @access public
      * @param none
+     *
      * @return string
      */
     public function createCustomerUrl()
     {
-        trigger_error("DEPRECATED: Please use TransparentRedirectRequest::url", E_USER_NOTICE);
-        return $this->_config->baseUrl() . $this->_config->merchantPath() .
+        trigger_error('DEPRECATED: Please use TransparentRedirectRequest::url', E_USER_NOTICE);
+
+        return $this->_config->baseUrl().$this->_config->merchantPath().
                 '/customers/all/create_via_transparent_redirect_request';
     }
 
-
     /**
-     * creates a full array signature of a valid create request
+     * creates a full array signature of a valid create request.
+     *
      * @return array gateway create request format
      */
     public static function createSignature()
     {
-
         $creditCardSignature = CreditCardGateway::createSignature();
         unset($creditCardSignature['customerId']);
         $signature = array(
@@ -150,19 +155,21 @@ class CustomerGateway
             array('creditCard' => $creditCardSignature),
             array('customFields' => array('_anyKey_')),
             );
+
         return $signature;
     }
 
     /**
-     * creates a full array signature of a valid update request
+     * creates a full array signature of a valid update request.
+     *
      * @return array update request format
      */
     public static function updateSignature()
     {
         $creditCardSignature = CreditCardGateway::updateSignature();
 
-        foreach($creditCardSignature AS $key => $value) {
-            if(is_array($value) and array_key_exists('options', $value)) {
+        foreach ($creditCardSignature as $key => $value) {
+            if (is_array($value) and array_key_exists('options', $value)) {
                 array_push($creditCardSignature[$key]['options'], 'updateExistingToken');
             }
         }
@@ -174,15 +181,15 @@ class CustomerGateway
             array('creditCard' => $creditCardSignature),
             array('customFields' => array('_anyKey_')),
             );
+
         return $signature;
     }
 
-
     /**
-     * find a customer by id
+     * find a customer by id.
      *
-     * @access public
      * @param string id customer Id
+     *
      * @return object Customer|boolean false
      */
     public function find($id)
@@ -190,26 +197,26 @@ class CustomerGateway
         $this->_validateId($id);
 
         try {
-            $path = $this->_config->merchantPath() . '/customers/' . $id;
+            $path = $this->_config->merchantPath().'/customers/'.$id;
             $response = $this->_http->get($path);
 
             return Customer::factory($response['customer']);
         } catch (Exception\NotFound $e) {
             return false;
         }
-
     }
 
     /**
-     * credit a customer for the passed transaction
+     * credit a customer for the passed transaction.
      *
-     * @access public
      * @param array $attribs
+     *
      * @return object Result_Successful or Result_Error
      */
     public function credit($customerId, $transactionAttribs)
     {
         $this->_validateId($customerId);
+
         return Transaction::credit(
                 array_merge($transactionAttribs,
                         array('customerId' => $customerId)
@@ -218,45 +225,51 @@ class CustomerGateway
     }
 
     /**
-     * credit a customer, assuming validations will pass
+     * credit a customer, assuming validations will pass.
      *
      * returns a Transaction object on success
      *
-     * @access public
      * @param array $attribs
+     *
      * @return object Transaction
+     *
      * @throws Exception\ValidationError
      */
     public function creditNoValidate($customerId, $transactionAttribs)
     {
         $result = $this->credit($customerId, $transactionAttribs);
+
         return Util::returnObjectOrThrowException('Braintree\Transaction', $result);
     }
 
     /**
-     * delete a customer by id
+     * delete a customer by id.
      *
      * @param string $customerId
      */
     public function delete($customerId)
     {
         $this->_validateId($customerId);
-        $path = $this->_config->merchantPath() . '/customers/' . $customerId;
+        $path = $this->_config->merchantPath().'/customers/'.$customerId;
         $this->_http->delete($path);
+
         return new Result\Successful();
     }
 
     /**
-     * create a new sale for a customer
+     * create a new sale for a customer.
      *
      * @param string $customerId
-     * @param array $transactionAttribs
+     * @param array  $transactionAttribs
+     *
      * @return object Result_Successful or Result_Error
+     *
      * @see Transaction::sale()
      */
     public function sale($customerId, $transactionAttribs)
     {
         $this->_validateId($customerId);
+
         return Transaction::sale(
                 array_merge($transactionAttribs,
                         array('customerId' => $customerId)
@@ -265,19 +278,23 @@ class CustomerGateway
     }
 
     /**
-     * create a new sale for a customer, assuming validations will pass
+     * create a new sale for a customer, assuming validations will pass.
      *
      * returns a Transaction object on success
-     * @access public
+     *
      * @param string $customerId
-     * @param array $transactionAttribs
+     * @param array  $transactionAttribs
+     *
      * @return object Transaction
+     *
      * @throws Exception\ValidationsFailed
+     *
      * @see Transaction::sale()
      */
     public function saleNoValidate($customerId, $transactionAttribs)
     {
         $result = $this->sale($customerId, $transactionAttribs);
+
         return Util::returnObjectOrThrowException('Braintree\Transaction', $result);
     }
 
@@ -288,9 +305,11 @@ class CustomerGateway
      * If <b>query</b> is a hash, the search will be an advanced search.
      * For more detailed information and examples, see {@link http://www.braintreepayments.com/gateway/customer-api#searching http://www.braintreepaymentsolutions.com/gateway/customer-api}
      *
-     * @param mixed $query search query
+     * @param mixed $query   search query
      * @param array $options options such as page number
+     *
      * @return object ResourceCollection
+     *
      * @throws InvalidArgumentException
      */
     public function search($query)
@@ -298,90 +317,94 @@ class CustomerGateway
         $criteria = array();
         foreach ($query as $term) {
             $result = $term->toparam();
-            if(is_null($result) || empty($result)) {
+            if (is_null($result) || empty($result)) {
                 throw new InvalidArgumentException('Operator must be provided');
             }
 
             $criteria[$term->name] = $term->toparam();
         }
 
-        $path = $this->_config->merchantPath() . '/customers/advanced_search_ids';
+        $path = $this->_config->merchantPath().'/customers/advanced_search_ids';
         $response = $this->_http->post($path, array('search' => $criteria));
         $pager = array(
             'object' => $this,
             'method' => 'fetch',
-            'methodArgs' => array($query)
+            'methodArgs' => array($query),
             );
 
         return new ResourceCollection($response, $pager);
     }
 
     /**
-     * updates the customer record
+     * updates the customer record.
      *
      * if calling this method in static context, customerId
      * is the 2nd attribute. customerId is not sent in object context.
      *
-     * @access public
-     * @param array $attributes
+     * @param array  $attributes
      * @param string $customerId (optional)
+     *
      * @return object Result_Successful or Result_Error
      */
     public function update($customerId, $attributes)
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
         $this->_validateId($customerId);
+
         return $this->_doUpdate(
             'put',
-            '/customers/' . $customerId,
+            '/customers/'.$customerId,
             array('customer' => $attributes)
         );
     }
 
     /**
-     * update a customer record, assuming validations will pass
+     * update a customer record, assuming validations will pass.
      *
      * if calling this method in static context, customerId
      * is the 2nd attribute. customerId is not sent in object context.
      * returns a Customer object on success
      *
-     * @access public
-     * @param array $attributes
+     * @param array  $attributes
      * @param string $customerId
+     *
      * @return object Customer
+     *
      * @throws Exception\ValidationsFailed
      */
     public function updateNoValidate($customerId, $attributes)
     {
         $result = $this->update($customerId, $attributes);
+
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
     /**
-     *
-     * @access public
      * @param none
+     *
      * @return string
      */
     public function updateCustomerUrl()
     {
-        trigger_error("DEPRECATED: Please use TransparentRedirectRequest::url", E_USER_NOTICE);
-        return $this->_config->baseUrl() . $this->_config->merchantPath() .
+        trigger_error('DEPRECATED: Please use TransparentRedirectRequest::url', E_USER_NOTICE);
+
+        return $this->_config->baseUrl().$this->_config->merchantPath().
                 '/customers/all/update_via_transparent_redirect_request';
     }
 
     /**
-     * update a customer from a TransparentRedirect operation
+     * update a customer from a TransparentRedirect operation.
      *
-     * @access public
      * @param array $attribs
+     *
      * @return object
      */
     public function updateFromTransparentRedirect($queryString)
     {
-        trigger_error("DEPRECATED: Please use TransparentRedirectRequest::confirm", E_USER_NOTICE);
+        trigger_error('DEPRECATED: Please use TransparentRedirectRequest::confirm', E_USER_NOTICE);
         $params = TransparentRedirect::parseAndValidateQueryString(
                 $queryString
         );
+
         return $this->_doUpdate(
                 'post',
                 '/customers/all/confirm_transparent_redirect_request',
@@ -392,11 +415,12 @@ class CustomerGateway
     /* instance methods */
 
     /**
-     * sets instance properties from an array of values
+     * sets instance properties from an array of values.
      *
      * @ignore
-     * @access protected
+     *
      * @param array $customerAttribs array of customer data
+     *
      * @return none
      */
     protected function _initialize($customerAttribs)
@@ -407,8 +431,7 @@ class CustomerGateway
         // map each address into its own object
         $addressArray = array();
         if (isset($customerAttribs['addresses'])) {
-
-            foreach ($customerAttribs['addresses'] AS $address) {
+            foreach ($customerAttribs['addresses'] as $address) {
                 $addressArray[] = Address::factory($address);
             }
         }
@@ -417,7 +440,7 @@ class CustomerGateway
         // map each creditCard into its own object
         $creditCardArray = array();
         if (isset($customerAttribs['creditCards'])) {
-            foreach ($customerAttribs['creditCards'] AS $creditCard) {
+            foreach ($customerAttribs['creditCards'] as $creditCard) {
                 $creditCardArray[] = CreditCard::factory($creditCard);
             }
         }
@@ -426,7 +449,7 @@ class CustomerGateway
         // map each paypalAccount into its own object
         $paypalAccountArray = array();
         if (isset($customerAttribs['paypalAccounts'])) {
-            foreach ($customerAttribs['paypalAccounts'] AS $paypalAccount) {
+            foreach ($customerAttribs['paypalAccounts'] as $paypalAccount) {
                 $paypalAccountArray[] = PayPalAccount::factory($paypalAccount);
             }
         }
@@ -435,7 +458,7 @@ class CustomerGateway
         // map each applePayCard into its own object
         $applePayCardArray = array();
         if (isset($customerAttribs['applePayCards'])) {
-            foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
+            foreach ($customerAttribs['applePayCards'] as $applePayCard) {
                 $applePayCardArray[] = applePayCard::factory($applePayCard);
             }
         }
@@ -443,21 +466,23 @@ class CustomerGateway
     }
 
     /**
-     * returns a string representation of the customer
+     * returns a string representation of the customer.
+     *
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.
+                Util::attributesToString($this->_attributes).']';
     }
 
     /**
      * returns false if comparing object is not a Customer,
-     * or is a Customer with a different id
+     * or is a Customer with a different id.
      *
      * @param object $otherCust customer to compare against
-     * @return boolean
+     *
+     * @return bool
      */
     public function isEqual($otherCust)
     {
@@ -465,7 +490,7 @@ class CustomerGateway
     }
 
     /**
-     * returns an array containt all of the customer's payment methods
+     * returns an array containt all of the customer's payment methods.
      *
      * @return array
      */
@@ -475,13 +500,14 @@ class CustomerGateway
     }
 
     /**
-     * returns the customer's default payment method
+     * returns the customer's default payment method.
      *
      * @return object CreditCard or PayPalAccount
      */
     public function defaultPaymentMethod()
     {
         $defaultPaymentMethods = array_filter($this->paymentMethods(), 'Braintree\Customer::_defaultPaymentMethodFilter');
+
         return current($defaultPaymentMethods);
     }
 
@@ -493,7 +519,6 @@ class CustomerGateway
     /* private class properties  */
 
     /**
-     * @access protected
      * @var array registry of customer data
      */
     protected $_attributes = array(
@@ -512,61 +537,68 @@ class CustomerGateway
         );
 
     /**
-     * sends the create request to the gateway
+     * sends the create request to the gateway.
      *
      * @ignore
+     *
      * @param string $subPath
-     * @param array $params
+     * @param array  $params
+     *
      * @return mixed
      */
     public function _doCreate($subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath() . $subPath;
+        $fullPath = $this->_config->merchantPath().$subPath;
         $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }
 
     /**
-     * verifies that a valid customer id is being used
+     * verifies that a valid customer id is being used.
+     *
      * @ignore
+     *
      * @param string customer id
+     *
      * @throws InvalidArgumentException
      */
-    private function _validateId($id = null) {
+    private function _validateId($id = null)
+    {
         if (empty($id)) {
-           throw new InvalidArgumentException(
+            throw new InvalidArgumentException(
                    'expected customer id to be set'
                    );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
             throw new InvalidArgumentException(
-                    $id . ' is an invalid customer id.'
+                    $id.' is an invalid customer id.'
                     );
         }
     }
 
-
     /* private class methods */
 
     /**
-     * sends the update request to the gateway
+     * sends the update request to the gateway.
      *
      * @ignore
+     *
      * @param string $subPath
-     * @param array $params
+     * @param array  $params
+     *
      * @return mixed
      */
     private function _doUpdate($httpVerb, $subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath() . $subPath;
+        $fullPath = $this->_config->merchantPath().$subPath;
         $response = $this->_http->$httpVerb($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
     }
 
     /**
-     * generic method for validating incoming gateway responses
+     * generic method for validating incoming gateway responses.
      *
      * creates a new Customer object and encapsulates
      * it inside a Result_Successful object, or
@@ -574,8 +606,11 @@ class CustomerGateway
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
+     *
      * @param array $response gateway response values
+     *
      * @return object Result_Successful or Result_Error
+     *
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)
@@ -585,11 +620,11 @@ class CustomerGateway
             return new Result\Successful(
                     Customer::factory($response['customer'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            "Expected customer or apiErrorResponse"
+            'Expected customer or apiErrorResponse'
             );
         }
     }

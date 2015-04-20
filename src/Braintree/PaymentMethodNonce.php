@@ -1,23 +1,24 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
- * Braintree PaymentMethodNonce module
+ * Braintree PaymentMethodNonce module.
  *
- * @package    Braintree
  * @category   Resources
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
- * Creates and manages Braintree PaymentMethodNonces
+ * Creates and manages Braintree PaymentMethodNonces.
  *
  * <b>== More information ==</b>
  *
  *
- * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class PaymentMethodNonce extends Braintree
 {
@@ -36,6 +37,7 @@ class PaymentMethodNonce extends Braintree
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
+
         return $instance;
     }
 

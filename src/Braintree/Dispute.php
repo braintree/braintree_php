@@ -1,10 +1,11 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
- * Creates an instance of Dispute as returned from a transaction
+ * Creates an instance of Dispute as returned from a transaction.
  *
  *
- * @package    Braintree
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $amount
@@ -28,18 +29,17 @@ final class Dispute extends Braintree
     const Open  = 'open';
 
     /* Dispute Reason */
-    const CANCELLED_RECURRING_TRANSACTION = "cancelled_recurring_transaction";
-    const CREDIT_NOT_PROCESSED            = "credit_not_processed";
-    const DUPLICATE                       = "duplicate";
-    const FRAUD                           = "fraud";
-    const GENERAL                         = "general";
-    const INVALID_ACCOUNT                 = "invalid_account";
-    const NOT_RECOGNIZED                  = "not_recognized";
-    const PRODUCT_NOT_RECEIVED            = "product_not_received";
-    const PRODUCT_UNSATISFACTORY          = "product_unsatisfactory";
-    const TRANSACTION_AMOUNT_DIFFERS      = "transaction_amount_differs";
-    const RETRIEVAL                       = "retrieval";
-
+    const CANCELLED_RECURRING_TRANSACTION = 'cancelled_recurring_transaction';
+    const CREDIT_NOT_PROCESSED            = 'credit_not_processed';
+    const DUPLICATE                       = 'duplicate';
+    const FRAUD                           = 'fraud';
+    const GENERAL                         = 'general';
+    const INVALID_ACCOUNT                 = 'invalid_account';
+    const NOT_RECOGNIZED                  = 'not_recognized';
+    const PRODUCT_NOT_RECEIVED            = 'product_not_received';
+    const PRODUCT_UNSATISFACTORY          = 'product_unsatisfactory';
+    const TRANSACTION_AMOUNT_DIFFERS      = 'transaction_amount_differs';
+    const RETRIEVAL                       = 'retrieval';
 
     protected function _initialize($disputeAttribs)
     {
@@ -56,21 +56,23 @@ final class Dispute extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 
-    public function  __toString()
+    public function __toString()
     {
         $display = array(
             'amount', 'reason', 'status',
-            'replyByDate', 'receivedDate', 'currencyIsoCode'
+            'replyByDate', 'receivedDate', 'currencyIsoCode',
             );
 
         $displayAttributes = array();
-        foreach ($display AS $attrib) {
+        foreach ($display as $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
-        return __CLASS__ . '[' .
-                Util::attributesToString($displayAttributes) .']';
+
+        return __CLASS__.'['.
+                Util::attributesToString($displayAttributes).']';
     }
 }

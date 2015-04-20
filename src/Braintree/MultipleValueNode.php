@@ -1,38 +1,41 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 use InvalidArgumentException;
 
 class MultipleValueNode
 {
-    function __construct($name, $allowedValues = array())
+    public function __construct($name, $allowedValues = array())
     {
         $this->name = $name;
         $this->items = array();
-		$this->allowedValues = $allowedValues;
+        $this->allowedValues = $allowedValues;
     }
 
-    function in($values)
+    public function in($values)
     {
-		$bad_values = array_diff($values, $this->allowedValues);
-		if (count($this->allowedValues) > 0 && count($bad_values) > 0) {
-			$message = 'Invalid argument(s) for ' . $this->name . ':';
-			foreach ($bad_values AS $bad_value) {
-				$message .= ' ' . $bad_value;
-			}
+        $bad_values = array_diff($values, $this->allowedValues);
+        if (count($this->allowedValues) > 0 && count($bad_values) > 0) {
+            $message = 'Invalid argument(s) for '.$this->name.':';
+            foreach ($bad_values as $bad_value) {
+                $message .= ' '.$bad_value;
+            }
 
-			throw new InvalidArgumentException($message);
-		}
+            throw new InvalidArgumentException($message);
+        }
 
         $this->items = $values;
+
         return $this;
     }
 
-    function is($value)
+    public function is($value)
     {
         return $this->in(array($value));
     }
 
-    function toParam()
+    public function toParam()
     {
         return $this->items;
     }

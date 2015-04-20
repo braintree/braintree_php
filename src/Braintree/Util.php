@@ -1,58 +1,60 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 use Datetime;
 use InvalidArgumentException;
 
 /**
  * Braintree Utility methods
- * PHP version 5
+ * PHP version 5.
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-
 class Util
 {
     /**
-     * extracts an attribute and returns an array of objects
+     * extracts an attribute and returns an array of objects.
      *
      * extracts the requested element from an array, and converts the contents
      * of its child arrays to objects of type $attributeName, or returns
      * an array with a single element containing the value of that array element
      *
-     * @param array $attribArray attributes from a search response
+     * @param array  $attribArray   attributes from a search response
      * @param string $attributeName indicates which element of the passed array to extract
      *
      * @return array array of $attributeName objects, or a single element array
      */
-    public static function extractAttributeAsArray(& $attribArray, $attributeName)
+    public static function extractAttributeAsArray(&$attribArray, $attributeName)
     {
-        if(!isset($attribArray[$attributeName])):
+        if (!isset($attribArray[$attributeName])):
             return array();
         endif;
 
         // get what should be an array from the passed array
         $data = $attribArray[$attributeName];
         // set up the class that will be used to convert each array element
-        $classFactory = self::buildClassName($attributeName) . '::factory';
-        if(is_array($data)):
+        $classFactory = self::buildClassName($attributeName).'::factory';
+        if (is_array($data)):
             // create an object from the data in each element
-            $objectArray = array_map($classFactory, $data);
-        else:
+            $objectArray = array_map($classFactory, $data); else:
             return array($data);
         endif;
 
         unset($attribArray[$attributeName]);
+
         return $objectArray;
     }
     /**
-     * throws an exception based on the type of error
-     * @param string $statusCode HTTP status code to throw exception from
-     * @throws Exception multiple types depending on the error
+     * throws an exception based on the type of error.
      *
+     * @param string $statusCode HTTP status code to throw exception from
+     *
+     * @throws Exception multiple types depending on the error
      */
-    public static function throwStatusCodeException($statusCode, $message=null)
+    public static function throwStatusCodeException($statusCode, $message = null)
     {
-        switch($statusCode) {
+        switch ($statusCode) {
         case 401:
             throw new Exception\Authentication();
             break;
@@ -78,15 +80,16 @@ class Util
     }
 
     /**
-     *
      * @param string $className
      * @param object $resultObj
+     *
      * @return object returns the passed object if successful
+     *
      * @throws Exception\ValidationsFailed
      */
     public static function returnObjectOrThrowException($className, $resultObj)
     {
-        $resultObjName = Util::cleanClassName($className);
+        $resultObjName = self::cleanClassName($className);
         if ($resultObj->success) {
             return $resultObj->$resultObjName;
         } else {
@@ -95,9 +98,10 @@ class Util
     }
 
     /**
-     * removes the  header from a classname
+     * removes the  header from a classname.
      *
      * @param string $name ClassName
+     *
      * @return camelCased classname minus  header
      */
     public static function cleanClassName($name)
@@ -126,7 +130,7 @@ class Util
             'MerchantAccount' => 'merchantAccount',
             'MerchantAccountGateway' => 'merchantAccount',
             'PayPalAccount' => 'paypalAccount',
-            'PayPalAccountGateway' => 'paypalAccount'
+            'PayPalAccountGateway' => 'paypalAccount',
         );
 
         $name = str_replace(__NAMESPACE__.'\\', '', $name);
@@ -135,8 +139,8 @@ class Util
     }
 
     /**
-     *
      * @param string $name className
+     *
      * @return string ClassName
      */
     public static function buildClassName($name)
@@ -152,19 +156,19 @@ class Util
             'plan' => 'Plan',
             'address' => 'Address',
             'settlementBatchSummary' => 'SettlementBatchSummary',
-            'merchantAccount' => 'MerchantAccount'
+            'merchantAccount' => 'MerchantAccount',
         );
 
         $name = str_replace(__NAMESPACE__.'\\', '', $name);
 
-        return (string)$responseKeysToClassNames[$name];
+        return (string) $responseKeysToClassNames[$name];
     }
 
     /**
-     * convert alpha-beta-gamma to alphaBetaGamma
+     * convert alpha-beta-gamma to alphaBetaGamma.
      *
-     * @access public
      * @param string $string
+     *
      * @return string modified string
      */
     public static function delimiterToCamelCase($string, $delimiter = '[\-\_]')
@@ -177,14 +181,14 @@ class Util
             $callback = create_function('$matches', 'return strtoupper($matches[1]);');
         }
 
-        return preg_replace_callback('/' . $delimiter . '(\w)/', $callback, $string);
+        return preg_replace_callback('/'.$delimiter.'(\w)/', $callback, $string);
     }
 
     /**
-     * convert alpha-beta-gamma to alpha_beta_gamma
+     * convert alpha-beta-gamma to alpha_beta_gamma.
      *
-     * @access public
      * @param string $string
+     *
      * @return string modified string
      */
     public static function delimiterToUnderscore($string)
@@ -192,12 +196,11 @@ class Util
         return preg_replace('/-/', '_', $string);
     }
 
-
     /**
-     * find capitals and convert to delimiter + lowercase
+     * find capitals and convert to delimiter + lowercase.
      *
-     * @access public
      * @param var $string
+     *
      * @return var modified string
      */
     public static function camelCaseToDelimiter($string, $delimiter = '-')
@@ -214,40 +217,40 @@ class Util
     }
 
     /**
-     *
-     * @param array $array associative array to implode
+     * @param array  $array     associative array to implode
      * @param string $separator (optional, defaults to =)
-     * @param string $glue (optional, defaults to ', ')
+     * @param string $glue      (optional, defaults to ', ')
      */
     public static function implodeAssociativeArray($array, $separator = '=', $glue = ', ')
     {
         // build a new array with joined keys and values
         $tmpArray = null;
-        foreach ($array AS $key => $value) {
-                $tmpArray[] = $key . $separator . $value;
-
+        foreach ($array as $key => $value) {
+            $tmpArray[] = $key.$separator.$value;
         }
         // implode and return the new array
         return (is_array($tmpArray)) ? implode($glue, $tmpArray) : false;
     }
 
-    public static function attributesToString($attributes) {
+    public static function attributesToString($attributes)
+    {
         $printableAttribs = array();
-        foreach ($attributes AS $key => $value) {
+        foreach ($attributes as $key => $value) {
             if (is_array($value)) {
-                $pAttrib = Util::attributesToString($value);
-            } else if ($value instanceof DateTime) {
+                $pAttrib = self::attributesToString($value);
+            } elseif ($value instanceof DateTime) {
                 $pAttrib = $value->format(DateTime::RFC850);
             } else {
                 $pAttrib = $value;
             }
             $printableAttribs[$key] = sprintf('%s', $pAttrib);
         }
-        return Util::implodeAssociativeArray($printableAttribs);
+
+        return self::implodeAssociativeArray($printableAttribs);
     }
 
     /**
-     * verify user request structure
+     * verify user request structure.
      *
      * compares the expected signature of a gateway request
      * against the actual structure sent by the user
@@ -262,78 +265,85 @@ class Util
         $invalidKeys = array_diff($userKeys, $validKeys);
         $invalidKeys = self::_removeWildcardKeys($validKeys, $invalidKeys);
 
-        if(!empty($invalidKeys)) {
+        if (!empty($invalidKeys)) {
             asort($invalidKeys);
-            $sortedList = join(', ', $invalidKeys);
-            throw new InvalidArgumentException('invalid keys: '. $sortedList);
+            $sortedList = implode(', ', $invalidKeys);
+            throw new InvalidArgumentException('invalid keys: '.$sortedList);
         }
     }
     /**
-     * flattens a numerically indexed nested array to a single level
-     * @param array $keys
+     * flattens a numerically indexed nested array to a single level.
+     *
+     * @param array  $keys
      * @param string $namespace
+     *
      * @return array
      */
     private static function _flattenArray($keys, $namespace = null)
     {
         $flattenedArray = array();
-        foreach($keys AS $key) {
-            if(is_array($key)) {
+        foreach ($keys as $key) {
+            if (is_array($key)) {
                 $theKeys = array_keys($key);
                 $theValues = array_values($key);
                 $scope = $theKeys[0];
-                $fullKey = empty($namespace) ? $scope : $namespace . '[' . $scope . ']';
+                $fullKey = empty($namespace) ? $scope : $namespace.'['.$scope.']';
                 $flattenedArray = array_merge($flattenedArray, self::_flattenArray($theValues[0], $fullKey));
             } else {
-                $fullKey = empty($namespace) ? $key : $namespace . '[' . $key . ']';
+                $fullKey = empty($namespace) ? $key : $namespace.'['.$key.']';
                 $flattenedArray[] = $fullKey;
             }
         }
         sort($flattenedArray);
+
         return $flattenedArray;
     }
 
     private static function _flattenUserKeys($keys, $namespace = null)
     {
-       $flattenedArray = array();
+        $flattenedArray = array();
 
-       foreach($keys AS $key => $value) {
-           $fullKey = empty($namespace) ? $key : $namespace;
-           if (!is_numeric($key) && $namespace != null) {
-              $fullKey .= '[' . $key . ']';
-           }
-           if (is_numeric($key) && is_string($value)) {
-              $fullKey .= '[' . $value . ']';
-           }
-           if(is_array($value)) {
-               $more = self::_flattenUserKeys($value, $fullKey);
-               $flattenedArray = array_merge($flattenedArray, $more);
-           } else {
-               $flattenedArray[] = $fullKey;
-           }
-       }
-       sort($flattenedArray);
-       return $flattenedArray;
+        foreach ($keys as $key => $value) {
+            $fullKey = empty($namespace) ? $key : $namespace;
+            if (!is_numeric($key) && $namespace != null) {
+                $fullKey .= '['.$key.']';
+            }
+            if (is_numeric($key) && is_string($value)) {
+                $fullKey .= '['.$value.']';
+            }
+            if (is_array($value)) {
+                $more = self::_flattenUserKeys($value, $fullKey);
+                $flattenedArray = array_merge($flattenedArray, $more);
+            } else {
+                $flattenedArray[] = $fullKey;
+            }
+        }
+        sort($flattenedArray);
+
+        return $flattenedArray;
     }
 
     /**
-     * removes wildcard entries from the invalid keys array
-     * @param array $validKeys
+     * removes wildcard entries from the invalid keys array.
+     *
+     * @param array  $validKeys
      * @param <array $invalidKeys
+     *
      * @return array
      */
     private static function _removeWildcardKeys($validKeys, $invalidKeys)
     {
-        foreach($validKeys AS $key) {
+        foreach ($validKeys as $key) {
             if (stristr($key, '[_anyKey_]')) {
                 $wildcardKey = str_replace('[_anyKey_]', '', $key);
-                foreach ($invalidKeys AS $index => $invalidKey) {
+                foreach ($invalidKeys as $index => $invalidKey) {
                     if (stristr($invalidKey, $wildcardKey)) {
                         unset($invalidKeys[$index]);
                     }
                 }
             }
         }
+
         return $invalidKeys;
     }
 }

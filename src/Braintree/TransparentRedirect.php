@@ -1,9 +1,10 @@
-<?php namespace Braintree;
+<?php
 
+namespace Braintree;
 
 /**
  * Braintree Transparent Redirect module
- * Static class providing methods to build Transparent Redirect urls
+ * Static class providing methods to build Transparent Redirect urls.
  *
  * The TransparentRedirect module provides methods to build the tr_data param
  * that must be submitted when using the transparent redirect API.
@@ -32,8 +33,8 @@
  *
  *  </code>
  *
- * @package    Braintree
  * @category   Resources
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class TransparentRedirect
@@ -52,9 +53,7 @@ class TransparentRedirect
      */
     protected function __construct()
     {
-
     }
-
 
     // static methods redirecting to gateway
 

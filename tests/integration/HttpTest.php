@@ -1,9 +1,10 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+
+require_once realpath(dirname(__FILE__)).'/../TestHelper.php';
 
 class Braintree_HttpTest extends PHPUnit_Framework_TestCase
 {
-    function testProductionSSL()
+    public function testProductionSSL()
     {
         try {
             Braintree_Configuration::environment('production');
@@ -17,7 +18,7 @@ class Braintree_HttpTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::environment('development');
     }
 
-    function testSandboxSSL()
+    public function testSandboxSSL()
     {
         try {
             Braintree_Configuration::environment('sandbox');
@@ -31,7 +32,7 @@ class Braintree_HttpTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::environment('development');
     }
 
-    function testSslError()
+    public function testSslError()
     {
         try {
             Braintree_Configuration::environment('sandbox');
@@ -46,17 +47,17 @@ class Braintree_HttpTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::environment('development');
     }
 
-    function testAuthorizationWithConfig()
+    public function testAuthorizationWithConfig()
     {
         $config = new Braintree_Configuration(array(
             'environment' => 'development',
             'merchant_id' => 'integration_merchant_id',
             'publicKey' => 'badPublicKey',
-            'privateKey' => 'badPrivateKey'
+            'privateKey' => 'badPrivateKey',
         ));
 
         $http = new Braintree_Http($config);
-        $result = $http->_doUrlRequest('GET', $config->baseUrl() . '/merchants/integration_merchant_id/customers');
+        $result = $http->_doUrlRequest('GET', $config->baseUrl().'/merchants/integration_merchant_id/customers');
         $this->assertEquals(401, $result['status']);
     }
 }

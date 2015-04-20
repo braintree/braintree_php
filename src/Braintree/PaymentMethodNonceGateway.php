@@ -1,23 +1,24 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 /**
- * Braintree PaymentMethodNonceGateway module
+ * Braintree PaymentMethodNonceGateway module.
  *
- * @package    Braintree
  * @category   Resources
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
- * Creates and manages Braintree PaymentMethodNonces
+ * Creates and manages Braintree PaymentMethodNonces.
  *
  * <b>== More information ==</b>
  *
  *
- * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class PaymentMethodNonceGateway
 {
@@ -32,16 +33,15 @@ class PaymentMethodNonceGateway
         $this->_http = new Http($gateway->config);
     }
 
-
     public function create($token)
     {
-        $subPath = '/payment_methods/' . $token . '/nonces';
-        $fullPath = $this->_config->merchantPath() . $subPath;
+        $subPath = '/payment_methods/'.$token.'/nonces';
+        $fullPath = $this->_config->merchantPath().$subPath;
         $response = $this->_http->post($fullPath);
 
         return new Result\Successful(
             PaymentMethodNonce::factory($response['paymentMethodNonce']),
-            "paymentMethodNonce"
+            'paymentMethodNonce'
         );
     }
 }

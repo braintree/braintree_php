@@ -1,17 +1,18 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../../TestHelper.php';
+
+require_once realpath(dirname(__FILE__)).'/../../TestHelper.php';
 
 class ClientTokenTest extends PHPUnit_Framework_TestCase
 {
-    function testErrorsWhenCreditCardOptionsGivenWithoutCustomerId()
+    public function testErrorsWhenCreditCardOptionsGivenWithoutCustomerId()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: options[makeDefault]');
-        Braintree_ClientToken::generate(array("options" => array("makeDefault" => true)));
+        Braintree_ClientToken::generate(array('options' => array('makeDefault' => true)));
     }
 
-    function testErrorsWhenInvalidArgumentIsSupplied()
+    public function testErrorsWhenInvalidArgumentIsSupplied()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: customrId');
-        Braintree_ClientToken::generate(array("customrId" => "1234"));
+        Braintree_ClientToken::generate(array('customrId' => '1234'));
     }
 }

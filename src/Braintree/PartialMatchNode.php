@@ -1,16 +1,20 @@
-<?php namespace Braintree;
+<?php
+
+namespace Braintree;
 
 class PartialMatchNode extends EqualityNode
 {
-    function startsWith($value)
+    public function startsWith($value)
     {
-        $this->searchTerms["starts_with"] = strval($value);
+        $this->searchTerms['starts_with'] = strval($value);
+
         return $this;
     }
 
-    function endsWith($value)
+    public function endsWith($value)
     {
-        $this->searchTerms["ends_with"] = strval($value);
+        $this->searchTerms['ends_with'] = strval($value);
+
         return $this;
     }
 }
