@@ -147,7 +147,7 @@ class CustomerGateway
     public static function createSignature()
     {
         $creditCardSignature = CreditCardGateway::createSignature();
-        unset($creditCardSignature['customerId']);
+        unset($creditCardSignature[array_search('customerId', $creditCardSignature)]);
         $signature = array(
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',

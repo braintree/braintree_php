@@ -518,6 +518,26 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(null != $foundPaypalAccount);
     }
 
+    public function testCreate_acceptsNumberAndOtherCreditCardParameters()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$transactable,
+            'cardholderName' => 'Jane Doe',
+            'cvv' => '123',
+            'expirationMonth' => '10',
+            'expirationYear' => '24',
+            'number' => '4242424242424242',
+        ));
+        $this->assertTrue($result->success);
+        $this->assertTrue('Jane Doe' == $result->paymentMethod->cardholderName);
+        $this->assertTrue('10' == $result->paymentMethod->expirationMonth);
+        $this->assertTrue('2024' == $result->paymentMethod->expirationYear);
+        $this->assertTrue('424242' == $result->paymentMethod->bin);
+        $this->assertTrue('4242' == $result->paymentMethod->last4);
+    }
+
     public function testFind_returnsCreditCards()
     {
         $paymentMethodToken = 'CREDIT_CARD_TOKEN-'.strval(rand());

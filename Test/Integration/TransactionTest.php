@@ -540,6 +540,7 @@ class TransactionTest extends Setup
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
         $this->assertEquals('05', $transaction->creditCardDetails->expirationMonth);
         $this->assertEquals('2011', $transaction->creditCardDetails->expirationYear);
+        $this->assertNotNull($transaction->creditCardDetails->imageUrl);
     }
 
     public function testSale_withCustomFields()
@@ -1179,6 +1180,20 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Dispute::OPEN, $dispute->status);
         $this->assertEquals('retrievaltransaction', $dispute->transactionDetails->id);
         $this->assertEquals('1000.00', $dispute->transactionDetails->amount);
+    }
+
+    public function testFindExposesPayPalDetails()
+    {
+        $transaction = Braintree\Transaction::find('settledtransaction');
+        $this->assertNotNull($transaction->paypalDetails->debugId);
+        $this->assertNotNull($transaction->paypalDetails->payerEmail);
+        $this->assertNotNull($transaction->paypalDetails->authorizationId);
+        $this->assertNotNull($transaction->paypalDetails->payerId);
+        $this->assertNotNull($transaction->paypalDetails->payerFirstName);
+        $this->assertNotNull($transaction->paypalDetails->payerLastName);
+        $this->assertNotNull($transaction->paypalDetails->sellerProtectionStatus);
+        $this->assertNotNull($transaction->paypalDetails->captureId);
+        $this->assertNotNull($transaction->paypalDetails->refundId);
     }
 
     public function testSale_storeInVault()

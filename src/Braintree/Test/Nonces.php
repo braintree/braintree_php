@@ -26,5 +26,6 @@ class Nonces
     public static $applePayMasterCard = 'fake-apple-pay-visa-nonce';
     public static $applePayAmEx = 'fake-apple-pay-amex-nonce';
     public static $abstractTransactable = 'fake-abstract-transactable-nonce';
+    public static $europe = 'fake-europe-bank-account-nonce';
     public static $coinbase = 'fake-coinbase-nonce';
 }

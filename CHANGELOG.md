@@ -1,3 +1,7 @@
+## 2.38.0
+* Update payment instrument types and test nonces
+* Add missing valid params to PaymentMethodGateway
+
 ## 2.37.0
 * Add 3D Secure transaction fields
 * Add ability to create nonce from vaulted payment methods
