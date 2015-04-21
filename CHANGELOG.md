@@ -242,7 +242,7 @@
 * Added Braintree_AddOns/Braintree_Discounts
 * Enhanced Braintree_Subscription search
 * Enhanced Braintree_Transaction search
-* Added constants for Braintree_Result_CreditCardVerification statuses
+* Added constants for Braintree_Result\CreditCardVerification statuses
 * Added EXPIRED and PENDING statuses to Braintree_Subscription
 * Allowed prorateCharges to be specified on Braintree_Subscription update
 * Added Braintree_AddOn/Braintree_Discount details to Braintree_Transactions that were created from a Braintree_Subscription

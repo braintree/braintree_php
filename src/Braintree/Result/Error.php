@@ -23,7 +23,7 @@ use Braintree\Error\ErrorCollection;
  * if ($result->success) {
  *     // Successful Result
  * } else {
- *     // Result_Error
+ *     // Result\Error
  * }
  * </code>
  *

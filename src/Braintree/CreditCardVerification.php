@@ -2,7 +2,7 @@
 
 namespace Braintree;
 
-class CreditCardVerification extends Result_CreditCardVerification
+class CreditCardVerification extends Result\CreditCardVerification
 {
     public static function factory($attributes)
     {

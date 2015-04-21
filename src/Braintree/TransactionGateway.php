@@ -313,7 +313,7 @@ final class TransactionGateway
      *
      * @param string $id transaction id
      *
-     * @return object Result_Successful|Braintree\Result_Error
+     * @return object Result\Successful|Braintree\Result\Error
      */
     public function void($transactionId)
     {
@@ -437,15 +437,15 @@ final class TransactionGateway
      * generic method for validating incoming gateway responses.
      *
      * creates a new Transaction object and encapsulates
-     * it inside a Result_Successful object, or
-     * encapsulates a Errors object inside a Result_Error
+     * it inside a Result\Successful object, or
+     * encapsulates a Errors object inside a Result\Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
      *
      * @param array $response gateway response values
      *
-     * @return object Result_Successful or Result_Error
+     * @return object Result\Successful or Result\Error
      *
      * @throws Exception\Unexpected
      */

@@ -3,6 +3,8 @@
 namespace Braintree;
 
 use InvalidArgumentException;
+use DateTime;
+use DateTimeZone;
 
 /**
  * Braintree Transparent Redirect Gateway module
@@ -19,6 +21,8 @@ class TransparentRedirectGateway
 
     public function __construct($gateway)
     {
+        self::init();
+
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
     }
@@ -40,6 +44,10 @@ class TransparentRedirectGateway
      */
     public static function init()
     {
+        if (self::$_createCustomerSignature) {
+            return true;
+        }
+
         self::$_createCustomerSignature = array(
             self::$_transparentRedirectKeys,
             array('customer' => CustomerGateway::createSignature()),

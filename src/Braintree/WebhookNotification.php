@@ -39,7 +39,7 @@ class WebhookNotification extends Braintree
     public static function verify($challenge)
     {
         $publicKey = Configuration::publicKey();
-        $digest = Digest::hexDigestSha1(Braintree\Configuration::privateKey(), $challenge);
+        $digest = Digest::hexDigestSha1(Configuration::privateKey(), $challenge);
 
         return "{$publicKey}|{$digest}";
     }
@@ -66,7 +66,7 @@ class WebhookNotification extends Braintree
 
     private static function _payloadMatches($signature, $payload)
     {
-        $payloadSignature = Digest::hexDigestSha1(Braintree\Configuration::privateKey(), $payload);
+        $payloadSignature = Digest::hexDigestSha1(Configuration::privateKey(), $payload);
 
         return Digest::secureCompare($signature, $payloadSignature);
     }

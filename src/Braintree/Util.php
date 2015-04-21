@@ -2,7 +2,7 @@
 
 namespace Braintree;
 
-use Datetime;
+use DateTime;
 use InvalidArgumentException;
 
 /**
@@ -107,33 +107,31 @@ class Util
     public static function cleanClassName($name)
     {
         $classNamesToResponseKeys = array(
-            'CreditCard' => 'creditCard',
-            'CreditCardGateway' => 'creditCard',
-            'Customer' => 'customer',
-            'CustomerGateway' => 'customer',
-            'Subscription' => 'subscription',
-            'SubscriptionGateway' => 'subscription',
-            'Transaction' => 'transaction',
-            'TransactionGateway' => 'transaction',
-            'CreditCardVerification' => 'verification',
-            'CreditCardVerificationGateway' => 'verification',
-            'AddOn' => 'addOn',
-            'AddOnGateway' => 'addOn',
-            'Discount' => 'discount',
-            'DiscountGateway' => 'discount',
-            'Plan' => 'plan',
-            'PlanGateway' => 'plan',
-            'Address' => 'address',
-            'AddressGateway' => 'address',
-            'SettlementBatchSummary' => 'settlementBatchSummary',
-            'SettlementBatchSummaryGateway' => 'settlementBatchSummary',
-            'MerchantAccount' => 'merchantAccount',
-            'MerchantAccountGateway' => 'merchantAccount',
-            'PayPalAccount' => 'paypalAccount',
-            'PayPalAccountGateway' => 'paypalAccount',
+            'Braintree\CreditCard' => 'creditCard',
+            'Braintree\CreditCardGateway' => 'creditCard',
+            'Braintree\Customer' => 'customer',
+            'Braintree\CustomerGateway' => 'customer',
+            'Braintree\Subscription' => 'subscription',
+            'Braintree\SubscriptionGateway' => 'subscription',
+            'Braintree\Transaction' => 'transaction',
+            'Braintree\TransactionGateway' => 'transaction',
+            'Braintree\CreditCardVerification' => 'verification',
+            'Braintree\CreditCardVerificationGateway' => 'verification',
+            'Braintree\AddOn' => 'addOn',
+            'Braintree\AddOnGateway' => 'addOn',
+            'Braintree\Discount' => 'discount',
+            'Braintree\DiscountGateway' => 'discount',
+            'Braintree\Plan' => 'plan',
+            'Braintree\PlanGateway' => 'plan',
+            'Braintree\Address' => 'address',
+            'Braintree\AddressGateway' => 'address',
+            'Braintree\SettlementBatchSummary' => 'settlementBatchSummary',
+            'Braintree\SettlementBatchSummaryGateway' => 'settlementBatchSummary',
+            'Braintree\MerchantAccount' => 'merchantAccount',
+            'Braintree\MerchantAccountGateway' => 'merchantAccount',
+            'Braintree\PayPalAccount' => 'paypalAccount',
+            'Braintree\PayPalAccountGateway' => 'paypalAccount',
         );
-
-        $name = str_replace(__NAMESPACE__.'\\', '', $name);
 
         return $classNamesToResponseKeys[$name];
     }
@@ -146,20 +144,18 @@ class Util
     public static function buildClassName($name)
     {
         $responseKeysToClassNames = array(
-            'creditCard' => 'CreditCard',
-            'customer' => 'Customer',
-            'subscription' => 'Subscription',
-            'transaction' => 'Transaction',
-            'verification' => 'CreditCardVerification',
-            'addOn' => 'AddOn',
-            'discount' => 'Discount',
-            'plan' => 'Plan',
-            'address' => 'Address',
-            'settlementBatchSummary' => 'SettlementBatchSummary',
-            'merchantAccount' => 'MerchantAccount',
+            'creditCard' => 'Braintree\CreditCard',
+            'customer' => 'Braintree\Customer',
+            'subscription' => 'Braintree\Subscription',
+            'transaction' => 'Braintree\Transaction',
+            'verification' => 'Braintree\CreditCardVerification',
+            'addOn' => 'Braintree\AddOn',
+            'discount' => 'Braintree\Discount',
+            'plan' => 'Braintree\Plan',
+            'address' => 'Braintree\Address',
+            'settlementBatchSummary' => 'Braintree\SettlementBatchSummary',
+            'merchantAccount' => 'Braintree\MerchantAccount',
         );
-
-        $name = str_replace(__NAMESPACE__.'\\', '', $name);
 
         return (string) $responseKeysToClassNames[$name];
     }

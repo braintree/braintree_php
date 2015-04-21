@@ -174,7 +174,7 @@ class Customer extends Braintree
         $applePayCardArray = array();
         if (isset($customerAttribs['applePayCards'])) {
             foreach ($customerAttribs['applePayCards'] as $applePayCard) {
-                $applePayCardArray[] = applePayCard::factory($applePayCard);
+                $applePayCardArray[] = ApplePayCard::factory($applePayCard);
             }
         }
         $this->_set('applePayCards', $applePayCardArray);

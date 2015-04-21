@@ -2,6 +2,8 @@
 
 namespace Braintree\MerchantAccount;
 
+use Braintree\Braintree;
+
 final class IndividualDetails extends Braintree
 {
     protected function _initialize($individualAttribs)

@@ -11,16 +11,16 @@ use Braintree\Util;
  * A Successful Result will be returned from gateway methods when
  * validations pass. It will provide access to the created resource.
  *
- * For example, when creating a customer, Result_Successful will
+ * For example, when creating a customer, Result\Successful will
  * respond to <b>customer</b> like so:
  *
  * <code>
  * $result = Customer::create(array('first_name' => "John"));
  * if ($result->success) {
- *     // Result_Successful
+ *     // Result\Successful
  *     echo "Created customer {$result->customer->id}";
  * } else {
- *     // Result_Error
+ *     // Result\Error
  * }
  * </code>
  *

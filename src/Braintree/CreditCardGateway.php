@@ -196,7 +196,7 @@ class CreditCardGateway
      *
      * @param array $attribs
      *
-     * @return object Result_Successful or Result_Error
+     * @return object Result\Successful or Result\Error
      */
     public function credit($token, $transactionAttribs)
     {
@@ -234,7 +234,7 @@ class CreditCardGateway
      * @param string $token
      * @param array  $transactionAttribs
      *
-     * @return object Result_Successful or Result_Error
+     * @return object Result\Successful or Result\Error
      *
      * @see Transaction::sale()
      */
@@ -280,7 +280,7 @@ class CreditCardGateway
      * @param array  $attributes
      * @param string $token      (optional)
      *
-     * @return object Result_Successful or Result_Error
+     * @return object Result\Successful or Result\Error
      */
     public function update($token, $attributes)
     {
@@ -479,15 +479,15 @@ class CreditCardGateway
      * generic method for validating incoming gateway responses.
      *
      * creates a new CreditCard object and encapsulates
-     * it inside a Result_Successful object, or
-     * encapsulates a Errors object inside a Result_Error
+     * it inside a Result\Successful object, or
+     * encapsulates a Errors object inside a Result\Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
      *
      * @param array $response gateway response values
      *
-     * @return object Result_Successful or Result_Error
+     * @return object Result\Successful or Result\Error
      *
      * @throws Exception\Unexpected
      */

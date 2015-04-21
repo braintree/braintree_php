@@ -202,7 +202,7 @@ class CustomerGateway
 
             return Customer::factory($response['customer']);
         } catch (Exception\NotFound $e) {
-            return false;
+            throw new Exception\NotFound('customer with id ' . $id . ' not found');
         }
     }
 
@@ -211,7 +211,7 @@ class CustomerGateway
      *
      * @param array $attribs
      *
-     * @return object Result_Successful or Result_Error
+     * @return object Result\Successful or Result\Error
      */
     public function credit($customerId, $transactionAttribs)
     {
@@ -262,7 +262,7 @@ class CustomerGateway
      * @param string $customerId
      * @param array  $transactionAttribs
      *
-     * @return object Result_Successful or Result_Error
+     * @return object Result\Successful or Result\Error
      *
      * @see Transaction::sale()
      */
@@ -344,7 +344,7 @@ class CustomerGateway
      * @param array  $attributes
      * @param string $customerId (optional)
      *
-     * @return object Result_Successful or Result_Error
+     * @return object Result\Successful or Result\Error
      */
     public function update($customerId, $attributes)
     {
@@ -459,7 +459,7 @@ class CustomerGateway
         $applePayCardArray = array();
         if (isset($customerAttribs['applePayCards'])) {
             foreach ($customerAttribs['applePayCards'] as $applePayCard) {
-                $applePayCardArray[] = applePayCard::factory($applePayCard);
+                $applePayCardArray[] = ApplePayCard::factory($applePayCard);
             }
         }
         $this->_set('applePayCards', $applePayCardArray);
@@ -601,15 +601,15 @@ class CustomerGateway
      * generic method for validating incoming gateway responses.
      *
      * creates a new Customer object and encapsulates
-     * it inside a Result_Successful object, or
-     * encapsulates a Errors object inside a Result_Error
+     * it inside a Result\Successful object, or
+     * encapsulates a Errors object inside a Result\Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
      *
      * @param array $response gateway response values
      *
-     * @return object Result_Successful or Result_Error
+     * @return object Result\Successful or Result\Error
      *
      * @throws Exception\Unexpected
      */
