@@ -202,7 +202,7 @@ class CustomerGateway
 
             return Customer::factory($response['customer']);
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound('customer with id ' . $id . ' not found');
+            throw new Exception\NotFound('customer with id '.$id.' not found');
         }
     }
 

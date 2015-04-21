@@ -37,4 +37,3 @@ class Setup extends PHPUnit_Framework_TestCase
         Configuration::privateKey('test_private_key');
     }
 }
-

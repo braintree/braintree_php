@@ -5,7 +5,7 @@ namespace Test\Integration;
 require_once dirname(__DIR__).'/Setup.php';
 
 use Test;
-Use Test\Braintree\CreditCardNumbers\CardTypeIndicators;
+use Test\Braintree\CreditCardNumbers\CardTypeIndicators;
 use Test\Setup;
 use Braintree;
 

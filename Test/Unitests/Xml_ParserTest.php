@@ -6,7 +6,6 @@ require_once dirname(__DIR__).'/Setup.php';
 
 use DateTime;
 use DateTimeZone;
-
 use Test\Setup;
 use Braintree;
 

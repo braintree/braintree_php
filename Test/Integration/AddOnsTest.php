@@ -7,7 +7,7 @@ require_once dirname(__DIR__).'/Setup.php';
 use Test\Setup;
 use Braintree;
 
-class AddOnTest extends Setup
+class AddOnsTest extends Setup
 {
     public function testAll_returnsAllAddOns()
     {

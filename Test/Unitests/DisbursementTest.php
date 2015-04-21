@@ -5,7 +5,6 @@ namespace Test\Unitests;
 require_once dirname(__DIR__).'/Setup.php';
 
 use DateTime;
-
 use Test\Setup;
 use Braintree;
 
