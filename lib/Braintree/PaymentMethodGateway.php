@@ -85,29 +85,34 @@ class Braintree_PaymentMethodGateway
         return new Braintree_Result_Successful();
     }
 
-    private static function baseSignature($options)
+    private static function baseSignature()
     {
         $billingAddressSignature = Braintree_AddressGateway::createSignature();
+        $optionsSignature = array(
+            'failOnDuplicatePaymentMethod',
+            'makeDefault',
+            'verificationMerchantAccountId',
+            'verifyCard'
+        );
         return array(
-            'customerId',
+            'billingAddressId',
+            'cardholderName',
+            'cvv',
+            'deviceData',
+            'expirationDate',
+            'expirationMonth',
+            'expirationYear',
+            'number',
             'paymentMethodNonce',
             'token',
-            'billingAddressId',
-            'deviceData',
-            array('options' => $options),
+            array('options' => $optionsSignature),
             array('billingAddress' => $billingAddressSignature)
         );
     }
 
     public static function createSignature()
     {
-        $options = array(
-            'makeDefault',
-            'verifyCard',
-            'failOnDuplicatePaymentMethod',
-            'verificationMerchantAccountId'
-        );
-        $signature = self::baseSignature($options);
+        $signature = array_merge(self::baseSignature(), array('customerId'));
         return $signature;
     }
 
@@ -119,28 +124,13 @@ class Braintree_PaymentMethodGateway
                 'updateExisting'
             )
         ));
-        return array(
-            'billingAddressId',
-            'cardholderName',
-            'cvv',
+        $signature = array_merge(self::baseSignature(), array(
             'deviceSessionId',
-            'expirationDate',
-            'expirationMonth',
-            'expirationYear',
-            'number',
-            'token',
             'venmoSdkPaymentMethodCode',
-            'deviceData',
             'fraudMerchantId',
-            'paymentMethodNonce',
-            array('options' => array(
-                'makeDefault',
-                'verificationMerchantAccountId',
-                'verifyCard',
-                'venmoSdkSession'
-            )),
             array('billingAddress' => $billingAddressSignature)
-        );
+        ));
+        return $signature;
     }
 
     /**

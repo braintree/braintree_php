@@ -26,6 +26,20 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    function testCreateSignature_doesNotIncludeCustomerIdOnCreditCard()
+    {
+        $signature = Braintree_CustomerGateway::createSignature();
+        $creditCardSignatures = array_filter($signature, 'Braintree_CustomerTest::findCreditCardArray');
+        $creditCardSignature = array_shift($creditCardSignatures)['creditCard'];
+
+        $this->assertNotContains('customerId', $creditCardSignature);
+    }
+
+    function findCreditCardArray($el)
+    {
+        return is_array($el) && array_key_exists('creditCard', $el);
+    }
+
     function testFindErrorsOnBlankId()
     {
         $this->setExpectedException('InvalidArgumentException');
