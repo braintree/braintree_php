@@ -65,7 +65,7 @@ class Helper
 
     public static function suppressDeprecationWarnings()
     {
-        set_error_handler('Helper::_errorHandler', E_USER_NOTICE);
+        set_error_handler('Test\Helper::_errorHandler', E_USER_NOTICE);
     }
 
     public static function _errorHandler($errno, $errstr, $errfile, $errline)
