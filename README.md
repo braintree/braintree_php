@@ -55,12 +55,12 @@ Iterating through the results of a transaction or customer search will fetch the
 ```php
 <?php
 
-
+//Lets get some details for all of the sales that took place in the past 2 days.
 $now = new Datetime();
 $past = clone $now;
 $past = $past->modify("-2 days");
 
-//Lets get all the sales in the past 2 days.
+//lookup up a collection of sale transactions.
 $collection = Braintree_Transaction::search(array(
   Braintree_TransactionSearch::createdAt()->between($past, $now),
   Braintree_TransactionSearch::type()->is(Braintree_Transaction::SALE)
@@ -82,12 +82,36 @@ If you offer multiple payment types. E.G. CreditCards, PayPal, and Apple Pay. Yo
 ```php
 <?php
 
-//lookup a customer with multiple saved paymentMethods
-$customer = Braintree_Customer::find('a_customer_id');
+// Load up a customer with multiple saved paymentMethods.
+$customer = Braintree_Customer::find('85011179');
 
-//loop throgh all of the payment methods.
-foreach ($custtomer->paymentMethods() as $paymentMethod) {
-    print_r($paymentMethod);
+// Loop throgh all of the payment methods of different types stored for user
+foreach ($customer->paymentMethods() as $paymentMethod) {
+
+    // All paymentMethod types can return basic fields consistently
+    print_r("token: ". $paymentMethod->token . "\n");
+    print_r("isDefault: " . $paymentMethod->isDefault() . "\n ");
+    print_r("image: <img src=\"" . $paymentMethod->imageUrl . "\"/>\n ");
+    
+    // A little bit of custom logic however is needed to find a label to present to the customer.
+    print_r("accountIdentifier: " . getAccountIdentifier ($paymentMethod). "\n ");
+
+}
+
+//A simple function helps us get a label across different object types.
+function getAccountIdentifier ($paymentMethod){
+
+  // We can use the class to determine the type of paymentObject.
+  switch (get_class($paymentMethod)) { 
+    case "Braintree_CreditCard":
+        return $paymentMethod->maskedNumber;
+    case "Braintree_PayPalAccount":
+        return $paymentMethod->email;
+    case "Braintree_ApplePayCard":
+        return $paymentMethod->paymentInstrumentName;
+    case "Braintree_EuropeBankAccount":
+        return $paymentMethod->maskedIban;
+  }
 }
 
 ?>
