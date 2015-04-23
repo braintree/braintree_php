@@ -49,6 +49,49 @@ if ($result->success) {
 ?>
 ```
 
+## Looping Through Collections of Objects
+Iterating through the results of a transaction or customer search will fetch the individual object details.
+
+```php
+<?php
+
+
+$now = new Datetime();
+$past = clone $now;
+$past = $past->modify("-2 days");
+
+//Lets get all the sales in the past 2 days.
+$collection = Braintree_Transaction::search(array(
+  Braintree_TransactionSearch::createdAt()->between($past, $now),
+  Braintree_TransactionSearch::type()->is(Braintree_Transaction::SALE)
+));
+
+//loop throgh the collection to get access to individual transation objects.
+foreach ($collection as $transaction) {
+    print_r("transactionId ". $transaction->id . "\n");
+    print_r("firstName: " . $transaction->customerDetails->firstName . "\n");
+    print_r("amount: $" . $transaction->amount . "\n");
+    print_r("paymentInstrument: " . $transaction->paymentInstrumentType . "\n ");
+}
+
+?>
+```
+## Finding Customer Payment Methods
+If you offer multiple payment types. E.G. CreditCards, PayPal, and Apple Pay. You can use the paymentMethods() lookup to find all options easily. 
+
+```php
+<?php
+
+//lookup a customer with multiple saved paymentMethods
+$customer = Braintree_Customer::find('a_customer_id');
+
+//loop throgh all of the payment methods.
+foreach ($custtomer->paymentMethods() as $paymentMethod) {
+    print_r($paymentMethod);
+}
+
+?>
+```
 ## Documentation
 
  * [Official documentation](https://developers.braintreepayments.com/php/sdk/server/overview)
