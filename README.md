@@ -83,7 +83,7 @@ If you offer multiple payment types. E.G. CreditCards, PayPal, and Apple Pay. Yo
 <?php
 
 // Load up a customer with multiple saved paymentMethods.
-$customer = Braintree_Customer::find('85011179');
+$customer = Braintree_Customer::find('a_customer_id');
 
 // Loop throgh all of the payment methods of different types stored for user
 foreach ($customer->paymentMethods() as $paymentMethod) {
@@ -93,12 +93,12 @@ foreach ($customer->paymentMethods() as $paymentMethod) {
     print_r("isDefault: " . $paymentMethod->isDefault() . "\n ");
     print_r("image: <img src=\"" . $paymentMethod->imageUrl . "\"/>\n ");
     
-    // A little bit of custom logic however is needed to find a label to present to the customer.
+    // Some simple logic can be used to find a label to put beside the image.
     print_r("accountIdentifier: " . getAccountIdentifier ($paymentMethod). "\n ");
 
 }
 
-//A simple function helps us get a label across different object types.
+// This function helps us get a label across different object types.
 function getAccountIdentifier ($paymentMethod){
 
   // We can use the class to determine the type of paymentObject.
@@ -112,6 +112,7 @@ function getAccountIdentifier ($paymentMethod){
     case "Braintree_EuropeBankAccount":
         return $paymentMethod->maskedIban;
   }
+
 }
 
 ?>
