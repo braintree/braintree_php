@@ -1162,6 +1162,26 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
     }
 
+    function testFindExposesThreeDSecureInfo()
+    {
+        $transaction = Braintree_Transaction::find("threedsecuredtransaction");
+
+        $info = $transaction->threeDSecureInfo;
+        $this->assertEquals("Y", $info->enrolled);
+        $this->assertEquals("authenticate_successful", $info->status);
+        $this->assertEquals("xidvalue", $info->xid);
+        $this->assertEquals("somebase64value", $info->cavv);
+        $this->assertTrue($info->liabilityShifted);
+        $this->assertTrue($info->liabilityShiftPossible);
+    }
+
+    function testFindExposesNullThreeDSecureInfo()
+    {
+        $transaction = Braintree_Transaction::find("settledtransaction");
+
+        $this->assertNull($transaction->threeDSecureInfo);
+    }
+
     function testFindExposesRetrievals()
     {
         $transaction = Braintree_Transaction::find("retrievaltransaction");

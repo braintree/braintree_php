@@ -110,6 +110,7 @@ require_once('Braintree/PlanGateway.php');
 require_once('Braintree/RangeNode.php');
 require_once('Braintree/ResourceCollection.php');
 require_once('Braintree/RiskData.php');
+require_once('Braintree/ThreeDSecureInfo.php');
 require_once('Braintree/SettlementBatchSummary.php');
 require_once('Braintree/SettlementBatchSummaryGateway.php');
 require_once('Braintree/SignatureService.php');
