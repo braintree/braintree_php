@@ -43,4 +43,22 @@ class Braintree_PaymentMethodNonceGateway
             "paymentMethodNonce"
         );
     }
+
+    /**
+     * @access public
+     *
+     */
+    public function find($nonce)
+    {
+        try {
+            $path = $this->_config->merchantPath() . '/payment_method_nonces/' . $nonce;
+            $response = $this->_http->get($path);
+            return Braintree_PaymentMethodNonce::factory($response['paymentMethodNonce']);
+        } catch (Braintree_Exception_NotFound $e) {
+            throw new Braintree_Exception_NotFound(
+            'payment method nonce with id ' . $id . ' not found'
+            );
+        }
+
+    }
 }

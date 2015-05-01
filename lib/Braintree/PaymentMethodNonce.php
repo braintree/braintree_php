@@ -27,14 +27,15 @@ class Braintree_PaymentMethodNonce extends Braintree
         return Braintree_Configuration::gateway()->paymentMethodNonce()->create($token);
     }
 
+    public static function find($nonce)
+    {
+        return Braintree_Configuration::gateway()->paymentMethodNonce()->find($nonce);
+    }
+
     public static function factory($attributes)
     {
-        $defaultAttributes = array(
-            'nonce' => '',
-        );
-
         $instance = new self();
-        $instance->_initialize(array_merge($defaultAttributes, $attributes));
+        $instance->_initialize($attributes);
         return $instance;
     }
 
@@ -42,5 +43,10 @@ class Braintree_PaymentMethodNonce extends Braintree
     {
         $this->_attributes = $nonceAttributes;
         $this->_set('nonce', $nonceAttributes['nonce']);
+        $this->_set('type', $nonceAttributes['type']);
+
+        if(isset($nonceAttributes['threeDSecureInfo'])) {
+            $this->_set('threeDSecureInfo', Braintree_ThreeDSecureInfo::factory($nonceAttributes['threeDSecureInfo']));
+        }
     }
 }
