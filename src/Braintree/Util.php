@@ -1,5 +1,4 @@
 <?php
-
 namespace Braintree;
 
 use DateTime;
@@ -221,7 +220,12 @@ class Util
     {
         // build a new array with joined keys and values
         $tmpArray = null;
+
         foreach ($array as $key => $value) {
+            if ($value instanceof DateTime) {
+                $value =  $value->format('r');
+            }
+
             $tmpArray[] = $key.$separator.$value;
         }
         // implode and return the new array
@@ -231,6 +235,7 @@ class Util
     public static function attributesToString($attributes)
     {
         $printableAttribs = array();
+
         foreach ($attributes as $key => $value) {
             if (is_array($value)) {
                 $pAttrib = self::attributesToString($value);
@@ -239,6 +244,7 @@ class Util
             } else {
                 $pAttrib = $value;
             }
+
             $printableAttribs[$key] = sprintf('%s', $pAttrib);
         }
 
