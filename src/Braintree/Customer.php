@@ -177,6 +177,9 @@ class Customer extends Braintree
             }
         }
         $this->_set('applePayCards', $applePayCardArray);
+
+        // Also provide a map to all payment methods for consistency of accesss.
+        $this->_set('paymentMethods', array_merge($creditCardArray, $paypalAccountArray, $applePayCardArray, $coinbaseAccountArray));
     }
 
     /**
