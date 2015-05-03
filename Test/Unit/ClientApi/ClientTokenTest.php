@@ -1,5 +1,4 @@
 <?php
-
 namespace Test\Unit\ClientApi;
 
 require_once dirname(dirname(__DIR__)).'/Setup.php';

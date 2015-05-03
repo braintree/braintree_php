@@ -1,5 +1,4 @@
 <?php
-
 namespace Braintree\Transaction;
 
 use Braintree\Instance;

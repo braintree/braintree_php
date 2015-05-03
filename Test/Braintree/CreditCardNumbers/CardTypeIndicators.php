@@ -1,5 +1,4 @@
 <?php
-
 namespace Test\Braintree\CreditCardNumbers;
 
 class CardTypeIndicators

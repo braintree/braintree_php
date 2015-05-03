@@ -1,5 +1,4 @@
 <?php
-
 namespace Braintree;
 
 class TextNode extends PartialMatchNode

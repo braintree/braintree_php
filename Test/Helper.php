@@ -1,5 +1,4 @@
 <?php
-
 namespace Test;
 
 require_once __DIR__.'/Setup.php';

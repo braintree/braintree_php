@@ -1,5 +1,4 @@
 <?php
-
 namespace Braintree\Exception;
 
 use Braintree\Exception;

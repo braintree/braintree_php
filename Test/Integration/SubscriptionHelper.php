@@ -1,5 +1,4 @@
 <?php
-
 namespace Test\Integration;
 
 use Braintree;

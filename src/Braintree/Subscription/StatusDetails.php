@@ -1,5 +1,4 @@
 <?php
-
 namespace Braintree\Subscription;
 
 use Braintree\Instance;

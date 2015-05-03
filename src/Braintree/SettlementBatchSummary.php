@@ -1,5 +1,4 @@
 <?php
-
 namespace Braintree;
 
 class SettlementBatchSummary extends Braintree

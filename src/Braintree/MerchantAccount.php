@@ -1,5 +1,4 @@
 <?php
-
 namespace Braintree;
 
 final class MerchantAccount extends Braintree

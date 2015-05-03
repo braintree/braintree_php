@@ -1,5 +1,4 @@
 <?php
-
 namespace Braintree;
 
 final class PaymentInstrumentType

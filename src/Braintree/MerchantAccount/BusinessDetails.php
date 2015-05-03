@@ -1,5 +1,4 @@
 <?php
-
 namespace Braintree\MerchantAccount;
 
 use Braintree\Braintree;
