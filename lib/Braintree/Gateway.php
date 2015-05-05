@@ -15,13 +15,7 @@ class Braintree_Gateway
         if (is_array($config)) {
             $config = new Braintree_Configuration($config);
         }
-        $config->assertValid();
         $this->config = $config;
-    }
-
-    public function customer()
-    {
-        return new Braintree_CustomerGateway($this);
     }
 
     public function addOn()
@@ -49,14 +43,29 @@ class Braintree_Gateway
         return new Braintree_CreditCardVerificationGateway($this);
     }
 
+    public function customer()
+    {
+        return new Braintree_CustomerGateway($this);
+    }
+
     public function discount()
     {
         return new Braintree_DiscountGateway($this);
     }
 
+    public function merchant()
+    {
+        return new Braintree_MerchantGateway($this);
+    }
+
     public function merchantAccount()
     {
         return new Braintree_MerchantAccountGateway($this);
+    }
+
+    public function oauth()
+    {
+        return new Braintree_OAuthGateway($this);
     }
 
     public function paymentMethod()

@@ -27,7 +27,8 @@ class Braintree_GatewayTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::publicKey('integration_public_key');
         Braintree_Configuration::privateKey('integration_private_key');
 
-        new Braintree_Gateway(Braintree_Configuration::$global);
+        $gateway = new Braintree_Gateway(Braintree_Configuration::$global);
+        $gateway->addOn();
     }
 
     function testConstructWithArrayOfCredentials()

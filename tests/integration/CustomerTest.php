@@ -61,6 +61,22 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($customer->merchantId);
     }
 
+    function testCreateWithAccessToken()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
+        ));
+        $result = $gateway->customer()->create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals('Mike', $customer->firstName);
+        $this->assertEquals('Jones', $customer->lastName);
+        $this->assertNotNull($customer->merchantId);
+    }
+
     function testCreateCustomerWithCardUsingNonce()
     {
         $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);

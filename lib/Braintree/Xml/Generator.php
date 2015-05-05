@@ -21,6 +21,7 @@ class Braintree_Xml_Generator
      */
     public static function arrayToXml($aData)
     {
+        $aData = Braintree_Util::camelCaseToDelimiterArray($aData, '-');
         // set up the XMLWriter
         $writer = new XMLWriter();
         $writer->openMemory();
@@ -33,7 +34,7 @@ class Braintree_Xml_Generator
         $aKeys = array_keys($aData);
         $rootElementName = $aKeys[0];
         // open the root element
-        $writer->startElement(Braintree_Util::camelCaseToDelimiter($rootElementName));
+        $writer->startElement($rootElementName);
         // create the body
         self::_createElementsFromArray($writer, $aData[$rootElementName], $rootElementName);
 
@@ -64,9 +65,7 @@ class Braintree_Xml_Generator
             }
           return;
         }
-        foreach ($aData AS $index => $element) {
-            // convert the style back to gateway format
-            $elementName = Braintree_Util::camelCaseToDelimiter($index, '-');
+        foreach ($aData AS $elementName => $element) {
             // handle child elements
             $writer->startElement($elementName);
             if (is_array($element)) {

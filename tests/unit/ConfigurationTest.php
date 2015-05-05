@@ -143,9 +143,27 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     function testBaseUrl()
     {
+        $this->config->setEnvironment('development');
+        $bu = $this->config->baseUrl();
+        $this->assertEquals('http://localhost:3000', $bu);
+
+        $fakeConfig = $this->getMockBuilder('Braintree_Configuration')->setMethods(array('portNumber'))->getMock();
+        $fakeConfig->expects($this->once())->method('portNumber')->will($this->returnValue(80));
+        $fakeConfig->setEnvironment('development');
+        $bu = $fakeConfig->baseUrl();
+        $this->assertEquals('http://localhost', $bu);
+
+        $this->config->setEnvironment('qa');
+        $bu = $this->config->baseUrl();
+        $this->assertEquals('https://gateway.qa.braintreepayments.com', $bu);
+
         $this->config->setEnvironment('sandbox');
         $bu = $this->config->baseUrl();
-        $this->assertEquals('https://api.sandbox.braintreegateway.com:443', $bu);
+        $this->assertEquals('https://api.sandbox.braintreegateway.com', $bu);
+
+        $this->config->setEnvironment('production');
+        $bu = $this->config->baseUrl();
+        $this->assertEquals('https://api.braintreegateway.com', $bu);
     }
 
      /**
@@ -159,7 +177,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::publicKey('integration_public_key');
         Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertValid();
+        Braintree_Configuration::$global->assertHasAccessTokenOrKeys();
     }
      /**
      * @expectedException Braintree_Exception_Configuration
@@ -172,7 +190,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::publicKey('integration_public_key');
         Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertValid();
+        Braintree_Configuration::$global->assertHasAccessTokenOrKeys();
     }
      /**
      * @expectedException Braintree_Exception_Configuration
@@ -185,7 +203,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         //Braintree_Configuration::publicKey('integration_public_key');
         Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertValid();
+        Braintree_Configuration::$global->assertHasAccessTokenOrKeys();
     }
      /**
      * @expectedException Braintree_Exception_Configuration
@@ -198,6 +216,147 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::publicKey('integration_public_key');
         //Braintree_Configuration::privateKey('integration_private_key');
 
-        Braintree_Configuration::$global->assertValid();
+        Braintree_Configuration::$global->assertHasAccessTokenOrKeys();
+    }
+
+    function testValidWithOAuthClientCredentials()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_id$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+        ));
+
+        $config->assertHasClientCredentials();
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage clientSecret needs to be set.
+     */
+    function testInvalidWithOAuthClientCredentials()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_id$development$integration_oauth_client_id'
+        ));
+
+        $config->assertHasClientCredentials();
+    }
+
+    function testDetectEnvironmentFromClientId()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_id$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+        ));
+
+        $this->assertEquals('development', $config->getEnvironment());
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Mismatched credential environments: clientId environment is sandbox and clientSecret environment is development
+     */
+    function testDetectEnvironmentFromClientIdFail()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_id$sandbox$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+        ));
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Value passed for clientId is not a clientId
+     */
+    function testClientIdTypeFail()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_secret$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+        ));
+    }
+
+    function testValidWithAccessToken()
+    {
+        $config = new Braintree_Configuration(array(
+            'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
+        ));
+
+        $config->assertHasAccessTokenOrKeys();
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Value passed for accessToken is not an accessToken
+     */
+    function testInvalidAccessTokenType()
+    {
+        $config = new Braintree_Configuration(array(
+            'accessToken' => 'client_id$development$integration_merchant_id$integration_oauth_access_token',
+        ));
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Incorrect accessToken syntax. Expected: type$environment$merchant_id$token
+     */
+    function testInvalidAccessTokenSyntax()
+    {
+        $config = new Braintree_Configuration(array(
+            'accessToken' => 'client_id$development$integration_oauth_client_id',
+        ));
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage "invalid" is not a valid environment.
+     */
+    function testInvalidAccessTokenEnvironment()
+    {
+        $config = new Braintree_Configuration(array(
+            'accessToken' => 'access_token$invalid$integration_merchant_id$integration_oauth_access_token',
+        ));
+    }
+
+
+    function testValidWithOAuthClientCredentialsAndAccessToken()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_id$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret',
+            'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
+        ));
+
+        $config->assertHasClientCredentials();
+        $config->assertHasAccessTokenOrKeys();
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Mismatched credential environments: clientId environment is development and accessToken environment is sandbox
+     */
+    function testInvalidEnvironmentWithOAuthClientCredentialsAndAccessToken()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_id$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret',
+            'accessToken' => 'access_token$sandbox$integration_merchant_id$integration_oauth_access_token',
+        ));
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId).
+     */
+    function testCannotMixKeysWithOAuthCredentials()
+    {
+        $config = new Braintree_Configuration(array(
+            'clientId' => 'client_id$development$integration_oauth_client_id',
+            'clientSecret' => 'client_secret$development$integration_oauth_client_secret',
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
     }
 }

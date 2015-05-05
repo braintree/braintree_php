@@ -215,6 +215,30 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
     }
 
+    function testSaleWithAccessToken()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
+        ));
+        $result = $gateway->transaction()->sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertNotNull($transaction->processorAuthorizationCode);
+        $this->assertEquals('510510', $transaction->creditCardDetails->bin);
+        $this->assertEquals('5100', $transaction->creditCardDetails->last4);
+        $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
+    }
+
     function testSaleWithRiskData()
     {
         $result = Braintree_Transaction::sale(array(
