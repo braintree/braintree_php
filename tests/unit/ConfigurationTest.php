@@ -145,7 +145,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->config->setEnvironment('development');
         $bu = $this->config->baseUrl();
-        $this->assertEquals('http://localhost:3000', $bu);
+        $this->assertEquals('http://localhost:' . $this->config->portNumber(), $bu);
 
         $fakeConfig = $this->getMockBuilder('Braintree_Configuration')->setMethods(array('portNumber'))->getMock();
         $fakeConfig->expects($this->once())->method('portNumber')->will($this->returnValue(80));
