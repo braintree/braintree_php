@@ -1200,8 +1200,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $info = $transaction->threeDSecureInfo;
         $this->assertEquals("Y", $info->enrolled);
         $this->assertEquals("authenticate_successful", $info->status);
-        $this->assertEquals("xidvalue", $info->xid);
-        $this->assertEquals("somebase64value", $info->cavv);
         $this->assertTrue($info->liabilityShifted);
         $this->assertTrue($info->liabilityShiftPossible);
     }
