@@ -217,9 +217,16 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testSaleWithAccessToken()
     {
-        $gateway = new Braintree_Gateway(array(
-            'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
+        $credentials = Braintree_OAuthTestHelper::createCredentials(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+            'merchantId' => 'integration_merchant_id',
         ));
+
+        $gateway = new Braintree_Gateway(array(
+            'accessToken' => $credentials->accessToken,
+        ));
+
         $result = $gateway->transaction()->sale(array(
             'amount' => '100.00',
             'creditCard' => array(

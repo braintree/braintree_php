@@ -6,8 +6,8 @@ class Braintree_MerchantTest extends PHPUnit_Framework_TestCase
     function testCreateMerchant()
     {
         $gateway = new Braintree_Gateway(array(
-            'clientId' => 'client_id$development$integration_oauth_client_id',
-            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
         $result = $gateway->merchant()->create(array(
             'email' => 'name@email.com',
@@ -28,7 +28,7 @@ class Braintree_MerchantTest extends PHPUnit_Framework_TestCase
     function testAssertsHasCredentials()
     {
         $gateway = new Braintree_Gateway(array(
-            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+            'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
         $gateway->merchant()->create(array(
             'email' => 'name@email.com',

@@ -63,9 +63,16 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
 
     function testCreateWithAccessToken()
     {
-        $gateway = new Braintree_Gateway(array(
-            'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
+        $credentials = Braintree_OAuthTestHelper::createCredentials(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+            'merchantId' => 'integration_merchant_id',
         ));
+
+        $gateway = new Braintree_Gateway(array(
+            'accessToken' => $credentials->accessToken,
+        ));
+
         $result = $gateway->customer()->create(array(
             'firstName' => 'Mike',
             'lastName' => 'Jones',

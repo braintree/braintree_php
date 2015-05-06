@@ -222,8 +222,8 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testValidWithOAuthClientCredentials()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'client_id$development$integration_oauth_client_id',
-            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
 
         $config->assertHasClientCredentials();
@@ -236,7 +236,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testInvalidWithOAuthClientCredentials()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'client_id$development$integration_oauth_client_id'
+            'clientId' => 'client_id$development$integration_client_id'
         ));
 
         $config->assertHasClientCredentials();
@@ -245,8 +245,8 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testDetectEnvironmentFromClientId()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'client_id$development$integration_oauth_client_id',
-            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
 
         $this->assertEquals('development', $config->getEnvironment());
@@ -259,8 +259,8 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testDetectEnvironmentFromClientIdFail()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'client_id$sandbox$integration_oauth_client_id',
-            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+            'clientId' => 'client_id$sandbox$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
     }
 
@@ -271,15 +271,15 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testClientIdTypeFail()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'client_secret$development$integration_oauth_client_id',
-            'clientSecret' => 'client_secret$development$integration_oauth_client_secret'
+            'clientId' => 'client_secret$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
     }
 
     function testValidWithAccessToken()
     {
         $config = new Braintree_Configuration(array(
-            'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
+            'accessToken' => 'access_token$development$integration_merchant_id$integration_access_token',
         ));
 
         $config->assertHasAccessTokenOrKeys();
@@ -292,7 +292,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testInvalidAccessTokenType()
     {
         $config = new Braintree_Configuration(array(
-            'accessToken' => 'client_id$development$integration_merchant_id$integration_oauth_access_token',
+            'accessToken' => 'client_id$development$integration_merchant_id$integration_access_token',
         ));
     }
 
@@ -303,7 +303,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testInvalidAccessTokenSyntax()
     {
         $config = new Braintree_Configuration(array(
-            'accessToken' => 'client_id$development$integration_oauth_client_id',
+            'accessToken' => 'client_id$development$integration_client_id',
         ));
     }
 
@@ -314,7 +314,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testInvalidAccessTokenEnvironment()
     {
         $config = new Braintree_Configuration(array(
-            'accessToken' => 'access_token$invalid$integration_merchant_id$integration_oauth_access_token',
+            'accessToken' => 'access_token$invalid$integration_merchant_id$integration_access_token',
         ));
     }
 
@@ -322,9 +322,9 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testValidWithOAuthClientCredentialsAndAccessToken()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'client_id$development$integration_oauth_client_id',
-            'clientSecret' => 'client_secret$development$integration_oauth_client_secret',
-            'accessToken' => 'access_token$development$integration_merchant_id$integration_oauth_access_token',
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+            'accessToken' => 'access_token$development$integration_merchant_id$integration_access_token',
         ));
 
         $config->assertHasClientCredentials();
@@ -338,9 +338,9 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testInvalidEnvironmentWithOAuthClientCredentialsAndAccessToken()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'client_id$development$integration_oauth_client_id',
-            'clientSecret' => 'client_secret$development$integration_oauth_client_secret',
-            'accessToken' => 'access_token$sandbox$integration_merchant_id$integration_oauth_access_token',
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+            'accessToken' => 'access_token$sandbox$integration_merchant_id$integration_access_token',
         ));
     }
 
@@ -351,8 +351,8 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     function testCannotMixKeysWithOAuthCredentials()
     {
         $config = new Braintree_Configuration(array(
-            'clientId' => 'client_id$development$integration_oauth_client_id',
-            'clientSecret' => 'client_secret$development$integration_oauth_client_secret',
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',

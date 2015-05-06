@@ -8,6 +8,7 @@ set_include_path(
 require_once "Braintree.php";
 require_once "Braintree/CreditCardNumbers/CardTypeIndicators.php";
 require_once "Braintree/CreditCardDefaults.php";
+require_once "Braintree/OAuthTestHelper.php";
 
 function integrationMerchantConfig()
 {
