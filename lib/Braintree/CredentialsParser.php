@@ -40,6 +40,7 @@ class Braintree_CredentialsParser
      */
     private static $_validEnvironments = array(
         'development',
+        'integration',
         'sandbox',
         'production',
         'qa',

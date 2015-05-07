@@ -314,6 +314,7 @@ class Braintree_Configuration
              $serverName = 'api.sandbox.braintreegateway.com';
              break;
          case 'development':
+         case 'integration':
          default:
              $serverName = 'localhost';
              break;
@@ -335,6 +336,7 @@ class Braintree_Configuration
              $serverName = 'https://auth.sandbox.venmo.com';
              break;
          case 'development':
+         case 'integration':
          default:
              $serverName = 'http://auth.venmo.dev:9292';
              break;
@@ -354,6 +356,7 @@ class Braintree_Configuration
     public function sslOn()
     {
         switch($this->_environment) {
+         case 'integration':
          case 'development':
              $ssl = false;
              break;
