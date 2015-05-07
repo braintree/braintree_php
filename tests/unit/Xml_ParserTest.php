@@ -25,6 +25,21 @@ XML;
             array('dashEs' => '', 'underScores' => '')), $array);
     }
 
+    function testCustomFieldsUnderscore()
+    {
+        $xml =<<<XML
+        <root>
+          <custom-fields>
+            <with-dashes>convert to underscore</with-dashes>
+          </custom-fields>
+        </root>
+XML;
+
+        $array = Braintree_Xml::buildArrayFromXml($xml);
+        $this->assertEquals(array('root' =>
+            array('customFields' => array('with_dashes' => 'convert to underscore'))), $array);
+    }
+
     function testNullOrEmptyString()
     {
         $xml = <<<XML

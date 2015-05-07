@@ -1,11 +1,11 @@
 <?php
 /**
- * Braintree HTTP Client
- * processes Http requests using curl
+ * Braintree HTTP OAuth Client
+ * processes Http OAuth requests using curl
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Http extends Braintree_HttpBase
+class Braintree_HttpOAuth extends Braintree_HttpBase
 {
     protected $_config;
 
@@ -28,7 +28,7 @@ class Braintree_Http extends Braintree_HttpBase
     {
         $response = $this->_doRequest('GET', $path);
         if($response['status'] === 200) {
-            return Braintree_Xml::buildArrayFromXml($response['body']);
+            return Braintree_Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
         } else {
             Braintree_Util::throwStatusCodeException($response['status']);
         }
@@ -36,10 +36,11 @@ class Braintree_Http extends Braintree_HttpBase
 
     public function post($path, $params = null)
     {
-        $response = $this->_doRequest('POST', $path, $this->_buildXml($params));
+        $body = http_build_query(Braintree_Util::camelCaseToDelimiterArray($params, '_'));
+        $response = $this->_doRequest('POST', $path, $body);
         $responseCode = $response['status'];
-        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422) {
-            return Braintree_Xml::buildArrayFromXml($response['body']);
+        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
+            return Braintree_Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
         } else {
             Braintree_Util::throwStatusCodeException($responseCode);
         }
@@ -47,39 +48,29 @@ class Braintree_Http extends Braintree_HttpBase
 
     public function put($path, $params = null)
     {
-        $response = $this->_doRequest('PUT', $path, $this->_buildXml($params));
+        $body = http_build_query(Braintree_Util::camelCaseToDelimiterArray($params, '_'));
+        $response = $this->_doRequest('PUT', $path, $body);
         $responseCode = $response['status'];
-        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422) {
-            return Braintree_Xml::buildArrayFromXml($response['body']);
+        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
+            return Braintree_Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
         } else {
             Braintree_Util::throwStatusCodeException($responseCode);
         }
     }
 
-    private function _buildXml($params)
-    {
-        return empty($params) ? null : Braintree_Xml::buildXmlFromArray($params);
-    }
-
     protected function _getHeaders()
     {
         return array(
-            'Accept: application/xml',
-            'Content-Type: application/xml',
+            'Accept: application/json',
+            'Content-Type: application/x-www-form-urlencoded',
         );
     }
 
     protected function _getAuthorization()
     {
-        if ($this->_config->isAccessToken()) {
-            return array(
-                'token' => $this->_config->getAccessToken(),
-            );
-        } else {
-            return array(
-                'user' => $this->_config->getClientId(),
-                'password' => $this->_config->getClientSecret(),
-            );
-        }
+        return array(
+            'user' => $this->_config->getClientId(),
+            'password' => $this->_config->getClientSecret(),
+        );
     }
 }

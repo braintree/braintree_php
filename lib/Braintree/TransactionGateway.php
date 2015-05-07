@@ -23,6 +23,7 @@ final class Braintree_TransactionGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_config->assertHasAccessTokenOrKeys();
         $this->_http = new Braintree_Http($gateway->config);
     }
 

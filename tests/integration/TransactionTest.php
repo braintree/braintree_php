@@ -215,6 +215,37 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
     }
 
+    function testSaleWithAccessToken()
+    {
+        $credentials = Braintree_OAuthTestHelper::createCredentials(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+            'merchantId' => 'integration_merchant_id',
+        ));
+
+        $gateway = new Braintree_Gateway(array(
+            'accessToken' => $credentials->accessToken,
+        ));
+
+        $result = $gateway->transaction()->sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertNotNull($transaction->processorAuthorizationCode);
+        $this->assertEquals('510510', $transaction->creditCardDetails->bin);
+        $this->assertEquals('5100', $transaction->creditCardDetails->last4);
+        $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
+    }
+
     function testSaleWithRiskData()
     {
         $result = Braintree_Transaction::sale(array(
@@ -1160,6 +1191,24 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(new DateTime('2014-03-21'), $dispute->replyByDate);
         $this->assertEquals("disputedtransaction", $dispute->transactionDetails->id);
         $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
+    }
+
+    function testFindExposesThreeDSecureInfo()
+    {
+        $transaction = Braintree_Transaction::find("threedsecuredtransaction");
+
+        $info = $transaction->threeDSecureInfo;
+        $this->assertEquals("Y", $info->enrolled);
+        $this->assertEquals("authenticate_successful", $info->status);
+        $this->assertTrue($info->liabilityShifted);
+        $this->assertTrue($info->liabilityShiftPossible);
+    }
+
+    function testFindExposesNullThreeDSecureInfo()
+    {
+        $transaction = Braintree_Transaction::find("settledtransaction");
+
+        $this->assertNull($transaction->threeDSecureInfo);
     }
 
     function testFindExposesRetrievals()

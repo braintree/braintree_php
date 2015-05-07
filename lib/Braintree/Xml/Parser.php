@@ -28,15 +28,15 @@ class Braintree_Xml_Parser
     {
         // SimpleXML provides the root information on construct
         $iterator = new SimpleXMLIterator($xml);
-        $xmlRoot = Braintree_Util::delimiterToCamelCase($iterator->getName());
+        $xmlRoot = $iterator->getName();
         $type = $iterator->attributes()->type;
 
         self::$_xmlRoot = $iterator->getName();
         self::$_responseType = $type;
 
         // return the mapped array with the root element as the header
-        return array($xmlRoot => self::_iteratorToArray($iterator));
-
+        $array = array($xmlRoot => self::_iteratorToArray($iterator));
+        return Braintree_Util::delimiterToCamelCaseArray($array);
     }
 
     /**
@@ -69,17 +69,11 @@ class Braintree_Xml_Parser
             $parentElement = $iterator->xpath($iterator->key() . '/..');
             if ($parentElement[0] instanceof SimpleXMLIterator) {
                 $parentElement = $parentElement[0];
-                $parentKey = Braintree_Util::delimiterToCamelCase($parentElement->getName());
             } else {
                 $parentElement = null;
             }
 
-
-            if ($parentKey == "customFields") {
-                $key = Braintree_Util::delimiterToUnderscore($iterator->key());
-            } else {
-                $key = Braintree_Util::delimiterToCamelCase($iterator->key());
-            }
+            $key = $iterator->key();
 
             // process children recursively
             if ($iterator->hasChildren()) {
