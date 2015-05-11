@@ -42,4 +42,14 @@ class Braintree_CreditCardVerificationSearch
     static function createdAt() {
 	    return new Braintree_RangeNode("created_at");
     }
+
+    static function creditCardCardType()
+    {
+        return new Braintree_MultipleValueNode("credit_card_card_type", Braintree_CreditCard::allCardTypes());
+    }
+
+    static function status()
+    {
+        return new Braintree_MultipleValueNode("status", Braintree_Result_CreditCardVerification::allStatuses());
+    }
 }
