@@ -81,4 +81,14 @@ class Braintree_Result_CreditCardVerification
         return __CLASS__ . '[' .
                 Braintree_Util::attributesToString($this->_attributes) .']';
     }
+
+    public static function allStatuses()
+    {
+        return array(
+            Braintree_Result_creditCardVerification::FAILED,
+            Braintree_Result_creditCardVerification::GATEWAY_REJECTED,
+            Braintree_Result_creditCardVerification::PROCESSOR_DECLINED,
+            Braintree_Result_creditCardVerification::VERIFIED,
+        );
+    }
 }
