@@ -1,29 +1,37 @@
 <?php
 
+/**
+ * Base functionality for library classes
+ */
 abstract class Braintree_Base
 {
     /**
+     * Disable the default constructor
+     *
+     * Objects that inherit from Braintree_Base should be constructed with
+     * the static factory() method.
+     *
      * @ignore
-     * don't permit an explicit call of the constructor!
-     * (like $t = new Braintree_Transaction())
      */
     protected function __construct()
     {
     }
+
     /**
+     * Disable cloning of objects
+     *
      * @ignore
-     *  don't permit cloning the instances (like $x = clone $v)
      */
     protected function __clone()
     {
     }
 
     /**
-     * returns private/nonexistent instance properties
+     * Accessor for instance properties stored in the private $_attributes property
+     *
      * @ignore
-     * @access public
-     * @param string $name property name
-     * @return mixed contents of instance properties
+     * @param string $name
+     * @return mixed
      */
     public function __get($name)
     {
@@ -37,9 +45,10 @@ abstract class Braintree_Base
     }
 
     /**
-     * used by isset() and empty()
-     * @access public
-     * @param string $name property name
+     * Checks for the existance of a property stored in the private $_attributes property
+     *
+     * @ignore
+     * @param string $name
      * @return boolean
      */
     public function __isset($name)
@@ -47,6 +56,13 @@ abstract class Braintree_Base
         return array_key_exists($name, $this->_attributes);
     }
 
+    /**
+     * Mutator for instance properties stored in the private $_attributes property
+     *
+     * @ignore
+     * @param string $key
+     * @param mixed $value
+     */
     public function _set($key, $value)
     {
         $this->_attributes[$key] = $value;
