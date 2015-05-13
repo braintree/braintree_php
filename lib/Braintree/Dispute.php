@@ -14,7 +14,7 @@
  * @property-read string $disbursementDate
  * @property-read object $transactionDetails
  */
-final class Braintree_Dispute extends Braintree
+final class Braintree_Dispute extends Braintree_Base
 {
     protected $_attributes = array();
 

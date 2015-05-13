@@ -1,5 +1,5 @@
 <?php
-class Braintree_WebhookNotification extends Braintree
+class Braintree_WebhookNotification extends Braintree_Base
 {
     const SUBSCRIPTION_CANCELED = 'subscription_canceled';
     const SUBSCRIPTION_CHARGED_SUCCESSFULLY = 'subscription_charged_successfully';

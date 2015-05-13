@@ -1,5 +1,5 @@
 <?php
-class Braintree_ThreeDSecureInfo extends Braintree
+class Braintree_ThreeDSecureInfo extends Braintree_Base
 {
     public static function factory($attributes)
     {

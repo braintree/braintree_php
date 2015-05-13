@@ -28,7 +28,7 @@
  * @property-read string $updatedAt
  * @property-read string $website
  */
-class Braintree_Customer extends Braintree
+class Braintree_Customer extends Braintree_Base
 {
     public static function all()
     {

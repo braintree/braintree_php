@@ -1,5 +1,5 @@
 <?php
-final class Braintree_Disbursement extends Braintree
+final class Braintree_Disbursement extends Braintree_Base
 {
     private $_merchantAccount;
 

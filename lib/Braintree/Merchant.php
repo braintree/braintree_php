@@ -1,6 +1,6 @@
 <?php
 
-final class Braintree_Merchant extends Braintree
+final class Braintree_Merchant extends Braintree_Base
 {
     protected function _initialize($attribs)
     {

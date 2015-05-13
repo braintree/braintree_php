@@ -22,7 +22,7 @@
  * @property-read string $userName
  * @property-read string $userEmail
  */
-class Braintree_CoinbaseAccount extends Braintree
+class Braintree_CoinbaseAccount extends Braintree_Base
 {
     /**
      *  factory method: returns an instance of Braintree_CoinbaseAccount

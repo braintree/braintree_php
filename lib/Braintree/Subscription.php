@@ -11,7 +11,7 @@
  * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Subscription extends Braintree
+class Braintree_Subscription extends Braintree_Base
 {
     const ACTIVE = 'Active';
     const CANCELED = 'Canceled';

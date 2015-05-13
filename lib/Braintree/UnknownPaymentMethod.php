@@ -20,7 +20,7 @@
  * @property-read string $token
  * @property-read string $imageUrl
  */
-class Braintree_UnknownPaymentMethod extends Braintree
+class Braintree_UnknownPaymentMethod extends Braintree_Base
 {
 
 

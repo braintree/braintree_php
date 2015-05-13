@@ -18,7 +18,7 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  */
-class Braintree_PaymentMethod extends Braintree
+class Braintree_PaymentMethod extends Braintree_Base
 {
     // static methods redirecting to gateway
 

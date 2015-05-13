@@ -25,7 +25,7 @@
  * @property-read string $streetAddress
  * @property-read string $updatedAt
  */
-class Braintree_Address extends Braintree
+class Braintree_Address extends Braintree_Base
 {
     /**
      * returns false if comparing object is not a Braintree_Address,

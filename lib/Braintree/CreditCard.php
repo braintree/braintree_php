@@ -27,7 +27,7 @@
  * @property-read string $token
  * @property-read string $updatedAt
  */
-class Braintree_CreditCard extends Braintree
+class Braintree_CreditCard extends Braintree_Base
 {
     // Card Type
     const AMEX = 'American Express';
