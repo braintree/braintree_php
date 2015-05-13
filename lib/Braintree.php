@@ -22,6 +22,7 @@ require_once('Braintree/Address.php');
 require_once('Braintree/AddressGateway.php');
 require_once('Braintree/AddOn.php');
 require_once('Braintree/AddOnGateway.php');
+require_once('Braintree/AndroidPayCard.php');
 require_once('Braintree/ApplePayCard.php');
 require_once('Braintree/ClientToken.php');
 require_once('Braintree/ClientTokenGateway.php');

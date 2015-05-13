@@ -119,6 +119,29 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($applePayDetails->cardholderName);
     }
 
+    function testCreateTransactionUsingFakeAndroidPayNonce()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '47.00',
+            'paymentMethodNonce' => Braintree_Test_Nonces::$androidPay
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('47.00', $transaction->amount);
+        $androidPayCardDetails = $transaction->androidPayCardDetails;
+        $this->assertSame(Braintree_CreditCard::DISCOVER, $androidPayCardDetails->cardType);
+        $this->assertSame("1117", $androidPayCardDetails->last4);
+        $this->assertNull($androidPayCardDetails->token);
+        $this->assertSame(Braintree_CreditCard::DISCOVER, $androidPayCardDetails->virtualCardType);
+        $this->assertSame("1117", $androidPayCardDetails->virtualCardLast4);
+        $this->assertSame(Braintree_CreditCard::VISA, $androidPayCardDetails->sourceCardType);
+        $this->assertSame("1111", $androidPayCardDetails->sourceCardLast4);
+        $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
+        $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
+        $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
+    }
+
     function testCreateTransactionUsingFakeCoinbaseNonce()
     {
         $result = Braintree_Transaction::sale(array(

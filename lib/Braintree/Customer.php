@@ -175,6 +175,15 @@ class Braintree_Customer extends Braintree_Base
             }
         }
         $this->_set('applePayCards', $applePayCardArray);
+
+        // map each androidPayCard into its own object
+        $androidPayCardArray = array();
+        if (isset($customerAttribs['androidPayCards'])) {
+            foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
+                $androidPayCardArray[] = Braintree_AndroidPayCard::factory($androidPayCard);
+            }
+        }
+        $this->_set('androidPayCards', $androidPayCardArray);
     }
 
     /**
@@ -206,7 +215,7 @@ class Braintree_Customer extends Braintree_Base
      */
     public function paymentMethods()
     {
-        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts);
+        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards);
     }
 
     /**

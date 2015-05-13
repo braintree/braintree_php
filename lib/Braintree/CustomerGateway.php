@@ -439,6 +439,15 @@ class Braintree_CustomerGateway
             }
         }
         $this->_set('applePayCards', $applePayCardArray);
+
+        // map each androidPayCard into its own object
+        $androidPayCardArray = array();
+        if (isset($customerAttribs['androidPayCards'])) {
+            foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
+                $androidPayCardArray[] = Braintree_AndroidPayCard::factory($androidPayCard);
+            }
+        }
+        $this->_set('androidPayCards', $androidPayCardArray);
     }
 
     /**
@@ -470,13 +479,13 @@ class Braintree_CustomerGateway
      */
     public function paymentMethods()
     {
-        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards);
+        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->androidPayCards);
     }
 
     /**
      * returns the customer's default payment method
      *
-     * @return object Braintree_CreditCard or Braintree_PayPalAccount
+     * @return object Braintree_CreditCard | Braintree_PayPalAccount | Braintree_ApplePayCard | Braintree_AndroidPayCard
      */
     public function defaultPaymentMethod()
     {
