@@ -1,6 +1,6 @@
 <?php
 
-final class Braintree_MerchantAccount extends Braintree
+final class Braintree_MerchantAccount extends Braintree_Base
 {
     const STATUS_ACTIVE = 'active';
     const STATUS_PENDING = 'pending';

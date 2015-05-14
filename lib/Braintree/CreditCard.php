@@ -27,7 +27,7 @@
  * @property-read string $token
  * @property-read string $updatedAt
  */
-class Braintree_CreditCard extends Braintree
+class Braintree_CreditCard extends Braintree_Base
 {
     // Card Type
     const AMEX = 'American Express';
@@ -44,7 +44,7 @@ class Braintree_CreditCard extends Braintree
     const VISA = 'Visa';
     const UNKNOWN = 'Unknown';
 
-	// Credit card origination location
+    // Credit card origination location
 	const INTERNATIONAL = "international";
 	const US            = "us";
 
@@ -288,5 +288,24 @@ class Braintree_CreditCard extends Braintree
     public static function delete($token)
     {
         return Braintree_Configuration::gateway()->creditCard()->delete($token);
+    }
+
+    public static function allCardTypes()
+    {
+        return array(
+             Braintree_CreditCard::AMEX,
+             Braintree_CreditCard::CARTE_BLANCHE,
+             Braintree_CreditCard::CHINA_UNION_PAY,
+             Braintree_CreditCard::DINERS_CLUB_INTERNATIONAL,
+             Braintree_CreditCard::DISCOVER,
+             Braintree_CreditCard::JCB,
+             Braintree_CreditCard::LASER,
+             Braintree_CreditCard::MAESTRO,
+             Braintree_CreditCard::MASTER_CARD,
+             Braintree_CreditCard::SOLO,
+             Braintree_CreditCard::SWITCH_TYPE,
+             Braintree_CreditCard::VISA,
+             Braintree_CreditCard::UNKNOWN
+        );
     }
 }

@@ -22,7 +22,7 @@
  * @property-read string $paymentInstrumentName
  * @property-read string $updatedAt
  */
-class Braintree_ApplePayCard extends Braintree
+class Braintree_ApplePayCard extends Braintree_Base
 {
     // Card Type
     const AMEX = 'Apple Pay - American Express';

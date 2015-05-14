@@ -21,7 +21,7 @@
  * @property-read string $token
  * @property-read string $imageUrl
  */
-class Braintree_PayPalAccount extends Braintree
+class Braintree_PayPalAccount extends Braintree_Base
 {
     /**
      *  factory method: returns an instance of Braintree_PayPalAccount

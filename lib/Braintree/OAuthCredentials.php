@@ -7,7 +7,7 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  */
-class Braintree_OAuthCredentials extends Braintree
+class Braintree_OAuthCredentials extends Braintree_Base
 {
     protected function _initialize($attribs)
     {

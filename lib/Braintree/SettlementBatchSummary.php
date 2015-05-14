@@ -1,5 +1,5 @@
 <?php
-class Braintree_SettlementBatchSummary extends Braintree
+class Braintree_SettlementBatchSummary extends Braintree_Base
 {
     public static function factory($attributes)
     {

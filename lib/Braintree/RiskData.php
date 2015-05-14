@@ -1,5 +1,5 @@
 <?php
-class Braintree_RiskData extends Braintree
+class Braintree_RiskData extends Braintree_Base
 {
     public static function factory($attributes)
     {
