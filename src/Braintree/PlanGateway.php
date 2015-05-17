@@ -11,6 +11,7 @@ class PlanGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_config->assertHasAccessTokenOrKeys();
         $this->_http = new Http($gateway->config);
     }
 
@@ -18,15 +19,13 @@ class PlanGateway
     {
         $path = $this->_config->merchantPath().'/plans';
         $response = $this->_http->get($path);
+
         if (key_exists('plans', $response)) {
             $plans = array('plan' => $response['plans']);
         } else {
             $plans = array('plan' => array());
         }
 
-        return Util::extractAttributeAsArray(
-            $plans,
-            'plan'
-        );
+        return Util::extractAttributeAsArray($plans, 'plan');
     }
 }

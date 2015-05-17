@@ -82,7 +82,16 @@ class CreditCardVerification
      */
     public function __toString()
     {
-        return __CLASS__.'['.
-                Util::attributesToString($this->_attributes).']';
+        return __CLASS__.'['.Util::attributesToString($this->_attributes).']';
+    }
+
+    public static function allStatuses()
+    {
+        return array(
+            CreditCardVerification::FAILED,
+            CreditCardVerification::GATEWAY_REJECTED,
+            CreditCardVerification::PROCESSOR_DECLINED,
+            CreditCardVerification::VERIFIED
+        );
     }
 }

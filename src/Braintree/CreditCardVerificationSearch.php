@@ -3,50 +3,53 @@ namespace Braintree;
 
 class CreditCardVerificationSearch
 {
-    public static function id()
-    {
+    static function id() {
         return new TextNode('id');
     }
-    public static function creditCardCardholderName()
-    {
+
+    static function creditCardCardholderName() {
         return new TextNode('credit_card_cardholder_name');
     }
 
-    public static function creditCardExpirationDate()
-    {
+    static function billingAddressDetailsPostalCode() {
+        return new TextNode('billing_address_details_postal_code');
+    }
+
+    static function customerEmail() {
+        return new TextNode('customer_email');
+    }
+
+    static function customerId() {
+        return new TextNode('customer_id');
+    }
+
+    static function paymentMethodToken(){
+        return new TextNode('payment_method_token');
+    }
+
+    static function creditCardExpirationDate() {
         return new EqualityNode('credit_card_expiration_date');
     }
-    public static function creditCardNumber()
-    {
+
+    static function creditCardNumber() {
         return new PartialMatchNode('credit_card_number');
     }
 
-    public static function ids()
-    {
+    static function ids() {
         return new MultipleValueNode('ids');
     }
 
-    public static function creditCardCardType()
-    {
-        return new MultipleValueNode('credit_card_card_type', array(
-            CreditCard::AMEX,
-            CreditCard::CARTE_BLANCHE,
-            CreditCard::CHINA_UNION_PAY,
-            CreditCard::DINERS_CLUB_INTERNATIONAL,
-            CreditCard::DISCOVER,
-            CreditCard::JCB,
-            CreditCard::LASER,
-            CreditCard::MAESTRO,
-            CreditCard::MASTER_CARD,
-            CreditCard::SOLO,
-            CreditCard::SWITCH_TYPE,
-            CreditCard::VISA,
-            CreditCard::UNKNOWN,
-        ));
+    static function createdAt() {
+        return new RangeNode("created_at");
     }
 
-    public static function createdAt()
+    static function creditCardCardType()
     {
-        return new RangeNode('created_at');
+        return new MultipleValueNode("credit_card_card_type", CreditCard::allCardTypes());
+    }
+
+    static function status()
+    {
+        return new MultipleValueNode("status", Result\CreditCardVerification::allStatuses());
     }
 }

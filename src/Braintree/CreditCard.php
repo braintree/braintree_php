@@ -294,4 +294,23 @@ class CreditCard extends Braintree
     {
         return Configuration::gateway()->creditCard()->delete($token);
     }
+
+    public static function allCardTypes()
+    {
+        return array(
+            CreditCard::AMEX,
+            CreditCard::CARTE_BLANCHE,
+            CreditCard::CHINA_UNION_PAY,
+            CreditCard::DINERS_CLUB_INTERNATIONAL,
+            CreditCard::DISCOVER,
+            CreditCard::JCB,
+            CreditCard::LASER,
+            CreditCard::MAESTRO,
+            CreditCard::MASTER_CARD,
+            CreditCard::SOLO,
+            CreditCard::SWITCH_TYPE,
+            CreditCard::VISA,
+            CreditCard::UNKNOWN
+        );
+    }
 }

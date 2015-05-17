@@ -66,6 +66,30 @@ class CustomerTest extends Setup
         $this->assertNotNull($customer->merchantId);
     }
 
+    public function testCreateWithAccessToken()
+    {
+        $credentials = Test\Braintree\OAuthTestHelper::createCredentials(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+            'merchantId' => 'integration_merchant_id',
+        ));
+
+        $gateway = new Braintree\Gateway(array(
+            'accessToken' => $credentials->accessToken,
+        ));
+
+        $result = $gateway->customer()->create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals('Mike', $customer->firstName);
+        $this->assertEquals('Jones', $customer->lastName);
+        $this->assertNotNull($customer->merchantId);
+    }
+
+
     public function testCreateCustomerWithCardUsingNonce()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);

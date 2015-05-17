@@ -32,7 +32,8 @@ class GatewayTest extends Setup
         Braintree\Configuration::publicKey('integration_public_key');
         Braintree\Configuration::privateKey('integration_private_key');
 
-        new Braintree\Gateway(Braintree\Configuration::$global);
+        $gateway = new Braintree\Gateway(Braintree\Configuration::$global);
+        $gateway->addOn();
     }
 
     public function testConstructWithArrayOfCredentials()

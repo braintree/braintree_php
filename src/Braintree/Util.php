@@ -126,8 +126,11 @@ class Util
             'Braintree\AddressGateway' => 'address',
             'Braintree\SettlementBatchSummary' => 'settlementBatchSummary',
             'Braintree\SettlementBatchSummaryGateway' => 'settlementBatchSummary',
+            'Braintree\Merchant' => 'merchant',
+            'Braintree\MerchantGateway' => 'merchant',
             'Braintree\MerchantAccount' => 'merchantAccount',
             'Braintree\MerchantAccountGateway' => 'merchantAccount',
+            'Braintree\OAuthCredentials' => 'credentials',
             'Braintree\PayPalAccount' => 'paypalAccount',
             'Braintree\PayPalAccountGateway' => 'paypalAccount',
         );
@@ -209,6 +212,53 @@ class Util
         }
 
         return preg_replace_callback('/([A-Z])/', $callbacks[$delimiter], $string);
+    }
+
+    public static function delimiterToCamelCaseArray($array, $delimiter = '[\-\_]')
+    {
+        $converted = array();
+        foreach ($array as $key => $value) {
+            if (is_string($key)) {
+                $key = self::delimiterToCamelCase($key, $delimiter);
+            }
+
+            if (is_array($value)) {
+                // Make an exception for custom fields, which must be underscore (can't be
+                // camelCase).
+                if ($key === 'customFields') {
+                    $value = self::delimiterToUnderscoreArray($value);
+                } else {
+                    $value = self::delimiterToCamelCaseArray($value, $delimiter);
+                }
+            }
+            $converted[$key] = $value;
+        }
+        return $converted;
+    }
+
+    public static function camelCaseToDelimiterArray($array, $delimiter = '-')
+    {
+        $converted = array();
+        foreach ($array as $key => $value) {
+            if (is_string($key)) {
+                $key = self::camelCaseToDelimiter($key, $delimiter);
+            }
+            if (is_array($value)) {
+                $value = self::camelCaseToDelimiterArray($value, $delimiter);
+            }
+            $converted[$key] = $value;
+        }
+        return $converted;
+    }
+
+    public static function delimiterToUnderscoreArray($array)
+    {
+        $converted = array();
+        foreach ($array as $key => $value) {
+            $key = self::delimiterToUnderscore($key);
+            $converted[$key] = $value;
+        }
+        return $converted;
     }
 
     /**

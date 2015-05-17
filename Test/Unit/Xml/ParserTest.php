@@ -1,14 +1,14 @@
 <?php
-namespace Test\Unit;
+namespace Test\Unit\Xml;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(dirname(__DIR__)).'/Setup.php';
 
 use DateTime;
 use DateTimeZone;
 use Test\Setup;
 use Braintree;
 
-class Xml_ParserTest extends Setup
+class ParserTest extends Setup
 {
     public function testTypeCastIntegers()
     {
@@ -27,6 +27,21 @@ XML;
 
         $array = Braintree\Xml::buildArrayFromXml($xml);
         $this->assertEquals(array('root' => array('dashEs' => '', 'underScores' => '')), $array);
+    }
+
+    function testCustomFieldsUnderscore()
+    {
+        $xml =<<<XML
+        <root>
+          <custom-fields>
+            <with-dashes>convert to underscore</with-dashes>
+          </custom-fields>
+        </root>
+XML;
+
+        $array = Braintree\Xml::buildArrayFromXml($xml);
+        $this->assertEquals(array('root' =>
+            array('customFields' => array('with_dashes' => 'convert to underscore'))), $array);
     }
 
     public function testNullOrEmptyString()

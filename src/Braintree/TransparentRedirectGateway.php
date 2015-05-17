@@ -24,6 +24,7 @@ class TransparentRedirectGateway
 
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_config->assertHasAccessTokenOrKeys();
     }
 
     /**
@@ -230,12 +231,12 @@ class TransparentRedirectGateway
             $queryStringWithoutHash = $match[1];
         }
 
-        if ($params['http_status'] != '200') {
+        if (empty($params['http_status']) || ($params['http_status'] != '200')) {
             $message = null;
             if (array_key_exists('bt_message', $params)) {
                 $message = $params['bt_message'];
             }
-            Util::throwStatusCodeException($params['http_status'], $message);
+            Util::throwStatusCodeException(isset($params['http_status']) ? $params['http_status'] : null, $message);
         }
 
         // recreate the hash and compare it

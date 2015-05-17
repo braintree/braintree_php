@@ -31,6 +31,8 @@ class Generator
      */
     public static function arrayToXml($aData)
     {
+        $aData = Util::camelCaseToDelimiterArray($aData, '-');
+
         // set up the XMLWriter
         $writer = new XMLWriter();
         $writer->openMemory();
@@ -43,7 +45,7 @@ class Generator
         $aKeys = array_keys($aData);
         $rootElementName = $aKeys[0];
         // open the root element
-        $writer->startElement(Util::camelCaseToDelimiter($rootElementName));
+        $writer->startElement($rootElementName);
         // create the body
         self::_createElementsFromArray($writer, $aData[$rootElementName], $rootElementName);
 
@@ -76,9 +78,8 @@ class Generator
 
             return;
         }
-        foreach ($aData as $index => $element) {
-            // convert the style back to gateway format
-            $elementName = Util::camelCaseToDelimiter($index, '-');
+
+        foreach ($aData AS $elementName => $element) {
             // handle child elements
             $writer->startElement($elementName);
             if (is_array($element)) {

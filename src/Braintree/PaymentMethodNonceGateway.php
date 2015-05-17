@@ -43,4 +43,20 @@ class PaymentMethodNonceGateway
             'paymentMethodNonce'
         );
     }
+
+    /**
+     * @access public
+     *
+     */
+    public function find($nonce)
+    {
+        try {
+            $path = $this->_config->merchantPath().'/payment_method_nonces/'.$nonce;
+            $response = $this->_http->get($path);
+
+            return PaymentMethodNonce::factory($response['paymentMethodNonce']);
+        } catch (Exception\NotFound $e) {
+            throw new Exception\NotFound('payment method nonce with id '.$id.' not found');
+        }
+    }
 }

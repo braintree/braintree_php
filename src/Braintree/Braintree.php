@@ -1,23 +1,6 @@
 <?php
 namespace Braintree;
 
-function checkBraintreeDependencies()
-{
-    if (version_compare(PHP_VERSION, '5.2.1', '<')) {
-        throw new Exception('PHP version >= 5.2.1 required');
-    }
-
-    $requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
-
-    foreach ($requiredExtensions as $ext) {
-        if (!extension_loaded($ext)) {
-            throw new Exception('The Braintree library requires the '.$ext.' extension.');
-        }
-    }
-}
-
-checkBraintreeDependencies();
-
 /**
  * Braintree PHP Library.
  *
@@ -83,5 +66,22 @@ abstract class Braintree
     public function _set($key, $value)
     {
         $this->_attributes[$key] = $value;
+    }
+
+    public static function check()
+    {
+        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+            throw new Exception('PHP version >= 5.3.0 required');
+        }
+
+        $requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
+
+        foreach ($requiredExtensions as $ext) {
+            if (!extension_loaded($ext)) {
+                throw new Exception('The Braintree library requires the '.$ext.' extension.');
+            }
+        }
+
+        return 'Ok';
     }
 }

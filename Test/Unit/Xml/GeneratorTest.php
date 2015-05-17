@@ -1,12 +1,12 @@
 <?php
-namespace Test\Unit;
+namespace Test\Unit\Xml;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(dirname(__DIR__)).'/Setup.php';
 
 use Test\Setup;
 use Braintree;
 
-class Xml_GeneratorTest extends Setup
+class GeneratorTest extends Setup
 {
     public function testSetsTypeAttributeForBooleans()
     {
@@ -38,6 +38,24 @@ XML;
 XML;
         $xml = Braintree\Xml::buildXmlFromArray(array(
             'root' => array('stuff' => array('foo', 'bar')),
+        ));
+        $this->assertEquals($expected, $xml);
+    }
+
+    function testCreatesWithDashes()
+    {
+        $expected = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+ <some-stuff>
+  <inner-foo type="integer">42</inner-foo>
+  <bar-bar-bar type="integer">3</bar-bar-bar>
+ </some-stuff>
+</root>
+
+XML;
+        $xml = Braintree\Xml::buildXmlFromArray(array(
+            'root' => array('someStuff' => array('innerFoo' => 42, 'barBarBar' => 3))
         ));
         $this->assertEquals($expected, $xml);
     }

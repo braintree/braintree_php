@@ -26,6 +26,7 @@ final class TransactionGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_config->assertHasAccessTokenOrKeys();
         $this->_http = new Http($gateway->config);
     }
 

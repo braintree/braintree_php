@@ -2,10 +2,10 @@
 namespace Braintree;
 
 /**
- * Braintree Gateway module.
+ * Braintree Gateway module
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class Gateway
@@ -17,13 +17,8 @@ class Gateway
         if (is_array($config)) {
             $config = new Configuration($config);
         }
-        $config->assertValid();
-        $this->config = $config;
-    }
 
-    public function customer()
-    {
-        return new CustomerGateway($this);
+        $this->config = $config;
     }
 
     public function addOn()
@@ -51,14 +46,29 @@ class Gateway
         return new CreditCardVerificationGateway($this);
     }
 
+    public function customer()
+    {
+        return new CustomerGateway($this);
+    }
+
     public function discount()
     {
         return new DiscountGateway($this);
     }
 
+    public function merchant()
+    {
+        return new MerchantGateway($this);
+    }
+
     public function merchantAccount()
     {
         return new MerchantAccountGateway($this);
+    }
+
+    public function oauth()
+    {
+        return new OAuthGateway($this);
     }
 
     public function paymentMethod()

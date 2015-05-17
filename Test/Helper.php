@@ -52,14 +52,14 @@ class Helper
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array_merge($regularParams, array('tr_data' => $trData))));
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/x-www-form-urlencoded',
+            'Content-Type: application/x-www-form-urlencoded'
         ));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         curl_close($curl);
         preg_match('/Location: .*\?(.*)/i', $response, $match);
 
-        return trim($match[1]);
+        return $match ? trim($match[1]) : null;
     }
 
     public static function suppressDeprecationWarnings()

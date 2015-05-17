@@ -1,3 +1,11 @@
+## 2.40.0
+* Add missing criteria to credit card verification search
+* Bugfix for autoloading files with Composer
+
+## 2.39.0
+* Add oauth functionality
+* Add 3DS info to the server side
+
 ## 2.38.0
 * Update payment instrument types and test nonces
 * Add missing valid params to PaymentMethodGateway

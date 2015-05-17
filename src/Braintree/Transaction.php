@@ -342,6 +342,10 @@ final class Transaction extends Braintree
         if (isset($transactionAttribs['riskData'])) {
             $this->_set('riskData', RiskData::factory($transactionAttribs['riskData']));
         }
+
+        if (isset($transactionAttribs['threeDSecureInfo'])) {
+            $this->_set('threeDSecureInfo', ThreeDSecureInfo::factory($transactionAttribs['threeDSecureInfo']));
+        }
     }
 
     /**

@@ -34,14 +34,15 @@ class Parser
     {
         // SimpleXML provides the root information on construct
         $iterator = new SimpleXMLIterator($xml);
-        $xmlRoot = Util::delimiterToCamelCase($iterator->getName());
+        $xmlRoot = $iterator->getName();
         $type = $iterator->attributes()->type;
 
         self::$_xmlRoot = $iterator->getName();
         self::$_responseType = $type;
 
         // return the mapped array with the root element as the header
-        return array($xmlRoot => self::_iteratorToArray($iterator));
+        $array = array($xmlRoot => self::_iteratorToArray($iterator));
+        return Util::delimiterToCamelCaseArray($array);
     }
 
     /**
@@ -73,16 +74,11 @@ class Parser
             $parentElement = $iterator->xpath($iterator->key().'/..');
             if ($parentElement[0] instanceof SimpleXMLIterator) {
                 $parentElement = $parentElement[0];
-                $parentKey = Util::delimiterToCamelCase($parentElement->getName());
             } else {
                 $parentElement = null;
             }
 
-            if ($parentKey == 'customFields') {
-                $key = Util::delimiterToUnderscore($iterator->key());
-            } else {
-                $key = Util::delimiterToCamelCase($iterator->key());
-            }
+            $key = $iterator->key();
 
             // process children recursively
             if ($iterator->hasChildren()) {

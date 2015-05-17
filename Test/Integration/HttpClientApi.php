@@ -9,7 +9,7 @@ use Test;
 
 class HttpClientApi extends Braintree\Http
 {
-    private function _doRequest($httpVerb, $path, $requestBody = null)
+    protected function _doRequest($httpVerb, $path, $requestBody = null)
     {
         return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl().'/merchants/'.$this->_config->merchantId().$path, $requestBody);
     }

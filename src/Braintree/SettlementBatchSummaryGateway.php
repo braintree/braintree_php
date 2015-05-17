@@ -11,15 +11,18 @@ class SettlementBatchSummaryGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
+        $this->_config->assertHasAccessTokenOrKeys();
         $this->_http = new Http($gateway->config);
     }
 
     public function generate($settlement_date, $groupByCustomField = null)
     {
         $criteria = array('settlement_date' => $settlement_date);
+
         if (isset($groupByCustomField)) {
             $criteria['group_by_custom_field'] = $groupByCustomField;
         }
+
         $params = array('settlement_batch_summary' => $criteria);
         $path = $this->_config->merchantPath().'/settlement_batch_summary';
         $response = $this->_http->post($path, $params);
