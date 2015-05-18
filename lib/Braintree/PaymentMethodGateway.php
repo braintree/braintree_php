@@ -72,6 +72,36 @@ class Braintree_PaymentMethodGateway
 
     }
 
+    /**
+     * Convert a payment method nonce to a payment method
+     *
+     * @access public
+     * @param string $nonce payment method nonce
+     * @return object Braintree_CreditCard|Braintree_PayPalAccount
+     * @throws Braintree_Exception_NotFound
+     */
+    public function fromNonce($nonce)
+    {
+        $this->_validateId($nonce, "nonce");
+        try {
+            $path = $this->_config->merchantPath() . '/payment_methods/from_nonce/' . $nonce;
+            $response = $this->_http->get($path);
+            if (isset($response['creditCard']))
+                return Braintree_CreditCard::factory($response['creditCard']);
+            elseif (isset($response['payPalAccount']))
+                return Braintree_PayPalAccount::factory($response['payPalAccount']);
+            else
+                throw new Braintree_Exception_NotFound(
+                    'no payment method with nonce ' . $nonce . ' found'
+                );
+        } catch (Braintree_Exception_NotFound $e) {
+            throw new Braintree_Exception_NotFound(
+                'payment method with nonce ' . $nonce . ' locked, consumed or not found'
+            );
+        }
+
+    }
+
     public function update($token, $attribs)
     {
         Braintree_Util::verifyKeys(self::updateSignature(), $attribs);
