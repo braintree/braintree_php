@@ -1,3 +1,6 @@
+## 3.0.0
+* Deprecate PHP 5.2 and 5.3
+
 ## 2.40.0
 * Add missing criteria to credit card verification search
 * Bugfix for autoloading files with Composer
