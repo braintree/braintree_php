@@ -14,11 +14,13 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('integration_public_key|d9b899556c966b3f06945ec21311865d35df3ce4', $verificationString);
     }
 
+    /**
+     * @expectedException Braintree_Exception_InvalidChallenge
+     * @expectedExceptionMessage challenge contains non-hex characters
+     */
     function testVerifyRaisesErrorWithInvalidChallenge()
     {
-        $this->setExpectedException('Braintree_Exception_InvalidChallenge', 'challenge contains non-hex characters');
-
-        $verificationString = Braintree_WebhookNotification::verify('GOODBYECRUELWORLD');
+        Braintree_WebhookNotification::verify('GOODBYECRUELWORLD');
     }
 
     function testSampleNotificationReturnsAParsableNotification()
