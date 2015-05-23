@@ -53,6 +53,16 @@ if ($result->success) {
 
  * [Official documentation](https://developers.braintreepayments.com/php/sdk/server/overview)
 
+## Testing
+
+Tests are written in PHPunit (installed by composer). Unit tests should run on
+any system meeting the base requirements:
+
+    phpunit tests/unit/
+
+Please note that the integration tests require access to services internal to 
+Braintree, and so will not run in your test environment.
+
 ## Open Source Attribution
 
 A list of open source projects that help power Braintree can be found [here](https://www.braintreepayments.com/developers/open-source).
