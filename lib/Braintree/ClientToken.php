@@ -7,11 +7,21 @@ class Braintree_ClientToken
 
     // static methods redirecting to gateway
 
+    /**
+     * 
+     * @param array $params
+     * @return array
+     */
     public static function generate($params=array())
     {
         return Braintree_Configuration::gateway()->clientToken()->generate($params);
     }
 
+    /**
+     * 
+     * @param type $params
+     * @throws InvalidArgumentException
+     */
     public static function conditionallyVerifyKeys($params)
     {
         return Braintree_Configuration::gateway()->clientToken()->conditionallyVerifyKeys($params);
