@@ -13,10 +13,28 @@
  */
 class Braintree_AddressGateway
 {
+    /**
+     *
+     * @var Braintree_Gateway
+     */
     private $_gateway;
+    
+    /**
+     *
+     * @var Braintree_Configuration
+     */
     private $_config;
+    
+    /**
+     *
+     * @var Braintree_Http
+     */
     private $_http;
 
+    /**
+     * 
+     * @param Braintree_Gateway $gateway
+     */
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -265,7 +283,7 @@ class Braintree_AddressGateway
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
+     * @return object Result_Successful|Result_Error
      * @throws Braintree_Exception_Unexpected
      */
     private function _verifyGatewayResponse($response)
