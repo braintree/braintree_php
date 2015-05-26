@@ -20,7 +20,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
      */
     function testVerifyRaisesErrorWithInvalidChallenge()
     {
-        Braintree_WebhookNotification::verify('goodbye cruel world');
+        Braintree_WebhookNotification::verify('bad challenge');
     }
 
     function testSampleNotificationReturnsAParsableNotification()
