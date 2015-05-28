@@ -49,6 +49,74 @@ if ($result->success) {
 ?>
 ```
 
+## Looping Through Collections of Objects
+Iterating through the results of a transaction or customer search will fetch the individual object details.
+
+```php
+<?php
+
+//Lets get some details for all of the sales that took place in the past 2 days.
+$now = new Datetime();
+$past = clone $now;
+$past = $past->modify("-2 days");
+
+//lookup up a collection of sale transactions.
+$collection = Braintree_Transaction::search(array(
+  Braintree_TransactionSearch::createdAt()->between($past, $now),
+  Braintree_TransactionSearch::type()->is(Braintree_Transaction::SALE)
+));
+
+//loop throgh the collection to get access to individual transation objects.
+foreach ($collection as $transaction) {
+    print_r("transactionId ". $transaction->id . "\n");
+    print_r("firstName: " . $transaction->customerDetails->firstName . "\n");
+    print_r("amount: $" . $transaction->amount . "\n");
+    print_r("paymentInstrument: " . $transaction->paymentInstrumentType . "\n ");
+}
+
+?>
+```
+## Finding Customer Payment Methods
+If you offer multiple payment types. E.G. CreditCards, PayPal, and Apple Pay. You can use the paymentMethods() lookup to find all options easily. 
+
+```php
+<?php
+
+// Load up a customer with multiple saved paymentMethods.
+$customer = Braintree_Customer::find('a_customer_id');
+
+// Loop throgh all of the payment methods of different types stored for user
+foreach ($customer->paymentMethods() as $paymentMethod) {
+
+    // All paymentMethod types can return basic fields consistently
+    print_r("token: ". $paymentMethod->token . "\n");
+    print_r("isDefault: " . $paymentMethod->isDefault() . "\n ");
+    print_r("image: <img src=\"" . $paymentMethod->imageUrl . "\"/>\n ");
+    
+    // Some simple logic can be used to find a label to put beside the image.
+    print_r("accountIdentifier: " . getAccountIdentifier ($paymentMethod). "\n ");
+
+}
+
+// This function helps us get a label across different object types.
+function getAccountIdentifier ($paymentMethod){
+
+  // We can use the class to determine the type of paymentObject.
+  switch (get_class($paymentMethod)) { 
+    case "Braintree_CreditCard":
+        return $paymentMethod->maskedNumber;
+    case "Braintree_PayPalAccount":
+        return $paymentMethod->email;
+    case "Braintree_ApplePayCard":
+        return $paymentMethod->paymentInstrumentName;
+    case "Braintree_EuropeBankAccount":
+        return $paymentMethod->maskedIban;
+  }
+
+}
+
+?>
+```
 ## Documentation
 
  * [Official documentation](https://developers.braintreepayments.com/php/sdk/server/overview)
