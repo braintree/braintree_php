@@ -28,8 +28,8 @@ class Braintree_SettlementBatchSummary extends Braintree_Base
     }
 
 
-    // static methods redirecting to gateway
     /**
+     * static method redirecting to gateway
      * 
      * @param string $settlement_date Date YYYY-MM-DD
      * @param string $groupByCustomField
