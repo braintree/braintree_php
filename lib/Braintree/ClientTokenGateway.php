@@ -2,10 +2,28 @@
 
 class Braintree_ClientTokenGateway
 {
+    /**
+     *
+     * @var Braintree_Gateway
+     */
     private $_gateway;
+    
+    /**
+     *
+     * @var Braintree_Configuration
+     */
     private $_config;
+    
+    /**
+     *
+     * @var Braintree_Http
+     */
     private $_http;
 
+    /**
+     * 
+     * @param Braintree_Gateway $gateway
+     */
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;

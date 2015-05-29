@@ -84,26 +84,58 @@ class Braintree_Address extends Braintree_Base
 
     // static methods redirecting to gateway
 
+    /**
+     * 
+     * @param array $attribs
+     * @return Braintree_Address
+     */
     public static function create($attribs)
     {
         return Braintree_Configuration::gateway()->address()->create($attribs);
     }
 
+    /**
+     * 
+     * @param array $attribs
+     * @return Braintree_Address
+     */
     public static function createNoValidate($attribs)
     {
         return Braintree_Configuration::gateway()->address()->createNoValidate($attribs);
     }
 
+    /**
+     * 
+     * @param Braintree_Customer|int $customerOrId
+     * @param int $addressId
+     * @throws InvalidArgumentException
+     * @return Braintree_Result_Successful
+     */
     public static function delete($customerOrId = null, $addressId = null)
     {
         return Braintree_Configuration::gateway()->address()->delete($customerOrId, $addressId);
     }
 
+    /**
+     * 
+     * @param Braintree_Customer|int $customerOrId
+     * @param int $addressId
+     * @throws Braintree_Exception_NotFound
+     * @return Braintree_Address
+     */
     public static function find($customerOrId, $addressId)
     {
         return Braintree_Configuration::gateway()->address()->find($customerOrId, $addressId);
     }
 
+    /**
+     * 
+     * @param Braintree_Customer|int $customerOrId
+     * @param int $addressId
+     * @param array $attributes
+     * @throws Braintree_Exception_Unexpected
+     * @return Braintree_Result_Successful|Braintree_Result_Error
+     */
     public static function update($customerOrId, $addressId, $attributes)
     {
         return Braintree_Configuration::gateway()->address()->update($customerOrId, $addressId, $attributes);

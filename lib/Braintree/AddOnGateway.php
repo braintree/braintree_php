@@ -34,7 +34,7 @@ class Braintree_AddOnGateway
 
     /**
      * 
-     * @return array
+     * @return Braintree_AddOn[]
      */
     public function all()
     {

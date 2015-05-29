@@ -15,7 +15,6 @@ class Braintree_SettlementBatchSummary extends Braintree_Base
 
     /**
      * @ignore
-     * 
      * @param array $attributes
      */
     protected function _initialize($attributes)

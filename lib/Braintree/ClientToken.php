@@ -27,11 +27,19 @@ class Braintree_ClientToken
         return Braintree_Configuration::gateway()->clientToken()->conditionallyVerifyKeys($params);
     }
 
+    /**
+     * 
+     * @return string client token retrieved from server
+     */
     public static function generateWithCustomerIdSignature()
     {
         return Braintree_Configuration::gateway()->clientToken()->generateWithCustomerIdSignature();
     }
 
+    /**
+     * 
+     * @return string client token retrieved from server
+     */
     public static function generateWithoutCustomerIdSignature()
     {
         return Braintree_Configuration::gateway()->clientToken()->generateWithoutCustomerIdSignature();
