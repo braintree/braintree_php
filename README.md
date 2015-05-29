@@ -49,6 +49,10 @@ if ($result->success) {
 ?>
 ```
 
+## Legacy PHP Support
+
+Version [2.40.0](https://github.com/braintree/braintree_php/releases/tag/2.40.0) is compatible with PHP 5.2 and 5.3. You can find it on our releases page.
+
 ## Documentation
 
  * [Official documentation](https://developers.braintreepayments.com/php/sdk/server/overview)
