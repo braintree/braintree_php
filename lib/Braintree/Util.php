@@ -267,8 +267,10 @@ class Braintree_Util
         // build a new array with joined keys and values
         $tmpArray = null;
         foreach ($array AS $key => $value) {
-                $tmpArray[] = $key . $separator . $value;
-
+            if ($value instanceof DateTime) {
+                $value = $value->format('r');
+            }
+            $tmpArray[] = $key . $separator . $value;
         }
         // implode and return the new array
         return (is_array($tmpArray)) ? implode($glue, $tmpArray) : false;
