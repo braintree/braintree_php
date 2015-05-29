@@ -102,6 +102,7 @@ class Braintree_CustomerGateway
     /**
      * create a customer from a TransparentRedirect operation
      *
+     * @deprecated since version 2.35.0
      * @access public
      * @param array $attribs
      * @return object
@@ -120,6 +121,7 @@ class Braintree_CustomerGateway
 
     /**
      *
+     * @deprecated since version 2.35.0
      * @access public
      * @param none
      * @return string
@@ -203,8 +205,9 @@ class Braintree_CustomerGateway
      * credit a customer for the passed transaction
      *
      * @access public
-     * @param array $attribs
-     * @return object Braintree_Result_Successful or Braintree_Result_Error
+     * @param int $customerId
+     * @param array $transactionAttribs
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     public function credit($customerId, $transactionAttribs)
     {
@@ -222,8 +225,9 @@ class Braintree_CustomerGateway
      * returns a Braintree_Transaction object on success
      *
      * @access public
-     * @param array $attribs
-     * @return object Braintree_Transaction
+     * @param int $customerId
+     * @param array $transactionAttribs
+     * @return Braintree_Transaction
      * @throws Braintree_Exception_ValidationError
      */
     public function creditNoValidate($customerId, $transactionAttribs)
@@ -288,7 +292,6 @@ class Braintree_CustomerGateway
      * For more detailed information and examples, see {@link http://www.braintreepayments.com/gateway/customer-api#searching http://www.braintreepaymentsolutions.com/gateway/customer-api}
      *
      * @param mixed $query search query
-     * @param array $options options such as page number
      * @return object Braintree_ResourceCollection
      * @throws InvalidArgumentException
      */
@@ -322,8 +325,8 @@ class Braintree_CustomerGateway
      * is the 2nd attribute. customerId is not sent in object context.
      *
      * @access public
-     * @param array $attributes
      * @param string $customerId (optional)
+     * @param array $attributes
      * @return object Braintree_Result_Successful or Braintree_Result_Error
      */
     public function update($customerId, $attributes)
@@ -345,8 +348,8 @@ class Braintree_CustomerGateway
      * returns a Braintree_Customer object on success
      *
      * @access public
-     * @param array $attributes
      * @param string $customerId
+     * @param array $attributes
      * @return object Braintree_Customer
      * @throws Braintree_Exception_ValidationsFailed
      */
@@ -357,8 +360,8 @@ class Braintree_CustomerGateway
     }
     /**
      *
+     * @deprecated since version 2.35.0
      * @access public
-     * @param none
      * @return string
      */
     public function updateCustomerUrl()
@@ -371,8 +374,9 @@ class Braintree_CustomerGateway
     /**
      * update a customer from a TransparentRedirect operation
      *
+     * @deprecated since version 2.35.0
      * @access public
-     * @param array $attribs
+     * @param string $queryString
      * @return object
      */
     public function updateFromTransparentRedirect($queryString)
