@@ -4,7 +4,7 @@ The Braintree PHP library provides integration access to the Braintree Gateway.
 
 ## Dependencies
 
-PHP version >= 5.2.1 required.
+PHP version >= 5.4.0 required.
 
 The following PHP extensions are required:
 
@@ -48,6 +48,10 @@ if ($result->success) {
 
 ?>
 ```
+
+## Legacy PHP Support
+
+Version [2.40.0](https://github.com/braintree/braintree_php/releases/tag/2.40.0) is compatible with PHP 5.2 and 5.3. You can find it on our releases page.
 
 ## Documentation
 
