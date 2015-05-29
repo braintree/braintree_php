@@ -1,5 +1,7 @@
 ## 3.0.0
 * Deprecate PHP 5.2 and 5.3
+* Validate webhook challenge payload
+* Bugfix for calling `__toString()` on objects that contain a `\DateTime`
 
 ## 2.40.0
 * Add missing criteria to credit card verification search
