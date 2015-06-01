@@ -75,10 +75,15 @@ class Braintree_Http extends Braintree_HttpBase
             return array(
                 'token' => $this->_config->getAccessToken(),
             );
-        } else {
+        } else if ($this->_config->isClientCredentials()) {
             return array(
                 'user' => $this->_config->getClientId(),
                 'password' => $this->_config->getClientSecret(),
+            );
+        } else {
+            return array(
+                'user' => $this->_config->getPublicKey(),
+                'password' => $this->_config->getPrivateKey(),
             );
         }
     }

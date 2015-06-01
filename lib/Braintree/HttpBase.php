@@ -31,7 +31,7 @@ abstract class Braintree_HttpBase
         if (isset($authorization['user'])) {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_USERPWD, $authorization['user'] . ':' . $authorization['password']);
-        } else if ($authorization['token']) {
+        } else if (isset($authorization['token'])) {
             $headers[] = 'Authorization: Bearer ' . $authorization['token'];
         }
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
