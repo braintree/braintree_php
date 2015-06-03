@@ -1,3 +1,6 @@
+## 3.0.1
+* Add support for Android Pay
+
 ## 3.0.0
 * Deprecate PHP 5.2 and 5.3
 * Validate webhook challenge payload

@@ -77,6 +77,29 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(intval($applePayCard->expirationYear) > 0);
     }
 
+    function testCreate_fromFakeAndroidPayNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree_Test_Nonces::$androidPay
+        ));
+
+        $this->assertTrue($result->success);
+        $androidPayCard = $result->paymentMethod;
+        $this->assertNotNull($androidPayCard->token);
+        $this->assertSame(Braintree_CreditCard::DISCOVER, $androidPayCard->virtualCardType);
+        $this->assertSame(Braintree_CreditCard::DISCOVER, $androidPayCard->cardType);
+        $this->assertSame("1117", $androidPayCard->virtualCardLast4);
+        $this->assertSame("1117", $androidPayCard->last4);
+        $this->assertSame(Braintree_CreditCard::VISA, $androidPayCard->sourceCardType);
+        $this->assertSame("1111", $androidPayCard->sourceCardLast4);
+        $this->assertTrue($androidPayCard->default);
+        $this->assertContains('android_pay', $androidPayCard->imageUrl);
+        $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
+        $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
+    }
+
     function testCreate_fromUnvalidatedCreditCardNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
@@ -617,6 +640,31 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Braintree_ApplePayCard', $foundApplePayCard);
         $this->assertTrue(intval($foundApplePayCard->expirationMonth) > 0);
         $this->assertTrue(intval($foundApplePayCard->expirationYear) > 0);
+    }
+
+    function testFind_returnsAndroidPayCards()
+    {
+        $paymentMethodToken = 'ANDROID-PAY-' . strval(rand());
+        $customer = Braintree_Customer::createNoValidate();
+        $nonce = Braintree_Test_Nonces::$androidPay;
+        Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'token' => $paymentMethodToken
+        ));
+
+        $foundAndroidPayCard = Braintree_PaymentMethod::find($paymentMethodToken);
+
+        $this->assertSame($paymentMethodToken, $foundAndroidPayCard->token);
+        $this->assertInstanceOf('Braintree_AndroidPayCard', $foundAndroidPayCard);
+        $this->assertSame(Braintree_CreditCard::DISCOVER, $foundAndroidPayCard->virtualCardType);
+        $this->assertSame("1117", $foundAndroidPayCard->virtualCardLast4);
+        $this->assertSame(Braintree_CreditCard::VISA, $foundAndroidPayCard->sourceCardType);
+        $this->assertSame("1111", $foundAndroidPayCard->sourceCardLast4);
+        $this->assertTrue($foundAndroidPayCard->default);
+        $this->assertContains('android_pay', $foundAndroidPayCard->imageUrl);
+        $this->assertTrue(intval($foundAndroidPayCard->expirationMonth) > 0);
+        $this->assertTrue(intval($foundAndroidPayCard->expirationYear) > 0);
     }
 
     function testFind_returnsCoinbaseAccounts()
