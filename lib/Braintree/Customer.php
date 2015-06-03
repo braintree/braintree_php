@@ -71,7 +71,7 @@ class Braintree_Customer extends Braintree_Base
     }
 
     /**
-     * @deprecated since version 2.35.0
+     * @deprecated since version 2.3.0
      * @param string $queryString
      * @return Braintree_Result_Successful
      */
@@ -81,7 +81,7 @@ class Braintree_Customer extends Braintree_Base
     }
 
     /**
-     * @deprecated since version 2.35.0
+     * @deprecated since version 2.3.0
      * @return string
      */
     public static function createCustomerUrl()
@@ -193,7 +193,7 @@ class Braintree_Customer extends Braintree_Base
 
     /**
      * 
-     * @deprecated since version 2.35.0
+     * @deprecated since version 2.3.0
      * @return string
      */
     public static function updateCustomerUrl()
@@ -203,7 +203,7 @@ class Braintree_Customer extends Braintree_Base
 
     /**
      * 
-     * @deprecated since version 2.35.0
+     * @deprecated since version 2.3.0
      * @param string $queryString
      * @return Braintree_Result_Successful|Braintree_Result_Error
      */

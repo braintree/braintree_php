@@ -102,7 +102,7 @@ class Braintree_CustomerGateway
     /**
      * create a customer from a TransparentRedirect operation
      *
-     * @deprecated since version 2.35.0
+     * @deprecated since version 2.3.0
      * @access public
      * @param array $attribs
      * @return object
@@ -121,7 +121,7 @@ class Braintree_CustomerGateway
 
     /**
      *
-     * @deprecated since version 2.35.0
+     * @deprecated since version 2.3.0
      * @access public
      * @param none
      * @return string
@@ -360,7 +360,7 @@ class Braintree_CustomerGateway
     }
     /**
      *
-     * @deprecated since version 2.35.0
+     * @deprecated since version 2.3.0
      * @access public
      * @return string
      */
@@ -374,7 +374,7 @@ class Braintree_CustomerGateway
     /**
      * update a customer from a TransparentRedirect operation
      *
-     * @deprecated since version 2.35.0
+     * @deprecated since version 2.3.0
      * @access public
      * @param string $queryString
      * @return object
