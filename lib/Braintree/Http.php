@@ -38,7 +38,7 @@ class Braintree_Http extends Braintree_HttpBase
     {
         $response = $this->_doRequest('POST', $path, $this->_buildXml($params));
         $responseCode = $response['status'];
-        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422) {
+        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode == 400) {
             return Braintree_Xml::buildArrayFromXml($response['body']);
         } else {
             Braintree_Util::throwStatusCodeException($responseCode);
@@ -49,7 +49,7 @@ class Braintree_Http extends Braintree_HttpBase
     {
         $response = $this->_doRequest('PUT', $path, $this->_buildXml($params));
         $responseCode = $response['status'];
-        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422) {
+        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode == 400) {
             return Braintree_Xml::buildArrayFromXml($response['body']);
         } else {
             Braintree_Util::throwStatusCodeException($responseCode);

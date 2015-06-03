@@ -4,9 +4,9 @@ class Braintree_OAuthTestHelper
 {
     public static function createGrant($gateway, $params)
     {
-        $http = new Braintree_HttpOAuth($gateway->config);
-        $response = $http->post('/oauth_testing/grants', $params);
-        return $response['code'];
+        $http = new Braintree_Http($gateway->config);
+        $response = $http->post('/oauth_testing/grants', array('grant' => $params));
+        return $response['grant']['code'];
     }
 
     public static function createCredentials($params)

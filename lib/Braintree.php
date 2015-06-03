@@ -47,7 +47,6 @@ require_once('Braintree/Exception.php');
 require_once('Braintree/Gateway.php');
 require_once('Braintree/HttpBase.php');
 require_once('Braintree/Http.php');
-require_once('Braintree/HttpOAuth.php');
 require_once('Braintree/KeyValueNode.php');
 require_once('Braintree/Merchant.php');
 require_once('Braintree/MerchantGateway.php');
