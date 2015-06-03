@@ -17,7 +17,7 @@ class Braintree_OAuthGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
-        $this->_http = new Braintree_HttpOAuth($gateway->config);
+        $this->_http = new Braintree_Http($gateway->config);
 
         $this->_config->assertHasClientCredentials();
     }
@@ -25,21 +25,27 @@ class Braintree_OAuthGateway
     public function createTokenFromCode($params)
     {
         $params['grantType'] = "authorization_code";
-        $response = $this->_http->post('/oauth/access_tokens', $params);
-        return $this->_verifyGatewayResponse($response);
+        return $this->_createToken($params);
     }
 
     public function createTokenFromRefreshToken($params)
     {
         $params['grantType'] = "refresh_token";
+        return $this->_createToken($params);
+    }
+
+    private function _createToken($params)
+    {
+        $params = array('credentials' => $params);
         $response = $this->_http->post('/oauth/access_tokens', $params);
         return $this->_verifyGatewayResponse($response);
     }
 
     private function _verifyGatewayResponse($response)
     {
-        $result = Braintree_OAuthCredentials::factory($response);
-        $result->success = !isset($response['error']);
+        $credentials = $response['credentials'];
+        $result = Braintree_OAuthCredentials::factory($credentials);
+        $result->success = !isset($credentials['error']);
         return $result;
     }
 
