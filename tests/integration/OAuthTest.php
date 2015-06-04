@@ -39,7 +39,24 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($result->expiresAt);
     }
 
-    function testCreateTokenFromCodeFail()
+    function testCreateTokenFromCode_ValidationError()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+        $result = $gateway->oauth()->createTokenFromCode(array(
+            'code' => 'bad_code',
+            'scope' => 'read_write',
+        ));
+
+        $this->assertEquals(false, $result->success);
+        $errors = $result->errors->forKey('credentials')->onAttribute('code');
+        $this->assertEquals(Braintree_Error_Codes::OAUTH_INVALID_GRANT, $errors[0]->code);
+        $this->assertEquals(1, preg_match('/Invalid grant: code not found/', $result->message));
+    }
+
+    function testCreateTokenFromCode_OldError()
     {
         $gateway = new Braintree_Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
