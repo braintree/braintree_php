@@ -94,6 +94,7 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
           'creditCardCardholderName' => "Tom Smith",
           'creditCardExpirationDate' => "05/2012",
           'creditCardNumber' => Braintree_Test_CreditCardNumbers::$visa,
+          'creditCardUniqueIdentifier' => $transaction->creditCardDetails->uniqueNumberIdentifier,
           'customerCompany' => "Braintree",
           'customerEmail' => "smith@example.com",
           'customerFax' => "5551231234",
@@ -113,7 +114,8 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
           'shippingLocality' => "Braintree",
           'shippingPostalCode' => "54321",
           'shippingRegion' => "MA",
-          'shippingStreetAddress' => "456 Road"
+          'shippingStreetAddress' => "456 Road",
+          'user' => "integration_user_public_id"
         );
 
         $query = array(Braintree_TransactionSearch::id()->is($transaction->id));
@@ -308,6 +310,60 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
             Braintree_TransactionSearch::createdUsing()->in(array(Braintree_Transaction::TOKEN))
         ));
         $this->assertEquals(0, $collection->maximumCount());
+    }
+
+    function test_multipleValueNode_paymentInstrumentType_is_creditCard()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012'
+            )
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::paymentInstrumentType()->is("CreditCardDetail")
+        ));
+
+
+        $this->assertEquals($transaction->paymentInstrumentType, "credit_card");
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function test_multipleValueNode_paymentInstrumentType_is_paypal()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => Braintree_Test_Nonces::$paypalOneTimePayment
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::paymentInstrumentType()->is("PayPalDetail")
+        ));
+
+
+        $this->assertEquals($transaction->paymentInstrumentType, Braintree_PaymentInstrumentType::PAYPAL_ACCOUNT);
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    function test_multipleValueNode_paymentInstrumentType_is_applepay()
+    {
+        $transaction = Braintree_Transaction::saleNoValidate(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => Braintree_Test_Nonces::$applePayVisa
+        ));
+
+        $collection = Braintree_Transaction::search(array(
+            Braintree_TransactionSearch::id()->is($transaction->id),
+            Braintree_TransactionSearch::paymentInstrumentType()->is("ApplePayDetail")
+        ));
+
+
+        $this->assertEquals($transaction->paymentInstrumentType, Braintree_PaymentInstrumentType::APPLE_PAY_CARD);
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
     }
 
     function test_multipleValueNode_createdUsing_allowedValues()

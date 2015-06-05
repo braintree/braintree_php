@@ -37,12 +37,16 @@ class Braintree_TransactionSearch
 	static function paypalPaymentId()            { return new Braintree_TextNode('paypal_payment_id'); }
 	static function paypalAuthorizationId()      { return new Braintree_TextNode('paypal_authorization_id'); }
 	static function paypalPayerEmail()           { return new Braintree_TextNode('paypal_payer_email'); }
+	static function creditCardUniqueIdentifier() { return new Braintree_TextNode('credit_card_unique_identifier'); }
 
-	static function creditCardExpirationDate()   { return new Braintree_EqualityNode('credit_card_expiration_date'); }
+	static function user()                       { return new Braintree_MultipleValueNode('user'); }
+	static function paymentInstrumentType()      { return new Braintree_MultipleValueNode('paymentInstrumentType'); }
+
+    static function creditCardExpirationDate()   { return new Braintree_EqualityNode('credit_card_expiration_date'); }
 
 	static function creditCardNumber()           { return new Braintree_PartialMatchNode('credit_card_number'); }
 
-	static function refund()                     { return new Braintree_KeyValueNode("refund"); }
+    static function refund()                     { return new Braintree_KeyValueNode("refund"); }
 
 	static function amount()                     { return new Braintree_RangeNode("amount"); }
 	static function authorizedAt()               { return new Braintree_RangeNode("authorizedAt"); }

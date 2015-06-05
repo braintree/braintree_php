@@ -9,6 +9,7 @@ require_once "Braintree.php";
 require_once "Braintree/CreditCardNumbers/CardTypeIndicators.php";
 require_once "Braintree/CreditCardDefaults.php";
 require_once "Braintree/OAuthTestHelper.php";
+require_once "Braintree/PaymentInstrumentType.php";
 
 function integrationMerchantConfig()
 {
