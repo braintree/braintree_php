@@ -8,7 +8,7 @@ use Braintree\PaymentMethod;
 use Braintree\Subscription;
 use Braintree\Test\Nonces;
 use Braintree\Transaction;
-use TestHelper;
+use Braintree\Tests\TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';

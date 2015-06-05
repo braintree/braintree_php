@@ -16,11 +16,11 @@ use Braintree\Test\CreditCardNumbers;
 use Braintree\Test\Nonces;
 use Braintree\Test\TransactionAmounts;
 use Braintree\Test\VenmoSdk;
+use Braintree\Tests\Braintree\CreditCardNumbers\CardTypeIndicators;
 use Braintree\Transaction;
 use Braintree\TransparentRedirect;
-use CreditCardNumbers_CardTypeIndicators;
-use OAuthTestHelper;
-use TestHelper;
+use Braintree\Tests\Braintree\OAuthTestHelper;
+use Braintree\Tests\TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
@@ -2089,7 +2089,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $transaction = Transaction::saleNoValidate(array(
             'amount'     => '100.00',
             'creditCard' => array(
-                'number'         => CreditCardNumbers_CardTypeIndicators::PREPAID,
+                'number'         => CardTypeIndicators::PREPAID,
                 'expirationDate' => '05/12',
             )
         ));
@@ -2099,7 +2099,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $prepaid_card_transaction = Transaction::saleNoValidate(array(
             'amount'     => '100.00',
             'creditCard' => array(
-                'number'         => CreditCardNumbers_CardTypeIndicators::COMMERCIAL,
+                'number'         => CardTypeIndicators::COMMERCIAL,
                 'expirationDate' => '05/12',
             )
         ));
@@ -2109,7 +2109,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $transaction = Transaction::saleNoValidate(array(
             'amount'     => '100.00',
             'creditCard' => array(
-                'number'         => CreditCardNumbers_CardTypeIndicators::PAYROLL,
+                'number'         => CardTypeIndicators::PAYROLL,
                 'expirationDate' => '05/12',
             )
         ));
@@ -2119,7 +2119,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $transaction = Transaction::saleNoValidate(array(
             'amount'     => '100.00',
             'creditCard' => array(
-                'number'         => CreditCardNumbers_CardTypeIndicators::HEALTHCARE,
+                'number'         => CardTypeIndicators::HEALTHCARE,
                 'expirationDate' => '05/12',
             )
         ));
@@ -2129,7 +2129,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $transaction = Transaction::saleNoValidate(array(
             'amount'     => '100.00',
             'creditCard' => array(
-                'number'         => CreditCardNumbers_CardTypeIndicators::DURBIN_REGULATED,
+                'number'         => CardTypeIndicators::DURBIN_REGULATED,
                 'expirationDate' => '05/12',
             )
         ));
@@ -2139,7 +2139,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $transaction = Transaction::saleNoValidate(array(
             'amount'     => '100.00',
             'creditCard' => array(
-                'number'         => CreditCardNumbers_CardTypeIndicators::DEBIT,
+                'number'         => CardTypeIndicators::DEBIT,
                 'expirationDate' => '05/12',
             )
         ));
@@ -2149,7 +2149,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $transaction = Transaction::saleNoValidate(array(
             'amount'     => '100.00',
             'creditCard' => array(
-                'number'         => CreditCardNumbers_CardTypeIndicators::ISSUING_BANK,
+                'number'         => CardTypeIndicators::ISSUING_BANK,
                 'expirationDate' => '05/12',
             )
         ));
@@ -2159,7 +2159,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $transaction = Transaction::saleNoValidate(array(
             'amount'     => '100.00',
             'creditCard' => array(
-                'number'         => CreditCardNumbers_CardTypeIndicators::COUNTRY_OF_ISSUANCE,
+                'number'         => CardTypeIndicators::COUNTRY_OF_ISSUANCE,
                 'expirationDate' => '05/12',
             )
         ));

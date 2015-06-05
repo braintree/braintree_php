@@ -2,7 +2,7 @@
 
 use Braintree\Gateway;
 use Braintree\MerchantAccount;
-use TestHelper;
+use Braintree\Tests\TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
@@ -99,7 +99,7 @@ class MerchantAccountTest extends \PHPUnit_Framework_TestCase
     function testCreateWithId()
     {
         $rand = rand(1, 1000);
-        $subMerchantAccountId = "sub_merchant_account_id" + $rand;
+        $subMerchantAccountId = "sub_merchant_account_id" . $rand;
         $validParamsWithId = self::$validParams;
         $validParamsWithId['id'] = $subMerchantAccountId;
         $result = MerchantAccount::create($validParamsWithId);
@@ -107,7 +107,7 @@ class MerchantAccountTest extends \PHPUnit_Framework_TestCase
         $merchantAccount = $result->merchantAccount;
         $this->assertEquals(MerchantAccount::STATUS_PENDING, $merchantAccount->status);
         $this->assertEquals("sandbox_master_merchant_account", $merchantAccount->masterMerchantAccount->id);
-        $this->assertEquals("sub_merchant_account_id" + $rand, $merchantAccount->id);
+        $this->assertEquals("sub_merchant_account_id" . $rand, $merchantAccount->id);
     }
 
     function testFailedCreate()

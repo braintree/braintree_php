@@ -10,7 +10,7 @@ use Braintree\Test\VenmoSdk;
 use Braintree\Transaction;
 use Braintree\TransparentRedirect;
 use OAuthTestHelper;
-use TestHelper;
+use Braintree\Tests\TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';

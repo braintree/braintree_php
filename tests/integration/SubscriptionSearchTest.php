@@ -3,7 +3,7 @@
 use Braintree\Http;
 use Braintree\Subscription;
 use Braintree\SubscriptionSearch;
-use TestHelper;
+use Braintree\Tests\TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';

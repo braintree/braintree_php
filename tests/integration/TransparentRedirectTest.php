@@ -6,7 +6,7 @@ use Braintree\Customer;
 use Braintree\Gateway;
 use Braintree\Transaction;
 use Braintree\TransparentRedirect;
-use TestHelper;
+use Braintree\Tests\TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 

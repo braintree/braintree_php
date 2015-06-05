@@ -5,7 +5,7 @@ use Braintree\Configuration;
 use Braintree\CreditCard;
 use Braintree\Customer;
 use Braintree\Gateway;
-use TestHelper;
+use Braintree\Tests\TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';

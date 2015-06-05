@@ -9,7 +9,7 @@ use Braintree\Gateway;
 use Braintree\PaymentMethod;
 use Braintree\PayPalAccount;
 use Braintree\Subscription;
-use TestHelper;
+use Braintree\Tests\TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';

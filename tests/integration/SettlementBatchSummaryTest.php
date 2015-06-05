@@ -5,7 +5,7 @@ use Braintree\Error\Codes;
 use Braintree\Gateway;
 use Braintree\SettlementBatchSummary;
 use Braintree\Transaction;
-use TestHelper;
+use Braintree\Tests\TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 

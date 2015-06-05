@@ -2,7 +2,7 @@
 
 use Braintree\Configuration;
 use Braintree\Http;
-use TestHelper;
+use Braintree\Tests\TestHelper;
 
 class HttpClientApi extends Http
 {

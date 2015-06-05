@@ -104,7 +104,7 @@ class TestHelper
 
     public static function assertPrintable($object)
     {
-        " " . $object;
+        return " " . $object;
     }
 
     public static function settle($transactionId)

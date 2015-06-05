@@ -1,4 +1,5 @@
-<?php
+<?php namespace Braintree\Tests\Braintree;
+
 
 use Braintree\Gateway;
 use Braintree\HttpOAuth;

@@ -5,12 +5,13 @@ use Braintree\Configuration;
 use Braintree\CreditCard;
 use Braintree\Customer;
 use Braintree\Gateway;
+use Braintree\Result\CreditCardVerification;
 use Braintree\Subscription;
 use Braintree\Test\VenmoSdk;
+use Braintree\Tests\Braintree\CreditCardNumbers\CardTypeIndicators;
+use Braintree\Tests\TestHelper;
 use Braintree\Transaction;
 use Braintree\TransparentRedirect;
-use CreditCardNumbers_CardTypeIndicators;
-use TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
@@ -187,7 +188,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
             'options'        => array('verifyCard' => true)
         ));
         $this->assertFalse($result->success);
-        $this->assertEquals(Result_CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals(CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
         $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
         $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
         $this->assertEquals('I', $result->creditCardVerification->cvvResponseCode);
@@ -221,7 +222,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
             'options'        => array('verifyCard' => true, 'verificationAmount' => '1.02')
         ));
         $this->assertFalse($result->success);
-        $this->assertEquals(Result_CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals(CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
         $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
         $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
         $this->assertEquals('I', $result->creditCardVerification->cvvResponseCode);
@@ -244,7 +245,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
             )
         ));
         $this->assertFalse($result->success);
-        $this->assertEquals(Result_CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals(CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
         $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
         $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
         $this->assertEquals('I', $result->creditCardVerification->cvvResponseCode);
@@ -897,7 +898,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
             'options'        => array('verifyCard' => true)
         ));
         $this->assertFalse($result->success);
-        $this->assertEquals(Result_CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals(CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
         $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
         $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
         $this->assertEquals('I', $result->creditCardVerification->cvvResponseCode);
@@ -926,7 +927,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
             )
         ));
         $this->assertFalse($result->success);
-        $this->assertEquals(Result_CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals(CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
         $this->assertEquals(TestHelper::nonDefaultMerchantAccountId(),
             $result->creditCardVerification->merchantAccountId);
     }
@@ -1168,7 +1169,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         $result = CreditCard::create(array(
             'customerId'     => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number'         => CreditCardNumbers_CardTypeIndicators::PREPAID,
+            'number'         => CardTypeIndicators::PREPAID,
             'expirationDate' => '05/12',
             'options'        => array('verifyCard' => true)
         ));
@@ -1181,7 +1182,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         $result = CreditCard::create(array(
             'customerId'     => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number'         => CreditCardNumbers_CardTypeIndicators::COMMERCIAL,
+            'number'         => CardTypeIndicators::COMMERCIAL,
             'expirationDate' => '05/12',
             'options'        => array('verifyCard' => true)
         ));
@@ -1194,7 +1195,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         $result = CreditCard::create(array(
             'customerId'     => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number'         => CreditCardNumbers_CardTypeIndicators::DEBIT,
+            'number'         => CardTypeIndicators::DEBIT,
             'expirationDate' => '05/12',
             'options'        => array('verifyCard' => true)
         ));
@@ -1207,7 +1208,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         $result = CreditCard::create(array(
             'customerId'     => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number'         => CreditCardNumbers_CardTypeIndicators::PAYROLL,
+            'number'         => CardTypeIndicators::PAYROLL,
             'expirationDate' => '05/12',
             'options'        => array('verifyCard' => true)
         ));
@@ -1220,7 +1221,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         $result = CreditCard::create(array(
             'customerId'     => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number'         => CreditCardNumbers_CardTypeIndicators::HEALTHCARE,
+            'number'         => CardTypeIndicators::HEALTHCARE,
             'expirationDate' => '05/12',
             'options'        => array('verifyCard' => true)
         ));
@@ -1233,7 +1234,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         $result = CreditCard::create(array(
             'customerId'     => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number'         => CreditCardNumbers_CardTypeIndicators::DURBIN_REGULATED,
+            'number'         => CardTypeIndicators::DURBIN_REGULATED,
             'expirationDate' => '05/12',
             'options'        => array('verifyCard' => true)
         ));
@@ -1246,7 +1247,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         $result = CreditCard::create(array(
             'customerId'     => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number'         => CreditCardNumbers_CardTypeIndicators::COUNTRY_OF_ISSUANCE,
+            'number'         => CardTypeIndicators::COUNTRY_OF_ISSUANCE,
             'expirationDate' => '05/12',
             'options'        => array('verifyCard' => true)
         ));
@@ -1259,7 +1260,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         $result = CreditCard::create(array(
             'customerId'     => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number'         => CreditCardNumbers_CardTypeIndicators::ISSUING_BANK,
+            'number'         => CardTypeIndicators::ISSUING_BANK,
             'expirationDate' => '05/12',
             'options'        => array('verifyCard' => true)
         ));
@@ -1272,7 +1273,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         $result = CreditCard::create(array(
             'customerId'     => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number'         => CreditCardNumbers_CardTypeIndicators::NO,
+            'number'         => CardTypeIndicators::NO,
             'expirationDate' => '05/12',
             'options'        => array('verifyCard' => true)
         ));
@@ -1290,7 +1291,7 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         $result = CreditCard::create(array(
             'customerId'     => $customer->id,
             'cardholderName' => 'Cardholder',
-            'number'         => CreditCardNumbers_CardTypeIndicators::UNKNOWN,
+            'number'         => CardTypeIndicators::UNKNOWN,
             'expirationDate' => '05/12',
             'options'        => array('verifyCard' => true)
         ));
