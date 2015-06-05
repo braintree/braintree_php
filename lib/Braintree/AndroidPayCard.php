@@ -1,4 +1,5 @@
-<?php
+<?php namespace Braintree;
+
 /**
  * Braintree AndroidPayCard module
  * Creates and manages Braintree Android Pay cards
@@ -27,7 +28,7 @@
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
  */
-class Braintree_AndroidPayCard extends Braintree_Base
+class AndroidPayCard extends Base
 {
     /* instance methods */
     /**
@@ -41,19 +42,19 @@ class Braintree_AndroidPayCard extends Braintree_Base
     }
 
     /**
-     *  factory method: returns an instance of Braintree_AndroidPayCard
+     *  factory method: returns an instance of AndroidPayCard
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_AndroidPayCard
+     * @return object instance of AndroidPayCard
      */
     public static function factory($attributes)
     {
         $defaultAttributes = array(
-            'expirationMonth'    => '',
-            'expirationYear'    => '',
-            'last4'  => $attributes['virtualCardLast4'],
-            'cardType'  => $attributes['virtualCardType'],
+            'expirationMonth' => '',
+            'expirationYear'  => '',
+            'last4'           => $attributes['virtualCardLast4'],
+            'cardType'        => $attributes['virtualCardType'],
         );
 
         $instance = new self();
@@ -76,7 +77,7 @@ class Braintree_AndroidPayCard extends Braintree_Base
         $subscriptionArray = array();
         if (isset($androidPayCardAttribs['subscriptions'])) {
             foreach ($androidPayCardAttribs['subscriptions'] AS $subscription) {
-                $subscriptionArray[] = Braintree_Subscription::factory($subscription);
+                $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
 

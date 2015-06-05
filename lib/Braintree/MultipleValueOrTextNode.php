@@ -1,11 +1,11 @@
-<?php
+<?php namespace Braintree;
 
-class Braintree_MultipleValueOrTextNode extends Braintree_MultipleValueNode
+class MultipleValueOrTextNode extends MultipleValueNode
 {
     function __construct($name)
     {
         parent::__construct($name);
-        $this->textNode = new Braintree_TextNode($name);
+        $this->textNode = new TextNode($name);
     }
 
     function contains($value)

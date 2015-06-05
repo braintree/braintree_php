@@ -1,11 +1,14 @@
-<?php
-/**
- * Braintree PaymentMethodNonceGateway module
- *
- * @package    Braintree
- * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
+<?php namespace Braintree;
+
+    /**
+     * Braintree PaymentMethodNonceGateway module
+     *
+     * @package    Braintree
+     * @category   Resources
+     * @copyright  2014 Braintree, a division of PayPal, Inc.
+     */
+use Braintree\Result\Successful;
+use Braintree\Exception\NotFound;
 
 /**
  * Creates and manages Braintree PaymentMethodNonces
@@ -18,7 +21,7 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  */
-class Braintree_PaymentMethodNonceGateway
+class PaymentMethodNonceGateway
 {
     private $_gateway;
     private $_config;
@@ -28,7 +31,7 @@ class Braintree_PaymentMethodNonceGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
     }
 
 
@@ -38,8 +41,8 @@ class Braintree_PaymentMethodNonceGateway
         $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->post($fullPath);
 
-        return new Braintree_Result_Successful(
-            Braintree_PaymentMethodNonce::factory($response['paymentMethodNonce']),
+        return new Successful(
+            PaymentMethodNonce::factory($response['paymentMethodNonce']),
             "paymentMethodNonce"
         );
     }
@@ -53,10 +56,10 @@ class Braintree_PaymentMethodNonceGateway
         try {
             $path = $this->_config->merchantPath() . '/payment_method_nonces/' . $nonce;
             $response = $this->_http->get($path);
-            return Braintree_PaymentMethodNonce::factory($response['paymentMethodNonce']);
-        } catch (Braintree_Exception_NotFound $e) {
-            throw new Braintree_Exception_NotFound(
-            'payment method nonce with id ' . $id . ' not found'
+            return PaymentMethodNonce::factory($response['paymentMethodNonce']);
+        } catch (NotFound $e) {
+            throw new NotFound(
+                'payment method nonce with id ' . $id . ' not found'
             );
         }
 

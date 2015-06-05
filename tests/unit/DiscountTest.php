@@ -1,12 +1,15 @@
-<?php
+<?php namespace Braintree\Tests\Unit;
+
+use Braintree\Discount;
+
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_DiscountTest extends PHPUnit_Framework_TestCase
+class DiscountTest extends \PHPUnit_Framework_TestCase
 {
     public function testFactory()
     {
-        $discount = \Braintree_Discount::factory(array());
+        $discount = Discount::factory(array());
 
-        $this->assertInstanceOf('Braintree_Discount', $discount);
+        $this->assertInstanceOf('Braintree\Discount', $discount);
     }
 }

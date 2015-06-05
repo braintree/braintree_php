@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Exception;
+
+use Braintree\Exception;
+
 /**
  * Raised when the gateway is down for maintenance.
  *
@@ -6,7 +10,7 @@
  * @subpackage Exception
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Exception_DownForMaintenance extends Braintree_Exception
+class DownForMaintenance extends Exception
 {
 
 }

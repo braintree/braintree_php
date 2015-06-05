@@ -1,11 +1,13 @@
-<?php
-/**
- * Coinbase details from a transaction
- *
- * @package    Braintree
- * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
+<?php namespace Braintree\Transaction;
+
+    /**
+     * Coinbase details from a transaction
+     *
+     * @package    Braintree
+     * @subpackage Transaction
+     * @copyright  2014 Braintree, a division of PayPal, Inc.
+     */
+use Braintree\Instance;
 
 /**
  * creates an instance of Coinbase
@@ -20,9 +22,9 @@
  * @property-read string $userName
  * @property-read string $userEmail
  * @property-read string $imageUrl
- * @uses Braintree_Instance inherits methods
+ * @uses Instance inherits methods
  */
-class Braintree_Transaction_CoinbaseDetails extends Braintree_Instance
+class CoinbaseDetails extends Instance
 {
     protected $_attributes = array();
 

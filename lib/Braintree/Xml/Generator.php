@@ -1,9 +1,12 @@
-<?php
-/**
- * PHP version 5
- *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
+<?php namespace Braintree\Xml;
+
+    /**
+     * PHP version 5
+     *
+     * @copyright  2014 Braintree, a division of PayPal, Inc.
+     */
+use Braintree\Util;
+use XMLWriter;
 
 /**
  * Generates XML output from arrays using PHP's
@@ -11,17 +14,18 @@
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Xml_Generator
+class Generator
 {
     /**
      * arrays passed to this method should have a single root element
      * with an array as its value
+     *
      * @param array $aData the array of data
      * @return var XML string
      */
     public static function arrayToXml($aData)
     {
-        $aData = Braintree_Util::camelCaseToDelimiterArray($aData, '-');
+        $aData = Util::camelCaseToDelimiterArray($aData, '-');
         // set up the XMLWriter
         $writer = new XMLWriter();
         $writer->openMemory();
@@ -63,7 +67,7 @@ class Braintree_Xml_Generator
             } else {
                 $writer->text($aData);
             }
-          return;
+            return;
         }
         foreach ($aData AS $elementName => $element) {
             // handle child elements
@@ -76,8 +80,7 @@ class Braintree_Xml_Generator
                         self::_createElementsFromArray($writer, $itemInArray);
                         $writer->endElement();
                     }
-                }
-                else {
+                } else {
                     self::_createElementsFromArray($writer, $element);
                 }
             } else {
@@ -95,15 +98,16 @@ class Braintree_Xml_Generator
 
     /**
      * convert passed data into an array of attributeType, attributeName, and value
-     * dates sent as DateTime objects will be converted to strings
+     * dates sent as \DateTime objects will be converted to strings
+     *
      * @access protected
      * @param mixed $value
      * @return array attributes and element value
      */
     private static function _generateXmlAttribute($value)
     {
-        if ($value instanceof DateTime) {
-            return array('type', 'datetime', self::_dateTimeToXmlTimestamp($value));
+        if ($value instanceof \DateTime) {
+            return array('type', '\DateTime', self::_DateTimeToXmlTimestamp($value));
         }
         if (is_int($value)) {
             return array('type', 'integer', $value);
@@ -111,32 +115,34 @@ class Braintree_Xml_Generator
         if (is_bool($value)) {
             return array('type', 'boolean', ($value ? 'true' : 'false'));
         }
-        if ($value === NULL) {
+        if ($value === null) {
             return array('nil', 'true', $value);
         }
     }
+
     /**
-     * converts datetime back to xml schema format
+     * converts \DateTime back to xml schema format
+     *
      * @access protected
-     * @param object $dateTime
+     * @param object $DateTime
      * @return var XML schema formatted timestamp
      */
-    private static function _dateTimeToXmlTimestamp($dateTime)
+    private static function _DateTimeToXmlTimestamp($DateTime)
     {
-        $dateTime->setTimeZone(new DateTimeZone('UTC'));
-        return ($dateTime->format('Y-m-d\TH:i:s') . 'Z');
+        $DateTime->setTimeZone(new \DateTimeZone('UTC'));
+        return ($DateTime->format('Y-m-d\TH:i:s') . 'Z');
     }
 
     private static function _castDateTime($string)
     {
         try {
             if (empty($string)) {
-               return false;
+                return false;
             }
-            $dateTime = new DateTime($string);
-            return self::_dateTimeToXmlTimestamp($dateTime);
-        } catch (Exception $e) {
-            // not a datetime
+            $DateTime = new \DateTime($string);
+            return self::_DateTimeToXmlTimestamp($DateTime);
+        } catch (\Exception $e) {
+            // not a \DateTime
             return false;
         }
     }

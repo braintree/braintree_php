@@ -1,4 +1,9 @@
 <?php
+namespace Braintree\Result;
+
+use Braintree\Util;
+use Braintree\RiskData;
+
 /**
  * Braintree Credit Card Verification Result
  *
@@ -17,13 +22,13 @@
  * @property-read string $status
  *
  */
-class Braintree_Result_CreditCardVerification
+class CreditCardVerification
 {
     // Status
-    const FAILED                   = 'failed';
-    const GATEWAY_REJECTED         = 'gateway_rejected';
-    const PROCESSOR_DECLINED       = 'processor_declined';
-    const VERIFIED                 = 'verified';
+    const FAILED = 'failed';
+    const GATEWAY_REJECTED = 'gateway_rejected';
+    const PROCESSOR_DECLINED = 'processor_declined';
+    const VERIFIED = 'verified';
 
     private $_attributes;
     private $_avsErrorResponseCode;
@@ -43,6 +48,7 @@ class Braintree_Result_CreditCardVerification
 
     /**
      * initializes instance properties from the keys/values of an array
+     *
      * @ignore
      * @access protected
      * @param <type> $aAttribs array of properties to set - single level
@@ -50,13 +56,12 @@ class Braintree_Result_CreditCardVerification
      */
     private function _initializeFromArray($attributes)
     {
-        if(isset($attributes['riskData']))
-        {
-            $attributes['riskData'] = Braintree_RiskData::factory($attributes['riskData']);
+        if (isset($attributes['riskData'])) {
+            $attributes['riskData'] = RiskData::factory($attributes['riskData']);
         }
 
         $this->_attributes = $attributes;
-        foreach($attributes AS $name => $value) {
+        foreach ($attributes AS $name => $value) {
             $varName = "_$name";
             $this->$varName = $value;
         }
@@ -74,21 +79,22 @@ class Braintree_Result_CreditCardVerification
 
     /**
      * returns a string representation of the customer
+     *
      * @return string
      */
     public function  __toString()
     {
         return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+        Util::attributesToString($this->_attributes) . ']';
     }
 
     public static function allStatuses()
     {
         return array(
-            Braintree_Result_creditCardVerification::FAILED,
-            Braintree_Result_creditCardVerification::GATEWAY_REJECTED,
-            Braintree_Result_creditCardVerification::PROCESSOR_DECLINED,
-            Braintree_Result_creditCardVerification::VERIFIED,
+            creditCardVerification::FAILED,
+            creditCardVerification::GATEWAY_REJECTED,
+            creditCardVerification::PROCESSOR_DECLINED,
+            creditCardVerification::VERIFIED,
         );
     }
 }

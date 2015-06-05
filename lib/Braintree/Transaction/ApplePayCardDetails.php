@@ -1,11 +1,13 @@
-<?php
-/**
- * Apple Pay card details from a transaction
- *
- * @package    Braintree
- * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
+<?php namespace Braintree\Transaction;
+
+    /**
+     * Apple Pay card details from a transaction
+     *
+     * @package    Braintree
+     * @subpackage Transaction
+     * @copyright  2014 Braintree, a division of PayPal, Inc.
+     */
+use Braintree\Instance;
 
 /**
  * creates an instance of ApplePayCardDetails
@@ -20,9 +22,9 @@
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
  * @property-read string $cardholderName
- * @uses Braintree_Instance inherits methods
+ * @uses Instance inherits methods
  */
-class Braintree_Transaction_ApplePayCardDetails extends Braintree_Instance
+class ApplePayCardDetails extends Instance
 {
     protected $_attributes = array();
 

@@ -1,4 +1,12 @@
-<?php
+<?php namespace Braintree;
+
+use Braintree\Exception\NotFound;
+use Braintree\Exception\Unexpected;
+use Braintree\Exception\ValidationsFailed;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
+use \InvalidArgumentException;
+
 /**
  * Braintree AddressGateway module
  * PHP Version 5
@@ -11,7 +19,7 @@
  * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_AddressGateway
+class AddressGateway
 {
     private $_gateway;
     private $_config;
@@ -22,7 +30,7 @@ class Braintree_AddressGateway
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasAccessTokenOrKeys();
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
     }
 
 
@@ -30,12 +38,12 @@ class Braintree_AddressGateway
     /**
      *
      * @access public
-     * @param  array  $attribs
+     * @param  array $attribs
      * @return object Result, either Successful or Error
      */
     public function create($attribs)
     {
-        Braintree_Util::verifyKeys(self::createSignature(), $attribs);
+        Util::verifyKeys(self::createSignature(), $attribs);
         $customerId = isset($attribs['customerId']) ?
             $attribs['customerId'] :
             null;
@@ -50,17 +58,17 @@ class Braintree_AddressGateway
 
     /**
      * attempts the create operation assuming all data will validate
-     * returns a Braintree_Address object instead of a Result
+     * returns a Address object instead of a Result
      *
      * @access public
      * @param  array $attribs
      * @return object
-     * @throws Braintree_Exception_ValidationError
+     * @throws ValidationsFailed
      */
     public function createNoValidate($attribs)
     {
         $result = $this->create($attribs);
-        return Braintree_Util::returnObjectOrThrowException(__CLASS__, $result);
+        return Util::returnObjectOrThrowException(__CLASS__, $result);
 
     }
 
@@ -76,7 +84,7 @@ class Braintree_AddressGateway
         $customerId = $this->_determineCustomerId($customerOrId);
         $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
         $this->_http->delete($path);
-        return new Braintree_Result_Successful();
+        return new Successful();
     }
 
     /**
@@ -90,8 +98,8 @@ class Braintree_AddressGateway
      * @access public
      * @param mixed $customerOrId
      * @param string $addressId
-     * @return object Braintree_Address
-     * @throws Braintree_Exception_NotFound
+     * @return object Address
+     * @throws NotFound
      */
     public function find($customerOrId, $addressId)
     {
@@ -102,10 +110,10 @@ class Braintree_AddressGateway
         try {
             $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
             $response = $this->_http->get($path);
-            return Braintree_Address::factory($response['address']);
-        } catch (Braintree_Exception_NotFound $e) {
-            throw new Braintree_Exception_NotFound(
-            'address for customer ' . $customerId .
+            return Address::factory($response['address']);
+        } catch (NotFound $e) {
+            throw new NotFound(
+                'address for customer ' . $customerId .
                 ' with id ' . $addressId . ' not found.'
             );
         }
@@ -124,13 +132,13 @@ class Braintree_AddressGateway
      * @param array $attributes
      * @param mixed $customerOrId (only used in call)
      * @param string $addressId (only used in call)
-     * @return object Braintree_Result_Successful or Braintree_Result_Error
+     * @return object Successful or Error
      */
     public function update($customerOrId, $addressId, $attributes)
     {
         $this->_validateId($addressId);
         $customerId = $this->_determineCustomerId($customerOrId);
-        Braintree_Util::verifyKeys(self::updateSignature(), $attributes);
+        Util::verifyKeys(self::updateSignature(), $attributes);
 
         $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
         $response = $this->_http->put($path, array('address' => $attributes));
@@ -149,31 +157,43 @@ class Braintree_AddressGateway
      * @access public
      * @param array $transactionAttribs
      * @param string $customerId
-     * @return object Braintree_Transaction
-     * @throws Braintree_Exception_ValidationsFailed
-     * @see Braintree_Address::update()
+     * @return object Transaction
+     * @throws ValidationsFailed
+     * @see Address::update()
      */
     public function updateNoValidate($customerOrId, $addressId, $attributes)
     {
         $result = $this->update($customerOrId, $addressId, $attributes);
-        return Braintree_Util::returnObjectOrThrowException(__CLASS__, $result);
+        return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
 
     /**
      * creates a full array signature of a valid create request
+     *
      * @return array gateway create request format
      */
     public static function createSignature()
     {
         return array(
-            'company', 'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
-            'countryName', 'customerId', 'extendedAddress', 'firstName',
-            'lastName', 'locality', 'postalCode', 'region', 'streetAddress'
+            'company',
+            'countryCodeAlpha2',
+            'countryCodeAlpha3',
+            'countryCodeNumeric',
+            'countryName',
+            'customerId',
+            'extendedAddress',
+            'firstName',
+            'lastName',
+            'locality',
+            'postalCode',
+            'region',
+            'streetAddress'
         );
     }
 
     /**
      * creates a full array signature of a valid update request
+     *
      * @return array gateway update request format
      */
     public static function updateSignature()
@@ -185,40 +205,42 @@ class Braintree_AddressGateway
 
     /**
      * verifies that a valid address id is being used
+     *
      * @ignore
      * @param string $id address id
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     private function _validateId($id = null)
     {
         if (empty($id) || trim($id) == "") {
-            throw new InvalidArgumentException(
-            'expected address id to be set'
+            throw new \InvalidArgumentException(
+                'expected address id to be set'
             );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
-            throw new InvalidArgumentException(
-            $id . ' is an invalid address id.'
+            throw new \InvalidArgumentException(
+                $id . ' is an invalid address id.'
             );
         }
     }
 
     /**
      * verifies that a valid customer id is being used
+     *
      * @ignore
      * @param string $id customer id
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     private function _validateCustomerId($id = null)
     {
         if (empty($id) || trim($id) == "") {
-            throw new InvalidArgumentException(
-            'expected customer id to be set'
+            throw new \InvalidArgumentException(
+                'expected customer id to be set'
             );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
-            throw new InvalidArgumentException(
-            $id . ' is an invalid customer id.'
+            throw new \InvalidArgumentException(
+                $id . ' is an invalid customer id.'
             );
         }
 
@@ -226,13 +248,14 @@ class Braintree_AddressGateway
 
     /**
      * determines if a string id or Customer object was passed
+     *
      * @ignore
      * @param mixed $customerOrId
      * @return string customerId
      */
     private function _determineCustomerId($customerOrId)
     {
-        $customerId = ($customerOrId instanceof Braintree_Customer) ? $customerOrId->id : $customerOrId;
+        $customerId = ($customerOrId instanceof Customer) ? $customerOrId->id : $customerOrId;
         $this->_validateCustomerId($customerId);
         return $customerId;
 
@@ -241,6 +264,7 @@ class Braintree_AddressGateway
     /* private class methods */
     /**
      * sends the create request to the gateway
+     *
      * @ignore
      * @param string $subPath
      * @param array $params
@@ -258,29 +282,31 @@ class Braintree_AddressGateway
     /**
      * generic method for validating incoming gateway responses
      *
-     * creates a new Braintree_Address object and encapsulates
-     * it inside a Braintree_Result_Successful object, or
-     * encapsulates a Braintree_Errors object inside a Result_Error
+     * creates a new Address object and encapsulates
+     * it inside a Successful object, or
+     * encapsulates a Errors object inside a Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
-     * @throws Braintree_Exception_Unexpected
+     * @return object Successful or Error
+     * @throws Unexpected
      */
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['address'])) {
-            // return a populated instance of Braintree_Address
-            return new Braintree_Result_Successful(
-                Braintree_Address::factory($response['address'])
+            // return a populated instance of Address
+            return new Successful(
+                Address::factory($response['address'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
-            return new Braintree_Result_Error($response['apiErrorResponse']);
         } else {
-            throw new Braintree_Exception_Unexpected(
-            "Expected address or apiErrorResponse"
-            );
+            if (isset($response['apiErrorResponse'])) {
+                return new Error($response['apiErrorResponse']);
+            } else {
+                throw new Unexpected(
+                    "Expected address or apiErrorResponse"
+                );
+            }
         }
 
     }

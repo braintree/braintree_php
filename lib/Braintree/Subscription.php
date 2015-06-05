@@ -1,4 +1,7 @@
-<?php
+<?php namespace Braintree;
+
+use Braintree\Subscription\StatusDetails;
+
 /**
  * Braintree Subscription module
  *
@@ -11,7 +14,7 @@
  * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Subscription extends Braintree_Base
+class Subscription extends Base
 {
     const ACTIVE = 'Active';
     const CANCELED = 'Canceled';
@@ -20,9 +23,9 @@ class Braintree_Subscription extends Braintree_Base
     const PENDING = 'Pending';
 
     // Subscription Sources
-    const API           = 'api';
+    const API = 'api';
     const CONTROL_PANEL = 'control_panel';
-    const RECURRING     = 'recurring';
+    const RECURRING = 'recurring';
 
     /**
      * @ignore
@@ -45,7 +48,7 @@ class Braintree_Subscription extends Braintree_Base
         $addOnArray = array();
         if (isset($attributes['addOns'])) {
             foreach ($attributes['addOns'] AS $addOn) {
-                $addOnArray[] = Braintree_AddOn::factory($addOn);
+                $addOnArray[] = AddOn::factory($addOn);
             }
         }
         $this->_attributes['addOns'] = $addOnArray;
@@ -53,19 +56,19 @@ class Braintree_Subscription extends Braintree_Base
         $discountArray = array();
         if (isset($attributes['discounts'])) {
             foreach ($attributes['discounts'] AS $discount) {
-                $discountArray[] = Braintree_Discount::factory($discount);
+                $discountArray[] = Discount::factory($discount);
             }
         }
         $this->_attributes['discounts'] = $discountArray;
 
         if (isset($attributes['descriptor'])) {
-            $this->_set('descriptor', new Braintree_Descriptor($attributes['descriptor']));
+            $this->_set('descriptor', new Descriptor($attributes['descriptor']));
         }
 
         $statusHistory = array();
         if (isset($attributes['statusHistory'])) {
             foreach ($attributes['statusHistory'] AS $history) {
-                $statusHistory[] = new Braintree_Subscription_StatusDetails($history);
+                $statusHistory[] = new StatusDetails($history);
             }
         }
         $this->_attributes['statusHistory'] = $statusHistory;
@@ -73,7 +76,7 @@ class Braintree_Subscription extends Braintree_Base
         $transactionArray = array();
         if (isset($attributes['transactions'])) {
             foreach ($attributes['transactions'] AS $transaction) {
-                $transactionArray[] = Braintree_Transaction::factory($transaction);
+                $transactionArray[] = Transaction::factory($transaction);
             }
         }
         $this->_attributes['transactions'] = $transactionArray;
@@ -81,6 +84,7 @@ class Braintree_Subscription extends Braintree_Base
 
     /**
      * returns a string representation of the customer
+     *
      * @return string
      */
     public function  __toString()
@@ -88,14 +92,14 @@ class Braintree_Subscription extends Braintree_Base
         $excludedAttributes = array('statusHistory');
 
         $displayAttributes = array();
-        foreach($this->_attributes as $key => $val) {
+        foreach ($this->_attributes as $key => $val) {
             if (!in_array($key, $excludedAttributes)) {
                 $displayAttributes[$key] = $val;
             }
         }
 
         return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($displayAttributes) .']';
+        Util::attributesToString($displayAttributes) . ']';
     }
 
 
@@ -103,36 +107,36 @@ class Braintree_Subscription extends Braintree_Base
 
     public static function create($attributes)
     {
-        return Braintree_Configuration::gateway()->subscription()->create($attributes);
+        return Configuration::gateway()->subscription()->create($attributes);
     }
 
     public static function find($id)
     {
-        return Braintree_Configuration::gateway()->subscription()->find($id);
+        return Configuration::gateway()->subscription()->find($id);
     }
 
     public static function search($query)
     {
-        return Braintree_Configuration::gateway()->subscription()->search($query);
+        return Configuration::gateway()->subscription()->search($query);
     }
 
     public static function fetch($query, $ids)
     {
-        return Braintree_Configuration::gateway()->subscription()->fetch($query, $ids);
+        return Configuration::gateway()->subscription()->fetch($query, $ids);
     }
 
     public static function update($subscriptionId, $attributes)
     {
-        return Braintree_Configuration::gateway()->subscription()->update($subscriptionId, $attributes);
+        return Configuration::gateway()->subscription()->update($subscriptionId, $attributes);
     }
 
     public static function retryCharge($subscriptionId, $amount = null)
     {
-        return Braintree_Configuration::gateway()->subscription()->retryCharge($subscriptionId, $amount);
+        return Configuration::gateway()->subscription()->retryCharge($subscriptionId, $amount);
     }
 
     public static function cancel($subscriptionId)
     {
-        return Braintree_Configuration::gateway()->subscription()->cancel($subscriptionId);
+        return Configuration::gateway()->subscription()->cancel($subscriptionId);
     }
 }

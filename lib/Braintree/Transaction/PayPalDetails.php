@@ -1,11 +1,13 @@
-<?php
-/**
- * PayPal details from a transaction
- *
- * @package    Braintree
- * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
+<?php namespace Braintree\Transaction;
+
+    /**
+     * PayPal details from a transaction
+     *
+     * @package    Braintree
+     * @subpackage Transaction
+     * @copyright  2014 Braintree, a division of PayPal, Inc.
+     */
+use Braintree\Instance;
 
 /**
  * creates an instance of PayPalDetails
@@ -20,9 +22,9 @@
  * @property-read string $authorizationId
  * @property-read string $token
  * @property-read string $imageUrl
- * @uses Braintree_Instance inherits methods
+ * @uses Instance inherits methods
  */
-class Braintree_Transaction_PayPalDetails extends Braintree_Instance
+class PayPalDetails extends Instance
 {
     protected $_attributes = array();
 

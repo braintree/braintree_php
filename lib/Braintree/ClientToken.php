@@ -1,29 +1,29 @@
-<?php
+<?php namespace Braintree;
 
-class Braintree_ClientToken
+class ClientToken
 {
     const DEFAULT_VERSION = 2;
 
 
     // static methods redirecting to gateway
 
-    public static function generate($params=array())
+    public static function generate($params = array())
     {
-        return Braintree_Configuration::gateway()->clientToken()->generate($params);
+        return Configuration::gateway()->clientToken()->generate($params);
     }
 
     public static function conditionallyVerifyKeys($params)
     {
-        return Braintree_Configuration::gateway()->clientToken()->conditionallyVerifyKeys($params);
+        return Configuration::gateway()->clientToken()->conditionallyVerifyKeys($params);
     }
 
     public static function generateWithCustomerIdSignature()
     {
-        return Braintree_Configuration::gateway()->clientToken()->generateWithCustomerIdSignature();
+        return Configuration::gateway()->clientToken()->generateWithCustomerIdSignature();
     }
 
     public static function generateWithoutCustomerIdSignature()
     {
-        return Braintree_Configuration::gateway()->clientToken()->generateWithoutCustomerIdSignature();
+        return Configuration::gateway()->clientToken()->generateWithoutCustomerIdSignature();
     }
 }

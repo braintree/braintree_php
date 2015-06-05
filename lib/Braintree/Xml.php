@@ -1,4 +1,8 @@
-<?php
+<?php namespace Braintree;
+
+use Braintree\Xml\Generator;
+use Braintree\Xml\Parser;
+
 /**
  * Braintree Xml parser and generator
  * PHP version 5
@@ -6,7 +10,7 @@
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-final class Braintree_Xml
+final class Xml
 {
     /**
      * @ignore
@@ -23,7 +27,7 @@ final class Braintree_Xml
      */
     public static function buildArrayFromXml($xml)
     {
-        return Braintree_Xml_Parser::arrayFromXml($xml);
+        return Parser::arrayFromXml($xml);
     }
 
     /**
@@ -33,6 +37,6 @@ final class Braintree_Xml
      */
     public static function buildXmlFromArray($array)
     {
-        return Braintree_Xml_Generator::arrayToXml($array);
+        return Generator::arrayToXml($array);
     }
 }

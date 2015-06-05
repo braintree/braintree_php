@@ -1,4 +1,5 @@
-<?php
+<?php namespace Braintree;
+
 /**
  * Partner Merchant information that is generated when a partner is connected
  * to or disconnected from a user.
@@ -13,9 +14,9 @@
  * @property-read string $privateKey
  * @property-read string $clientSideEncryptionKey
  * @property-read string $partnerMerchantId
- * @uses Braintree_Instance inherits methods
+ * @uses Instance inherits methods
  */
-class Braintree_PartnerMerchant extends Braintree_Base
+class PartnerMerchant extends Base
 {
     protected $_attributes = array();
 

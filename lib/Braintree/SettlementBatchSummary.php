@@ -1,5 +1,6 @@
-<?php
-class Braintree_SettlementBatchSummary extends Braintree_Base
+<?php namespace Braintree;
+
+class SettlementBatchSummary extends Base
 {
     public static function factory($attributes)
     {
@@ -24,8 +25,8 @@ class Braintree_SettlementBatchSummary extends Braintree_Base
 
     // static methods redirecting to gateway
 
-    public static function generate($settlement_date, $groupByCustomField = NULL)
+    public static function generate($settlement_date, $groupByCustomField = null)
     {
-        return Braintree_Configuration::gateway()->settlementBatchSummary()->generate($settlement_date, $groupByCustomField);
+        return Configuration::gateway()->settlementBatchSummary()->generate($settlement_date, $groupByCustomField);
     }
 }

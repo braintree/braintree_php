@@ -1,4 +1,5 @@
-<?php
+<?php namespace Braintree;
+
 /**
  * super class for all Braintree exceptions
  *
@@ -6,6 +7,6 @@
  * @subpackage Exception
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Exception extends Exception
+class Exception extends \Exception
 {
 }

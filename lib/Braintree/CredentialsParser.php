@@ -1,4 +1,7 @@
-<?php
+<?php namespace Braintree;
+
+use Braintree\Exception\Configuration as ConfigurationException;
+
 /**
  *
  * CredentialsParser registry
@@ -8,7 +11,7 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
-class Braintree_CredentialsParser
+class CredentialsParser
 {
     private $_clientId;
     private $_clientSecret;
@@ -51,10 +54,16 @@ class Braintree_CredentialsParser
     {
         $environments = array();
         if (!empty($this->_clientId)) {
-            $environments[] = array('clientId', $this->_parseClientCredential('clientId', $this->_clientId, 'client_id'));
+            $environments[] = array(
+                'clientId',
+                $this->_parseClientCredential('clientId', $this->_clientId, 'client_id')
+            );
         }
         if (!empty($this->_clientSecret)) {
-            $environments[] = array('clientSecret', $this->_parseClientCredential('clientSecret', $this->_clientSecret, 'client_secret'));
+            $environments[] = array(
+                'clientSecret',
+                $this->_parseClientCredential('clientSecret', $this->_clientSecret, 'client_secret')
+            );
         }
         if (!empty($this->_accessToken)) {
             $environments[] = array('accessToken', $this->_parseAccessToken());
@@ -63,7 +72,7 @@ class Braintree_CredentialsParser
         $checkEnv = $environments[0];
         foreach ($environments as $env) {
             if ($env[1] !== $checkEnv[1]) {
-                throw new Braintree_Exception_Configuration(
+                throw new ConfigurationException(
                     'Mismatched credential environments: ' . $checkEnv[0] . ' environment is ' . $checkEnv[1] .
                     ' and ' . $env[0] . ' environment is ' . $env[1]);
             }
@@ -73,10 +82,11 @@ class Braintree_CredentialsParser
         $this->_environment = $checkEnv[1];
     }
 
-    public static function assertValidEnvironment($environment) {
+    public static function assertValidEnvironment($environment)
+    {
         if (!in_array($environment, self::$_validEnvironments)) {
-            throw new Braintree_Exception_Configuration('"' .
-                                    $environment . '" is not a valid environment.');
+            throw new ConfigurationException('"' .
+                $environment . '" is not a valid environment.');
         }
     }
 
@@ -84,7 +94,7 @@ class Braintree_CredentialsParser
     {
         $explodedCredential = explode('$', $value);
         if (sizeof($explodedCredential) != 3) {
-            throw new Braintree_Exception_Configuration('Incorrect ' . $credentialType . ' format. Expected: type$environment$token');
+            throw new ConfigurationException('Incorrect ' . $credentialType . ' format. Expected: type$environment$token');
         }
 
         $gotValuePrefix = $explodedCredential[0];
@@ -92,7 +102,7 @@ class Braintree_CredentialsParser
         $token = $explodedCredential[2];
 
         if ($gotValuePrefix != $expectedValuePrefix) {
-            throw new Braintree_Exception_Configuration('Value passed for ' . $credentialType . ' is not a ' . $credentialType);
+            throw new ConfigurationException('Value passed for ' . $credentialType . ' is not a ' . $credentialType);
         }
 
         return $environment;
@@ -102,7 +112,7 @@ class Braintree_CredentialsParser
     {
         $accessTokenExploded = explode('$', $this->_accessToken);
         if (sizeof($accessTokenExploded) != 4) {
-            throw new Braintree_Exception_Configuration('Incorrect accessToken syntax. Expected: type$environment$merchant_id$token');
+            throw new ConfigurationException('Incorrect accessToken syntax. Expected: type$environment$merchant_id$token');
         }
 
         $gotValuePrefix = $accessTokenExploded[0];
@@ -111,7 +121,7 @@ class Braintree_CredentialsParser
         $token = $accessTokenExploded[3];
 
         if ($gotValuePrefix != 'access_token') {
-            throw new Braintree_Exception_Configuration('Value passed for accessToken is not an accessToken');
+            throw new ConfigurationException('Value passed for accessToken is not an accessToken');
         }
 
         $this->_merchantId = $merchantId;

@@ -1,5 +1,6 @@
-<?php
-class Braintree_Discount extends Braintree_Modification
+<?php namespace Braintree;
+
+class Discount extends Modification
 {
     public static function factory($attributes)
     {
@@ -13,6 +14,6 @@ class Braintree_Discount extends Braintree_Modification
 
     public static function all()
     {
-        return Braintree_Configuration::gateway()->discount()->all();
+        return Configuration::gateway()->discount()->all();
     }
 }

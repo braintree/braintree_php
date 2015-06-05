@@ -15,19 +15,26 @@ The following PHP extensions are required:
 * SimpleXML
 * xmlwriter
 
+## Installation
+```
+composer require braintree/braintree_php
+```
+
 ## Quick Start Example
 
 ```php
+
 <?php
 
-require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
+use Braintree\Configuration;
+use Braintree\Transaction;
 
-Braintree_Configuration::environment('sandbox');
-Braintree_Configuration::merchantId('your_merchant_id');
-Braintree_Configuration::publicKey('your_public_key');
-Braintree_Configuration::privateKey('your_private_key');
+Configuration::environment('sandbox');
+Configuration::merchantId('your_merchant_id');
+Configuration::publicKey('your_public_key');
+Configuration::privateKey('your_private_key');
 
-$result = Braintree_Transaction::sale(array(
+$result = Transaction::sale(array(
     'amount' => '1000.00',
     'creditCard' => array(
         'number' => '5105105105105100',
@@ -46,7 +53,7 @@ if ($result->success) {
     print_r($result->errors->deepAll());
 }
 
-?>
+
 ```
 
 ## Legacy PHP Support

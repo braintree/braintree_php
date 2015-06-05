@@ -1,14 +1,15 @@
-<?php
+<?php namespace Braintree;
+namespace Braintree;
 
 /**
  * Base functionality for library classes
  */
-abstract class Braintree_Base
+abstract class Base
 {
     /**
      * Disable the default constructor
      *
-     * Objects that inherit from Braintree_Base should be constructed with
+     * Objects that inherit from Base should be constructed with
      * the static factory() method.
      *
      * @ignore
@@ -37,8 +38,7 @@ abstract class Braintree_Base
     {
         if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
-        }
-        else {
+        } else {
             trigger_error('Undefined property on ' . get_class($this) . ': ' . $name, E_USER_NOTICE);
             return null;
         }

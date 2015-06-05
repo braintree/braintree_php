@@ -1,6 +1,11 @@
-<?php
+<?php namespace Braintree;
 
-final class Braintree_MerchantAccountGateway
+use Braintree\Exception\NotFound;
+use Braintree\Exception\Unexpected;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
+
+final class MerchantAccountGateway
 {
     private $_gateway;
     private $_config;
@@ -11,12 +16,12 @@ final class Braintree_MerchantAccountGateway
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasAccessTokenOrKeys();
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
     }
 
     public function create($attribs)
     {
-        Braintree_Util::verifyKeys(self::detectSignature($attribs), $attribs);
+        Util::verifyKeys(self::detectSignature($attribs), $attribs);
         return $this->_doCreate('/merchant_accounts/create_via_api', array('merchant_account' => $attribs));
     }
 
@@ -25,22 +30,24 @@ final class Braintree_MerchantAccountGateway
         try {
             $path = $this->_config->merchantPath() . '/merchant_accounts/' . $merchant_account_id;
             $response = $this->_http->get($path);
-            return Braintree_MerchantAccount::factory($response['merchantAccount']);
-        } catch (Braintree_Exception_NotFound $e) {
-            throw new Braintree_Exception_NotFound('merchant account with id ' . $merchant_account_id . ' not found');
+            return MerchantAccount::factory($response['merchantAccount']);
+        } catch (NotFound $e) {
+            throw new NotFound('merchant account with id ' . $merchant_account_id . ' not found');
         }
     }
 
     public function update($merchant_account_id, $attributes)
     {
-        Braintree_Util::verifyKeys(self::updateSignature(), $attributes);
-        return $this->_doUpdate('/merchant_accounts/' . $merchant_account_id . '/update_via_api', array('merchant_account' => $attributes));
+        Util::verifyKeys(self::updateSignature(), $attributes);
+        return $this->_doUpdate('/merchant_accounts/' . $merchant_account_id . '/update_via_api',
+            array('merchant_account' => $attributes));
     }
 
     public static function detectSignature($attribs)
     {
         if (isset($attribs['applicantDetails'])) {
-            trigger_error("DEPRECATED: Passing applicantDetails to create is deprecated. Please use individual, business, and funding", E_USER_NOTICE);
+            trigger_error("DEPRECATED: Passing applicantDetails to create is deprecated. Please use individual, business, and funding",
+                E_USER_NOTICE);
             return self::createDeprecatedSignature();
         } else {
             return self::createSignature();
@@ -111,7 +118,7 @@ final class Braintree_MerchantAccountGateway
         );
 
         return array(
-            array('applicantDetails' =>  $applicantDetailsSignature),
+            array('applicantDetails' => $applicantDetailsSignature),
             'id',
             'tosAccepted',
             'masterMerchantAccountId'
@@ -137,16 +144,18 @@ final class Braintree_MerchantAccountGateway
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['merchantAccount'])) {
-            // return a populated instance of Braintree_merchantAccount
-            return new Braintree_Result_Successful(
-                    Braintree_MerchantAccount::factory($response['merchantAccount'])
+            // return a populated instance of merchantAccount
+            return new Successful(
+                MerchantAccount::factory($response['merchantAccount'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
-            return new Braintree_Result_Error($response['apiErrorResponse']);
         } else {
-            throw new Braintree_Exception_Unexpected(
-            "Expected merchant account or apiErrorResponse"
-            );
+            if (isset($response['apiErrorResponse'])) {
+                return new Error($response['apiErrorResponse']);
+            } else {
+                throw new Unexpected(
+                    "Expected merchant account or apiErrorResponse"
+                );
+            }
         }
     }
 }

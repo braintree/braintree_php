@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Error;
+
+use Braintree\Util;
+
 /**
  * error object returned as part of a validation error collection
  * provides read-only access to $attribute, $code, and $message
@@ -15,11 +19,11 @@
  * @property-read string $code
  * @property-read string $message
  */
-class Braintree_Error_Validation
+class Validation
 {
-   private $_attribute;
-   private $_code;
-   private $_message;
+    private $_attribute;
+    private $_code;
+    private $_message;
 
     /**
      * @ignore
@@ -29,8 +33,10 @@ class Braintree_Error_Validation
     {
         $this->_initializeFromArray($attributes);
     }
+
     /**
      * initializes instance properties from the keys/values of an array
+     *
      * @ignore
      * @access protected
      * @param array $attributes array of properties to set - single level
@@ -38,9 +44,9 @@ class Braintree_Error_Validation
      */
     private function _initializeFromArray($attributes)
     {
-        foreach($attributes AS $name => $value) {
+        foreach ($attributes AS $name => $value) {
             $varName = "_$name";
-            $this->$varName = Braintree_Util::delimiterToCamelCase($value, '_');
+            $this->$varName = Util::delimiterToCamelCase($value, '_');
         }
     }
 

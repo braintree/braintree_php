@@ -1,34 +1,39 @@
-<?php
+<?php namespace Braintree\Tests\Integration;
+
+use Braintree\Exception\Configuration;
+use Braintree\Gateway;
+use OAuthTestHelper;
+
 require_once __DIR__ . '/../TestHelper.php';
 
-class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
+class OAuthTest extends \PHPUnit_Framework_TestCase
 {
     /**
-    * @expectedException Braintree_Exception_Configuration
-    * @expectedExceptionMessage clientSecret needs to be set.
-    */
+     * @expectedException Configuration
+     * @expectedExceptionMessage clientSecret needs to be set.
+     */
     function testAssertsHasCredentials()
     {
-        $gateway = new Braintree_Gateway(array(
+        $gateway = new Gateway(array(
             'clientId' => 'client_id$development$integration_client_id'
         ));
         $gateway->oauth()->createTokenFromCode(array(
-            'code' => 'integration_oauth_auth_code_' . rand(0,299)
+            'code' => 'integration_oauth_auth_code_' . rand(0, 299)
         ));
     }
 
     function testCreateTokenFromCode()
     {
-        $gateway = new Braintree_Gateway(array(
-            'clientId' => 'client_id$development$integration_client_id',
+        $gateway = new Gateway(array(
+            'clientId'     => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
-        $code = Braintree_OAuthTestHelper::createGrant($gateway, array(
+        $code = OAuthTestHelper::createGrant($gateway, array(
             'merchant_public_id' => 'integration_merchant_id',
-            'scope' => 'read_write'
+            'scope'              => 'read_write'
         ));
         $result = $gateway->oauth()->createTokenFromCode(array(
-            'code' => $code,
+            'code'  => $code,
             'scope' => 'read_write',
         ));
 
@@ -41,12 +46,12 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 
     function testCreateTokenFromCodeFail()
     {
-        $gateway = new Braintree_Gateway(array(
-            'clientId' => 'client_id$development$integration_client_id',
+        $gateway = new Gateway(array(
+            'clientId'     => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
         $result = $gateway->oauth()->createTokenFromCode(array(
-            'code' => 'bad_code',
+            'code'  => 'bad_code',
             'scope' => 'read_write',
         ));
 
@@ -57,22 +62,22 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 
     function testCreateTokenFromRefreshToken()
     {
-        $gateway = new Braintree_Gateway(array(
-            'clientId' => 'client_id$development$integration_client_id',
+        $gateway = new Gateway(array(
+            'clientId'     => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
-        $code = Braintree_OAuthTestHelper::createGrant($gateway, array(
+        $code = OAuthTestHelper::createGrant($gateway, array(
             'merchant_public_id' => 'integration_merchant_id',
-            'scope' => 'read_write'
+            'scope'              => 'read_write'
         ));
         $refreshToken = $gateway->oauth()->createTokenFromCode(array(
-            'code' => $code,
+            'code'  => $code,
             'scope' => 'read_write',
         ))->refreshToken;
 
         $result = $gateway->oauth()->createTokenFromRefreshToken(array(
             'refreshToken' => $refreshToken,
-            'scope' => 'read_write',
+            'scope'        => 'read_write',
         ));
 
         $this->assertEquals(true, $result->success);
@@ -85,46 +90,46 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 
     function testBuildConnectUrl()
     {
-        $gateway = new Braintree_Gateway(array(
-            'clientId' => 'client_id$development$integration_client_id',
+        $gateway = new Gateway(array(
+            'clientId'     => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
         $url = $gateway->oauth()->connectUrl(array(
-            'merchantId' => 'integration_merchant_id',
+            'merchantId'  => 'integration_merchant_id',
             'redirectUri' => 'http://bar.example.com',
-            'scope' => 'read_write',
-            'state' => 'baz_state',
-            'user' => array(
-                'country' => 'USA',
-                'email' => 'foo@example.com',
-                'firstName' => 'Bob',
-                'lastName' => 'Jones',
-                'phone' => '555-555-5555',
-                'dobYear' => '1970',
-                'dobMonth' => '01',
-                'dobDay' => '01',
+            'scope'       => 'read_write',
+            'state'       => 'baz_state',
+            'user'        => array(
+                'country'       => 'USA',
+                'email'         => 'foo@example.com',
+                'firstName'     => 'Bob',
+                'lastName'      => 'Jones',
+                'phone'         => '555-555-5555',
+                'dobYear'       => '1970',
+                'dobMonth'      => '01',
+                'dobDay'        => '01',
                 'streetAddress' => '222 W Merchandise Mart',
-                'locality' => 'Chicago',
-                'region' => 'IL',
-                'postalCode' => '60606',
+                'locality'      => 'Chicago',
+                'region'        => 'IL',
+                'postalCode'    => '60606',
             ),
-            'business' => array(
-                'name' => '14 Ladders',
-                'registeredAs' => '14.0 Ladders',
-                'industry' => 'Ladders',
-                'description' => 'We sell the best ladders',
-                'streetAddress' => '111 N Canal',
-                'locality' => 'Chicago',
-                'region' => 'IL',
-                'postalCode' => '60606',
-                'country' => 'USA',
-                'annualVolumeAmount' => '1000000',
+            'business'    => array(
+                'name'                     => '14 Ladders',
+                'registeredAs'             => '14.0 Ladders',
+                'industry'                 => 'Ladders',
+                'description'              => 'We sell the best ladders',
+                'streetAddress'            => '111 N Canal',
+                'locality'                 => 'Chicago',
+                'region'                   => 'IL',
+                'postalCode'               => '60606',
+                'country'                  => 'USA',
+                'annualVolumeAmount'       => '1000000',
                 'averageTransactionAmount' => '100',
                 'maximumTransactionAmount' => '10000',
-                'shipPhysicalGoods' => true,
-                'fulfillmentCompletedIn' => 7,
-                'currency' => 'USD',
-                'website' => 'http://example.com',
+                'shipPhysicalGoods'        => true,
+                'fulfillmentCompletedIn'   => 7,
+                'currency'                 => 'USD',
+                'website'                  => 'http://example.com',
             ),
         ));
 
@@ -175,8 +180,8 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 
     function testBuildConnectUrlWithoutOptionalParams()
     {
-        $gateway = new Braintree_Gateway(array(
-            'clientId' => 'client_id$development$integration_client_id',
+        $gateway = new Gateway(array(
+            'clientId'     => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
         $url = $gateway->oauth()->connectUrl();

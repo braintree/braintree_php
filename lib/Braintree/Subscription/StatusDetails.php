@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Subscription;
+
+use Braintree\Instance;
+
 /**
  * Status details from a subscription
  * Creates an instance of StatusDetails, as part of a subscription response
@@ -12,8 +16,8 @@
  * @property-read string $timestamp
  * @property-read string $subscriptionSource
  * @property-read string $user
- * @uses Braintree_Instance inherits methods
+ * @uses Instance inherits methods
  */
-class Braintree_Subscription_StatusDetails extends Braintree_Instance
+class StatusDetails extends Instance
 {
 }

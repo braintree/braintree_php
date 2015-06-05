@@ -1,11 +1,11 @@
-<?php
+<?php namespace Braintree;
 
-class Braintree_KeyValueNode
+class KeyValueNode
 {
     function __construct($name)
     {
         $this->name = $name;
-        $this->searchTerm = True;
+        $this->searchTerm = true;
 
     }
 

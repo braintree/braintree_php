@@ -1,5 +1,6 @@
-<?php
-class Braintree_AddOnGateway
+<?php namespace Braintree;
+
+class AddOnGateway
 {
     private $_gateway;
     private $_config;
@@ -10,7 +11,7 @@ class Braintree_AddOnGateway
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasAccessTokenOrKeys();
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
     }
 
     public function all()
@@ -20,7 +21,7 @@ class Braintree_AddOnGateway
 
         $addOns = array("addOn" => $response['addOns']);
 
-        return Braintree_Util::extractAttributeAsArray(
+        return Util::extractAttributeAsArray(
             $addOns,
             'addOn'
         );

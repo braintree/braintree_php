@@ -1,4 +1,15 @@
-<?php
+<?php namespace Braintree;
+namespace Braintree;
+
+use Braintree\Exception\Authentication;
+use Braintree\Exception\Authorization;
+use Braintree\Exception\DownForMaintenance;
+use Braintree\Exception\NotFound;
+use Braintree\Exception\ServerError;
+use Braintree\Exception\Unexpected;
+use Braintree\Exception\UpgradeRequired;
+use Braintree\Exception\ValidationsFailed;
+
 /**
  * Braintree Utility methods
  * PHP version 5
@@ -6,23 +17,23 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
-class Braintree_Util
+class Util
 {
     /**
      * extracts an attribute and returns an array of objects
      *
      * extracts the requested element from an array, and converts the contents
-     * of its child arrays to objects of type Braintree_$attributeName, or returns
+     * of its child arrays to objects of type $attributeName, or returns
      * an array with a single element containing the value of that array element
      *
      * @param array $attribArray attributes from a search response
      * @param string $attributeName indicates which element of the passed array to extract
      *
-     * @return array array of Braintree_$attributeName objects, or a single element array
+     * @return array array of $attributeName objects, or a single element array
      */
     public static function extractAttributeAsArray(& $attribArray, $attributeName)
     {
-        if(!isset($attribArray[$attributeName])):
+        if (!isset($attribArray[$attributeName])):
             return array();
         endif;
 
@@ -30,7 +41,7 @@ class Braintree_Util
         $data = $attribArray[$attributeName];
         // set up the class that will be used to convert each array element
         $classFactory = self::buildClassName($attributeName) . '::factory';
-        if(is_array($data)):
+        if (is_array($data)):
             // create an object from the data in each element
             $objectArray = array_map($classFactory, $data);
         else:
@@ -40,36 +51,38 @@ class Braintree_Util
         unset($attribArray[$attributeName]);
         return $objectArray;
     }
+
     /**
      * throws an exception based on the type of error
+     *
      * @param string $statusCode HTTP status code to throw exception from
-     * @throws Braintree_Exception multiple types depending on the error
+     * @throws Exception multiple types depending on the error
      *
      */
-    public static function throwStatusCodeException($statusCode, $message=null)
+    public static function throwStatusCodeException($statusCode, $message = null)
     {
-        switch($statusCode) {
-        case 401:
-            throw new Braintree_Exception_Authentication();
-            break;
-        case 403:
-            throw new Braintree_Exception_Authorization($message);
-            break;
-        case 404:
-            throw new Braintree_Exception_NotFound();
-            break;
-        case 426:
-            throw new Braintree_Exception_UpgradeRequired();
-            break;
-        case 500:
-            throw new Braintree_Exception_ServerError();
-            break;
-        case 503:
-            throw new Braintree_Exception_DownForMaintenance();
-            break;
-        default:
-            throw new Braintree_Exception_Unexpected('Unexpected HTTP_RESPONSE #'.$statusCode);
-            break;
+        switch ($statusCode) {
+            case 401:
+                throw new Authentication();
+                break;
+            case 403:
+                throw new Authorization($message);
+                break;
+            case 404:
+                throw new NotFound();
+                break;
+            case 426:
+                throw new UpgradeRequired();
+                break;
+            case 500:
+                throw new ServerError();
+                break;
+            case 503:
+                throw new DownForMaintenance();
+                break;
+            default:
+                throw new Unexpected('Unexpected HTTP_RESPONSE #' . $statusCode);
+                break;
         }
     }
 
@@ -78,82 +91,82 @@ class Braintree_Util
      * @param string $className
      * @param object $resultObj
      * @return object returns the passed object if successful
-     * @throws Braintree_Exception_ValidationsFailed
+     * @throws ValidationsFailed
      */
     public static function returnObjectOrThrowException($className, $resultObj)
     {
-        $resultObjName = Braintree_Util::cleanClassName($className);
+        $resultObjName = Util::cleanClassName($className);
         if ($resultObj->success) {
             return $resultObj->$resultObjName;
         } else {
-            throw new Braintree_Exception_ValidationsFailed();
+            throw new ValidationsFailed();
         }
     }
 
     /**
-     * removes the Braintree_ header from a classname
+     * removes the  header from a classname
      *
-     * @param string $name Braintree_ClassName
-     * @return camelCased classname minus Braintree_ header
+     * @param string $name ClassName
+     * @return string camelCased classname minus  header
      */
     public static function cleanClassName($name)
     {
         $classNamesToResponseKeys = array(
-            'CreditCard' => 'creditCard',
-            'CreditCardGateway' => 'creditCard',
-            'Customer' => 'customer',
-            'CustomerGateway' => 'customer',
-            'Subscription' => 'subscription',
-            'SubscriptionGateway' => 'subscription',
-            'Transaction' => 'transaction',
-            'TransactionGateway' => 'transaction',
-            'CreditCardVerification' => 'verification',
+            'CreditCard'                    => 'creditCard',
+            'CreditCardGateway'             => 'creditCard',
+            'Customer'                      => 'customer',
+            'CustomerGateway'               => 'customer',
+            'Subscription'                  => 'subscription',
+            'SubscriptionGateway'           => 'subscription',
+            'Transaction'                   => 'transaction',
+            'TransactionGateway'            => 'transaction',
+            'CreditCardVerification'        => 'verification',
             'CreditCardVerificationGateway' => 'verification',
-            'AddOn' => 'addOn',
-            'AddOnGateway' => 'addOn',
-            'Discount' => 'discount',
-            'DiscountGateway' => 'discount',
-            'Plan' => 'plan',
-            'PlanGateway' => 'plan',
-            'Address' => 'address',
-            'AddressGateway' => 'address',
-            'SettlementBatchSummary' => 'settlementBatchSummary',
+            'AddOn'                         => 'addOn',
+            'AddOnGateway'                  => 'addOn',
+            'Discount'                      => 'discount',
+            'DiscountGateway'               => 'discount',
+            'Plan'                          => 'plan',
+            'PlanGateway'                   => 'plan',
+            'Address'                       => 'address',
+            'AddressGateway'                => 'address',
+            'SettlementBatchSummary'        => 'settlementBatchSummary',
             'SettlementBatchSummaryGateway' => 'settlementBatchSummary',
-            'Merchant' => 'merchant',
-            'MerchantGateway' => 'merchant',
-            'MerchantAccount' => 'merchantAccount',
-            'MerchantAccountGateway' => 'merchantAccount',
-            'OAuthCredentials' => 'credentials',
-            'PayPalAccount' => 'paypalAccount',
-            'PayPalAccountGateway' => 'paypalAccount'
+            'Merchant'                      => 'merchant',
+            'MerchantGateway'               => 'merchant',
+            'MerchantAccount'               => 'merchantAccount',
+            'MerchantAccountGateway'        => 'merchantAccount',
+            'OAuthCredentials'              => 'credentials',
+            'PayPalAccount'                 => 'paypalAccount',
+            'PayPalAccountGateway'          => 'paypalAccount'
         );
 
-        $name = str_replace('Braintree_', '', $name);
+        $name = str_replace('', '', $name);
         return $classNamesToResponseKeys[$name];
     }
 
     /**
      *
      * @param string $name className
-     * @return string Braintree_ClassName
+     * @return string ClassName
      */
     public static function buildClassName($name)
     {
         $responseKeysToClassNames = array(
-            'creditCard' => 'CreditCard',
-            'customer' => 'Customer',
-            'subscription' => 'Subscription',
-            'transaction' => 'Transaction',
-            'verification' => 'CreditCardVerification',
-            'addOn' => 'AddOn',
-            'discount' => 'Discount',
-            'plan' => 'Plan',
-            'address' => 'Address',
+            'creditCard'             => 'CreditCard',
+            'customer'               => 'Customer',
+            'subscription'           => 'Subscription',
+            'transaction'            => 'Transaction',
+            'verification'           => 'CreditCardVerification',
+            'addOn'                  => 'AddOn',
+            'discount'               => 'Discount',
+            'plan'                   => 'Plan',
+            'address'                => 'Address',
             'settlementBatchSummary' => 'SettlementBatchSummary',
-            'merchantAccount' => 'MerchantAccount'
+            'merchantAccount'        => 'MerchantAccount'
         );
 
-        return 'Braintree_' . $responseKeysToClassNames[$name];
+        return '' . $responseKeysToClassNames[$name];
     }
 
     /**
@@ -267,7 +280,7 @@ class Braintree_Util
         // build a new array with joined keys and values
         $tmpArray = null;
         foreach ($array AS $key => $value) {
-            if ($value instanceof DateTime) {
+            if ($value instanceof \DateTime) {
                 $value = $value->format('r');
             }
             $tmpArray[] = $key . $separator . $value;
@@ -276,19 +289,22 @@ class Braintree_Util
         return (is_array($tmpArray)) ? implode($glue, $tmpArray) : false;
     }
 
-    public static function attributesToString($attributes) {
+    public static function attributesToString($attributes)
+    {
         $printableAttribs = array();
         foreach ($attributes AS $key => $value) {
             if (is_array($value)) {
-                $pAttrib = Braintree_Util::attributesToString($value);
-            } else if ($value instanceof DateTime) {
-                $pAttrib = $value->format(DateTime::RFC850);
+                $pAttrib = Util::attributesToString($value);
             } else {
-                $pAttrib = $value;
+                if ($value instanceof \DateTime) {
+                    $pAttrib = $value->format(\DateTime::RFC850);
+                } else {
+                    $pAttrib = $value;
+                }
             }
             $printableAttribs[$key] = sprintf('%s', $pAttrib);
         }
-        return Braintree_Util::implodeAssociativeArray($printableAttribs);
+        return Util::implodeAssociativeArray($printableAttribs);
     }
 
     /**
@@ -307,14 +323,16 @@ class Braintree_Util
         $invalidKeys = array_diff($userKeys, $validKeys);
         $invalidKeys = self::_removeWildcardKeys($validKeys, $invalidKeys);
 
-        if(!empty($invalidKeys)) {
+        if (!empty($invalidKeys)) {
             asort($invalidKeys);
             $sortedList = join(', ', $invalidKeys);
-            throw new InvalidArgumentException('invalid keys: '. $sortedList);
+            throw new \InvalidArgumentException('invalid keys: ' . $sortedList);
         }
     }
+
     /**
      * flattens a numerically indexed nested array to a single level
+     *
      * @param array $keys
      * @param string $namespace
      * @return array
@@ -322,8 +340,8 @@ class Braintree_Util
     private static function _flattenArray($keys, $namespace = null)
     {
         $flattenedArray = array();
-        foreach($keys AS $key) {
-            if(is_array($key)) {
+        foreach ($keys AS $key) {
+            if (is_array($key)) {
                 $theKeys = array_keys($key);
                 $theValues = array_values($key);
                 $scope = $theKeys[0];
@@ -340,36 +358,37 @@ class Braintree_Util
 
     private static function _flattenUserKeys($keys, $namespace = null)
     {
-       $flattenedArray = array();
+        $flattenedArray = array();
 
-       foreach($keys AS $key => $value) {
-           $fullKey = empty($namespace) ? $key : $namespace;
-           if (!is_numeric($key) && $namespace != null) {
-              $fullKey .= '[' . $key . ']';
-           }
-           if (is_numeric($key) && is_string($value)) {
-              $fullKey .= '[' . $value . ']';
-           }
-           if(is_array($value)) {
-               $more = self::_flattenUserKeys($value, $fullKey);
-               $flattenedArray = array_merge($flattenedArray, $more);
-           } else {
-               $flattenedArray[] = $fullKey;
-           }
-       }
-       sort($flattenedArray);
-       return $flattenedArray;
+        foreach ($keys AS $key => $value) {
+            $fullKey = empty($namespace) ? $key : $namespace;
+            if (!is_numeric($key) && $namespace != null) {
+                $fullKey .= '[' . $key . ']';
+            }
+            if (is_numeric($key) && is_string($value)) {
+                $fullKey .= '[' . $value . ']';
+            }
+            if (is_array($value)) {
+                $more = self::_flattenUserKeys($value, $fullKey);
+                $flattenedArray = array_merge($flattenedArray, $more);
+            } else {
+                $flattenedArray[] = $fullKey;
+            }
+        }
+        sort($flattenedArray);
+        return $flattenedArray;
     }
 
     /**
      * removes wildcard entries from the invalid keys array
+     *
      * @param array $validKeys
      * @param <array $invalidKeys
      * @return array
      */
     private static function _removeWildcardKeys($validKeys, $invalidKeys)
     {
-        foreach($validKeys AS $key) {
+        foreach ($validKeys AS $key) {
             if (stristr($key, '[_anyKey_]')) {
                 $wildcardKey = str_replace('[_anyKey_]', '', $key);
                 foreach ($invalidKeys AS $index => $invalidKey) {

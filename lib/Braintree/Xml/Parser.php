@@ -1,10 +1,14 @@
-<?php
+<?php namespace Braintree\Xml;
+
 
 /**
  * Braintree XML Parser
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
+use Braintree\Util;
+use SimpleXMLIterator;
+
 /**
  * Parses incoming Xml into arrays using PHP's
  * built-in SimpleXML, and its extension via
@@ -12,7 +16,7 @@
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Xml_Parser
+class Parser
 {
 
     private static $_xmlRoot;
@@ -20,6 +24,7 @@ class Braintree_Xml_Parser
 
     /**
      * sets up the SimpleXMLIterator and starts the parsing
+     *
      * @access public
      * @param string $xml
      * @return array array mapped to the passed xml
@@ -36,7 +41,7 @@ class Braintree_Xml_Parser
 
         // return the mapped array with the root element as the header
         $array = array($xmlRoot => self::_iteratorToArray($iterator));
-        return Braintree_Util::delimiterToCamelCaseArray($array);
+        return Util::delimiterToCamelCaseArray($array);
     }
 
     /**
@@ -96,9 +101,10 @@ class Braintree_Xml_Parser
             // determine if there are multiple tags of this name at the same level
             if (isset($parentElement) &&
                 ($parentElement->attributes()->type == 'collection') &&
-                $iterator->hasChildren()) {
-              $xmlArray[$key][] = $output;
-              continue;
+                $iterator->hasChildren()
+            ) {
+                $xmlArray[$key][] = $output;
+                continue;
             }
 
             // if the element was an array type, output to a numbered key
@@ -115,6 +121,7 @@ class Braintree_Xml_Parser
 
     /**
      * typecast xml value based on attributes
+     *
      * @param object $valueObj SimpleXMLElement
      * @return mixed value for placing into array
      */
@@ -129,45 +136,46 @@ class Braintree_Xml_Parser
         // switch on the type attribute
         // switch works even if $attribs->type isn't set
         switch ($attribs->type) {
-            case 'datetime':
-                return self::_timestampToUTC((string) $valueObj);
+            case '\DateTime':
+                return self::_timestampToUTC((string)$valueObj);
                 break;
             case 'date':
-                return new DateTime((string)$valueObj);
+                return new \DateTime((string)$valueObj);
                 break;
             case 'integer':
-                return (int) $valueObj;
+                return (int)$valueObj;
                 break;
             case 'boolean':
-                $value =  (string) $valueObj;
+                $value = (string)$valueObj;
                 // look for a number inside the string
-                if(is_numeric($value)) {
-                    return (bool) $value;
+                if (is_numeric($value)) {
+                    return (bool)$value;
                 } else {
                     // look for the string "true", return false in all other cases
-                    return ($value != "true") ? FALSE : TRUE;
+                    return ($value != "true") ? false : true;
                 }
                 break;
             case 'array':
                 return array();
             default:
-                return (string) $valueObj;
+                return (string)$valueObj;
         }
 
     }
 
     /**
-     * convert xml timestamps into DateTime
+     * convert xml timestamps into \DateTime
+     *
      * @param string $timestamp
-     * @return string UTC formatted datetime string
+     * @return string UTC formatted \DateTime string
      */
     private static function _timestampToUTC($timestamp)
     {
-        $tz = new DateTimeZone('UTC');
-        // strangely DateTime requires an explicit set below
+        $tz = new \DateTimeZone('UTC');
+        // strangely \DateTime requires an explicit set below
         // to show the proper time zone
-        $dateTime = new DateTime($timestamp, $tz);
-        $dateTime->setTimezone($tz);
-        return $dateTime;
+        $DateTime = new \DateTime($timestamp, $tz);
+        $DateTime->setTimezone($tz);
+        return $DateTime;
     }
 }

@@ -1,12 +1,15 @@
-<?php
+<?php namespace Braintree\Tests\Unit;
+
+use Braintree\DisbursementDetails;
+
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_DisbursementDetailsTest extends PHPUnit_Framework_TestCase
+class DisbursementDetailsTest extends \PHPUnit_Framework_TestCase
 {
     function testIsValidReturnsTrue()
     {
-        $details = new Braintree_DisbursementDetails(array(
-            "disbursementDate" => new DateTime("2013-04-10")
+        $details = new DisbursementDetails(array(
+            "disbursementDate" => new \DateTime("2013-04-10")
         ));
 
         $this->assertTrue($details->isValid());
@@ -14,7 +17,7 @@ class Braintree_DisbursementDetailsTest extends PHPUnit_Framework_TestCase
 
     function testIsValidReturnsFalse()
     {
-        $details = new Braintree_DisbursementDetails(array(
+        $details = new DisbursementDetails(array(
             "disbursementDate" => null
         ));
 

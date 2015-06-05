@@ -1,20 +1,24 @@
-<?php
+<?php namespace Braintree\Tests\Unit;
+
+use Braintree\ResourceCollection;
+
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_TestResource
+class TestResource
 {
-    public function lookup($id) {
-        return Braintree_ResourceCollectionTest::$values[intval($id)];
+    public function lookup($id)
+    {
+        return ResourceCollectionTest::$values[intval($id)];
     }
 
     public function fetch($ids)
     {
 
-        return array_map("Braintree_TestResource::lookup", $ids);
+        return array_map("\\BrainTree\\Tests\\Unit\\TestResource::lookup", $ids);
     }
 }
 
-class Braintree_ResourceCollectionTest extends PHPUnit_Framework_TestCase
+class ResourceCollectionTest extends \PHPUnit_Framework_TestCase
 {
     public static $values = array("a", "b", "c", "d", "e");
 
@@ -24,24 +28,23 @@ class Braintree_ResourceCollectionTest extends PHPUnit_Framework_TestCase
         $response = array(
             'searchResults' => array(
                 'pageSize' => 2,
-                'ids' => array('0', '1', '2', '3', '4')
+                'ids'      => array('0', '1', '2', '3', '4')
             )
         );
 
-        $object = new Braintree_TestResource();
+        $object = new TestResource();
         $pager = array(
-            'object' => $object,
-            'method' => 'fetch',
+            'object'     => $object,
+            'method'     => 'fetch',
             'methodArgs' => array()
         );
 
-        $collection = new Braintree_ResourceCollection($response, $pager);
+        $collection = new ResourceCollection($response, $pager);
 
         $count = 0;
         $index = 0;
-        foreach ($collection as $value)
-        {
-            $this->assertEquals(Braintree_ResourceCollectionTest::$values[$index], $value);
+        foreach ($collection as $value) {
+            $this->assertEquals(ResourceCollectionTest::$values[$index], $value);
             $index += 1;
             $count += 1;
         }
@@ -55,23 +58,22 @@ class Braintree_ResourceCollectionTest extends PHPUnit_Framework_TestCase
         $response = array(
             'searchResults' => array(
                 'pageSize' => 2,
-                'ids' => array()
+                'ids'      => array()
             )
         );
 
-        $object = new Braintree_TestResource();
+        $object = new TestResource();
         $pager = array(
-            'object' => $object,
-            'method' => 'fetch',
+            'object'     => $object,
+            'method'     => 'fetch',
             'methodArgs' => array()
         );
 
-        $collection = new Braintree_ResourceCollection($response, $pager);
+        $collection = new ResourceCollection($response, $pager);
 
         $count = 0;
         $index = 0;
-        foreach ($collection as $value)
-        {
+        foreach ($collection as $value) {
             $index += 1;
             $count += 1;
             break;

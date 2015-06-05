@@ -1,43 +1,47 @@
-<?php
+<?php namespace Braintree\Tests\Unit;
+
+use Braintree\Configuration;
+use Braintree\Gateway;
+
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_GatewayTest extends PHPUnit_Framework_TestCase
+class GatewayTest extends \PHPUnit_Framework_TestCase
 {
     function setup()
     {
-        Braintree_Configuration::reset();
+        Configuration::reset();
     }
 
     function teardown()
     {
-        Braintree_Configuration::environment('development');
-        Braintree_Configuration::merchantId('integration_merchant_id');
-        Braintree_Configuration::publicKey('integration_public_key');
-        Braintree_Configuration::privateKey('integration_private_key');
+        Configuration::environment('development');
+        Configuration::merchantId('integration_merchant_id');
+        Configuration::publicKey('integration_public_key');
+        Configuration::privateKey('integration_private_key');
     }
 
     /**
-    * @expectedException Braintree_Exception_Configuration
-    * @expectedExceptionMessage merchantId needs to be set.
-    */
+     * @expectedException \Braintree\Exception\Configuration
+     * @expectedExceptionMessage merchantId needs to be set.
+     */
     function testConfigGetsAssertedValid()
     {
-        Braintree_Configuration::environment('development');
-        //Braintree_Configuration::merchantId('integration_merchant_id');
-        Braintree_Configuration::publicKey('integration_public_key');
-        Braintree_Configuration::privateKey('integration_private_key');
+        Configuration::environment('development');
+        //Configuration::merchantId('integration_merchant_id');
+        Configuration::publicKey('integration_public_key');
+        Configuration::privateKey('integration_private_key');
 
-        $gateway = new Braintree_Gateway(Braintree_Configuration::$global);
+        $gateway = new Gateway(Configuration::$global);
         $gateway->addOn();
     }
 
     function testConstructWithArrayOfCredentials()
     {
-        $gateway = new Braintree_Gateway(array(
+        $gateway = new Gateway(array(
             'environment' => 'sandbox',
-            'merchantId' => 'sandbox_merchant_id',
-            'publicKey' => 'sandbox_public_key',
-            'privateKey' => 'sandbox_private_key'
+            'merchantId'  => 'sandbox_merchant_id',
+            'publicKey'   => 'sandbox_public_key',
+            'privateKey'  => 'sandbox_private_key'
         ));
 
         $this->assertEquals('sandbox', $gateway->config->getEnvironment());
