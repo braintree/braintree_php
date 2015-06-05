@@ -1,19 +1,11 @@
-<?php
+<?php namespace Braintree\Tests;
 
 use Braintree\ClientToken;
 use Braintree\Configuration;
 use Braintree\Http;
 use Braintree\TransparentRedirect;
 
-set_include_path(
-  get_include_path() . PATH_SEPARATOR .
-  realpath(dirname(__FILE__)) . '/../lib'
-);
-
-require_once "Braintree.php";
-require_once "Braintree/CreditCardNumbers/CardTypeIndicators.php";
-require_once "Braintree/CreditCardDefaults.php";
-require_once "Braintree/OAuthTestHelper.php";
+require_once '../vendor/autoload.php';
 
 function integrationMerchantConfig()
 {

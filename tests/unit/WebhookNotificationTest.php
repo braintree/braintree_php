@@ -4,6 +4,7 @@ use Braintree\Configuration;
 use Braintree\Dispute;
 use Braintree\Error\Codes;
 use Braintree\MerchantAccount;
+use function Braintree\Tests\integrationMerchantConfig;
 use Braintree\WebhookNotification;
 use Braintree\WebhookTesting;
 
