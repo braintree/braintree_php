@@ -95,7 +95,7 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
     {
         $rand = rand(1, 1000);
         $subMerchantAccountId = "sub_merchant_account_id" + $rand;
-        $validParamsWithId = self::$validParams;
+        $validParamsWithId = array_merge(array(), self::$validParams);
         $validParamsWithId['id'] = $subMerchantAccountId;
         $result = Braintree_MerchantAccount::create($validParamsWithId);
         $this->assertEquals(true, $result->success);
@@ -115,31 +115,27 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
 
     function testCreateWithFundingDestination()
     {
-        $params = self::$validParams;
+        $params = array_merge(array(), self::$validParams);
         $params['funding']['destination'] = Braintree_MerchantAccount::FUNDING_DESTINATION_BANK;
         $result = Braintree_MerchantAccount::create($params);
         $this->assertEquals(true, $result->success);
 
-        $params = self::$validParams;
+        $params = array_merge(array(), self::$validParams);
         $params['funding']['destination'] = Braintree_MerchantAccount::FUNDING_DESTINATION_EMAIL;
         $params['funding']['email'] = "billgates@outlook.com";
-        unset($params['funding']['accountNumber']);
-        unset($params['funding']['routingNumber']);
         $result = Braintree_MerchantAccount::create($params);
         $this->assertEquals(true, $result->success);
 
-        $params = self::$validParams;
+        $params = array_merge(array(), self::$validParams);
         $params['funding']['destination'] = Braintree_MerchantAccount::FUNDING_DESTINATION_MOBILE_PHONE;
         $params['funding']['mobilePhone'] = "1112224444";
-        unset($params['funding']['accountNumber']);
-        unset($params['funding']['routingNumber']);
         $result = Braintree_MerchantAccount::create($params);
         $this->assertEquals(true, $result->success);
     }
 
     function testFind()
     {
-        $params = self::$validParams;
+        $params = array_merge(array(), self::$validParams);
         $result = Braintree_MerchantAccount::create(self::$validParams);
         $this->assertEquals(true, $result->success);
         $this->assertEquals(Braintree_MerchantAccount::STATUS_PENDING, $result->merchantAccount->status);
@@ -160,7 +156,7 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
 
     function testUpdate()
     {
-        $params = self::$validParams;
+        $params = array_merge(array(), self::$validParams);
         unset($params["tosAccepted"]);
         unset($params["masterMerchantAccountId"]);
         $params["individual"]["firstName"] = "John";
