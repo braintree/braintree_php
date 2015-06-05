@@ -16,13 +16,14 @@ The following PHP extensions are required:
 * xmlwriter
 
 ## Installation
-```php
+```
 composer require braintree/braintree_php
 ```
 
 ## Quick Start Example
 
 ```php
+
 <?php
 
 use Braintree\Configuration;
