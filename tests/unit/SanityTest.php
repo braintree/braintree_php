@@ -6,7 +6,7 @@ class SanityTest extends \PHPUnit_Framework_TestCase
 {
     function testCodeFiles_allOmitPHPCloseTag()
     {
-        $codeFiles = explode("\n", shell_exec("find ./lib -name \*.php"));
+        $codeFiles = explode("\n", shell_exec("find ../lib -name \*.php"));
         foreach ($codeFiles as $codeFile) {
             if ($codeFile == "") {
                 continue;
