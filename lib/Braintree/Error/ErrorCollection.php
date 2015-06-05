@@ -1,12 +1,14 @@
 <?php
 namespace Braintree\Error;
 
+use Braintree\Util;
+
 /**
  *
  * Error handler
  * Handles validation errors
  *
- * Contains a read-only property $error which is a ValidationErrorCollection
+ * Contains a read-only property $error which is a ValidationsFailedCollection
  *
  * @package    Braintree
  * @subpackage Errors

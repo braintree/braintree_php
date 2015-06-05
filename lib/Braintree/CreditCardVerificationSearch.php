@@ -59,6 +59,6 @@ class CreditCardVerificationSearch
 
     static function status()
     {
-        return new MultipleValueNode("status", Result_CreditCardVerification::allStatuses());
+        return new MultipleValueNode("status", CreditCardVerification::allStatuses());
     }
 }

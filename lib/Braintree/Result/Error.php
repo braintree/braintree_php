@@ -3,6 +3,10 @@ namespace Braintree\Result;
 
 use Braintree\Base;
 use Braintree\Error\ErrorCollection;
+use Braintree\MerchantAccount;
+use Braintree\Subscription;
+use Braintree\Transaction;
+use Braintree\Util;
 
 /**
  * Braintree Error Result

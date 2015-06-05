@@ -7,6 +7,10 @@
      * @category   Resources
      * @copyright  2014 Braintree, a division of PayPal, Inc.
      */
+use Braintree\Exception\Unexpected;
+use Braintree\Exception\NotFound;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
 
 /**
  * Manages Braintree PayPalAccounts
@@ -39,7 +43,7 @@ class PayPalAccountGateway
      * @access public
      * @param string $token paypal accountunique id
      * @return object PayPalAccount
-     * @throws Exception_NotFound
+     * @throws NotFound
      */
     public function find($token)
     {
@@ -48,8 +52,8 @@ class PayPalAccountGateway
             $path = $this->_config->merchantPath() . '/payment_methods/paypal_account/' . $token;
             $response = $this->_http->get($path);
             return PayPalAccount::factory($response['paypalAccount']);
-        } catch (Exception_NotFound $e) {
-            throw new Exception_NotFound(
+        } catch (NotFound $e) {
+            throw new NotFound(
                 'paypal account with token ' . $token . ' not found'
             );
         }
@@ -65,7 +69,7 @@ class PayPalAccountGateway
      * @access public
      * @param array $attributes
      * @param string $token (optional)
-     * @return object Result_Successful or Result_Error
+     * @return object Successful or Error
      */
     public function update($token, $attributes)
     {
@@ -80,7 +84,7 @@ class PayPalAccountGateway
         $this->_validateId($token);
         $path = $this->_config->merchantPath() . '/payment_methods/paypal_account/' . $token;
         $this->_http->delete($path);
-        return new Result_Successful();
+        return new Successful();
     }
 
     /**
@@ -88,7 +92,7 @@ class PayPalAccountGateway
      *
      * @param string $token
      * @param array $transactionAttribs
-     * @return object Result_Successful or Result_Error
+     * @return object Successful or Error
      * @see Transaction::sale()
      */
     public function sale($token, $transactionAttribs)
@@ -129,27 +133,27 @@ class PayPalAccountGateway
      * generic method for validating incoming gateway responses
      *
      * creates a new PayPalAccount object and encapsulates
-     * it inside a Result_Successful object, or
-     * encapsulates a Errors object inside a Result_Error
+     * it inside a Successful object, or
+     * encapsulates a Errors object inside a Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
-     * @throws Exception_Unexpected
+     * @return object Successful or Error
+     * @throws Unexpected
      */
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['paypalAccount'])) {
             // return a populated instance of PayPalAccount
-            return new Result_Successful(
+            return new Successful(
                 PayPalAccount::factory($response['paypalAccount'])
             );
         } else {
             if (isset($response['apiErrorResponse'])) {
-                return new Result_Error($response['apiErrorResponse']);
+                return new Error($response['apiErrorResponse']);
             } else {
-                throw new Exception_Unexpected(
+                throw new Unexpected(
                     'Expected paypal account or apiErrorResponse'
                 );
             }
@@ -161,7 +165,7 @@ class PayPalAccountGateway
      *
      * @ignore
      * @param string $identifier
-     * @param Optional $string $identifierType type of identifier supplied, default 'token'
+     * @param string $identifierType type of identifier supplied, default 'token' (Optional)
      * @throws \InvalidArgumentException
      */
     private function _validateId($identifier = null, $identifierType = 'token')

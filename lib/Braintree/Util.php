@@ -107,7 +107,7 @@ class Util
      * removes the  header from a classname
      *
      * @param string $name ClassName
-     * @return camelCased classname minus  header
+     * @return string camelCased classname minus  header
      */
     public static function cleanClassName($name)
     {

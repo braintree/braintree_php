@@ -1,5 +1,7 @@
 <?php namespace Braintree;
 
+use Braintree\Dispute\TransactionDetails;
+
 /**
  * Creates an instance of Dispute as returned from a transaction
  *
@@ -47,7 +49,7 @@ final class Dispute extends Base
 
         if (isset($disputeAttribs['transaction'])) {
             $this->_set('transactionDetails',
-                new Dispute_TransactionDetails($disputeAttribs['transaction'])
+                new TransactionDetails($disputeAttribs['transaction'])
             );
         }
     }

@@ -1,5 +1,10 @@
 <?php namespace Braintree;
 
+use Braintree\Exception\NotFound;
+use Braintree\Exception\Unexpected;
+use Braintree\Exception\ValidationsFailed;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
 use \InvalidArgumentException;
 
 /**
@@ -58,7 +63,7 @@ class AddressGateway
      * @access public
      * @param  array $attribs
      * @return object
-     * @throws Exception_ValidationError
+     * @throws ValidationsFailed
      */
     public function createNoValidate($attribs)
     {
@@ -79,7 +84,7 @@ class AddressGateway
         $customerId = $this->_determineCustomerId($customerOrId);
         $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
         $this->_http->delete($path);
-        return new Result_Successful();
+        return new Successful();
     }
 
     /**
@@ -94,7 +99,7 @@ class AddressGateway
      * @param mixed $customerOrId
      * @param string $addressId
      * @return object Address
-     * @throws Exception_NotFound
+     * @throws NotFound
      */
     public function find($customerOrId, $addressId)
     {
@@ -106,8 +111,8 @@ class AddressGateway
             $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
             $response = $this->_http->get($path);
             return Address::factory($response['address']);
-        } catch (Exception_NotFound $e) {
-            throw new Exception_NotFound(
+        } catch (NotFound $e) {
+            throw new NotFound(
                 'address for customer ' . $customerId .
                 ' with id ' . $addressId . ' not found.'
             );
@@ -127,7 +132,7 @@ class AddressGateway
      * @param array $attributes
      * @param mixed $customerOrId (only used in call)
      * @param string $addressId (only used in call)
-     * @return object Result_Successful or Result_Error
+     * @return object Successful or Error
      */
     public function update($customerOrId, $addressId, $attributes)
     {
@@ -153,7 +158,7 @@ class AddressGateway
      * @param array $transactionAttribs
      * @param string $customerId
      * @return object Transaction
-     * @throws Exception_ValidationsFailed
+     * @throws ValidationsFailed
      * @see Address::update()
      */
     public function updateNoValidate($customerOrId, $addressId, $attributes)
@@ -278,27 +283,27 @@ class AddressGateway
      * generic method for validating incoming gateway responses
      *
      * creates a new Address object and encapsulates
-     * it inside a Result_Successful object, or
-     * encapsulates a Errors object inside a Result_Error
+     * it inside a Successful object, or
+     * encapsulates a Errors object inside a Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
-     * @throws Exception_Unexpected
+     * @return object Successful or Error
+     * @throws Unexpected
      */
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['address'])) {
             // return a populated instance of Address
-            return new Result_Successful(
+            return new Successful(
                 Address::factory($response['address'])
             );
         } else {
             if (isset($response['apiErrorResponse'])) {
-                return new Result_Error($response['apiErrorResponse']);
+                return new Error($response['apiErrorResponse']);
             } else {
-                throw new Exception_Unexpected(
+                throw new Unexpected(
                     "Expected address or apiErrorResponse"
                 );
             }

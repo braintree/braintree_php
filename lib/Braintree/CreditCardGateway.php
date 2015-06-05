@@ -1,5 +1,10 @@
 <?php namespace Braintree;
 
+use Braintree\Exception\NotFound;
+use Braintree\Exception\Unexpected;
+use Braintree\Exception\ValidationsFailed;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
 use \InvalidArgumentException;
 
 /**
@@ -42,7 +47,7 @@ class CreditCardGateway
      * @access public
      * @param array $attribs
      * @return object
-     * @throws Exception_ValidationError
+     * @throws ValidationsFailed
      */
     public function createNoValidate($attribs)
     {
@@ -148,7 +153,7 @@ class CreditCardGateway
      * @access public
      * @param string $token credit card unique id
      * @return object CreditCard
-     * @throws Exception_NotFound
+     * @throws NotFound
      */
     public function find($token)
     {
@@ -157,8 +162,8 @@ class CreditCardGateway
             $path = $this->_config->merchantPath() . '/payment_methods/credit_card/' . $token;
             $response = $this->_http->get($path);
             return CreditCard::factory($response['creditCard']);
-        } catch (Exception_NotFound $e) {
-            throw new Exception_NotFound(
+        } catch (NotFound $e) {
+            throw new NotFound(
                 'credit card with token ' . $token . ' not found'
             );
         }
@@ -171,7 +176,7 @@ class CreditCardGateway
      * @access public
      * @param string $nonce payment method nonce
      * @return object CreditCard
-     * @throws Exception_NotFound
+     * @throws NotFound
      */
     public function fromNonce($nonce)
     {
@@ -180,8 +185,8 @@ class CreditCardGateway
             $path = $this->_config->merchantPath() . '/payment_methods/from_nonce/' . $nonce;
             $response = $this->_http->get($path);
             return CreditCard::factory($response['creditCard']);
-        } catch (Exception_NotFound $e) {
-            throw new Exception_NotFound(
+        } catch (NotFound $e) {
+            throw new NotFound(
                 'credit card with nonce ' . $nonce . ' locked, consumed or not found'
             );
         }
@@ -193,7 +198,7 @@ class CreditCardGateway
      *
      * @access public
      * @param array $attribs
-     * @return object Result_Successful or Result_Error
+     * @return object Successful or Error
      */
     public function credit($token, $transactionAttribs)
     {
@@ -214,7 +219,7 @@ class CreditCardGateway
      * @access public
      * @param array $attribs
      * @return object Transaction
-     * @throws Exception_ValidationError
+     * @throws ValidationsFailed
      */
     public function creditNoValidate($token, $transactionAttribs)
     {
@@ -227,7 +232,7 @@ class CreditCardGateway
      *
      * @param string $token
      * @param array $transactionAttribs
-     * @return object Result_Successful or Result_Error
+     * @return object Successful or Error
      * @see Transaction::sale()
      */
     public function sale($token, $transactionAttribs)
@@ -250,7 +255,7 @@ class CreditCardGateway
      * @param array $transactionAttribs
      * @param string $token
      * @return object Transaction
-     * @throws Exception_ValidationsFailed
+     * @throws ValidationsFailed
      * @see Transaction::sale()
      */
     public function saleNoValidate($token, $transactionAttribs)
@@ -268,7 +273,7 @@ class CreditCardGateway
      * @access public
      * @param array $attributes
      * @param string $token (optional)
-     * @return object Result_Successful or Result_Error
+     * @return object Successful or Error
      */
     public function update($token, $attributes)
     {
@@ -288,7 +293,7 @@ class CreditCardGateway
      * @param array $attributes
      * @param string $token
      * @return object CreditCard
-     * @throws Exception_ValidationsFailed
+     * @throws ValidationsFailed
      */
     public function updateNoValidate($token, $attributes)
     {
@@ -334,7 +339,7 @@ class CreditCardGateway
         $this->_validateId($token);
         $path = $this->_config->merchantPath() . '/payment_methods/credit_card/' . $token;
         $this->_http->delete($path);
-        return new Result_Successful();
+        return new Successful();
     }
 
     private static function baseOptions()
@@ -436,7 +441,7 @@ class CreditCardGateway
      *
      * @ignore
      * @param string $identifier
-     * @param Optional $string $identifierType type of identifier supplied, default "token"
+     * @param string $identifierType type of identifier supplied, default "token" (Optional)
      * @throws \InvalidArgumentException
      */
     private function _validateId($identifier = null, $identifierType = "token")
@@ -472,27 +477,27 @@ class CreditCardGateway
      * generic method for validating incoming gateway responses
      *
      * creates a new CreditCard object and encapsulates
-     * it inside a Result_Successful object, or
-     * encapsulates a Errors object inside a Result_Error
+     * it inside a Successful object, or
+     * encapsulates a Errors object inside a Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
-     * @throws Exception_Unexpected
+     * @return object Successful or Error
+     * @throws Unexpected
      */
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['creditCard'])) {
             // return a populated instance of Address
-            return new Result_Successful(
+            return new Successful(
                 CreditCard::factory($response['creditCard'])
             );
         } else {
             if (isset($response['apiErrorResponse'])) {
-                return new Result_Error($response['apiErrorResponse']);
+                return new Error($response['apiErrorResponse']);
             } else {
-                throw new Exception_Unexpected(
+                throw new Unexpected(
                     "Expected address or apiErrorResponse"
                 );
             }

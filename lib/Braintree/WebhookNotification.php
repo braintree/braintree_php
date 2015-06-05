@@ -1,6 +1,7 @@
 <?php namespace Braintree;
 
 use Braintree\Error\ValidationErrorCollection;
+use Braintree\Error\ValidationsFailedCollection;
 use Braintree\Exception\InvalidChallenge;
 use Braintree\Exception\InvalidSignature;
 

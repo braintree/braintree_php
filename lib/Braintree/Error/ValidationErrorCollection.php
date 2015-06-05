@@ -42,11 +42,11 @@ class ValidationErrorCollection extends Collection
 
     public function deepAll()
     {
-        $validationErrors = array_merge(array(), $this->_errors);
+        $ValidationsFaileds = array_merge(array(), $this->_errors);
         foreach ($this->_nested as $nestedErrors) {
-            $validationErrors = array_merge($validationErrors, $nestedErrors->deepAll());
+            $ValidationsFaileds = array_merge($ValidationsFaileds, $nestedErrors->deepAll());
         }
-        return $validationErrors;
+        return $ValidationsFaileds;
     }
 
     public function deepSize()

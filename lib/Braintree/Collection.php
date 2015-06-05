@@ -1,5 +1,8 @@
 <?php namespace Braintree;
 
+use ArrayIterator;
+use OutOfRangeException;
+
 /**
  * Braintree Generic collection
  *

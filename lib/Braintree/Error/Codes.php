@@ -7,7 +7,7 @@ namespace Braintree\Error;
  *
  * ErrorCodes class provides constants for validation errors.
  * The constants should be used to check for a specific validation
- * error in a ValidationErrorCollection.
+ * error in a ValidationsFailedCollection.
  * The error messages returned from the server may change;
  * but the codes will remain the same.
  *

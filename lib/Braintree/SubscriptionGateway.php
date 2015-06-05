@@ -1,5 +1,10 @@
 <?php namespace Braintree;
 
+use Braintree\Exception\NotFound;
+use Braintree\Exception\Unexpected;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
+
 /**
  * Braintree SubscriptionGateway module
  *
@@ -42,8 +47,8 @@ class SubscriptionGateway
             $path = $this->_config->merchantPath() . '/subscriptions/' . $id;
             $response = $this->_http->get($path);
             return Subscription::factory($response['subscription']);
-        } catch (Exception_NotFound $e) {
-            throw new Exception_NotFound('subscription with id ' . $id . ' not found');
+        } catch (NotFound $e) {
+            throw new NotFound('subscription with id ' . $id . ' not found');
         }
 
     }
@@ -239,20 +244,20 @@ class SubscriptionGateway
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['subscription'])) {
-            return new Result_Successful(
+            return new Successful(
                 Subscription::factory($response['subscription'])
             );
         } else {
             if (isset($response['transaction'])) {
                 // return a populated instance of Transaction, for subscription retryCharge
-                return new Result_Successful(
+                return new Successful(
                     Transaction::factory($response['transaction'])
                 );
             } else {
                 if (isset($response['apiErrorResponse'])) {
-                    return new Result_Error($response['apiErrorResponse']);
+                    return new Error($response['apiErrorResponse']);
                 } else {
-                    throw new Exception_Unexpected(
+                    throw new Unexpected(
                         "Expected subscription, transaction, or apiErrorResponse"
                     );
                 }

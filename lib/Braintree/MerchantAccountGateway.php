@@ -1,5 +1,10 @@
 <?php namespace Braintree;
 
+use Braintree\Exception\NotFound;
+use Braintree\Exception\Unexpected;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
+
 final class MerchantAccountGateway
 {
     private $_gateway;
@@ -26,8 +31,8 @@ final class MerchantAccountGateway
             $path = $this->_config->merchantPath() . '/merchant_accounts/' . $merchant_account_id;
             $response = $this->_http->get($path);
             return MerchantAccount::factory($response['merchantAccount']);
-        } catch (Exception_NotFound $e) {
-            throw new Exception_NotFound('merchant account with id ' . $merchant_account_id . ' not found');
+        } catch (NotFound $e) {
+            throw new NotFound('merchant account with id ' . $merchant_account_id . ' not found');
         }
     }
 
@@ -140,14 +145,14 @@ final class MerchantAccountGateway
     {
         if (isset($response['merchantAccount'])) {
             // return a populated instance of merchantAccount
-            return new Result_Successful(
+            return new Successful(
                 MerchantAccount::factory($response['merchantAccount'])
             );
         } else {
             if (isset($response['apiErrorResponse'])) {
-                return new Result_Error($response['apiErrorResponse']);
+                return new Error($response['apiErrorResponse']);
             } else {
-                throw new Exception_Unexpected(
+                throw new Unexpected(
                     "Expected merchant account or apiErrorResponse"
                 );
             }

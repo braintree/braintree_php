@@ -1,6 +1,9 @@
 <?php
 namespace Braintree\Result;
 
+use Braintree\Util;
+use Braintree\RiskData;
+
 /**
  * Braintree Credit Card Verification Result
  *

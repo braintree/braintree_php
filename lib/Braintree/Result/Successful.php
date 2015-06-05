@@ -2,6 +2,7 @@
 namespace Braintree\Result;
 
 use Braintree\Instance;
+use Braintree\Util;
 
 /**
  * Braintree Successful Result

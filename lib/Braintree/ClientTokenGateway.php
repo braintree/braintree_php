@@ -1,5 +1,7 @@
 <?php namespace Braintree;
 
+use Braintree\Exception\Unexpected;
+
 class ClientTokenGateway
 {
     private $_gateway;
@@ -88,7 +90,7 @@ class ClientTokenGateway
                 $response['apiErrorResponse']['message']
             );
         } else {
-            throw new Exception_Unexpected(
+            throw new Unexpected(
                 "Expected clientToken or apiErrorResponse"
             );
         }

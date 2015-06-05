@@ -1,5 +1,12 @@
 <?php namespace Braintree;
 
+use Braintree\Exception\DownForMaintenance;
+use Braintree\Exception\NotFound;
+use Braintree\Exception\Unexpected;
+use Braintree\Exception\ValidationsFailed;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
+
 /**
  * Braintree TransactionGateway processor
  * Creates and manages transactions
@@ -52,7 +59,7 @@ final class TransactionGateway
      * @access private
      * @param array $attribs
      * @return object
-     * @throws Exception_ValidationError
+     * @throws ValidationsFailed
      */
     private function createNoValidate($attribs)
     {
@@ -251,7 +258,7 @@ final class TransactionGateway
      * @access public
      * @param array $attribs
      * @return object
-     * @throws Exception_ValidationError
+     * @throws ValidationsFailed
      */
     public function creditNoValidate($attribs)
     {
@@ -271,8 +278,8 @@ final class TransactionGateway
             $path = $this->_config->merchantPath() . '/transactions/' . $id;
             $response = $this->_http->get($path);
             return Transaction::factory($response['transaction']);
-        } catch (Exception_NotFound $e) {
-            throw new Exception_NotFound(
+        } catch (NotFound $e) {
+            throw new NotFound(
                 'transaction with id ' . $id . ' not found'
             );
         }
@@ -296,7 +303,7 @@ final class TransactionGateway
      * @access public
      * @param array $attribs
      * @return array
-     * @throws Exception_ValidationsFailed
+     * @throws ValidationsFailed
      */
     public function saleNoValidate($attribs)
     {
@@ -334,7 +341,7 @@ final class TransactionGateway
 
             return new ResourceCollection($response, $pager);
         } else {
-            throw new Exception_DownForMaintenance();
+            throw new DownForMaintenance();
         }
     }
 
@@ -358,7 +365,7 @@ final class TransactionGateway
      * void a transaction by id
      *
      * @param string $id transaction id
-     * @return object Result_Successful|Result_Error
+     * @return object Successful|Error
      */
     public function void($transactionId)
     {
@@ -472,27 +479,27 @@ final class TransactionGateway
      * generic method for validating incoming gateway responses
      *
      * creates a new Transaction object and encapsulates
-     * it inside a Result_Successful object, or
-     * encapsulates a Errors object inside a Result_Error
+     * it inside a Successful object, or
+     * encapsulates a Errors object inside a Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
-     * @throws Exception_Unexpected
+     * @return object Successful or Error
+     * @throws Unexpected
      */
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['transaction'])) {
             // return a populated instance of Transaction
-            return new Result_Successful(
+            return new Successful(
                 Transaction::factory($response['transaction'])
             );
         } else {
             if (isset($response['apiErrorResponse'])) {
-                return new Result_Error($response['apiErrorResponse']);
+                return new Error($response['apiErrorResponse']);
             } else {
-                throw new Exception_Unexpected(
+                throw new Unexpected(
                     "Expected transaction or apiErrorResponse"
                 );
             }

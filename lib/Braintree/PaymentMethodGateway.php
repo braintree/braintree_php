@@ -7,6 +7,10 @@
      * @category   Resources
      * @copyright  2014 Braintree, a division of PayPal, Inc.
      */
+use Braintree\Exception\Unexpected;
+use Braintree\Result\Successful;
+use Braintree\Result\Error;
+use Braintree\Exception\NotFound;
 
 /**
  * Creates and manages Braintree PaymentMethods
@@ -46,7 +50,7 @@ class PaymentMethodGateway
      * @access public
      * @param string $token payment method unique id
      * @return object CreditCard or PayPalAccount
-     * @throws Exception_NotFound
+     * @throws NotFound
      */
     public function find($token)
     {
@@ -77,8 +81,8 @@ class PaymentMethodGateway
                     }
                 }
             }
-        } catch (Exception_NotFound $e) {
-            throw new Exception_NotFound(
+        } catch (NotFound $e) {
+            throw new NotFound(
                 'payment method with token ' . $token . ' not found'
             );
         }
@@ -96,7 +100,7 @@ class PaymentMethodGateway
         $this->_validateId($token);
         $path = $this->_config->merchantPath() . '/payment_methods/any/' . $token;
         $this->_http->delete($path);
-        return new Result_Successful();
+        return new Successful();
     }
 
     private static function baseSignature()
@@ -183,62 +187,62 @@ class PaymentMethodGateway
      * generic method for validating incoming gateway responses
      *
      * creates a new CreditCard or PayPalAccount object
-     * and encapsulates it inside a Result_Successful object, or
-     * encapsulates a Errors object inside a Result_Error
+     * and encapsulates it inside a Successful object, or
+     * encapsulates a Errors object inside a Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
-     * @throws Exception_Unexpected
+     * @return object Successful or Error
+     * @throws Unexpected
      */
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['creditCard'])) {
             // return a populated instance of CreditCard
-            return new Result_Successful(
+            return new Successful(
                 CreditCard::factory($response['creditCard']),
                 "paymentMethod"
             );
         } else {
             if (isset($response['paypalAccount'])) {
                 // return a populated instance of PayPalAccount
-                return new Result_Successful(
+                return new Successful(
                     PayPalAccount::factory($response['paypalAccount']),
                     "paymentMethod"
                 );
             } else {
                 if (isset($response['coinbaseAccount'])) {
                     // return a populated instance of CoinbaseAccount
-                    return new Result_Successful(
+                    return new Successful(
                         CoinbaseAccount::factory($response['coinbaseAccount']),
                         "paymentMethod"
                     );
                 } else {
                     if (isset($response['applePayCard'])) {
                         // return a populated instance of ApplePayCard
-                        return new Result_Successful(
+                        return new Successful(
                             ApplePayCard::factory($response['applePayCard']),
                             "paymentMethod"
                         );
                     } else {
                         if (isset($response['androidPayCard'])) {
                             // return a populated instance of AndroidPayCard
-                            return new Result_Successful(
+                            return new Successful(
                                 AndroidPayCard::factory($response['androidPayCard']),
                                 "paymentMethod"
                             );
                         } else {
                             if (isset($response['apiErrorResponse'])) {
-                                return new Result_Error($response['apiErrorResponse']);
+                                return new Error($response['apiErrorResponse']);
                             } else {
                                 if (is_array($response)) {
-                                    return new Result_Successful(
+                                    return new Successful(
                                         UnknownPaymentMethod::factory($response),
                                         "paymentMethod"
                                     );
                                 } else {
-                                    throw new Exception_Unexpected(
+                                    throw new Unexpected(
                                         'Expected payment method or apiErrorResponse'
                                     );
                                 }
@@ -255,7 +259,7 @@ class PaymentMethodGateway
      *
      * @ignore
      * @param string $identifier
-     * @param Optional $string $identifierType type of identifier supplied, default 'token'
+     * @param string $identifierType type of identifier supplied, default 'token' (Optional)
      * @throws \InvalidArgumentException
      */
     private function _validateId($identifier = null, $identifierType = 'token')

@@ -7,6 +7,8 @@
      * @category   Resources
      * @copyright  2014 Braintree, a division of PayPal, Inc.
      */
+use Braintree\Result\Successful;
+use Braintree\Exception\NotFound;
 
 /**
  * Creates and manages Braintree PaymentMethodNonces
@@ -39,7 +41,7 @@ class PaymentMethodNonceGateway
         $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->post($fullPath);
 
-        return new Result_Successful(
+        return new Successful(
             PaymentMethodNonce::factory($response['paymentMethodNonce']),
             "paymentMethodNonce"
         );
@@ -55,8 +57,8 @@ class PaymentMethodNonceGateway
             $path = $this->_config->merchantPath() . '/payment_method_nonces/' . $nonce;
             $response = $this->_http->get($path);
             return PaymentMethodNonce::factory($response['paymentMethodNonce']);
-        } catch (Exception_NotFound $e) {
-            throw new Exception_NotFound(
+        } catch (NotFound $e) {
+            throw new NotFound(
                 'payment method nonce with id ' . $id . ' not found'
             );
         }

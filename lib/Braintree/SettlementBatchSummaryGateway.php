@@ -1,5 +1,9 @@
 <?php namespace Braintree;
 
+use Braintree\Exception\Unexpected;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
+
 class SettlementBatchSummaryGateway
 {
     private $_gateway;
@@ -51,14 +55,14 @@ class SettlementBatchSummaryGateway
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['settlementBatchSummary'])) {
-            return new Result_Successful(
+            return new Successful(
                 SettlementBatchSummary::factory($response['settlementBatchSummary'])
             );
         } else {
             if (isset($response['apiErrorResponse'])) {
-                return new Result_Error($response['apiErrorResponse']);
+                return new Error($response['apiErrorResponse']);
             } else {
-                throw new Exception_Unexpected(
+                throw new Unexpected(
                     "Expected settlementBatchSummary or apiErrorResponse"
                 );
             }

@@ -1,5 +1,7 @@
 <?php namespace Braintree;
 
+use Braintree\Subscription\StatusDetails;
+
 /**
  * Braintree Subscription module
  *
@@ -66,7 +68,7 @@ class Subscription extends Base
         $statusHistory = array();
         if (isset($attributes['statusHistory'])) {
             foreach ($attributes['statusHistory'] AS $history) {
-                $statusHistory[] = new Subscription_StatusDetails($history);
+                $statusHistory[] = new StatusDetails($history);
             }
         }
         $this->_attributes['statusHistory'] = $statusHistory;

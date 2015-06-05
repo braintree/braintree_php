@@ -1,5 +1,11 @@
 <?php namespace Braintree;
 
+use Braintree\Exception\Unexpected;
+use Braintree\Exception\ValidationsFailed;
+use Braintree\Exception\NotFound;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
+
 /**
  * Braintree CustomerGateway module
  * Creates and manages Customers
@@ -93,7 +99,7 @@ class CustomerGateway
      * @access public
      * @param array $attribs
      * @return object
-     * @throws Exception_ValidationError
+     * @throws ValidationsFailed
      */
     public function createNoValidate($attribs = array())
     {
@@ -204,7 +210,7 @@ class CustomerGateway
      * @access public
      * @param string id customer Id
      * @return object Customer
-     * @throws Exception_NotFound
+     * @throws NotFound
      */
     public function find($id)
     {
@@ -213,8 +219,8 @@ class CustomerGateway
             $path = $this->_config->merchantPath() . '/customers/' . $id;
             $response = $this->_http->get($path);
             return Customer::factory($response['customer']);
-        } catch (Exception_NotFound $e) {
-            throw new Exception_NotFound(
+        } catch (NotFound $e) {
+            throw new NotFound(
                 'customer with id ' . $id . ' not found'
             );
         }
@@ -226,7 +232,7 @@ class CustomerGateway
      *
      * @access public
      * @param array $attribs
-     * @return object Result_Successful or Result_Error
+     * @return object Successful or Error
      */
     public function credit($customerId, $transactionAttribs)
     {
@@ -246,7 +252,7 @@ class CustomerGateway
      * @access public
      * @param array $attribs
      * @return object Transaction
-     * @throws Exception_ValidationError
+     * @throws ValidationsFailed
      */
     public function creditNoValidate($customerId, $transactionAttribs)
     {
@@ -264,7 +270,7 @@ class CustomerGateway
         $this->_validateId($customerId);
         $path = $this->_config->merchantPath() . '/customers/' . $customerId;
         $this->_http->delete($path);
-        return new Result_Successful();
+        return new Successful();
     }
 
     /**
@@ -272,7 +278,7 @@ class CustomerGateway
      *
      * @param string $customerId
      * @param array $transactionAttribs
-     * @return object Result_Successful or Result_Error
+     * @return object Successful or Error
      * @see Transaction::sale()
      */
     public function sale($customerId, $transactionAttribs)
@@ -294,7 +300,7 @@ class CustomerGateway
      * @param string $customerId
      * @param array $transactionAttribs
      * @return object Transaction
-     * @throws Exception_ValidationsFailed
+     * @throws ValidationsFailed
      * @see Transaction::sale()
      */
     public function saleNoValidate($customerId, $transactionAttribs)
@@ -347,7 +353,7 @@ class CustomerGateway
      * @access public
      * @param array $attributes
      * @param string $customerId (optional)
-     * @return object Result_Successful or Result_Error
+     * @return object Successful or Error
      */
     public function update($customerId, $attributes)
     {
@@ -371,7 +377,7 @@ class CustomerGateway
      * @param array $attributes
      * @param string $customerId
      * @return object Customer
-     * @throws Exception_ValidationsFailed
+     * @throws ValidationsFailed
      */
     public function updateNoValidate($customerId, $attributes)
     {
@@ -604,27 +610,27 @@ class CustomerGateway
      * generic method for validating incoming gateway responses
      *
      * creates a new Customer object and encapsulates
-     * it inside a Result_Successful object, or
-     * encapsulates a Errors object inside a Result_Error
+     * it inside a Successful object, or
+     * encapsulates a Errors object inside a Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result_Successful or Result_Error
-     * @throws Exception_Unexpected
+     * @return object Successful or Error
+     * @throws Unexpected
      */
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['customer'])) {
             // return a populated instance of Customer
-            return new Result_Successful(
+            return new Successful(
                 Customer::factory($response['customer'])
             );
         } else {
             if (isset($response['apiErrorResponse'])) {
-                return new Result_Error($response['apiErrorResponse']);
+                return new Error($response['apiErrorResponse']);
             } else {
-                throw new Exception_Unexpected(
+                throw new Unexpected(
                     "Expected customer or apiErrorResponse"
                 );
             }
