@@ -1,11 +1,12 @@
-<?php
+<?php namespace Braintree;
+
 /**
  * Braintree HTTP OAuth Client
  * processes Http OAuth requests using curl
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_HttpOAuth extends Braintree_HttpBase
+class HttpOAuth extends HttpBase
 {
     protected $_config;
 
@@ -17,44 +18,44 @@ class Braintree_HttpOAuth extends Braintree_HttpBase
     public function delete($path)
     {
         $response = $this->_doRequest('DELETE', $path);
-        if($response['status'] === 200) {
+        if ($response['status'] === 200) {
             return true;
         } else {
-            Braintree_Util::throwStatusCodeException($response['status']);
+            Util::throwStatusCodeException($response['status']);
         }
     }
 
     public function get($path)
     {
         $response = $this->_doRequest('GET', $path);
-        if($response['status'] === 200) {
-            return Braintree_Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
+        if ($response['status'] === 200) {
+            return Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
         } else {
-            Braintree_Util::throwStatusCodeException($response['status']);
+            Util::throwStatusCodeException($response['status']);
         }
     }
 
     public function post($path, $params = null)
     {
-        $body = http_build_query(Braintree_Util::camelCaseToDelimiterArray($params, '_'));
+        $body = http_build_query(Util::camelCaseToDelimiterArray($params, '_'));
         $response = $this->_doRequest('POST', $path, $body);
         $responseCode = $response['status'];
-        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
-            return Braintree_Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
+        if ($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
+            return Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
         } else {
-            Braintree_Util::throwStatusCodeException($responseCode);
+            Util::throwStatusCodeException($responseCode);
         }
     }
 
     public function put($path, $params = null)
     {
-        $body = http_build_query(Braintree_Util::camelCaseToDelimiterArray($params, '_'));
+        $body = http_build_query(Util::camelCaseToDelimiterArray($params, '_'));
         $response = $this->_doRequest('PUT', $path, $body);
         $responseCode = $response['status'];
-        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
-            return Braintree_Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
+        if ($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
+            return Util::delimiterToCamelCaseArray(json_decode($response['body'], true), '_');
         } else {
-            Braintree_Util::throwStatusCodeException($responseCode);
+            Util::throwStatusCodeException($responseCode);
         }
     }
 
@@ -69,7 +70,7 @@ class Braintree_HttpOAuth extends Braintree_HttpBase
     protected function _getAuthorization()
     {
         return array(
-            'user' => $this->_config->getClientId(),
+            'user'     => $this->_config->getClientId(),
             'password' => $this->_config->getClientSecret(),
         );
     }

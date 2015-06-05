@@ -1,4 +1,15 @@
-<?php
+<?php namespace Braintree;
+
+use Braintree\Transaction\AddressDetails;
+use Braintree\Transaction\AndroidPayCardDetails;
+use Braintree\Transaction\ApplePayCardDetails;
+use Braintree\Transaction\CoinbaseDetails;
+use Braintree\Transaction\CreditCardDetails;
+use Braintree\Transaction\CustomerDetails;
+use Braintree\Transaction\PayPalDetails;
+use Braintree\Transaction\StatusDetails;
+use Braintree\Transaction\SubscriptionDetails;
+
 /**
  * Braintree Transaction processor
  * Creates and manages transactions
@@ -8,7 +19,7 @@
  *
  * <b>Minimalistic example:</b>
  * <code>
- * Braintree_Transaction::saleNoValidate(array(
+ * Transaction::saleNoValidate(array(
  *   'amount' => '100.00',
  *   'creditCard' => array(
  *       'number' => '5105105105105100',
@@ -19,7 +30,7 @@
  *
  * <b>Full example:</b>
  * <code>
- * Braintree_Transaction::saleNoValidate(array(
+ * Transaction::saleNoValidate(array(
  *    'amount'      => '100.00',
  *    'orderId'    => '123',
  *    'channel'    => 'MyShoppingCardProvider',
@@ -75,7 +86,7 @@
  * a transaction can be stored in the vault by setting
  * <i>transaction[options][storeInVault]</i> to true.
  * <code>
- *   $transaction = Braintree_Transaction::saleNoValidate(array(
+ *   $transaction = Transaction::saleNoValidate(array(
  *     'customer' => array(
  *       'firstName'    => 'Adam',
  *       'lastName'    => 'Williams'
@@ -98,7 +109,7 @@
  * To also store the billing address in the vault, pass the
  * <b>addBillingAddressToPaymentMethod</b> option.
  * <code>
- *   Braintree_Transaction.saleNoValidate(array(
+ *   Transaction.saleNoValidate(array(
  *    ...
  *     'options' => array(
  *       'storeInVault' => true
@@ -119,7 +130,7 @@
  * $transaction[options][submitForSettlement] to true.
  *
  * <code>
- *   $transaction = Braintree_Transaction::saleNoValidate(array(
+ *   $transaction = Transaction::saleNoValidate(array(
  *     'amount'    => '100.00',
  *     'creditCard'    => array(
  *       'number'    => '5105105105105100',
@@ -154,12 +165,12 @@
  * @property-read object $coinbaseDetails transaction Coinbase account info
  * @property-read object $paypalDetails transaction paypal account info
  * @property-read object $customerDetails transaction customer info
- * @property-read array  $customFields custom fields passed with the request
+ * @property-read array $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
  * @property-read string $additionalProcessorResponse raw response from processor
  * @property-read object $shippingDetails transaction shipping address
  * @property-read string $status transaction status
- * @property-read array  $statusHistory array of StatusDetails objects
+ * @property-read array $statusHistory array of StatusDetails objects
  * @property-read string $type transaction type
  * @property-read string $updatedAt transaction updated timestamp
  * @property-read object $disbursementDetails populated when transaction is disbursed
@@ -167,53 +178,53 @@
  *
  */
 
-final class Braintree_Transaction extends Braintree_Base
+final class Transaction extends Base
 {
     // Transaction Status
-    const AUTHORIZATION_EXPIRED    = 'authorization_expired';
-    const AUTHORIZING              = 'authorizing';
-    const AUTHORIZED               = 'authorized';
-    const GATEWAY_REJECTED         = 'gateway_rejected';
-    const FAILED                   = 'failed';
-    const PROCESSOR_DECLINED       = 'processor_declined';
-    const SETTLED                  = 'settled';
-    const SETTLING                 = 'settling';
+    const AUTHORIZATION_EXPIRED = 'authorization_expired';
+    const AUTHORIZING = 'authorizing';
+    const AUTHORIZED = 'authorized';
+    const GATEWAY_REJECTED = 'gateway_rejected';
+    const FAILED = 'failed';
+    const PROCESSOR_DECLINED = 'processor_declined';
+    const SETTLED = 'settled';
+    const SETTLING = 'settling';
     const SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
-    const VOIDED                   = 'voided';
-    const UNRECOGNIZED             = 'unrecognized';
-    const SETTLEMENT_DECLINED      = 'settlement_declined';
-    const SETTLEMENT_PENDING       = 'settlement_pending';
+    const VOIDED = 'voided';
+    const UNRECOGNIZED = 'unrecognized';
+    const SETTLEMENT_DECLINED = 'settlement_declined';
+    const SETTLEMENT_PENDING = 'settlement_pending';
 
     // Transaction Escrow Status
-    const ESCROW_HOLD_PENDING    = 'hold_pending';
-    const ESCROW_HELD            = 'held';
+    const ESCROW_HOLD_PENDING = 'hold_pending';
+    const ESCROW_HELD = 'held';
     const ESCROW_RELEASE_PENDING = 'release_pending';
-    const ESCROW_RELEASED        = 'released';
-    const ESCROW_REFUNDED        = 'refunded';
+    const ESCROW_RELEASED = 'released';
+    const ESCROW_REFUNDED = 'refunded';
 
     // Transaction Types
-    const SALE   = 'sale';
+    const SALE = 'sale';
     const CREDIT = 'credit';
 
     // Transaction Created Using
     const FULL_INFORMATION = 'full_information';
-    const TOKEN            = 'token';
+    const TOKEN = 'token';
 
     // Transaction Sources
-    const API           = 'api';
+    const API = 'api';
     const CONTROL_PANEL = 'control_panel';
-    const RECURRING     = 'recurring';
+    const RECURRING = 'recurring';
 
     // Gateway Rejection Reason
-    const AVS            = 'avs';
-    const AVS_AND_CVV    = 'avs_and_cvv';
-    const CVV            = 'cvv';
-    const DUPLICATE      = 'duplicate';
-    const FRAUD          = 'fraud';
+    const AVS = 'avs';
+    const AVS_AND_CVV = 'avs_and_cvv';
+    const CVV = 'cvv';
+    const DUPLICATE = 'duplicate';
+    const FRAUD = 'fraud';
     const THREE_D_SECURE = 'three_d_secure';
 
     // Industry Types
-    const LODGING_INDUSTRY           = 'lodging';
+    const LODGING_INDUSTRY = 'lodging';
     const TRAVEL_AND_CRUISE_INDUSTRY = 'travel_cruise';
 
     /**
@@ -230,7 +241,7 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['applePay'])) {
             $this->_set('applePayCardDetails',
-                new Braintree_Transaction_ApplePayCardDetails(
+                new ApplePayCardDetails(
                     $transactionAttribs['applePay']
                 )
             );
@@ -238,7 +249,7 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['androidPayCard'])) {
             $this->_set('androidPayCardDetails',
-                new Braintree_Transaction_AndroidPayCardDetails(
+                new AndroidPayCardDetails(
                     $transactionAttribs['androidPayCard']
                 )
             );
@@ -246,7 +257,7 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['creditCard'])) {
             $this->_set('creditCardDetails',
-                new Braintree_Transaction_CreditCardDetails(
+                new CreditCardDetails(
                     $transactionAttribs['creditCard']
                 )
             );
@@ -254,7 +265,7 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['coinbaseAccount'])) {
             $this->_set('coinbaseDetails',
-                new Braintree_Transaction_CoinbaseDetails(
+                new CoinbaseDetails(
                     $transactionAttribs['coinbaseAccount']
                 )
             );
@@ -262,7 +273,7 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['paypal'])) {
             $this->_set('paypalDetails',
-                new Braintree_Transaction_PayPalDetails(
+                new PayPalDetails(
                     $transactionAttribs['paypal']
                 )
             );
@@ -270,7 +281,7 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['customer'])) {
             $this->_set('customerDetails',
-                new Braintree_Transaction_CustomerDetails(
+                new CustomerDetails(
                     $transactionAttribs['customer']
                 )
             );
@@ -278,7 +289,7 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['billing'])) {
             $this->_set('billingDetails',
-                new Braintree_Transaction_AddressDetails(
+                new AddressDetails(
                     $transactionAttribs['billing']
                 )
             );
@@ -286,7 +297,7 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['shipping'])) {
             $this->_set('shippingDetails',
-                new Braintree_Transaction_AddressDetails(
+                new AddressDetails(
                     $transactionAttribs['shipping']
                 )
             );
@@ -294,7 +305,7 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['subscription'])) {
             $this->_set('subscriptionDetails',
-                new Braintree_Transaction_SubscriptionDetails(
+                new SubscriptionDetails(
                     $transactionAttribs['subscription']
                 )
             );
@@ -302,7 +313,7 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['descriptor'])) {
             $this->_set('descriptor',
-                new Braintree_Descriptor(
+                new Descriptor(
                     $transactionAttribs['descriptor']
                 )
             );
@@ -310,14 +321,14 @@ final class Braintree_Transaction extends Braintree_Base
 
         if (isset($transactionAttribs['disbursementDetails'])) {
             $this->_set('disbursementDetails',
-                new Braintree_DisbursementDetails($transactionAttribs['disbursementDetails'])
+                new DisbursementDetails($transactionAttribs['disbursementDetails'])
             );
         }
 
         $disputes = array();
         if (isset($transactionAttribs['disputes'])) {
             foreach ($transactionAttribs['disputes'] AS $dispute) {
-                $disputes[] = Braintree_Dispute::factory($dispute);
+                $disputes[] = Dispute::factory($dispute);
             }
         }
 
@@ -326,7 +337,7 @@ final class Braintree_Transaction extends Braintree_Base
         $statusHistory = array();
         if (isset($transactionAttribs['statusHistory'])) {
             foreach ($transactionAttribs['statusHistory'] AS $history) {
-                $statusHistory[] = new Braintree_Transaction_StatusDetails($history);
+                $statusHistory[] = new StatusDetails($history);
             }
         }
 
@@ -335,7 +346,7 @@ final class Braintree_Transaction extends Braintree_Base
         $addOnArray = array();
         if (isset($transactionAttribs['addOns'])) {
             foreach ($transactionAttribs['addOns'] AS $addOn) {
-                $addOnArray[] = Braintree_AddOn::factory($addOn);
+                $addOnArray[] = AddOn::factory($addOn);
             }
         }
         $this->_set('addOns', $addOnArray);
@@ -343,37 +354,43 @@ final class Braintree_Transaction extends Braintree_Base
         $discountArray = array();
         if (isset($transactionAttribs['discounts'])) {
             foreach ($transactionAttribs['discounts'] AS $discount) {
-                $discountArray[] = Braintree_Discount::factory($discount);
+                $discountArray[] = Discount::factory($discount);
             }
         }
         $this->_set('discounts', $discountArray);
 
-        if(isset($transactionAttribs['riskData'])) {
-            $this->_set('riskData', Braintree_RiskData::factory($transactionAttribs['riskData']));
+        if (isset($transactionAttribs['riskData'])) {
+            $this->_set('riskData', RiskData::factory($transactionAttribs['riskData']));
         }
-        if(isset($transactionAttribs['threeDSecureInfo'])) {
-            $this->_set('threeDSecureInfo', Braintree_ThreeDSecureInfo::factory($transactionAttribs['threeDSecureInfo']));
+        if (isset($transactionAttribs['threeDSecureInfo'])) {
+            $this->_set('threeDSecureInfo', ThreeDSecureInfo::factory($transactionAttribs['threeDSecureInfo']));
         }
     }
 
     /**
      * returns a string representation of the transaction
+     *
      * @return string
      */
     public function  __toString()
     {
         // array of attributes to print
         $display = array(
-            'id', 'type', 'amount', 'status',
-            'createdAt', 'creditCardDetails', 'customerDetails'
-            );
+            'id',
+            'type',
+            'amount',
+            'status',
+            'createdAt',
+            'creditCardDetails',
+            'customerDetails'
+        );
 
         $displayAttributes = array();
         foreach ($display AS $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
         return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($displayAttributes) .']';
+        Util::attributesToString($displayAttributes) . ']';
     }
 
     public function isEqual($otherTx)
@@ -386,9 +403,8 @@ final class Braintree_Transaction extends Braintree_Base
         $token = $this->creditCardDetails->token;
         if (empty($token)) {
             return null;
-        }
-        else {
-            return Braintree_CreditCard::find($token);
+        } else {
+            return CreditCard::find($token);
         }
     }
 
@@ -397,22 +413,22 @@ final class Braintree_Transaction extends Braintree_Base
         $customerId = $this->customerDetails->id;
         if (empty($customerId)) {
             return null;
-        }
-        else {
-            return Braintree_Customer::find($customerId);
+        } else {
+            return Customer::find($customerId);
         }
     }
 
-    public function isDisbursed() {
+    public function isDisbursed()
+    {
         return $this->disbursementDetails->isValid();
     }
 
     /**
-     *  factory method: returns an instance of Braintree_Transaction
+     *  factory method: returns an instance of Transaction
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_Transaction
+     * @return object instance of Transaction
      */
     public static function factory($attributes)
     {
@@ -426,91 +442,91 @@ final class Braintree_Transaction extends Braintree_Base
 
     public static function cloneTransaction($transactionId, $attribs)
     {
-        return Braintree_Configuration::gateway()->transaction()->cloneTransaction($transactionId, $attribs);
+        return Configuration::gateway()->transaction()->cloneTransaction($transactionId, $attribs);
     }
 
     public static function createFromTransparentRedirect($queryString)
     {
-        return Braintree_Configuration::gateway()->transaction()->createFromTransparentRedirect($queryString);
+        return Configuration::gateway()->transaction()->createFromTransparentRedirect($queryString);
     }
 
     public static function createTransactionUrl()
     {
-        return Braintree_Configuration::gateway()->transaction()->createTransactionUrl();
+        return Configuration::gateway()->transaction()->createTransactionUrl();
     }
 
     public static function credit($attribs)
     {
-        return Braintree_Configuration::gateway()->transaction()->credit($attribs);
+        return Configuration::gateway()->transaction()->credit($attribs);
     }
 
     public static function creditNoValidate($attribs)
     {
-        return Braintree_Configuration::gateway()->transaction()->creditNoValidate($attribs);
+        return Configuration::gateway()->transaction()->creditNoValidate($attribs);
     }
 
     public static function find($id)
     {
-        return Braintree_Configuration::gateway()->transaction()->find($id);
+        return Configuration::gateway()->transaction()->find($id);
     }
 
     public static function sale($attribs)
     {
-        return Braintree_Configuration::gateway()->transaction()->sale($attribs);
+        return Configuration::gateway()->transaction()->sale($attribs);
     }
 
     public static function saleNoValidate($attribs)
     {
-        return Braintree_Configuration::gateway()->transaction()->saleNoValidate($attribs);
+        return Configuration::gateway()->transaction()->saleNoValidate($attribs);
     }
 
     public static function search($query)
     {
-        return Braintree_Configuration::gateway()->transaction()->search($query);
+        return Configuration::gateway()->transaction()->search($query);
     }
 
     public static function fetch($query, $ids)
     {
-        return Braintree_Configuration::gateway()->transaction()->fetch($query, $ids);
+        return Configuration::gateway()->transaction()->fetch($query, $ids);
     }
 
     public static function void($transactionId)
     {
-        return Braintree_Configuration::gateway()->transaction()->void($transactionId);
+        return Configuration::gateway()->transaction()->void($transactionId);
     }
 
     public static function voidNoValidate($transactionId)
     {
-        return Braintree_Configuration::gateway()->transaction()->voidNoValidate($transactionId);
+        return Configuration::gateway()->transaction()->voidNoValidate($transactionId);
     }
 
     public static function submitForSettlement($transactionId, $amount = null)
     {
-        return Braintree_Configuration::gateway()->transaction()->submitForSettlement($transactionId, $amount);
+        return Configuration::gateway()->transaction()->submitForSettlement($transactionId, $amount);
     }
 
     public static function submitForSettlementNoValidate($transactionId, $amount = null)
     {
-        return Braintree_Configuration::gateway()->transaction()->submitForSettlementNoValidate($transactionId, $amount);
+        return Configuration::gateway()->transaction()->submitForSettlementNoValidate($transactionId, $amount);
     }
 
     public static function holdInEscrow($transactionId)
     {
-        return Braintree_Configuration::gateway()->transaction()->holdInEscrow($transactionId);
+        return Configuration::gateway()->transaction()->holdInEscrow($transactionId);
     }
 
     public static function releaseFromEscrow($transactionId)
     {
-        return Braintree_Configuration::gateway()->transaction()->releaseFromEscrow($transactionId);
+        return Configuration::gateway()->transaction()->releaseFromEscrow($transactionId);
     }
 
     public static function cancelRelease($transactionId)
     {
-        return Braintree_Configuration::gateway()->transaction()->cancelRelease($transactionId);
+        return Configuration::gateway()->transaction()->cancelRelease($transactionId);
     }
 
     public static function refund($transactionId, $amount = null)
     {
-        return Braintree_Configuration::gateway()->transaction()->refund($transactionId, $amount);
+        return Configuration::gateway()->transaction()->refund($transactionId, $amount);
     }
 }

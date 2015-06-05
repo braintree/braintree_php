@@ -1,15 +1,16 @@
-<?php
+<?php namespace Braintree;
+
 /**
  * Digest encryption module
  * Digest creates an HMAC-SHA1 hash for encrypting messages
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Digest
+class Digest
 {
     public static function hexDigestSha1($key, $string)
     {
-        if(function_exists('hash_hmac')) {
+        if (function_exists('hash_hmac')) {
             return self::_builtInHmacSha1($string, $key);
         } else {
             return self::_hmacSha1($string, $key);
@@ -45,7 +46,7 @@ class Braintree_Digest
     public static function _hmacSha1($message, $key)
     {
         $pack = 'H40';
-        $keyDigest = sha1($key,true);
+        $keyDigest = sha1($key, true);
         $innerPad = str_repeat(chr(0x36), 64);
         $outerPad = str_repeat(chr(0x5C), 64);
 
@@ -54,6 +55,6 @@ class Braintree_Digest
             $outerPad{$i} = $keyDigest{$i} ^ $outerPad{$i};
         }
 
-        return sha1($outerPad.pack($pack, sha1($innerPad.$message)));
+        return sha1($outerPad . pack($pack, sha1($innerPad . $message)));
     }
 }

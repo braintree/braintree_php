@@ -1,7 +1,10 @@
-<?php
+<?php namespace Braintree\Tests\Unit;
+
+use Braintree\Xml;
+
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_Xml_GeneratorTest extends PHPUnit_Framework_TestCase
+class Xml_GeneratorTest extends \PHPUnit_Framework_TestCase
 {
     function testSetsTypeAttributeForBooleans()
     {
@@ -13,7 +16,7 @@ class Braintree_Xml_GeneratorTest extends PHPUnit_Framework_TestCase
 </root>
 
 XML;
-        $xml = Braintree_Xml::buildXmlFromArray(array(
+        $xml = Xml::buildXmlFromArray(array(
             'root' => array('yes' => true, 'no' => false)
         ));
         $this->assertEquals($expected, $xml);
@@ -31,7 +34,7 @@ XML;
 </root>
 
 XML;
-        $xml = Braintree_Xml::buildXmlFromArray(array(
+        $xml = Xml::buildXmlFromArray(array(
             'root' => array('stuff' => array('foo', 'bar'))
         ));
         $this->assertEquals($expected, $xml);
@@ -49,7 +52,7 @@ XML;
 </root>
 
 XML;
-        $xml = Braintree_Xml::buildXmlFromArray(array(
+        $xml = Xml::buildXmlFromArray(array(
             'root' => array('someStuff' => array('innerFoo' => 42, 'barBarBar' => 3))
         ));
         $this->assertEquals($expected, $xml);
@@ -67,7 +70,7 @@ XML;
 </root>
 
 XML;
-        $xml = Braintree_Xml::buildXmlFromArray(array(
+        $xml = Xml::buildXmlFromArray(array(
             'root' => array('stuff' => array(true, false))
         ));
         $this->assertEquals($expected, $xml);
@@ -82,7 +85,7 @@ XML;
 </root>
 
 XML;
-        $xml = Braintree_Xml::buildXmlFromArray(array(
+        $xml = Xml::buildXmlFromArray(array(
             'root' => array('stuff' => array())
         ));
         $this->assertEquals($expected, $xml);
@@ -97,7 +100,7 @@ XML;
 </root>
 
 XML;
-        $xml = Braintree_Xml::buildXmlFromArray(array(
+        $xml = Xml::buildXmlFromArray(array(
             'root' => array('stuff' => '<>&\'"')
         ));
         $this->assertEquals($expected, $xml);

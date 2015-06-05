@@ -1,11 +1,14 @@
-<?php
+<?php namespace Braintree;
+
+use Braintree\Exception\SSLCertificate;
+
 /**
  * Braintree HTTP Client
  * processes Http requests using curl
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-abstract class Braintree_HttpBase
+abstract class HttpBase
 {
     protected function _doRequest($httpVerb, $path, $requestBody = null)
     {
@@ -13,6 +16,7 @@ abstract class Braintree_HttpBase
     }
 
     abstract protected function _getHeaders();
+
     abstract protected function _getAuthorization();
 
     public function _doUrlRequest($httpVerb, $url, $requestBody = null)
@@ -24,15 +28,17 @@ abstract class Braintree_HttpBase
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
 
         $headers = $this->_getHeaders($curl);
-        $headers[] = 'User-Agent: Braintree PHP Library ' . Braintree_Version::get();
-        $headers[] = 'X-ApiVersion: ' . Braintree_Configuration::API_VERSION;
+        $headers[] = 'User-Agent: Braintree PHP Library ' . Version::get();
+        $headers[] = 'X-ApiVersion: ' . Configuration::API_VERSION;
 
         $authorization = $this->_getAuthorization();
         if (isset($authorization['user'])) {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_USERPWD, $authorization['user'] . ':' . $authorization['password']);
-        } else if (isset($authorization['token'])) {
-            $headers[] = 'Authorization: Bearer ' . $authorization['token'];
+        } else {
+            if (isset($authorization['token'])) {
+                $headers[] = 'Authorization: Bearer ' . $authorization['token'];
+            }
         }
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
@@ -43,7 +49,7 @@ abstract class Braintree_HttpBase
             curl_setopt($curl, CURLOPT_CAINFO, $this->_config->caFile());
         }
 
-        if(!empty($requestBody)) {
+        if (!empty($requestBody)) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
         }
 
@@ -53,7 +59,7 @@ abstract class Braintree_HttpBase
         curl_close($curl);
         if ($this->_config->sslOn()) {
             if ($httpStatus == 0) {
-                throw new Braintree_Exception_SSLCertificate();
+                throw new SSLCertificate();
             }
         }
         return array('status' => $httpStatus, 'body' => $response);

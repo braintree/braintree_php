@@ -1,4 +1,5 @@
-<?php
+<?php namespace Braintree;
+
 /**
  * Braintree ResourceCollection
  * ResourceCollection is a container object for result data
@@ -7,7 +8,7 @@
  *
  * example:
  * <code>
- * $result = Braintree_Customer::all();
+ * $result = Customer::all();
  *
  * foreach($result as $transaction) {
  *   print_r($transaction->id);
@@ -18,7 +19,7 @@
  * @subpackage Utility
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_ResourceCollection implements Iterator
+class ResourceCollection implements \Iterator
 {
     private $_index;
     private $_batchIndex;
@@ -31,8 +32,8 @@ class Braintree_ResourceCollection implements Iterator
      *
      * expects an array of attributes with literal keys
      *
-     * @param array $attributes
-     * @param array $pagerAttribs
+     * @param $response
+     * @param $pager
      */
     public function  __construct($response, $pager)
     {
@@ -106,12 +107,9 @@ class Braintree_ResourceCollection implements Iterator
 
     private function _getNextPage()
     {
-        if (empty($this->_ids))
-        {
+        if (empty($this->_ids)) {
             $this->_items = array();
-        }
-        else
-        {
+        } else {
             $this->_items = $this->_getPage(array_slice($this->_ids, $this->_batchIndex, $this->_pageSize));
             $this->_batchIndex += $this->_pageSize;
             $this->_index = 0;

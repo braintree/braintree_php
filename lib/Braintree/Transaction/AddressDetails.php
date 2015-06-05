@@ -1,4 +1,7 @@
-<?php
+<?php namespace Braintree\Transaction;
+
+use Braintree\Instance;
+
 /**
  * Creates an instance of AddressDetails as returned from a transaction
  *
@@ -16,9 +19,9 @@
  * @property-read string $region
  * @property-read string $postalCode
  * @property-read string $countryName
- * @uses Braintree_Instance inherits methods
+ * @uses Instance inherits methods
  */
-class Braintree_Transaction_AddressDetails extends Braintree_Instance
+class AddressDetails extends Instance
 {
     protected $_attributes = array();
 }

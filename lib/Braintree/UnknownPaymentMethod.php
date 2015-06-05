@@ -1,11 +1,12 @@
-<?php
-/**
- * Braintree UnknownPaymentMethod module
- *
- * @package    Braintree
- * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
+<?php namespace Braintree;
+
+    /**
+     * Braintree UnknownPaymentMethod module
+     *
+     * @package    Braintree
+     * @category   Resources
+     * @copyright  2014 Braintree, a division of PayPal, Inc.
+     */
 
 /**
  * Manages Braintree UnknownPaymentMethod
@@ -20,16 +21,16 @@
  * @property-read string $token
  * @property-read string $imageUrl
  */
-class Braintree_UnknownPaymentMethod extends Braintree_Base
+class UnknownPaymentMethod extends Base
 {
 
 
     /**
-     *  factory method: returns an instance of Braintree_UnknownPaymentMethod
+     *  factory method: returns an instance of UnknownPaymentMethod
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_UnknownPaymentMethod
+     * @return object instance of UnknownPaymentMethod
      */
     public static function factory($attributes)
     {

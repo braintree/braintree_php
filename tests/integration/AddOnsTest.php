@@ -1,32 +1,36 @@
-<?php
+<?php namespace Braintree\Tests\Integration;
+
+use Braintree\AddOn;
+use Braintree\Configuration;
+use Braintree\Gateway;
+use Braintree\Http;
+
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
+class AddOnTest extends \PHPUnit_Framework_TestCase
 {
     function testAll_returnsAllAddOns()
     {
         $newId = strval(rand());
 
-        $addOnParams = array (
-            "amount" => "100.00",
-            "description" => "some description",
-            "id" => $newId,
-            "kind" => "add_on",
-            "name" => "php_add_on",
-            "neverExpires" => "false",
+        $addOnParams = array(
+            "amount"                => "100.00",
+            "description"           => "some description",
+            "id"                    => $newId,
+            "kind"                  => "add_on",
+            "name"                  => "php_add_on",
+            "neverExpires"          => "false",
             "numberOfBillingCycles" => "1"
         );
 
-        $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
+        $http = new Http(Configuration::$global);
+        $path = Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
         $http->post($path, array("modification" => $addOnParams));
 
-        $addOns = Braintree_AddOn::all();
+        $addOns = AddOn::all();
 
-        foreach ($addOns as $addOn)
-        {
-            if ($addOn->id == $newId)
-            {
+        foreach ($addOns as $addOn) {
+            if ($addOn->id == $newId) {
                 $actualAddOn = $addOn;
             }
         }
@@ -45,32 +49,30 @@ class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
     {
         $newId = strval(rand());
 
-        $addOnParams = array (
-            "amount" => "100.00",
-            "description" => "some description",
-            "id" => $newId,
-            "kind" => "add_on",
-            "name" => "php_add_on",
-            "neverExpires" => "false",
+        $addOnParams = array(
+            "amount"                => "100.00",
+            "description"           => "some description",
+            "id"                    => $newId,
+            "kind"                  => "add_on",
+            "name"                  => "php_add_on",
+            "neverExpires"          => "false",
             "numberOfBillingCycles" => "1"
         );
 
-        $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
+        $http = new Http(Configuration::$global);
+        $path = Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
         $http->post($path, array("modification" => $addOnParams));
 
-        $gateway = new Braintree_Gateway(array(
+        $gateway = new Gateway(array(
             'environment' => 'development',
-            'merchantId' => 'integration_merchant_id',
-            'publicKey' => 'integration_public_key',
-            'privateKey' => 'integration_private_key'
+            'merchantId'  => 'integration_merchant_id',
+            'publicKey'   => 'integration_public_key',
+            'privateKey'  => 'integration_private_key'
         ));
         $addOns = $gateway->addOn()->all();
 
-        foreach ($addOns as $addOn)
-        {
-            if ($addOn->id == $newId)
-            {
+        foreach ($addOns as $addOn) {
+            if ($addOn->id == $newId) {
                 $actualAddOn = $addOn;
             }
         }

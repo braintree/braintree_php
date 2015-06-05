@@ -1,4 +1,5 @@
-<?php
+<?php namespace Braintree;
+
 /**
  * Braintree Generic collection
  *
@@ -12,7 +13,7 @@
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
 
-class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
+class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 {
     /**
      *
@@ -22,6 +23,7 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Add a value into the collection
+     *
      * @param string $value
      */
     public function add($value)
@@ -31,60 +33,70 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Set index's value
+     *
      * @param integer $index
      * @param mixed $value
      * @throws OutOfRangeException
      */
     public function set($index, $value)
     {
-        if($index >= $this->count())
+        if ($index >= $this->count()) {
             throw new OutOfRangeException('Index out of range');
+        }
 
         $this->_collection[$index] = $value;
     }
 
     /**
      * Remove a value from the collection
+     *
      * @param integer $index index to remove
      * @throws OutOfRangeException if index is out of range
      */
     public function remove($index)
     {
-        if($index >= $this->count())
+        if ($index >= $this->count()) {
             throw new OutOfRangeException('Index out of range');
+        }
 
         array_splice($this->_collection, $index, 1);
     }
 
     /**
      * Return value at index
+     *
      * @param integer $index
      * @return mixed
      * @throws OutOfRangeException
      */
     public function get($index)
     {
-        if($index >= $this->count())
+        if ($index >= $this->count()) {
             throw new OutOfRangeException('Index out of range');
+        }
 
         return $this->_collection[$index];
     }
 
     /**
      * Determine if index exists
+     *
      * @param integer $index
      * @return boolean
      */
     public function exists($index)
     {
-        if($index >= $this->count())
+        if ($index >= $this->count()) {
             return false;
+        }
 
         return true;
     }
+
     /**
      * Return count of items in collection
      * Implements countable
+     *
      * @return integer
      */
     public function count()
@@ -96,6 +108,7 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Return an iterator
      * Implements IteratorAggregate
+     *
      * @return ArrayIterator
      */
     public function getIterator()
@@ -106,6 +119,7 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Set offset to value
      * Implements ArrayAccess
+     *
      * @see set
      * @param integer $offset
      * @param mixed $value
@@ -118,6 +132,7 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Unset offset
      * Implements ArrayAccess
+     *
      * @see remove
      * @param integer $offset
      */
@@ -129,6 +144,7 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * get an offset's value
      * Implements ArrayAccess
+     *
      * @see get
      * @param integer $offset
      * @return mixed
@@ -141,6 +157,7 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Determine if offset exists
      * Implements ArrayAccess
+     *
      * @see exists
      * @param integer $offset
      * @return boolean

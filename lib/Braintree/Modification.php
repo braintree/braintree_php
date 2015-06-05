@@ -1,5 +1,6 @@
-<?php
-class Braintree_Modification extends Braintree_Base
+<?php namespace Braintree;
+
+class Modification extends Base
 {
     protected function _initialize($attributes)
     {
@@ -8,7 +9,7 @@ class Braintree_Modification extends Braintree_Base
         $addOnArray = array();
         if (isset($attributes['addOns'])) {
             foreach ($attributes['addOns'] AS $addOn) {
-                $addOnArray[] = Braintree_addOn::factory($addOn);
+                $addOnArray[] = addOn::factory($addOn);
             }
         }
         $this->_attributes['addOns'] = $addOnArray;

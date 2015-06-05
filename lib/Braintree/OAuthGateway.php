@@ -1,4 +1,5 @@
-<?php
+<?php namespace Braintree;
+
 /**
  * Braintree OAuthGateway module
  * PHP Version 5
@@ -7,7 +8,7 @@
  * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_OAuthGateway
+class OAuthGateway
 {
     private $_gateway;
     private $_config;
@@ -17,7 +18,7 @@ class Braintree_OAuthGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
-        $this->_http = new Braintree_HttpOAuth($gateway->config);
+        $this->_http = new HttpOAuth($gateway->config);
 
         $this->_config->assertHasClientCredentials();
     }
@@ -38,14 +39,14 @@ class Braintree_OAuthGateway
 
     private function _verifyGatewayResponse($response)
     {
-        $result = Braintree_OAuthCredentials::factory($response);
+        $result = OAuthCredentials::factory($response);
         $result->success = !isset($response['error']);
         return $result;
     }
 
     public function connectUrl($params = array())
     {
-        $query = Braintree_Util::camelCaseToDelimiterArray($params, '_');
+        $query = Util::camelCaseToDelimiterArray($params, '_');
         $query['client_id'] = $this->_config->getClientId();
         $url = $this->_config->baseUrl() . '/oauth/connect?' . http_build_query($query);
 

@@ -1,11 +1,13 @@
-<?php
-/**
- * Android Pay card details from a transaction
- *
- * @package    Braintree
- * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
- */
+<?php namespace Braintree\Transaction;
+
+    /**
+     * Android Pay card details from a transaction
+     *
+     * @package    Braintree
+     * @subpackage Transaction
+     * @copyright  2014 Braintree, a division of PayPal, Inc.
+     */
+use Braintree\Instance;
 
 /**
  * creates an instance of AndroidPayCardDetails
@@ -26,9 +28,9 @@
  * @property-read string $token
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
- * @uses Braintree_Instance inherits methods
+ * @uses Instance inherits methods
  */
-class Braintree_Transaction_AndroidPayCardDetails extends Braintree_Instance
+class AndroidPayCardDetails extends Instance
 {
     protected $_attributes = array();
 

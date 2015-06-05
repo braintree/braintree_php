@@ -1,6 +1,6 @@
-<?php
+<?php namespace Braintree;
 
-class Braintree_PartialMatchNode extends Braintree_EqualityNode
+class PartialMatchNode extends EqualityNode
 {
     function startsWith($value)
     {

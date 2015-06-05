@@ -1,4 +1,5 @@
-<?php
+<?php namespace Braintree;
+
 /**
  * Braintree Gateway module
  *
@@ -6,105 +7,105 @@
  * @category   Resources
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Gateway
+class Gateway
 {
     public $config;
 
     public function __construct($config)
     {
         if (is_array($config)) {
-            $config = new Braintree_Configuration($config);
+            $config = new Configuration($config);
         }
         $this->config = $config;
     }
 
     public function addOn()
     {
-        return new Braintree_AddOnGateway($this);
+        return new AddOnGateway($this);
     }
 
     public function address()
     {
-        return new Braintree_AddressGateway($this);
+        return new AddressGateway($this);
     }
 
     public function clientToken()
     {
-        return new Braintree_ClientTokenGateway($this);
+        return new ClientTokenGateway($this);
     }
 
     public function creditCard()
     {
-        return new Braintree_CreditCardGateway($this);
+        return new CreditCardGateway($this);
     }
 
     public function creditCardVerification()
     {
-        return new Braintree_CreditCardVerificationGateway($this);
+        return new CreditCardVerificationGateway($this);
     }
 
     public function customer()
     {
-        return new Braintree_CustomerGateway($this);
+        return new CustomerGateway($this);
     }
 
     public function discount()
     {
-        return new Braintree_DiscountGateway($this);
+        return new DiscountGateway($this);
     }
 
     public function merchant()
     {
-        return new Braintree_MerchantGateway($this);
+        return new MerchantGateway($this);
     }
 
     public function merchantAccount()
     {
-        return new Braintree_MerchantAccountGateway($this);
+        return new MerchantAccountGateway($this);
     }
 
     public function oauth()
     {
-        return new Braintree_OAuthGateway($this);
+        return new OAuthGateway($this);
     }
 
     public function paymentMethod()
     {
-        return new Braintree_PaymentMethodGateway($this);
+        return new PaymentMethodGateway($this);
     }
 
     public function paymentMethodNonce()
     {
-        return new Braintree_PaymentMethodNonceGateway($this);
+        return new PaymentMethodNonceGateway($this);
     }
 
     public function payPalAccount()
     {
-        return new Braintree_PayPalAccountGateway($this);
+        return new PayPalAccountGateway($this);
     }
 
     public function plan()
     {
-        return new Braintree_PlanGateway($this);
+        return new PlanGateway($this);
     }
 
     public function settlementBatchSummary()
     {
-        return new Braintree_SettlementBatchSummaryGateway($this);
+        return new SettlementBatchSummaryGateway($this);
     }
 
     public function subscription()
     {
-        return new Braintree_SubscriptionGateway($this);
+        return new SubscriptionGateway($this);
     }
 
     public function transaction()
     {
-        return new Braintree_TransactionGateway($this);
+        return new TransactionGateway($this);
     }
 
     public function transparentRedirect()
     {
-        return new Braintree_TransparentRedirectGateway($this);
+        return new TransparentRedirectGateway($this);
     }
 }

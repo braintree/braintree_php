@@ -1,5 +1,8 @@
-<?php
-class Braintree_CreditCardVerification extends Braintree_Result_CreditCardVerification
+<?php namespace Braintree;
+
+use Braintree\Result\CreditCardVerification as VerificationResult;
+
+class CreditCardVerification extends VerificationResult
 {
     public static function factory($attributes)
     {
@@ -12,11 +15,11 @@ class Braintree_CreditCardVerification extends Braintree_Result_CreditCardVerifi
 
     public static function fetch($query, $ids)
     {
-        return Braintree_Configuration::gateway()->creditCardVerification()->fetch($query, $ids);
+        return Configuration::gateway()->creditCardVerification()->fetch($query, $ids);
     }
 
     public static function search($query)
     {
-        return Braintree_Configuration::gateway()->creditCardVerification()->search($query);
+        return Configuration::gateway()->creditCardVerification()->search($query);
     }
 }

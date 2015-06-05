@@ -1,12 +1,15 @@
-<?php
+<?php namespace Braintree\Tests\Unit;
+
+use Braintree\AddOn;
+
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
+class AddOnTest extends \PHPUnit_Framework_TestCase
 {
     public function testFactory()
     {
-        $addOn = \Braintree_AddOn::factory(array());
+        $addOn = AddOn::factory(array());
 
-        $this->assertInstanceOf('Braintree_AddOn', $addOn);
+        $this->assertInstanceOf('Braintree\AddOn', $addOn);
     }
 }

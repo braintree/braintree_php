@@ -136,7 +136,7 @@ require_once('Braintree/PaymentInstrumentType.php');
 require_once('Braintree/UnknownPaymentMethod.php');
 
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-    throw new Braintree_Exception('PHP version >= 5.4.0 required');
+    throw new Exception('PHP version >= 5.4.0 required');
 }
 
 
@@ -144,7 +144,7 @@ function requireDependencies() {
     $requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
     foreach ($requiredExtensions AS $ext) {
         if (!extension_loaded($ext)) {
-            throw new Braintree_Exception('The Braintree library requires the ' . $ext . ' extension.');
+            throw new Exception('The Braintree library requires the ' . $ext . ' extension.');
         }
     }
 }
