@@ -44,10 +44,10 @@ class Braintree_OAuthGateway
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['credentials'])) {
-            $credentials = $response['credentials'];
-            $result = Braintree_OAuthCredentials::factory($credentials);
-            $result->success = true;
-            return $result;
+            $result =  new Braintree_Result_Successful(
+                Braintree_OAuthCredentials::factory($response['credentials'])
+            );
+            return $this->_mapSuccess($result);
         } else if (isset($response['apiErrorResponse'])) {
             $result = new Braintree_Result_Error($response['apiErrorResponse']);
             return $this->_mapError($result);
@@ -71,7 +71,16 @@ class Braintree_OAuthGateway
         }
         $result->errorDescription = explode(': ', $error->message)[1];
         return $result;
+    }
 
+    public function _mapSuccess($result)
+    {
+        $credentials = $result->credentials;
+        $result->accessToken = $credentials->accessToken;
+        $result->refreshToken = $credentials->refreshToken;
+        $result->tokenType = $credentials->tokenType;
+        $result->expiresAt = $credentials->expiresAt;
+        return $result;
     }
 
     public function connectUrl($params = array())

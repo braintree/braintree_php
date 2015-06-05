@@ -33,6 +33,29 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertEquals(true, $result->success);
+        $credentials = $result->credentials;
+        $this->assertNotNull($credentials->accessToken);
+        $this->assertNotNull($credentials->refreshToken);
+        $this->assertEquals('bearer', $credentials->tokenType);
+        $this->assertNotNull($credentials->expiresAt);
+    }
+
+    function testCreateTokenFromCode_OldAPI()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+        $code = Braintree_OAuthTestHelper::createGrant($gateway, array(
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'read_write'
+        ));
+        $result = $gateway->oauth()->createTokenFromCode(array(
+            'code' => $code,
+            'scope' => 'read_write',
+        ));
+
+        $this->assertEquals(true, $result->success);
         $this->assertNotNull($result->accessToken);
         $this->assertNotNull($result->refreshToken);
         $this->assertEquals('bearer', $result->tokenType);
@@ -85,7 +108,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $refreshToken = $gateway->oauth()->createTokenFromCode(array(
             'code' => $code,
             'scope' => 'read_write',
-        ))->refreshToken;
+        ))->credentials->refreshToken;
 
         $result = $gateway->oauth()->createTokenFromRefreshToken(array(
             'refreshToken' => $refreshToken,
@@ -93,10 +116,11 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertEquals(true, $result->success);
-        $this->assertNotNull($result->accessToken);
-        $this->assertNotNull($result->refreshToken);
-        $this->assertEquals('bearer', $result->tokenType);
-        $this->assertNotNull($result->expiresAt);
+        $credentials = $result->credentials;
+        $this->assertNotNull($credentials->accessToken);
+        $this->assertNotNull($credentials->refreshToken);
+        $this->assertEquals('bearer', $credentials->tokenType);
+        $this->assertNotNull($credentials->expiresAt);
     }
 
 
