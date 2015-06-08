@@ -43,9 +43,43 @@ class Braintree_OAuthGateway
 
     private function _verifyGatewayResponse($response)
     {
-        $credentials = $response['credentials'];
-        $result = Braintree_OAuthCredentials::factory($credentials);
-        $result->success = !isset($credentials['error']);
+        if (isset($response['credentials'])) {
+            $result =  new Braintree_Result_Successful(
+                Braintree_OAuthCredentials::factory($response['credentials'])
+            );
+            return $this->_mapSuccess($result);
+        } else if (isset($response['apiErrorResponse'])) {
+            $result = new Braintree_Result_Error($response['apiErrorResponse']);
+            return $this->_mapError($result);
+        } else {
+            throw new Braintree_Exception_Unexpected(
+                "Expected credentials or apiErrorResponse"
+            );
+        }
+    }
+
+    public function _mapError($result)
+    {
+        $error = $result->errors->deepAll()[0];
+
+        if ($error->code == Braintree_Error_Codes::OAUTH_INVALID_GRANT) {
+            $result->error = 'invalid_grant';
+        } else if ($error->code == Braintree_Error_Codes::OAUTH_INVALID_CREDENTIALS) {
+            $result->error = 'invalid_credentials';
+        } else if ($error->code == Braintree_Error_Codes::OAUTH_INVALID_SCOPE) {
+            $result->error = 'invalid_scope';
+        }
+        $result->errorDescription = explode(': ', $error->message)[1];
+        return $result;
+    }
+
+    public function _mapSuccess($result)
+    {
+        $credentials = $result->credentials;
+        $result->accessToken = $credentials->accessToken;
+        $result->refreshToken = $credentials->refreshToken;
+        $result->tokenType = $credentials->tokenType;
+        $result->expiresAt = $credentials->expiresAt;
         return $result;
     }
 
