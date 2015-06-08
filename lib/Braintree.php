@@ -140,7 +140,7 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 
 
 function requireDependencies() {
-    $requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
+    $requiredExtensions = array('xmlwriter', 'openssl', 'dom', 'hash', 'curl');
     foreach ($requiredExtensions AS $ext) {
         if (!extension_loaded($ext)) {
             throw new Braintree_Exception('The Braintree library requires the ' . $ext . ' extension.');

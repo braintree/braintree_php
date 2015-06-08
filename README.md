@@ -12,7 +12,6 @@ The following PHP extensions are required:
 * dom
 * hash
 * openssl
-* SimpleXML
 * xmlwriter
 
 ## Quick Start Example
