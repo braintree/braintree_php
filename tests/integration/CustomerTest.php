@@ -116,7 +116,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $customer = $result->customer;
         $this->assertNotNull($customer->applePayCards[0]);
-        $this->assertNotNull($customer->paymentMethods()[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
     }
 
     function testCreateCustomerWithAndroidPayCard()
@@ -128,7 +128,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
         $customer = $result->customer;
         $this->assertNotNull($customer->androidPayCards[0]);
-        $this->assertNotNull($customer->paymentMethods()[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
         $androidPayCard = $customer->androidPayCards[0];
         $this->assertTrue($androidPayCard instanceof Braintree_AndroidPayCard);
         $this->assertNotNull($androidPayCard->token);
@@ -147,7 +147,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($customer->coinbaseAccounts[0]->userId);
         $this->assertNotNull($customer->coinbaseAccounts[0]->userName);
         $this->assertNotNull($customer->coinbaseAccounts[0]->userEmail);
-        $this->assertNotNull($customer->paymentMethods()[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
     }
 
 
