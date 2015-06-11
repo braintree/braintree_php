@@ -61,6 +61,6 @@ class Braintree_PaymentMethodNonceTest extends PHPUnit_Framework_TestCase
     function testFind_nonExistantNonce()
     {
         $this->setExpectedException('Braintree_Exception_NotFound');
-        Braintree_PaymentMethodNonce::create('not_a_nonce');
+        Braintree_PaymentMethodNonce::find('not_a_nonce');
     }
 }
