@@ -5,7 +5,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 {
     /**
     * @expectedException Braintree_Exception_Configuration
-    * @expectedExceptionMessage clientSecret needs to be set.
+    * @expectedExceptionMessage clientSecret needs to be passed to Braintree_Gateway.
     */
     public function testAssertsHasCredentials()
     {

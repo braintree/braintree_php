@@ -108,14 +108,14 @@ class Braintree_Configuration
     public function assertHasAccessTokenOrKeys()
     {
         if (empty($this->_accessToken)) {
-            if (empty($this->_environment)) {
-                throw new Braintree_Exception_Configuration('environment needs to be set.');
-            } else if (empty($this->_merchantId)) {
-                throw new Braintree_Exception_Configuration('merchantId needs to be set.');
+            if (empty($this->_merchantId)) {
+                throw new Braintree_Exception_Configuration('Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway.');
+            } else if (empty($this->_environment)) {
+                throw new Braintree_Exception_Configuration('Braintree_Configuration::environment needs to be set.');
             } else if (empty($this->_publicKey)) {
-                throw new Braintree_Exception_Configuration('publicKey needs to be set.');
+                throw new Braintree_Exception_Configuration('Braintree_Configuration::publicKey needs to be set.');
             } else if (empty($this->_privateKey)) {
-                throw new Braintree_Exception_Configuration('privateKey needs to be set.');
+                throw new Braintree_Exception_Configuration('Braintree_Configuration::privateKey needs to be set.');
             }
         }
     }
@@ -129,14 +129,14 @@ class Braintree_Configuration
     public function assertHasClientId()
     {
         if (empty($this->_clientId)) {
-            throw new Braintree_Exception_Configuration('clientId needs to be set.');
+            throw new Braintree_Exception_Configuration('clientId needs to be passed to Braintree_Gateway.');
         }
     }
 
     public function assertHasClientSecret()
     {
         if (empty($this->_clientSecret)) {
-            throw new Braintree_Exception_Configuration('clientSecret needs to be set.');
+            throw new Braintree_Exception_Configuration('clientSecret needs to be passed to Braintree_Gateway.');
         }
     }
 

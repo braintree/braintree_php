@@ -23,7 +23,7 @@ class Braintree_MerchantTest extends PHPUnit_Framework_TestCase
 
     /**
     * @expectedException Braintree_Exception_Configuration
-    * @expectedExceptionMessage clientId needs to be set.
+    * @expectedExceptionMessage clientId needs to be passed to Braintree_Gateway.
     */
     function testAssertsHasCredentials()
     {

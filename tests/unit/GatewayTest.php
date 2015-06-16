@@ -18,7 +18,7 @@ class Braintree_GatewayTest extends PHPUnit_Framework_TestCase
 
     /**
     * @expectedException Braintree_Exception_Configuration
-    * @expectedExceptionMessage merchantId needs to be set.
+    * @expectedExceptionMessage Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway.
     */
     function testConfigGetsAssertedValid()
     {
