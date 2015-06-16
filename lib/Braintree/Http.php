@@ -8,6 +8,7 @@
 class Braintree_Http
 {
     protected $_config;
+    private $_useClientCredentials;
 
     public function __construct($config)
     {
@@ -71,14 +72,15 @@ class Braintree_Http
 
     private function _getAuthorization()
     {
-        if ($this->_config->isAccessToken()) {
-            return array(
-                'token' => $this->_config->getAccessToken(),
-            );
-        } else if ($this->_config->isClientCredentials()) {
+        if ($this->_useClientCredentials)
+        {
             return array(
                 'user' => $this->_config->getClientId(),
                 'password' => $this->_config->getClientSecret(),
+            );
+        } else if ($this->_config->isAccessToken()) {
+            return array(
+                'token' => $this->_config->getAccessToken(),
             );
         } else {
             return array(
@@ -86,6 +88,11 @@ class Braintree_Http
                 'password' => $this->_config->getPrivateKey(),
             );
         }
+    }
+
+    public function useClientCredentials()
+    {
+        $this->_useClientCredentials = true;
     }
 
     private function _doRequest($httpVerb, $path, $requestBody = null)

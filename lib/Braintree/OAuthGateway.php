@@ -18,6 +18,7 @@ class Braintree_OAuthGateway
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_http = new Braintree_Http($gateway->config);
+        $this->_http->useClientCredentials();
 
         $this->_config->assertHasClientCredentials();
     }
