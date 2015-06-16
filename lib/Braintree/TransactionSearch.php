@@ -1,6 +1,9 @@
 <?php
 class Braintree_TransactionSearch
 {
+	static function amount()                     { return new Braintree_RangeNode("amount"); }
+	static function authorizationExpiredAt()     { return new Braintree_RangeNode("authorizationExpiredAt"); }
+	static function authorizedAt()               { return new Braintree_RangeNode("authorizedAt"); }
 	static function billingCompany()             { return new Braintree_TextNode('billing_company'); }
 	static function billingCountryName()         { return new Braintree_TextNode('billing_country_name'); }
 	static function billingExtendedAddress()     { return new Braintree_TextNode('billing_extended_address'); }
@@ -10,7 +13,10 @@ class Braintree_TransactionSearch
 	static function billingPostalCode()          { return new Braintree_TextNode('billing_postal_code'); }
 	static function billingRegion()              { return new Braintree_TextNode('billing_region'); }
 	static function billingStreetAddress()       { return new Braintree_TextNode('billing_street_address'); }
+	static function createdAt()                  { return new Braintree_RangeNode("createdAt"); }
 	static function creditCardCardholderName()   { return new Braintree_TextNode('credit_card_cardholderName'); }
+	static function creditCardNumber()           { return new Braintree_PartialMatchNode('credit_card_number'); }
+	static function creditCardUniqueIdentifier() { return new Braintree_TextNode('credit_card_unique_identifier'); }
 	static function customerCompany()            { return new Braintree_TextNode('customer_company'); }
 	static function customerEmail()              { return new Braintree_TextNode('customer_email'); }
 	static function customerFax()                { return new Braintree_TextNode('customer_fax'); }
@@ -19,11 +25,21 @@ class Braintree_TransactionSearch
 	static function customerLastName()           { return new Braintree_TextNode('customer_last_name'); }
 	static function customerPhone()              { return new Braintree_TextNode('customer_phone'); }
 	static function customerWebsite()            { return new Braintree_TextNode('customer_website'); }
+	static function disbursementDate()           { return new Braintree_RangeNode("disbursementDate"); }
+	static function disputeDate()                { return new Braintree_RangeNode("disputeDate"); }
+	static function failedAt()                   { return new Braintree_RangeNode("failedAt"); }
+	static function gatewayRejectedAt()          { return new Braintree_RangeNode("gatewayRejectedAt"); }
 	static function id()                         { return new Braintree_TextNode('id'); }
 	static function ids()                        { return new Braintree_MultipleValueNode('ids'); }
 	static function orderId()                    { return new Braintree_TextNode('order_id'); }
+	static function paymentInstrumentType()      { return new Braintree_MultipleValueNode('paymentInstrumentType'); }
 	static function paymentMethodToken()         { return new Braintree_TextNode('payment_method_token'); }
+	static function paypalAuthorizationId()      { return new Braintree_TextNode('paypal_authorization_id'); }
+	static function paypalPayerEmail()           { return new Braintree_TextNode('paypal_payer_email'); }
+	static function paypalPaymentId()            { return new Braintree_TextNode('paypal_payment_id'); }
 	static function processorAuthorizationCode() { return new Braintree_TextNode('processor_authorization_code'); }
+	static function processorDeclinedAt()        { return new Braintree_RangeNode("processorDeclinedAt"); }
+	static function settledAt()                  { return new Braintree_RangeNode("settledAt"); }
 	static function settlementBatchId()          { return new Braintree_TextNode('settlement_batch_id'); }
 	static function shippingCompany()            { return new Braintree_TextNode('shipping_company'); }
 	static function shippingCountryName()        { return new Braintree_TextNode('shipping_country_name'); }
@@ -34,34 +50,12 @@ class Braintree_TransactionSearch
 	static function shippingPostalCode()         { return new Braintree_TextNode('shipping_postal_code'); }
 	static function shippingRegion()             { return new Braintree_TextNode('shipping_region'); }
 	static function shippingStreetAddress()      { return new Braintree_TextNode('shipping_street_address'); }
-	static function paypalPaymentId()            { return new Braintree_TextNode('paypal_payment_id'); }
-	static function paypalAuthorizationId()      { return new Braintree_TextNode('paypal_authorization_id'); }
-	static function paypalPayerEmail()           { return new Braintree_TextNode('paypal_payer_email'); }
-	static function creditCardUniqueIdentifier() { return new Braintree_TextNode('credit_card_unique_identifier'); }
-
-	static function user()                       { return new Braintree_MultipleValueNode('user'); }
-	static function paymentInstrumentType()      { return new Braintree_MultipleValueNode('paymentInstrumentType'); }
-
-    static function creditCardExpirationDate()   { return new Braintree_EqualityNode('credit_card_expiration_date'); }
-
-	static function creditCardNumber()           { return new Braintree_PartialMatchNode('credit_card_number'); }
-
-    static function refund()                     { return new Braintree_KeyValueNode("refund"); }
-
-	static function amount()                     { return new Braintree_RangeNode("amount"); }
-	static function authorizedAt()               { return new Braintree_RangeNode("authorizedAt"); }
-	static function authorizationExpiredAt()     { return new Braintree_RangeNode("authorizationExpiredAt"); }
-	static function createdAt()                  { return new Braintree_RangeNode("createdAt"); }
-	static function failedAt()                   { return new Braintree_RangeNode("failedAt"); }
-	static function gatewayRejectedAt()          { return new Braintree_RangeNode("gatewayRejectedAt"); }
-	static function processorDeclinedAt()        { return new Braintree_RangeNode("processorDeclinedAt"); }
-	static function settledAt()                  { return new Braintree_RangeNode("settledAt"); }
 	static function submittedForSettlementAt()   { return new Braintree_RangeNode("submittedForSettlementAt"); }
+	static function user()                       { return new Braintree_MultipleValueNode('user'); }
 	static function voidedAt()                   { return new Braintree_RangeNode("voidedAt"); }
-	static function disbursementDate()           { return new Braintree_RangeNode("disbursementDate"); }
-	static function disputeDate()                { return new Braintree_RangeNode("disputeDate"); }
-
+    static function creditCardExpirationDate()   { return new Braintree_EqualityNode('credit_card_expiration_date'); }
     static function merchantAccountId()          { return new Braintree_MultipleValueNode("merchant_account_id"); }
+    static function refund()                     { return new Braintree_KeyValueNode("refund"); }
 
     static function createdUsing()
     {
