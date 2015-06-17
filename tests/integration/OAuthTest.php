@@ -191,6 +191,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
                 'currency' => 'USD',
                 'website' => 'http://example.com',
             ),
+            'paymentMethods' => ['credit_card'],
         ));
 
         $components = parse_url($url);
@@ -234,6 +235,10 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(7, $query['business']['fulfillment_completed_in']);
         $this->assertEquals('USD', $query['business']['currency']);
         $this->assertEquals('http://example.com', $query['business']['website']);
+
+        $this->assertCount(1, $query['payment_methods']);
+        $this->assertEquals('credit_card', $query['payment_methods'][0]);
+
         $this->assertEquals(64, strlen($query['signature']));
         $this->assertEquals('SHA256', $query['algorithm']);
     }

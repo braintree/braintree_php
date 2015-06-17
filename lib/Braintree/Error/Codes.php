@@ -188,6 +188,7 @@ class Braintree_Error_Codes
     const MERCHANT_EMAIL_FORMAT_IS_INVALID              = '93602';
     const MERCHANT_EMAIL_IS_REQUIRED                    = '83601';
     const MERCHANT_INCONSISTENT_COUNTRY                 = '93612';
+    const MERCHANT_ACCOUNT_PAYMENT_METHODS_ARE_INVALID  = '93613';
 
     const MERCHANT_ACCOUNT_ID_FORMAT_IS_INVALID                         = '82603';
     const MERCHANT_ACCOUNT_ID_IS_IN_USE                                 = '82604';
