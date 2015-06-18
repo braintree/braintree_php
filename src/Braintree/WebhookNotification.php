@@ -37,6 +37,10 @@ class WebhookNotification extends Braintree
 
     public static function verify($challenge)
     {
+        if (!preg_match('/^[a-f0-9]{20,32}$/', $challenge)) {
+            throw new Exception\InvalidChallenge("challenge contains non-hex characters");
+        }
+
         $publicKey = Configuration::publicKey();
         $digest = Digest::hexDigestSha1(Configuration::privateKey(), $challenge);
 

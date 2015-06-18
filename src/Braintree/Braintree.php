@@ -70,8 +70,8 @@ abstract class Braintree
 
     public static function check()
     {
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-            throw new Exception('PHP version >= 5.3.0 required');
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            throw new Exception('PHP version >= 5.4.0 required');
         }
 
         $requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');

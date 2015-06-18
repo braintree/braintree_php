@@ -16,8 +16,17 @@ class WebhookNotificationTest extends Setup
 
     public function testVerify()
     {
-        $verificationString = Braintree\WebhookNotification::verify('verification_token');
-        $this->assertEquals('integration_public_key|c9f15b74b0d98635cd182c51e2703cffa83388c3', $verificationString);
+        $verificationString = Braintree\WebhookNotification::verify('20f9f8ed05f77439fe955c977e4c8a53');
+        $this->assertEquals('integration_public_key|d9b899556c966b3f06945ec21311865d35df3ce4', $verificationString);
+    }
+
+    /**
+     * @expectedException Braintree_Exception_InvalidChallenge
+     * @expectedExceptionMessage challenge contains non-hex characters
+     */
+    public function testVerifyRaisesErrorWithInvalidChallenge()
+    {
+        Braintree\WebhookNotification::verify('bad challenge');
     }
 
     public function testSampleNotificationReturnsAParsableNotification()

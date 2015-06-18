@@ -4,12 +4,12 @@ namespace Test\Unit;
 require_once dirname(__DIR__).'/Setup.php';
 
 use stdClass;
+use DateTime;
 use Test\Setup;
 use Braintree;
 
 class UtilTest extends Setup
 {
-    // test throwStatusCodeException
     /**
      * @expectedException Braintree\Exception\Authentication
      */
@@ -84,10 +84,13 @@ class UtilTest extends Setup
     }
     public function testimplodeAssociativeArray()
     {
-        $array = array('test1' => 'val1',
-                       'test2' => 'val2', );
+        $array = array(
+            'test1' => 'val1',
+            'test2' => 'val2',
+            'test3' => new DateTime('2015-05-15 17:21:00'),
+        );
         $string = Braintree\Util::implodeAssociativeArray($array);
-        $this->assertEquals('test1=val1, test2=val2', $string);
+        $this->assertEquals('test1=val1, test2=val2, test3=Fri, 15 May 2015 17:21:00 +0000', $string);
     }
     public function testVerifyKeys_withThreeLevels()
     {

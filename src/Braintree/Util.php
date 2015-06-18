@@ -273,11 +273,12 @@ class Util
 
         foreach ($array as $key => $value) {
             if ($value instanceof DateTime) {
-                $value =  $value->format('r');
+                $value = $value->format('r');
             }
 
-            $tmpArray[] = $key.$separator.$value;
+            $tmpArray[] = $key . $separator . $value;
         }
+
         // implode and return the new array
         return (is_array($tmpArray)) ? implode($glue, $tmpArray) : false;
     }
