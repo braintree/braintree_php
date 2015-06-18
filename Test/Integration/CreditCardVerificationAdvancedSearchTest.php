@@ -9,7 +9,7 @@ use Braintree;
 
 class CreditCardVerificationAdvancedSearchTest extends Setup
 {
-    function test_searchOnTextFields()
+    public function test_searchOnTextFields()
     {
         $searchCriteria = array(
             'creditCardCardholderName' => 'Tim Toole',
@@ -31,7 +31,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $verification = $result->creditCardVerification;
 
         $query = array(Braintree\CreditCardVerificationSearch::id()->is($verification->id));
-        foreach ($searchCriteria AS $criterion => $value) {
+        foreach ($searchCriteria as $criterion => $value) {
             $query[] = Braintree\CreditCardVerificationSearch::$criterion()->is($value);
         }
 
@@ -39,7 +39,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($result->creditCardVerification->id, $collection->firstItem()->id);
 
-        foreach ($searchCriteria AS $criterion => $value) {
+        foreach ($searchCriteria as $criterion => $value) {
             $collection = Braintree\CreditCardVerification::search(array(
                 Braintree\CreditCardVerificationSearch::$criterion()->is($value),
                 Braintree\CreditCardVerificationSearch::id()->is($result->creditCardVerification->id)
@@ -55,7 +55,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         }
     }
 
-    function test_searchOnSuccessfulCustomerAndPaymentFields()
+    public function test_searchOnSuccessfulCustomerAndPaymentFields()
     {
         $customerId = uniqid();
         $searchCriteria = array(
@@ -76,14 +76,14 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $customer = $result->customer;
 
         $query = array();
-        foreach ($searchCriteria AS $criterion => $value) {
+        foreach ($searchCriteria as $criterion => $value) {
             $query[] = Braintree\CreditCardVerificationSearch::$criterion()->is($value);
         }
 
         $collection = Braintree\CreditCardVerification::search($query);
         $this->assertEquals(1, $collection->maximumCount());
 
-        foreach ($searchCriteria AS $criterion => $value) {
+        foreach ($searchCriteria as $criterion => $value) {
             $collection = Braintree\CreditCardVerification::search(array(
                 Braintree\CreditCardVerificationSearch::$criterion()->is($value),
             ));
@@ -96,7 +96,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         }
     }
 
-    function testGateway_searchEmpty()
+    public function testGateway_searchEmpty()
     {
         $query = array();
         $query[] = Braintree\CreditCardVerificationSearch::creditCardCardholderName()->is('Not Found');
@@ -112,7 +112,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $this->assertEquals(0, $collection->maximumCount());
     }
 
-    function test_createdAt()
+    public function test_createdAt()
     {
         $result = Braintree\Customer::create(array(
             'creditCard' => array(
@@ -152,7 +152,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $this->assertEquals($verification->id, $collection->firstItem()->id);
     }
 
-    function test_multipleValueNode_ids()
+    public function test_multipleValueNode_ids()
     {
         $result = Braintree\Customer::create(array(
             'creditCard' => array(
@@ -173,7 +173,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
 
         $collection = Braintree\CreditCardVerification::search(array(
             Braintree\CreditCardVerificationSearch::ids()->in(
-                array($creditCardVerification->id,'1234')
+                array($creditCardVerification->id, '1234')
             )
         ));
         $this->assertEquals(1, $collection->maximumCount());
@@ -185,7 +185,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $this->assertEquals(0, $collection->maximumCount());
     }
 
-    function test_multipleValueNode_creditCardType()
+    public function test_multipleValueNode_creditCardType()
     {
         $result = Braintree\Customer::create(array(
             'creditCard' => array(
@@ -221,7 +221,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $this->assertEquals(0, $collection->maximumCount());
     }
 
-    function test_multipleValueNode_status()
+    public function test_multipleValueNode_status()
     {
         $result = Braintree\Customer::create(array(
             'creditCard' => array(

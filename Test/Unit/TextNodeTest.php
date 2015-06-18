@@ -8,12 +8,12 @@ use Braintree;
 
 class TextNodeTest extends Setup
 {
-  public function testIs()
-  {
-      $node = new Braintree\TextNode('field');
-      $node->is('value');
-      $this->assertEquals(array('is' => 'value'), $node->toParam());
-  }
+    public function testIs()
+    {
+        $node = new Braintree\TextNode('field');
+        $node->is('value');
+        $this->assertEquals(array('is' => 'value'), $node->toParam());
+    }
 
     public function testIsNot()
     {

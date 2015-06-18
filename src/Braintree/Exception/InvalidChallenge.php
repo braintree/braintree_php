@@ -5,5 +5,4 @@ use Braintree\Exception;
 
 class InvalidChallenge extends Exception
 {
-
 }

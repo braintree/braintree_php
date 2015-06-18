@@ -125,7 +125,7 @@ class CustomerTest extends Setup
         $this->assertNotNull($customer->paymentMethods()[0]);
     }
 
-    function testCreateCustomerWithAndroidPayCard()
+    public function testCreateCustomerWithAndroidPayCard()
     {
         $nonce = Braintree\Test\Nonces::$androidPay;
         $result = Braintree\Customer::create(array(

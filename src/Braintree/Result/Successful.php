@@ -85,15 +85,16 @@ class Successful extends Instance
        return __CLASS__.'['.implode(', ', $objects).']';
    }
 
-   private function _mapPropertyNamesToObjsToReturn($propertyNames, $objsToReturn) {
-       if (count($objsToReturn) !== count($propertyNames)) {
-           $propertyNames = array();
+    private function _mapPropertyNamesToObjsToReturn($propertyNames, $objsToReturn)
+    {
+        if (count($objsToReturn) !== count($propertyNames)) {
+            $propertyNames = array();
 
-           foreach ($objsToReturn as $obj) {
-               array_push($propertyNames, Util::cleanClassName(get_class($obj)));
-           }
-       }
+            foreach ($objsToReturn as $obj) {
+                array_push($propertyNames, Util::cleanClassName(get_class($obj)));
+            }
+        }
 
-       return array_combine($propertyNames, $objsToReturn);
-   }
+        return array_combine($propertyNames, $objsToReturn);
+    }
 }

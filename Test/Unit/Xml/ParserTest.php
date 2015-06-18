@@ -29,7 +29,7 @@ XML;
         $this->assertEquals(array('root' => array('dashEs' => '', 'underScores' => '')), $array);
     }
 
-    function testCustomFieldsUnderscore()
+    public function testCustomFieldsUnderscore()
     {
         $xml =<<<XML
         <root>

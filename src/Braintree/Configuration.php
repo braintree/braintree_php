@@ -112,11 +112,11 @@ class Configuration
         if (empty($this->_accessToken)) {
             if (empty($this->_environment)) {
                 throw new Exception\Configuration('environment needs to be set.');
-            } else if (empty($this->_merchantId)) {
+            } elseif (empty($this->_merchantId)) {
                 throw new Exception\Configuration('merchantId needs to be set.');
-            } else if (empty($this->_publicKey)) {
+            } elseif (empty($this->_publicKey)) {
                 throw new Exception\Configuration('publicKey needs to be set.');
-            } else if (empty($this->_privateKey)) {
+            } elseif (empty($this->_privateKey)) {
                 throw new Exception\Configuration('privateKey needs to be set.');
             }
         }
@@ -259,7 +259,7 @@ class Configuration
      * @param none
      * @return string filepath
      */
-    public function caFile($sslPath = NULL)
+    public function caFile($sslPath = null)
     {
         $sslPath = $sslPath ? $sslPath : DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                    'ssl' . DIRECTORY_SEPARATOR;
@@ -269,8 +269,7 @@ class Configuration
             $sslPath .  'api_braintreegateway_com.ca.crt'
         );
 
-        if (!file_exists($caPath))
-        {
+        if (!file_exists($caPath)) {
             throw new Exception\SSLCaFileNotFound();
         }
 
@@ -313,7 +312,7 @@ class Configuration
      */
     public function serverName()
     {
-        switch($this->_environment) {
+        switch ($this->_environment) {
          case 'production':
              $serverName = 'api.braintreegateway.com';
              break;
@@ -335,7 +334,7 @@ class Configuration
 
     public function authUrl()
     {
-        switch($this->_environment) {
+        switch ($this->_environment) {
          case 'production':
              $serverName = 'https://auth.venmo.com';
              break;
@@ -365,7 +364,7 @@ class Configuration
      */
     public function sslOn()
     {
-        switch($this->_environment) {
+        switch ($this->_environment) {
          case 'integration':
          case 'development':
              $ssl = false;
@@ -378,7 +377,7 @@ class Configuration
              break;
         }
 
-       return $ssl;
+        return $ssl;
     }
 
     /**

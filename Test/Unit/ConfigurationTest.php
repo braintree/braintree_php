@@ -224,7 +224,7 @@ class ConfigurationTest extends Setup
     }
 
 
-    function testValidWithOAuthClientCredentials()
+    public function testValidWithOAuthClientCredentials()
     {
         $config = new Braintree\Configuration(array(
             'clientId' => 'client_id$development$integration_client_id',
@@ -238,7 +238,7 @@ class ConfigurationTest extends Setup
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage clientSecret needs to be set.
      */
-    function testInvalidWithOAuthClientCredentials()
+    public function testInvalidWithOAuthClientCredentials()
     {
         $config = new Braintree\Configuration(array(
             'clientId' => 'client_id$development$integration_client_id'
@@ -247,7 +247,7 @@ class ConfigurationTest extends Setup
         $config->assertHasClientCredentials();
     }
 
-    function testDetectEnvironmentFromClientId()
+    public function testDetectEnvironmentFromClientId()
     {
         $config = new Braintree\Configuration(array(
             'clientId' => 'client_id$development$integration_client_id',
@@ -261,7 +261,7 @@ class ConfigurationTest extends Setup
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage Mismatched credential environments: clientId environment is sandbox and clientSecret environment is development
      */
-    function testDetectEnvironmentFromClientIdFail()
+    public function testDetectEnvironmentFromClientIdFail()
     {
         $config = new Braintree\Configuration(array(
             'clientId' => 'client_id$sandbox$integration_client_id',
@@ -273,7 +273,7 @@ class ConfigurationTest extends Setup
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage Value passed for clientId is not a clientId
      */
-    function testClientIdTypeFail()
+    public function testClientIdTypeFail()
     {
         $config = new Braintree\Configuration(array(
             'clientId' => 'client_secret$development$integration_client_id',
@@ -281,7 +281,7 @@ class ConfigurationTest extends Setup
         ));
     }
 
-    function testValidWithAccessToken()
+    public function testValidWithAccessToken()
     {
         $config = new Braintree\Configuration(array(
             'accessToken' => 'access_token$development$integration_merchant_id$integration_access_token',
@@ -294,7 +294,7 @@ class ConfigurationTest extends Setup
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage Value passed for accessToken is not an accessToken
      */
-    function testInvalidAccessTokenType()
+    public function testInvalidAccessTokenType()
     {
         $config = new Braintree\Configuration(array(
             'accessToken' => 'client_id$development$integration_merchant_id$integration_access_token',
@@ -305,7 +305,7 @@ class ConfigurationTest extends Setup
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage Incorrect accessToken syntax. Expected: type$environment$merchant_id$token
      */
-    function testInvalidAccessTokenSyntax()
+    public function testInvalidAccessTokenSyntax()
     {
         $config = new Braintree\Configuration(array(
             'accessToken' => 'client_id$development$integration_client_id',
@@ -316,7 +316,7 @@ class ConfigurationTest extends Setup
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage "invalid" is not a valid environment.
      */
-    function testInvalidAccessTokenEnvironment()
+    public function testInvalidAccessTokenEnvironment()
     {
         $config = new Braintree\Configuration(array(
             'accessToken' => 'access_token$invalid$integration_merchant_id$integration_access_token',
@@ -324,7 +324,7 @@ class ConfigurationTest extends Setup
     }
 
 
-    function testValidWithOAuthClientCredentialsAndAccessToken()
+    public function testValidWithOAuthClientCredentialsAndAccessToken()
     {
         $config = new Braintree\Configuration(array(
             'clientId' => 'client_id$development$integration_client_id',
@@ -340,7 +340,7 @@ class ConfigurationTest extends Setup
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage Mismatched credential environments: clientId environment is development and accessToken environment is sandbox
      */
-    function testInvalidEnvironmentWithOAuthClientCredentialsAndAccessToken()
+    public function testInvalidEnvironmentWithOAuthClientCredentialsAndAccessToken()
     {
         $config = new Braintree\Configuration(array(
             'clientId' => 'client_id$development$integration_client_id',
@@ -353,7 +353,7 @@ class ConfigurationTest extends Setup
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId).
      */
-    function testCannotMixKeysWithOAuthCredentials()
+    public function testCannotMixKeysWithOAuthCredentials()
     {
         $config = new Braintree\Configuration(array(
             'clientId' => 'client_id$development$integration_client_id',

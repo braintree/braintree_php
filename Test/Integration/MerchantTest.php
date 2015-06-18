@@ -9,7 +9,7 @@ use Braintree;
 
 class MerchantTest extends Setup
 {
-    function testCreateMerchant()
+    public function testCreateMerchant()
     {
         $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
@@ -31,7 +31,7 @@ class MerchantTest extends Setup
     * @expectedException Exception\Configuration
     * @expectedExceptionMessage clientId needs to be set.
     */
-    function testAssertsHasCredentials()
+    public function testAssertsHasCredentials()
     {
         $gateway = new Braintree\Gateway(array(
             'clientSecret' => 'client_secret$development$integration_client_secret'

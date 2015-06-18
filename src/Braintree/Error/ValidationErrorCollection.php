@@ -24,25 +24,24 @@ class ValidationErrorCollection extends Collection
     /**
      * @ignore
      */
-    public function  __construct($data)
+    public function __construct($data)
     {
-        foreach($data AS $key => $errorData)
+        foreach ($data as $key => $errorData) {
             // map errors to new collections recursively
             if ($key == 'errors') {
-                foreach ($errorData AS $error) {
+                foreach ($errorData as $error) {
                     $this->_errors[] = new Validation($error);
                 }
             } else {
                 $this->_nested[$key] = new ValidationErrorCollection($errorData);
             }
-
+        }
     }
 
     public function deepAll()
     {
         $validationErrors = array_merge(array(), $this->_errors);
-        foreach($this->_nested as $nestedErrors)
-        {
+        foreach ($this->_nested as $nestedErrors) {
             $validationErrors = array_merge($validationErrors, $nestedErrors->deepAll());
         }
         return $validationErrors;
@@ -51,8 +50,7 @@ class ValidationErrorCollection extends Collection
     public function deepSize()
     {
         $total = sizeof($this->_errors);
-        foreach($this->_nested as $_nestedErrors)
-        {
+        foreach ($this->_nested as $_nestedErrors) {
             $total = $total + $_nestedErrors->deepSize();
         }
         return $total;
@@ -71,10 +69,10 @@ class ValidationErrorCollection extends Collection
     public function onAttribute($attribute)
     {
         $matches = array();
-        foreach ($this->_errors AS $key => $error) {
-           if($error->attribute == $attribute) {
-               $matches[] = $error;
-           }
+        foreach ($this->_errors as $key => $error) {
+            if ($error->attribute == $attribute) {
+                $matches[] = $error;
+            }
         }
         return $matches;
     }
@@ -89,7 +87,7 @@ class ValidationErrorCollection extends Collection
      *
      * @ignore
      */
-    public function  __get($name)
+    public function __get($name)
     {
         $varName = "_$name";
         return isset($this->$varName) ? $this->$varName : null;
@@ -107,7 +105,7 @@ class ValidationErrorCollection extends Collection
             $output[] = $this->_inspect($this->_errors);
         }
         if (!empty($this->_nested)) {
-            foreach ($this->_nested AS $key => $values) {
+            foreach ($this->_nested as $key => $values) {
                 $output[] = $this->_inspect($this->_nested);
             }
         }
@@ -120,7 +118,7 @@ class ValidationErrorCollection extends Collection
     private function _inspect($errors, $scope = null)
     {
         $eOutput = '[' . __CLASS__ . '/errors:[';
-        foreach($errors AS $error => $errorObj) {
+        foreach ($errors as $error => $errorObj) {
             $outputErrs[] = "({$errorObj->error['code']} {$errorObj->error['message']})";
         }
         $eOutput .= join(', ', $outputErrs) . ']]';

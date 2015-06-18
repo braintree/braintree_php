@@ -42,7 +42,7 @@ XML;
         $this->assertEquals($expected, $xml);
     }
 
-    function testCreatesWithDashes()
+    public function testCreatesWithDashes()
     {
         $expected = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>

@@ -125,7 +125,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($applePayDetails->cardholderName);
     }
 
-    function testCreateTransactionUsingFakeAndroidPayNonce()
+    public function testCreateTransactionUsingFakeAndroidPayNonce()
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
@@ -244,7 +244,7 @@ class TransactionTest extends Setup
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
     }
 
-    function testSaleWithAccessToken()
+    public function testSaleWithAccessToken()
     {
         $credentials = Test\Braintree\OAuthTestHelper::createCredentials(array(
             'clientId' => 'client_id$development$integration_client_id',
@@ -1222,7 +1222,7 @@ class TransactionTest extends Setup
         $this->assertEquals('1000.00', $dispute->transactionDetails->amount);
     }
 
-    function testFindExposesThreeDSecureInfo()
+    public function testFindExposesThreeDSecureInfo()
     {
         $transaction = Braintree\Transaction::find('threedsecuredtransaction');
 
@@ -1233,7 +1233,7 @@ class TransactionTest extends Setup
         $this->assertTrue($info->liabilityShiftPossible);
     }
 
-    function testFindExposesNullThreeDSecureInfo()
+    public function testFindExposesNullThreeDSecureInfo()
     {
         $transaction = Braintree\Transaction::find('settledtransaction');
 

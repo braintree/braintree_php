@@ -34,7 +34,7 @@ use Braintree\Error\ErrorCollection;
  */
 class Error extends Braintree
 {
-   /**
+    /**
     * @var bool always false
     */
    public $success = false;

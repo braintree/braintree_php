@@ -181,7 +181,7 @@ class Customer extends Braintree
         // map each androidPayCard into its own object
         $androidPayCardArray = array();
         if (isset($customerAttribs['androidPayCards'])) {
-            foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
+            foreach ($customerAttribs['androidPayCards'] as $androidPayCard) {
                 $androidPayCardArray[] = AndroidPayCard::factory($androidPayCard);
             }
         }

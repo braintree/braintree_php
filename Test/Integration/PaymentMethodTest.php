@@ -82,7 +82,7 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(intval($applePayCard->expirationYear) > 0);
     }
 
-    function testCreate_fromFakeAndroidPayNonce()
+    public function testCreate_fromFakeAndroidPayNonce()
     {
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\PaymentMethod::create(array(
@@ -646,7 +646,7 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(intval($foundApplePayCard->expirationYear) > 0);
     }
 
-    function testFind_returnsAndroidPayCards()
+    public function testFind_returnsAndroidPayCards()
     {
         $paymentMethodToken = 'ANDROID-PAY-' . strval(rand());
         $customer = Braintree\Customer::createNoValidate();

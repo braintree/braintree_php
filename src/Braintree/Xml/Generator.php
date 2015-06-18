@@ -79,7 +79,7 @@ class Generator
             return;
         }
 
-        foreach ($aData AS $elementName => $element) {
+        foreach ($aData as $elementName => $element) {
             // handle child elements
             $writer->startElement($elementName);
             if (is_array($element)) {

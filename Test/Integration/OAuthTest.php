@@ -13,17 +13,17 @@ class OAuthTest extends Setup
     * @expectedException Braintree\Exception\Configuration
     * @expectedExceptionMessage clientSecret needs to be set.
     */
-    function testAssertsHasCredentials()
+    public function testAssertsHasCredentials()
     {
         $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id'
         ));
         $gateway->oauth()->createTokenFromCode(array(
-            'code' => 'integration_oauth_auth_code_' . rand(0,299)
+            'code' => 'integration_oauth_auth_code_' . rand(0, 299)
         ));
     }
 
-    function testCreateTokenFromCode()
+    public function testCreateTokenFromCode()
     {
         $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
@@ -45,7 +45,7 @@ class OAuthTest extends Setup
         $this->assertNotNull($result->expiresAt);
     }
 
-    function testCreateTokenFromCodeFail()
+    public function testCreateTokenFromCodeFail()
     {
         $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
@@ -61,7 +61,7 @@ class OAuthTest extends Setup
         $this->assertEquals('code not found', $result->errorDescription);
     }
 
-    function testCreateTokenFromRefreshToken()
+    public function testCreateTokenFromRefreshToken()
     {
         $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
@@ -89,7 +89,7 @@ class OAuthTest extends Setup
     }
 
 
-    function testBuildConnectUrl()
+    public function testBuildConnectUrl()
     {
         $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
@@ -179,7 +179,7 @@ class OAuthTest extends Setup
         $this->assertEquals('SHA256', $query['algorithm']);
     }
 
-    function testBuildConnectUrlWithoutOptionalParams()
+    public function testBuildConnectUrlWithoutOptionalParams()
     {
         $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',

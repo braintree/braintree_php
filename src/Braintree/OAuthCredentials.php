@@ -27,7 +27,7 @@ class OAuthCredentials extends Braintree
      * returns a string representation of the access token
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__.'['.Util::attributesToString($this->_attributes).']';
     }

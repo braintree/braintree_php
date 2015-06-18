@@ -19,7 +19,7 @@ use Braintree\Util;
  */
 class Validation
 {
-   private $_attribute;
+    private $_attribute;
     private $_code;
     private $_message;
 

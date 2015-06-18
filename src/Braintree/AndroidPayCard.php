@@ -77,7 +77,7 @@ class AndroidPayCard extends Braintree
 
         $subscriptionArray = array();
         if (isset($androidPayCardAttribs['subscriptions'])) {
-            foreach ($androidPayCardAttribs['subscriptions'] AS $subscription) {
+            foreach ($androidPayCardAttribs['subscriptions'] as $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }

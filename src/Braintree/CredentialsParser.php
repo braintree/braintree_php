@@ -82,7 +82,8 @@ class CredentialsParser
         $this->_environment = $checkEnv[1];
     }
 
-    public static function assertValidEnvironment($environment) {
+    public static function assertValidEnvironment($environment)
+    {
         if (!in_array($environment, self::$_validEnvironments, true)) {
             throw new Exception\Configuration('"'.$environment.'" is not a valid environment.');
         }
