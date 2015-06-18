@@ -17,13 +17,14 @@ namespace Braintree\Test;
  */
 class Nonces
 {
-   public static $transactable = 'fake-valid-nonce';
+    public static $transactable = 'fake-valid-nonce';
     public static $consumed = 'fake-consumed-nonce';
     public static $paypalOneTimePayment = 'fake-paypal-one-time-nonce';
     public static $paypalFuturePayment = 'fake-paypal-future-nonce';
     public static $applePayVisa = 'fake-apple-pay-visa-nonce';
     public static $applePayMasterCard = 'fake-apple-pay-visa-nonce';
     public static $applePayAmEx = 'fake-apple-pay-amex-nonce';
+    public static $androidPay = "fake-android-pay-nonce";
     public static $abstractTransactable = 'fake-abstract-transactable-nonce';
     public static $europe = 'fake-europe-bank-account-nonce';
     public static $coinbase = 'fake-coinbase-nonce';

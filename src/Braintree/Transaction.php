@@ -235,6 +235,14 @@ final class Transaction extends Braintree
             );
         }
 
+        if (isset($transactionAttribs['androidPayCard'])) {
+            $this->_set('androidPayCardDetails',
+                new Transaction\AndroidPayCardDetails(
+                    $transactionAttribs['androidPayCard']
+                )
+            );
+        }
+
         if (isset($transactionAttribs['creditCard'])) {
             $this->_set('creditCardDetails',
                 new Transaction\CreditCardDetails(

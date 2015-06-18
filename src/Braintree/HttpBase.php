@@ -35,7 +35,7 @@ abstract class HttpBase
         if (isset($authorization['user'])) {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_USERPWD, $authorization['user'] . ':' . $authorization['password']);
-        } elseif ($authorization['token']) {
+        } elseif (isset($authorization['token'])) {
             $headers[] = 'Authorization: Bearer ' . $authorization['token'];
         }
 

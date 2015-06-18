@@ -65,6 +65,8 @@ class PaymentMethodGateway
                 return CoinbaseAccount::factory($response['coinbaseAccount']);
             } elseif (isset($response['applePayCard'])) {
                 return ApplePayCard::factory($response['applePayCard']);
+            } elseif (isset($response['androidPayCard'])) {
+                return AndroidPayCard::factory($response['androidPayCard']);
             } elseif (is_array($response)) {
                 return UnknownPaymentMethod::factory($response);
             }
@@ -220,6 +222,12 @@ class PaymentMethodGateway
                 ApplePayCard::factory($response['applePayCard']),
                 'paymentMethod'
             );
+        } elseif (isset($response['androidPayCard'])) {
+            // return a populated instance of Braintree_AndroidPayCard
+            return new Result\Successful(
+                AndroidPayCard::factory($response['androidPayCard']),
+                "paymentMethod"
+            );
         } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } elseif (is_array($response)) {
@@ -229,7 +237,7 @@ class PaymentMethodGateway
             );
         } else {
             throw new Exception\Unexpected(
-            'Expected payment method or apiErrorResponse'
+                'Expected payment method or apiErrorResponse'
             );
         }
     }

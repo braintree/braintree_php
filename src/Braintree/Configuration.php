@@ -18,6 +18,8 @@ class Configuration
     private $_merchantId = null;
     private $_publicKey = null;
     private $_privateKey = null;
+    private $_clientId = null;
+    private $_clientSecret = null;
     private $_accessToken = null;
 
     /**
@@ -52,8 +54,8 @@ class Configuration
 
             $this->_environment = $parsedCredentials->getEnvironment();
             $this->_merchantId = $parsedCredentials->getMerchantId();
-            $this->_publicKey = $parsedCredentials->getClientId();
-            $this->_privateKey = $parsedCredentials->getClientSecret();
+            $this->_clientId = $parsedCredentials->getClientId();
+            $this->_clientSecret = $parsedCredentials->getClientSecret();
             $this->_accessToken = $parsedCredentials->getAccessToken();
         }
     }
@@ -128,14 +130,14 @@ class Configuration
 
     public function assertHasClientId()
     {
-        if (empty($this->_publicKey)) {
+        if (empty($this->_clientId)) {
             throw new Exception\Configuration('clientId needs to be set.');
         }
     }
 
     public function assertHasClientSecret()
     {
-        if (empty($this->_privateKey)) {
+        if (empty($this->_clientSecret)) {
             throw new Exception\Configuration('clientSecret needs to be set.');
         }
     }
@@ -173,7 +175,7 @@ class Configuration
 
     public function getClientId()
     {
-        return $this->_publicKey;
+        return $this->_clientId;
     }
 
     /**
@@ -191,7 +193,7 @@ class Configuration
 
     public function getClientSecret()
     {
-        return $this->_privateKey;
+        return $this->_clientSecret;
     }
 
     /**
@@ -211,6 +213,12 @@ class Configuration
     {
         return !empty($this->_accessToken);
     }
+
+    public function isClientCredentials()
+    {
+        return !empty($this->_clientId);
+    }
+
     /**
      * returns the base braintree gateway URL based on config values
      *

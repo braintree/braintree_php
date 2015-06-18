@@ -178,8 +178,14 @@ class Customer extends Braintree
         }
         $this->_set('applePayCards', $applePayCardArray);
 
-        // Also provide a map to all payment methods for consistency of accesss.
-        $this->_set('paymentMethods', array_merge($creditCardArray, $paypalAccountArray, $applePayCardArray, $coinbaseAccountArray));
+        // map each androidPayCard into its own object
+        $androidPayCardArray = array();
+        if (isset($customerAttribs['androidPayCards'])) {
+            foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
+                $androidPayCardArray[] = AndroidPayCard::factory($androidPayCard);
+            }
+        }
+        $this->_set('androidPayCards', $androidPayCardArray);
     }
 
     /**
@@ -213,7 +219,7 @@ class Customer extends Braintree
      */
     public function paymentMethods()
     {
-        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts);
+        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards);
     }
 
     /**

@@ -100,7 +100,7 @@ class MerchantAccountTest extends Setup
     {
         $rand = rand(1, 1000);
         $subMerchantAccountId = 'sub_merchant_account_id' + $rand;
-        $validParamsWithId = array_merge(array(), self::$validParams);
+        $validParamsWithId = self::$validParams;
         $validParamsWithId['id'] = $subMerchantAccountId;
         $result = Braintree\MerchantAccount::create($validParamsWithId);
         $this->assertEquals(true, $result->success);
@@ -120,18 +120,18 @@ class MerchantAccountTest extends Setup
 
     public function testCreateWithFundingDestination()
     {
-        $params = array_merge(array(), self::$validParams);
+        $params = self::$validParams;
         $params['funding']['destination'] = Braintree\MerchantAccount::FUNDING_DESTINATION_BANK;
         $result = Braintree\MerchantAccount::create($params);
         $this->assertEquals(true, $result->success);
 
-        $params = array_merge(array(), self::$validParams);
+        $params = self::$validParams;
         $params['funding']['destination'] = Braintree\MerchantAccount::FUNDING_DESTINATION_EMAIL;
         $params['funding']['email'] = 'billgates@outlook.com';
         $result = Braintree\MerchantAccount::create($params);
         $this->assertEquals(true, $result->success);
 
-        $params = array_merge(array(), self::$validParams);
+        $params = self::$validParams;
         $params['funding']['destination'] = Braintree\MerchantAccount::FUNDING_DESTINATION_MOBILE_PHONE;
         $params['funding']['mobilePhone'] = '1112224444';
         $result = Braintree\MerchantAccount::create($params);
@@ -140,7 +140,7 @@ class MerchantAccountTest extends Setup
 
     public function testFind()
     {
-        $params = array_merge(array(), self::$validParams);
+        $params = self::$validParams;
         $result = Braintree\MerchantAccount::create(self::$validParams);
         $this->assertEquals(true, $result->success);
         $this->assertEquals(Braintree\MerchantAccount::STATUS_PENDING, $result->merchantAccount->status);
@@ -161,7 +161,7 @@ class MerchantAccountTest extends Setup
 
     public function testUpdate()
     {
-        $params = array_merge(array(), self::$validParams);
+        $params = self::$validParams;
         unset($params['tosAccepted']);
         unset($params['masterMerchantAccountId']);
         $params['individual']['firstName'] = 'John';

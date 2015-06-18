@@ -81,10 +81,15 @@ class Http extends HttpBase
             return array(
                 'token' => $this->_config->getAccessToken(),
             );
-        } else {
+        } elseif ($this->_config->isClientCredentials()) {
             return array(
                 'user' => $this->_config->getClientId(),
                 'password' => $this->_config->getClientSecret(),
+            );
+        } else {
+            return array(
+                'user' => $this->_config->getPublicKey(),
+                'password' => $this->_config->getPrivateKey(),
             );
         }
     }

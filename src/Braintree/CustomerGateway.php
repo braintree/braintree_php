@@ -463,6 +463,15 @@ class CustomerGateway
             }
         }
         $this->_set('applePayCards', $applePayCardArray);
+
+        // map each androidPayCard into its own object
+        $androidPayCardArray = array();
+        if (isset($customerAttribs['androidPayCards'])) {
+            foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
+                $androidPayCardArray[] = AndroidPayCard::factory($androidPayCard);
+            }
+        }
+        $this->_set('androidPayCards', $androidPayCardArray);
     }
 
     /**
@@ -496,13 +505,13 @@ class CustomerGateway
      */
     public function paymentMethods()
     {
-        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards);
+        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->androidPayCards);
     }
 
     /**
      * returns the customer's default payment method.
      *
-     * @return object CreditCard or PayPalAccount
+     * @return object CreditCard | PayPalAccount | ApplePayCard | AndroidPayCard
      */
     public function defaultPaymentMethod()
     {
