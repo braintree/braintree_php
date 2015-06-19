@@ -26,7 +26,7 @@ class AddOnsTest extends Setup
         $path = Braintree\Configuration::$global->merchantPath().'/modifications/create_modification_for_tests';
         $http->post($path, array('modification' => $addOnParams));
 
-        $addOns = AddOn::all();
+        $addOns = Braintree\AddOn::all();
 
         foreach ($addOns as $addOn) {
             if ($addOn->id == $newId) {
