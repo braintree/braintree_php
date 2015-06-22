@@ -105,6 +105,11 @@ class Braintree_Configuration
         self::$global->setPrivateKey($value);
     }
 
+    public static function assertGlobalHasAccessTokenOrKeys()
+    {
+        self::$global->assertHasAccessTokenOrKeys();
+    }
+
     public function assertHasAccessTokenOrKeys()
     {
         if (empty($this->_accessToken)) {
