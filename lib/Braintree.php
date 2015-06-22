@@ -92,6 +92,7 @@ require_once('Braintree/Exception/Authorization.php');
 require_once('Braintree/Exception/Configuration.php');
 require_once('Braintree/Exception/DownForMaintenance.php');
 require_once('Braintree/Exception/ForgedQueryString.php');
+require_once('Braintree/Exception/InvalidChallenge.php');
 require_once('Braintree/Exception/InvalidSignature.php');
 require_once('Braintree/Exception/NotFound.php');
 require_once('Braintree/Exception/ServerError.php');
