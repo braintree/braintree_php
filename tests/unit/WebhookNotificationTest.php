@@ -25,7 +25,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway.
+     * @expectedExceptionMessage Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway.)
      */
     function testVerifyRaisesErrorWhenEnvironmentNotSet()
     {
