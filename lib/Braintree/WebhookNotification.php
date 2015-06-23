@@ -25,6 +25,8 @@ class Braintree_WebhookNotification extends Braintree_Base
         if (preg_match("/[^A-Za-z0-9+=\/\n]/", $payload) === 1) {
             throw new Braintree_Exception_InvalidSignature("payload contains illegal characters");
         }
+
+        Braintree_Configuration::assertGlobalHasAccessTokenOrKeys();
         self::_validateSignature($signature, $payload);
 
         $xml = base64_decode($payload);

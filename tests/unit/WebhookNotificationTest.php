@@ -25,13 +25,11 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway.)
+     * @expectedExceptionMessage Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway).
      */
     function testVerifyRaisesErrorWhenEnvironmentNotSet()
     {
         Braintree_Configuration::reset();
-
-        $this->setExpectedException('Braintree_Exception_Configuration', 'Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway.');
 
         Braintree_WebhookNotification::verify('20f9f8ed05f77439fe955c977e4c8a53');
     }
@@ -64,6 +62,25 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
 
         $webhookNotification = Braintree_WebhookNotification::parse(
             $sampleNotification['bt_signature'] . "bad",
+            $sampleNotification['bt_payload']
+        );
+    }
+
+    /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway).
+     */
+    function testParsingWithNoKeysRaisesError()
+    {
+        Braintree_Configuration::reset();
+
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
+            'my_id'
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
             $sampleNotification['bt_payload']
         );
     }

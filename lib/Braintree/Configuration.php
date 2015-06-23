@@ -114,7 +114,7 @@ class Braintree_Configuration
     {
         if (empty($this->_accessToken)) {
             if (empty($this->_merchantId)) {
-                throw new Braintree_Exception_Configuration('Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway.)');
+                throw new Braintree_Exception_Configuration('Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway).');
             } else if (empty($this->_environment)) {
                 throw new Braintree_Exception_Configuration('Braintree_Configuration::environment needs to be set.');
             } else if (empty($this->_publicKey)) {
