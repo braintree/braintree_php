@@ -20,6 +20,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
      */
     function testVerifyRaisesErrorWithInvalidChallenge()
     {
+        $this->setExpectedException('Braintree_Exception_InvalidChallenge', 'challenge contains non-hex characters');
+
         Braintree_WebhookNotification::verify('bad challenge');
     }
 
