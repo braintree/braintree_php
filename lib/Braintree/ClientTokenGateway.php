@@ -2,10 +2,28 @@
 
 class Braintree_ClientTokenGateway
 {
+    /**
+     *
+     * @var Braintree_Gateway
+     */
     private $_gateway;
+    
+    /**
+     *
+     * @var Braintree_Configuration
+     */
     private $_config;
+    
+    /**
+     *
+     * @var Braintree_Http
+     */
     private $_http;
 
+    /**
+     * 
+     * @param Braintree_Gateway $gateway
+     */
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -42,6 +60,11 @@ class Braintree_ClientTokenGateway
         return $this->_verifyGatewayResponse($response);
     }
 
+    /**
+     * 
+     * @param array $params
+     * @throws InvalidArgumentException
+     */
     public function conditionallyVerifyKeys($params)
     {
         if (array_key_exists("customerId", $params)) {
@@ -51,11 +74,19 @@ class Braintree_ClientTokenGateway
         }
     }
 
+    /**
+     * 
+     * @return mixed[]
+     */
     public function generateWithCustomerIdSignature()
     {
         return array("version", "customerId", "proxyMerchantId", array("options" => array("makeDefault", "verifyCard", "failOnDuplicatePaymentMethod")), "merchantAccountId");
     }
 
+    /**
+     * 
+     * @return string[]
+     */
     public function generateWithoutCustomerIdSignature()
     {
         return array("version", "proxyMerchantId", "merchantAccountId");
