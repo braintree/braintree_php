@@ -88,7 +88,8 @@ class Braintree_OAuthGateway
     {
         $query = Braintree_Util::camelCaseToDelimiterArray($params, '_');
         $query['client_id'] = $this->_config->getClientId();
-        $url = $this->_config->baseUrl() . '/oauth/connect?' . http_build_query($query);
+        $queryString = preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($query));
+        $url = $this->_config->baseUrl() . '/oauth/connect?' . $queryString;
 
         return $this->signUrl($url);
     }

@@ -259,4 +259,20 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey('redirect_uri', $query);
         $this->assertArrayNotHasKey('scope', $query);
     }
+
+    public function testBuildConnectUrlWithPaymentMethods()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+        $url = $gateway->oauth()->connectUrl(array(
+            'paymentMethods' => array('credit_card', 'paypal')
+        ));
+
+        $queryString = parse_url($url)['query'];
+        parse_str($queryString, $query);
+
+        $this->assertEquals(array('credit_card', 'paypal'), $query['payment_methods']);
+    }
 }
