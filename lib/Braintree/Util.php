@@ -17,7 +17,6 @@ class Braintree_Util
      *
      * @param array $attribArray attributes from a search response
      * @param string $attributeName indicates which element of the passed array to extract
-     *
      * @return array array of Braintree_$attributeName objects, or a single element array
      */
     public static function extractAttributeAsArray(& $attribArray, $attributeName)

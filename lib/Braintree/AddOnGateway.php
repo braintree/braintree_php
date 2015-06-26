@@ -1,10 +1,29 @@
 <?php
+
 class Braintree_AddOnGateway
 {
+    /**
+     *
+     * @var Braintree_Gateway
+     */
     private $_gateway;
+    
+    /**
+     *
+     * @var Braintree_Configuration
+     */
     private $_config;
+    
+    /**
+     *
+     * @var Braintree_Http
+     */
     private $_http;
 
+    /**
+     * 
+     * @param Braintree_Gateway $gateway
+     */
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -13,6 +32,10 @@ class Braintree_AddOnGateway
         $this->_http = new Braintree_Http($gateway->config);
     }
 
+    /**
+     * 
+     * @return Braintree_AddOn[]
+     */
     public function all()
     {
         $path = $this->_config->merchantPath() . '/add_ons';
