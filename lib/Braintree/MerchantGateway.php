@@ -12,6 +12,7 @@ final class Braintree_MerchantGateway
         $this->_config = $gateway->config;
         $this->_config->assertHasClientCredentials();
         $this->_http = new Braintree_Http($gateway->config);
+        $this->_http->useClientCredentials();
     }
 
     public function create($attribs)

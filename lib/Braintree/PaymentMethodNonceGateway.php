@@ -56,7 +56,7 @@ class Braintree_PaymentMethodNonceGateway
             return Braintree_PaymentMethodNonce::factory($response['paymentMethodNonce']);
         } catch (Braintree_Exception_NotFound $e) {
             throw new Braintree_Exception_NotFound(
-            'payment method nonce with id ' . $id . ' not found'
+            'payment method nonce with id ' . $nonce . ' not found'
             );
         }
 

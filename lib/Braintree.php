@@ -46,9 +46,7 @@ require_once('Braintree/IsNode.php');
 require_once('Braintree/EqualityNode.php');
 require_once('Braintree/Exception.php');
 require_once('Braintree/Gateway.php');
-require_once('Braintree/HttpBase.php');
 require_once('Braintree/Http.php');
-require_once('Braintree/HttpOAuth.php');
 require_once('Braintree/KeyValueNode.php');
 require_once('Braintree/Merchant.php');
 require_once('Braintree/MerchantGateway.php');
@@ -94,6 +92,7 @@ require_once('Braintree/Exception/Authorization.php');
 require_once('Braintree/Exception/Configuration.php');
 require_once('Braintree/Exception/DownForMaintenance.php');
 require_once('Braintree/Exception/ForgedQueryString.php');
+require_once('Braintree/Exception/InvalidChallenge.php');
 require_once('Braintree/Exception/InvalidSignature.php');
 require_once('Braintree/Exception/NotFound.php');
 require_once('Braintree/Exception/ServerError.php');
@@ -141,7 +140,7 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 
 
 function requireDependencies() {
-    $requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
+    $requiredExtensions = array('xmlwriter', 'openssl', 'dom', 'hash', 'curl');
     foreach ($requiredExtensions AS $ext) {
         if (!extension_loaded($ext)) {
             throw new Braintree_Exception('The Braintree library requires the ' . $ext . ' extension.');

@@ -17,6 +17,36 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::privateKey('integration_private_key');
     }
 
+    function testAssertGlobalHasAccessTokenOrKeys()
+    {
+        Braintree_Configuration::environment('development');
+        Braintree_Configuration::merchantId('integration_merchant_id');
+        Braintree_Configuration::publicKey('integration_public_key');
+        Braintree_Configuration::privateKey('integration_private_key');
+
+        try {
+            Braintree_Configuration::assertGlobalHasAccessTokenOrKeys();
+        } catch (Exception $notExpected) {
+            $this->fail();
+        }
+
+        $this->assertTrue(TRUE);
+    }
+
+     /**
+     * @expectedException Braintree_Exception_Configuration
+     * @expectedExceptionMessage Braintree_Configuration::publicKey needs to be set.
+     */
+    function testAssertGlobalHasAccessTokenOrKeysWithoutPublicKey()
+    {
+        Braintree_Configuration::environment('development');
+        Braintree_Configuration::merchantId('integration_merchant_id');
+        Braintree_Configuration::publicKey('');
+        Braintree_Configuration::privateKey('integration_private_key');
+
+        Braintree_Configuration::assertGlobalHasAccessTokenOrKeys();
+    }
+
     function testConstructWithArrayOfCredentials()
     {
         $config = new Braintree_Configuration(array(
@@ -168,7 +198,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
      /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage environment needs to be set.
+     * @expectedExceptionMessage Braintree_Configuration::environment needs to be set.
      */
     function testValidateEmptyEnvironment()
     {
@@ -181,7 +211,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
      /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage merchantId needs to be set.
+     * @expectedExceptionMessage Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway).
      */
     function testMerchantId()
     {
@@ -194,7 +224,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
      /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage publicKey needs to be set.
+     * @expectedExceptionMessage Braintree_Configuration::publicKey needs to be set.
      */
     function testPublicKey()
     {
@@ -207,7 +237,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
      /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage privateKey needs to be set.
+     * @expectedExceptionMessage Braintree_Configuration::privateKey needs to be set.
      */
     function testPrivateKey()
     {
@@ -231,7 +261,7 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
 
      /**
      * @expectedException Braintree_Exception_Configuration
-     * @expectedExceptionMessage clientSecret needs to be set.
+     * @expectedExceptionMessage clientSecret needs to be passed to Braintree_Gateway.
      */
     function testInvalidWithOAuthClientCredentials()
     {

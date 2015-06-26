@@ -12,12 +12,13 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read array  $addresses
- * @property-read array  $applePayCards
+ * @property-read array  $paymentMethods
  * @property-read string $company
  * @property-read string $createdAt
  * @property-read array  $creditCards
- * @property-read array  $coinbaseAccounts
  * @property-read array  $paypalAccounts
+ * @property-read array  $applePayCards
+ * @property-read array  $coinbaseAccounts
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $email
  * @property-read string $fax
@@ -267,7 +268,7 @@ class Braintree_Customer extends Braintree_Base
         $applePayCardArray = array();
         if (isset($customerAttribs['applePayCards'])) {
             foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
-                $applePayCardArray[] = Braintree_applePayCard::factory($applePayCard);
+                $applePayCardArray[] = Braintree_ApplePayCard::factory($applePayCard);
             }
         }
         $this->_set('applePayCards', $applePayCardArray);
@@ -280,6 +281,8 @@ class Braintree_Customer extends Braintree_Base
             }
         }
         $this->_set('androidPayCards', $androidPayCardArray);
+
+        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards));
     }
 
     /**
@@ -307,11 +310,13 @@ class Braintree_Customer extends Braintree_Base
     /**
      * returns an array containt all of the customer's payment methods
      *
+     * @deprecated since version 3.1.0 - use the paymentMethods property directly
+     *
      * @return array
      */
     public function paymentMethods()
     {
-        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards);
+        return $this->paymentMethods;
     }
 
     /**
@@ -321,7 +326,7 @@ class Braintree_Customer extends Braintree_Base
      */
     public function defaultPaymentMethod()
     {
-        $defaultPaymentMethods = array_filter($this->paymentMethods(), 'Braintree_Customer::_defaultPaymentMethodFilter');
+        $defaultPaymentMethods = array_filter($this->paymentMethods, 'Braintree_Customer::_defaultPaymentMethodFilter');
         return current($defaultPaymentMethods);
     }
 
