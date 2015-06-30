@@ -317,7 +317,7 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $transaction = Braintree_Transaction::saleNoValidate(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'creditCard' => array(
-                'number'         => Braintree_Test_CreditCardNumbers::$visa,
+                'number' => Braintree_Test_CreditCardNumbers::$visa,
                 'expirationDate' => '05/2012'
             )
         ));
@@ -328,7 +328,7 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
         ));
 
 
-        $this->assertEquals($transaction->paymentInstrumentType, "credit_card");
+        $this->assertEquals($transaction->paymentInstrumentType, Braintree_PaymentInstrumentType::CREDIT_CARD);
         $this->assertEquals($transaction->id, $collection->firstItem()->id);
     }
 
