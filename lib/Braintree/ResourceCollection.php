@@ -125,8 +125,8 @@ class Braintree_ResourceCollection implements Iterator
      */
     private function _getPage($ids)
     {
-        $className = $this->_pager['className'];
-        $classMethod = $this->_pager['classMethod'];
+        $object = $this->_pager['object'];
+        $method = $this->_pager['method'];
         $methodArgs = array();
         foreach ($this->_pager['methodArgs'] as $arg) {
             array_push($methodArgs, $arg);
@@ -134,7 +134,7 @@ class Braintree_ResourceCollection implements Iterator
         array_push($methodArgs, $ids);
 
         return call_user_func_array(
-            array($className, $classMethod),
+            array($object, $method),
             $methodArgs
         );
     }

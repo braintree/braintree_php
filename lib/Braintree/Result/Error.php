@@ -25,7 +25,7 @@
  * @property-read object $errors Braintree_Error_ErrorCollection
  * @property-read object $creditCardVerification credit card verification data
  */
-class Braintree_Result_Error extends Braintree
+class Braintree_Result_Error extends Braintree_Base
 {
    /**
     *

@@ -237,7 +237,9 @@ class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
             'planId' => $triallessPlan['id']
         ))->subscription;
 
-        Braintree_Http::put('/subscriptions/' . $subscription->id . '/make_past_due', array('daysPastDue' => 5));
+        $http = new Braintree_Http(Braintree_Configuration::$global);
+        $path = Braintree_Configuration::$global->merchantPath() . '/subscriptions/' . $subscription->id . '/make_past_due';
+        $http->put($path, array('daysPastDue' => 5));
 
         $found = false;
         $collection = Braintree_Subscription::search(array(

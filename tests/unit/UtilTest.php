@@ -3,8 +3,6 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_UtilTest extends PHPUnit_Framework_TestCase
 {
-
-    // test throwStatusCodeException
     /**
      * @expectedException Braintree_Exception_Authentication
      */
@@ -77,13 +75,18 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
         $cn = Braintree_Util::cleanClassName('Braintree_Transaction');
         $this->assertEquals('transaction', $cn);
     }
+
     function testimplodeAssociativeArray()
     {
-        $array = array('test1' => 'val1',
-                       'test2' => 'val2');
+        $array = array(
+            'test1' => 'val1',
+            'test2' => 'val2',
+            'test3' => new DateTime('2015-05-15 17:21:00'),
+        );
         $string = Braintree_Util::implodeAssociativeArray($array);
-        $this->assertEquals('test1=val1, test2=val2', $string);
+        $this->assertEquals('test1=val1, test2=val2, test3=Fri, 15 May 2015 17:21:00 +0000', $string);
     }
+
     function testVerifyKeys_withThreeLevels()
     {
         $signature = array(
@@ -211,5 +214,22 @@ class Braintree_UtilTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException');
 
         Braintree_Util::verifyKeys($signature, $userKeys);
+    }
+
+    /**
+     * @expectedException Braintree_Exception_ValidationsFailed
+     */
+    function testReturnException()
+    {
+        $this->success = false;
+        Braintree_Util::returnObjectOrThrowException('Braintree_Transaction', $this);
+    }
+
+    function testReturnObject()
+    {
+        $this->success = true;
+        $this->transaction = new stdClass();
+        $t = Braintree_Util::returnObjectOrThrowException('Braintree_Transaction', $this);
+        $this->assertInternalType('object', $t);
     }
 }

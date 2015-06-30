@@ -1,21 +1,6 @@
 <?php
-class Braintree_Plan extends Braintree
+class Braintree_Plan extends Braintree_Base
 {
-    public static function all()
-    {
-        $response = Braintree_Http::get('/plans');
-        if (key_exists('plans', $response)){
-            $plans = array("plan" => $response['plans']);
-        } else {
-            $plans = array("plan" => array());
-        }
-
-        return Braintree_Util::extractAttributeAsArray(
-            $plans,
-            'plan'
-        );
-    }
-
     public static function factory($attributes)
     {
         $instance = new self();
@@ -51,5 +36,13 @@ class Braintree_Plan extends Braintree
             }
         }
         $this->_attributes['plans'] = $planArray;
+    }
+
+
+    // static methods redirecting to gateway
+
+    public static function all()
+    {
+        return Braintree_Configuration::gateway()->plan()->all();
     }
 }

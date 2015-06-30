@@ -37,6 +37,32 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('336', $address->countryCodeNumeric);
     }
 
+    function testGatewayCreate()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $result = $gateway->address()->create(array(
+            'customerId' => $customer->id,
+            'streetAddress' => '1 E Main St',
+            'locality' => 'Chicago',
+            'region' => 'IL',
+            'postalCode' => '60622',
+        ));
+
+        $this->assertTrue($result->success);
+        $address = $result->address;
+        $this->assertEquals('1 E Main St', $address->streetAddress);
+        $this->assertEquals('Chicago', $address->locality);
+        $this->assertEquals('IL', $address->region);
+        $this->assertEquals('60622', $address->postalCode);
+    }
+
     function testCreate_withValidationErrors()
     {
         $customer = Braintree_Customer::createNoValidate();

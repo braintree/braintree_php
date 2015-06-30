@@ -160,7 +160,8 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
     function test_paypalAccountEmail()
     {
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
             )

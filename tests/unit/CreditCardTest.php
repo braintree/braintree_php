@@ -37,7 +37,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
             'deviceData', 'fraudMerchantId', 'paymentMethodNonce',
-            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'venmoSdkSession', 'failOnDuplicatePaymentMethod')),
+            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'venmoSdkSession', 'failOnDuplicatePaymentMethod')),
             array(
                 'billingAddress' => array(
                     'firstName',
@@ -56,7 +56,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             ),
             'customerId'
         );
-        $this->assertEquals($expected, Braintree_CreditCard::CreateSignature());
+        $this->assertEquals($expected, Braintree_CreditCardGateway::createSignature());
     }
 
     function testUpdateSignature()
@@ -65,7 +65,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
             'deviceData', 'fraudMerchantId', 'paymentMethodNonce',
-            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'venmoSdkSession')),
+            array('options' => array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'venmoSdkSession')),
             array(
                 'billingAddress' => array(
                     'firstName',
@@ -88,7 +88,7 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
                 ),
             ),
         );
-        $this->assertEquals($expected, Braintree_CreditCard::UpdateSignature());
+        $this->assertEquals($expected, Braintree_CreditCardGateway::updateSignature());
     }
 
     function testErrorsOnFindWithBlankArgument()
@@ -107,5 +107,29 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException');
         Braintree_CreditCard::find('\t');
+    }
+
+    function testVerificationIsLatestVerification()
+    {
+        $creditCard = Braintree_CreditCard::factory(
+            array(
+                'verifications' => array(
+                    array(
+                        'id' => '123',
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121212')
+                    ),
+                    array(
+                        'id' => '932',
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121215')
+                    ),
+                    array(
+                        'id' => '456',
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121213')
+                    )
+                )
+            )
+        );
+
+        $this->assertEquals('932', $creditCard->verification->id);
     }
 }

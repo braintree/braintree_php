@@ -24,6 +24,31 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, preg_match('/png/', $result->creditCard->imageUrl));
     }
 
+    function testGatewayCreate()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $result = $gateway->creditCard()->create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ));
+
+        $this->assertTrue($result->success);
+        $this->assertEquals($customer->id, $result->creditCard->customerId);
+        $this->assertEquals('510510', $result->creditCard->bin);
+        $this->assertEquals('5100', $result->creditCard->last4);
+        $this->assertEquals('Cardholder', $result->creditCard->cardholderName);
+        $this->assertEquals('05/2012', $result->creditCard->expirationDate);
+    }
+
     function testCreate_withDefault()
     {
         $customer = Braintree_Customer::createNoValidate();
@@ -53,7 +78,8 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     function testAddCardToExistingCustomerUsingNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             "credit_card" => array(
                 "number" => "4111111111111111",
                 "expirationMonth" => "11",
@@ -146,6 +172,40 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
             'number' => '5105105105105100',
             'expirationDate' => '05/2011',
             'options' => array('verifyCard' => true)
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Result_CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
+        $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
+        $this->assertEquals('I', $result->creditCardVerification->cvvResponseCode);
+        $this->assertEquals(null, $result->creditCardVerification->avsErrorResponseCode);
+        $this->assertEquals('I', $result->creditCardVerification->avsPostalCodeResponseCode);
+        $this->assertEquals('I', $result->creditCardVerification->avsStreetAddressResponseCode);
+        $this->assertEquals(Braintree_CreditCard::PREPAID_UNKNOWN, $result->creditCardVerification->creditCard["prepaid"]);
+    }
+
+    function testCreate_withCardVerificationReturnsVerificationWithRiskData()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2011',
+            'options' => array('verifyCard' => true)
+        ));
+        $this->assertTrue($result->success);
+        $this->assertNotNull($result->creditCard->verification->riskData);
+        $this->assertNotNull($result->creditCard->verification->riskData->decision);
+    }
+
+    function testCreate_withCardVerificationAndOverriddenAmount()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_CreditCard::create(array(
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/2011',
+            'options' => array('verifyCard' => true, 'verificationAmount' => '1.02')
         ));
         $this->assertFalse($result->success);
         $this->assertEquals(Braintree_Result_CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
@@ -733,7 +793,8 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     function testFromNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             "credit_card" => array(
                 "number" => "4009348888881881",
                 "expirationMonth" => "11",
@@ -750,7 +811,8 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
 
     function testFromNonce_ReturnsErrorWhenNoncePointsToSharedCard()
     {
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             "credit_card" => array(
                 "number" => "4009348888881881",
                 "expirationMonth" => "11",
@@ -766,7 +828,8 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
     function testFromNonce_ReturnsErrorWhenNonceIsConsumed()
     {
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             "credit_card" => array(
                 "number" => "4009348888881881",
                 "expirationMonth" => "11",
@@ -777,37 +840,6 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
 
         Braintree_CreditCard::fromNonce($nonce);
         $this->setExpectedException('Braintree_Exception_NotFound', "consumed");
-        Braintree_CreditCard::fromNonce($nonce);
-    }
-
-    function testFromNonce_ReturnsErrorWhenNonceIsLocked()
-    {
-        $customer = Braintree_Customer::createNoValidate();
-        $clientTokenOptions = array();
-        $clientToken = json_decode(Braintree_TestHelper::decodedClientToken($clientTokenOptions));
-        $sharedCustomerIdentifier = "fake_identifier_" . rand();
-
-        $options = array(
-            "credit_card" => array(
-                "number" => "4009348888881881",
-                "expirationMonth" => "11",
-                "expirationYear" => "2099"
-            ),
-            "share" => true
-        );
-        $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
-        $options["shared_customer_identifier"] = $sharedCustomerIdentifier;
-        $options["shared_customer_identifier_type"] = "testing";
-
-        $response = Braintree_HttpClientApi::post('/client_api/v1/payment_methods/credit_cards.json', json_encode($options));
-        $this->assertEquals(201, $response["status"]);
-
-        unset($options["credit_card"]);
-        $response = Braintree_HttpClientApi::get_cards($options);
-        $body = json_decode($response["body"]);
-        $nonce = $body->paymentMethods[0]->nonce;
-
-        $this->setExpectedException('Braintree_Exception_NotFound', "locked");
         Braintree_CreditCard::fromNonce($nonce);
     }
 

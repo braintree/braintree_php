@@ -1,5 +1,5 @@
 <?php
-class Braintree_WebhookNotification extends Braintree
+class Braintree_WebhookNotification extends Braintree_Base
 {
     const SUBSCRIPTION_CANCELED = 'subscription_canceled';
     const SUBSCRIPTION_CHARGED_SUCCESSFULLY = 'subscription_charged_successfully';
@@ -25,6 +25,8 @@ class Braintree_WebhookNotification extends Braintree
         if (preg_match("/[^A-Za-z0-9+=\/\n]/", $payload) === 1) {
             throw new Braintree_Exception_InvalidSignature("payload contains illegal characters");
         }
+
+        Braintree_Configuration::assertGlobalHasAccessTokenOrKeys();
         self::_validateSignature($signature, $payload);
 
         $xml = base64_decode($payload);
@@ -34,6 +36,10 @@ class Braintree_WebhookNotification extends Braintree
 
     public static function verify($challenge)
     {
+        if (!preg_match('/^[a-f0-9]{20,32}$/', $challenge)) {
+            throw new Braintree_Exception_InvalidChallenge("challenge contains non-hex characters");
+        }
+        Braintree_Configuration::assertGlobalHasAccessTokenOrKeys();
         $publicKey = Braintree_Configuration::publicKey();
         $digest = Braintree_Digest::hexDigestSha1(Braintree_Configuration::privateKey(), $challenge);
         return "{$publicKey}|{$digest}";

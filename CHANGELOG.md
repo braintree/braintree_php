@@ -1,3 +1,61 @@
+## 3.1.0
+* Add support for HHVM
+* Validate that configuration is valid before verifying webhooks
+* Make OAuth methods conform more to existing API
+* Expose customer paymentMethods as an attribute
+
+## 3.0.1
+* Add support for Android Pay
+
+## 3.0.0
+* Deprecate PHP 5.2 and 5.3
+* Validate webhook challenge payload
+* Bugfix for calling `__toString()` on objects that contain a `\DateTime`
+
+## 2.40.0
+* Add missing criteria to credit card verification search
+* Bugfix for autoloading files with Composer
+
+## 2.39.0
+* Add oauth functionality
+* Add 3DS info to the server side
+
+## 2.38.0
+* Update payment instrument types and test nonces
+* Add missing valid params to PaymentMethodGateway
+
+## 2.37.0
+* Add 3D Secure transaction fields
+* Add ability to create nonce from vaulted payment methods
+
+## 2.36.0
+* Surface Apple Pay payment instrument name in responses
+* Support Coinbase payment instruments
+
+## 2.35.2
+* Fix E_STRICT errors
+* Expose subscription status details
+
+## 2.35.1
+* Bugfix for auto loading files
+
+## 2.35.0
+* Allow PayPal fields in transaction.options.paypal
+* Add error code constants
+* Internal refactoring
+
+## 2.34.0
+* Add risk_data to Transaction and Verification with Kount decision and id
+* Add verification_amount an option when creating a credit card
+* Add TravelCruise industry type to Transaction
+* Add room_rate to Lodging industry type
+* Add CreditCard#verification as the latest verification on that credit card
+* Add ApplePay support to all endpoints that may return ApplePayCard objects
+* Add prefix to sample Webhook to simulate webhook query params
+
+## 2.33.0
+* Allow descriptor to be passed in Funding Details options params for Merchant Account create and update.
+
 ## 2.32.0
 * Add additionalProcessorResponse to Transaction
 

@@ -17,7 +17,6 @@ class Braintree_Util
      *
      * @param array $attribArray attributes from a search response
      * @param string $attributeName indicates which element of the passed array to extract
-     *
      * @return array array of Braintree_$attributeName objects, or a single element array
      */
     public static function extractAttributeAsArray(& $attribArray, $attributeName)
@@ -74,6 +73,23 @@ class Braintree_Util
     }
 
     /**
+     *
+     * @param string $className
+     * @param object $resultObj
+     * @return object returns the passed object if successful
+     * @throws Braintree_Exception_ValidationsFailed
+     */
+    public static function returnObjectOrThrowException($className, $resultObj)
+    {
+        $resultObjName = Braintree_Util::cleanClassName($className);
+        if ($resultObj->success) {
+            return $resultObj->$resultObjName;
+        } else {
+            throw new Braintree_Exception_ValidationsFailed();
+        }
+    }
+
+    /**
      * removes the Braintree_ header from a classname
      *
      * @param string $name Braintree_ClassName
@@ -83,17 +99,32 @@ class Braintree_Util
     {
         $classNamesToResponseKeys = array(
             'CreditCard' => 'creditCard',
+            'CreditCardGateway' => 'creditCard',
             'Customer' => 'customer',
+            'CustomerGateway' => 'customer',
             'Subscription' => 'subscription',
+            'SubscriptionGateway' => 'subscription',
             'Transaction' => 'transaction',
+            'TransactionGateway' => 'transaction',
             'CreditCardVerification' => 'verification',
+            'CreditCardVerificationGateway' => 'verification',
             'AddOn' => 'addOn',
+            'AddOnGateway' => 'addOn',
             'Discount' => 'discount',
+            'DiscountGateway' => 'discount',
             'Plan' => 'plan',
+            'PlanGateway' => 'plan',
             'Address' => 'address',
+            'AddressGateway' => 'address',
             'SettlementBatchSummary' => 'settlementBatchSummary',
+            'SettlementBatchSummaryGateway' => 'settlementBatchSummary',
+            'Merchant' => 'merchant',
+            'MerchantGateway' => 'merchant',
             'MerchantAccount' => 'merchantAccount',
-            'PayPalAccount' => 'paypalAccount'
+            'MerchantAccountGateway' => 'merchantAccount',
+            'OAuthCredentials' => 'credentials',
+            'PayPalAccount' => 'paypalAccount',
+            'PayPalAccountGateway' => 'paypalAccount'
         );
 
         $name = str_replace('Braintree_', '', $name);
@@ -177,6 +208,53 @@ class Braintree_Util
         return preg_replace_callback('/([A-Z])/', $callbacks[$delimiter], $string);
     }
 
+    public static function delimiterToCamelCaseArray($array, $delimiter = '[\-\_]')
+    {
+        $converted = array();
+        foreach ($array as $key => $value) {
+            if (is_string($key)) {
+                $key = self::delimiterToCamelCase($key, $delimiter);
+            }
+
+            if (is_array($value)) {
+                // Make an exception for custom fields, which must be underscore (can't be
+                // camelCase).
+                if ($key === 'customFields') {
+                    $value = self::delimiterToUnderscoreArray($value);
+                } else {
+                    $value = self::delimiterToCamelCaseArray($value, $delimiter);
+                }
+            }
+            $converted[$key] = $value;
+        }
+        return $converted;
+    }
+
+    public static function camelCaseToDelimiterArray($array, $delimiter = '-')
+    {
+        $converted = array();
+        foreach ($array as $key => $value) {
+            if (is_string($key)) {
+                $key = self::camelCaseToDelimiter($key, $delimiter);
+            }
+            if (is_array($value)) {
+                $value = self::camelCaseToDelimiterArray($value, $delimiter);
+            }
+            $converted[$key] = $value;
+        }
+        return $converted;
+    }
+
+    public static function delimiterToUnderscoreArray($array)
+    {
+        $converted = array();
+        foreach ($array as $key => $value) {
+            $key = self::delimiterToUnderscore($key);
+            $converted[$key] = $value;
+        }
+        return $converted;
+    }
+
     /**
      *
      * @param array $array associative array to implode
@@ -188,8 +266,10 @@ class Braintree_Util
         // build a new array with joined keys and values
         $tmpArray = null;
         foreach ($array AS $key => $value) {
-                $tmpArray[] = $key . $separator . $value;
-
+            if ($value instanceof DateTime) {
+                $value = $value->format('r');
+            }
+            $tmpArray[] = $key . $separator . $value;
         }
         // implode and return the new array
         return (is_array($tmpArray)) ? implode($glue, $tmpArray) : false;

@@ -42,9 +42,52 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($customer->merchantId);
     }
 
+    function testGatewayCreate()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $result = $gateway->customer()->create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals('Mike', $customer->firstName);
+        $this->assertEquals('Jones', $customer->lastName);
+        $this->assertNotNull($customer->merchantId);
+    }
+
+    function testCreateWithAccessToken()
+    {
+        $credentials = Braintree_OAuthTestHelper::createCredentials(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+            'merchantId' => 'integration_merchant_id',
+        ));
+
+        $gateway = new Braintree_Gateway(array(
+            'accessToken' => $credentials->accessToken,
+        ));
+
+        $result = $gateway->customer()->create(array(
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+        ));
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+        $this->assertEquals('Mike', $customer->firstName);
+        $this->assertEquals('Jones', $customer->lastName);
+        $this->assertNotNull($customer->merchantId);
+    }
+
     function testCreateCustomerWithCardUsingNonce()
     {
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             "creditCard" => array(
                 "number" => "4111111111111111",
                 "expirationMonth" => "11",
@@ -63,6 +106,50 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertSame("411111", $result->customer->creditCards[0]->bin);
         $this->assertSame("1111", $result->customer->creditCards[0]->last4);
     }
+
+    function testCreateCustomerWithApplePayCard()
+    {
+        $nonce = Braintree_Test_Nonces::$applePayVisa;
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $this->assertNotNull($customer->applePayCards[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
+    }
+
+    function testCreateCustomerWithAndroidPayCard()
+    {
+        $nonce = Braintree_Test_Nonces::$androidPay;
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $this->assertNotNull($customer->androidPayCards[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
+        $androidPayCard = $customer->androidPayCards[0];
+        $this->assertTrue($androidPayCard instanceof Braintree_AndroidPayCard);
+        $this->assertNotNull($androidPayCard->token);
+        $this->assertNotNull($androidPayCard->expirationYear);
+    }
+
+    function testCreateCustomerWithCoinbase()
+    {
+        $nonce = Braintree_Test_Nonces::$coinbase;
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $this->assertNotNull($customer->coinbaseAccounts[0]);
+        $this->assertNotNull($customer->coinbaseAccounts[0]->userId);
+        $this->assertNotNull($customer->coinbaseAccounts[0]->userName);
+        $this->assertNotNull($customer->coinbaseAccounts[0]->userEmail);
+        $this->assertNotNull($customer->paymentMethods[0]);
+    }
+
 
     function testCreate_withUnicode()
     {
@@ -659,7 +746,8 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
             )
         ));
         $paypalAccountToken = 'PAYPALToken-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paypalAccountToken,
@@ -690,7 +778,8 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
             )
         ));
         $paypalAccountToken = 'PAYPALToken-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'access_token' => 'PAYPAL_ACCESS_TOKEN',
                 'token' => $paypalAccountToken,

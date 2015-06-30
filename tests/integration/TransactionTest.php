@@ -49,7 +49,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
     function testCreateTransactionUsingNonce()
     {
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             "creditCard" => array(
                 "number" => "4111111111111111",
                 "expirationMonth" => "11",
@@ -70,9 +71,96 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('47.00', $transaction->amount);
     }
 
+    function testGatewayCreateTransactionUsingNonce()
+    {
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
+            "creditCard" => array(
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ),
+            "share" => true
+        ));
+
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ));
+        $result = $gateway->transaction()->sale(array(
+            'amount' => '47.00',
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
+        $this->assertEquals('47.00', $transaction->amount);
+    }
+
+    function testCreateTransactionUsingFakeApplePayNonce()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '47.00',
+            'paymentMethodNonce' => Braintree_Test_Nonces::$applePayAmEx
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('47.00', $transaction->amount);
+        $applePayDetails = $transaction->applePayCardDetails;
+        $this->assertSame(Braintree_ApplePayCard::AMEX, $applePayDetails->cardType);
+        $this->assertContains("AmEx ", $applePayDetails->paymentInstrumentName);
+        $this->assertTrue(intval($applePayDetails->expirationMonth) > 0);
+        $this->assertTrue(intval($applePayDetails->expirationYear) > 0);
+        $this->assertNotNull($applePayDetails->cardholderName);
+    }
+
+    function testCreateTransactionUsingFakeAndroidPayNonce()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '47.00',
+            'paymentMethodNonce' => Braintree_Test_Nonces::$androidPay
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('47.00', $transaction->amount);
+        $androidPayCardDetails = $transaction->androidPayCardDetails;
+        $this->assertSame(Braintree_CreditCard::DISCOVER, $androidPayCardDetails->cardType);
+        $this->assertSame("1117", $androidPayCardDetails->last4);
+        $this->assertNull($androidPayCardDetails->token);
+        $this->assertSame(Braintree_CreditCard::DISCOVER, $androidPayCardDetails->virtualCardType);
+        $this->assertSame("1117", $androidPayCardDetails->virtualCardLast4);
+        $this->assertSame(Braintree_CreditCard::VISA, $androidPayCardDetails->sourceCardType);
+        $this->assertSame("1111", $androidPayCardDetails->sourceCardLast4);
+        $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
+        $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
+        $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
+    }
+
+    function testCreateTransactionUsingFakeCoinbaseNonce()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '17.00',
+            'paymentMethodNonce' => Braintree_Test_Nonces::$coinbase
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertNotNull($transaction->coinbaseDetails);
+        $this->assertNotNull($transaction->coinbaseDetails->userId);
+        $this->assertNotNull($transaction->coinbaseDetails->userName);
+        $this->assertNotNull($transaction->coinbaseDetails->userEmail);
+    }
+
     function testCreateTransactionReturnsPaymentInstrumentType()
     {
-        $nonce = Braintree_HttpClientApi::nonce_for_new_card(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
             "creditCard" => array(
                 "number" => "4111111111111111",
                 "expirationMonth" => "11",
@@ -148,6 +236,53 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
+    }
+
+    function testSaleWithAccessToken()
+    {
+        $credentials = Braintree_OAuthTestHelper::createCredentials(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+            'merchantId' => 'integration_merchant_id',
+        ));
+
+        $gateway = new Braintree_Gateway(array(
+            'accessToken' => $credentials->accessToken,
+        ));
+
+        $result = $gateway->transaction()->sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertNotNull($transaction->processorAuthorizationCode);
+        $this->assertEquals('510510', $transaction->creditCardDetails->bin);
+        $this->assertEquals('5100', $transaction->creditCardDetails->last4);
+        $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
+    }
+
+    function testSaleWithRiskData()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertNotNull($transaction->riskData);
+        $this->assertNotNull($transaction->riskData->decision);
     }
 
     function testRecurring()
@@ -452,6 +587,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
       $this->assertEquals('05', $transaction->creditCardDetails->expirationMonth);
       $this->assertEquals('2011', $transaction->creditCardDetails->expirationYear);
+      $this->assertNotNull($transaction->creditCardDetails->imageUrl);
     }
 
     function testSale_withCustomFields()
@@ -1080,6 +1216,51 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
     }
 
+    function testFindExposesThreeDSecureInfo()
+    {
+        $transaction = Braintree_Transaction::find("threedsecuredtransaction");
+
+        $info = $transaction->threeDSecureInfo;
+        $this->assertEquals("Y", $info->enrolled);
+        $this->assertEquals("authenticate_successful", $info->status);
+        $this->assertTrue($info->liabilityShifted);
+        $this->assertTrue($info->liabilityShiftPossible);
+    }
+
+    function testFindExposesNullThreeDSecureInfo()
+    {
+        $transaction = Braintree_Transaction::find("settledtransaction");
+
+        $this->assertNull($transaction->threeDSecureInfo);
+    }
+
+    function testFindExposesRetrievals()
+    {
+        $transaction = Braintree_Transaction::find("retrievaltransaction");
+
+        $dispute = $transaction->disputes[0];
+        $this->assertEquals('1000.00', $dispute->amount);
+        $this->assertEquals('USD', $dispute->currencyIsoCode);
+        $this->assertEquals(Braintree_Dispute::RETRIEVAL, $dispute->reason);
+        $this->assertEquals(Braintree_Dispute::OPEN, $dispute->status);
+        $this->assertEquals("retrievaltransaction", $dispute->transactionDetails->id);
+        $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
+    }
+
+    function testFindExposesPayPalDetails()
+    {
+        $transaction = Braintree_Transaction::find("settledtransaction");
+        $this->assertNotNull($transaction->paypalDetails->debugId);
+        $this->assertNotNull($transaction->paypalDetails->payerEmail);
+        $this->assertNotNull($transaction->paypalDetails->authorizationId);
+        $this->assertNotNull($transaction->paypalDetails->payerId);
+        $this->assertNotNull($transaction->paypalDetails->payerFirstName);
+        $this->assertNotNull($transaction->paypalDetails->payerLastName);
+        $this->assertNotNull($transaction->paypalDetails->sellerProtectionStatus);
+        $this->assertNotNull($transaction->paypalDetails->captureId);
+        $this->assertNotNull($transaction->paypalDetails->refundId);
+    }
+
     function testSale_storeInVault()
     {
         $transaction = Braintree_Transaction::saleNoValidate(array(
@@ -1286,6 +1467,34 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             Braintree_Error_Codes::TRANSACTION_CANNOT_HOLD_IN_ESCROW,
             $errors[0]->code
         );
+    }
+
+    function testSale_withThreeDSecureOptionRequired()
+    {
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonce_for_new_card(array(
+            "creditCard" => array(
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            )
+        ));
+
+        $result = Braintree_Transaction::sale(array(
+            'merchantAccountId' => Braintree_TestHelper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/09'
+            ),
+            'options' => array(
+                'three_d_secure' => array(
+                    'required' => true
+                )
+            )
+        ));
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree_Transaction::THREE_D_SECURE, $result->transaction->gatewayRejectionReason);
     }
 
     function testSale_withThreeDSecureToken()
@@ -1935,7 +2144,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree_Customer::createNoValidate();
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paymentMethodToken
@@ -1960,7 +2170,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     function testCreate_withFuturePayPal()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paymentMethodToken
@@ -1984,7 +2195,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     function testCreate_withPayeeEmail()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paymentMethodToken
@@ -2012,7 +2224,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     function testCreate_withPayeeEmailInOptions()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paymentMethodToken
@@ -2038,10 +2251,74 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         Braintree_PaymentMethod::find($paymentMethodToken);
     }
 
+    function testCreate_withPayeeEmailInOptionsPayPal()
+    {
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            )
+        ));
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'paypalAccount' => array(),
+            'options' => array(
+                'paypal' => array(
+                    'payeeEmail' => 'payee@example.com'
+                )
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
+        $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
+        $this->assertNotNull($transaction->paypalDetails->payeeEmail);
+        $this->setExpectedException('Braintree_Exception_NotFound');
+        Braintree_PaymentMethod::find($paymentMethodToken);
+    }
+
+    function testCreate_withPayPalCustomField()
+    {
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            )
+        ));
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'paypalAccount' => array(),
+            'options' => array(
+                'paypal' => array(
+                    'customField' => 'custom field stuff'
+                )
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('custom field stuff', $transaction->paypalDetails->customField);
+        $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
+        $this->setExpectedException('Braintree_Exception_NotFound');
+        Braintree_PaymentMethod::find($paymentMethodToken);
+    }
+
     function testCreate_withPayPalReturnsPaymentInstrumentType()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paymentMethodToken
@@ -2062,7 +2339,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     function testCreate_withFuturePayPalAndVault()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paymentMethodToken
@@ -2089,7 +2367,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     function testCreate_withOnetimePayPal()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'access_token' => 'PAYPAL_ACCESS_TOKEN',
                 'token' => $paymentMethodToken
@@ -2113,7 +2392,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
     function testCreate_withOnetimePayPalAndDoesNotVault()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'access_token' => 'PAYPAL_ACCESS_TOKEN',
                 'token' => $paymentMethodToken
@@ -2150,12 +2430,13 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
+        $this->assertEquals(Braintree_Transaction::SETTLING, $transaction->status);
     }
 
     function testCreate_withPayPalHandlesBadUnvalidatedNonces()
     {
-        $nonce = Braintree_HttpClientApi::nonceForPayPalAccount(array(
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'access_token' => 'PAYPAL_ACCESS_TOKEN',
                 'consent_code' => 'PAYPAL_CONSENT_CODE'
@@ -2310,9 +2591,6 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $transactionResult = Braintree_Transaction::sale(array(
             'amount' => Braintree_Test_TransactionAmounts::$authorize,
             'paymentMethodNonce' => $nonce,
-            'options' => array(
-                'submitForSettlement' => true
-            )
         ));
 
         $this->assertTrue($transactionResult->success);
@@ -2428,5 +2706,99 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_PENDING);
         $this->assertEquals($inline_transaction->processorSettlementResponseCode, "4002");
         $this->assertEquals($inline_transaction->processorSettlementResponseText, "Settlement Pending");
+    }
+
+    function testSale_withLodgingIndustryData()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'industry' => array(
+                'industryType' => Braintree_Transaction::LODGING_INDUSTRY,
+                'data' => array(
+                    'folioNumber' => 'aaa',
+                    'checkInDate' => '2014-07-07',
+                    'checkOutDate' => '2014-07-09',
+                    'roomRate' => '239.00'
+                )
+            )
+        ));
+        $this->assertTrue($result->success);
+    }
+
+    function testSale_withLodgingIndustryDataValidation()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'industry' => array(
+                'industryType' => Braintree_Transaction::LODGING_INDUSTRY,
+                'data' => array(
+                    'folioNumber' => 'aaa',
+                    'checkInDate' => '2014-07-07',
+                    'checkOutDate' => '2014-06-09',
+                    'roomRate' => '239.00'
+                )
+            )
+        ));
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $errors = $result->errors->forKey('transaction')->forKey('industry')->onAttribute('checkOutDate');
+        $this->assertEquals(Braintree_Error_Codes::INDUSTRY_DATA_LODGING_CHECK_OUT_DATE_MUST_FOLLOW_CHECK_IN_DATE, $errors[0]->code);
+    }
+
+    function testSale_withTravelCruiseIndustryData()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'industry' => array(
+                'industryType' => Braintree_Transaction::TRAVEL_AND_CRUISE_INDUSTRY,
+                'data' => array(
+                    'travelPackage' => 'flight',
+                    'departureDate' => '2014-07-07',
+                    'lodgingCheckInDate' => '2014-07-09',
+                    'lodgingCheckOutDate' => '2014-07-10',
+                    'lodgingName' => 'Disney',
+                )
+            )
+        ));
+        $this->assertTrue($result->success);
+    }
+
+    function testSale_withTravelCruiseIndustryDataValidation()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ),
+            'industry' => array(
+                'industryType' => Braintree_Transaction::TRAVEL_AND_CRUISE_INDUSTRY,
+                'data' => array(
+                    'travelPackage' => 'invalid',
+                    'departureDate' => '2014-07-07',
+                    'lodgingCheckInDate' => '2014-07-09',
+                    'lodgingCheckOutDate' => '2014-07-10',
+                    'lodgingName' => 'Disney',
+                )
+            )
+        ));
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $errors = $result->errors->forKey('transaction')->forKey('industry')->onAttribute('travelPackage');
+        $this->assertEquals(Braintree_Error_Codes::INDUSTRY_DATA_TRAVEL_CRUISE_TRAVEL_PACKAGE_IS_INVALID, $errors[0]->code);
     }
 }

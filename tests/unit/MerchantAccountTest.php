@@ -33,6 +33,7 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
             "funding" => array(
                 "accountNumberLast4" => "8798",
                 "routingNumber" => "071000013",
+                "descriptor" => "Joes Bloggs MI",
             )
         );
         $merchantAccount = Braintree_MerchantAccount::factory($params);
@@ -56,6 +57,7 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($merchantAccount->businessDetails->taxId, "123456789");
         $this->assertEquals($merchantAccount->fundingDetails->accountNumberLast4, "8798");
         $this->assertEquals($merchantAccount->fundingDetails->routingNumber, "071000013");
+        $this->assertEquals($merchantAccount->fundingDetails->descriptor, "Joes Bloggs MI");
     }
 }
 ?>

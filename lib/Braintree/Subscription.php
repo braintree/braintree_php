@@ -11,7 +11,7 @@
  * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Subscription extends Braintree
+class Braintree_Subscription extends Braintree_Base
 {
     const ACTIVE = 'Active';
     const CANCELED = 'Canceled';
@@ -19,12 +19,10 @@ class Braintree_Subscription extends Braintree
     const PAST_DUE = 'Past Due';
     const PENDING = 'Pending';
 
-    public static function create($attributes)
-    {
-        Braintree_Util::verifyKeys(self::_createSignature(), $attributes);
-        $response = Braintree_Http::post('/subscriptions', array('subscription' => $attributes));
-        return self::_verifyGatewayResponse($response);
-    }
+    // Subscription Sources
+    const API           = 'api';
+    const CONTROL_PANEL = 'control_panel';
+    const RECURRING     = 'recurring';
 
     /**
      * @ignore
@@ -35,141 +33,6 @@ class Braintree_Subscription extends Braintree
         $instance->_initialize($attributes);
 
         return $instance;
-    }
-
-    public static function find($id)
-    {
-        self::_validateId($id);
-
-        try {
-            $response = Braintree_Http::get('/subscriptions/' . $id);
-            return self::factory($response['subscription']);
-        } catch (Braintree_Exception_NotFound $e) {
-            throw new Braintree_Exception_NotFound('subscription with id ' . $id . ' not found');
-        }
-
-    }
-
-    public static function search($query)
-    {
-        $criteria = array();
-        foreach ($query as $term) {
-            $criteria[$term->name] = $term->toparam();
-        }
-
-
-        $response = Braintree_Http::post('/subscriptions/advanced_search_ids', array('search' => $criteria));
-        $pager = array(
-            'className' => __CLASS__,
-            'classMethod' => 'fetch',
-            'methodArgs' => array($query)
-            );
-
-        return new Braintree_ResourceCollection($response, $pager);
-    }
-
-    public static function fetch($query, $ids)
-    {
-        $criteria = array();
-        foreach ($query as $term) {
-            $criteria[$term->name] = $term->toparam();
-        }
-        $criteria["ids"] = Braintree_SubscriptionSearch::ids()->in($ids)->toparam();
-        $response = Braintree_Http::post('/subscriptions/advanced_search', array('search' => $criteria));
-
-        return Braintree_Util::extractAttributeAsArray(
-            $response['subscriptions'],
-            'subscription'
-        );
-    }
-
-    public static function update($subscriptionId, $attributes)
-    {
-        Braintree_Util::verifyKeys(self::_updateSignature(), $attributes);
-        $response = Braintree_Http::put(
-            '/subscriptions/' . $subscriptionId,
-            array('subscription' => $attributes)
-        );
-        return self::_verifyGatewayResponse($response);
-    }
-
-    public static function retryCharge($subscriptionId, $amount = null)
-    {
-        $transaction_params = array('type' => Braintree_Transaction::SALE,
-            'subscriptionId' => $subscriptionId);
-        if (isset($amount)) {
-            $transaction_params['amount'] = $amount;
-        }
-
-        $response = Braintree_Http::post(
-            '/transactions',
-            array('transaction' => $transaction_params));
-        return self::_verifyGatewayResponse($response);
-    }
-
-    public static function cancel($subscriptionId)
-    {
-        $response = Braintree_Http::put('/subscriptions/' . $subscriptionId . '/cancel');
-        return self::_verifyGatewayResponse($response);
-    }
-
-    private static function _createSignature()
-    {
-        return array_merge(
-            array(
-                'billingDayOfMonth',
-                'firstBillingDate',
-                'createdAt',
-                'updatedAt',
-                'id',
-                'merchantAccountId',
-                'neverExpires',
-                'numberOfBillingCycles',
-                'paymentMethodToken',
-                'paymentMethodNonce',
-                'planId',
-                'price',
-                'trialDuration',
-                'trialDurationUnit',
-                'trialPeriod',
-                array('descriptor' => array('name', 'phone', 'url')),
-                array('options' => array('doNotInheritAddOnsOrDiscounts', 'startImmediately')),
-            ),
-            self::_addOnDiscountSignature()
-        );
-    }
-
-    private static function _updateSignature()
-    {
-        return array_merge(
-            array(
-                'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
-                'paymentMethodNonce', 'id', 'neverExpires', 'price',
-                array('descriptor' => array('name', 'phone', 'url')),
-                array('options' => array('prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure')),
-            ),
-            self::_addOnDiscountSignature()
-        );
-    }
-
-    private static function _addOnDiscountSignature()
-    {
-        return array(
-            array(
-                'addOns' => array(
-                    array('add' => array('amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('remove' => array('_anyKey_')),
-                )
-            ),
-            array(
-                'discounts' => array(
-                    array('add' => array('amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('remove' => array('_anyKey_')),
-                )
-            )
-        );
     }
 
     /**
@@ -199,6 +62,14 @@ class Braintree_Subscription extends Braintree
             $this->_set('descriptor', new Braintree_Descriptor($attributes['descriptor']));
         }
 
+        $statusHistory = array();
+        if (isset($attributes['statusHistory'])) {
+            foreach ($attributes['statusHistory'] AS $history) {
+                $statusHistory[] = new Braintree_Subscription_StatusDetails($history);
+            }
+        }
+        $this->_attributes['statusHistory'] = $statusHistory;
+
         $transactionArray = array();
         if (isset($attributes['transactions'])) {
             foreach ($attributes['transactions'] AS $transaction) {
@@ -209,51 +80,59 @@ class Braintree_Subscription extends Braintree
     }
 
     /**
-     * @ignore
-     */
-    private static function _validateId($id = null) {
-        if (empty($id)) {
-           throw new InvalidArgumentException(
-                   'expected subscription id to be set'
-                   );
-        }
-        if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
-            throw new InvalidArgumentException(
-                    $id . ' is an invalid subscription id.'
-                    );
-        }
-    }
-    /**
-     * @ignore
-     */
-    private static function _verifyGatewayResponse($response)
-    {
-        if (isset($response['subscription'])) {
-            return new Braintree_Result_Successful(
-                self::factory($response['subscription'])
-            );
-        } else if (isset($response['transaction'])) {
-            // return a populated instance of Braintree_Transaction, for subscription retryCharge
-            return new Braintree_Result_Successful(
-                Braintree_Transaction::factory($response['transaction'])
-            );
-        } else if (isset($response['apiErrorResponse'])) {
-            return new Braintree_Result_Error($response['apiErrorResponse']);
-        } else {
-            throw new Braintree_Exception_Unexpected(
-            "Expected subscription, transaction, or apiErrorResponse"
-            );
-        }
-    }
-
-    /**
      * returns a string representation of the customer
      * @return string
      */
     public function  __toString()
     {
+        $excludedAttributes = array('statusHistory');
+
+        $displayAttributes = array();
+        foreach($this->_attributes as $key => $val) {
+            if (!in_array($key, $excludedAttributes)) {
+                $displayAttributes[$key] = $val;
+            }
+        }
+
         return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+                Braintree_Util::attributesToString($displayAttributes) .']';
     }
 
+
+    // static methods redirecting to gateway
+
+    public static function create($attributes)
+    {
+        return Braintree_Configuration::gateway()->subscription()->create($attributes);
+    }
+
+    public static function find($id)
+    {
+        return Braintree_Configuration::gateway()->subscription()->find($id);
+    }
+
+    public static function search($query)
+    {
+        return Braintree_Configuration::gateway()->subscription()->search($query);
+    }
+
+    public static function fetch($query, $ids)
+    {
+        return Braintree_Configuration::gateway()->subscription()->fetch($query, $ids);
+    }
+
+    public static function update($subscriptionId, $attributes)
+    {
+        return Braintree_Configuration::gateway()->subscription()->update($subscriptionId, $attributes);
+    }
+
+    public static function retryCharge($subscriptionId, $amount = null)
+    {
+        return Braintree_Configuration::gateway()->subscription()->retryCharge($subscriptionId, $amount);
+    }
+
+    public static function cancel($subscriptionId)
+    {
+        return Braintree_Configuration::gateway()->subscription()->cancel($subscriptionId);
+    }
 }
