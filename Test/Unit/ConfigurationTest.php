@@ -22,6 +22,36 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::privateKey('integration_private_key');
     }
 
+    public function testAssertGlobalHasAccessTokenOrKeys()
+    {
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('integration_merchant_id');
+        Braintree\Configuration::publicKey('integration_public_key');
+        Braintree\Configuration::privateKey('integration_private_key');
+
+        try {
+            Braintree\Configuration::assertGlobalHasAccessTokenOrKeys();
+        } catch (Exception $notExpected) {
+            $this->fail();
+        }
+
+        $this->assertTrue(true);
+    }
+
+     /**
+     * @expectedException Braintree\Exception_Configuration
+     * @expectedExceptionMessage Braintree\Configuration::publicKey needs to be set.
+     */
+    public function testAssertGlobalHasAccessTokenOrKeysWithoutPublicKey()
+    {
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('integration_merchant_id');
+        Braintree\Configuration::publicKey('');
+        Braintree\Configuration::privateKey('integration_private_key');
+
+        Braintree\Configuration::assertGlobalHasAccessTokenOrKeys();
+    }
+
     public function testConstructWithArrayOfCredentials()
     {
         $config = new Braintree\Configuration(array(
@@ -222,7 +252,6 @@ class ConfigurationTest extends Setup
 
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-
 
     public function testValidWithOAuthClientCredentials()
     {

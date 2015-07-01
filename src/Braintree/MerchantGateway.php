@@ -13,6 +13,7 @@ final class MerchantGateway
         $this->_config = $gateway->config;
         $this->_config->assertHasClientCredentials();
         $this->_http = new Http($gateway->config);
+        $this->_http->useClientCredentials();
     }
 
     public function create($attribs)

@@ -122,7 +122,7 @@ class CustomerTest extends Setup
         $this->assertTrue($result->success);
         $customer = $result->customer;
         $this->assertNotNull($customer->applePayCards[0]);
-        $this->assertNotNull($customer->paymentMethods()[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
     }
 
     public function testCreateCustomerWithAndroidPayCard()
@@ -134,7 +134,7 @@ class CustomerTest extends Setup
         $this->assertTrue($result->success);
         $customer = $result->customer;
         $this->assertNotNull($customer->androidPayCards[0]);
-        $this->assertNotNull($customer->paymentMethods()[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
         $androidPayCard = $customer->androidPayCards[0];
         $this->assertTrue($androidPayCard instanceof Braintree\AndroidPayCard);
         $this->assertNotNull($androidPayCard->token);
@@ -153,7 +153,7 @@ class CustomerTest extends Setup
         $this->assertNotNull($customer->coinbaseAccounts[0]->userId);
         $this->assertNotNull($customer->coinbaseAccounts[0]->userName);
         $this->assertNotNull($customer->coinbaseAccounts[0]->userEmail);
-        $this->assertNotNull($customer->paymentMethods()[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
     }
 
     public function testCreate_withUnicode()

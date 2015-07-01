@@ -1,6 +1,8 @@
 <?php
 namespace Braintree;
 
+use Exception;
+
 /**
  * Braintree PHP Library.
  *
@@ -74,7 +76,7 @@ abstract class Braintree
             throw new Exception('PHP version >= 5.4.0 required');
         }
 
-        $requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
+        $requiredExtensions = array('xmlwriter', 'openssl', 'dom', 'hash', 'curl');
 
         foreach ($requiredExtensions as $ext) {
             if (!extension_loaded($ext)) {

@@ -56,7 +56,7 @@ class PaymentMethodNonceGateway
 
             return PaymentMethodNonce::factory($response['paymentMethodNonce']);
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound('payment method nonce with id '.$id.' not found');
+            throw new Exception\NotFound('payment method nonce with id '.$nonce.' not found');
         }
     }
 }

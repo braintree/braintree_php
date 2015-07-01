@@ -21,12 +21,25 @@ class WebhookNotificationTest extends Setup
     }
 
     /**
-     * @expectedException Braintree_Exception_InvalidChallenge
+     * @expectedException Braintree\Exception\InvalidChallenge
      * @expectedExceptionMessage challenge contains non-hex characters
      */
     public function testVerifyRaisesErrorWithInvalidChallenge()
     {
+        $this->setExpectedException('Braintree\Exception\InvalidChallenge', 'challenge contains non-hex characters');
+
         Braintree\WebhookNotification::verify('bad challenge');
+    }
+
+    /**
+     * @expectedException Braintree\Exception_Configuration
+     * @expectedExceptionMessage Braintree\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\Gateway).
+     */
+    public function testVerifyRaisesErrorWhenEnvironmentNotSet()
+    {
+        Braintree\Configuration::reset();
+
+        Braintree\WebhookNotification::verify('20f9f8ed05f77439fe955c977e4c8a53');
     }
 
     public function testSampleNotificationReturnsAParsableNotification()
@@ -57,6 +70,25 @@ class WebhookNotificationTest extends Setup
 
         $webhookNotification = Braintree\WebhookNotification::parse(
             $sampleNotification['bt_signature'].'bad',
+            $sampleNotification['bt_payload']
+        );
+    }
+
+    /**
+     * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage Braintree\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\Gateway).
+     */
+    public function testParsingWithNoKeysRaisesError()
+    {
+        Braintree\Configuration::reset();
+
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
+            'my_id'
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
             $sampleNotification['bt_payload']
         );
     }

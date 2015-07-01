@@ -15,7 +15,6 @@
         "ext-dom": "*",
         "ext-hash": "*",
         "ext-openssl": "*",
-        "ext-simplexml": "*",
         "ext-xmlwriter": "*"
     },
     "require-dev": {

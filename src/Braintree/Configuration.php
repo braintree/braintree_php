@@ -107,18 +107,25 @@ class Configuration
         self::$global->setPrivateKey($value);
     }
 
+    public static function assertGlobalHasAccessTokenOrKeys()
+    {
+        self::$global->assertHasAccessTokenOrKeys();
+    }
+
     public function assertHasAccessTokenOrKeys()
     {
-        if (empty($this->_accessToken)) {
-            if (empty($this->_environment)) {
-                throw new Exception\Configuration('environment needs to be set.');
-            } elseif (empty($this->_merchantId)) {
-                throw new Exception\Configuration('merchantId needs to be set.');
-            } elseif (empty($this->_publicKey)) {
-                throw new Exception\Configuration('publicKey needs to be set.');
-            } elseif (empty($this->_privateKey)) {
-                throw new Exception\Configuration('privateKey needs to be set.');
-            }
+        if ($this->_accessToken) {
+            return true;
+        }
+
+        if (empty($this->_merchantId)) {
+            throw new Exception\Configuration('Braintree\\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\\Gateway).');
+        } elseif (empty($this->_environment)) {
+            throw new Exception\Configuration('Braintree\\Configuration::environment needs to be set.');
+        } elseif (empty($this->_publicKey)) {
+            throw new Exception\Configuration('Braintree\\Configuration::publicKey needs to be set.');
+        } elseif (empty($this->_privateKey)) {
+            throw new Exception\Configuration('Braintree\\Configuration::privateKey needs to be set.');
         }
     }
 
@@ -131,14 +138,14 @@ class Configuration
     public function assertHasClientId()
     {
         if (empty($this->_clientId)) {
-            throw new Exception\Configuration('clientId needs to be set.');
+            throw new Exception\Configuration('clientId needs to be passed to Braintree\\Gateway.');
         }
     }
 
     public function assertHasClientSecret()
     {
         if (empty($this->_clientSecret)) {
-            throw new Exception\Configuration('clientSecret needs to be set.');
+            throw new Exception\Configuration('clientSecret needs to be passed to Braintree\\Gateway.');
         }
     }
 

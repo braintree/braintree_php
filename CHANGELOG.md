@@ -1,3 +1,9 @@
+## 3.1.0
+* Add support for HHVM
+* Validate that configuration is valid before verifying webhooks
+* Make OAuth methods conform more to existing API
+* Expose customer paymentMethods as an attribute
+
 ## 3.0.1
 * Add support for Android Pay
 
