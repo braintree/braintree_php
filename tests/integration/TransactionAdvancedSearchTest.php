@@ -105,6 +105,7 @@ class Braintree_TransactionAdvancedSearchTest extends PHPUnit_Framework_TestCase
           'customerWebsite' => "http://example.com",
           'orderId' => "myorder",
           'paymentMethodToken' => $token,
+          'paymentInstrumentType' => 'CreditCardDetail',
           'processorAuthorizationCode' => $transaction->processorAuthorizationCode,
           'shippingCompany' => "Braintree P.S.",
           'shippingCountryName' => "Mexico",
