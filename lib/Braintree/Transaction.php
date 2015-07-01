@@ -211,6 +211,7 @@ final class Braintree_Transaction extends Braintree_Base
     const DUPLICATE      = 'duplicate';
     const FRAUD          = 'fraud';
     const THREE_D_SECURE = 'three_d_secure';
+    const APPLICATION_INCOMPLETE = 'application_incomplete';
 
     // Industry Types
     const LODGING_INDUSTRY           = 'lodging';
