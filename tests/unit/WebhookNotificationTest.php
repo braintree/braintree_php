@@ -4,7 +4,7 @@ use Braintree\Configuration;
 use Braintree\Dispute;
 use Braintree\Error\Codes;
 use Braintree\MerchantAccount;
-use function Braintree\Tests\integrationMerchantConfig;
+use Braintree\Tests\TestHelper;
 use Braintree\WebhookNotification;
 use Braintree\WebhookTesting;
 
@@ -14,7 +14,7 @@ class WebhookNotificationTest extends \PHPUnit_Framework_TestCase
 {
     function setup()
     {
-        integrationMerchantConfig();
+        TestHelper::integrationMerchantConfig();
     }
 
     function testVerify()

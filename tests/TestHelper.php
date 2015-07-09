@@ -5,30 +5,31 @@ use Braintree\Configuration;
 use Braintree\Http;
 use Braintree\TransparentRedirect;
 
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-function integrationMerchantConfig()
-{
-    Configuration::environment('development');
-    Configuration::merchantId('integration_merchant_id');
-    Configuration::publicKey('integration_public_key');
-    Configuration::privateKey('integration_private_key');
-}
-
-function testMerchantConfig()
-{
-    Configuration::environment('development');
-    Configuration::merchantId('test_merchant_id');
-    Configuration::publicKey('test_public_key');
-    Configuration::privateKey('test_private_key');
-}
-
-integrationMerchantConfig();
+TestHelper::integrationMerchantConfig();
 
 date_default_timezone_set("UTC");
 
 class TestHelper
 {
+
+    public static function integrationMerchantConfig()
+    {
+        Configuration::environment('development');
+        Configuration::merchantId('integration_merchant_id');
+        Configuration::publicKey('integration_public_key');
+        Configuration::privateKey('integration_private_key');
+    }
+
+    public static function testMerchantConfig()
+    {
+        Configuration::environment('development');
+        Configuration::merchantId('test_merchant_id');
+        Configuration::publicKey('test_public_key');
+        Configuration::privateKey('test_private_key');
+    }
+
     public static function defaultMerchantAccountId()
     {
         return 'sandbox_credit_card';
@@ -52,7 +53,8 @@ class TestHelper
     public static function createViaTr($regularParams, $trParams)
     {
         $trData = TransparentRedirect::transactionData(
-            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+            array_merge($trParams,
+                array("redirectUrl" => "http://www.example.com"))
         );
         return TestHelper::submitTrRequest(
             TransparentRedirect::url(),
@@ -69,10 +71,15 @@ class TestHelper
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($curl, CURLOPT_HEADER, true);
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array_merge($regularParams, array('tr_data' => $trData))));
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/x-www-form-urlencoded'
-        ));
+        curl_setopt($curl,
+            CURLOPT_POSTFIELDS,
+            http_build_query(array_merge($regularParams,
+                array('tr_data' => $trData))));
+        curl_setopt($curl,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/x-www-form-urlencoded'
+            ));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         curl_close($curl);
@@ -139,7 +146,8 @@ class TestHelper
     {
         $http = new Http(Configuration::$global);
         $path = Configuration::$global->merchantPath() . '/three_d_secure/create_verification/' . $merchantAccountId;
-        $response = $http->post($path, array('threeDSecureVerification' => $params));
+        $response = $http->post($path,
+            array('threeDSecureVerification' => $params));
         return $response['threeDSecureVerification']['threeDSecureToken'];
     }
 
@@ -150,7 +158,8 @@ class TestHelper
         return $now->format('Y-m-d');
     }
 
-    public static function decodedClientToken($params=array()) {
+    public static function decodedClientToken($params = array())
+    {
         $encodedClientToken = ClientToken::generate($params);
         return base64_decode($encodedClientToken);
     }
