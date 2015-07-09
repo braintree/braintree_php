@@ -717,7 +717,7 @@ class PaymentMethodTest extends \PHPUnit_Framework_TestCase
 
     function testFind_throwsIfCannotBeFound()
     {
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethod::find('NON_EXISTENT_TOKEN');
     }
 
@@ -1034,7 +1034,7 @@ class PaymentMethodTest extends \PHPUnit_Framework_TestCase
         $updatedPaypalAccount = PaymentMethod::find($updatedToken);
         $this->assertEquals($originalPaypalAccount->email, $updatedPaypalAccount->email);
 
-        $this->setExpectedException('Exception_NotFound', 'payment method with token ' . $originalToken . ' not found');
+        $this->setExpectedException('Braintree\Exception\NotFound', 'payment method with token ' . $originalToken . ' not found');
         PaymentMethod::find($originalToken);
 
     }
@@ -1136,9 +1136,9 @@ class PaymentMethodTest extends \PHPUnit_Framework_TestCase
 
         PaymentMethod::delete($paymentMethodToken);
 
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethod::find($paymentMethodToken);
-        integrationMerchantConfig();
+        TestHelper::integrationMerchantConfig();
     }
 
     function testDelete_worksWithPayPalAccounts()
@@ -1161,7 +1161,7 @@ class PaymentMethodTest extends \PHPUnit_Framework_TestCase
 
         PaymentMethod::delete($paymentMethodToken);
 
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethod::find($paymentMethodToken);
     }
 

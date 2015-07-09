@@ -766,7 +766,7 @@ class SubscriptionTest extends \PHPUnit_Framework_TestCase
 
     function testFind_throwsIfNotFound()
     {
-        $this->setExpectedException('Exception_NotFound', 'subscription with id does-not-exist not found');
+        $this->setExpectedException('Braintree\Exception\NotFound', 'subscription with id does-not-exist not found');
         Subscription::find('does-not-exist');
 
     }
@@ -881,7 +881,7 @@ class SubscriptionTest extends \PHPUnit_Framework_TestCase
 
     function testUpdate_invalidSubscriptionId()
     {
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         Subscription::update('does-not-exist', array());
     }
 
@@ -1158,7 +1158,7 @@ class SubscriptionTest extends \PHPUnit_Framework_TestCase
 
     function testCancel_throwsErrorIfRecordNotFound()
     {
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         Subscription::cancel('non-existing-id');
     }
 

@@ -4,6 +4,7 @@ use Braintree\Configuration;
 use Braintree\Gateway;
 use Braintree\Http;
 use Braintree\Plan;
+use Braintree\Tests\TestHelper;
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
@@ -11,10 +12,10 @@ class PlanTest extends \PHPUnit_Framework_TestCase
 {
     function testAll_withNoPlans_returnsEmptyArray()
     {
-        testMerchantConfig();
+        TestHelper::testMerchantConfig();
         $plans = Plan::all();
         $this->assertEquals($plans, array());
-        integrationMerchantConfig();
+        TestHelper::integrationMerchantConfig();
 
     }
 

@@ -122,7 +122,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     function testCreateNoValidate_withValidationErrors()
     {
         $customer = Customer::createNoValidate();
-        $this->setExpectedException('Exception_ValidationsFailed');
+        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
         Address::createNoValidate(array(
             'customerId'  => $customer->id,
             'countryName' => 'Invalid States of America'
@@ -138,7 +138,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         ));
         Address::find($customer->id, $address->id);
         Address::delete($customer->id, $address->id);
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         Address::find($customer->id, $address->id);
     }
 
@@ -173,7 +173,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     function testFind_whenNotFound()
     {
         $customer = Customer::createNoValidate();
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         Address::find($customer->id, 'does-not-exist');
     }
 

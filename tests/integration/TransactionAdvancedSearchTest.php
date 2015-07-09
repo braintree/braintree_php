@@ -1445,7 +1445,7 @@ function test_advancedSearchGivesIterableResult()
 
 function test_handles_search_timeout()
 {
-    $this->setExpectedException('Exception_DownForMaintenance');
+    $this->setExpectedException('Braintree\Exception\DownForMaintenance');
     $collection = Transaction::search(array(
         TransactionSearch::amount()->is('-5')
     ));

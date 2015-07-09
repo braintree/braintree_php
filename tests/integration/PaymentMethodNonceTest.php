@@ -29,7 +29,7 @@ class PaymentMethodNonceTest extends \PHPUnit_Framework_TestCase
 
     function testCreate_fromNonExistentPaymentMethodToken()
     {
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethodNonce::create('not_a_token');
     }
 
@@ -66,7 +66,7 @@ class PaymentMethodNonceTest extends \PHPUnit_Framework_TestCase
 
     function testFind_nonExistantNonce()
     {
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethodNonce::create('not_a_nonce');
     }
 }

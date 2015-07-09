@@ -82,7 +82,7 @@ class PayPalAccountTest extends \PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
 
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PayPalAccount::find($creditCardToken);
     }
 
@@ -103,7 +103,7 @@ class PayPalAccountTest extends \PHPUnit_Framework_TestCase
 
     function testFind_throwsIfCannotBeFound()
     {
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PayPalAccount::find('invalid-token');
     }
 
@@ -186,7 +186,7 @@ class PayPalAccountTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($updateResult->success);
         $this->assertEquals($newToken, $updateResult->paypalAccount->token);
 
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PayPalAccount::find($originalToken);
 
     }
@@ -283,7 +283,7 @@ class PayPalAccountTest extends \PHPUnit_Framework_TestCase
 
         PayPalAccount::delete($paymentMethodToken);
 
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PayPalAccount::find($paymentMethodToken);
     }
 

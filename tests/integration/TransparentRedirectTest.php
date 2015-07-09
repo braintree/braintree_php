@@ -24,7 +24,7 @@ class TransparentRedirectTest extends \PHPUnit_Framework_TestCase
             array(),
             $trData
         );
-        $this->setExpectedException('Exception_DownForMaintenance');
+        $this->setExpectedException('Braintree\Exception\DownForMaintenance');
         Customer::createFromTransparentRedirect($queryString);
     }
 
@@ -40,7 +40,7 @@ class TransparentRedirectTest extends \PHPUnit_Framework_TestCase
             array(),
             $trData
         );
-        $this->setExpectedException('Exception_DownForMaintenance');
+        $this->setExpectedException('Braintree\Exception\DownForMaintenance');
         Customer::createFromTransparentRedirect($queryString);
     }
 
@@ -58,7 +58,7 @@ class TransparentRedirectTest extends \PHPUnit_Framework_TestCase
                 array(),
                 $trData
             );
-            $this->setExpectedException('Exception_Authentication');
+            $this->setExpectedException('Braintree\Exception\Authentication');
             Customer::createFromTransparentRedirect($queryString);
         } catch (\Exception $e) {
         }

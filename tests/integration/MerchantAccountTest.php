@@ -159,7 +159,7 @@ class MerchantAccountTest extends \PHPUnit_Framework_TestCase
 
     function testFind_throwsIfNotFound()
     {
-        $this->setExpectedException('Exception_NotFound', 'merchant account with id does-not-exist not found');
+        $this->setExpectedException('Braintree\Exception\NotFound', 'merchant account with id does-not-exist not found');
         MerchantAccount::find('does-not-exist');
     }
 

@@ -495,7 +495,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
 
     function testCreateNoValidate_throwsIfInvalid()
     {
-        $this->setExpectedException('Exception_ValidationsFailed');
+        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
         $customer = Customer::createNoValidate(array('email' => 'invalid'));
     }
 
@@ -529,7 +529,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $result->success);
         Customer::find($result->customer->id);
         Customer::delete($result->customer->id);
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         Customer::find($result->customer->id);
     }
 
@@ -557,7 +557,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
 
     function testFind_throwsExceptionIfNotFound()
     {
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         Customer::find("does-not-exist");
     }
 
@@ -1113,7 +1113,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
             )
         ));
         $creditCard = $customer->creditCards[0];
-        $this->setExpectedException('Exception_ValidationsFailed');
+        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
         Customer::saleNoValidate($customer->id, array(
             'amount' => 'invalid'
         ));
@@ -1165,7 +1165,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
             )
         ));
         $creditCard = $customer->creditCards[0];
-        $this->setExpectedException('Exception_ValidationsFailed');
+        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
         Customer::creditNoValidate($customer->id, array(
             'amount' => 'invalid'
         ));

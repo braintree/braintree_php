@@ -1058,7 +1058,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
             )
         ));
         $this->assertEquals(Transaction::AUTHORIZED, $transaction->status);
-        $this->setExpectedException('Exception_ValidationsFailed');
+        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
         $submittedTransaction = Transaction::submitForSettlementNoValidate($transaction->id, '101.00');
     }
 
@@ -1194,7 +1194,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Transaction::AUTHORIZED, $transaction->status);
         $voided = Transaction::voidNoValidate($transaction->id);
         $this->assertEquals(Transaction::VOIDED, $voided->status);
-        $this->setExpectedException('Exception_ValidationsFailed');
+        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
         $voided = Transaction::voidNoValidate($transaction->id);
     }
 
@@ -2216,7 +2216,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
         $this->assertNotNull($transaction->paypalDetails->debugId);
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethod::find($paymentMethodToken);
     }
 
@@ -2245,7 +2245,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
         $this->assertNotNull($transaction->paypalDetails->debugId);
         $this->assertNotNull($transaction->paypalDetails->payeeEmail);
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethod::find($paymentMethodToken);
     }
 
@@ -2275,7 +2275,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
         $this->assertNotNull($transaction->paypalDetails->debugId);
         $this->assertNotNull($transaction->paypalDetails->payeeEmail);
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethod::find($paymentMethodToken);
     }
 
@@ -2307,7 +2307,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
         $this->assertNotNull($transaction->paypalDetails->debugId);
         $this->assertNotNull($transaction->paypalDetails->payeeEmail);
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethod::find($paymentMethodToken);
     }
 
@@ -2338,7 +2338,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('custom field stuff', $transaction->paypalDetails->customField);
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
         $this->assertNotNull($transaction->paypalDetails->debugId);
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethod::find($paymentMethodToken);
     }
 
@@ -2413,7 +2413,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
         $this->assertNotNull($transaction->paypalDetails->debugId);
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethod::find($paymentMethodToken);
     }
 
@@ -2441,7 +2441,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
         $this->assertNotNull($transaction->paypalDetails->imageUrl);
         $this->assertNotNull($transaction->paypalDetails->debugId);
-        $this->setExpectedException('Exception_NotFound');
+        $this->setExpectedException('Braintree\Exception\NotFound');
         PaymentMethod::find($paymentMethodToken);
     }
 
@@ -2521,7 +2521,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
             'amount'             => TransactionAmounts::$decline,
             'paymentMethodNonce' => $nonce
         ));
-        $this->setExpectedException('Exception_ValidationsFailed');
+        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
         Transaction::voidNoValidate($result->transaction->id);
     }
 
