@@ -110,6 +110,7 @@ require_once('Braintree/Test/TransactionAmounts.php');
 require_once('Braintree/Test/VenmoSdk.php');
 require_once('Braintree/Test/Nonces.php');
 require_once('Braintree/Transaction/AddressDetails.php');
+require_once('Braintree/Transaction/AndroidPayCardDetails.php');
 require_once('Braintree/Transaction/ApplePayCardDetails.php');
 require_once('Braintree/Transaction/CoinbaseDetails.php');
 require_once('Braintree/Transaction/CreditCardDetails.php');
