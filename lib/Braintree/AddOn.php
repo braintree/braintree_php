@@ -24,10 +24,4 @@ class Braintree_AddOn extends Braintree_Modification
     {
         return Braintree_Configuration::gateway()->addOn()->all();
     }
-
-    public function  __toString()
-    {
-        return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
-    }
 }

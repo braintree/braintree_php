@@ -12,4 +12,8 @@ class Braintree_Modification extends Braintree_Base
         $instance->_initialize($attributes);
         return $instance;
     }
+
+    public function __toString() {
+        return get_called_class() . '[' . Braintree_Util::attributesToString($this->_attributes) . ']';
+    }
 }
