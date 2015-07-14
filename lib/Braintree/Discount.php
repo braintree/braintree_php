@@ -15,4 +15,10 @@ class Braintree_Discount extends Braintree_Modification
     {
         return Braintree_Configuration::gateway()->discount()->all();
     }
+
+    public function  __toString()
+    {
+        return __CLASS__ . '[' .
+                Braintree_Util::attributesToString($this->_attributes) .']';
+    }
 }

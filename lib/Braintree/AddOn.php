@@ -3,7 +3,7 @@
 class Braintree_AddOn extends Braintree_Modification
 {
     /**
-     * 
+     *
      * @param array $attributes
      * @return Braintree_AddOn
      */
@@ -17,11 +17,17 @@ class Braintree_AddOn extends Braintree_Modification
 
     /**
      * static methods redirecting to gateway
-     * 
+     *
      * @return Braintree_AddOn[]
      */
     public static function all()
     {
         return Braintree_Configuration::gateway()->addOn()->all();
+    }
+
+    public function  __toString()
+    {
+        return __CLASS__ . '[' .
+                Braintree_Util::attributesToString($this->_attributes) .']';
     }
 }
