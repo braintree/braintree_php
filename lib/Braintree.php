@@ -43,6 +43,7 @@ require_once('Braintree/Digest.php');
 require_once('Braintree/Discount.php');
 require_once('Braintree/DiscountGateway.php');
 require_once('Braintree/IsNode.php');
+require_once('Braintree/EuropeBankAccount.php');
 require_once('Braintree/EqualityNode.php');
 require_once('Braintree/Exception.php');
 require_once('Braintree/Gateway.php');

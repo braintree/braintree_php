@@ -150,7 +150,6 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($customer->paymentMethods[0]);
     }
 
-
     function testCreate_withUnicode()
     {
         $result = Braintree_Customer::create(array(
