@@ -1,3 +1,6 @@
+## 3.2.0
+* Add additional search criteria
+
 ## 3.1.0
 * Add support for HHVM
 * Validate that configuration is valid before verifying webhooks

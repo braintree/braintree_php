@@ -51,6 +51,6 @@ class Braintree_MerchantTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('merchant')->onAttribute('paymentMethods');
-        $this->assertEquals(Braintree_Error_codes::MERCHANT_ACCOUNT_PAYMENT_METHODS_ARE_INVALID, $errors[0]->code);
+        $this->assertEquals(Braintree_Error_Codes::MERCHANT_ACCOUNT_PAYMENT_METHODS_ARE_INVALID, $errors[0]->code);
     }
 }
