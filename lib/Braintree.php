@@ -114,6 +114,7 @@ require_once('Braintree/Transaction/AddressDetails.php');
 require_once('Braintree/Transaction/AndroidPayCardDetails.php');
 require_once('Braintree/Transaction/ApplePayCardDetails.php');
 require_once('Braintree/Transaction/CoinbaseDetails.php');
+require_once('Braintree/Transaction/EuropeBankAccountDetails.php');
 require_once('Braintree/Transaction/CreditCardDetails.php');
 require_once('Braintree/Transaction/PayPalDetails.php');
 require_once('Braintree/Transaction/CustomerDetails.php');

@@ -145,6 +145,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
         $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
         $this->assertEquals('47.00', $transaction->amount);
+        $this->assertEquals('DEUTDEFF', $transaction->europeBankAccount->bic);
     }
 
     function testSettleAltPayTransaction()

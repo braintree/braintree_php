@@ -262,6 +262,14 @@ final class Braintree_Transaction extends Braintree_Base
             );
         }
 
+        if (isset($transactionAttribs['europeBankAccount'])) {
+            $this->_set('europeBankAccount',
+                new Braintree_Transaction_EuropeBankAccountDetails(
+                    $transactionAttribs['europeBankAccount']
+                )
+            );
+        }
+
         if (isset($transactionAttribs['paypal'])) {
             $this->_set('paypalDetails',
                 new Braintree_Transaction_PayPalDetails(
