@@ -1454,6 +1454,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($transaction->paypalDetails->sellerProtectionStatus);
         $this->assertNotNull($transaction->paypalDetails->captureId);
         $this->assertNotNull($transaction->paypalDetails->refundId);
+        $this->assertNotNull($transaction->paypalDetails->transactionFeeAmount);
+        $this->assertNotNull($transaction->paypalDetails->transactionFeeCurrencyIsoCode);
     }
 
     function testSale_storeInVault()
