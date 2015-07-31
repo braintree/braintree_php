@@ -101,6 +101,201 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('47.00', $transaction->amount);
     }
 
+    function testCreateTransactionUsingEuropeBankAccountNonce()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'altpay_merchant',
+            'publicKey' => 'altpay_merchant_public_key',
+            'privateKey' => 'altpay_merchant_private_key'
+        ));
+
+        $result = $gateway->customer()->create();
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $clientApi = new Braintree_HttpClientApi($gateway->config);
+        $nonce = $clientApi->nonceForNewEuropeanBankAccount(array(
+            "customerId" => $customer->id,
+            "sepa_mandate" => array(
+                "locale" => "de-DE",
+                "bic" => "DEUTDEFF",
+                "iban" => "DE89370400440532013000",
+                "accountHolderName" => "Bob Holder",
+                "billingAddress" => array(
+                    "streetAddress" => "123 Currywurst Way",
+                    "extendedAddress" => "Lager Suite",
+                    "firstName" => "Wilhelm",
+                    "lastName" => "Dix",
+                    "locality" => "Frankfurt",
+                    "postalCode" => "60001",
+                    "countryCodeAlpha2" => "DE",
+                    "region" => "Hesse"
+                )
+            )
+        ));
+
+        $result = $gateway->transaction()->sale(array(
+            'amount' => '47.00',
+            'merchantAccountId' => 'fake_sepa_ma',
+            'paymentMethodNonce' => $nonce
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $transaction->status);
+        $this->assertEquals(Braintree_Transaction::SALE, $transaction->type);
+        $this->assertEquals('47.00', $transaction->amount);
+        $this->assertEquals('DEUTDEFF', $transaction->europeBankAccount->bic);
+    }
+
+    function testSettleAltPayTransaction()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'altpay_merchant',
+            'publicKey' => 'altpay_merchant_public_key',
+            'privateKey' => 'altpay_merchant_private_key'
+        ));
+
+        $result = $gateway->customer()->create();
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $clientApi = new Braintree_HttpClientApi($gateway->config);
+        $nonce = $clientApi->nonceForNewEuropeanBankAccount(array(
+            "customerId" => $customer->id,
+            "sepa_mandate" => array(
+                "locale" => "de-DE",
+                "bic" => "DEUTDEFF",
+                "iban" => "DE89370400440532013000",
+                "accountHolderName" => "Bob Holder",
+                "billingAddress" => array(
+                    "streetAddress" => "123 Currywurst Way",
+                    "extendedAddress" => "Lager Suite",
+                    "firstName" => "Wilhelm",
+                    "lastName" => "Dix",
+                    "locality" => "Frankfurt",
+                    "postalCode" => "60001",
+                    "countryCodeAlpha2" => "DE",
+                    "region" => "Hesse"
+                )
+            )
+        ));
+
+        $result = $gateway->transaction()->sale(array(
+            'amount' => '47.00',
+            'merchantAccountId' => 'fake_sepa_ma',
+            'paymentMethodNonce' => $nonce,
+            'options' => array(
+                'submitForSettlement' => true
+            )
+        ));
+
+        $transaction = $result->transaction;
+
+        Braintree_TestHelper::settle($transaction->id, $gateway->config);
+        $transaction = $gateway->transaction()->find($transaction->id);
+        $this->assertSame(Braintree_Transaction::SETTLED, $transaction->status);
+    }
+
+    function testSettlementConfirmAltPayTransaction()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'altpay_merchant',
+            'publicKey' => 'altpay_merchant_public_key',
+            'privateKey' => 'altpay_merchant_private_key'
+        ));
+
+        $result = $gateway->customer()->create();
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $clientApi = new Braintree_HttpClientApi($gateway->config);
+        $nonce = $clientApi->nonceForNewEuropeanBankAccount(array(
+            "customerId" => $customer->id,
+            "sepa_mandate" => array(
+                "locale" => "de-DE",
+                "bic" => "DEUTDEFF",
+                "iban" => "DE89370400440532013000",
+                "accountHolderName" => "Bob Holder",
+                "billingAddress" => array(
+                    "streetAddress" => "123 Currywurst Way",
+                    "extendedAddress" => "Lager Suite",
+                    "firstName" => "Wilhelm",
+                    "lastName" => "Dix",
+                    "locality" => "Frankfurt",
+                    "postalCode" => "60001",
+                    "countryCodeAlpha2" => "DE",
+                    "region" => "Hesse"
+                )
+            )
+        ));
+
+        $result = $gateway->transaction()->sale(array(
+            'amount' => '47.00',
+            'merchantAccountId' => 'fake_sepa_ma',
+            'paymentMethodNonce' => $nonce,
+            'options' => array(
+                'submitForSettlement' => true
+            )
+        ));
+
+        $transaction = $result->transaction;
+
+        Braintree_TestHelper::settlementConfirm($transaction->id, $gateway->config);
+        $transaction = $gateway->transaction()->find($transaction->id);
+        $this->assertSame(Braintree_Transaction::SETTLEMENT_CONFIRMED, $transaction->status);
+    }
+
+    function testSettlementDeclineAltPayTransaction()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'altpay_merchant',
+            'publicKey' => 'altpay_merchant_public_key',
+            'privateKey' => 'altpay_merchant_private_key'
+        ));
+
+        $result = $gateway->customer()->create();
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $clientApi = new Braintree_HttpClientApi($gateway->config);
+        $nonce = $clientApi->nonceForNewEuropeanBankAccount(array(
+            "customerId" => $customer->id,
+            "sepa_mandate" => array(
+                "locale" => "de-DE",
+                "bic" => "DEUTDEFF",
+                "iban" => "DE89370400440532013000",
+                "accountHolderName" => "Bob Holder",
+                "billingAddress" => array(
+                    "streetAddress" => "123 Currywurst Way",
+                    "extendedAddress" => "Lager Suite",
+                    "firstName" => "Wilhelm",
+                    "lastName" => "Dix",
+                    "locality" => "Frankfurt",
+                    "postalCode" => "60001",
+                    "countryCodeAlpha2" => "DE",
+                    "region" => "Hesse"
+                )
+            )
+        ));
+
+        $result = $gateway->transaction()->sale(array(
+            'amount' => '47.00',
+            'merchantAccountId' => 'fake_sepa_ma',
+            'paymentMethodNonce' => $nonce,
+            'options' => array(
+                'submitForSettlement' => true
+            )
+        ));
+
+        $transaction = $result->transaction;
+
+        Braintree_TestHelper::settlementConfirm($transaction->id, $gateway->config);
+        Braintree_TestHelper::settlementDecline($transaction->id, $gateway->config);
+        $transaction = $gateway->transaction()->find($transaction->id);
+        $this->assertSame(Braintree_Transaction::SETTLEMENT_DECLINED, $transaction->status);
+    }
+
     function testCreateTransactionUsingFakeApplePayNonce()
     {
         $result = Braintree_Transaction::sale(array(
@@ -1259,6 +1454,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($transaction->paypalDetails->sellerProtectionStatus);
         $this->assertNotNull($transaction->paypalDetails->captureId);
         $this->assertNotNull($transaction->paypalDetails->refundId);
+        $this->assertNotNull($transaction->paypalDetails->transactionFeeAmount);
+        $this->assertNotNull($transaction->paypalDetails->transactionFeeCurrencyIsoCode);
     }
 
     function testSale_storeInVault()
@@ -2063,7 +2260,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             'options' => array('submitForSettlement' => true)
         ));
-        Braintree_TestHelper::settle($transaction->id);
+        Braintree_Test_Transaction::settle($transaction->id);
         return $transaction;
     }
 
@@ -2343,6 +2540,33 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         Braintree_PaymentMethod::find($paymentMethodToken);
     }
 
+    function testCreate_withPayPalDescription()
+    {
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount(array(
+            'paypal_account' => array(
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            )
+        ));
+
+        $result = Braintree_Transaction::sale(array(
+            'amount' => Braintree_Test_TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'paypalAccount' => array(),
+            'options' => array(
+                'paypal' => array(
+                    'description' => 'Product description'
+                )
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('Product description', $transaction->paypalDetails->description);
+    }
+
     function testCreate_withPayPalReturnsPaymentInstrumentType()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
@@ -2538,7 +2762,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($transactionResult->success);
-        Braintree_TestHelper::settle($transactionResult->transaction->id);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
 
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($result->success);
@@ -2559,7 +2783,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($transactionResult->success);
         $originalTransaction = $transactionResult->transaction;
-        Braintree_TestHelper::settle($transactionResult->transaction->id);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
 
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($result->success);
@@ -2582,7 +2806,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($transactionResult->success);
         $originalTransaction = $transactionResult->transaction;
-        Braintree_TestHelper::settle($transactionResult->transaction->id);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
 
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($result->success);
@@ -2603,7 +2827,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($transactionResult->success);
-        Braintree_TestHelper::settle($transactionResult->transaction->id);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
 
         $firstRefund = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($firstRefund->success);
@@ -2643,7 +2867,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($transactionResult->success);
-        Braintree_TestHelper::settle($transactionResult->transaction->id);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
 
         $result = Braintree_Transaction::refund(
             $transactionResult->transaction->id,
@@ -2669,7 +2893,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($transactionResult->success);
         $originalTransaction = $transactionResult->transaction;
-        Braintree_TestHelper::settle($originalTransaction->id);
+        Braintree_Test_Transaction::settle($originalTransaction->id);
 
         $firstRefund = Braintree_Transaction::refund(
             $transactionResult->transaction->id,
@@ -2708,7 +2932,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
 
         $transaction = $result->transaction;
-        Braintree_TestHelper::settlementDecline($transaction->id);
+        Braintree_Test_Transaction::settlementDecline($transaction->id);
 
         $inline_transaction = Braintree_Transaction::find($transaction->id);
         $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_DECLINED);
@@ -2729,7 +2953,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
 
         $transaction = $result->transaction;
-        Braintree_TestHelper::settlementPending($transaction->id);
+        Braintree_Test_Transaction::settlementPending($transaction->id);
 
         $inline_transaction = Braintree_Transaction::find($transaction->id);
         $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_PENDING);

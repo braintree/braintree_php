@@ -63,6 +63,8 @@ class Braintree_PaymentMethodGateway
                 return Braintree_ApplePayCard::factory($response['applePayCard']);
             } else if (isset($response['androidPayCard'])) {
                 return Braintree_AndroidPayCard::factory($response['androidPayCard']);
+            } else if (isset($response['europeBankAccount'])) {
+                return Braintree_EuropeBankAccount::factory($response['europeBankAccount']);
             } else if (is_array($response)) {
                 return Braintree_UnknownPaymentMethod::factory($response);
             }
@@ -211,6 +213,12 @@ class Braintree_PaymentMethodGateway
             // return a populated instance of Braintree_AndroidPayCard
             return new Braintree_Result_Successful(
                 Braintree_AndroidPayCard::factory($response['androidPayCard']),
+                "paymentMethod"
+            );
+        } else if (isset($response['europeBankAccount'])) {
+            // return a populated instance of Braintree_EuropeBankAccount
+            return new Braintree_Result_Successful(
+                Braintree_EuropeBankAccount::factory($response['europeBankAccount']),
                 "paymentMethod"
             );
         } else if (isset($response['apiErrorResponse'])) {
