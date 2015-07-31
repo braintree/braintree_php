@@ -3,7 +3,6 @@ require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
 {
-
     public function setUp()
     {
         Braintree_Configuration::environment('development');
@@ -17,6 +16,9 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
         Braintree_Configuration::environment('development');
     }
 
+    /**
+     * @expectedException Braintree_Exception_TestOperationPerformedInProduction
+     */
     function testThrowingExceptionWhenProduction()
     {
         Braintree_Configuration::environment('production');
