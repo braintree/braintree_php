@@ -5,7 +5,7 @@ class Braintree_HttpClientApi extends Braintree_Http
 
     protected function _doRequest($httpVerb, $path, $requestBody = null)
     {
-        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . "/merchants/" . $this->_config->getMerchantId() . $path, $requestBody);
+        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . "/merchants/" . $this->_config->merchantId() . $path, $requestBody);
     }
 
     public function get($path)
@@ -57,9 +57,7 @@ class Braintree_HttpClientApi extends Braintree_Http
             $clientTokenOptions["customerId"] = $options["customerId"];
             unset($options["customerId"]);
         }
-
         $clientToken = json_decode(Braintree_TestHelper::decodedClientToken($clientTokenOptions));
-
         $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
         $options["shared_customer_identifier"] = "fake_identifier_" . rand();
         $options["shared_customer_identifier_type"] = "testing";
@@ -67,31 +65,6 @@ class Braintree_HttpClientApi extends Braintree_Http
         if ($response["status"] == 201 || $response["status"] == 202) {
             $body = json_decode($response["body"]);
             return $body->creditCards[0]->nonce;
-        } else {
-            throw new Exception(var_dump($response));
-        }
-    }
-
-    public function nonceForNewEuropeanBankAccount($options) {
-        $clientTokenOptions = array(
-            'sepaMandateType' => 'business',
-            'sepaMandateAcceptanceLocation' => 'Rostock, Germany'
-        );
-
-        if (array_key_exists("customerId", $options)) {
-            $clientTokenOptions["customerId"] = $options["customerId"];
-            unset($options["customerId"]);
-        }
-
-        $gateway = new Braintree_Gateway($this->_config);
-
-        $clientToken = json_decode(base64_decode($gateway->clientToken()->generate($clientTokenOptions)));
-        $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
-
-        $response = $this->post('/client_api/v1/sepa_mandates/', json_encode($options));
-        if ($response["status"] == 201 || $response["status"] == 202) {
-            $body = json_decode($response["body"]);
-            return $body->europeBankAccounts[0]->nonce;
         } else {
             throw new Exception(var_dump($response));
         }

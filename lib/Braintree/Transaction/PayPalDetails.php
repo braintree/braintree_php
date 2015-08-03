@@ -20,9 +20,6 @@
  * @property-read string $authorizationId
  * @property-read string $token
  * @property-read string $imageUrl
- * @property-read string $transactionFeeAmount
- * @property-read string $transactionFeeCurrencyIsoCode
- * @property-read string $description
  * @uses Braintree_Instance inherits methods
  */
 class Braintree_Transaction_PayPalDetails extends Braintree_Instance

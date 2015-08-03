@@ -183,7 +183,6 @@ final class Braintree_Transaction extends Braintree_Base
     const UNRECOGNIZED             = 'unrecognized';
     const SETTLEMENT_DECLINED      = 'settlement_declined';
     const SETTLEMENT_PENDING       = 'settlement_pending';
-    const SETTLEMENT_CONFIRMED     = 'settlement_confirmed';
 
     // Transaction Escrow Status
     const ESCROW_HOLD_PENDING    = 'hold_pending';
@@ -258,14 +257,6 @@ final class Braintree_Transaction extends Braintree_Base
             $this->_set('coinbaseDetails',
                 new Braintree_Transaction_CoinbaseDetails(
                     $transactionAttribs['coinbaseAccount']
-                )
-            );
-        }
-
-        if (isset($transactionAttribs['europeBankAccount'])) {
-            $this->_set('europeBankAccount',
-                new Braintree_Transaction_EuropeBankAccountDetails(
-                    $transactionAttribs['europeBankAccount']
                 )
             );
         }

@@ -28,7 +28,6 @@ class Braintree_TransactionSearch
     static function customerWebsite()            { return new Braintree_TextNode('customer_website'); }
     static function disbursementDate()           { return new Braintree_RangeNode("disbursementDate"); }
     static function disputeDate()                { return new Braintree_RangeNode("disputeDate"); }
-    static function europeBankAccountIban()      { return new Braintree_TextNode("europeBankAccountIban"); }
     static function failedAt()                   { return new Braintree_RangeNode("failedAt"); }
     static function gatewayRejectedAt()          { return new Braintree_RangeNode("gatewayRejectedAt"); }
     static function id()                         { return new Braintree_TextNode('id'); }
