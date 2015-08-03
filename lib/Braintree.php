@@ -134,6 +134,8 @@ require_once('Braintree/PaymentMethodNonce.php');
 require_once('Braintree/PaymentMethodNonceGateway.php');
 require_once('Braintree/PaymentInstrumentType.php');
 require_once('Braintree/UnknownPaymentMethod.php');
+require_once('Braintree/Exception/TestOperationPerformedInProduction.php');
+require_once('Braintree/Test/Transaction.php');
 
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     throw new Braintree_Exception('PHP version >= 5.4.0 required');
