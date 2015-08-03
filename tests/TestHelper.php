@@ -111,17 +111,34 @@ class Braintree_TestHelper
         " " . $object;
     }
 
-    public static function settle($transactionId)
+    public static function settle($transactionId, $config = null)
     {
-        $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . '/transactions/' . $transactionId . '/settle';
+        if (empty($config)) {
+            $config = Braintree_Configuration::$global;
+        }
+        $http = new Braintree_Http($config);
+        $path = $config->merchantPath() . '/transactions/' . $transactionId . '/settle';
         $http->put($path);
     }
 
-    public static function settlementDecline($transactionId)
+    public static function settlementConfirm($transactionId, $config = null)
     {
-        $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . '/transactions/' . $transactionId . '/settlement_decline';
+        if (empty($config)) {
+            $config = Braintree_Configuration::$global;
+        }
+
+        $http = new Braintree_Http($config);
+        $path = $config->merchantPath() . '/transactions/' . $transactionId . '/settlement_confirm';
+        $http->put($path);
+    }
+
+    public static function settlementDecline($transactionId, $config = null)
+    {
+        if (empty($config)) {
+            $config = Braintree_Configuration::$global;
+        }
+        $http = new Braintree_Http($config);
+        $path = $config->merchantPath() . '/transactions/' . $transactionId . '/settlement_decline';
         $http->put($path);
     }
 
