@@ -7,9 +7,9 @@ final class Braintree_Test_Transaction
      * @param string $id transaction id
      * @return object Braintree_Transaction
      */
-    public static function settle($transactionId)
+    public static function settle($transactionId, $config)
     {
-        return self::_doTestRequest('/settle', $transactionId);
+        return self::_doTestRequest('/settle', $transactionId, $config);
     }
     /**
      * settlement confirm a transaction by id in sandbox
@@ -17,9 +17,9 @@ final class Braintree_Test_Transaction
      * @param string $id transaction id
      * @return object Braintree_Transaction
      */
-    public static function settlementConfirm($transactionId)
+    public static function settlementConfirm($transactionId, $config)
     {
-        return self::_doTestRequest('/settlement_confirm', $transactionId);
+        return self::_doTestRequest('/settlement_confirm', $transactionId, $config);
     }
     /**
      * settlement decline a transaction by id in sandbox
@@ -27,9 +27,9 @@ final class Braintree_Test_Transaction
      * @param string $id transaction id
      * @return object Braintree_Transaction
      */
-    public static function settlementDecline($transactionId)
+    public static function settlementDecline($transactionId, $config)
     {
-        return self::_doTestRequest('/settlement_decline', $transactionId);
+        return self::_doTestRequest('/settlement_decline', $transactionId, $config);
     }
     /**
      * settlement pending a transaction by id in sandbox
@@ -37,15 +37,15 @@ final class Braintree_Test_Transaction
      * @param string $id transaction id
      * @return object Braintree_Transaction
      */
-    public static function settlementPending($transactionId)
+    public static function settlementPending($transactionId, $config)
     {
-        return self::_doTestRequest('/settlement_pending', $transactionId);
+        return self::_doTestRequest('/settlement_pending', $transactionId, $config);
     }
-    private static function _doTestRequest($testPath, $transactionId)
+    private static function _doTestRequest($testPath, $transactionId, $config)
     {
         self::_checkEnvironment();
-        $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . '/transactions/' . $transactionId . $testPath;
+        $http = new Braintree_Http($config);
+        $path = $config->merchantPath() . '/transactions/' . $transactionId . $testPath;
         $response = $http->put($path);
         return Braintree_Transaction::factory($response['transaction']);
     }

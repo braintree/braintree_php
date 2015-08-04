@@ -2,6 +2,7 @@
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/SubscriptionTestHelper.php';
 require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
+require_once realpath(dirname(__FILE__)) . '../../../lib/Braintree/Test/Transaction.php';
 
 class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 {
@@ -191,8 +192,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $transaction = $result->transaction;
-
-        Braintree_TestHelper::settle($transaction->id, $gateway->config);
+        $transaction = Braintree_Test_Transaction::settle($transaction->id, $gateway->config);
         $transaction = $gateway->transaction()->find($transaction->id);
         $this->assertSame(Braintree_Transaction::SETTLED, $transaction->status);
     }
@@ -241,7 +241,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $transaction = $result->transaction;
 
-        Braintree_TestHelper::settlementConfirm($transaction->id, $gateway->config);
+        Braintree_Test_Transaction::settlementConfirm($transaction->id, $gateway->config);
         $transaction = $gateway->transaction()->find($transaction->id);
         $this->assertSame(Braintree_Transaction::SETTLEMENT_CONFIRMED, $transaction->status);
     }
@@ -290,8 +290,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $transaction = $result->transaction;
 
-        Braintree_TestHelper::settlementConfirm($transaction->id, $gateway->config);
-        Braintree_TestHelper::settlementDecline($transaction->id, $gateway->config);
+        Braintree_Test_Transaction::settlementConfirm($transaction->id, $gateway->config);
+        Braintree_Test_Transaction::settlementDecline($transaction->id, $gateway->config);
         $transaction = $gateway->transaction()->find($transaction->id);
         $this->assertSame(Braintree_Transaction::SETTLEMENT_DECLINED, $transaction->status);
     }
@@ -2260,7 +2260,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             'options' => array('submitForSettlement' => true)
         ));
-        Braintree_Test_Transaction::settle($transaction->id);
+        Braintree_Test_Transaction::settle($transaction->id, Braintree_Configuration::$global);
         return $transaction;
     }
 
@@ -2762,7 +2762,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($transactionResult->success);
-        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id, Braintree_Configuration::$global);
 
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($result->success);
@@ -2783,7 +2783,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($transactionResult->success);
         $originalTransaction = $transactionResult->transaction;
-        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id, Braintree_Configuration::$global);
 
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($result->success);
@@ -2806,7 +2806,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($transactionResult->success);
         $originalTransaction = $transactionResult->transaction;
-        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id, Braintree_Configuration::$global);
 
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($result->success);
@@ -2827,7 +2827,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($transactionResult->success);
-        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id, Braintree_Configuration::$global);
 
         $firstRefund = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($firstRefund->success);
@@ -2867,7 +2867,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($transactionResult->success);
-        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id, Braintree_Configuration::$global);
 
         $result = Braintree_Transaction::refund(
             $transactionResult->transaction->id,
@@ -2893,7 +2893,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($transactionResult->success);
         $originalTransaction = $transactionResult->transaction;
-        Braintree_Test_Transaction::settle($originalTransaction->id);
+        Braintree_Test_Transaction::settle($originalTransaction->id, Braintree_Configuration::$global);
 
         $firstRefund = Braintree_Transaction::refund(
             $transactionResult->transaction->id,
@@ -2932,7 +2932,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
 
         $transaction = $result->transaction;
-        Braintree_Test_Transaction::settlementDecline($transaction->id);
+        Braintree_Test_Transaction::settlementDecline($transaction->id, Braintree_Configuration::$global);
 
         $inline_transaction = Braintree_Transaction::find($transaction->id);
         $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_DECLINED);
@@ -2953,7 +2953,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
 
         $transaction = $result->transaction;
-        Braintree_Test_Transaction::settlementPending($transaction->id);
+        Braintree_Test_Transaction::settlementPending($transaction->id, Braintree_Configuration::$global);
 
         $inline_transaction = Braintree_Transaction::find($transaction->id);
         $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_PENDING);
