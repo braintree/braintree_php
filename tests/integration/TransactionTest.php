@@ -192,7 +192,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $transaction = $result->transaction;
-        $transaction = Braintree_Test_Transaction::settle($transaction->id, $gateway->config);
+        $transaction = $gateway->testing()->settle($transaction->id);
         $transaction = $gateway->transaction()->find($transaction->id);
         $this->assertSame(Braintree_Transaction::SETTLED, $transaction->status);
     }
@@ -240,8 +240,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $transaction = $result->transaction;
-
-        Braintree_Test_Transaction::settlementConfirm($transaction->id, $gateway->config);
+        $transaction = $gateway->testing()->settlementConfirm($transaction->id);
         $transaction = $gateway->transaction()->find($transaction->id);
         $this->assertSame(Braintree_Transaction::SETTLEMENT_CONFIRMED, $transaction->status);
     }
@@ -289,9 +288,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $transaction = $result->transaction;
-
-        Braintree_Test_Transaction::settlementConfirm($transaction->id, $gateway->config);
-        Braintree_Test_Transaction::settlementDecline($transaction->id, $gateway->config);
+        $transaction = $gateway->testing()->settlementConfirm($transaction->id);
+        $transaction = $gateway->testing()->settlementDecline($transaction->id);
         $transaction = $gateway->transaction()->find($transaction->id);
         $this->assertSame(Braintree_Transaction::SETTLEMENT_DECLINED, $transaction->status);
     }
@@ -2260,7 +2258,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             ),
             'options' => array('submitForSettlement' => true)
         ));
-        Braintree_Test_Transaction::settle($transaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settle($transaction->id);
         return $transaction;
     }
 
@@ -2762,7 +2760,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($transactionResult->success);
-        Braintree_Test_Transaction::settle($transactionResult->transaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
 
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($result->success);
@@ -2783,7 +2781,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($transactionResult->success);
         $originalTransaction = $transactionResult->transaction;
-        Braintree_Test_Transaction::settle($transactionResult->transaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
 
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($result->success);
@@ -2806,7 +2804,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($transactionResult->success);
         $originalTransaction = $transactionResult->transaction;
-        Braintree_Test_Transaction::settle($transactionResult->transaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
 
         $result = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($result->success);
@@ -2827,7 +2825,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($transactionResult->success);
-        Braintree_Test_Transaction::settle($transactionResult->transaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
 
         $firstRefund = Braintree_Transaction::refund($transactionResult->transaction->id);
         $this->assertTrue($firstRefund->success);
@@ -2867,7 +2865,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($transactionResult->success);
-        Braintree_Test_Transaction::settle($transactionResult->transaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settle($transactionResult->transaction->id);
 
         $result = Braintree_Transaction::refund(
             $transactionResult->transaction->id,
@@ -2893,7 +2891,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($transactionResult->success);
         $originalTransaction = $transactionResult->transaction;
-        Braintree_Test_Transaction::settle($originalTransaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settle($originalTransaction->id);
 
         $firstRefund = Braintree_Transaction::refund(
             $transactionResult->transaction->id,
@@ -2932,7 +2930,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
 
         $transaction = $result->transaction;
-        Braintree_Test_Transaction::settlementDecline($transaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settlementDecline($transaction->id);
 
         $inline_transaction = Braintree_Transaction::find($transaction->id);
         $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_DECLINED);
@@ -2953,7 +2951,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->success);
 
         $transaction = $result->transaction;
-        Braintree_Test_Transaction::settlementPending($transaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settlementPending($transaction->id);
 
         $inline_transaction = Braintree_Transaction::find($transaction->id);
         $this->assertEquals($inline_transaction->status, Braintree_Transaction::SETTLEMENT_PENDING);

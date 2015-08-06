@@ -5,53 +5,47 @@ final class Braintree_Test_Transaction
      * settle a transaction by id in sandbox
      *
      * @param string $id transaction id
+     * @param Braintree_Configuration $config gateway config
      * @return object Braintree_Transaction
      */
-    public static function settle($transactionId, $config)
+    public static function settle($transactionId)
     {
-        return self::_doTestRequest('/settle', $transactionId, $config);
+        return Braintree_Configuration::gateway()->testing()->settle($transactionId);
     }
+
     /**
      * settlement confirm a transaction by id in sandbox
      *
      * @param string $id transaction id
+     * @param Braintree_Configuration $config gateway config
      * @return object Braintree_Transaction
      */
-    public static function settlementConfirm($transactionId, $config)
+    public static function settlementConfirm($transactionId)
     {
-        return self::_doTestRequest('/settlement_confirm', $transactionId, $config);
+        return Braintree_Configuration::gateway()->testing()->settlementConfirm($transactionId);
     }
+
     /**
      * settlement decline a transaction by id in sandbox
      *
      * @param string $id transaction id
+     * @param Braintree_Configuration $config gateway config
      * @return object Braintree_Transaction
      */
-    public static function settlementDecline($transactionId, $config)
+    public static function settlementDecline($transactionId)
     {
-        return self::_doTestRequest('/settlement_decline', $transactionId, $config);
+        return Braintree_Configuration::gateway()->testing()->settlementDecline($transactionId);
     }
+
     /**
      * settlement pending a transaction by id in sandbox
      *
      * @param string $id transaction id
+     * @param Braintree_Configuration $config gateway config
      * @return object Braintree_Transaction
      */
-    public static function settlementPending($transactionId, $config)
+    public static function settlementPending($transactionId)
     {
-        return self::_doTestRequest('/settlement_pending', $transactionId, $config);
-    }
-    private static function _doTestRequest($testPath, $transactionId, $config)
-    {
-        self::_checkEnvironment();
-        $http = new Braintree_Http($config);
-        $path = $config->merchantPath() . '/transactions/' . $transactionId . $testPath;
-        $response = $http->put($path);
-        return Braintree_Transaction::factory($response['transaction']);
-    }
-    private static function _checkEnvironment()
-    {
-        if (Braintree_Configuration::$global->getEnvironment() == 'production')
-            throw new Braintree_Exception_TestOperationPerformedInProduction();
+        return Braintree_Configuration::gateway()->testing()->settlementPending($transactionId);
     }
 }

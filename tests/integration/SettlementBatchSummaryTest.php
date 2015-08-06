@@ -49,7 +49,7 @@ class Braintree_SettlementBatchSummaryTest extends PHPUnit_Framework_TestCase
             ),
             'options' => array('submitForSettlement' => true)
         ));
-        Braintree_Test_Transaction::settle($transaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settle($transaction->id);
 
         $today = new Datetime;
         $result = Braintree_SettlementBatchSummary::generate(Braintree_TestHelper::nowInEastern());
@@ -76,7 +76,7 @@ class Braintree_SettlementBatchSummaryTest extends PHPUnit_Framework_TestCase
             'options' => array('submitForSettlement' => true)
         ));
 
-        Braintree_Test_Transaction::settle($transaction->id, Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settle($transaction->id);
 
         $today = new Datetime;
         $result = Braintree_SettlementBatchSummary::generate(Braintree_TestHelper::nowInEastern(), 'store_me');

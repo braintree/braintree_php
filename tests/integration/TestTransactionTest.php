@@ -25,7 +25,7 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
 
         $this->setExpectedException('Braintree_Exception_TestOperationPerformedInProduction');
 
-        Braintree_Test_Transaction::settle('transactionId', Braintree_Configuration::$global);
+        Braintree_Test_Transaction::settle('transactionId');
     }
 
     function testSettle()
@@ -39,7 +39,7 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
             'options' => ['submitForSettlement' => true]
         ]);
 
-        $transaction = Braintree_Test_Transaction::settle($transaction->id, Braintree_Configuration::$global);
+        $transaction = Braintree_Test_Transaction::settle($transaction->id);
 
         $this->assertEquals('settled', $transaction->status);
     }
@@ -55,7 +55,7 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
             'options' => ['submitForSettlement' => true]
         ]);
 
-        $transaction = Braintree_Test_Transaction::settlementConfirm($transaction->id, Braintree_Configuration::$global);
+        $transaction = Braintree_Test_Transaction::settlementConfirm($transaction->id);
 
         $this->assertEquals('settlement_confirmed', $transaction->status);
     }
@@ -71,7 +71,7 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
             'options' => ['submitForSettlement' => true]
         ]);
 
-        $transaction = Braintree_Test_Transaction::settlementDecline($transaction->id, Braintree_Configuration::$global);
+        $transaction = Braintree_Test_Transaction::settlementDecline($transaction->id);
 
         $this->assertEquals('settlement_declined', $transaction->status);
     }
@@ -87,7 +87,7 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
             'options' => ['submitForSettlement' => true]
         ]);
 
-        $transaction = Braintree_Test_Transaction::settlementPending($transaction->id, Braintree_Configuration::$global);
+        $transaction = Braintree_Test_Transaction::settlementPending($transaction->id);
 
         $this->assertEquals('settlement_pending', $transaction->status);
     }
