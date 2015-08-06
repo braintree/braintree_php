@@ -192,7 +192,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $transaction = $result->transaction;
-        $transaction = $gateway->testing()->settle($transaction->id);
+        $gateway->testing()->settle($transaction->id);
         $transaction = $gateway->transaction()->find($transaction->id);
         $this->assertSame(Braintree_Transaction::SETTLED, $transaction->status);
     }
@@ -240,7 +240,7 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $transaction = $result->transaction;
-        $transaction = $gateway->testing()->settlementConfirm($transaction->id);
+        $gateway->testing()->settlementConfirm($transaction->id);
         $transaction = $gateway->transaction()->find($transaction->id);
         $this->assertSame(Braintree_Transaction::SETTLEMENT_CONFIRMED, $transaction->status);
     }
@@ -288,8 +288,8 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         ));
 
         $transaction = $result->transaction;
-        $transaction = $gateway->testing()->settlementConfirm($transaction->id);
-        $transaction = $gateway->testing()->settlementDecline($transaction->id);
+        $gateway->testing()->settlementConfirm($transaction->id);
+        $gateway->testing()->settlementDecline($transaction->id);
         $transaction = $gateway->transaction()->find($transaction->id);
         $this->assertSame(Braintree_Transaction::SETTLEMENT_DECLINED, $transaction->status);
     }
