@@ -42,7 +42,8 @@ final class Braintree_TestingGateway
 
     private function _checkEnvironment()
     {
-        if (Braintree_Configuration::$global->getEnvironment() == 'production')
+        if (Braintree_Configuration::$global->getEnvironment() == 'production') {
             throw new Braintree_Exception_TestOperationPerformedInProduction();
+        }
     }
 }
