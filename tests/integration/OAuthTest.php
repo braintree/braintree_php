@@ -275,4 +275,17 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array('credit_card', 'paypal'), $query['payment_methods']);
     }
+
+    public function testComputeSignature()
+    {
+        $gateway = new Braintree_Gateway(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+        $urlToSign = 'https://api.braintreegateway.com/oauth/connect?client_id=client_id$development$integration_client_id&merchant_id=integration_merchant_id';
+
+        $signature = $gateway->oauth()->computeSignature($urlToSign);
+
+        $this->assertEquals("1bf0d8ef8374bb6f6908d640b32ab9807646b682ca603709595c11e185db57a7", $signature);
+    }
 }

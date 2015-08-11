@@ -91,12 +91,12 @@ class Braintree_OAuthGateway
         $queryString = preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($query));
         $url = $this->_config->baseUrl() . '/oauth/connect?' . $queryString;
 
-        return $this->signUrl($url);
+        return $url . '&signature=' . $this->computeSignature($url) . '&algorithm=SHA256';
     }
 
-    private function signUrl($url)
+    public function computeSignature($url)
     {
         $key = hash('sha256', $this->_config->getClientSecret(), true);
-        return $url . '&signature=' . hash_hmac('sha256', $url, $key) . '&algorithm=SHA256';
+        return hash_hmac('sha256', $url, $key);
     }
 }
