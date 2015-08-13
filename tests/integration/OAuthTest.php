@@ -288,20 +288,4 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals("a36bcf10dd982e2e47e0d6a2cb930aea47ade73f954b7d59c58dae6167894d41", $signature);
     }
-
-    public function testConnectUrlWithSignature()
-    {
-        $gateway = new Braintree_Gateway(array(
-            'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret'
-        ));
-
-        $url = $gateway->oauth()->connectUrl(array(
-            'business' => array(
-                'name' => 'We Like Spaces'
-            )
-        ));
-
-        $this->assertEquals('http://localhost:3000/oauth/connect?business%5Bname%5D=We+Like+Spaces&client_id=client_id%24development%24integration_client_id&signature=a36bcf10dd982e2e47e0d6a2cb930aea47ade73f954b7d59c58dae6167894d41&algorithm=SHA256', $url);
-    }
 }
