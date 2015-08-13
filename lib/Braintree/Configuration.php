@@ -19,6 +19,7 @@ class Braintree_Configuration
     private $_clientId = null;
     private $_clientSecret = null;
     private $_accessToken = null;
+    private $_proxy = null;
 
     /**
      * Braintree API version to use
@@ -103,6 +104,14 @@ class Braintree_Configuration
             return self::$global->getPrivateKey();
         }
         self::$global->setPrivateKey($value);
+    }
+
+    public static function proxy($proxy)
+    {
+        if (empty($proxy)) {
+            return self::$global->getProxy();
+        }
+        self::$global->setProxy($proxy);
     }
 
     public static function assertGlobalHasAccessTokenOrKeys()
@@ -210,6 +219,19 @@ class Braintree_Configuration
     public function getAccessToken()
     {
         return $this->_accessToken;
+    }
+
+    /**
+     * Do not use this method directly.
+     */
+    public function setProxy($value)
+    {
+        $this->_proxy = $value;
+    }
+
+    public function getProxy()
+    {
+        return $this->_proxy;
     }
 
     public function isAccessToken()
