@@ -43,6 +43,21 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($customer->merchantId);
     }
 
+    function testCreateWithIdOfZero()
+    {
+        $result = Braintree_Customer::create(array(
+            'id' => '0'
+        ));
+
+        $this->assertEquals(true, $result->success);
+        $this->assertEquals($result->customer->id, '0');
+        $customer = Braintree_Customer::find('0');
+
+        $this->assertEquals('0', $customer->id);
+
+        Braintree_Customer::delete('0');
+    }
+
     function testGatewayCreate()
     {
         $gateway = new Braintree_Gateway(array(
