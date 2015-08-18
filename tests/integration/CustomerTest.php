@@ -15,7 +15,8 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $collection = Braintree_Customer::all();
         $this->assertTrue($collection->maximumCount() > 1);
         $customer = $collection->firstItem();
-        $this->assertTrue(intval($customer->id) > 0);
+
+        $this->assertNotNull($customer->id);
         $this->assertTrue($customer instanceof Braintree_Customer);
     }
 
@@ -40,6 +41,21 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('419.555.1235', $customer->fax);
         $this->assertEquals('http://example.com', $customer->website);
         $this->assertNotNull($customer->merchantId);
+    }
+
+    function testCreateWithIdOfZero()
+    {
+        $result = Braintree_Customer::create(array(
+            'id' => '0'
+        ));
+
+        $this->assertEquals(true, $result->success);
+        $this->assertEquals($result->customer->id, '0');
+        $customer = Braintree_Customer::find('0');
+
+        $this->assertEquals('0', $customer->id);
+
+        Braintree_Customer::delete('0');
     }
 
     function testGatewayCreate()
