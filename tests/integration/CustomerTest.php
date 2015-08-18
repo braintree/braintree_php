@@ -16,7 +16,7 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($collection->maximumCount() > 1);
         $customer = $collection->firstItem();
 
-        $this->assertNotNull($customer->id);
+        $this->assertTrue(strlen($customer->id) > 0);
         $this->assertTrue($customer instanceof Braintree_Customer);
     }
 
