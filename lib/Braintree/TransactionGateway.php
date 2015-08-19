@@ -158,7 +158,8 @@ final class Braintree_TransactionGateway
                     array('paypal' =>
                         array(
                             'payeeEmail',
-                            'customField'
+                            'customField',
+                            'description'
                         )
                     )
                 ),

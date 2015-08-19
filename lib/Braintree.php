@@ -43,6 +43,7 @@ require_once('Braintree/Digest.php');
 require_once('Braintree/Discount.php');
 require_once('Braintree/DiscountGateway.php');
 require_once('Braintree/IsNode.php');
+require_once('Braintree/EuropeBankAccount.php');
 require_once('Braintree/EqualityNode.php');
 require_once('Braintree/Exception.php');
 require_once('Braintree/Gateway.php');
@@ -113,6 +114,7 @@ require_once('Braintree/Transaction/AddressDetails.php');
 require_once('Braintree/Transaction/AndroidPayCardDetails.php');
 require_once('Braintree/Transaction/ApplePayCardDetails.php');
 require_once('Braintree/Transaction/CoinbaseDetails.php');
+require_once('Braintree/Transaction/EuropeBankAccountDetails.php');
 require_once('Braintree/Transaction/CreditCardDetails.php');
 require_once('Braintree/Transaction/PayPalDetails.php');
 require_once('Braintree/Transaction/CustomerDetails.php');
@@ -134,6 +136,8 @@ require_once('Braintree/PaymentMethodNonce.php');
 require_once('Braintree/PaymentMethodNonceGateway.php');
 require_once('Braintree/PaymentInstrumentType.php');
 require_once('Braintree/UnknownPaymentMethod.php');
+require_once('Braintree/Exception/TestOperationPerformedInProduction.php');
+require_once('Braintree/Test/Transaction.php');
 
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     throw new Braintree_Exception('PHP version >= 5.4.0 required');

@@ -557,15 +557,15 @@ class Braintree_CustomerGateway
      * @throws InvalidArgumentException
      */
     private function _validateId($id = null) {
-        if (empty($id)) {
-           throw new InvalidArgumentException(
-                   'expected customer id to be set'
-                   );
+        if (is_null($id)) {
+            throw new InvalidArgumentException(
+                'expected customer id to be set'
+            );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
             throw new InvalidArgumentException(
-                    $id . ' is an invalid customer id.'
-                    );
+                $id . ' is an invalid customer id.'
+            );
         }
     }
 

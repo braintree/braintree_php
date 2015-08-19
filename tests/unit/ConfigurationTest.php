@@ -177,23 +177,17 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         $bu = $this->config->baseUrl();
         $this->assertEquals('http://localhost:' . $this->config->portNumber(), $bu);
 
-        $fakeConfig = $this->getMockBuilder('Braintree_Configuration')->setMethods(array('portNumber'))->getMock();
-        $fakeConfig->expects($this->once())->method('portNumber')->will($this->returnValue(80));
-        $fakeConfig->setEnvironment('development');
-        $bu = $fakeConfig->baseUrl();
-        $this->assertEquals('http://localhost', $bu);
-
         $this->config->setEnvironment('qa');
         $bu = $this->config->baseUrl();
-        $this->assertEquals('https://gateway.qa.braintreepayments.com', $bu);
+        $this->assertEquals('https://gateway.qa.braintreepayments.com:443', $bu);
 
         $this->config->setEnvironment('sandbox');
         $bu = $this->config->baseUrl();
-        $this->assertEquals('https://api.sandbox.braintreegateway.com', $bu);
+        $this->assertEquals('https://api.sandbox.braintreegateway.com:443', $bu);
 
         $this->config->setEnvironment('production');
         $bu = $this->config->baseUrl();
-        $this->assertEquals('https://api.braintreegateway.com', $bu);
+        $this->assertEquals('https://api.braintreegateway.com:443', $bu);
     }
 
      /**
