@@ -20,6 +20,7 @@
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
  * @property-read string $cardholderName
+ * @property-read string $sourceDescription
  * @uses Braintree_Instance inherits methods
  */
 class Braintree_Transaction_ApplePayCardDetails extends Braintree_Instance

@@ -28,6 +28,10 @@ class Braintree_Test_Nonces
    public static $applePayMasterCard = "fake-apple-pay-visa-nonce";
    public static $applePayAmEx = "fake-apple-pay-amex-nonce";
    public static $androidPay = "fake-android-pay-nonce";
+   public static $androidPayDiscover = "fake-android-pay-discover-nonce";
+   public static $androidPayVisa = "fake-android-pay-visa-nonce";
+   public static $androidPayMasterCard = "fake-android-pay-mastercard-nonce";
+   public static $androidPayAmEx = "fake-android-pay-amex-nonce";
    public static $abstractTransactable = "fake-abstract-transactable-nonce";
    public static $europe = "fake-europe-bank-account-nonce";
    public static $coinbase = "fake-coinbase-nonce";

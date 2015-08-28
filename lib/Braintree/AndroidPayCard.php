@@ -22,6 +22,7 @@
  * @property-read string $last4
  * @property-read string $sourceCardLast4
  * @property-read string $sourceCardType
+ * @property-read string $sourceDescription
  * @property-read string $token
  * @property-read string $updatedAt
  * @property-read string $virtualCardLast4
