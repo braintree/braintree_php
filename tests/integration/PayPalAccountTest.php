@@ -85,10 +85,22 @@ class Braintree_PayPalAccountTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertTrue($result->success);
 
-        $foundPayPalAccount = Braintree_PayPalAccount::find($result->paymentMethod->token);
-
         $this->assertNotNull($result->paymentMethod->createdAt);
         $this->assertNotNull($result->paymentMethod->updatedAt);
+    }
+
+    function test_PayPalAccountExposesBillingAgreementId()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree_Test_Nonces::$paypalBillingAgreement
+        ));
+        $this->assertTrue($result->success);
+
+        $foundPayPalAccount = Braintree_PayPalAccount::find($result->paymentMethod->token);
+
+        $this->assertNotNull($foundPayPalAccount->billingAgreementId);
     }
 
     function testFind_throwsIfCannotBeFound()
