@@ -106,7 +106,7 @@ class Braintree_Configuration
         self::$global->setPrivateKey($value);
     }
 
-    public static function proxy($proxy)
+    public static function proxy($proxy = null)
     {
         if (empty($proxy)) {
             return self::$global->getProxy();

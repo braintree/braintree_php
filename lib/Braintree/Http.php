@@ -131,9 +131,9 @@ class Braintree_Http
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
         }
 
-        if (!empty($this->_config->getProxy())) {
-            curl_setopt($curl, CURLOPT_PROXY, $this->_config->getProxy());
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+      $proxy = $this->_config->getProxy();
+        if (!empty($proxy)) {
+            curl_setopt($curl, CURLOPT_PROXY, $proxy);
         }
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
