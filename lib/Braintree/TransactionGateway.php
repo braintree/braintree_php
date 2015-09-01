@@ -161,6 +161,14 @@ final class Braintree_TransactionGateway
                             'customField',
                             'description'
                         )
+                    ),
+                    array('amexRewards' =>
+                        array(
+                            'requestId',
+                            'points',
+                            'currencyAmount',
+                            'currencyIsoCode'
+                        )
                     )
                 ),
             ),

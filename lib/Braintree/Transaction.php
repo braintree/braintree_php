@@ -164,6 +164,7 @@
  * @property-read string $updatedAt transaction updated timestamp
  * @property-read object $disbursementDetails populated when transaction is disbursed
  * @property-read object $disputes populated when transaction is disputed
+ * @property-read string $amexRewardsResponse AmEx Rewards response
  *
  */
 

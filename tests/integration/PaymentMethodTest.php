@@ -71,18 +71,19 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($applePayCard->token);
         $this->assertSame(Braintree_ApplePayCard::VISA, $applePayCard->cardType);
         $this->assertContains("Visa ", $applePayCard->paymentInstrumentName);
+        $this->assertContains("Visa ", $applePayCard->sourceDescription);
         $this->assertTrue($applePayCard->default);
         $this->assertContains('apple_pay', $applePayCard->imageUrl);
         $this->assertTrue(intval($applePayCard->expirationMonth) > 0);
         $this->assertTrue(intval($applePayCard->expirationYear) > 0);
     }
 
-    function testCreate_fromFakeAndroidPayNonce()
+    function testCreate_fromFakeAndroidPayProxyCardNonce()
     {
         $customer = Braintree_Customer::createNoValidate();
         $result = Braintree_PaymentMethod::create(array(
             'customerId' => $customer->id,
-            'paymentMethodNonce' => Braintree_Test_Nonces::$androidPay
+            'paymentMethodNonce' => Braintree_Test_Nonces::$androidPayDiscover
         ));
 
         $this->assertTrue($result->success);
@@ -94,6 +95,31 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame("1117", $androidPayCard->last4);
         $this->assertSame(Braintree_CreditCard::VISA, $androidPayCard->sourceCardType);
         $this->assertSame("1111", $androidPayCard->sourceCardLast4);
+        $this->assertSame("Visa 1111", $androidPayCard->sourceDescription);
+        $this->assertTrue($androidPayCard->default);
+        $this->assertContains('android_pay', $androidPayCard->imageUrl);
+        $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
+        $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
+    }
+
+    function testCreate_fromFakeAndroidPayNetworkTokenNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree_Test_Nonces::$androidPayMasterCard
+        ));
+
+        $this->assertTrue($result->success);
+        $androidPayCard = $result->paymentMethod;
+        $this->assertNotNull($androidPayCard->token);
+        $this->assertSame(Braintree_CreditCard::MASTER_CARD, $androidPayCard->virtualCardType);
+        $this->assertSame(Braintree_CreditCard::MASTER_CARD, $androidPayCard->cardType);
+        $this->assertSame("4444", $androidPayCard->virtualCardLast4);
+        $this->assertSame("4444", $androidPayCard->last4);
+        $this->assertSame(Braintree_CreditCard::MASTER_CARD, $androidPayCard->sourceCardType);
+        $this->assertSame("4444", $androidPayCard->sourceCardLast4);
+        $this->assertSame("MasterCard 4444", $androidPayCard->sourceDescription);
         $this->assertTrue($androidPayCard->default);
         $this->assertContains('android_pay', $androidPayCard->imageUrl);
         $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);

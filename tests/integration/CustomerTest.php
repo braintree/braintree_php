@@ -135,9 +135,25 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($customer->paymentMethods[0]);
     }
 
-    function testCreateCustomerWithAndroidPayCard()
+    function testCreateCustomerWithAndroidPayProxyCard()
     {
-        $nonce = Braintree_Test_Nonces::$androidPay;
+        $nonce = Braintree_Test_Nonces::$androidPayDiscover;
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $this->assertNotNull($customer->androidPayCards[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
+        $androidPayCard = $customer->androidPayCards[0];
+        $this->assertTrue($androidPayCard instanceof Braintree_AndroidPayCard);
+        $this->assertNotNull($androidPayCard->token);
+        $this->assertNotNull($androidPayCard->expirationYear);
+    }
+
+    function testCreateCustomerWithAndroidPayNetworkToken()
+    {
+        $nonce = Braintree_Test_Nonces::$androidPayMasterCard;
         $result = Braintree_Customer::create(array(
             'paymentMethodNonce' => $nonce
         ));
