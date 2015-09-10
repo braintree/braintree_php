@@ -313,6 +313,21 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($applePayDetails->cardholderName);
     }
 
+    function testCreateTransactionUsingRawApplePayParams()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '1.02',
+            'apple_pay_card' => array(
+                'number' => "370295001292109",
+                'cardholder_name' => "JANE SMITH",
+                'cryptogram' => "AAAAAAAA/COBt84dnIEcwAA3gAAGhgEDoLABAAhAgAABAAAALnNCLw==",
+                'expiration_month' => "10",
+                'expiration_year' => "17"
+            )
+        ));
+        $this->assertTrue($result->success);
+    }
+
     function testCreateTransactionUsingFakeAndroidPayProxyCardNonce()
     {
         $result = Braintree_Transaction::sale(array(
