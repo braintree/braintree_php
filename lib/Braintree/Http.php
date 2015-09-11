@@ -131,6 +131,11 @@ class Braintree_Http
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
         }
 
+      $proxy = $this->_config->getProxy();
+        if (!empty($proxy)) {
+            curl_setopt($curl, CURLOPT_PROXY, $proxy);
+        }
+
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
