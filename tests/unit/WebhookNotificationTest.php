@@ -195,6 +195,27 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    function testBuildsASampleNotificationForASubscriptionChargedSuccessfullyWebhook()
+    {
+        $sampleNotification = Braintree_WebhookTesting::sampleNotification(
+            Braintree_WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree_WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree_WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->subscription->id);
+        $this->assertEquals(1, count($webhookNotification->subscription->_attributes['transactions']));
+
+        $transaction = $webhookNotification->subscription->_attributes['transactions'][0];
+        $this->assertEquals('submitted_for_settlement', $transaction->status);
+        $this->assertEquals('49.99', $transaction->amount);
+    }
+
     function testBuildsASampleNotificationForAMerchantAccountApprovedWebhook()
     {
         $sampleNotification = Braintree_WebhookTesting::sampleNotification(
