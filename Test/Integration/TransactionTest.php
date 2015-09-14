@@ -3100,13 +3100,13 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::INDUSTRY_DATA_TRAVEL_CRUISE_TRAVEL_PACKAGE_IS_INVALID, $errors[0]->code);
     }
 
-    public function testBurnAmexRewardsPointsForTransactionCreate()
+    public function testSale_withAmexRewardsSucceeds()
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
-                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
                 'expirationDate' => '05/12'
             ),
             'options' => array(
@@ -3122,18 +3122,69 @@ class TransactionTest extends Setup
 
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals('success', $transaction->amexRewardsResponse);
         $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
         $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
     }
 
-    public function testBurnAmexRewardsPointsForTransactionSubmitForSettlement()
+    public function testSale_withAmexRewardsSucceedsEvenIfCardIsIneligible()
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
-                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['IneligibleCard'],
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'submitForSettlement' => true,
+                'amexRewards' => array(
+                    'requestId' => 'ABC123',
+                    'points' => '100',
+                    'currencyAmount' => '1.00',
+                    'currencyIsoCode' => 'USD'
+                )
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+    }
+
+    function testSale_withAmexRewardsSucceedsEvenIfCardBalanceIsInsufficient()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '47.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['InsufficientPoints'],
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'submitForSettlement' => true,
+                'amexRewards' => array(
+                    'requestId' => 'ABC123',
+                    'points' => '100',
+                    'currencyAmount' => '1.00',
+                    'currencyIsoCode' => 'USD'
+                )
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+    }
+
+    function testSubmitForSettlement_withAmexRewardsSucceeds()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '47.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
                 'expirationDate' => '05/12'
             ),
             'options' => array(
@@ -3153,23 +3204,21 @@ class TransactionTest extends Setup
 
         $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '47.00');
         $submitTransaction = $submitResult->transaction;
-        $this->assertEquals('success', $submitTransaction->amexRewardsResponse);
         $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitTransaction->status);
     }
 
-    public function testBurnAmexRewardsPointsErrorForTransactionCreate()
+    public function testSubmitForSettlement_withAmexRewardsSucceedsEvenIfCardIsIneligible()
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
-                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['IneligibleCard'],
                 'expirationDate' => '05/12'
             ),
             'options' => array(
-                'submitForSettlement' => true,
                 'amexRewards' => array(
-                    'requestId' => 'CARD_INELIGIBLE',
+                    'requestId' => 'ABC123',
                     'points' => '100',
                     'currencyAmount' => '1.00',
                     'currencyIsoCode' => 'USD'
@@ -3179,8 +3228,41 @@ class TransactionTest extends Setup
 
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals('RDM2002 Card is not eligible for redemption', $transaction->amexRewardsResponse);
-        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
         $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+
+        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '47.00');
+        $submitTransaction = $submitResult->transaction;
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitTransaction->status);
     }
+
+    function testSubmitForSettlement_withAmexRewardsSucceedsEvenIfCardBalanceIsInsufficient()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '47.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['InsufficientPoints'],
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'amexRewards' => array(
+                    'requestId' => 'ABC123',
+                    'points' => '100',
+                    'currencyAmount' => '1.00',
+                    'currencyIsoCode' => 'USD'
+                )
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+
+        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '47.00');
+        $submitTransaction = $submitResult->transaction;
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitTransaction->status);
+    }
+
 }

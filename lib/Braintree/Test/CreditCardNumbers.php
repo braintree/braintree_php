@@ -55,6 +55,12 @@ class CreditCardNumbers
         'Visa'       => '4000111111111115',
         );
 
+    public static $amexPayWithPoints = array(
+        'Success'            => "371260714673002",
+        'IneligibleCard'     => "378267515471109",
+        'InsufficientPoints' => "371544868764018",
+        );
+
     public static function getAll()
     {
         return array_merge(
