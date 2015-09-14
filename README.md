@@ -28,9 +28,9 @@ Braintree_Configuration::privateKey('your_private_key');
 
 $result = Braintree_Transaction::sale(array(
     'amount' => '1000.00',
-    'creditCard' => array(
-        'number' => '5105105105105100',
-        'expirationDate' => '05/12'
+    'paymentMethodNonce' => 'nonceFromTheClient',
+    'options' => array(
+      'submitForSettlement' => true
     )
 ));
 
