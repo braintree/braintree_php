@@ -30,7 +30,7 @@ $result = Braintree_Transaction::sale(array(
     'amount' => '1000.00',
     'paymentMethodNonce' => 'nonceFromTheClient',
     'options' => array(
-      'submitForSettlement' => true
+        'submitForSettlement' => true
     )
 ));
 
