@@ -21,6 +21,7 @@ class Braintree_Configuration
     private $_accessToken = null;
     private $_proxyHost = null;
     private $_proxyPort = null;
+    private $_proxyType = null;
 
     /**
      * Braintree API version to use
@@ -121,6 +122,14 @@ class Braintree_Configuration
             return self::$global->getProxyPort();
         }
         self::$global->setProxyPort($value);
+    }
+
+    public static function proxyType($value=null)
+    {
+        if (empty($value)) {
+            return self::$global->getProxyType();
+        }
+        self::$global->setProxyType($value);
     }
 
     public static function assertGlobalHasAccessTokenOrKeys()
@@ -249,6 +258,19 @@ class Braintree_Configuration
     public function getProxyPort()
     {
         return $this->_proxyPort;
+    }
+
+    /**
+     * Do not use this method directly. Pass in the proxyType to the constructor.
+     */
+    public function setProxyType($value)
+    {
+        $this->_proxyType = $value;
+    }
+
+    public function getProxyType()
+    {
+        return $this->_proxyType;
     }
 
     public function getAccessToken()

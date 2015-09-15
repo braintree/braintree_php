@@ -134,7 +134,11 @@ class Braintree_Http
         $proxyHost = $this->_config->getProxyHost();
         $proxyPort = $this->_config->getProxyPort();
         if(!empty($proxyHost) && !empty($proxyPort)) {
+            $proxyType = $this->_config->getProxyType();
             curl_setopt($curl, CURLOPT_PROXY, $proxyHost . ':' . $proxyPort);
+            if(!empty($proxyType)) {
+                curl_setopt($curl, CURLOPT_PROXYTYPE, $proxyType);
+            }
         }
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
