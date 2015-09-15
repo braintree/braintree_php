@@ -11,13 +11,14 @@
  * @category   Resources
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
- * @property-read string $token
- * @property-read string $default
- * @property-read string $masked-iban
- * @property-read string $bic
- * @property-read string $mandate-reference-number
  * @property-read string $account-holder-name
+ * @property-read string $bic
+ * @property-read string $customerId
+ * @property-read string $default
  * @property-read string $image-url
+ * @property-read string $mandate-reference-number
+ * @property-read string $masked-iban
+ * @property-read string $token
  */
 class Braintree_EuropeBankAccount extends Braintree_Base
 {

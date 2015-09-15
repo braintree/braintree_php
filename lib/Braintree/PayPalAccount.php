@@ -17,6 +17,7 @@
  * @category   Resources
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
+ * @property-read string $customerId
  * @property-read string $email
  * @property-read string $token
  * @property-read string $imageUrl
