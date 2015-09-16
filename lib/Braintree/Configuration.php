@@ -154,7 +154,7 @@ class Braintree_Configuration
     /**
      * Specifies whether or not a proxy is properly configured
      *
-     * @return true if a proxy is configured properly, false if not
+     * @return bool true if a proxy is configured properly, false if not
      */
     public static function isUsingProxy()
     {
