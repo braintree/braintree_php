@@ -26,6 +26,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame('1111', $result->paymentMethod->last4);
         $this->assertNotNull($result->paymentMethod->token);
         $this->assertNotNull($result->paymentMethod->imageUrl);
+        $this->assertSame($customer->id, $result->paymentMethod->customerId);
     }
 
     function testGatewayCreate_fromVaultedCreditCardNonce()
@@ -56,6 +57,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame('1111', $result->paymentMethod->last4);
         $this->assertNotNull($result->paymentMethod->token);
         $this->assertNotNull($result->paymentMethod->imageUrl);
+        $this->assertSame($customer->id, $result->paymentMethod->customerId);
     }
 
     function testCreate_fromFakeApplePayNonce()
@@ -76,6 +78,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertContains('apple_pay', $applePayCard->imageUrl);
         $this->assertTrue(intval($applePayCard->expirationMonth) > 0);
         $this->assertTrue(intval($applePayCard->expirationYear) > 0);
+        $this->assertSame($customer->id, $applePayCard->customerId);
     }
 
     function testCreate_fromFakeAndroidPayProxyCardNonce()
@@ -100,6 +103,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertContains('android_pay', $androidPayCard->imageUrl);
         $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
+        $this->assertSame($customer->id, $androidPayCard->customerId);
     }
 
     function testCreate_fromFakeAndroidPayNetworkTokenNonce()
@@ -124,6 +128,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertContains('android_pay', $androidPayCard->imageUrl);
         $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
+        $this->assertSame($customer->id, $androidPayCard->customerId);
     }
 
     function testCreate_fromUnvalidatedCreditCardNonce()
@@ -148,6 +153,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('411111', $result->paymentMethod->bin);
         $this->assertSame('1111', $result->paymentMethod->last4);
+        $this->assertSame($customer->id, $result->paymentMethod->customerId);
         $this->assertNotNull($result->paymentMethod->token);
     }
 
@@ -170,6 +176,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('jane.doe@example.com', $result->paymentMethod->email);
         $this->assertSame($paymentMethodToken, $result->paymentMethod->token);
+        $this->assertSame($customer->id, $result->paymentMethod->customerId);
     }
 
     function testCreate_fromAbstractPaymentMethodNonce()
@@ -183,6 +190,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($result->success);
         $this->assertNotNull($result->paymentMethod->token);
+        $this->assertSame($customer->id, $result->paymentMethod->customerId);
     }
 
     function testCreate_doesNotWorkForUnvalidatedOnetimePaypalAccountNonce()
@@ -687,6 +695,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame("1117", $foundAndroidPayCard->virtualCardLast4);
         $this->assertSame(Braintree_CreditCard::VISA, $foundAndroidPayCard->sourceCardType);
         $this->assertSame("1111", $foundAndroidPayCard->sourceCardLast4);
+        $this->assertSame($customer->id, $foundAndroidPayCard->customerId);
         $this->assertTrue($foundAndroidPayCard->default);
         $this->assertContains('android_pay', $foundAndroidPayCard->imageUrl);
         $this->assertTrue(intval($foundAndroidPayCard->expirationMonth) > 0);
@@ -709,6 +718,7 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($foundCoinbaseAccount->userId);
         $this->assertNotNull($foundCoinbaseAccount->userName);
         $this->assertNotNull($foundCoinbaseAccount->userEmail);
+        $this->assertNotNull($foundCoinbaseAccount->customerId);
     }
 
 

@@ -13,6 +13,7 @@
  *
  * @property-read string $cardType
  * @property-read string $createdAt
+ * @property-read string $customerId
  * @property-read string $expirationDate
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
