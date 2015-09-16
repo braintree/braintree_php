@@ -208,6 +208,14 @@ class Braintree_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('MY_PROXY', $this->config->proxyType());
     }
 
+    function testProxyIsConfigured()
+    {
+        $this->config->proxyHost('example.com');
+        $this->config->proxyPort('1234');
+
+        $this->assertTrue($this->config->isUsingProxy());
+    }
+
      /**
      * @expectedException Braintree_Exception_Configuration
      * @expectedExceptionMessage Braintree_Configuration::environment needs to be set.
