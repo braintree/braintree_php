@@ -124,7 +124,7 @@ class Braintree_Http
         if ($this->_config->sslOn()) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-            curl_setopt($curl, CURLOPT_CAINFO, $this->_config->caFile());
+            curl_setopt($curl, CURLOPT_CAINFO, $this->getCaFile());
         }
 
         if(!empty($requestBody)) {
@@ -151,5 +151,23 @@ class Braintree_Http
             }
         }
         return array('status' => $httpStatus, 'body' => $response);
+    }
+
+    private function getCaFile()
+    {
+        $caFile = $this->_config->caFile();
+
+        if (substr($caFile, 0, 7) !== 'phar://')
+            return $caFile;
+
+        $extractedCaFile = sys_get_temp_dir() . '/api_braintreegateway_com.ca.crt';
+
+        if (!file_exists($extractedCaFile) || filesize($extractedCaFile) != filesize($caFile)) {
+            if (!copy($caFile, $extractedCaFile)) {
+                throw new Braintree_Exception_SSLCaFileNotFound();
+            }
+        }
+
+        return $extractedCaFile;
     }
 }
