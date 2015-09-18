@@ -155,19 +155,25 @@ class Braintree_Http
 
     private function getCaFile()
     {
-        $caFile = $this->_config->caFile();
+        static $memo;
 
-        if (substr($caFile, 0, 7) !== 'phar://')
-            return $caFile;
+        if($memo === null) {
+            $caFile = $this->_config->caFile();
 
-        $extractedCaFile = sys_get_temp_dir() . '/api_braintreegateway_com.ca.crt';
-
-        if (!file_exists($extractedCaFile) || filesize($extractedCaFile) != filesize($caFile)) {
-            if (!copy($caFile, $extractedCaFile)) {
-                throw new Braintree_Exception_SSLCaFileNotFound();
+            if (substr($caFile, 0, 7) !== 'phar://') {
+                return $caFile;
             }
+
+            $extractedCaFile = sys_get_temp_dir() . '/api_braintreegateway_com.ca.crt';
+
+            if (!file_exists($extractedCaFile) || sha1_file($extractedCaFile) != sha1_file($caFile)) {
+                if (!copy($caFile, $extractedCaFile)) {
+                    throw new Braintree_Exception_SSLCaFileNotFound();
+                }
+            }
+            $memo = $extractedCaFile;
         }
 
-        return $extractedCaFile;
+        return $memo;
     }
 }
