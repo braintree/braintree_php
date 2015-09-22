@@ -157,7 +157,7 @@ class Braintree_Http
     {
         static $memo;
 
-        if($memo === null) {
+        if ($memo === null) {
             $caFile = $this->_config->caFile();
 
             if (substr($caFile, 0, 7) !== 'phar://') {
