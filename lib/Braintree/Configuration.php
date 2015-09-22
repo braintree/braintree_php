@@ -344,11 +344,7 @@ class Braintree_Configuration
     {
         $sslPath = $sslPath ? $sslPath : DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                    'ssl' . DIRECTORY_SEPARATOR;
-
-        $caPath = realpath(
-            dirname(__FILE__) .
-            $sslPath .  'api_braintreegateway_com.ca.crt'
-        );
+        $caPath = __DIR__ . $sslPath . 'api_braintreegateway_com.ca.crt';
 
         if (!file_exists($caPath))
         {
