@@ -317,6 +317,22 @@ class TransactionTest extends Setup
         $this->assertNotNull($applePayDetails->cardholderName);
     }
 
+    public function testCreateTransactionUsingRawApplePayParams()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '1.02',
+            'apple_pay_card' => array(
+                'number' => '370295001292109',
+                'cardholder_name' => 'JANE SMITH',
+                'cryptogram' => 'AAAAAAAA/COBt84dnIEcwAA3gAAGhgEDoLABAAhAgAABAAAALnNCLw==',
+                'expiration_month' => '10',
+                'expiration_year' => '17'
+            )
+        ));
+
+        $this->assertTrue($result->success);
+    }
+
     public function testCreateTransactionUsingFakeAndroidPayProxyCardNonce()
     {
         $result = Braintree\Transaction::sale(array(

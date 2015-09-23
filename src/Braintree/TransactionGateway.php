@@ -197,6 +197,12 @@ final class TransactionGateway
                 'paypalAccount' => array('payeeEmail')
             ),
             array(
+                'apple_pay_card' => array(
+                    'number', 'cardholder_name', 'cryptogram',
+                    'expiration_month', 'expiration_year'
+                )
+            ),
+            array(
                 'industry' => array(
                     'industryType',
                     array(

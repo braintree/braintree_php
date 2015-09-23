@@ -1,3 +1,6 @@
+## 3.5.0
+* Add support for raw ApplePay params on Transaction create
+
 ## 3.4.0
 * Add sourceDescription method to Android Pay and Apple Pay payment methods
 * Add new Android Pay test nonces
