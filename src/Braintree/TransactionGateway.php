@@ -176,6 +176,14 @@ final class TransactionGateway
                             'customField',
                             'description'
                         )
+                    ),
+                    array(
+                        'amexRewards' => array(
+                            'requestId',
+                            'points',
+                            'currencyAmount',
+                            'currencyIsoCode'
+                        )
                     )
                 )
             ),

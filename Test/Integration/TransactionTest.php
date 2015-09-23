@@ -317,11 +317,11 @@ class TransactionTest extends Setup
         $this->assertNotNull($applePayDetails->cardholderName);
     }
 
-    public function testCreateTransactionUsingFakeAndroidPayNonce()
+    public function testCreateTransactionUsingFakeAndroidPayProxyCardNonce()
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'paymentMethodNonce' => Braintree\Test\Nonces::$androidPay
+            'paymentMethodNonce' => Braintree\Test\Nonces::$androidPayDiscover
         ));
 
         $this->assertTrue($result->success);
@@ -335,6 +335,31 @@ class TransactionTest extends Setup
         $this->assertSame('1117', $androidPayCardDetails->virtualCardLast4);
         $this->assertSame(Braintree\CreditCard::VISA, $androidPayCardDetails->sourceCardType);
         $this->assertSame('1111', $androidPayCardDetails->sourceCardLast4);
+        $this->assertSame('Visa 1111', $androidPayCardDetails->sourceDescription);
+        $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
+        $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
+        $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
+    }
+
+    public function testCreateTransactionUsingFakeAndroidPayNetworkTokenNonce()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '47.00',
+            'paymentMethodNonce' => Braintree\Test\Nonces::$androidPayMasterCard
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('47.00', $transaction->amount);
+        $androidPayCardDetails = $transaction->androidPayCardDetails;
+        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $androidPayCardDetails->cardType);
+        $this->assertSame('4444', $androidPayCardDetails->last4);
+        $this->assertNull($androidPayCardDetails->token);
+        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $androidPayCardDetails->virtualCardType);
+        $this->assertSame('4444', $androidPayCardDetails->virtualCardLast4);
+        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $androidPayCardDetails->sourceCardType);
+        $this->assertSame('4444', $androidPayCardDetails->sourceCardLast4);
+        $this->assertSame('MasterCard 4444', $androidPayCardDetails->sourceDescription);
         $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
         $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
@@ -3057,5 +3082,89 @@ class TransactionTest extends Setup
 
         $errors = $result->errors->forKey('transaction')->forKey('industry')->onAttribute('travelPackage');
         $this->assertEquals(Braintree\Error\Codes::INDUSTRY_DATA_TRAVEL_CRUISE_TRAVEL_PACKAGE_IS_INVALID, $errors[0]->code);
+    }
+
+    public function testBurnAmexRewardsPointsForTransactionCreate()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '47.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'submitForSettlement' => true,
+                'amexRewards' => array(
+                    'requestId' => 'ABC123',
+                    'points' => '100',
+                    'currencyAmount' => '1.00',
+                    'currencyIsoCode' => 'USD'
+                )
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('success', $transaction->amexRewardsResponse);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+    }
+
+    public function testBurnAmexRewardsPointsForTransactionSubmitForSettlement()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '47.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'amexRewards' => array(
+                    'requestId' => 'ABC123',
+                    'points' => '100',
+                    'currencyAmount' => '1.00',
+                    'currencyIsoCode' => 'USD'
+                )
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+
+        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '47.00');
+        $submitTransaction = $submitResult->transaction;
+        $this->assertEquals('success', $submitTransaction->amexRewardsResponse);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitTransaction->status);
+    }
+
+    public function testBurnAmexRewardsPointsErrorForTransactionCreate()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '47.00',
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
+                'expirationDate' => '05/12'
+            ),
+            'options' => array(
+                'submitForSettlement' => true,
+                'amexRewards' => array(
+                    'requestId' => 'CARD_INELIGIBLE',
+                    'points' => '100',
+                    'currencyAmount' => '1.00',
+                    'currencyIsoCode' => 'USD'
+                )
+            )
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('RDM2002 Card is not eligible for redemption', $transaction->amexRewardsResponse);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
     }
 }

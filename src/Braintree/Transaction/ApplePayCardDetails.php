@@ -12,7 +12,6 @@ use Braintree\Instance;
 /**
  * creates an instance of ApplePayCardDetails.
  *
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $cardType
@@ -20,6 +19,7 @@ use Braintree\Instance;
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
  * @property-read string $cardholderName
+ * @property-read string $sourceDescription
  *
  * @uses Instance inherits methods
  */

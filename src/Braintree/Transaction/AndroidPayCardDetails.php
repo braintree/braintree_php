@@ -27,6 +27,7 @@ use Braintree\Instance;
  * @property-read string $imageUrl
  * @property-read string $sourceCardLast4
  * @property-read string $sourceCardType
+ * @property-read string $sourceDescription
  * @property-read string $token
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
