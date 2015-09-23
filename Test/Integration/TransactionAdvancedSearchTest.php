@@ -88,38 +88,39 @@ class TransactionAdvancedSearchTest extends Setup
         ));
 
         $search_criteria = array(
-          'billingCompany' => 'Braintree',
-          'billingCountryName' => 'United States of America',
-          'billingExtendedAddress' => 'Suite 123',
-          'billingFirstName' => $firstName,
-          'billingLastName' => 'Smith',
-          'billingLocality' => 'Chicago',
-          'billingPostalCode' => '12345',
-          'billingRegion' => 'IL',
-          'billingStreetAddress' => '123 Main St',
-          'creditCardCardholderName' => 'Tom Smith',
-          'creditCardExpirationDate' => '05/2012',
-          'creditCardNumber' => Braintree\Test\CreditCardNumbers::$visa,
-          'customerCompany' => 'Braintree',
-          'customerEmail' => 'smith@example.com',
-          'customerFax' => '5551231234',
-          'customerFirstName' => 'Tom',
-          'customerId' => $customerId,
-          'customerLastName' => 'Smith',
-          'customerPhone' => '5551231234',
-          'customerWebsite' => 'http://example.com',
-          'orderId' => 'myorder',
-          'paymentMethodToken' => $token,
-          'processorAuthorizationCode' => $transaction->processorAuthorizationCode,
-          'shippingCompany' => 'Braintree P.S.',
-          'shippingCountryName' => 'Mexico',
-          'shippingExtendedAddress' => 'Apt 456',
-          'shippingFirstName' => 'Thomas',
-          'shippingLastName' => 'Smithy',
-          'shippingLocality' => 'Braintree',
-          'shippingPostalCode' => '54321',
-          'shippingRegion' => 'MA',
-          'shippingStreetAddress' => '456 Road',
+            'billingCompany' => 'Braintree',
+            'billingCountryName' => 'United States of America',
+            'billingExtendedAddress' => 'Suite 123',
+            'billingFirstName' => $firstName,
+            'billingLastName' => 'Smith',
+            'billingLocality' => 'Chicago',
+            'billingPostalCode' => '12345',
+            'billingRegion' => 'IL',
+            'billingStreetAddress' => '123 Main St',
+            'creditCardCardholderName' => 'Tom Smith',
+            'creditCardExpirationDate' => '05/2012',
+            'creditCardNumber' => Braintree\Test\CreditCardNumbers::$visa,
+            'customerCompany' => 'Braintree',
+            'customerEmail' => 'smith@example.com',
+            'customerFax' => '5551231234',
+            'customerFirstName' => 'Tom',
+            'customerId' => $customerId,
+            'customerLastName' => 'Smith',
+            'customerPhone' => '5551231234',
+            'customerWebsite' => 'http://example.com',
+            'orderId' => 'myorder',
+            'paymentMethodToken' => $token,
+            'processorAuthorizationCode' => $transaction->processorAuthorizationCode,
+            'shippingCompany' => 'Braintree P.S.',
+            'shippingCountryName' => 'Mexico',
+            'shippingExtendedAddress' => 'Apt 456',
+            'shippingFirstName' => 'Thomas',
+            'shippingLastName' => 'Smithy',
+            'shippingLocality' => 'Braintree',
+            'shippingPostalCode' => '54321',
+            'shippingRegion' => 'MA',
+            'shippingStreetAddress' => '456 Road',
+            'user' => 'integration_user_public_id'
         );
 
         $query = array(Braintree\TransactionSearch::id()->is($transaction->id));
@@ -314,6 +315,57 @@ class TransactionAdvancedSearchTest extends Setup
             Braintree\TransactionSearch::createdUsing()->in(array(Braintree\Transaction::TOKEN)),
         ));
         $this->assertEquals(0, $collection->maximumCount());
+    }
+
+    public function test_multipleValueNode_paymentInstrumentType_is_creditCard()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate(array(
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'creditCard' => array(
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2012'
+            )
+        ));
+
+        $collection = Braintree\Transaction::search(array(
+            Braintree\TransactionSearch::id()->is($transaction->id),
+            Braintree\TransactionSearch::paymentInstrumentType()->is('CreditCardDetail')
+        ));
+
+        $this->assertEquals($transaction->paymentInstrumentType, Braintree\PaymentInstrumentType::CREDIT_CARD);
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    public function test_multipleValueNode_paymentInstrumentType_is_paypal()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate(array(
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$paypalOneTimePayment
+        ));
+
+        $collection = Braintree\Transaction::search(array(
+            Braintree\TransactionSearch::id()->is($transaction->id),
+            Braintree\TransactionSearch::paymentInstrumentType()->is('PayPalDetail')
+        ));
+
+        $this->assertEquals($transaction->paymentInstrumentType, Braintree\PaymentInstrumentType::PAYPAL_ACCOUNT);
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    public function test_multipleValueNode_paymentInstrumentType_is_applepay()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate(array(
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$applePayVisa
+        ));
+
+        $collection = Braintree\Transaction::search(array(
+            Braintree\TransactionSearch::id()->is($transaction->id),
+            Braintree\TransactionSearch::paymentInstrumentType()->is('ApplePayDetail')
+        ));
+
+        $this->assertEquals($transaction->paymentInstrumentType, Braintree\PaymentInstrumentType::APPLE_PAY_CARD);
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
     }
 
     public function test_multipleValueNode_createdUsing_allowedValues()

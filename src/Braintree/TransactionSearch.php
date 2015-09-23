@@ -3,6 +3,18 @@ namespace Braintree;
 
 class TransactionSearch
 {
+    public static function amount()
+    {
+        return new RangeNode('amount');
+    }
+    public static function authorizationExpiredAt()
+    {
+        return new RangeNode('authorizationExpiredAt');
+    }
+    public static function authorizedAt()
+    {
+        return new RangeNode('authorizedAt');
+    }
     public static function billingCompany()
     {
         return new TextNode('billing_company');
@@ -39,9 +51,25 @@ class TransactionSearch
     {
         return new TextNode('billing_street_address');
     }
+    public static function createdAt()
+    {
+        return new RangeNode('createdAt');
+    }
     public static function creditCardCardholderName()
     {
         return new TextNode('credit_card_cardholderName');
+    }
+    public static function creditCardExpirationDate()
+    {
+        return new EqualityNode('credit_card_expiration_date');
+    }
+    public static function creditCardNumber()
+    {
+        return new PartialMatchNode('credit_card_number');
+    }
+    public static function creditCardUniqueIdentifier()
+    {
+        return new TextNode('credit_card_unique_identifier');
     }
     public static function customerCompany()
     {
@@ -75,6 +103,22 @@ class TransactionSearch
     {
         return new TextNode('customer_website');
     }
+    public static function disbursementDate()
+    {
+        return new RangeNode('disbursementDate');
+    }
+    public static function disputeDate()
+    {
+        return new RangeNode('disputeDate');
+    }
+    public static function failedAt()
+    {
+        return new RangeNode('failedAt');
+    }
+    public static function gatewayRejectedAt()
+    {
+        return new RangeNode('gatewayRejectedAt');
+    }
     public static function id()
     {
         return new TextNode('id');
@@ -83,17 +127,49 @@ class TransactionSearch
     {
         return new MultipleValueNode('ids');
     }
+    public static function merchantAccountId()
+    {
+        return new MultipleValueNode('merchant_account_id');
+    }
     public static function orderId()
     {
         return new TextNode('order_id');
+    }
+    public static function paymentInstrumentType()
+    {
+        return new MultipleValueNode('paymentInstrumentType');
     }
     public static function paymentMethodToken()
     {
         return new TextNode('payment_method_token');
     }
+    public static function paypalAuthorizationId()
+    {
+        return new TextNode('paypal_authorization_id');
+    }
+    public static function paypalPayerEmail()
+    {
+        return new TextNode('paypal_payer_email');
+    }
+    public static function paypalPaymentId()
+    {
+        return new TextNode('paypal_payment_id');
+    }
     public static function processorAuthorizationCode()
     {
         return new TextNode('processor_authorization_code');
+    }
+    public static function processorDeclinedAt()
+    {
+        return new RangeNode('processorDeclinedAt');
+    }
+    public static function refund()
+    {
+        return new KeyValueNode('refund');
+    }
+    public static function settledAt()
+    {
+        return new RangeNode('settledAt');
     }
     public static function settlementBatchId()
     {
@@ -135,93 +211,24 @@ class TransactionSearch
     {
         return new TextNode('shipping_street_address');
     }
-    public static function paypalPaymentId()
-    {
-        return new TextNode('paypal_payment_id');
-    }
-    public static function paypalAuthorizationId()
-    {
-        return new TextNode('paypal_authorization_id');
-    }
-    public static function paypalPayerEmail()
-    {
-        return new TextNode('paypal_payer_email');
-    }
-
-    public static function creditCardExpirationDate()
-    {
-        return new EqualityNode('credit_card_expiration_date');
-    }
-
-    public static function creditCardNumber()
-    {
-        return new PartialMatchNode('credit_card_number');
-    }
-
-    public static function refund()
-    {
-        return new KeyValueNode('refund');
-    }
-
-    public static function amount()
-    {
-        return new RangeNode('amount');
-    }
-    public static function authorizedAt()
-    {
-        return new RangeNode('authorizedAt');
-    }
-    public static function authorizationExpiredAt()
-    {
-        return new RangeNode('authorizationExpiredAt');
-    }
-    public static function createdAt()
-    {
-        return new RangeNode('createdAt');
-    }
-    public static function failedAt()
-    {
-        return new RangeNode('failedAt');
-    }
-    public static function gatewayRejectedAt()
-    {
-        return new RangeNode('gatewayRejectedAt');
-    }
-    public static function processorDeclinedAt()
-    {
-        return new RangeNode('processorDeclinedAt');
-    }
-    public static function settledAt()
-    {
-        return new RangeNode('settledAt');
-    }
     public static function submittedForSettlementAt()
     {
         return new RangeNode('submittedForSettlementAt');
     }
+    public static function user()
+    {
+        return new MultipleValueNode('user');
+    }
     public static function voidedAt()
     {
         return new RangeNode('voidedAt');
-    }
-    public static function disbursementDate()
-    {
-        return new RangeNode('disbursementDate');
-    }
-    public static function disputeDate()
-    {
-        return new RangeNode('disputeDate');
-    }
-
-    public static function merchantAccountId()
-    {
-        return new MultipleValueNode('merchant_account_id');
     }
 
     public static function createdUsing()
     {
         return new MultipleValueNode('created_using', array(
             Transaction::FULL_INFORMATION,
-            Transaction::TOKEN,
+            Transaction::TOKEN
         ));
     }
 
@@ -240,7 +247,7 @@ class TransactionSearch
             CreditCard::SOLO,
             CreditCard::SWITCH_TYPE,
             CreditCard::VISA,
-            CreditCard::UNKNOWN,
+            CreditCard::UNKNOWN
         ));
     }
 
@@ -248,7 +255,7 @@ class TransactionSearch
     {
         return new MultipleValueNode('credit_card_customer_location', array(
             CreditCard::INTERNATIONAL,
-            CreditCard::US,
+            CreditCard::US
         ));
     }
 
@@ -275,7 +282,7 @@ class TransactionSearch
             Transaction::SUBMITTED_FOR_SETTLEMENT,
             Transaction::VOIDED,
             Transaction::SETTLEMENT_DECLINED,
-            Transaction::SETTLEMENT_PENDING,
+            Transaction::SETTLEMENT_PENDING
         ));
     }
 
@@ -283,7 +290,7 @@ class TransactionSearch
     {
         return new MultipleValueNode('type', array(
             Transaction::SALE,
-            Transaction::CREDIT,
+            Transaction::CREDIT
         ));
     }
 }

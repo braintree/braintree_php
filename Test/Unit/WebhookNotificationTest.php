@@ -32,7 +32,7 @@ class WebhookNotificationTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception_Configuration
+     * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage Braintree\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\Gateway).
      */
     public function testVerifyRaisesErrorWhenEnvironmentNotSet()

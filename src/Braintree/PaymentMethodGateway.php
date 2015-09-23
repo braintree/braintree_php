@@ -223,7 +223,7 @@ class PaymentMethodGateway
                 'paymentMethod'
             );
         } elseif (isset($response['androidPayCard'])) {
-            // return a populated instance of Braintree_AndroidPayCard
+            // return a populated instance of Braintree\AndroidPayCard
             return new Result\Successful(
                 AndroidPayCard::factory($response['androidPayCard']),
                 "paymentMethod"

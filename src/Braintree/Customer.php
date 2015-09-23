@@ -76,7 +76,7 @@ class Customer extends Braintree
     /**
      * @deprecated since version 2.3.0
      * @param string $queryString
-     * @return Result_Successful
+     * @return Result\Successful
      */
     public static function createFromTransparentRedirect($queryString)
     {
@@ -94,7 +94,7 @@ class Customer extends Braintree
 
     /**
      *
-     * @throws Exception_NotFound
+     * @throws Exception\NotFound
      * @param int $id
      * @return Customer
      */
@@ -107,7 +107,7 @@ class Customer extends Braintree
      *
      * @param int $customerId
      * @param array $transactionAttribs
-     * @return Result_Successful|Result_Error
+     * @return Result\Successful|Result\Error
      */
     public static function credit($customerId, $transactionAttribs)
     {
@@ -116,7 +116,7 @@ class Customer extends Braintree
 
     /**
      *
-     * @throws Exception_ValidationError
+     * @throws Exception\ValidationError
      * @param type $customerId
      * @param type $transactionAttribs
      * @return Transaction
@@ -130,7 +130,7 @@ class Customer extends Braintree
      *
      * @throws Exception on invalid id or non-200 http response code
      * @param int $customerId
-     * @return Result_Successful
+     * @return Result\Successful
      */
     public static function delete($customerId)
     {
@@ -172,10 +172,10 @@ class Customer extends Braintree
 
     /**
      *
-     * @throws Exception_Unexpected
+     * @throws Exception\Unexpected
      * @param int $customerId
      * @param array $attributes
-     * @return Result_Successful|Result_Error
+     * @return Result\Successful|Result\Error
      */
     public static function update($customerId, $attributes)
     {
@@ -184,7 +184,7 @@ class Customer extends Braintree
 
     /**
      *
-     * @throws Exception_Unexpected
+     * @throws Exception\Unexpected
      * @param int $customerId
      * @param array $attributes
      * @return CustomerGateway
@@ -208,7 +208,7 @@ class Customer extends Braintree
      *
      * @deprecated since version 2.3.0
      * @param string $queryString
-     * @return Result_Successful|Result_Error
+     * @return Result\Successful|Result\Error
      */
     public static function updateFromTransparentRedirect($queryString)
     {

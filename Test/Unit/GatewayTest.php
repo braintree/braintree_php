@@ -23,7 +23,7 @@ class GatewayTest extends Setup
 
     /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage merchantId needs to be set.
+     * @expectedExceptionMessage merchantId needs to be set
      */
     public function testConfigGetsAssertedValid()
     {

@@ -39,7 +39,7 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception_Configuration
+     * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage Braintree\Configuration::publicKey needs to be set.
      */
     public function testAssertGlobalHasAccessTokenOrKeysWithoutPublicKey()
@@ -215,7 +215,7 @@ class ConfigurationTest extends Setup
     }
     /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage merchantId needs to be set.
+     * @expectedExceptionMessage merchantId needs to be set
      */
     public function testMerchantId()
     {
@@ -265,7 +265,7 @@ class ConfigurationTest extends Setup
 
      /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage clientSecret needs to be set.
+     * @expectedExceptionMessage clientSecret needs to be passed
      */
     public function testInvalidWithOAuthClientCredentials()
     {

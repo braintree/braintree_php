@@ -43,11 +43,11 @@ class AndroidPayCard extends Braintree
     }
 
     /**
-     *  factory method: returns an instance of Braintree_AndroidPayCard
+     *  factory method: returns an instance of Braintree\AndroidPayCard
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_AndroidPayCard
+     * @return object instance of Braintree\AndroidPayCard
      */
     public static function factory($attributes)
     {

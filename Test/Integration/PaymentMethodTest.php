@@ -658,7 +658,7 @@ class PaymentMethodTest extends Setup
         ));
         $foundAndroidPayCard = Braintree\PaymentMethod::find($paymentMethodToken);
         $this->assertSame($paymentMethodToken, $foundAndroidPayCard->token);
-        $this->assertInstanceOf('Braintree_AndroidPayCard', $foundAndroidPayCard);
+        $this->assertInstanceOf('Braintree\AndroidPayCard', $foundAndroidPayCard);
         $this->assertSame(Braintree\CreditCard::DISCOVER, $foundAndroidPayCard->virtualCardType);
         $this->assertSame("1117", $foundAndroidPayCard->virtualCardLast4);
         $this->assertSame(Braintree\CreditCard::VISA, $foundAndroidPayCard->sourceCardType);
@@ -691,7 +691,7 @@ class PaymentMethodTest extends Setup
     {
         $paymentMethodToken = 'ABSTRACT-'.strval(rand());
         $customer = Braintree\Customer::createNoValidate();
-        $nonce = Braintree\test_Nonces::$abstractTransactable;
+        $nonce = Braintree\Test\Nonces::$abstractTransactable;
         Braintree\PaymentMethod::create(array(
             'customerId' => $customer->id,
             'paymentMethodNonce' => $nonce,
