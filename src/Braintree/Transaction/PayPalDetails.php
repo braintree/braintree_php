@@ -20,6 +20,9 @@ use Braintree\Instance;
  * @property-read string $authorizationId
  * @property-read string $token
  * @property-read string $imageUrl
+ * @property-read string $transactionFeeAmount
+ * @property-read string $transactionFeeCurrencyIsoCode
+ * @property-read string $description
  *
  * @uses Instance inherits methods
  */

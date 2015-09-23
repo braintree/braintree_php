@@ -90,27 +90,6 @@ class Helper
         ' '.$object;
     }
 
-    public static function settle($transactionId)
-    {
-        $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/transactions/'.$transactionId.'/settle';
-        $http->put($path);
-    }
-
-    public static function settlementDecline($transactionId)
-    {
-        $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/transactions/'.$transactionId.'/settlement_decline';
-        $http->put($path);
-    }
-
-    public static function settlementPending($transactionId)
-    {
-        $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/transactions/'.$transactionId.'/settlement_pending';
-        $http->put($path);
-    }
-
     public static function escrow($transactionId)
     {
         $http = new Braintree\Http(Braintree\Configuration::$global);

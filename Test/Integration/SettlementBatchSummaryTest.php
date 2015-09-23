@@ -56,7 +56,8 @@ class SettlementBatchSummaryTest extends Setup
             ),
             'options' => array('submitForSettlement' => true),
         ));
-        Test\Helper::settle($transaction->id);
+
+        Braintree\Test\Transaction::settle($transaction->id);
 
         $today = new DateTime();
         $result = Braintree\SettlementBatchSummary::generate(Test\Helper::nowInEastern());
@@ -83,7 +84,7 @@ class SettlementBatchSummaryTest extends Setup
             'options' => array('submitForSettlement' => true),
         ));
 
-        Test\Helper::settle($transaction->id);
+        Braintree\Test\Transaction::settle($transaction->id);
 
         $today = new DateTime();
         $result = Braintree\SettlementBatchSummary::generate(Test\Helper::nowInEastern(), 'store_me');

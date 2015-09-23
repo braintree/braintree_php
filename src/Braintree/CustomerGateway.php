@@ -217,11 +217,7 @@ class CustomerGateway
     {
         $this->_validateId($customerId);
 
-        return Transaction::credit(
-                array_merge($transactionAttribs,
-                        array('customerId' => $customerId)
-                        )
-                );
+        return Transaction::credit(array_merge($transactionAttribs, array('customerId' => $customerId)));
     }
 
     /**
@@ -574,15 +570,12 @@ class CustomerGateway
      */
     private function _validateId($id = null)
     {
-        if (empty($id)) {
-            throw new InvalidArgumentException(
-                   'expected customer id to be set'
-                   );
+        if (is_null($id)) {
+            throw new InvalidArgumentException('expected customer id to be set');
         }
+
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
-            throw new InvalidArgumentException(
-                    $id.' is an invalid customer id.'
-                    );
+            throw new InvalidArgumentException($id.' is an invalid customer id.');
         }
     }
 

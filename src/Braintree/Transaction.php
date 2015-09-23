@@ -181,6 +181,7 @@ final class Transaction extends Braintree
     const UNRECOGNIZED             = 'unrecognized';
     const SETTLEMENT_DECLINED      = 'settlement_declined';
     const SETTLEMENT_PENDING       = 'settlement_pending';
+    const SETTLEMENT_CONFIRMED     = 'settlement_confirmed';
 
     // Transaction Escrow Status
     const ESCROW_HOLD_PENDING    = 'hold_pending';
@@ -256,6 +257,14 @@ final class Transaction extends Braintree
             $this->_set('coinbaseDetails',
                 new Transaction\CoinbaseDetails(
                     $transactionAttribs['coinbaseAccount']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['europeBankAccount'])) {
+            $this->_set('europeBankAccount',
+                new Transaction\EuropeBankAccountDetails(
+                    $transactionAttribs['europeBankAccount']
                 )
             );
         }
@@ -375,8 +384,7 @@ final class Transaction extends Braintree
             $displayAttributes[$attrib] = $this->$attrib;
         }
 
-        return __CLASS__.'['.
-                Util::attributesToString($displayAttributes).']';
+        return __CLASS__.'['.Util::attributesToString($displayAttributes).']';
     }
 
     public function isEqual($otherTx)
@@ -386,20 +394,14 @@ final class Transaction extends Braintree
 
     public function vaultCreditCard()
     {
-        $token = $this->creditCardDetails->token;
-        if (empty($token)) {
-            return;
-        } else {
+        if ($token = $this->creditCardDetails->token) {
             return CreditCard::find($token);
         }
     }
 
     public function vaultCustomer()
     {
-        $customerId = $this->customerDetails->id;
-        if (empty($customerId)) {
-            return;
-        } else {
+        if ($customerId = $this->customerDetails->id) {
             return Customer::find($customerId);
         }
     }

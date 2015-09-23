@@ -20,7 +20,8 @@ class CustomerTest extends Setup
         $collection = Braintree\Customer::all();
         $this->assertTrue($collection->maximumCount() > 1);
         $customer = $collection->firstItem();
-        $this->assertTrue(intval($customer->id) > 0);
+
+        $this->assertTrue(strlen($customer->id) > 0);
         $this->assertTrue($customer instanceof Braintree\Customer);
     }
 
@@ -45,6 +46,22 @@ class CustomerTest extends Setup
         $this->assertEquals('419.555.1235', $customer->fax);
         $this->assertEquals('http://example.com', $customer->website);
         $this->assertNotNull($customer->merchantId);
+    }
+
+    public function testCreateWithIdOfZero()
+    {
+        $result = Braintree\Customer::create(array(
+            'id' => '0'
+        ));
+
+        $this->assertEquals(true, $result->success);
+        $this->assertEquals($result->customer->id, '0');
+
+        $customer = Braintree\Customer::find('0');
+
+        $this->assertEquals('0', $customer->id);
+
+        Braintree\Customer::delete('0');
     }
 
     public function testGatewayCreate()

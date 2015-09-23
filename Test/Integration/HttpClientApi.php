@@ -11,7 +11,7 @@ class HttpClientApi extends Braintree\Http
 {
     protected function _doRequest($httpVerb, $path, $requestBody = null)
     {
-        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl().'/merchants/'.$this->_config->merchantId().$path, $requestBody);
+        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl().'/merchants/'.$this->_config->getMerchantId().$path, $requestBody);
     }
 
     public function get($path)
@@ -27,6 +27,7 @@ class HttpClientApi extends Braintree\Http
     public function _doUrlRequest($httpVerb, $url, $requestBody = null)
     {
         $curl = curl_init();
+
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -41,8 +42,10 @@ class HttpClientApi extends Braintree\Http
         }
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
         curl_close($curl);
 
         return array('status' => $httpStatus, 'body' => $response);
@@ -62,19 +65,51 @@ class HttpClientApi extends Braintree\Http
     public function nonce_for_new_card($options)
     {
         $clientTokenOptions = array();
+
         if (array_key_exists('customerId', $options)) {
             $clientTokenOptions['customerId'] = $options['customerId'];
             unset($options['customerId']);
         }
+
         $clientToken = json_decode(Test\Helper::decodedClientToken($clientTokenOptions));
+
         $options['authorization_fingerprint'] = $clientToken->authorizationFingerprint;
         $options['shared_customer_identifier'] = 'fake_identifier_'.rand();
         $options['shared_customer_identifier_type'] = 'testing';
         $response = $this->post('/client_api/v1/payment_methods/credit_cards.json', json_encode($options));
-        if ($response['status'] == 201 || $response['status'] == 202) {
+
+        if (($response['status'] == 201) || ($response['status'] == 202)) {
             $body = json_decode($response['body']);
 
             return $body->creditCards[0]->nonce;
+        } else {
+            throw new Exception(var_dump($response));
+        }
+    }
+
+    public function nonceForNewEuropeanBankAccount($options)
+    {
+        $clientTokenOptions = array(
+            'sepaMandateType' => 'business',
+            'sepaMandateAcceptanceLocation' => 'Rostock, Germany'
+        );
+
+        if (array_key_exists('customerId', $options)) {
+            $clientTokenOptions['customerId'] = $options['customerId'];
+            unset($options['customerId']);
+        }
+
+        $gateway = new Braintree_Gateway($this->_config);
+
+        $clientToken = json_decode(base64_decode($gateway->clientToken()->generate($clientTokenOptions)));
+        $options['authorization_fingerprint'] = $clientToken->authorizationFingerprint;
+
+        $response = $this->post('/client_api/v1/sepa_mandates/', json_encode($options));
+
+        if (($response['status'] == 201) || ($response['status'] == 202)) {
+            $body = json_decode($response['body']);
+
+            return $body->europeBankAccounts[0]->nonce;
         } else {
             throw new Exception(var_dump($response));
         }
@@ -85,7 +120,8 @@ class HttpClientApi extends Braintree\Http
         $clientToken = json_decode(Test\Helper::decodedClientToken());
         $options['authorization_fingerprint'] = $clientToken->authorizationFingerprint;
         $response = $this->post('/client_api/v1/payment_methods/paypal_accounts.json', json_encode($options));
-        if ($response['status'] == 201 || $response['status'] == 202) {
+
+        if (($response['status'] == 201) || ($response['status'] == 202)) {
             $body = json_decode($response['body'], true);
 
             return $body['paypalAccounts'][0]['nonce'];

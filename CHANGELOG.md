@@ -1,3 +1,10 @@
+## 3.3.0
+* Add new test payment method nonces
+* Allow passing description on PayPal transactions
+* Add methods to change transaction settlement status in sandbox
+* Fix issue where customer with an id of 0 could not be found
+* Add Europe Bank Account functionality
+
 ## 3.2.0
 * Add additional search criteria
 

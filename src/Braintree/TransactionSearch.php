@@ -111,6 +111,10 @@ class TransactionSearch
     {
         return new RangeNode('disputeDate');
     }
+    public static function europeBankAccountIban()
+    {
+        return new TextNode('europeBankAccountIban');
+    }
     public static function failedAt()
     {
         return new RangeNode('failedAt');

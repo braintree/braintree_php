@@ -1520,4 +1520,54 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($result->transaction->id, $collection->firstItem()->id);
     }
+
+    public function testHandlesEuropeBankAccounts()
+    {
+        $gateway = new Braintree\Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'altpay_merchant',
+            'publicKey' => 'altpay_merchant_public_key',
+            'privateKey' => 'altpay_merchant_private_key'
+        ));
+
+        $result = $gateway->customer()->create();
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $clientApi = new HttpClientApi($gateway->config);
+        $nonce = $clientApi->nonceForNewEuropeanBankAccount(array(
+            'customerId' => $customer->id,
+            'sepa_mandate' => array(
+                'locale' => 'de-DE',
+                'bic' => 'DEUTDEFF',
+                'iban' => 'DE89370400440532013000',
+                'accountHolderName' => 'Bob Holder',
+                'billingAddress' => array(
+                    'streetAddress' => '123 Currywurst Way',
+                    'extendedAddress' => 'Lager Suite',
+                    'firstName' => 'Wilhelm',
+                    'lastName' => 'Dix',
+                    'locality' => 'Frankfurt',
+                    'postalCode' => '60001',
+                    'countryCodeAlpha2' => 'DE',
+                    'region' => 'Hesse'
+                )
+            )
+        ));
+        $transactionResult = $gateway->transaction()->sale(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'merchantAccountId' => 'fake_sepa_ma',
+            'amount' => 100
+        ));
+
+        $this->assertTrue($transactionResult->success);
+
+        $collection = $gateway->transaction()->search(array(
+            Braintree\TransactionSearch::customerId()->is($customer->id),
+            Braintree\TransactionSearch::europeBankAccountIban()->is('DE89370400440532013000'),
+        ));
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transactionResult->transaction->id, $collection->firstItem()->id);
+    }
 }

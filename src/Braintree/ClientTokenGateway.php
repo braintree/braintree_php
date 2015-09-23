@@ -58,7 +58,10 @@ class ClientTokenGateway
 
     public function generateWithCustomerIdSignature()
     {
-        return array('version', 'customerId', 'proxyMerchantId', array('options' => array('makeDefault', 'verifyCard', 'failOnDuplicatePaymentMethod')), 'merchantAccountId');
+        return array(
+            'version', 'customerId', 'proxyMerchantId',
+            array('options' => array('makeDefault', 'verifyCard', 'failOnDuplicatePaymentMethod')),
+            'merchantAccountId', 'sepaMandateType', 'sepaMandateAcceptanceLocation');
     }
 
     public function generateWithoutCustomerIdSignature()

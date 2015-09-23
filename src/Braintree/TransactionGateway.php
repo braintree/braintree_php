@@ -129,25 +129,36 @@ final class TransactionGateway
             'threeDSecureToken',
             'type',
             'venmoSdkPaymentMethodCode',
-            array('creditCard' => array('token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'),
+            array(
+                'creditCard' => array(
+                    'token', 'cardholderName', 'cvv', 'expirationDate',
+                    'expirationMonth', 'expirationYear', 'number'
+                )
             ),
-            array('customer' => array(
+            array(
+                'customer' => array(
                     'id', 'company', 'email', 'fax', 'firstName',
-                    'lastName', 'phone', 'website', ),
+                    'lastName', 'phone', 'website'
+                )
             ),
-            array('billing' => array(
+            array(
+                'billing' => array(
                     'firstName', 'lastName', 'company', 'countryName',
                     'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
                     'extendedAddress', 'locality', 'postalCode', 'region',
-                    'streetAddress', ),
+                    'streetAddress'
+                )
             ),
-            array('shipping' => array(
+            array(
+                'shipping' => array(
                     'firstName', 'lastName', 'company', 'countryName',
                     'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
                     'extendedAddress', 'locality', 'postalCode', 'region',
-                    'streetAddress', ),
+                    'streetAddress'
+                )
             ),
-            array('options' => array(
+            array(
+                'options' => array(
                     'holdInEscrow',
                     'storeInVault',
                     'storeInVaultOnSuccess',
@@ -156,21 +167,32 @@ final class TransactionGateway
                     'venmoSdkSession',
                     'storeShippingAddressInVault',
                     'payeeEmail',
-                    array('three_d_secure' => array('required'),
+                    array(
+                        'three_d_secure' => array('required'),
                     ),
-                    array('paypal' => array(
+                    array(
+                        'paypal' => array(
                             'payeeEmail',
                             'customField',
-                        ),
-                    ),
-                ),
+                            'description'
+                        )
+                    )
+                )
             ),
-            array('customFields' => array('_anyKey_'),
+            array(
+                'customFields' => array('_anyKey_')
             ),
-            array('descriptor' => array('name', 'phone', 'url')),
-            array('paypalAccount' => array('payeeEmail')),
-            array('industry' => array('industryType',
-                    array('data' => array(
+            array(
+                'descriptor' => array('name', 'phone', 'url')
+            ),
+            array(
+                'paypalAccount' => array('payeeEmail')
+            ),
+            array(
+                'industry' => array(
+                    'industryType',
+                    array(
+                        'data' => array(
                             'folioNumber',
                             'checkInDate',
                             'checkOutDate',
@@ -179,11 +201,11 @@ final class TransactionGateway
                             'lodgingCheckInDate',
                             'lodgingCheckOutDate',
                             'lodgingName',
-                            'roomRate',
-                        ),
-                    ),
-                ),
-            ),
+                            'roomRate'
+                        )
+                    )
+                )
+            )
         );
     }
 
@@ -217,15 +239,14 @@ final class TransactionGateway
     public function find($id)
     {
         $this->_validateId($id);
+
         try {
             $path = $this->_config->merchantPath().'/transactions/'.$id;
             $response = $this->_http->get($path);
 
             return Transaction::factory($response['transaction']);
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound(
-            'transaction with id '.$id.' not found'
-            );
+            throw new Exception\NotFound('transaction with id '.$id.' not found');
         }
     }
     /**
@@ -273,31 +294,35 @@ final class TransactionGateway
     public function search($query)
     {
         $criteria = array();
+
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
 
         $path = $this->_config->merchantPath().'/transactions/advanced_search_ids';
         $response = $this->_http->post($path, array('search' => $criteria));
-        if (array_key_exists('searchResults', $response)) {
-            $pager = array(
-                'object' => $this,
-                'method' => 'fetch',
-                'methodArgs' => array($query),
-                );
 
-            return new ResourceCollection($response, $pager);
-        } else {
+        if (!array_key_exists('searchResults', $response)) {
             throw new Exception\DownForMaintenance();
         }
+
+        $pager = array(
+            'object' => $this,
+            'method' => 'fetch',
+            'methodArgs' => array($query),
+        );
+
+        return new ResourceCollection($response, $pager);
     }
 
     public function fetch($query, $ids)
     {
         $criteria = array();
+
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
+
         $criteria['ids'] = TransactionSearch::ids()->in($ids)->toparam();
         $path = $this->_config->merchantPath().'/transactions/advanced_search';
         $response = $this->_http->post($path, array('search' => $criteria));
@@ -421,15 +446,12 @@ final class TransactionGateway
      */
     private function _validateId($id = null)
     {
-        if (empty($id)) {
-            throw new InvalidArgumentException(
-                   'expected transaction id to be set'
-                   );
+        if (is_null($id)) {
+            throw new InvalidArgumentException('expected transaction id to be set');
         }
+
         if (!preg_match('/^[0-9a-z]+$/', $id)) {
-            throw new InvalidArgumentException(
-                    $id.' is an invalid transaction id.'
-                    );
+            throw new InvalidArgumentException($id.' is an invalid transaction id.');
         }
     }
 
@@ -453,15 +475,11 @@ final class TransactionGateway
     {
         if (isset($response['transaction'])) {
             // return a populated instance of Transaction
-            return new Result\Successful(
-                    Transaction::factory($response['transaction'])
-            );
+            return new Result\Successful(Transaction::factory($response['transaction']));
         } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
-            throw new Exception\Unexpected(
-            'Expected transaction or apiErrorResponse'
-            );
+            throw new Exception\Unexpected('Expected transaction or apiErrorResponse');
         }
     }
 }
