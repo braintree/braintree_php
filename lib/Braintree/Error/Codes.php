@@ -461,6 +461,7 @@ class Braintree_Error_Codes
     const TRANSACTION_PAY_PAL_VAULT_RECORD_MISSING_DATA                               = '91583';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_CANNOT_BE_SET                      = '91519';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_IS_INVALID                         = '81520';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_AUTHS                                = '915104';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_CREDITS                              = '91546';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_VOICE_AUTHORIZATIONS                 = '91545';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID                                = '91548';
