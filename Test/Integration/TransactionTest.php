@@ -1847,6 +1847,35 @@ class TransactionTest extends Setup
         );
     }
 
+    public function testGatewayRejectionOnApplicationIncomplete()
+    {
+        $gateway = new Braintree\Gateway(array(
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+
+        $result = $gateway->merchant()->create(array(
+            'email' => 'name@email.com',
+            'countryCodeAlpha3' => 'USA',
+            'paymentMethods' => array('credit_card', 'paypal')
+        ));
+
+        $gateway = new Braintree\Gateway(array(
+            'accessToken' => $result->credentials->accessToken,
+        ));
+
+        $result = $gateway->transaction()->sale(array(
+            'amount' => '4000.00',
+            'creditCard' => array(
+                'number' => '4111111111111111',
+                'expirationDate' => '05/20'
+            )
+        ));
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::APPLICATION_INCOMPLETE, $transaction->gatewayRejectionReason);
+    }
+
     public function testGatewayRejectionOnAvs()
     {
         $old_merchant_id = Braintree\Configuration::merchantId();

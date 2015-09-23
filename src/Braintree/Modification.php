@@ -6,14 +6,6 @@ class Modification extends Braintree
     protected function _initialize($attributes)
     {
         $this->_attributes = $attributes;
-
-        $addOnArray = array();
-        if (isset($attributes['addOns'])) {
-            foreach ($attributes['addOns'] as $addOn) {
-                $addOnArray[] = addOn::factory($addOn);
-            }
-        }
-        $this->_attributes['addOns'] = $addOnArray;
     }
 
     public static function factory($attributes)
@@ -22,5 +14,10 @@ class Modification extends Braintree
         $instance->_initialize($attributes);
 
         return $instance;
+    }
+
+    public function __toString()
+    {
+        return get_called_class().'['.Util::attributesToString($this->_attributes).']';
     }
 }

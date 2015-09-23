@@ -14,4 +14,19 @@ class AddOnTest extends Setup
 
         $this->assertInstanceOf('Braintree\AddOn', $addOn);
     }
+
+    public function testToString()
+    {
+        $addOn = Braintree\AddOn::factory(array(
+            'amount' => '100.00',
+            'description' => 'some description',
+            'id' => '1',
+            'kind' => 'add_on',
+            'name' => 'php_add_on',
+            'neverExpires' => 'false',
+            'numberOfBillingCycles' => '1'
+        ));
+
+        $this->assertEquals('Braintree\AddOn[amount=100.00, description=some description, id=1, kind=add_on, name=php_add_on, neverExpires=false, numberOfBillingCycles=1]', (string)$addOn);
+    }
 }

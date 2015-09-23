@@ -26,7 +26,7 @@ final class MerchantGateway
     {
         if (isset($response['response']['merchant'])) {
             // return a populated instance of merchant
-            return new Result_Successful(array(
+            return new Result\Successful(array(
                 Merchant::factory($response['response']['merchant']),
                 OAuthCredentials::factory($response['response']['credentials']),
             ));

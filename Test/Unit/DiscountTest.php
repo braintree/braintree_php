@@ -14,4 +14,19 @@ class DiscountTest extends Setup
 
         $this->assertInstanceOf('Braintree\Discount', $discount);
     }
+
+    public function testToString()
+    {
+        $discount = Braintree\Discount::factory(array(
+            'amount' => '100.00',
+            'description' => 'some description',
+            'id' => '1',
+            'kind' => 'discount',
+            'name' => 'php_discount',
+            'neverExpires' => 'false',
+            'numberOfBillingCycles' => '1'
+        ));
+
+        $this->assertEquals('Braintree\Discount[amount=100.00, description=some description, id=1, kind=discount, name=php_discount, neverExpires=false, numberOfBillingCycles=1]', (string)$discount);
+    }
 }
