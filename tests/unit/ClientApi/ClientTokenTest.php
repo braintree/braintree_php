@@ -1,17 +1,22 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../../TestHelper.php';
+namespace Test\Unit\ClientApi;
 
-class ClientTokenTest extends PHPUnit_Framework_TestCase
+require_once dirname(dirname(__DIR__)).'/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class ClientTokenTest extends Setup
 {
-    function testErrorsWhenCreditCardOptionsGivenWithoutCustomerId()
+    public function testErrorsWhenCreditCardOptionsGivenWithoutCustomerId()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: options[makeDefault]');
-        Braintree_ClientToken::generate(array("options" => array("makeDefault" => true)));
+        Braintree\ClientToken::generate(array('options' => array('makeDefault' => true)));
     }
 
-    function testErrorsWhenInvalidArgumentIsSupplied()
+    public function testErrorsWhenInvalidArgumentIsSupplied()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: customrId');
-        Braintree_ClientToken::generate(array("customrId" => "1234"));
+        Braintree\ClientToken::generate(array('customrId' => '1234'));
     }
 }

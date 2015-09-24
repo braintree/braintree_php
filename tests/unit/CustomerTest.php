@@ -1,54 +1,57 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__).'/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class CustomerTest extends Setup
 {
-    function testGet_givesErrorIfInvalidProperty()
+    public function testGet_givesErrorIfInvalidProperty()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree_Customer: foo');
-        $c = Braintree_Customer::factory(array());
+        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\Customer: foo');
+        $c = Braintree\Customer::factory(array());
         $c->foo;
     }
 
-    function testUpdateSignature_doesNotAlterOptionsInCreditCardUpdateSignature()
+    public function testUpdateSignature_doesNotAlterOptionsInCreditCardUpdateSignature()
     {
-        Braintree_CustomerGateway::updateSignature();
-        foreach(Braintree_CreditCardGateway::updateSignature() AS $key => $value) {
-            if(is_array($value) and array_key_exists('options', $value)) {
+        Braintree\CustomerGateway::updateSignature();
+        foreach (Braintree\CreditCardGateway::updateSignature() as $key => $value) {
+            if (is_array($value) and array_key_exists('options', $value)) {
                 $this->assertEquals(array(
                     'makeDefault',
                     'verificationMerchantAccountId',
                     'verifyCard',
                     'verificationAmount',
-                    'venmoSdkSession'
+                    'venmoSdkSession',
                 ), $value['options']);
             }
         }
     }
 
-    function testCreateSignature_doesNotIncludeCustomerIdOnCreditCard()
+    public function testCreateSignature_doesNotIncludeCustomerIdOnCreditCard()
     {
-        $signature = Braintree_CustomerGateway::createSignature();
-        $creditCardSignatures = array_filter($signature, 'Braintree_CustomerTest::findCreditCardArray');
+        $signature = Braintree\CustomerGateway::createSignature();
+        $creditCardSignatures = array_filter($signature, 'Test\Unit\CustomerTest::findCreditCardArray');
         $creditCardSignature = array_shift($creditCardSignatures)['creditCard'];
-
         $this->assertNotContains('customerId', $creditCardSignature);
     }
-
-    function findCreditCardArray($el)
+    public function findCreditCardArray($el)
     {
         return is_array($el) && array_key_exists('creditCard', $el);
     }
 
-    function testFindErrorsOnBlankId()
+    public function testFindErrorsOnBlankId()
     {
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_Customer::find('');
+        Braintree\Customer::find('');
     }
 
-    function testFindErrorsOnWhitespaceId()
+    public function testFindErrorsOnWhitespaceId()
     {
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_Customer::find('\t');
+        Braintree\Customer::find('\t');
     }
 }

@@ -1,29 +1,32 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_DiscountTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__).'/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class DiscountTest extends Setup
 {
     public function testFactory()
     {
-        $discount = \Braintree_Discount::factory(array());
+        $discount = Braintree\Discount::factory(array());
 
-        $this->assertInstanceOf('Braintree_Discount', $discount);
+        $this->assertInstanceOf('Braintree\Discount', $discount);
     }
 
-    function testToString()
+    public function testToString()
     {
-        $discountParams = array (
-            "amount" => "100.00",
-            "description" => "some description",
-            "id" => "1",
-            "kind" => "discount",
-            "name" => "php_discount",
-            "neverExpires" => "false",
-            "numberOfBillingCycles" => "1"
-        );
+        $discount = Braintree\Discount::factory(array(
+            'amount' => '100.00',
+            'description' => 'some description',
+            'id' => '1',
+            'kind' => 'discount',
+            'name' => 'php_discount',
+            'neverExpires' => 'false',
+            'numberOfBillingCycles' => '1'
+        ));
 
-        $discount = \Braintree_Discount::factory($discountParams);
-
-        $this->assertEquals("Braintree_Discount[amount=100.00, description=some description, id=1, kind=discount, name=php_discount, neverExpires=false, numberOfBillingCycles=1]", (string) $discount);
+        $this->assertEquals('Braintree\Discount[amount=100.00, description=some description, id=1, kind=discount, name=php_discount, neverExpires=false, numberOfBillingCycles=1]', (string)$discount);
     }
 }

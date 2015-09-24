@@ -1,37 +1,43 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__).'/Setup.php';
+
+use DateTime;
+use Test\Setup;
+use Braintree;
+
+class CreditCardTest extends Setup
 {
-    function testGet_givesErrorIfInvalidProperty()
+    public function testGet_givesErrorIfInvalidProperty()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree_CreditCard: foo');
-        $cc = Braintree_CreditCard::factory(array());
+        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\CreditCard: foo');
+        $cc = Braintree\CreditCard::factory(array());
         $cc->foo;
     }
 
-    function testCreate_throwsIfInvalidKey()
+    public function testCreate_throwsIfInvalidKey()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalidKey');
-        Braintree_CreditCard::create(array('invalidKey' => 'foo'));
+        Braintree\CreditCard::create(array('invalidKey' => 'foo'));
     }
 
-    function testIsDefault()
+    public function testIsDefault()
     {
-        $creditCard = Braintree_CreditCard::factory(array('default' => true));
+        $creditCard = Braintree\CreditCard::factory(array('default' => true));
         $this->assertTrue($creditCard->isDefault());
 
-        $creditCard = Braintree_CreditCard::factory(array('default' => false));
+        $creditCard = Braintree\CreditCard::factory(array('default' => false));
         $this->assertFalse($creditCard->isDefault());
     }
 
-    function testMaskedNumber()
+    public function testMaskedNumber()
     {
-        $creditCard = Braintree_CreditCard::factory(array('bin' => '123456', 'last4' => '7890'));
+        $creditCard = Braintree\CreditCard::factory(array('bin' => '123456', 'last4' => '7890'));
         $this->assertEquals('123456******7890', $creditCard->maskedNumber);
     }
 
-    function testCreateSignature()
+    public function testCreateSignature()
     {
         $expected = array(
             'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
@@ -51,15 +57,15 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
                     'locality',
                     'region',
                     'postalCode',
-                    'streetAddress'
+                    'streetAddress',
                 ),
             ),
-            'customerId'
+            'customerId',
         );
-        $this->assertEquals($expected, Braintree_CreditCardGateway::createSignature());
+        $this->assertEquals($expected, Braintree\CreditCardGateway::createSignature());
     }
 
-    function testUpdateSignature()
+    public function testUpdateSignature()
     {
         $expected = array(
             'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
@@ -82,51 +88,51 @@ class Braintree_CreditCardTest extends PHPUnit_Framework_TestCase
                     'streetAddress',
                     array(
                         'options' => array(
-                            'updateExisting'
-                        )
-                    )
+                            'updateExisting',
+                        ),
+                    ),
                 ),
             ),
         );
-        $this->assertEquals($expected, Braintree_CreditCardGateway::updateSignature());
+        $this->assertEquals($expected, Braintree\CreditCardGateway::updateSignature());
     }
 
-    function testErrorsOnFindWithBlankArgument()
+    public function testErrorsOnFindWithBlankArgument()
     {
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_CreditCard::find('');
+        Braintree\CreditCard::find('');
     }
 
-    function testErrorsOnFindWithWhitespaceArgument()
+    public function testErrorsOnFindWithWhitespaceArgument()
     {
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_CreditCard::find('  ');
+        Braintree\CreditCard::find('  ');
     }
 
-    function testErrorsOnFindWithWhitespaceCharacterArgument()
+    public function testErrorsOnFindWithWhitespaceCharacterArgument()
     {
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_CreditCard::find('\t');
+        Braintree\CreditCard::find('\t');
     }
 
-    function testVerificationIsLatestVerification()
+    public function testVerificationIsLatestVerification()
     {
-        $creditCard = Braintree_CreditCard::factory(
+        $creditCard = Braintree\CreditCard::factory(
             array(
                 'verifications' => array(
                     array(
                         'id' => '123',
-                        'createdAt' => DateTime::createFromFormat('Ymd', '20121212')
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121212'),
                     ),
                     array(
                         'id' => '932',
-                        'createdAt' => DateTime::createFromFormat('Ymd', '20121215')
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121215'),
                     ),
                     array(
                         'id' => '456',
-                        'createdAt' => DateTime::createFromFormat('Ymd', '20121213')
-                    )
-                )
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121213'),
+                    ),
+                ),
             )
         );
 

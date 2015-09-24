@@ -1,15 +1,21 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_SanityTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__).'/Setup.php';
+
+use Test\Setup;
+
+class SanityTest extends Setup
 {
-    function testCodeFiles_allOmitPHPCloseTag()
+    public function testCodeFiles_allOmitPHPCloseTag()
     {
-        $codeFiles = explode("\n", shell_exec("find ./lib -name \*.php"));
+        $codeFiles = explode("\n", shell_exec("find ./src -name \*.php"));
         foreach ($codeFiles as $codeFile) {
-            if ($codeFile == "") continue;
+            if ($codeFile == '') {
+                continue;
+            }
             $code = file_get_contents($codeFile);
-            $this->assertNotContains("?>", $code, "$codeFile should not contain a PHP close tag");
+            $this->assertNotContains('?>', $code, "$codeFile should not contain a PHP close tag");
         }
     }
 }
