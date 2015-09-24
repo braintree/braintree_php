@@ -1,11 +1,18 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Integration;
 
-class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__).'/Setup.php';
+
+use DateTime;
+use Test;
+use Test\Setup;
+use Braintree;
+
+class TestTransactionTest extends Setup
 {
     public function setUp()
     {
-        Braintree_Configuration::environment('development');
+        Braintree\Configuration::environment('development');
     }
 
     /**
@@ -13,24 +20,24 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
      */
     public function tearDownResetBraintreeEnvironment()
     {
-        Braintree_Configuration::environment('development');
+        Braintree\Configuration::environment('development');
     }
 
     /**
-     * @expectedException Braintree_Exception_TestOperationPerformedInProduction
+     * @expectedException Braintree\Exception\TestOperationPerformedInProduction
      */
-    function testThrowingExceptionWhenProduction()
+    public function testThrowingExceptionWhenProduction()
     {
-        Braintree_Configuration::environment('production');
+        Braintree\Configuration::environment('production');
 
-        $this->setExpectedException('Braintree_Exception_TestOperationPerformedInProduction');
+        $this->setExpectedException('Braintree\Exception\TestOperationPerformedInProduction');
 
-        Braintree_Test_Transaction::settle('transactionId');
+        Braintree\Test\Transaction::settle('transactionId');
     }
 
-    function testSettle()
+    public function testSettle()
     {
-        $transaction = Braintree_Transaction::saleNoValidate([
+        $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => '5105105105105100',
@@ -39,14 +46,14 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
             'options' => ['submitForSettlement' => true]
         ]);
 
-        $transaction = Braintree_Test_Transaction::settle($transaction->id);
+        $transaction = Braintree\Test\Transaction::settle($transaction->id);
 
         $this->assertEquals('settled', $transaction->status);
     }
 
-    function testSettlementConfirmed()
+    public function testSettlementConfirmed()
     {
-         $transaction = Braintree_Transaction::saleNoValidate([
+        $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => '5105105105105100',
@@ -55,14 +62,14 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
             'options' => ['submitForSettlement' => true]
         ]);
 
-        $transaction = Braintree_Test_Transaction::settlementConfirm($transaction->id);
+        $transaction = Braintree\Test\Transaction::settlementConfirm($transaction->id);
 
         $this->assertEquals('settlement_confirmed', $transaction->status);
     }
 
-    function testSettlementDeclined()
+    public function testSettlementDeclined()
     {
-         $transaction = Braintree_Transaction::saleNoValidate([
+        $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => '5105105105105100',
@@ -71,14 +78,14 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
             'options' => ['submitForSettlement' => true]
         ]);
 
-        $transaction = Braintree_Test_Transaction::settlementDecline($transaction->id);
+        $transaction = Braintree\Test\Transaction::settlementDecline($transaction->id);
 
         $this->assertEquals('settlement_declined', $transaction->status);
     }
 
-    function testSettlementPending()
+    public function testSettlementPending()
     {
-         $transaction = Braintree_Transaction::saleNoValidate([
+        $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => '5105105105105100',
@@ -87,7 +94,7 @@ class Braintree_TestTransactionTest extends PHPUnit_Framework_TestCase
             'options' => ['submitForSettlement' => true]
         ]);
 
-        $transaction = Braintree_Test_Transaction::settlementPending($transaction->id);
+        $transaction = Braintree\Test\Transaction::settlementPending($transaction->id);
 
         $this->assertEquals('settlement_pending', $transaction->status);
     }

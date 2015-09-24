@@ -1,18 +1,24 @@
 <?php
-require_once __DIR__ . '/../TestHelper.php';
+namespace Test\Integration;
 
-class Braintree_MerchantTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__).'/Setup.php';
+
+use Test;
+use Test\Setup;
+use Braintree;
+
+class MerchantTest extends Setup
 {
-    function testCreateMerchant()
+    public function testCreateMerchant()
     {
-        $gateway = new Braintree_Gateway(array(
+        $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
         $result = $gateway->merchant()->create(array(
             'email' => 'name@email.com',
             'countryCodeAlpha3' => 'USA',
-            'paymentMethods' => ['credit_card', 'paypal'],
+            'paymentMethods' => ['credit_card', 'paypal']
         ));
 
         $this->assertEquals(true, $result->success);
@@ -23,13 +29,13 @@ class Braintree_MerchantTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * @expectedException Braintree_Exception_Configuration
-    * @expectedExceptionMessage clientId needs to be passed to Braintree_Gateway.
+    * @expectedException Exception\Configuration
+    * @expectedExceptionMessage clientId needs to be passed to Braintree\Gateway.
     */
-    function testAssertsHasCredentials()
+    public function testAssertsHasCredentials()
     {
-        $gateway = new Braintree_Gateway(array(
-            'clientSecret' => 'client_secret$development$integration_client_secret',
+        $gateway = new Braintree\Gateway(array(
+            'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
         $gateway->merchant()->create(array(
             'email' => 'name@email.com',
@@ -37,9 +43,9 @@ class Braintree_MerchantTest extends PHPUnit_Framework_TestCase
         ));
     }
 
-    function testBadPaymentMethods()
+    public function testBadPaymentMethods()
     {
-        $gateway = new Braintree_Gateway(array(
+        $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',
         ));
@@ -51,6 +57,6 @@ class Braintree_MerchantTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('merchant')->onAttribute('paymentMethods');
-        $this->assertEquals(Braintree_Error_Codes::MERCHANT_ACCOUNT_PAYMENT_METHODS_ARE_INVALID, $errors[0]->code);
+        $this->assertEquals(Braintree\Error\Codes::MERCHANT_ACCOUNT_PAYMENT_METHODS_ARE_INVALID, $errors[0]->code);
     }
 }

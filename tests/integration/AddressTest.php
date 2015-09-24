@@ -1,12 +1,17 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Integration;
 
-class Braintree_AddressTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__).'/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class AddressTest extends Setup
 {
-    function testCreate()
+    public function testCreate()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $result = Braintree_Address::create(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\Address::create(array(
             'customerId' => $customer->id,
             'firstName' => 'Dan',
             'lastName' => 'Smith',
@@ -19,7 +24,7 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
             'countryName' => 'Vatican City',
             'countryCodeAlpha2' => 'VA',
             'countryCodeAlpha3' => 'VAT',
-            'countryCodeNumeric' => '336'
+            'countryCodeNumeric' => '336',
         ));
         $this->assertTrue($result->success);
         $address = $result->address;
@@ -37,15 +42,15 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('336', $address->countryCodeNumeric);
     }
 
-    function testGatewayCreate()
+    public function testGatewayCreate()
     {
-        $customer = Braintree_Customer::createNoValidate();
+        $customer = Braintree\Customer::createNoValidate();
 
-        $gateway = new Braintree_Gateway(array(
+        $gateway = new Braintree\Gateway(array(
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
-            'privateKey' => 'integration_private_key'
+            'privateKey' => 'integration_private_key',
         ));
         $result = $gateway->address()->create(array(
             'customerId' => $customer->id,
@@ -63,34 +68,34 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('60622', $address->postalCode);
     }
 
-    function testCreate_withValidationErrors()
+    public function testCreate_withValidationErrors()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $result = Braintree_Address::create(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\Address::create(array(
             'customerId' => $customer->id,
-            'countryName' => 'Invalid States of America'
+            'countryName' => 'Invalid States of America',
         ));
         $this->assertFalse($result->success);
         $countryErrors = $result->errors->forKey('address')->onAttribute('countryName');
-        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED, $countryErrors[0]->code);
+        $this->assertEquals(Braintree\Error\Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED, $countryErrors[0]->code);
     }
 
-    function testCreate_withValidationErrors_onCountryCodes()
+    public function testCreate_withValidationErrors_onCountryCodes()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $result = Braintree_Address::create(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\Address::create(array(
             'customerId' => $customer->id,
-            'countryCodeAlpha2' => 'ZZ'
+            'countryCodeAlpha2' => 'ZZ',
         ));
         $this->assertFalse($result->success);
         $countryErrors = $result->errors->forKey('address')->onAttribute('countryCodeAlpha2');
-        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_CODE_ALPHA2_IS_NOT_ACCEPTED, $countryErrors[0]->code);
+        $this->assertEquals(Braintree\Error\Codes::ADDRESS_COUNTRY_CODE_ALPHA2_IS_NOT_ACCEPTED, $countryErrors[0]->code);
     }
 
-    function testCreateNoValidate()
+    public function testCreateNoValidate()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $address = Braintree_Address::createNoValidate(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $address = Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
             'firstName' => 'Dan',
             'lastName' => 'Smith',
@@ -100,7 +105,7 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
             'locality' => 'Chicago',
             'region' => 'IL',
             'postalCode' => '60622',
-            'countryName' => 'United States of America'
+            'countryName' => 'United States of America',
         ));
         $this->assertEquals('Dan', $address->firstName);
         $this->assertEquals('Smith', $address->lastName);
@@ -113,33 +118,33 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('United States of America', $address->countryName);
     }
 
-    function testCreateNoValidate_withValidationErrors()
+    public function testCreateNoValidate_withValidationErrors()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $this->setExpectedException('Braintree_Exception_ValidationsFailed');
-        Braintree_Address::createNoValidate(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
+        Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
-            'countryName' => 'Invalid States of America'
+            'countryName' => 'Invalid States of America',
         ));
     }
 
-    function testDelete()
+    public function testDelete()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $address = Braintree_Address::createNoValidate(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $address = Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
-            'streetAddress' => '1 E Main St'
+            'streetAddress' => '1 E Main St',
         ));
-        Braintree_Address::find($customer->id, $address->id);
-        Braintree_Address::delete($customer->id, $address->id);
-        $this->setExpectedException('Braintree_Exception_NotFound');
-        Braintree_Address::find($customer->id, $address->id);
+        Braintree\Address::find($customer->id, $address->id);
+        Braintree\Address::delete($customer->id, $address->id);
+        $this->setExpectedException('Braintree\Exception\NotFound');
+        Braintree\Address::find($customer->id, $address->id);
     }
 
-    function testFind()
+    public function testFind()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $result = Braintree_Address::create(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\Address::create(array(
             'customerId' => $customer->id,
             'firstName' => 'Dan',
             'lastName' => 'Smith',
@@ -149,10 +154,10 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
             'locality' => 'Chicago',
             'region' => 'IL',
             'postalCode' => '60622',
-            'countryName' => 'United States of America'
+            'countryName' => 'United States of America',
         ));
         $this->assertTrue($result->success);
-        $address = Braintree_Address::find($customer->id, $result->address->id);
+        $address = Braintree\Address::find($customer->id, $result->address->id);
         $this->assertEquals('Dan', $address->firstName);
         $this->assertEquals('Smith', $address->lastName);
         $this->assertEquals('Braintree', $address->company);
@@ -164,17 +169,17 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('United States of America', $address->countryName);
     }
 
-    function testFind_whenNotFound()
+    public function testFind_whenNotFound()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $this->setExpectedException('Braintree_Exception_NotFound');
-        Braintree_Address::find($customer->id, 'does-not-exist');
+        $customer = Braintree\Customer::createNoValidate();
+        $this->setExpectedException('Braintree\Exception\NotFound');
+        Braintree\Address::find($customer->id, 'does-not-exist');
     }
 
-    function testUpdate()
+    public function testUpdate()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $address = Braintree_Address::createNoValidate(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $address = Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
             'firstName' => 'Old First',
             'lastName' => 'Old Last',
@@ -187,9 +192,9 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
             'countryName' => 'United States of America',
             'countryCodeAlpha2' => 'US',
             'countryCodeAlpha3' => 'USA',
-            'countryCodeNumeric' => '840'
+            'countryCodeNumeric' => '840',
         ));
-        $result = Braintree_Address::update($customer->id, $address->id, array(
+        $result = Braintree\Address::update($customer->id, $address->id, array(
             'firstName' => 'New First',
             'lastName' => 'New Last',
             'company' => 'New Company',
@@ -201,7 +206,7 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
             'countryName' => 'Mexico',
             'countryCodeAlpha2' => 'MX',
             'countryCodeAlpha3' => 'MEX',
-            'countryCodeNumeric' => '484'
+            'countryCodeNumeric' => '484',
         ));
         $this->assertTrue($result->success);
         $address = $result->address;
@@ -219,50 +224,49 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('484', $address->countryCodeNumeric);
     }
 
-    function testUpdate_withValidationErrors()
+    public function testUpdate_withValidationErrors()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $address = Braintree_Address::createNoValidate(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $address = Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
-            'streetAddress' => '1 E Main St'
+            'streetAddress' => '1 E Main St',
         ));
-        $result = Braintree_Address::update(
+        $result = Braintree\Address::update(
             $customer->id,
             $address->id,
             array(
-                'countryName' => 'Invalid States of America'
+                'countryName' => 'Invalid States of America',
             )
         );
         $this->assertFalse($result->success);
         $countryErrors = $result->errors->forKey('address')->onAttribute('countryName');
-        $this->assertEquals(Braintree_Error_Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED, $countryErrors[0]->code);
+        $this->assertEquals(Braintree\Error\Codes::ADDRESS_COUNTRY_NAME_IS_NOT_ACCEPTED, $countryErrors[0]->code);
     }
 
-    function testUpdate_withValidationErrors_onCountry()
+    public function testUpdate_withValidationErrors_onCountry()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $address = Braintree_Address::createNoValidate(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $address = Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
-            'streetAddress' => '1 E Main St'
+            'streetAddress' => '1 E Main St',
         ));
-        $result = Braintree_Address::update(
+        $result = Braintree\Address::update(
             $customer->id,
             $address->id,
             array(
                 'countryCodeAlpha2' => 'MU',
-                'countryCodeAlpha3' => 'MYT'
+                'countryCodeAlpha3' => 'MYT',
             )
         );
         $this->assertFalse($result->success);
         $countryErrors = $result->errors->forKey('address')->onAttribute('base');
-        $this->assertEquals(Braintree_Error_Codes::ADDRESS_INCONSISTENT_COUNTRY, $countryErrors[0]->code);
+        $this->assertEquals(Braintree\Error\Codes::ADDRESS_INCONSISTENT_COUNTRY, $countryErrors[0]->code);
     }
 
-
-    function testUpdateNoValidate()
+    public function testUpdateNoValidate()
     {
-        $customer = Braintree_Customer::createNoValidate();
-        $createdAddress = Braintree_Address::createNoValidate(array(
+        $customer = Braintree\Customer::createNoValidate();
+        $createdAddress = Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
             'firstName' => 'Old First',
             'lastName' => 'Old Last',
@@ -272,9 +276,9 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
             'locality' => 'Old Chicago',
             'region' => 'Old Region',
             'postalCode' => 'Old Postal',
-            'countryName' => 'United States of America'
+            'countryName' => 'United States of America',
         ));
-        $address = Braintree_Address::updateNoValidate($customer->id, $createdAddress->id, array(
+        $address = Braintree\Address::updateNoValidate($customer->id, $createdAddress->id, array(
             'firstName' => 'New First',
             'lastName' => 'New Last',
             'company' => 'New Company',
@@ -283,7 +287,7 @@ class Braintree_AddressTest extends PHPUnit_Framework_TestCase
             'locality' => 'New Chicago',
             'region' => 'New Region',
             'postalCode' => 'New Postal',
-            'countryName' => 'Mexico'
+            'countryName' => 'Mexico',
         ));
         $this->assertEquals('New First', $address->firstName);
         $this->assertEquals('New Last', $address->lastName);
