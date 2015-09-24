@@ -1,5 +1,7 @@
 <?php
-final class Braintree_Disbursement extends Braintree_Base
+namespace Braintree;
+
+final class Disbursement extends Braintree
 {
     private $_merchantAccount;
 
@@ -10,15 +12,15 @@ final class Braintree_Disbursement extends Braintree_Base
 
         if (isset($disbursementAttribs['merchantAccount'])) {
             $this->_set('merchantAccount',
-                Braintree_MerchantAccount::factory($disbursementAttribs['merchantAccount'])
+                MerchantAccount::factory($disbursementAttribs['merchantAccount'])
             );
         }
     }
 
     public function transactions()
     {
-        $collection = Braintree_Transaction::search(array(
-            Braintree_TransactionSearch::ids()->in($this->transactionIds)
+        $collection = Transaction::search(array(
+            TransactionSearch::ids()->in($this->transactionIds),
         ));
 
         return $collection;
@@ -28,22 +30,24 @@ final class Braintree_Disbursement extends Braintree_Base
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 
-    public function  __toString()
+    public function __toString()
     {
         $display = array(
             'id', 'merchantAccountDetails', 'exceptionMessage', 'amount',
             'disbursementDate', 'followUpAction', 'retry', 'success',
-            'transactionIds'
+            'transactionIds',
             );
 
         $displayAttributes = array();
-        foreach ($display AS $attrib) {
+        foreach ($display as $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
-        return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($displayAttributes) .']';
+
+        return __CLASS__.'['.
+                Util::attributesToString($displayAttributes).']';
     }
 }

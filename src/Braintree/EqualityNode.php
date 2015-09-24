@@ -1,10 +1,12 @@
 <?php
+namespace Braintree;
 
-class Braintree_EqualityNode extends Braintree_IsNode
+class EqualityNode extends IsNode
 {
-    function isNot($value)
+    public function isNot($value)
     {
         $this->searchTerms['is_not'] = strval($value);
+
         return $this;
     }
 }

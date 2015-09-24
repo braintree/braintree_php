@@ -1,14 +1,15 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree Address module
  * PHP Version 5
- * Creates and manages Braintree Addresses
+ * Creates and manages Braintree Addresses.
  *
  * An Address belongs to a Customer. It can be associated to a
  * CreditCard as the billing address. It can also be used
  * as the shipping address when creating a Transaction.
  *
- * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $company
@@ -25,40 +26,44 @@
  * @property-read string $streetAddress
  * @property-read string $updatedAt
  */
-class Braintree_Address extends Braintree_Base
+class Address extends Braintree
 {
     /**
-     * returns false if comparing object is not a Braintree_Address,
-     * or is a Braintree_Address with a different id
+     * returns false if comparing object is not a Address,
+     * or is a Address with a different id.
      *
      * @param object $other address to compare against
-     * @return boolean
+     *
+     * @return bool
      */
     public function isEqual($other)
     {
-        return !($other instanceof Braintree_Address) ?
+        return !($other instanceof self) ?
             false :
             ($this->id === $other->id && $this->customerId === $other->customerId);
     }
 
     /**
      * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
+     * ClassName[property=value, property=value].
+     *
      * @ignore
+     *
      * @return var
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.
+                Util::attributesToString($this->_attributes).']';
     }
 
     /**
-     * sets instance properties from an array of values
+     * sets instance properties from an array of values.
      *
      * @ignore
-     * @access protected
+     *
      * @param array $addressAttribs array of address data
+     *
      * @return none
      */
     protected function _initialize($addressAttribs)
@@ -68,81 +73,50 @@ class Braintree_Address extends Braintree_Base
     }
 
     /**
-     *  factory method: returns an instance of Braintree_Address
-     *  to the requesting method, with populated properties
+     *  factory method: returns an instance of Address
+     *  to the requesting method, with populated properties.
+     *
      * @ignore
-     * @return object instance of Braintree_Address
+     *
+     * @return object instance of Address
      */
     public static function factory($attributes)
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
-
     }
-
 
     // static methods redirecting to gateway
 
-    /**
-     * 
-     * @param array $attribs
-     * @return Braintree_Address
-     */
     public static function create($attribs)
     {
-        return Braintree_Configuration::gateway()->address()->create($attribs);
+        return Configuration::gateway()->address()->create($attribs);
     }
 
-    /**
-     * 
-     * @param array $attribs
-     * @return Braintree_Address
-     */
     public static function createNoValidate($attribs)
     {
-        return Braintree_Configuration::gateway()->address()->createNoValidate($attribs);
+        return Configuration::gateway()->address()->createNoValidate($attribs);
     }
 
-    /**
-     * 
-     * @param Braintree_Customer|int $customerOrId
-     * @param int $addressId
-     * @throws InvalidArgumentException
-     * @return Braintree_Result_Successful
-     */
     public static function delete($customerOrId = null, $addressId = null)
     {
-        return Braintree_Configuration::gateway()->address()->delete($customerOrId, $addressId);
+        return Configuration::gateway()->address()->delete($customerOrId, $addressId);
     }
 
-    /**
-     * 
-     * @param Braintree_Customer|int $customerOrId
-     * @param int $addressId
-     * @throws Braintree_Exception_NotFound
-     * @return Braintree_Address
-     */
     public static function find($customerOrId, $addressId)
     {
-        return Braintree_Configuration::gateway()->address()->find($customerOrId, $addressId);
+        return Configuration::gateway()->address()->find($customerOrId, $addressId);
     }
 
-    /**
-     * 
-     * @param Braintree_Customer|int $customerOrId
-     * @param int $addressId
-     * @param array $attributes
-     * @throws Braintree_Exception_Unexpected
-     * @return Braintree_Result_Successful|Braintree_Result_Error
-     */
     public static function update($customerOrId, $addressId, $attributes)
     {
-        return Braintree_Configuration::gateway()->address()->update($customerOrId, $addressId, $attributes);
+        return Configuration::gateway()->address()->update($customerOrId, $addressId, $attributes);
     }
 
     public static function updateNoValidate($customerOrId, $addressId, $attributes)
     {
-        return Braintree_Configuration::gateway()->address()->updateNoValidate($customerOrId, $addressId, $attributes);
+        return Configuration::gateway()->address()->updateNoValidate($customerOrId, $addressId, $attributes);
     }
 }

@@ -1,12 +1,15 @@
 <?php
+namespace Braintree\MerchantAccount;
 
-final class Braintree_MerchantAccount_BusinessDetails extends Braintree_Base
+use Braintree\Braintree;
+
+final class BusinessDetails extends Braintree
 {
     protected function _initialize($businessAttribs)
     {
         $this->_attributes = $businessAttribs;
         if (isset($businessAttribs['address'])) {
-            $this->_set('addressDetails', new Braintree_MerchantAccount_AddressDetails($businessAttribs['address']));
+            $this->_set('addressDetails', new AddressDetails($businessAttribs['address']));
         }
     }
 
@@ -14,6 +17,7 @@ final class Braintree_MerchantAccount_BusinessDetails extends Braintree_Base
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 }

@@ -1,9 +1,9 @@
 <?php
-
+namespace Braintree;
 
 /**
  * Braintree Transparent Redirect module
- * Static class providing methods to build Transparent Redirect urls
+ * Static class providing methods to build Transparent Redirect urls.
  *
  * The TransparentRedirect module provides methods to build the tr_data param
  * that must be submitted when using the transparent redirect API.
@@ -14,7 +14,7 @@
  * user the action is complete.
  *
  * <code>
- *   $trData = Braintree_TransparentRedirect::createCustomerData(array(
+ *   $trData = TransparentRedirect::createCustomerData(array(
  *     'redirectUrl => 'http://example.com/redirect_back_to_merchant_site',
  *      ));
  * </code>
@@ -25,18 +25,18 @@
  * amount, include the amount in the trData.
  *
  * <code>
- *   $trData = Braintree_TransparentRedirect::transactionData(array(
+ *   $trData = TransparentRedirect::transactionData(array(
  *     'redirectUrl' => 'http://example.com/complete_transaction',
  *     'transaction' => array('amount' => '100.00'),
  *   ));
  *
  *  </code>
  *
- * @package    Braintree
  * @category   Resources
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_TransparentRedirect
+class TransparentRedirect
 {
     // Request Kinds
     const CREATE_TRANSACTION = 'create_transaction';
@@ -48,53 +48,51 @@ class Braintree_TransparentRedirect
     /**
      * @ignore
      * don't permit an explicit call of the constructor!
-     * (like $t = new Braintree_TransparentRedirect())
+     * (like $t = new TransparentRedirect())
      */
     protected function __construct()
     {
-
     }
-
 
     // static methods redirecting to gateway
 
     public static function confirm($queryString)
     {
-        return Braintree_Configuration::gateway()->transparentRedirect()->confirm($queryString);
+        return Configuration::gateway()->transparentRedirect()->confirm($queryString);
     }
 
     public static function createCreditCardData($params)
     {
-        return Braintree_Configuration::gateway()->transparentRedirect()->createCreditCardData($params);
+        return Configuration::gateway()->transparentRedirect()->createCreditCardData($params);
     }
 
     public static function createCustomerData($params)
     {
-        return Braintree_Configuration::gateway()->transparentRedirect()->createCustomerData($params);
+        return Configuration::gateway()->transparentRedirect()->createCustomerData($params);
     }
 
     public static function url()
     {
-        return Braintree_Configuration::gateway()->transparentRedirect()->url();
+        return Configuration::gateway()->transparentRedirect()->url();
     }
 
     public static function transactionData($params)
     {
-        return Braintree_Configuration::gateway()->transparentRedirect()->transactionData($params);
+        return Configuration::gateway()->transparentRedirect()->transactionData($params);
     }
 
     public static function updateCreditCardData($params)
     {
-        return Braintree_Configuration::gateway()->transparentRedirect()->updateCreditCardData($params);
+        return Configuration::gateway()->transparentRedirect()->updateCreditCardData($params);
     }
 
     public static function updateCustomerData($params)
     {
-        return Braintree_Configuration::gateway()->transparentRedirect()->updateCustomerData($params);
+        return Configuration::gateway()->transparentRedirect()->updateCustomerData($params);
     }
 
     public static function parseAndValidateQueryString($queryString)
     {
-        return Braintree_Configuration::gateway()->transparentRedirect()->parseAndValidateQueryString($queryString);
+        return Configuration::gateway()->transparentRedirect()->parseAndValidateQueryString($queryString);
     }
 }

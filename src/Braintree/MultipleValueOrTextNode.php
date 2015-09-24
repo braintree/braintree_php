@@ -1,44 +1,50 @@
 <?php
+namespace Braintree;
 
-class Braintree_MultipleValueOrTextNode extends Braintree_MultipleValueNode
+class MultipleValueOrTextNode extends MultipleValueNode
 {
-    function __construct($name)
+    public function __construct($name)
     {
         parent::__construct($name);
-        $this->textNode = new Braintree_TextNode($name);
+        $this->textNode = new TextNode($name);
     }
 
-    function contains($value)
+    public function contains($value)
     {
         $this->textNode->contains($value);
+
         return $this;
     }
 
-    function endsWith($value)
+    public function endsWith($value)
     {
         $this->textNode->endsWith($value);
+
         return $this;
     }
 
-    function is($value)
+    public function is($value)
     {
         $this->textNode->is($value);
+
         return $this;
     }
 
-    function isNot($value)
+    public function isNot($value)
     {
         $this->textNode->isNot($value);
+
         return $this;
     }
 
-    function startsWith($value)
+    public function startsWith($value)
     {
         $this->textNode->startsWith($value);
+
         return $this;
     }
 
-    function toParam()
+    public function toParam()
     {
         return array_merge(parent::toParam(), $this->textNode->toParam());
     }

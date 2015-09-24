@@ -1,5 +1,7 @@
 <?php
-class Braintree_Modification extends Braintree_Base
+namespace Braintree;
+
+class Modification extends Braintree
 {
     protected function _initialize($attributes)
     {
@@ -10,10 +12,12 @@ class Braintree_Modification extends Braintree_Base
     {
         $instance = new self();
         $instance->_initialize($attributes);
+
         return $instance;
     }
 
-    public function __toString() {
-        return get_called_class() . '[' . Braintree_Util::attributesToString($this->_attributes) . ']';
+    public function __toString()
+    {
+        return get_called_class().'['.Util::attributesToString($this->_attributes).']';
     }
 }

@@ -1,61 +1,61 @@
 <?php
-class Braintree_WebhookTesting
+namespace Braintree;
+
+class WebhookTesting
 {
     public static function sampleNotification($kind, $id)
     {
-        $payload = base64_encode(self::_sampleXml($kind, $id)) . "\n";
-        $signature = Braintree_Configuration::publicKey() . "|" . Braintree_Digest::hexDigestSha1(Braintree_Configuration::privateKey(), $payload);
+        $payload = base64_encode(self::_sampleXml($kind, $id))."\n";
+        $signature = Configuration::publicKey().'|'.Digest::hexDigestSha1(Configuration::privateKey(), $payload);
 
         return array(
             'bt_signature' => $signature,
-            'bt_payload' => $payload
+            'bt_payload' => $payload,
         );
     }
 
     private static function _sampleXml($kind, $id)
     {
         switch ($kind) {
-            case Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED:
+            case WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED:
                 $subjectXml = self::_merchantAccountApprovedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED:
+            case WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED:
                 $subjectXml = self::_merchantAccountDeclinedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::TRANSACTION_DISBURSED:
+            case WebhookNotification::TRANSACTION_DISBURSED:
                 $subjectXml = self::_transactionDisbursedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::DISBURSEMENT_EXCEPTION:
+            case WebhookNotification::DISBURSEMENT_EXCEPTION:
                 $subjectXml = self::_disbursementExceptionSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::DISBURSEMENT:
+            case WebhookNotification::DISBURSEMENT:
                 $subjectXml = self::_disbursementSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::PARTNER_MERCHANT_CONNECTED:
+            case WebhookNotification::PARTNER_MERCHANT_CONNECTED:
                 $subjectXml = self::_partnerMerchantConnectedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::PARTNER_MERCHANT_DISCONNECTED:
+            case WebhookNotification::PARTNER_MERCHANT_DISCONNECTED:
                 $subjectXml = self::_partnerMerchantDisconnectedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::PARTNER_MERCHANT_DECLINED:
+            case WebhookNotification::PARTNER_MERCHANT_DECLINED:
                 $subjectXml = self::_partnerMerchantDeclinedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::DISPUTE_OPENED:
+            case WebhookNotification::DISPUTE_OPENED:
                 $subjectXml = self::_disputeOpenedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::DISPUTE_LOST:
+            case WebhookNotification::DISPUTE_LOST:
                 $subjectXml = self::_disputeLostSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::DISPUTE_WON:
+            case WebhookNotification::DISPUTE_WON:
                 $subjectXml = self::_disputeWonSampleXml($id);
-                break;
-            case Braintree_WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
-                $subjectXml = self::_subscriptionChargedSuccessfullySampleXml($id);
                 break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
         }
         $timestamp = self::_timestamp();
+
         return "
         <notification>
             <timestamp type=\"datetime\">{$timestamp}</timestamp>
@@ -243,28 +243,9 @@ class Braintree_WebhookTesting
         ";
     }
 
-    private static function _subscriptionChargedSuccessfullySampleXml($id)
-    {
-        return "
-        <subscription>
-            <id>{$id}</id>
-            <transactions type=\"array\">
-                <transaction>
-                    <status>submitted_for_settlement</status>
-                    <amount>49.99</amount>
-                </transaction>
-            </transactions>
-            <add_ons type=\"array\">
-            </add_ons>
-            <discounts type=\"array\">
-            </discounts>
-        </subscription>
-        ";
-    }
-
     private static function _partnerMerchantConnectedSampleXml($id)
     {
-        return "
+        return '
         <partner-merchant>
           <merchant-public-id>public_id</merchant-public-id>
           <public-key>public_key</public-key>
@@ -272,25 +253,25 @@ class Braintree_WebhookTesting
           <partner-merchant-id>abc123</partner-merchant-id>
           <client-side-encryption-key>cse_key</client-side-encryption-key>
         </partner-merchant>
-        ";
+        ';
     }
 
     private static function _partnerMerchantDisconnectedSampleXml($id)
     {
-        return "
+        return '
         <partner-merchant>
           <partner-merchant-id>abc123</partner-merchant-id>
         </partner-merchant>
-        ";
+        ';
     }
 
     private static function _partnerMerchantDeclinedSampleXml($id)
     {
-        return "
+        return '
         <partner-merchant>
           <partner-merchant-id>abc123</partner-merchant-id>
         </partner-merchant>
-        ";
+        ';
     }
 
     private static function _timestamp()

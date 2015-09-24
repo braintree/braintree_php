@@ -1,6 +1,7 @@
 <?php
+namespace Braintree;
 
-final class Braintree_PaymentInstrumentType
+final class PaymentInstrumentType
 {
     const PAYPAL_ACCOUNT      = 'paypal_account';
     const COINBASE_ACCOUNT    = 'coinbase_account';

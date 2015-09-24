@@ -1,6 +1,7 @@
 <?php
+namespace Braintree;
 
-final class Braintree_Merchant extends Braintree_Base
+final class Merchant extends Braintree
 {
     protected function _initialize($attribs)
     {
@@ -18,9 +19,8 @@ final class Braintree_Merchant extends Braintree_Base
      * returns a string representation of the merchant
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.Util::attributesToString($this->_attributes).']';
     }
 }

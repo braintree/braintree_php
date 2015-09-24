@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Transaction;
+
+use Braintree\Instance;
+
 /**
  * Android Pay card details from a transaction
  *
@@ -27,9 +31,9 @@
  * @property-read string $token
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
- * @uses Braintree_Instance inherits methods
+ * @uses Braintree\Instance inherits methods
  */
-class Braintree_Transaction_AndroidPayCardDetails extends Braintree_Instance
+class AndroidPayCardDetails extends Instance
 {
     protected $_attributes = array();
 

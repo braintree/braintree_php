@@ -1,13 +1,16 @@
 <?php
+namespace Braintree\Result;
+
+use Braintree\RiskData;
+use Braintree\Util;
+
 /**
- * Braintree Credit Card Verification Result
+ * Braintree Credit Card Verification Result.
  *
  * This object is returned as part of an Error Result; it provides
  * access to the credit card verification data from the gateway
  *
  *
- * @package    Braintree
- * @subpackage Result
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $avsErrorResponseCode
@@ -15,9 +18,8 @@
  * @property-read string $avsStreetAddressResponseCode
  * @property-read string $cvvResponseCode
  * @property-read string $status
- *
  */
-class Braintree_Result_CreditCardVerification
+class CreditCardVerification
 {
     // Status
     const FAILED                   = 'failed';
@@ -36,59 +38,60 @@ class Braintree_Result_CreditCardVerification
     /**
      * @ignore
      */
-    public function  __construct($attributes)
+    public function __construct($attributes)
     {
         $this->_initializeFromArray($attributes);
     }
 
     /**
-     * initializes instance properties from the keys/values of an array
+     * initializes instance properties from the keys/values of an array.
+     *
      * @ignore
-     * @access protected
+     *
      * @param <type> $aAttribs array of properties to set - single level
+     *
      * @return none
      */
     private function _initializeFromArray($attributes)
     {
-        if(isset($attributes['riskData']))
-        {
-            $attributes['riskData'] = Braintree_RiskData::factory($attributes['riskData']);
+        if (isset($attributes['riskData'])) {
+            $attributes['riskData'] = RiskData::factory($attributes['riskData']);
         }
 
         $this->_attributes = $attributes;
-        foreach($attributes AS $name => $value) {
+        foreach ($attributes as $name => $value) {
             $varName = "_$name";
             $this->$varName = $value;
         }
     }
 
     /**
-     *
      * @ignore
      */
-    public function  __get($name)
+    public function __get($name)
     {
         $varName = "_$name";
+
         return isset($this->$varName) ? $this->$varName : null;
     }
 
     /**
-     * returns a string representation of the customer
+     * returns a string representation of the customer.
+     *
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.Util::attributesToString($this->_attributes).']';
     }
 
     public static function allStatuses()
     {
         return array(
-            Braintree_Result_creditCardVerification::FAILED,
-            Braintree_Result_creditCardVerification::GATEWAY_REJECTED,
-            Braintree_Result_creditCardVerification::PROCESSOR_DECLINED,
-            Braintree_Result_creditCardVerification::VERIFIED,
+            CreditCardVerification::FAILED,
+            CreditCardVerification::GATEWAY_REJECTED,
+            CreditCardVerification::PROCESSOR_DECLINED,
+            CreditCardVerification::VERIFIED
         );
     }
 }

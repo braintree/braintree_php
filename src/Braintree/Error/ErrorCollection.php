@@ -1,28 +1,29 @@
 <?php
+namespace Braintree\Error;
+
+use Braintree\Util;
+
 /**
- *
  * Error handler
- * Handles validation errors
+ * Handles validation errors.
  *
  * Contains a read-only property $error which is a ValidationErrorCollection
  *
- * @package    Braintree
- * @subpackage Errors
  * @category   Errors
+ *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read object $errors
  */
-class Braintree_Error_ErrorCollection
+class ErrorCollection
 {
     private $_errors;
 
     public function __construct($errorData)
     {
         $this->_errors =
-                new Braintree_Error_ValidationErrorCollection($errorData);
+                new ValidationErrorCollection($errorData);
     }
-
 
     /**
      * Returns all of the validation errors at all levels of nesting in a single, flat array.
@@ -42,13 +43,15 @@ class Braintree_Error_ErrorCollection
     public function deepSize()
     {
         $size = $this->_errors->deepSize();
+
         return $size;
     }
 
     /**
-     * return errors for the passed key name
+     * return errors for the passed key name.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function forKey($key)
@@ -58,28 +61,32 @@ class Braintree_Error_ErrorCollection
 
     /**
      * return errors for the passed html field.
-     * For example, $result->errors->onHtmlField("transaction[customer][last_name]")
+     * For example, $result->errors->onHtmlField("transaction[customer][last_name]").
      *
      * @param string $field
+     *
      * @return array
      */
     public function onHtmlField($field)
     {
         $pieces = preg_split("/[\[\]]+/", $field, 0, PREG_SPLIT_NO_EMPTY);
         $errors = $this;
-        foreach(array_slice($pieces, 0, -1) as $key) {
-            $errors = $errors->forKey(Braintree_Util::delimiterToCamelCase($key));
-            if (!isset($errors)) { return array(); }
+        foreach (array_slice($pieces, 0, -1) as $key) {
+            $errors = $errors->forKey(Util::delimiterToCamelCase($key));
+            if (!isset($errors)) {
+                return array();
+            }
         }
-        $finalKey = Braintree_Util::delimiterToCamelCase(end($pieces));
+        $finalKey = Util::delimiterToCamelCase(end($pieces));
+
         return $errors->onAttribute($finalKey);
     }
 
     /**
-     * Returns the errors at the given nesting level (see forKey) in a single, flat array:
+     * Returns the errors at the given nesting level (see forKey) in a single, flat array:.
      *
      * <code>
-     *   $result = Braintree_Customer::create(...);
+     *   $result = Customer::create(...);
      *   $customerErrors = $result->errors->forKey('customer')->shallowAll();
      * </code>
      */
@@ -89,20 +96,19 @@ class Braintree_Error_ErrorCollection
     }
 
     /**
-     *
      * @ignore
      */
-    public function  __get($name)
+    public function __get($name)
     {
         $varName = "_$name";
+
         return isset($this->$varName) ? $this->$varName : null;
     }
 
     /**
-     *
      * @ignore
      */
-    public function  __toString()
+    public function __toString()
     {
         return sprintf('%s', $this->_errors);
     }

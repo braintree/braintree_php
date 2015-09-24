@@ -1,5 +1,7 @@
 <?php
-class Braintree_RiskData extends Braintree_Base
+namespace Braintree;
+
+class RiskData extends Braintree
 {
     public static function factory($attributes)
     {
@@ -15,13 +17,13 @@ class Braintree_RiskData extends Braintree_Base
     }
 
     /**
-     * returns a string representation of the risk data
+     * returns a string representation of the risk data.
+     *
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.
+                Util::attributesToString($this->_attributes).']';
     }
-
 }

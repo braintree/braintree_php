@@ -1,21 +1,22 @@
 <?php
+namespace Braintree;
 
-class Braintree_KeyValueNode
+class KeyValueNode
 {
-    function __construct($name)
+    public function __construct($name)
     {
         $this->name = $name;
-        $this->searchTerm = True;
-
+        $this->searchTerm = true;
     }
 
-    function is($value)
+    public function is($value)
     {
         $this->searchTerm = $value;
+
         return $this;
     }
 
-    function toParam()
+    public function toParam()
     {
         return $this->searchTerm;
     }

@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Exception;
+
+use Braintree\Exception;
+
 /**
  * Raised when a suspected forged query string is present
  * Raised from methods that confirm transparent redirect requests
@@ -6,11 +10,8 @@
  * an attempted hack on the merchant's transparent redirect
  * confirmation URL.
  *
- * @package    Braintree
- * @subpackage Exception
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Exception_ForgedQueryString extends Braintree_Exception
+class ForgedQueryString extends Exception
 {
-
 }

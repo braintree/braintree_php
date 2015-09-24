@@ -1,5 +1,7 @@
 <?php
-class Braintree_CreditCardVerificationGateway
+namespace Braintree;
+
+class CreditCardVerificationGateway
 {
     private $_gateway;
     private $_config;
@@ -10,7 +12,7 @@ class Braintree_CreditCardVerificationGateway
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasAccessTokenOrKeys();
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
     }
 
     public function fetch($query, $ids)
@@ -19,11 +21,11 @@ class Braintree_CreditCardVerificationGateway
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
-        $criteria["ids"] = Braintree_CreditCardVerificationSearch::ids()->in($ids)->toparam();
-        $path = $this->_config->merchantPath() . '/verifications/advanced_search';
+        $criteria['ids'] = CreditCardVerificationSearch::ids()->in($ids)->toparam();
+        $path = $this->_config->merchantPath().'/verifications/advanced_search';
         $response = $this->_http->post($path, array('search' => $criteria));
 
-        return Braintree_Util::extractattributeasarray(
+        return Util::extractattributeasarray(
             $response['creditCardVerifications'],
             'verification'
         );
@@ -36,14 +38,14 @@ class Braintree_CreditCardVerificationGateway
             $criteria[$term->name] = $term->toparam();
         }
 
-        $path = $this->_config->merchantPath() . '/verifications/advanced_search_ids';
+        $path = $this->_config->merchantPath().'/verifications/advanced_search_ids';
         $response = $this->_http->post($path, array('search' => $criteria));
         $pager = array(
             'object' => $this,
             'method' => 'fetch',
-            'methodArgs' => array($query)
+            'methodArgs' => array($query),
             );
 
-        return new Braintree_ResourceCollection($response, $pager);
+        return new ResourceCollection($response, $pager);
     }
 }

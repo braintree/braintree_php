@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Transaction;
+
+use Braintree\Instance;
+
 /**
  * Europe bank account details from a transaction
  * Creates an instance of europe bank account details as returned from a transaction
@@ -16,6 +20,6 @@
  * @property-read string $token
  * @uses Braintree_Instance inherits methods
  */
-class Braintree_Transaction_EuropeBankAccountDetails extends Braintree_Instance
+class EuropeBankAccountDetails extends Instance
 {
 }

@@ -1,25 +1,24 @@
 <?php
+namespace Braintree\Test;
 
 /**
- * Credit card information used for testing purposes
+ * Credit card information used for testing purposes.
  *
- * The constants contained in the Braintree_Test_CreditCardNumbers class provide
+ * The constants contained in the Test\CreditCardNumbers class provide
  * credit card numbers that should be used when working in the sandbox environment.
  * The sandbox will not accept any credit card numbers other than the ones listed below.
  *
- * @package    Braintree
- * @subpackage Test
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Test_CreditCardNumbers
+class CreditCardNumbers
 {
     public static $amExes = array(
         '378282246310005',
         '371449635398431',
         '378734493671000',
         );
-    public static $carteBlanches = array('30569309025904',);
-    public static $dinersClubs   = array('38520000023237',);
+    public static $carteBlanches = array('30569309025904');
+    public static $dinersClubs   = array('38520000023237');
     public static $discoverCards = array(
         '6011111111111117',
         '6011000990139424',
@@ -54,12 +53,6 @@ class Braintree_Test_CreditCardNumbers
         'Discover'   => '6011000990139424',
         'MasterCard' => '5105105105105100',
         'Visa'       => '4000111111111115',
-        );
-
-    public static $amexPayWithPoints = array(
-        'Success' => "371260714673002",
-        'IneligibleCard' => "378267515471109",
-        'InsufficientPoints' => "371544868764018",
         );
 
     public static function getAll()

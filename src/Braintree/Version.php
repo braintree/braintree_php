@@ -1,29 +1,29 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree Library Version
- * stores version information about the Braintree library
+ * stores version information about the Braintree library.
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-final class Braintree_Version
+final class Version
 {
     /**
-     * class constants
+     * class constants.
      */
     const MAJOR = 3;
     const MINOR = 5;
-    const TINY = 0;
+    const TINY  = 0;
 
     /**
      * @ignore
-     * @access protected
      */
-    protected function  __construct()
+    protected function __construct()
     {
     }
 
     /**
-     *
      * @return string the current library version
      */
     public static function get()

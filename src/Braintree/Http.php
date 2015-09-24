@@ -1,11 +1,13 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree HTTP Client
  * processes Http requests using curl
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Http
+class Http
 {
     protected $_config;
     private $_useClientCredentials = false;
@@ -18,20 +20,20 @@ class Braintree_Http
     public function delete($path)
     {
         $response = $this->_doRequest('DELETE', $path);
-        if($response['status'] === 200) {
+        if ($response['status'] === 200) {
             return true;
         } else {
-            Braintree_Util::throwStatusCodeException($response['status']);
+            Util::throwStatusCodeException($response['status']);
         }
     }
 
     public function get($path)
     {
         $response = $this->_doRequest('GET', $path);
-        if($response['status'] === 200) {
-            return Braintree_Xml::buildArrayFromXml($response['body']);
+        if ($response['status'] === 200) {
+            return Xml::buildArrayFromXml($response['body']);
         } else {
-            Braintree_Util::throwStatusCodeException($response['status']);
+            Util::throwStatusCodeException($response['status']);
         }
     }
 
@@ -39,10 +41,10 @@ class Braintree_Http
     {
         $response = $this->_doRequest('POST', $path, $this->_buildXml($params));
         $responseCode = $response['status'];
-        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode == 400) {
-            return Braintree_Xml::buildArrayFromXml($response['body']);
+        if ($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
+            return Xml::buildArrayFromXml($response['body']);
         } else {
-            Braintree_Util::throwStatusCodeException($responseCode);
+            Util::throwStatusCodeException($responseCode);
         }
     }
 
@@ -50,16 +52,16 @@ class Braintree_Http
     {
         $response = $this->_doRequest('PUT', $path, $this->_buildXml($params));
         $responseCode = $response['status'];
-        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode == 400) {
-            return Braintree_Xml::buildArrayFromXml($response['body']);
+        if ($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
+            return Xml::buildArrayFromXml($response['body']);
         } else {
-            Braintree_Util::throwStatusCodeException($responseCode);
+            Util::throwStatusCodeException($responseCode);
         }
     }
 
     private function _buildXml($params)
     {
-        return empty($params) ? null : Braintree_Xml::buildXmlFromArray($params);
+        return empty($params) ? null : Xml::buildXmlFromArray($params);
     }
 
     private function _getHeaders()
@@ -77,7 +79,7 @@ class Braintree_Http
                 'user' => $this->_config->getClientId(),
                 'password' => $this->_config->getClientSecret(),
             );
-        } else if ($this->_config->isAccessToken()) {
+        } elseif ($this->_config->isAccessToken()) {
             return array(
                 'token' => $this->_config->getAccessToken(),
             );
@@ -108,14 +110,14 @@ class Braintree_Http
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
 
         $headers = $this->_getHeaders($curl);
-        $headers[] = 'User-Agent: Braintree PHP Library ' . Braintree_Version::get();
-        $headers[] = 'X-ApiVersion: ' . Braintree_Configuration::API_VERSION;
+        $headers[] = 'User-Agent: Braintree PHP Library ' . Version::get();
+        $headers[] = 'X-ApiVersion: ' . Configuration::API_VERSION;
 
         $authorization = $this->_getAuthorization();
         if (isset($authorization['user'])) {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_USERPWD, $authorization['user'] . ':' . $authorization['password']);
-        } else if (isset($authorization['token'])) {
+        } elseif (isset($authorization['token'])) {
             $headers[] = 'Authorization: Bearer ' . $authorization['token'];
         }
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -124,21 +126,11 @@ class Braintree_Http
         if ($this->_config->sslOn()) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-            curl_setopt($curl, CURLOPT_CAINFO, $this->getCaFile());
+            curl_setopt($curl, CURLOPT_CAINFO, $this->_config->caFile());
         }
 
-        if(!empty($requestBody)) {
+        if (!empty($requestBody)) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
-        }
-
-        if($this->_config->isUsingProxy()) {
-            $proxyHost = $this->_config->getProxyHost();
-            $proxyPort = $this->_config->getProxyPort();
-            $proxyType = $this->_config->getProxyType();
-            curl_setopt($curl, CURLOPT_PROXY, $proxyHost . ':' . $proxyPort);
-            if(!empty($proxyType)) {
-                curl_setopt($curl, CURLOPT_PROXYTYPE, $proxyType);
-            }
         }
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -147,33 +139,9 @@ class Braintree_Http
         curl_close($curl);
         if ($this->_config->sslOn()) {
             if ($httpStatus == 0) {
-                throw new Braintree_Exception_SSLCertificate();
+                throw new Exception\SSLCertificate();
             }
         }
         return array('status' => $httpStatus, 'body' => $response);
-    }
-
-    private function getCaFile()
-    {
-        static $memo;
-
-        if ($memo === null) {
-            $caFile = $this->_config->caFile();
-
-            if (substr($caFile, 0, 7) !== 'phar://') {
-                return $caFile;
-            }
-
-            $extractedCaFile = sys_get_temp_dir() . '/api_braintreegateway_com.ca.crt';
-
-            if (!file_exists($extractedCaFile) || sha1_file($extractedCaFile) != sha1_file($caFile)) {
-                if (!copy($caFile, $extractedCaFile)) {
-                    throw new Braintree_Exception_SSLCaFileNotFound();
-                }
-            }
-            $memo = $extractedCaFile;
-        }
-
-        return $memo;
     }
 }

@@ -1,5 +1,7 @@
 <?php
-class Braintree_ThreeDSecureInfo extends Braintree_Base
+namespace Braintree;
+
+class ThreeDSecureInfo extends Braintree
 {
     public static function factory($attributes)
     {
@@ -18,10 +20,8 @@ class Braintree_ThreeDSecureInfo extends Braintree_Base
      * returns a string representation of the three d secure info
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
-        return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+        return __CLASS__.'['.Util::attributesToString($this->_attributes).']';
     }
-
 }

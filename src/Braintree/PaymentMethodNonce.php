@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree PaymentMethodNonce module
  *
@@ -18,18 +20,18 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  */
-class Braintree_PaymentMethodNonce extends Braintree_Base
+class PaymentMethodNonce extends Braintree
 {
     // static methods redirecting to gateway
 
     public static function create($token)
     {
-        return Braintree_Configuration::gateway()->paymentMethodNonce()->create($token);
+        return Configuration::gateway()->paymentMethodNonce()->create($token);
     }
 
     public static function find($nonce)
     {
-        return Braintree_Configuration::gateway()->paymentMethodNonce()->find($nonce);
+        return Configuration::gateway()->paymentMethodNonce()->find($nonce);
     }
 
     public static function factory($attributes)
@@ -45,8 +47,8 @@ class Braintree_PaymentMethodNonce extends Braintree_Base
         $this->_set('nonce', $nonceAttributes['nonce']);
         $this->_set('type', $nonceAttributes['type']);
 
-        if(isset($nonceAttributes['threeDSecureInfo'])) {
-            $this->_set('threeDSecureInfo', Braintree_ThreeDSecureInfo::factory($nonceAttributes['threeDSecureInfo']));
+        if (isset($nonceAttributes['threeDSecureInfo'])) {
+            $this->_set('threeDSecureInfo', ThreeDSecureInfo::factory($nonceAttributes['threeDSecureInfo']));
         }
     }
 }

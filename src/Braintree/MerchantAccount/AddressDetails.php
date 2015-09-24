@@ -1,5 +1,9 @@
 <?php
+namespace Braintree\MerchantAccount;
 
-final class Braintree_MerchantAccount_AddressDetails extends Braintree_Instance {
+use Braintree\Instance;
+
+final class AddressDetails extends Instance
+{
     protected $_attributes = array();
 }
