@@ -9,7 +9,7 @@ class SanityTest extends Setup
 {
     public function testCodeFiles_allOmitPHPCloseTag()
     {
-        $codeFiles = explode("\n", shell_exec("find ./src -name \*.php"));
+        $codeFiles = explode("\n", shell_exec("find ./lib -name \*.php"));
         foreach ($codeFiles as $codeFile) {
             if ($codeFile == '') {
                 continue;

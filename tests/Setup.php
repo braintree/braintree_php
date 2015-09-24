@@ -2,7 +2,7 @@
 namespace Test;
 
 require_once __DIR__.'/autoload.php';
-require_once dirname(__DIR__).'/src/autoload.php';
+require_once dirname(__DIR__).'/lib/autoload.php';
 
 date_default_timezone_set('UTC');
 
