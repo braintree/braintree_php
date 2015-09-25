@@ -21,6 +21,9 @@ class Configuration
     private $_clientId = null;
     private $_clientSecret = null;
     private $_accessToken = null;
+    private $_proxyHost = null;
+    private $_proxyPort = null;
+    private $_proxyType = null;
 
     /**
      * Braintree API version to use
@@ -105,6 +108,58 @@ class Configuration
             return self::$global->getPrivateKey();
         }
         self::$global->setPrivateKey($value);
+    }
+
+     /**
+     * Sets or gets the proxy host to use for connecting to Braintree
+     *
+     * @param string $value If provided, sets the proxy host
+     * @return string The proxy host used for connecting to Braintree
+     */
+    public static function proxyHost($value = null)
+    {
+        if (empty($value)) {
+            return self::$global->getProxyHost();
+        }
+        self::$global->setProxyHost($value);
+    }
+     /**
+     * Sets or gets the port of the proxy to use for connecting to Braintree
+     *
+     * @param string $value If provided, sets the port of the proxy
+     * @return string The port of the proxy used for connecting to Braintree
+     */
+    public static function proxyPort($value = null)
+    {
+        if (empty($value)) {
+            return self::$global->getProxyPort();
+        }
+        self::$global->setProxyPort($value);
+    }
+     /**
+     * Sets or gets the proxy type to use for connecting to Braintree. This value
+     * can be any of the CURLOPT_PROXYTYPE options in PHP cURL.
+     *
+     * @param string $value If provided, sets the proxy type
+     * @return string The proxy type used for connecting to Braintree
+     */
+    public static function proxyType($value = null)
+    {
+        if (empty($value)) {
+            return self::$global->getProxyType();
+        }
+        self::$global->setProxyType($value);
+    }
+     /**
+     * Specifies whether or not a proxy is properly configured
+     *
+     * @return bool true if a proxy is configured properly, false if not
+     */
+    public static function isUsingProxy()
+    {
+        $proxyHost = self::$global->getProxyHost();
+        $proxyPort = self::$global->getProxyPort();
+        return !empty($proxyHost) && !empty($proxyPort);
     }
 
     public static function assertGlobalHasAccessTokenOrKeys()
@@ -209,6 +264,31 @@ class Configuration
     public function setPrivateKey($value)
     {
         $this->_privateKey = $value;
+    }
+
+    private function setProxyHost($value)
+    {
+        $this->_proxyHost = $value;
+    }
+     public function getProxyHost()
+    {
+        return $this->_proxyHost;
+    }
+     private function setProxyPort($value)
+    {
+        $this->_proxyPort = $value;
+    }
+     public function getProxyPort()
+    {
+        return $this->_proxyPort;
+    }
+     private function setProxyType($value)
+    {
+        $this->_proxyType = $value;
+    }
+     public function getProxyType()
+    {
+        return $this->_proxyType;
     }
 
     public function getAccessToken()
