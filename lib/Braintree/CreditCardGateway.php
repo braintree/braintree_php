@@ -39,7 +39,7 @@ class CreditCardGateway
 
     /**
      * attempts the create operation assuming all data will validate
-     * returns a CreditCard object instead of a Result.
+     * returns a CreditCard object instead of a Result
      *
      * @param array $attribs
      *
@@ -54,10 +54,10 @@ class CreditCardGateway
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
     /**
-     * create a customer from a TransparentRedirect operation.
+     * create a customer from a TransparentRedirect operation
      *
+     * @access public
      * @param array $attribs
-     *
      * @return object
      */
     public function createFromTransparentRedirect($queryString)
@@ -74,8 +74,9 @@ class CreditCardGateway
     }
 
     /**
-     * @param none
      *
+     * @access public
+     * @param none
      * @return string
      */
     public function createCreditCardUrl()
@@ -87,8 +88,7 @@ class CreditCardGateway
     }
 
     /**
-     * returns a ResourceCollection of expired credit cards.
-     *
+     * returns a ResourceCollection of expired credit cards
      * @return object ResourceCollection
      */
     public function expired()
@@ -115,7 +115,7 @@ class CreditCardGateway
         );
     }
     /**
-     * returns a ResourceCollection of credit cards expiring between start/end.
+     * returns a ResourceCollection of credit cards expiring between start/end
      *
      * @return object ResourceCollection
      */
@@ -144,12 +144,11 @@ class CreditCardGateway
     }
 
     /**
-     * find a creditcard by token.
+     * find a creditcard by token
      *
+     * @access public
      * @param string $token credit card unique id
-     *
      * @return object CreditCard
-     *
      * @throws Exception\NotFound
      */
     public function find($token)
@@ -168,12 +167,11 @@ class CreditCardGateway
     }
 
     /**
-     * Convert a payment method nonce to a credit card.
+     * Convert a payment method nonce to a credit card
      *
+     * @access public
      * @param string $nonce payment method nonce
-     *
      * @return object CreditCard
-     *
      * @throws Exception\NotFound
      */
     public function fromNonce($nonce)
@@ -192,10 +190,10 @@ class CreditCardGateway
     }
 
     /**
-     * create a credit on the card for the passed transaction.
+     * create a credit on the card for the passed transaction
      *
+     * @access public
      * @param array $attribs
-     *
      * @return object Result\Successful or Result\Error
      */
     public function credit($token, $transactionAttribs)
@@ -211,14 +209,13 @@ class CreditCardGateway
     }
 
     /**
-     * create a credit on this card, assuming validations will pass.
+     * create a credit on this card, assuming validations will pass
      *
      * returns a Transaction object on success
      *
+     * @access public
      * @param array $attribs
-     *
      * @return object Transaction
-     *
      * @throws Exception\ValidationError
      */
     public function creditNoValidate($token, $transactionAttribs)
@@ -229,7 +226,7 @@ class CreditCardGateway
     }
 
     /**
-     * create a new sale for the current card.
+     * create a new sale for the current card
      *
      * @param string $token
      * @param array  $transactionAttribs
@@ -251,7 +248,7 @@ class CreditCardGateway
     }
 
     /**
-     * create a new sale using this card, assuming validations will pass.
+     * create a new sale using this card, assuming validations will pass
      *
      * returns a Transaction object on success
      *
@@ -272,10 +269,10 @@ class CreditCardGateway
     }
 
     /**
-     * updates the creditcard record.
+     * updates the creditcard record
      *
      * if calling this method in context, $token
-     * is the 2nd attribute. $token is not sent in object context.
+     * is the 2nd attribute. $token is not sent in object context
      *
      * @param array  $attributes
      * @param string $token      (optional)
@@ -291,10 +288,10 @@ class CreditCardGateway
     }
 
     /**
-     * update a creditcard record, assuming validations will pass.
+     * update a creditcard record, assuming validations will pass
      *
      * if calling this method in context, $token
-     * is the 2nd attribute. $token is not sent in object context.
+     * is the 2nd attribute. $token is not sent in object context
      * returns a CreditCard object on success
      *
      * @param array  $attributes
@@ -324,7 +321,7 @@ class CreditCardGateway
     }
 
     /**
-     * update a customer from a TransparentRedirect operation.
+     * update a customer from a TransparentRedirect operation
      *
      * @param array $attribs
      *
@@ -416,7 +413,7 @@ class CreditCardGateway
     }
 
     /**
-     * sends the create request to the gateway.
+     * sends the create request to the gateway
      *
      * @ignore
      *
@@ -434,7 +431,7 @@ class CreditCardGateway
     }
 
     /**
-     * verifies that a valid credit card identifier is being used.
+     * verifies that a valid credit card identifier is being used
      *
      * @ignore
      *
@@ -458,7 +455,7 @@ class CreditCardGateway
     }
 
     /**
-     * sends the update request to the gateway.
+     * sends the update request to the gateway
      *
      * @ignore
      *
@@ -476,12 +473,12 @@ class CreditCardGateway
     }
 
     /**
-     * generic method for validating incoming gateway responses.
+     * generic method for validating incoming gateway responses
      *
      * creates a new CreditCard object and encapsulates
      * it inside a Result\Successful object, or
      * encapsulates a Errors object inside a Result\Error
-     * alternatively, throws an Unexpected exception if the response is invalid.
+     * alternatively, throws an Unexpected exception if the response is invalid
      *
      * @ignore
      *
