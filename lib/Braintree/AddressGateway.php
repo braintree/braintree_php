@@ -6,20 +6,39 @@ use InvalidArgumentException;
 /**
  * Braintree AddressGateway module
  * PHP Version 5
- * Creates and manages Braintree Addresses.
+ * Creates and manages Braintree Addresses
  *
  * An Address belongs to a Customer. It can be associated to a
  * CreditCard as the billing address. It can also be used
  * as the shipping address when creating a Transaction.
  *
+ * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
 class AddressGateway
 {
-    private $_gateway;
-    private $_config;
-    private $_http;
+    /**
+     *
+     * @var Braintree_Gateway
+     */
+     private $_gateway;
 
+    /**
+     *
+     * @var Braintree_Configuration
+     */
+     private $_config;
+
+    /**
+     *
+     * @var Braintree_Http
+     */
+     private $_http;
+
+    /**
+     *
+     * @param Braintree_Gateway $gateway
+     */
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -30,8 +49,9 @@ class AddressGateway
 
     /* public class methods */
     /**
-     * @param array $attribs
      *
+     * @access public
+     * @param  array  $attribs
      * @return object Result, either Successful or Error
      */
     public function create($attribs)
@@ -54,10 +74,9 @@ class AddressGateway
      * attempts the create operation assuming all data will validate
      * returns a Address object instead of a Result.
      *
-     * @param array $attribs
-     *
+     * @access public
+     * @param  array $attribs
      * @return object
-     *
      * @throws Exception\ValidationError
      */
     public function createNoValidate($attribs)
@@ -68,7 +87,7 @@ class AddressGateway
     }
 
     /**
-     * delete an address by id.
+     * delete an address by id
      *
      * @param mixed  $customerOrId
      * @param string $addressId
@@ -84,7 +103,7 @@ class AddressGateway
     }
 
     /**
-     * find an address by id.
+     * find an address by id
      *
      * Finds the address with the given <b>addressId</b> that is associated
      * to the given <b>customerOrId</b>.

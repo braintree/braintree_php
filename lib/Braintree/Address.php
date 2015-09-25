@@ -4,12 +4,13 @@ namespace Braintree;
 /**
  * Braintree Address module
  * PHP Version 5
- * Creates and manages Braintree Addresses.
+ * Creates and manages Braintree Addresses
  *
  * An Address belongs to a Customer. It can be associated to a
  * CreditCard as the billing address. It can also be used
  * as the shipping address when creating a Transaction.
  *
+ * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $company
@@ -88,28 +89,60 @@ class Address extends Braintree
         return $instance;
     }
 
-    // static methods redirecting to gateway
 
+    /**
+     *
+     * @param array $attribs
+     * @return Braintree\Address
+     */
     public static function create($attribs)
     {
         return Configuration::gateway()->address()->create($attribs);
     }
 
+    /**
+     *
+     * @param array $attribs
+     * @return Braintree\Address
+     */
     public static function createNoValidate($attribs)
     {
         return Configuration::gateway()->address()->createNoValidate($attribs);
     }
 
+    /**
+     *
+     * @param Braintree\Customer|int $customerOrId
+     * @param int $addressId
+     * @throws InvalidArgumentException
+     * @return Braintree\Result_Successful
+     */
     public static function delete($customerOrId = null, $addressId = null)
     {
         return Configuration::gateway()->address()->delete($customerOrId, $addressId);
     }
 
+    /**
+     *
+     * @param Braintree\Customer|int $customerOrId
+     * @param int $addressId
+     * @throws Braintree\Exception_NotFound
+     * @return Braintree\Address
+     */
     public static function find($customerOrId, $addressId)
     {
         return Configuration::gateway()->address()->find($customerOrId, $addressId);
     }
 
+
+    /**
+     *
+     * @param Braintree\Customer|int $customerOrId
+     * @param int $addressId
+     * @param array $attributes
+     * @throws Braintree\Exception_Unexpected
+     * @return Braintree\Result_Successful|Braintree\Result_Error
+     */
     public static function update($customerOrId, $addressId, $attributes)
     {
         return Configuration::gateway()->address()->update($customerOrId, $addressId, $attributes);

@@ -3,6 +3,11 @@ namespace Braintree;
 
 class AddOn extends Modification
 {
+    /**
+     *
+     * @param array $attributes
+     * @return Braintree\AddOn
+     */
     public static function factory($attributes)
     {
         $instance = new self();
@@ -11,8 +16,11 @@ class AddOn extends Modification
         return $instance;
     }
 
-    // static methods redirecting to gateway
-
+    /**
+     * static methods redirecting to gateway
+     *
+     * @return Braintree\AddOn[]
+     */
     public static function all()
     {
         return Configuration::gateway()->addOn()->all();
