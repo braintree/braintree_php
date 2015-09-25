@@ -110,7 +110,7 @@ class Configuration
         self::$global->setPrivateKey($value);
     }
 
-     /**
+    /**
      * Sets or gets the proxy host to use for connecting to Braintree
      *
      * @param string $value If provided, sets the proxy host
@@ -123,7 +123,8 @@ class Configuration
         }
         self::$global->setProxyHost($value);
     }
-     /**
+
+    /**
      * Sets or gets the port of the proxy to use for connecting to Braintree
      *
      * @param string $value If provided, sets the port of the proxy
@@ -136,9 +137,10 @@ class Configuration
         }
         self::$global->setProxyPort($value);
     }
-     /**
+
+    /**
      * Sets or gets the proxy type to use for connecting to Braintree. This value
-     * can be any of the CURLOPT_PROXYTYPE options in PHP cURL
+     * can be any of the CURLOPT_PROXYTYPE options in PHP cURL.
      *
      * @param string $value If provided, sets the proxy type
      * @return string The proxy type used for connecting to Braintree
@@ -150,7 +152,8 @@ class Configuration
         }
         self::$global->setProxyType($value);
     }
-     /**
+
+    /**
      * Specifies whether or not a proxy is properly configured
      *
      * @return bool true if a proxy is configured properly, false if not
@@ -210,7 +213,7 @@ class Configuration
     }
 
     /**
-     * Do not use this method directly. Pass in the environment to the constructor
+     * Do not use this method directly. Pass in the environment to the constructor.
      */
     public function setEnvironment($value)
     {
@@ -223,7 +226,7 @@ class Configuration
     }
 
     /**
-     * Do not use this method directly. Pass in the merchantId to the constructor
+     * Do not use this method directly. Pass in the merchantId to the constructor.
      */
     public function setMerchantId($value)
     {
@@ -241,7 +244,7 @@ class Configuration
     }
 
     /**
-     * Do not use this method directly. Pass in the publicKey to the constructor
+     * Do not use this method directly. Pass in the publicKey to the constructor.
      */
     public function setPublicKey($value)
     {
@@ -259,7 +262,7 @@ class Configuration
     }
 
     /**
-     * Do not use this method directly. Pass in the privateKey to the constructor
+     * Do not use this method directly. Pass in the privateKey to the constructor.
      */
     public function setPrivateKey($value)
     {
@@ -270,23 +273,28 @@ class Configuration
     {
         $this->_proxyHost = $value;
     }
-     public function getProxyHost()
+
+    public function getProxyHost()
     {
         return $this->_proxyHost;
     }
-     private function setProxyPort($value)
+
+    private function setProxyPort($value)
     {
         $this->_proxyPort = $value;
     }
-     public function getProxyPort()
+
+    public function getProxyPort()
     {
         return $this->_proxyPort;
     }
-     private function setProxyType($value)
+
+    private function setProxyType($value)
     {
         $this->_proxyType = $value;
     }
-     public function getProxyType()
+
+    public function getProxyType()
     {
         return $this->_proxyType;
     }

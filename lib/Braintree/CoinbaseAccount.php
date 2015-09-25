@@ -4,8 +4,8 @@ namespace Braintree;
 /**
  * Braintree CoinbaseAccount module
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
@@ -15,8 +15,8 @@ namespace Braintree;
  * <b>== More information ==</b>
  *
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $token
@@ -31,7 +31,6 @@ class CoinbaseAccount extends Braintree
      *  to the requesting method, with populated properties
      *
      * @ignore
-     *
      * @return object instance of CoinbaseAccount
      */
     public static function factory($attributes)
@@ -58,7 +57,6 @@ class CoinbaseAccount extends Braintree
      * sets instance properties from an array of values
      *
      * @param array $coinbaseAccountAttribs array of coinbaseAccount data
-     *
      * @return none
      */
     protected function _initialize($coinbaseAccountAttribs)
@@ -79,7 +77,6 @@ class CoinbaseAccount extends Braintree
     /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
-     *
      * @return string
      */
     public function __toString()

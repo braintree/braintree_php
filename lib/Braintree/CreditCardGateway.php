@@ -12,8 +12,8 @@ use InvalidArgumentException;
  * For more detailed information on CreditCards, see {@link http://www.braintreepayments.com/gateway/credit-card-api http://www.braintreepaymentsolutions.com/gateway/credit-card-api}<br />
  * For more detailed information on CreditCard verifications, see {@link http://www.braintreepayments.com/gateway/credit-card-verification-api http://www.braintreepaymentsolutions.com/gateway/credit-card-verification-api}
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class CreditCardGateway
@@ -230,9 +230,7 @@ class CreditCardGateway
      *
      * @param string $token
      * @param array  $transactionAttribs
-     *
      * @return object Result\Successful or Result\Error
-     *
      * @see Transaction::sale()
      */
     public function sale($token, $transactionAttribs)
@@ -254,11 +252,8 @@ class CreditCardGateway
      *
      * @param array  $transactionAttribs
      * @param string $token
-     *
      * @return object Transaction
-     *
      * @throws Exception\ValidationsFailed
-     *
      * @see Transaction::sale()
      */
     public function saleNoValidate($token, $transactionAttribs)
@@ -272,11 +267,10 @@ class CreditCardGateway
      * updates the creditcard record
      *
      * if calling this method in context, $token
-     * is the 2nd attribute. $token is not sent in object context
+     * is the 2nd attribute. $token is not sent in object context.
      *
      * @param array  $attributes
      * @param string $token      (optional)
-     *
      * @return object Result\Successful or Result\Error
      */
     public function update($token, $attributes)
@@ -291,14 +285,12 @@ class CreditCardGateway
      * update a creditcard record, assuming validations will pass
      *
      * if calling this method in context, $token
-     * is the 2nd attribute. $token is not sent in object context
+     * is the 2nd attribute. $token is not sent in object context.
      * returns a CreditCard object on success
      *
      * @param array  $attributes
      * @param string $token
-     *
      * @return object CreditCard
-     *
      * @throws Exception\ValidationsFailed
      */
     public function updateNoValidate($token, $attributes)
@@ -309,7 +301,6 @@ class CreditCardGateway
     }
     /**
      * @param none
-     *
      * @return string
      */
     public function updateCreditCardUrl()
@@ -324,7 +315,6 @@ class CreditCardGateway
      * update a customer from a TransparentRedirect operation
      *
      * @param array $attribs
-     *
      * @return object
      */
     public function updateFromTransparentRedirect($queryString)
@@ -416,10 +406,8 @@ class CreditCardGateway
      * sends the create request to the gateway
      *
      * @ignore
-     *
      * @param string $subPath
      * @param array  $params
-     *
      * @return mixed
      */
     public function _doCreate($subPath, $params)
@@ -434,10 +422,8 @@ class CreditCardGateway
      * verifies that a valid credit card identifier is being used
      *
      * @ignore
-     *
      * @param string   $identifier
      * @param Optional $string     $identifierType type of identifier supplied, default "token"
-     *
      * @throws InvalidArgumentException
      */
     private function _validateId($identifier = null, $identifierType = 'token')
@@ -458,10 +444,8 @@ class CreditCardGateway
      * sends the update request to the gateway
      *
      * @ignore
-     *
      * @param string $url
      * @param array  $params
-     *
      * @return mixed
      */
     private function _doUpdate($httpVerb, $subPath, $params)
@@ -481,11 +465,8 @@ class CreditCardGateway
      * alternatively, throws an Unexpected exception if the response is invalid
      *
      * @ignore
-     *
      * @param array $response gateway response values
-     *
      * @return object Result\Successful or Result\Error
-     *
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)

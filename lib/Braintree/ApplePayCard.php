@@ -3,14 +3,14 @@ namespace Braintree;
 
 /**
  * Braintree ApplePayCard module
- * Creates and manages Braintree Apple Pay cards.
+ * Creates and manages Braintree Apple Pay cards
  *
  * <b>== More information ==</b>
  *
  * See {@link https://developers.braintreepayments.com/javascript+php}<br />
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $cardType

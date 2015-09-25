@@ -10,8 +10,8 @@ namespace Braintree;
  * For more detailed information on CreditCards, see {@link http://www.braintreepayments.com/gateway/credit-card-api http://www.braintreepaymentsolutions.com/gateway/credit-card-api}<br />
  * For more detailed information on CreditCard verifications, see {@link http://www.braintreepayments.com/gateway/credit-card-verification-api http://www.braintreepaymentsolutions.com/gateway/credit-card-verification-api}
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $billingAddress
@@ -112,7 +112,6 @@ class CreditCard extends Braintree
      * sets instance properties from an array of values
      *
      * @param array $creditCardAttribs array of creditcard data
-     *
      * @return none
      */
     protected function _initialize($creditCardAttribs)
@@ -180,7 +179,6 @@ class CreditCard extends Braintree
      *  to the requesting method, with populated properties
      *
      * @ignore
-     *
      * @return object instance of CreditCard
      */
     public static function factory($attributes)
