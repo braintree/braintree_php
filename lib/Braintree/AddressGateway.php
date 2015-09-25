@@ -21,19 +21,19 @@ class AddressGateway
      *
      * @var Braintree_Gateway
      */
-     private $_gateway;
+    private $_gateway;
 
     /**
      *
      * @var Braintree_Configuration
      */
-     private $_config;
+    private $_config;
 
     /**
      *
      * @var Braintree_Http
      */
-     private $_http;
+    private $_http;
 
     /**
      *
@@ -112,9 +112,7 @@ class AddressGateway
      *
      * @param mixed  $customerOrId
      * @param string $addressId
-     *
      * @return object Address
-     *
      * @throws Exception\NotFound
      */
     public function find($customerOrId, $addressId)
