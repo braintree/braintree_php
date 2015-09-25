@@ -7,10 +7,8 @@ spl_autoload_register(function ($className) {
 
     $fileName = dirname(__DIR__).'/';
 
-    $lowerCasedName = strtolower($className);
-
-    if ($lastNsPos = strripos($lowerCasedName, '\\')) {
-        $namespace = str_replace("test", "tests", substr($lowerCasedName, 0, $lastNsPos));
+    if ($lastNsPos = strripos($className, '\\')) {
+        $namespace = substr($className, 0, $lastNsPos);
         $className = substr($className, $lastNsPos + 1);
         $fileName  .= str_replace('\\', DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR;
     }
