@@ -5,10 +5,25 @@ use InvalidArgumentException;
 
 class ClientTokenGateway
 {
+    /**
+     *
+     * @var Braintree\Gateway
+     */
     private $_gateway;
+     /**
+     *
+     * @var Braintree\Configuration
+     */
     private $_config;
+     /**
+     *
+     * @var Braintree\Http
+     */
     private $_http;
-
+     /**
+     *
+     * @param Braintree\Gateway $gateway
+     */
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -47,6 +62,11 @@ class ClientTokenGateway
         return $this->_verifyGatewayResponse($response);
     }
 
+    /**
+     *
+     * @param array $params
+     * @throws InvalidArgumentException
+     */
     public function conditionallyVerifyKeys($params)
     {
         if (array_key_exists('customerId', $params)) {
@@ -56,6 +76,10 @@ class ClientTokenGateway
         }
     }
 
+    /**
+     *
+     * @return mixed[]
+     */
     public function generateWithCustomerIdSignature()
     {
         return array(
@@ -64,6 +88,10 @@ class ClientTokenGateway
             'merchantAccountId', 'sepaMandateType', 'sepaMandateAcceptanceLocation');
     }
 
+    /**
+     *
+     * @return string[]
+     */
     public function generateWithoutCustomerIdSignature()
     {
         return array('version', 'proxyMerchantId', 'merchantAccountId');
@@ -77,11 +105,8 @@ class ClientTokenGateway
      * response from the Gateway or an HTTP status code exception.
      *
      * @ignore
-     *
      * @param array $response gateway response values
-     *
      * @return string client token
-     *
      * @throws InvalidArgumentException | HTTP status code exception
      */
     private function _verifyGatewayResponse($response)
