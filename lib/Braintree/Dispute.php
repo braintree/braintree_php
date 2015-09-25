@@ -2,7 +2,7 @@
 namespace Braintree;
 
 /**
- * Creates an instance of Dispute as returned from a transaction.
+ * Creates an instance of Dispute as returned from a transaction
  *
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.

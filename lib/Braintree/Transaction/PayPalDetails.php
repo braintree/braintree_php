@@ -4,13 +4,13 @@ namespace Braintree\Transaction;
 use Braintree\Instance;
 
 /**
- * PayPal details from a transaction.
+ * PayPal details from a transaction
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
- * creates an instance of PayPalDetails.
+ * creates an instance of PayPalDetails
  *
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.

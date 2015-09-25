@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 /**
  * Braintree TransactionGateway processor
- * Creates and manages transactions.
+ * Creates and manages transactions
  *
  *
  * <b>== More information ==</b>
@@ -102,7 +102,7 @@ final class TransactionGateway
     }
 
     /**
-     * creates a full array signature of a valid gateway request.
+     * creates a full array signature of a valid gateway request
      *
      * @return array gateway request signature format
      */
@@ -264,7 +264,7 @@ final class TransactionGateway
         }
     }
     /**
-     * new sale.
+     * new sale
      *
      * @param array $attribs
      *
@@ -276,7 +276,7 @@ final class TransactionGateway
     }
 
     /**
-     * roughly equivalent to the ruby bang method.
+     * roughly equivalent to the ruby bang method
      *
      * @param array $attribs
      *
@@ -292,7 +292,7 @@ final class TransactionGateway
     }
 
     /**
-     * Returns a ResourceCollection of transactions matching the search query.
+     * Returns a ResourceCollection of transactions matching the search query
      *
      * If <b>query</b> is a string, the search will be a basic search.
      * If <b>query</b> is a hash, the search will be an advanced search.
@@ -348,7 +348,7 @@ final class TransactionGateway
     }
 
     /**
-     * void a transaction by id.
+     * void a transaction by id
      *
      * @param string $id transaction id
      *
@@ -432,7 +432,7 @@ final class TransactionGateway
     }
 
     /**
-     * sends the create request to the gateway.
+     * sends the create request to the gateway
      *
      * @ignore
      *
@@ -450,7 +450,7 @@ final class TransactionGateway
     }
 
     /**
-     * verifies that a valid transaction id is being used.
+     * verifies that a valid transaction id is being used
      *
      * @ignore
      *
@@ -470,7 +470,7 @@ final class TransactionGateway
     }
 
     /**
-     * generic method for validating incoming gateway responses.
+     * generic method for validating incoming gateway responses
      *
      * creates a new Transaction object and encapsulates
      * it inside a Result\Successful object, or

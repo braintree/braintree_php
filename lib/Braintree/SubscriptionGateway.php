@@ -4,7 +4,7 @@ namespace Braintree;
 use InvalidArgumentException;
 
 /**
- * Braintree SubscriptionGateway module.
+ * Braintree SubscriptionGateway module
  *
  * <b>== More information ==</b>
  *

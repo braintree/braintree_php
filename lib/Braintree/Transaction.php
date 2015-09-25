@@ -3,7 +3,7 @@ namespace Braintree;
 
 /**
  * Braintree Transaction processor
- * Creates and manages transactions.
+ * Creates and manages transactions
  *
  * At minimum, an amount, credit card number, and
  * credit card expiration date are required.
@@ -218,7 +218,7 @@ final class Transaction extends Braintree
     const TRAVEL_AND_CRUISE_INDUSTRY = 'travel_cruise';
 
     /**
-     * sets instance properties from an array of values.
+     * sets instance properties from an array of values
      *
      * @ignore
      *
@@ -368,7 +368,7 @@ final class Transaction extends Braintree
     }
 
     /**
-     * returns a string representation of the transaction.
+     * returns a string representation of the transaction
      *
      * @return string
      */
@@ -414,7 +414,7 @@ final class Transaction extends Braintree
 
     /**
      *  factory method: returns an instance of Transaction
-     *  to the requesting method, with populated properties.
+     *  to the requesting method, with populated properties
      *
      * @ignore
      *

@@ -2,7 +2,7 @@
 namespace Braintree\Test;
 
 /**
- * Merchant Account constants used for testing purposes.
+ * Merchant Account constants used for testing purposes
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */

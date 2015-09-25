@@ -2,7 +2,7 @@
 namespace Braintree;
 
 /**
- * Braintree PaymentMethodNonceGateway module.
+ * Braintree PaymentMethodNonceGateway module
  *
  * @category   Resources
  *
@@ -10,7 +10,7 @@ namespace Braintree;
  */
 
 /**
- * Creates and manages Braintree PaymentMethodNonces.
+ * Creates and manages Braintree PaymentMethodNonces
  *
  * <b>== More information ==</b>
  *

@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 /**
  * Braintree CreditCardGateway module
- * Creates and manages Braintree CreditCards.
+ * Creates and manages Braintree CreditCards
  *
  * <b>== More information ==</b>
  *

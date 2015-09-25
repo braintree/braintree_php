@@ -17,7 +17,7 @@ class RiskData extends Braintree
     }
 
     /**
-     * returns a string representation of the risk data.
+     * returns a string representation of the risk data
      *
      * @return string
      */

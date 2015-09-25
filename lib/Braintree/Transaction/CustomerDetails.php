@@ -5,7 +5,7 @@ use Braintree\Instance;
 
 /**
  * Customer details from a transaction
- * Creates an instance of customer details as returned from a transaction.
+ * Creates an instance of customer details as returned from a transaction
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *

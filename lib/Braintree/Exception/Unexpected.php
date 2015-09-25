@@ -4,8 +4,8 @@ namespace Braintree\Exception;
 use Braintree\Exception;
 
 /**
- * Raised when an error occurs that the client library is not built to handle.
- * This shouldn't happen.
+ * Raised when an error occurs that the client library is not built to handle
+ * This shouldn't happen
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */

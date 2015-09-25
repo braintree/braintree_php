@@ -4,7 +4,7 @@ namespace Braintree\Exception;
 use Braintree\Exception;
 
 /**
- * Raised when the SSL certificate fails verification.
+ * Raised when the SSL certificate fails verification
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */

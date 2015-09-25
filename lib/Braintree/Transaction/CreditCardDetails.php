@@ -5,7 +5,7 @@ use Braintree\Instance;
 
 /**
  * CreditCard details from a transaction
- * creates an instance of CreditCardDetails.
+ * creates an instance of CreditCardDetails
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *

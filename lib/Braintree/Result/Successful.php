@@ -8,7 +8,7 @@ use Braintree\Util;
  * Braintree Successful Result
  *
  * A Successful Result will be returned from gateway methods when
- * validations pass. It will provide access to the created resource.
+ * validations pass. It will provide access to the created resource
  *
  * For example, when creating a customer, Successful will
  * respond to <b>customer</b> like so:

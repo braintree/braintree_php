@@ -3,14 +3,14 @@ namespace Braintree;
 
 /**
  * Braintree Library Version
- * stores version information about the Braintree library.
+ * stores version information about the Braintree library
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 final class Version
 {
     /**
-     * class constants.
+     * class constants
      */
     const MAJOR = 3;
     const MINOR = 5;

@@ -7,7 +7,7 @@ use DateTimeZone;
 
 /**
  * Braintree Transparent Redirect Gateway module
- * Static class providing methods to build Transparent Redirect urls.
+ * Static class providing methods to build Transparent Redirect urls
  *
  * @category   Resources
  *
@@ -38,7 +38,7 @@ class TransparentRedirectGateway
     private static $_updateCreditCardSignature;
 
     /**
-     * create signatures for different call types.
+     * create signatures for different call types
      *
      * @ignore
      */
@@ -90,7 +90,7 @@ class TransparentRedirectGateway
     }
 
     /**
-     * returns the trData string for creating a credit card,.
+     * returns the trData string for creating a credit card,
      *
      * @param array $params
      *
@@ -108,7 +108,7 @@ class TransparentRedirectGateway
     }
 
     /**
-     * returns the trData string for creating a customer.
+     * returns the trData string for creating a customer
      *
      * @param array $params
      *
@@ -131,7 +131,7 @@ class TransparentRedirectGateway
     }
 
     /**
-     * returns the trData string for creating a transaction.
+     * returns the trData string for creating a transaction
      *
      * @param array $params
      *
@@ -158,9 +158,9 @@ class TransparentRedirectGateway
     }
 
     /**
-     * Returns the trData string for updating a credit card.
+     * Returns the trData string for updating a credit card
      *
-     *  The paymentMethodToken of the credit card to update is required.
+     *  The paymentMethodToken of the credit card to update is required
      *
      * <code>
      * $trData = TransparentRedirect::updateCreditCardData(array(
@@ -190,9 +190,9 @@ class TransparentRedirectGateway
     }
 
     /**
-     * Returns the trData string for updating a customer.
+     * Returns the trData string for updating a customer
      *
-     *  The customerId of the customer to update is required.
+     *  The customerId of the customer to update is required
      *
      * <code>
      * $trData = TransparentRedirect::updateCustomerData(array(

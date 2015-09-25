@@ -4,7 +4,7 @@ namespace Braintree\Transaction;
 use Braintree\Instance;
 
 /**
- * Creates an instance of AddressDetails as returned from a transaction.
+ * Creates an instance of AddressDetails as returned from a transaction
  *
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.

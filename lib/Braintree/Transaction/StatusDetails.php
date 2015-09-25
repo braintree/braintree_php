@@ -5,7 +5,7 @@ use Braintree\Instance;
 
 /**
  * Status details from a transaction
- * Creates an instance of StatusDetails, as part of a transaction response.
+ * Creates an instance of StatusDetails, as part of a transaction response
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *

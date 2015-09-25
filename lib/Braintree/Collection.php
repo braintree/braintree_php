@@ -8,7 +8,7 @@ use OutOfRangeException;
 use ArrayIterator;
 
 /**
- * Braintree Generic collection.
+ * Braintree Generic collection
  *
  * PHP Version 5
  *
@@ -25,7 +25,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     protected $_collection = array();
 
     /**
-     * Add a value into the collection.
+     * Add a value into the collection
      *
      * @param string $value
      */
@@ -35,7 +35,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * Set index's value.
+     * Set index's value
      *
      * @param int   $index
      * @param mixed $value
@@ -52,7 +52,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * Remove a value from the collection.
+     * Remove a value from the collection
      *
      * @param int $index index to remove
      *
@@ -68,7 +68,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * Return value at index.
+     * Return value at index
      *
      * @param int $index
      *
@@ -86,7 +86,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * Determine if index exists.
+     * Determine if index exists
      *
      * @param int $index
      *
@@ -102,7 +102,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
     /**
      * Return count of items in collection
-     * Implements countable.
+     * Implements countable
      *
      * @return int
      */
@@ -113,7 +113,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Return an iterator
-     * Implements IteratorAggregate.
+     * Implements IteratorAggregate
      *
      * @return ArrayIterator
      */
@@ -124,7 +124,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Set offset to value
-     * Implements ArrayAccess.
+     * Implements ArrayAccess
      *
      * @see set
      *
@@ -138,7 +138,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Unset offset
-     * Implements ArrayAccess.
+     * Implements ArrayAccess
      *
      * @see remove
      *
@@ -151,7 +151,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * get an offset's value
-     * Implements ArrayAccess.
+     * Implements ArrayAccess
      *
      * @see get
      *
@@ -166,7 +166,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Determine if offset exists
-     * Implements ArrayAccess.
+     * Implements ArrayAccess
      *
      * @see exists
      *

@@ -4,7 +4,7 @@ namespace Braintree;
 use InvalidArgumentException;
 
 /**
- * Braintree PayPalAccountGateway module.
+ * Braintree PayPalAccountGateway module
  *
  * @category   Resources
  *
@@ -12,7 +12,7 @@ use InvalidArgumentException;
  */
 
 /**
- * Manages Braintree PayPalAccounts.
+ * Manages Braintree PayPalAccounts
  *
  * <b>== More information ==</b>
  *
@@ -36,7 +36,7 @@ class PayPalAccountGateway
     }
 
     /**
-     * find a paypalAccount by token.
+     * find a paypalAccount by token
      *
      * @param string $token paypal accountunique id
      *
@@ -60,10 +60,10 @@ class PayPalAccountGateway
     }
 
     /**
-     * updates the paypalAccount record.
+     * updates the paypalAccount record
      *
      * if calling this method in context, $token
-     * is the 2nd attribute. $token is not sent in object context.
+     * is the 2nd attribute. $token is not sent in object context
      *
      * @param array  $attributes
      * @param string $token      (optional)
@@ -88,7 +88,7 @@ class PayPalAccountGateway
     }
 
     /**
-     * create a new sale for the current PayPal account.
+     * create a new sale for the current PayPal account
      *
      * @param string $token
      * @param array  $transactionAttribs
@@ -118,7 +118,7 @@ class PayPalAccountGateway
     }
 
     /**
-     * sends the update request to the gateway.
+     * sends the update request to the gateway
      *
      * @ignore
      *
@@ -136,12 +136,12 @@ class PayPalAccountGateway
     }
 
     /**
-     * generic method for validating incoming gateway responses.
+     * generic method for validating incoming gateway responses
      *
      * creates a new PayPalAccount object and encapsulates
      * it inside a Result\Successful object, or
      * encapsulates a Errors object inside a Result\Error
-     * alternatively, throws an Unexpected exception if the response is invalid.
+     * alternatively, throws an Unexpected exception if the response is invalid
      *
      * @ignore
      *
@@ -168,7 +168,7 @@ class PayPalAccountGateway
     }
 
     /**
-     * verifies that a valid paypal account identifier is being used.
+     * verifies that a valid paypal account identifier is being used
      *
      * @ignore
      *

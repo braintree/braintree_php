@@ -5,7 +5,7 @@ use Braintree\Instance;
 
 /**
  * Status details from a subscription
- * Creates an instance of StatusDetails, as part of a subscription response.
+ * Creates an instance of StatusDetails, as part of a subscription response
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *

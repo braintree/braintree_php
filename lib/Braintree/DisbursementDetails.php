@@ -3,7 +3,7 @@ namespace Braintree;
 
 /**
  * Disbursement details from a transaction
- * Creates an instance of DisbursementDetails as returned from a transaction.
+ * Creates an instance of DisbursementDetails as returned from a transaction
  *
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.

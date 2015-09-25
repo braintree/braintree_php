@@ -5,7 +5,7 @@ use Iterator;
 
 /**
  * Braintree ResourceCollection
- * ResourceCollection is a container object for result data.
+ * ResourceCollection is a container object for result data
  *
  * stores and retrieves search results and aggregate data
  *
@@ -29,7 +29,7 @@ class ResourceCollection implements Iterator
     private $_pager;
 
     /**
-     * set up the resource collection.
+     * set up the resource collection
      *
      * expects an array of attributes with literal keys
      *
@@ -44,7 +44,7 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * returns the current item when iterating with foreach.
+     * returns the current item when iterating with foreach
      */
     public function current()
     {
@@ -52,7 +52,7 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * returns the first item in the collection.
+     * returns the first item in the collection
      *
      * @return mixed
      */
@@ -70,7 +70,7 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * advances to the next item in the collection when iterating with foreach.
+     * advances to the next item in the collection when iterating with foreach
      */
     public function next()
     {
@@ -78,7 +78,7 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * rewinds the testIterateOverResults collection to the first item when iterating with foreach.
+     * rewinds the testIterateOverResults collection to the first item when iterating with foreach
      */
     public function rewind()
     {
@@ -87,7 +87,7 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * returns whether the current item is valid when iterating with foreach.
+     * returns whether the current item is valid when iterating with foreach
      */
     public function valid()
     {
@@ -119,7 +119,7 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * requests the next page of results for the collection.
+     * requests the next page of results for the collection
      *
      * @return none
      */

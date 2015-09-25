@@ -40,7 +40,7 @@ class ConfigurationTest extends Setup
 
      /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage Braintree\Configuration::publicKey needs to be set.
+     * @expectedExceptionMessage Braintree\Configuration::publicKey needs to be set
      */
     public function testAssertGlobalHasAccessTokenOrKeysWithoutPublicKey()
     {
@@ -74,7 +74,7 @@ class ConfigurationTest extends Setup
 
     /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage "invalid" is not a valid environment.
+     * @expectedExceptionMessage "invalid" is not a valid environment
      */
     public function testSetInvalidEnvironment()
     {
@@ -196,7 +196,7 @@ class ConfigurationTest extends Setup
 
     /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage environment needs to be set.
+     * @expectedExceptionMessage environment needs to be set
      */
     public function testValidateEmptyEnvironment()
     {
@@ -222,7 +222,7 @@ class ConfigurationTest extends Setup
     }
     /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage publicKey needs to be set.
+     * @expectedExceptionMessage publicKey needs to be set
      */
     public function testPublicKey()
     {
@@ -235,7 +235,7 @@ class ConfigurationTest extends Setup
     }
     /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage privateKey needs to be set.
+     * @expectedExceptionMessage privateKey needs to be set
      */
     public function testPrivateKey()
     {
@@ -337,7 +337,7 @@ class ConfigurationTest extends Setup
 
      /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage "invalid" is not a valid environment.
+     * @expectedExceptionMessage "invalid" is not a valid environment
      */
     public function testInvalidAccessTokenEnvironment()
     {
@@ -374,7 +374,7 @@ class ConfigurationTest extends Setup
 
      /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId).
+     * @expectedExceptionMessage Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId)
      */
     public function testCannotMixKeysWithOAuthCredentials()
     {

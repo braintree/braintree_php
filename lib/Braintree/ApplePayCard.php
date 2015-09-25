@@ -34,7 +34,7 @@ class ApplePayCard extends Braintree
 
     /* instance methods */
     /**
-     * returns false if default is null or false.
+     * returns false if default is null or false
      *
      * @return bool
      */
@@ -44,7 +44,7 @@ class ApplePayCard extends Braintree
     }
 
     /**
-     * checks whether the card is expired based on the current date.
+     * checks whether the card is expired based on the current date
      *
      * @return bool
      */
@@ -55,7 +55,7 @@ class ApplePayCard extends Braintree
 
     /**
      *  factory method: returns an instance of ApplePayCard
-     *  to the requesting method, with populated properties.
+     *  to the requesting method, with populated properties
      *
      * @ignore
      *
@@ -76,7 +76,7 @@ class ApplePayCard extends Braintree
     }
 
     /**
-     * sets instance properties from an array of values.
+     * sets instance properties from an array of values
      *
      * @param array $applePayCardAttribs array of Apple Pay card properties
      *

@@ -5,7 +5,7 @@ use Braintree\Util;
 
 /**
  * Error handler
- * Handles validation errors.
+ * Handles validation errors
  *
  * Contains a read-only property $error which is a ValidationErrorCollection
  *
@@ -26,7 +26,7 @@ class ErrorCollection
     }
 
     /**
-     * Returns all of the validation errors at all levels of nesting in a single, flat array.
+     * Returns all of the validation errors at all levels of nesting in a single, flat array
      */
     public function deepAll()
     {
@@ -36,7 +36,7 @@ class ErrorCollection
     /**
      * Returns the total number of validation errors at all levels of nesting. For example,
      *if creating a customer with a credit card and a billing address, and each of the customer,
-     * credit card, and billing address has 1 error, this method will return 3.
+     * credit card, and billing address has 1 error, this method will return 3
      *
      * @return int size
      */
@@ -48,7 +48,7 @@ class ErrorCollection
     }
 
     /**
-     * return errors for the passed key name.
+     * return errors for the passed key name
      *
      * @param string $key
      *
@@ -60,8 +60,8 @@ class ErrorCollection
     }
 
     /**
-     * return errors for the passed html field.
-     * For example, $result->errors->onHtmlField("transaction[customer][last_name]").
+     * return errors for the passed html field
+     * For example, $result->errors->onHtmlField("transaction[customer][last_name]")
      *
      * @param string $field
      *
@@ -83,7 +83,7 @@ class ErrorCollection
     }
 
     /**
-     * Returns the errors at the given nesting level (see forKey) in a single, flat array:.
+     * Returns the errors at the given nesting level (see forKey) in a single, flat array:
      *
      * <code>
      *   $result = Customer::create(...);

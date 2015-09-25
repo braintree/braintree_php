@@ -3,7 +3,7 @@ namespace Braintree;
 
 /**
  * Partner Merchant information that is generated when a partner is connected
- * to or disconnected from a user.
+ * to or disconnected from a user
  *
  * Creates an instance of PartnerMerchants
  *

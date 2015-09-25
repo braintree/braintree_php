@@ -5,7 +5,7 @@ use Braintree\RiskData;
 use Braintree\Util;
 
 /**
- * Braintree Credit Card Verification Result.
+ * Braintree Credit Card Verification Result
  *
  * This object is returned as part of an Error Result; it provides
  * access to the credit card verification data from the gateway
@@ -44,7 +44,7 @@ class CreditCardVerification
     }
 
     /**
-     * initializes instance properties from the keys/values of an array.
+     * initializes instance properties from the keys/values of an array
      *
      * @ignore
      *
@@ -76,7 +76,7 @@ class CreditCardVerification
     }
 
     /**
-     * returns a string representation of the customer.
+     * returns a string representation of the customer
      *
      * @return string
      */

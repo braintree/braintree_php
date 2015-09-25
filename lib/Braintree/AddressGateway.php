@@ -72,7 +72,7 @@ class AddressGateway
 
     /**
      * attempts the create operation assuming all data will validate
-     * returns a Address object instead of a Result.
+     * returns a Address object instead of a Result
      *
      * @access public
      * @param  array $attribs
@@ -106,8 +106,8 @@ class AddressGateway
      * find an address by id
      *
      * Finds the address with the given <b>addressId</b> that is associated
-     * to the given <b>customerOrId</b>.
-     * If the address cannot be found, a NotFound exception will be thrown.
+     * to the given <b>customerOrId</b>
+     * If the address cannot be found, a NotFound exception will be thrown
      *
      *
      * @param mixed  $customerOrId
@@ -134,11 +134,11 @@ class AddressGateway
     }
 
     /**
-     * updates the address record.
+     * updates the address record
      *
      * if calling this method in context,
-     * customerOrId is the 2nd attribute, addressId 3rd.
-     * customerOrId & addressId are not sent in object context.
+     * customerOrId is the 2nd attribute, addressId 3rd
+     * customerOrId & addressId are not sent in object context
      *
      *
      * @param array  $attributes
@@ -160,11 +160,11 @@ class AddressGateway
     }
 
     /**
-     * update an address record, assuming validations will pass.
+     * update an address record, assuming validations will pass
      *
      * if calling this method in context,
-     * customerOrId is the 2nd attribute, addressId 3rd.
-     * customerOrId & addressId are not sent in object context.
+     * customerOrId is the 2nd attribute, addressId 3rd
+     * customerOrId & addressId are not sent in object context
      *
      * @param array  $transactionAttribs
      * @param string $customerId
@@ -183,7 +183,7 @@ class AddressGateway
     }
 
     /**
-     * creates a full array signature of a valid create request.
+     * creates a full array signature of a valid create request
      *
      * @return array gateway create request format
      */
@@ -197,7 +197,7 @@ class AddressGateway
     }
 
     /**
-     * creates a full array signature of a valid update request.
+     * creates a full array signature of a valid update request
      *
      * @return array gateway update request format
      */
@@ -208,7 +208,7 @@ class AddressGateway
     }
 
     /**
-     * verifies that a valid address id is being used.
+     * verifies that a valid address id is being used
      *
      * @ignore
      *
@@ -231,7 +231,7 @@ class AddressGateway
     }
 
     /**
-     * verifies that a valid customer id is being used.
+     * verifies that a valid customer id is being used
      *
      * @ignore
      *
@@ -254,7 +254,7 @@ class AddressGateway
     }
 
     /**
-     * determines if a string id or Customer object was passed.
+     * determines if a string id or Customer object was passed
      *
      * @ignore
      *
@@ -272,7 +272,7 @@ class AddressGateway
 
     /* private class methods */
     /**
-     * sends the create request to the gateway.
+     * sends the create request to the gateway
      *
      * @ignore
      *
@@ -290,12 +290,12 @@ class AddressGateway
     }
 
     /**
-     * generic method for validating incoming gateway responses.
+     * generic method for validating incoming gateway responses
      *
      * creates a new Address object and encapsulates
      * it inside a Result\Successful object, or
      * encapsulates a Errors object inside a Result\Error
-     * alternatively, throws an Unexpected exception if the response is invalid.
+     * alternatively, throws an Unexpected exception if the response is invalid
      *
      * @ignore
      *

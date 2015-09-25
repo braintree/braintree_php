@@ -13,7 +13,7 @@ use InvalidArgumentException;
 class Util
 {
     /**
-     * extracts an attribute and returns an array of objects.
+     * extracts an attribute and returns an array of objects
      *
      * extracts the requested element from an array, and converts the contents
      * of its child arrays to objects of type $attributeName, or returns
@@ -45,7 +45,7 @@ class Util
         return $objectArray;
     }
     /**
-     * throws an exception based on the type of error.
+     * throws an exception based on the type of error
      *
      * @param string $statusCode HTTP status code to throw exception from
      *
@@ -97,7 +97,7 @@ class Util
     }
 
     /**
-     * removes the  header from a classname.
+     * removes the  header from a classname
      *
      * @param string $name ClassName
      *
@@ -163,7 +163,7 @@ class Util
     }
 
     /**
-     * convert alpha-beta-gamma to alphaBetaGamma.
+     * convert alpha-beta-gamma to alphaBetaGamma
      *
      * @param string $string
      *
@@ -183,7 +183,7 @@ class Util
     }
 
     /**
-     * convert alpha-beta-gamma to alpha_beta_gamma.
+     * convert alpha-beta-gamma to alpha_beta_gamma
      *
      * @param string $string
      *
@@ -195,7 +195,7 @@ class Util
     }
 
     /**
-     * find capitals and convert to delimiter + lowercase.
+     * find capitals and convert to delimiter + lowercase
      *
      * @param var $string
      *
@@ -303,7 +303,7 @@ class Util
     }
 
     /**
-     * verify user request structure.
+     * verify user request structure
      *
      * compares the expected signature of a gateway request
      * against the actual structure sent by the user
@@ -325,7 +325,7 @@ class Util
         }
     }
     /**
-     * flattens a numerically indexed nested array to a single level.
+     * flattens a numerically indexed nested array to a single level
      *
      * @param array  $keys
      * @param string $namespace
@@ -377,7 +377,7 @@ class Util
     }
 
     /**
-     * removes wildcard entries from the invalid keys array.
+     * removes wildcard entries from the invalid keys array
      *
      * @param array  $validKeys
      * @param <array $invalidKeys

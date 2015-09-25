@@ -31,7 +31,7 @@ class Address extends Braintree
 {
     /**
      * returns false if comparing object is not a Address,
-     * or is a Address with a different id.
+     * or is a Address with a different id
      *
      * @param object $other address to compare against
      *
@@ -46,7 +46,7 @@ class Address extends Braintree
 
     /**
      * create a printable representation of the object as:
-     * ClassName[property=value, property=value].
+     * ClassName[property=value, property=value]
      *
      * @ignore
      *
@@ -59,7 +59,7 @@ class Address extends Braintree
     }
 
     /**
-     * sets instance properties from an array of values.
+     * sets instance properties from an array of values
      *
      * @ignore
      *
@@ -75,7 +75,7 @@ class Address extends Braintree
 
     /**
      *  factory method: returns an instance of Address
-     *  to the requesting method, with populated properties.
+     *  to the requesting method, with populated properties
      *
      * @ignore
      *

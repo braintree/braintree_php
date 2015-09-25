@@ -2,7 +2,7 @@
 namespace Braintree\Test;
 
 /**
- * Credit card information used for testing purposes.
+ * Credit card information used for testing purposes
  *
  * The constants contained in the Test\CreditCardNumbers class provide
  * credit card numbers that should be used when working in the sandbox environment.

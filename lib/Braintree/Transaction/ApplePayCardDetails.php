@@ -4,13 +4,13 @@ namespace Braintree\Transaction;
 use Braintree\Instance;
 
 /**
- * Apple Pay card details from a transaction.
+ * Apple Pay card details from a transaction
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
- * creates an instance of ApplePayCardDetails.
+ * creates an instance of ApplePayCardDetails
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *

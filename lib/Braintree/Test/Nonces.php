@@ -2,13 +2,13 @@
 namespace Braintree\Test;
 
 /**
- * Nonces used for testing purposes.
+ * Nonces used for testing purposes
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
- * Nonces used for testing purposes.
+ * Nonces used for testing purposes
  *
  * The constants in this class can be used to perform nonce operations
  * with the desired status in the sandbox environment.

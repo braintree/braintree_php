@@ -138,7 +138,7 @@ class Configuration
     }
      /**
      * Sets or gets the proxy type to use for connecting to Braintree. This value
-     * can be any of the CURLOPT_PROXYTYPE options in PHP cURL.
+     * can be any of the CURLOPT_PROXYTYPE options in PHP cURL
      *
      * @param string $value If provided, sets the proxy type
      * @return string The proxy type used for connecting to Braintree
@@ -210,7 +210,7 @@ class Configuration
     }
 
     /**
-     * Do not use this method directly. Pass in the environment to the constructor.
+     * Do not use this method directly. Pass in the environment to the constructor
      */
     public function setEnvironment($value)
     {
@@ -223,7 +223,7 @@ class Configuration
     }
 
     /**
-     * Do not use this method directly. Pass in the merchantId to the constructor.
+     * Do not use this method directly. Pass in the merchantId to the constructor
      */
     public function setMerchantId($value)
     {
@@ -241,7 +241,7 @@ class Configuration
     }
 
     /**
-     * Do not use this method directly. Pass in the publicKey to the constructor.
+     * Do not use this method directly. Pass in the publicKey to the constructor
      */
     public function setPublicKey($value)
     {
@@ -259,7 +259,7 @@ class Configuration
     }
 
     /**
-     * Do not use this method directly. Pass in the privateKey to the constructor.
+     * Do not use this method directly. Pass in the privateKey to the constructor
      */
     public function setPrivateKey($value)
     {

@@ -8,7 +8,7 @@ use XMLWriter;
 use Braintree\Util;
 
 /**
- * PHP version 5.
+ * PHP version 5
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
@@ -23,7 +23,7 @@ class Generator
 {
     /**
      * arrays passed to this method should have a single root element
-     * with an array as its value.
+     * with an array as its value
      *
      * @param array $aData the array of data
      *
@@ -58,7 +58,7 @@ class Generator
     }
 
     /**
-     * Construct XML elements with attributes from an associative array.
+     * Construct XML elements with attributes from an associative array
      *
      * @static
      *
@@ -108,7 +108,7 @@ class Generator
 
     /**
      * convert passed data into an array of attributeType, attributeName, and value
-     * dates sent as DateTime objects will be converted to strings.
+     * dates sent as DateTime objects will be converted to strings
      *
      * @param mixed $value
      *
@@ -130,7 +130,7 @@ class Generator
         }
     }
     /**
-     * converts datetime back to xml schema format.
+     * converts datetime back to xml schema format
      *
      * @param object $dateTime
      *

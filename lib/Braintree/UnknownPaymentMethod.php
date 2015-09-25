@@ -2,7 +2,7 @@
 namespace Braintree;
 
 /**
- * Braintree UnknownPaymentMethod module.
+ * Braintree UnknownPaymentMethod module
  *
  * @category   Resources
  *
@@ -10,7 +10,7 @@ namespace Braintree;
  */
 
 /**
- * Manages Braintree UnknownPaymentMethod.
+ * Manages Braintree UnknownPaymentMethod
  *
  * <b>== More information ==</b>
  *
@@ -26,7 +26,7 @@ class UnknownPaymentMethod extends Braintree
 {
     /**
      *  factory method: returns an instance of UnknownPaymentMethod
-     *  to the requesting method, with populated properties.
+     *  to the requesting method, with populated properties
      *
      * @ignore
      *
@@ -44,7 +44,7 @@ class UnknownPaymentMethod extends Braintree
     /* instance methods */
 
     /**
-     * returns false if default is null or false.
+     * returns false if default is null or false
      *
      * @return bool
      */
@@ -54,7 +54,7 @@ class UnknownPaymentMethod extends Braintree
     }
 
     /**
-     * sets instance properties from an array of values.
+     * sets instance properties from an array of values
      *
      * @param array $unknownPaymentMethodAttribs array of unknownPaymentMethod data
      *

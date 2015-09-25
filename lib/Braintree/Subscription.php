@@ -2,7 +2,7 @@
 namespace Braintree;
 
 /**
- * Braintree Subscription module.
+ * Braintree Subscription module
  *
  * <b>== More information ==</b>
  *
@@ -81,7 +81,7 @@ class Subscription extends Braintree
     }
 
     /**
-     * returns a string representation of the customer.
+     * returns a string representation of the customer
      *
      * @return string
      */

@@ -4,7 +4,7 @@ namespace Braintree;
 use InvalidArgumentException;
 
 /**
- * Braintree PaymentMethodGateway module.
+ * Braintree PaymentMethodGateway module
  *
  * @category   Resources
  *
@@ -12,7 +12,7 @@ use InvalidArgumentException;
  */
 
 /**
- * Creates and manages Braintree PaymentMethods.
+ * Creates and manages Braintree PaymentMethods
  *
  * <b>== More information ==</b>
  *
@@ -43,7 +43,7 @@ class PaymentMethodGateway
     }
 
     /**
-     * find a PaymentMethod by token.
+     * find a PaymentMethod by token
      *
      * @param string $token payment method unique id
      *
@@ -147,7 +147,7 @@ class PaymentMethodGateway
     }
 
     /**
-     * sends the create request to the gateway.
+     * sends the create request to the gateway
      *
      * @ignore
      *
@@ -165,7 +165,7 @@ class PaymentMethodGateway
     }
 
     /**
-     * sends the update request to the gateway.
+     * sends the update request to the gateway
      *
      * @ignore
      *
@@ -183,12 +183,12 @@ class PaymentMethodGateway
     }
 
     /**
-     * generic method for validating incoming gateway responses.
+     * generic method for validating incoming gateway responses
      *
      * creates a new CreditCard or PayPalAccount object
      * and encapsulates it inside a Result\Successful object, or
      * encapsulates a Errors object inside a Result\Error
-     * alternatively, throws an Unexpected exception if the response is invalid.
+     * alternatively, throws an Unexpected exception if the response is invalid
      *
      * @ignore
      *
@@ -251,7 +251,7 @@ class PaymentMethodGateway
     }
 
     /**
-     * verifies that a valid payment method identifier is being used.
+     * verifies that a valid payment method identifier is being used
      *
      * @ignore
      *

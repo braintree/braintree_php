@@ -4,13 +4,13 @@ namespace Braintree\Transaction;
 use Braintree\Instance;
 
 /**
- * Coinbase details from a transaction.
+ * Coinbase details from a transaction
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
- * creates an instance of Coinbase.
+ * creates an instance of Coinbase
  *
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.

@@ -4,13 +4,13 @@ namespace Braintree\Dispute;
 use Braintree\Instance;
 
 /**
- * Transaction details for a dispute.
+ * Transaction details for a dispute
  *
  * @copyright  2010 Braintree Payment Solutions
  */
 
 /**
- * Creates an instance of DisbursementDetails as returned from a transaction.
+ * Creates an instance of DisbursementDetails as returned from a transaction
  *
  *
  * @copyright  2010 Braintree Payment Solutions

@@ -2,7 +2,7 @@
 namespace Braintree;
 
 /**
- * Braintree Class Instance template.
+ * Braintree Class Instance template
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  * @abstract
@@ -20,7 +20,7 @@ abstract class Instance
     }
 
     /**
-     * returns private/nonexistent instance properties.
+     * returns private/nonexistent instance properties
      *
      * @param var $name property name
      *
@@ -38,7 +38,7 @@ abstract class Instance
     }
 
     /**
-     * used by isset() and empty().
+     * used by isset() and empty()
      *
      * @param string $name property name
      *
@@ -51,7 +51,7 @@ abstract class Instance
 
     /**
      * create a printable representation of the object as:
-     * ClassName[property=value, property=value].
+     * ClassName[property=value, property=value]
      *
      * @return var
      */
@@ -62,7 +62,7 @@ abstract class Instance
         return get_class($this).'['.$objOutput.']';
     }
     /**
-     * initializes instance properties from the keys/values of an array.
+     * initializes instance properties from the keys/values of an array
      *
      * @ignore
      *

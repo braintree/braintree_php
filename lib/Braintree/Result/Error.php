@@ -9,7 +9,7 @@ use Braintree\Util;
 use Braintree\Error\ErrorCollection;
 
 /**
- * Braintree Error Result.
+ * Braintree Error Result
  *
  * An Error Result will be returned from gateway methods when
  * the gateway responds with an error. It will provide access
@@ -42,7 +42,7 @@ class Error extends Braintree
    /**
     * return original value for a field
     * For example, if a user tried to submit 'invalid-email' in the html field transaction[customer][email],
-    * $result->valueForHtmlField("transaction[customer][email]") would yield "invalid-email".
+    * $result->valueForHtmlField("transaction[customer][email]") would yield "invalid-email"
     *
     * @param string $field
     *
@@ -66,7 +66,7 @@ class Error extends Braintree
    }
 
    /**
-    * overrides default constructor.
+    * overrides default constructor
     *
     * @ignore
     *
@@ -104,7 +104,7 @@ class Error extends Braintree
 
     /**
      * create a printable representation of the object as:
-     * ClassName[property=value, property=value].
+     * ClassName[property=value, property=value]
      *
      * @ignore
      *

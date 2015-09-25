@@ -34,7 +34,7 @@ abstract class Braintree
     }
 
     /**
-     * returns private/nonexistent instance properties.
+     * returns private/nonexistent instance properties
      *
      * @ignore
      *
@@ -54,7 +54,7 @@ abstract class Braintree
     }
 
     /**
-     * used by isset() and empty().
+     * used by isset() and empty()
      *
      * @param string $name property name
      *

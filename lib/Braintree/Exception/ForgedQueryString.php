@@ -8,7 +8,7 @@ use Braintree\Exception;
  * Raised from methods that confirm transparent redirect requests
  * when the given query string cannot be verified. This may indicate
  * an attempted hack on the merchant's transparent redirect
- * confirmation URL.
+ * confirmation URL
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */

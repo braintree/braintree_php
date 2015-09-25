@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 /**
  * Braintree CustomerGateway module
- * Creates and manages Customers.
+ * Creates and manages Customers
  *
  * <b>== More information ==</b>
  *
@@ -60,7 +60,7 @@ class CustomerGateway
 
     /**
      * Creates a customer using the given +attributes+. If <tt>:id</tt> is not passed,
-     * the gateway will generate it.
+     * the gateway will generate it
      *
      * <code>
      *   $result = Customer::create(array(
@@ -92,7 +92,7 @@ class CustomerGateway
 
     /**
      * attempts the create operation assuming all data will validate
-     * returns a Customer object instead of a Result.
+     * returns a Customer object instead of a Result
      *
      * @param array $attribs
      *
@@ -107,7 +107,7 @@ class CustomerGateway
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
     /**
-     * create a customer from a TransparentRedirect operation.
+     * create a customer from a TransparentRedirect operation
      *
      * @param array $attribs
      *
@@ -140,7 +140,7 @@ class CustomerGateway
     }
 
     /**
-     * creates a full array signature of a valid create request.
+     * creates a full array signature of a valid create request
      *
      * @return array gateway create request format
      */
@@ -160,7 +160,7 @@ class CustomerGateway
     }
 
     /**
-     * creates a full array signature of a valid update request.
+     * creates a full array signature of a valid update request
      *
      * @return array update request format
      */
@@ -186,7 +186,7 @@ class CustomerGateway
     }
 
     /**
-     * find a customer by id.
+     * find a customer by id
      *
      * @param string id customer Id
      *
@@ -207,7 +207,7 @@ class CustomerGateway
     }
 
     /**
-     * credit a customer for the passed transaction.
+     * credit a customer for the passed transaction
      *
      * @param array $attribs
      *
@@ -221,7 +221,7 @@ class CustomerGateway
     }
 
     /**
-     * credit a customer, assuming validations will pass.
+     * credit a customer, assuming validations will pass
      *
      * returns a Transaction object on success
      *
@@ -239,7 +239,7 @@ class CustomerGateway
     }
 
     /**
-     * delete a customer by id.
+     * delete a customer by id
      *
      * @param string $customerId
      */
@@ -253,7 +253,7 @@ class CustomerGateway
     }
 
     /**
-     * create a new sale for a customer.
+     * create a new sale for a customer
      *
      * @param string $customerId
      * @param array  $transactionAttribs
@@ -274,7 +274,7 @@ class CustomerGateway
     }
 
     /**
-     * create a new sale for a customer, assuming validations will pass.
+     * create a new sale for a customer, assuming validations will pass
      *
      * returns a Transaction object on success
      *
@@ -295,7 +295,7 @@ class CustomerGateway
     }
 
     /**
-     * Returns a ResourceCollection of customers matching the search query.
+     * Returns a ResourceCollection of customers matching the search query
      *
      * If <b>query</b> is a string, the search will be a basic search.
      * If <b>query</b> is a hash, the search will be an advanced search.
@@ -332,10 +332,10 @@ class CustomerGateway
     }
 
     /**
-     * updates the customer record.
+     * updates the customer record
      *
      * if calling this method in static context, customerId
-     * is the 2nd attribute. customerId is not sent in object context.
+     * is the 2nd attribute. customerId is not sent in object context
      *
      * @param array  $attributes
      * @param string $customerId (optional)
@@ -355,10 +355,10 @@ class CustomerGateway
     }
 
     /**
-     * update a customer record, assuming validations will pass.
+     * update a customer record, assuming validations will pass
      *
      * if calling this method in static context, customerId
-     * is the 2nd attribute. customerId is not sent in object context.
+     * is the 2nd attribute. customerId is not sent in object context
      * returns a Customer object on success
      *
      * @param array  $attributes
@@ -388,7 +388,7 @@ class CustomerGateway
     }
 
     /**
-     * update a customer from a TransparentRedirect operation.
+     * update a customer from a TransparentRedirect operation
      *
      * @param array $attribs
      *
@@ -411,7 +411,7 @@ class CustomerGateway
     /* instance methods */
 
     /**
-     * sets instance properties from an array of values.
+     * sets instance properties from an array of values
      *
      * @ignore
      *
@@ -471,7 +471,7 @@ class CustomerGateway
     }
 
     /**
-     * returns a string representation of the customer.
+     * returns a string representation of the customer
      *
      * @return string
      */
@@ -483,7 +483,7 @@ class CustomerGateway
 
     /**
      * returns false if comparing object is not a Customer,
-     * or is a Customer with a different id.
+     * or is a Customer with a different id
      *
      * @param object $otherCust customer to compare against
      *
@@ -495,7 +495,7 @@ class CustomerGateway
     }
 
     /**
-     * returns an array containt all of the customer's payment methods.
+     * returns an array containt all of the customer's payment methods
      *
      * @return array
      */
@@ -505,7 +505,7 @@ class CustomerGateway
     }
 
     /**
-     * returns the customer's default payment method.
+     * returns the customer's default payment method
      *
      * @return object CreditCard | PayPalAccount | ApplePayCard | AndroidPayCard
      */
@@ -542,7 +542,7 @@ class CustomerGateway
         );
 
     /**
-     * sends the create request to the gateway.
+     * sends the create request to the gateway
      *
      * @ignore
      *
@@ -560,7 +560,7 @@ class CustomerGateway
     }
 
     /**
-     * verifies that a valid customer id is being used.
+     * verifies that a valid customer id is being used
      *
      * @ignore
      *
@@ -582,7 +582,7 @@ class CustomerGateway
     /* private class methods */
 
     /**
-     * sends the update request to the gateway.
+     * sends the update request to the gateway
      *
      * @ignore
      *
@@ -600,12 +600,12 @@ class CustomerGateway
     }
 
     /**
-     * generic method for validating incoming gateway responses.
+     * generic method for validating incoming gateway responses
      *
      * creates a new Customer object and encapsulates
      * it inside a Result\Successful object, or
      * encapsulates a Errors object inside a Result\Error
-     * alternatively, throws an Unexpected exception if the response is invalid.
+     * alternatively, throws an Unexpected exception if the response is invalid
      *
      * @ignore
      *

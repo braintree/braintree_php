@@ -11,7 +11,7 @@ class OAuthTest extends Setup
 {
     /**
     * @expectedException Braintree\Exception\Configuration
-    * @expectedExceptionMessage clientSecret needs to be passed to Braintree\Gateway.
+    * @expectedExceptionMessage clientSecret needs to be passed to Braintree\Gateway
     */
     public function testAssertsHasCredentials()
     {

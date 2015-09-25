@@ -2,7 +2,7 @@
 namespace Braintree\Test;
 
 /**
- * Transaction amounts used for testing purposes.
+ * Transaction amounts used for testing purposes
  *
  * The constants in this class can be used to create transactions with
  * the desired status in the sandbox environment.

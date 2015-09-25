@@ -2,7 +2,7 @@
 namespace Braintree\Test;
 
 /**
- * VenmoSdk payment method codes used for testing purposes.
+ * VenmoSdk payment method codes used for testing purposes
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */

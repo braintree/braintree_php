@@ -2,7 +2,7 @@
 namespace Braintree;
 
 /**
- * Braintree CoinbaseAccount module.
+ * Braintree CoinbaseAccount module
  *
  * @category   Resources
  *
@@ -10,7 +10,7 @@ namespace Braintree;
  */
 
 /**
- * Manages Braintree CoinbaseAccounts.
+ * Manages Braintree CoinbaseAccounts
  *
  * <b>== More information ==</b>
  *
@@ -28,7 +28,7 @@ class CoinbaseAccount extends Braintree
 {
     /**
      *  factory method: returns an instance of CoinbaseAccount
-     *  to the requesting method, with populated properties.
+     *  to the requesting method, with populated properties
      *
      * @ignore
      *
@@ -45,7 +45,7 @@ class CoinbaseAccount extends Braintree
     /* instance methods */
 
     /**
-     * returns false if default is null or false.
+     * returns false if default is null or false
      *
      * @return bool
      */
@@ -55,7 +55,7 @@ class CoinbaseAccount extends Braintree
     }
 
     /**
-     * sets instance properties from an array of values.
+     * sets instance properties from an array of values
      *
      * @param array $coinbaseAccountAttribs array of coinbaseAccount data
      *
@@ -78,7 +78,7 @@ class CoinbaseAccount extends Braintree
 
     /**
      * create a printable representation of the object as:
-     * ClassName[property=value, property=value].
+     * ClassName[property=value, property=value]
      *
      * @return string
      */

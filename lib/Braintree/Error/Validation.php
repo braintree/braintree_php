@@ -5,7 +5,7 @@ use Braintree\Util;
 
 /**
  * error object returned as part of a validation error collection
- * provides read-only access to $attribute, $code, and $message.
+ * provides read-only access to $attribute, $code, and $message
  *
  * <b>== More information ==</b>
  *
@@ -33,7 +33,7 @@ class Validation
         $this->_initializeFromArray($attributes);
     }
     /**
-     * initializes instance properties from the keys/values of an array.
+     * initializes instance properties from the keys/values of an array
      *
      * @ignore
      *

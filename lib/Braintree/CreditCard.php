@@ -3,7 +3,7 @@ namespace Braintree;
 
 /**
  * Braintree CreditCard module
- * Creates and manages Braintree CreditCards.
+ * Creates and manages Braintree CreditCards
  *
  * <b>== More information ==</b>
  *
@@ -79,7 +79,7 @@ class CreditCard extends Braintree
 
     /* instance methods */
     /**
-     * returns false if default is null or false.
+     * returns false if default is null or false
      *
      * @return bool
      */
@@ -89,7 +89,7 @@ class CreditCard extends Braintree
     }
 
     /**
-     * checks whether the card is expired based on the current date.
+     * checks whether the card is expired based on the current date
      *
      * @return bool
      */
@@ -99,7 +99,7 @@ class CreditCard extends Braintree
     }
 
     /**
-     * checks whether the card is associated with venmo sdk.
+     * checks whether the card is associated with venmo sdk
      *
      * @return bool
      */
@@ -109,7 +109,7 @@ class CreditCard extends Braintree
     }
 
     /**
-     * sets instance properties from an array of values.
+     * sets instance properties from an array of values
      *
      * @param array $creditCardAttribs array of creditcard data
      *
@@ -152,7 +152,7 @@ class CreditCard extends Braintree
 
     /**
      * returns false if comparing object is not a CreditCard,
-     * or is a CreditCard with a different id.
+     * or is a CreditCard with a different id
      *
      * @param object $otherCreditCard customer to compare against
      *
@@ -165,7 +165,7 @@ class CreditCard extends Braintree
 
     /**
      * create a printable representation of the object as:
-     * ClassName[property=value, property=value].
+     * ClassName[property=value, property=value]
      *
      * @return string
      */
@@ -177,7 +177,7 @@ class CreditCard extends Braintree
 
     /**
      *  factory method: returns an instance of CreditCard
-     *  to the requesting method, with populated properties.
+     *  to the requesting method, with populated properties
      *
      * @ignore
      *

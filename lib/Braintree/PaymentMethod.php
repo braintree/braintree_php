@@ -2,7 +2,7 @@
 namespace Braintree;
 
 /**
- * Braintree PaymentMethod module.
+ * Braintree PaymentMethod module
  *
  * @category   Resources
  *
@@ -10,7 +10,7 @@ namespace Braintree;
  */
 
 /**
- * Creates and manages Braintree PaymentMethods.
+ * Creates and manages Braintree PaymentMethods
  *
  * <b>== More information ==</b>
  *

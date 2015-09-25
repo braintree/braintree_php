@@ -2,7 +2,7 @@
 namespace Braintree;
 
 /**
- * Braintree PayPalAccount module.
+ * Braintree PayPalAccount module
  *
  * @category   Resources
  *
@@ -10,14 +10,14 @@ namespace Braintree;
  */
 
 /**
- * Manages Braintree PayPalAccounts.
+ * Manages Braintree PayPalAccounts
  *
  * <b>== More information ==</b>
  *
  *
  * @category   Resources
  *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2014 Braintree, a division of PayPal, Inc
  *
  * @property-read string $email
  * @property-read string $token
@@ -27,7 +27,7 @@ class PayPalAccount extends Braintree
 {
     /**
      *  factory method: returns an instance of PayPalAccount
-     *  to the requesting method, with populated properties.
+     *  to the requesting method, with populated properties
      *
      * @ignore
      *
@@ -44,7 +44,7 @@ class PayPalAccount extends Braintree
     /* instance methods */
 
     /**
-     * returns false if default is null or false.
+     * returns false if default is null or false
      *
      * @return bool
      */
@@ -54,7 +54,7 @@ class PayPalAccount extends Braintree
     }
 
     /**
-     * sets instance properties from an array of values.
+     * sets instance properties from an array of values
      *
      * @param array $paypalAccountAttribs array of paypalAccount data
      *
@@ -77,7 +77,7 @@ class PayPalAccount extends Braintree
 
     /**
      * create a printable representation of the object as:
-     * ClassName[property=value, property=value].
+     * ClassName[property=value, property=value]
      *
      * @return string
      */
