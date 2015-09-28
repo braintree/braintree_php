@@ -15,7 +15,7 @@ class HttpTest extends Setup
             $this->setExpectedException('Braintree\Exception\Authentication');
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->get('/');
-        } catch (Exception $e) {
+        } catch (Braintree\Exception $e) {
             Braintree\Configuration::environment('development');
             throw $e;
         }
@@ -29,7 +29,7 @@ class HttpTest extends Setup
             $this->setExpectedException('Braintree\Exception\Authentication');
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->get('/');
-        } catch (Exception $e) {
+        } catch (Braintree\Exception $e) {
             Braintree\Configuration::environment('development');
             throw $e;
         }
@@ -44,7 +44,7 @@ class HttpTest extends Setup
             $http = new Braintree\Http(Braintree\Configuration::$global);
             //ip address of api.braintreegateway.com
             $http->_doUrlRequest('get', '204.109.13.121');
-        } catch (Exception $e) {
+        } catch (Braintree\Exception $e) {
             Braintree\Configuration::environment('development');
             throw $e;
         }
