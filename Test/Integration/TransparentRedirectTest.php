@@ -57,8 +57,9 @@ class TransparentRedirectTest extends Setup
             );
             $this->setExpectedException('Braintree\Exception\Authentication');
             Braintree\Customer::createFromTransparentRedirect($queryString);
-        } catch (Exception $e) {
+        } catch (Braintree\Exception $e) {
         }
+
         $privateKey = Braintree\Configuration::privateKey($privateKey);
         if (isset($e)) {
             throw $e;
