@@ -99,7 +99,7 @@ class HttpClientApi extends Braintree\Http
             unset($options['customerId']);
         }
 
-        $gateway = new Braintree_Gateway($this->_config);
+        $gateway = new Braintree\Gateway($this->_config);
 
         $clientToken = json_decode(base64_decode($gateway->clientToken()->generate($clientTokenOptions)));
         $options['authorization_fingerprint'] = $clientToken->authorizationFingerprint;

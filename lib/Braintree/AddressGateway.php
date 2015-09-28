@@ -19,7 +19,7 @@ class AddressGateway
 {
     /**
      *
-     * @var Braintree_Gateway
+     * @var Braintree\Gateway
      */
     private $_gateway;
 
@@ -37,7 +37,7 @@ class AddressGateway
 
     /**
      *
-     * @param Braintree_Gateway $gateway
+     * @param Braintree\Gateway $gateway
      */
     public function __construct($gateway)
     {
