@@ -83,6 +83,6 @@ class SubscriptionHelper
 
     public static function sortModificationsById(&$modifications)
     {
-        usort($modifications, array('SubscriptionHelper', 'compareModificationsById'));
+        usort($modifications, array('Test\Integration\SubscriptionHelper', 'compareModificationsById'));
     }
 }
