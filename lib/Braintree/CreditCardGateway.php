@@ -222,7 +222,7 @@ class CreditCardGateway
     {
         $result = $this->credit($token, $transactionAttribs);
 
-        return Util::returnObjectOrThrowException('Transaction', $result);
+        return Util::returnObjectOrThrowException('Braintree\Transaction', $result);
     }
 
     /**
@@ -260,7 +260,7 @@ class CreditCardGateway
     {
         $result = $this->sale($token, $transactionAttribs);
 
-        return Util::returnObjectOrThrowException('Transaction', $result);
+        return Util::returnObjectOrThrowException('Braintree\Transaction', $result);
     }
 
     /**
