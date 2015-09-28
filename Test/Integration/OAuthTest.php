@@ -9,19 +9,6 @@ use Braintree;
 
 class OAuthTest extends Setup
 {
-    /**
-    * @expectedException Braintree\Exception\Configuration
-    * @expectedExceptionMessage clientSecret needs to be passed to Braintree\Gateway
-    */
-    public function testAssertsHasCredentials()
-    {
-        $gateway = new Braintree\Gateway(array(
-            'clientId' => 'client_id$development$integration_client_id'
-        ));
-        $gateway->oauth()->createTokenFromCode(array(
-            'code' => 'integration_oauth_auth_code_'.rand(0, 299)
-        ));
-    }
 
     public function testCreateTokenFromCode()
     {
@@ -44,6 +31,20 @@ class OAuthTest extends Setup
         $this->assertNotNull($credentials->refreshToken);
         $this->assertEquals('bearer', $credentials->tokenType);
         $this->assertNotNull($credentials->expiresAt);
+    }
+
+    /**
+    * @expectedException Braintree\Exception\Configuration
+    * @expectedExceptionMessage clientSecret needs to be passed to Braintree\Gateway
+    */
+    public function testAssertsHasCredentials()
+    {
+        $gateway = new Braintree\Gateway(array(
+            'clientId' => 'client_id$development$integration_client_id'
+        ));
+        $gateway->oauth()->createTokenFromCode(array(
+            'code' => 'integration_oauth_auth_code_'.rand(0, 299)
+        ));
     }
 
     public function testCreateTokenFromCodeWithMixedCredentials()

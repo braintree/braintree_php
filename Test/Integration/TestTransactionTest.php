@@ -23,18 +23,6 @@ class TestTransactionTest extends Setup
         Braintree\Configuration::environment('development');
     }
 
-    /**
-     * @expectedException Braintree\Exception\TestOperationPerformedInProduction
-     */
-    public function testThrowingExceptionWhenProduction()
-    {
-        Braintree\Configuration::environment('production');
-
-        $this->setExpectedException('Braintree\Exception\TestOperationPerformedInProduction');
-
-        Braintree\Test\Transaction::settle('transactionId');
-    }
-
     public function testSettle()
     {
         $transaction = Braintree\Transaction::saleNoValidate([
@@ -49,6 +37,18 @@ class TestTransactionTest extends Setup
         $transaction = Braintree\Test\Transaction::settle($transaction->id);
 
         $this->assertEquals('settled', $transaction->status);
+    }
+
+    /**
+     * @expectedException Braintree\Exception\TestOperationPerformedInProduction
+     */
+    public function testThrowingExceptionWhenProduction()
+    {
+        Braintree\Configuration::environment('production');
+
+        $this->setExpectedException('Braintree\Exception\TestOperationPerformedInProduction');
+
+        Braintree\Test\Transaction::settle('transactionId');
     }
 
     public function testSettlementConfirmed()
