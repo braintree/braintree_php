@@ -126,11 +126,21 @@ class Http
         if ($this->_config->sslOn()) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-            curl_setopt($curl, CURLOPT_CAINFO, $this->_config->caFile());
+            curl_setopt($curl, CURLOPT_CAINFO, $this->getCaFile());
         }
 
         if (!empty($requestBody)) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
+        }
+
+       if($this->_config->isUsingProxy()) {
+            $proxyHost = $this->_config->getProxyHost();
+            $proxyPort = $this->_config->getProxyPort();
+            $proxyType = $this->_config->getProxyType();
+            curl_setopt($curl, CURLOPT_PROXY, $proxyHost . ':' . $proxyPort);
+            if(!empty($proxyType)) {
+                curl_setopt($curl, CURLOPT_PROXYTYPE, $proxyType);
+            }
         }
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -144,4 +154,28 @@ class Http
         }
         return array('status' => $httpStatus, 'body' => $response);
     }
+
+   private function getCaFile()
+   {
+        static $memo;
+
+        if ($memo === null) {
+            $caFile = $this->_config->caFile();
+
+            if (substr($caFile, 0, 7) !== 'phar://') {
+                return $caFile;
+            }
+
+            $extractedCaFile = sys_get_temp_dir() . '/api_braintreegateway_com.ca.crt';
+
+            if (!file_exists($extractedCaFile) || sha1_file($extractedCaFile) != sha1_file($caFile)) {
+                if (!copy($caFile, $extractedCaFile)) {
+                    throw new Braintree_Exception_SSLCaFileNotFound();
+                }
+            }
+            $memo = $extractedCaFile;
+        }
+
+        return $memo;
+   }
 }
