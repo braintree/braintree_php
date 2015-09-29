@@ -50,6 +50,9 @@ class WebhookTesting
             case WebhookNotification::DISPUTE_WON:
                 $subjectXml = self::_disputeWonSampleXml($id);
                 break;
+            case WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
+                $subjectXml = self::_subscriptionChargedSuccessfullySampleXml($id);
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -234,6 +237,25 @@ class WebhookTesting
         <subscription>
             <id>{$id}</id>
             <transactions type=\"array\">
+            </transactions>
+            <add_ons type=\"array\">
+            </add_ons>
+            <discounts type=\"array\">
+            </discounts>
+        </subscription>
+        ";
+    }
+
+    private static function _subscriptionChargedSuccessfullySampleXml($id)
+    {
+        return "
+        <subscription>
+            <id>{$id}</id>
+            <transactions type=\"array\">
+                <transaction>
+                    <status>submitted_for_settlement</status>
+                    <amount>49.99</amount>
+                </transaction>
             </transactions>
             <add_ons type=\"array\">
             </add_ons>

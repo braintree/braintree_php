@@ -201,6 +201,25 @@ class WebhookNotificationTest extends Setup
         );
     }
 
+    public function testBuildsASampleNotificationForASubscriptionChargedSuccessfullyWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY,
+            "my_id"
+        );
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+        $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->subscription->id);
+
+        $this->assertEquals(1, count($webhookNotification->subscription->transactions));
+        $transaction = $webhookNotification->subscription->transactions[0];
+        $this->assertEquals('submitted_for_settlement', $transaction->status);
+        $this->assertEquals('49.99', $transaction->amount);
+    }
+
     public function testBuildsASampleNotificationForAMerchantAccountApprovedWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
