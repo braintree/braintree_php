@@ -23,8 +23,11 @@ class CustomerSearch
     public static function paypalAccountEmail() { return new IsNode('paypal_account_email'); }
     public static function phone() { return new TextNode('phone'); }
     public static function website() { return new TextNode('website'); }
+
     public static function creditCardExpirationDate() { return new EqualityNode('credit_card_expiration_date'); }
     public static function creditCardNumber() { return new PartialMatchNode('credit_card_number'); }
+
     public static function ids() { return new MultipleValueNode('ids'); }
+
     public static function createdAt() { return new RangeNode('created_at'); }
 }
