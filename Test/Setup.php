@@ -26,14 +26,4 @@ class Setup extends PHPUnit_Framework_TestCase
         Configuration::publicKey('integration_public_key');
         Configuration::privateKey('integration_private_key');
     }
-
-    public static function testMerchantConfig()
-    {
-        Configuration::reset();
-
-        Configuration::environment('development');
-        Configuration::merchantId('test_merchant_id');
-        Configuration::publicKey('test_public_key');
-        Configuration::privateKey('test_private_key');
-    }
 }

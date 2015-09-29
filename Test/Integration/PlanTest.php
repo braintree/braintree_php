@@ -4,13 +4,14 @@ namespace Test\Integration;
 require_once dirname(__DIR__).'/Setup.php';
 
 use Test\Setup;
+use Test\Helper;
 use Braintree;
 
 class PlanTest extends Setup
 {
     public function testAll_withNoPlans_returnsEmptyArray()
     {
-        self::testMerchantConfig();
+        Helper::testMerchantConfig();
         $plans = Braintree\Plan::all();
         $this->assertEquals($plans, array());
         self::integrationMerchantConfig();

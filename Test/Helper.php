@@ -9,6 +9,16 @@ use Braintree;
 
 class Helper
 {
+    public static function testMerchantConfig()
+    {
+        Braintree\Configuration::reset();
+
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('test_merchant_id');
+        Braintree\Configuration::publicKey('test_public_key');
+        Braintree\Configuration::privateKey('test_private_key');
+    }
+
     public static function defaultMerchantAccountId()
     {
         return 'sandbox_credit_card';
