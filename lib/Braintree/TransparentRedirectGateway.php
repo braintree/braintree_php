@@ -20,8 +20,6 @@ class TransparentRedirectGateway
 
     public function __construct($gateway)
     {
-        self::init();
-
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasAccessTokenOrKeys();
@@ -44,9 +42,6 @@ class TransparentRedirectGateway
      */
     public static function init()
     {
-        if (self::$_createCustomerSignature) {
-            return true;
-        }
 
         self::$_createCustomerSignature = array(
             self::$_transparentRedirectKeys,
@@ -299,3 +294,4 @@ class TransparentRedirectGateway
         return Digest::hexDigestSha1($this->_config->privateKey(), $string);
     }
 }
+TransparentRedirectGateway::init();
