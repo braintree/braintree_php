@@ -106,8 +106,8 @@ class AddressGateway
      * find an address by id
      *
      * Finds the address with the given <b>addressId</b> that is associated
-     * to the given <b>customerOrId</b>
-     * If the address cannot be found, a NotFound exception will be thrown
+     * to the given <b>customerOrId</b>.
+     * If the address cannot be found, a NotFound exception will be thrown.
      *
      *
      * @param mixed  $customerOrId
