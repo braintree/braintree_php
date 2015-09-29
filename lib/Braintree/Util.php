@@ -36,7 +36,8 @@ class Util
         $classFactory = self::buildClassName($attributeName).'::factory';
         if (is_array($data)):
             // create an object from the data in each element
-            $objectArray = array_map($classFactory, $data); else:
+            $objectArray = array_map($classFactory, $data);
+        else:
             return array($data);
         endif;
 
