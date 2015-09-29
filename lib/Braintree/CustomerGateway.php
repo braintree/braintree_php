@@ -442,6 +442,16 @@ class CustomerGateway
         }
         $this->_set('creditCards', $creditCardArray);
 
+        // map each coinbaseAccount into its own object
+        $coinbaseAccountArray = array();
+        if (isset($customerAttribs['coinbaseAccounts'])) {
+            foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
+                $coinbaseAccountArray[] = Braintree\CoinbaseAccount::factory($coinbaseAccount);
+            }
+        }
+        $this->_set('coinbaseAccounts', $coinbaseAccountArray);
+
+
         // map each paypalAccount into its own object
         $paypalAccountArray = array();
         if (isset($customerAttribs['paypalAccounts'])) {
@@ -468,7 +478,9 @@ class CustomerGateway
             }
         }
         $this->_set('androidPayCards', $androidPayCardArray);
-    }
+
+        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards));
+     }
 
     /**
      * returns a string representation of the customer
@@ -501,7 +513,7 @@ class CustomerGateway
      */
     public function paymentMethods()
     {
-        return array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->androidPayCards);
+        return $this->paymentMethods;
     }
 
     /**
@@ -511,7 +523,7 @@ class CustomerGateway
      */
     public function defaultPaymentMethod()
     {
-        $defaultPaymentMethods = array_filter($this->paymentMethods(), 'Braintree\Customer::_defaultPaymentMethodFilter');
+        $defaultPaymentMethods = array_filter($this->paymentMethods, 'Braintree\Customer::_defaultPaymentMethodFilter');
 
         return current($defaultPaymentMethods);
     }
