@@ -137,8 +137,8 @@ class AddressGateway
      * updates the address record
      *
      * if calling this method in context,
-     * customerOrId is the 2nd attribute, addressId 3rd
-     * customerOrId & addressId are not sent in object context
+     * customerOrId is the 2nd attribute, addressId 3rd.
+     * customerOrId & addressId are not sent in object context.
      *
      *
      * @param array  $attributes
@@ -163,8 +163,8 @@ class AddressGateway
      * update an address record, assuming validations will pass
      *
      * if calling this method in context,
-     * customerOrId is the 2nd attribute, addressId 3rd
-     * customerOrId & addressId are not sent in object context
+     * customerOrId is the 2nd attribute, addressId 3rd.
+     * customerOrId & addressId are not sent in object context.
      *
      * @param array  $transactionAttribs
      * @param string $customerId

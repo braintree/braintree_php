@@ -100,9 +100,9 @@ class ClientTokenGateway
     /**
      * generic method for validating incoming gateway responses
      *
-     * If the request is successful, returns a client token string
+     * If the request is successful, returns a client token string.
      * Otherwise, throws an InvalidArgumentException with the error
-     * response from the Gateway or an HTTP status code exception
+     * response from the Gateway or an HTTP status code exception.
      *
      * @ignore
      * @param array $response gateway response values
