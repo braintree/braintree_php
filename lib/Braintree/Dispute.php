@@ -28,17 +28,17 @@ final class Dispute extends Braintree
     const Open  = 'open';
 
     /* Dispute Reason */
-    const CANCELLED_RECURRING_TRANSACTION = 'cancelled_recurring_transaction';
-    const CREDIT_NOT_PROCESSED            = 'credit_not_processed';
-    const DUPLICATE                       = 'duplicate';
-    const FRAUD                           = 'fraud';
-    const GENERAL                         = 'general';
-    const INVALID_ACCOUNT                 = 'invalid_account';
-    const NOT_RECOGNIZED                  = 'not_recognized';
-    const PRODUCT_NOT_RECEIVED            = 'product_not_received';
-    const PRODUCT_UNSATISFACTORY          = 'product_unsatisfactory';
-    const TRANSACTION_AMOUNT_DIFFERS      = 'transaction_amount_differs';
-    const RETRIEVAL                       = 'retrieval';
+    const CANCELLED_RECURRING_TRANSACTION = "cancelled_recurring_transaction";
+    const CREDIT_NOT_PROCESSED            = "credit_not_processed";
+    const DUPLICATE                       = "duplicate";
+    const FRAUD                           = "fraud";
+    const GENERAL                         = "general";
+    const INVALID_ACCOUNT                 = "invalid_account";
+    const NOT_RECOGNIZED                  = "not_recognized";
+    const PRODUCT_NOT_RECEIVED            = "product_not_received";
+    const PRODUCT_UNSATISFACTORY          = "product_unsatisfactory";
+    const TRANSACTION_AMOUNT_DIFFERS      = "transaction_amount_differs";
+    const RETRIEVAL                       = "retrieval";
 
     protected function _initialize($disputeAttribs)
     {
