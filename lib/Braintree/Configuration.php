@@ -34,17 +34,17 @@ class Configuration
     public function __construct($attribs = array())
     {
         foreach ($attribs as $kind => $value) {
-            if ($kind === 'environment') {
+            if ($kind == 'environment') {
                 CredentialsParser::assertValidEnvironment($value);
                 $this->_environment = $value;
             }
-            if ($kind === 'merchantId') {
+            if ($kind == 'merchantId') {
                 $this->_merchantId = $value;
             }
-            if ($kind === 'publicKey') {
+            if ($kind == 'publicKey') {
                 $this->_publicKey = $value;
             }
-            if ($kind === 'privateKey') {
+            if ($kind == 'privateKey') {
                 $this->_privateKey = $value;
             }
         }
@@ -172,18 +172,16 @@ class Configuration
 
     public function assertHasAccessTokenOrKeys()
     {
-        if ($this->_accessToken) {
-            return true;
-        }
-
-        if (empty($this->_merchantId)) {
-            throw new Exception\Configuration('Braintree\\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\\Gateway).');
-        } elseif (empty($this->_environment)) {
-            throw new Exception\Configuration('Braintree\\Configuration::environment needs to be set.');
-        } elseif (empty($this->_publicKey)) {
-            throw new Exception\Configuration('Braintree\\Configuration::publicKey needs to be set.');
-        } elseif (empty($this->_privateKey)) {
-            throw new Exception\Configuration('Braintree\\Configuration::privateKey needs to be set.');
+        if (empty($this->_accessToken)) {
+            if (empty($this->_merchantId)) {
+                throw new Exception\Configuration('Braintree\\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\Gateway).');
+            } else if (empty($this->_environment)) {
+                throw new Exception\Configuration('Braintree\\Configuration::environment needs to be set.');
+            } else if (empty($this->_publicKey)) {
+                throw new Exception\Configuration('Braintree\\Configuration::publicKey needs to be set.');
+            } else if (empty($this->_privateKey)) {
+                throw new Exception\Configuration('Braintree\\Configuration::privateKey needs to be set.');
+            }
         }
     }
 
@@ -313,7 +311,6 @@ class Configuration
     {
         return !empty($this->_clientId);
     }
-
     /**
      * returns the base braintree gateway URL based on config values
      *
@@ -345,14 +342,14 @@ class Configuration
      * @param none
      * @return string filepath
      */
-    public function caFile($sslPath = null)
+    public function caFile($sslPath = NULL)
     {
         $sslPath = $sslPath ? $sslPath : DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                    'ssl' . DIRECTORY_SEPARATOR;
-
         $caPath = __DIR__ . $sslPath . 'api_braintreegateway_com.ca.crt';
 
-        if (!file_exists($caPath)) {
+        if (!file_exists($caPath))
+        {
             throw new Exception\SSLCaFileNotFound();
         }
 
@@ -371,7 +368,7 @@ class Configuration
         if ($this->sslOn()) {
             return 443;
         }
-        return getenv('GATEWAY_PORT') ? getenv('GATEWAY_PORT') : 3000;
+        return getenv("GATEWAY_PORT") ? getenv("GATEWAY_PORT") : 3000;
     }
 
     /**
@@ -395,7 +392,7 @@ class Configuration
      */
     public function serverName()
     {
-        switch ($this->_environment) {
+        switch($this->_environment) {
          case 'production':
              $serverName = 'api.braintreegateway.com';
              break;
@@ -417,7 +414,7 @@ class Configuration
 
     public function authUrl()
     {
-        switch ($this->_environment) {
+        switch($this->_environment) {
          case 'production':
              $serverName = 'https://auth.venmo.com';
              break;
@@ -447,7 +444,7 @@ class Configuration
      */
     public function sslOn()
     {
-        switch ($this->_environment) {
+        switch($this->_environment) {
          case 'integration':
          case 'development':
              $ssl = false;
@@ -460,7 +457,7 @@ class Configuration
              break;
         }
 
-        return $ssl;
+       return $ssl;
     }
 
     /**
