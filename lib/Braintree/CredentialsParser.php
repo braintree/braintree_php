@@ -21,15 +21,13 @@ class CredentialsParser
     public function __construct($attribs)
     {
         foreach ($attribs as $kind => $value) {
-            if ($kind === 'clientId') {
+            if ($kind == 'clientId') {
                 $this->_clientId = $value;
             }
-
-            if ($kind === 'clientSecret') {
+            if ($kind == 'clientSecret') {
                 $this->_clientSecret = $value;
             }
-
-            if ($kind === 'accessToken') {
+            if ($kind == 'accessToken') {
                 $this->_accessToken = $value;
             }
         }
@@ -54,21 +52,17 @@ class CredentialsParser
     public function parse()
     {
         $environments = array();
-
         if (!empty($this->_clientId)) {
             $environments[] = array('clientId', $this->_parseClientCredential('clientId', $this->_clientId, 'client_id'));
         }
-
         if (!empty($this->_clientSecret)) {
             $environments[] = array('clientSecret', $this->_parseClientCredential('clientSecret', $this->_clientSecret, 'client_secret'));
         }
-
         if (!empty($this->_accessToken)) {
             $environments[] = array('accessToken', $this->_parseAccessToken());
         }
 
         $checkEnv = $environments[0];
-
         foreach ($environments as $env) {
             if ($env[1] !== $checkEnv[1]) {
                 throw new Exception\Configuration(
@@ -78,21 +72,19 @@ class CredentialsParser
         }
 
         self::assertValidEnvironment($checkEnv[1]);
-
         $this->_environment = $checkEnv[1];
     }
 
-    public static function assertValidEnvironment($environment)
-    {
-        if (!in_array($environment, self::$_validEnvironments, true)) {
-            throw new Exception\Configuration('"'.$environment.'" is not a valid environment.');
+    public static function assertValidEnvironment($environment) {
+        if (!in_array($environment, self::$_validEnvironments)) {
+            throw new Exception\Configuration('"' .
+                                    $environment . '" is not a valid environment.');
         }
     }
 
     private function _parseClientCredential($credentialType, $value, $expectedValuePrefix)
     {
         $explodedCredential = explode('$', $value);
-
         if (sizeof($explodedCredential) != 3) {
             throw new Exception\Configuration('Incorrect ' . $credentialType . ' format. Expected: type$environment$token');
         }
@@ -111,7 +103,6 @@ class CredentialsParser
     private function _parseAccessToken()
     {
         $accessTokenExploded = explode('$', $this->_accessToken);
-
         if (sizeof($accessTokenExploded) != 4) {
             throw new Exception\Configuration('Incorrect accessToken syntax. Expected: type$environment$merchant_id$token');
         }
@@ -126,7 +117,6 @@ class CredentialsParser
         }
 
         $this->_merchantId = $merchantId;
-
         return $environment;
     }
 

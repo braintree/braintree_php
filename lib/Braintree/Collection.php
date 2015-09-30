@@ -19,16 +19,17 @@ use ArrayIterator;
  * @subpackage Utility
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
+
 class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
     /**
+     *
      * @var array collection storage
      */
     protected $_collection = array();
 
     /**
      * Add a value into the collection
-     *
      * @param string $value
      */
     public function add($value)
@@ -39,70 +40,66 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Set index's value
      * @param integer $index
-     * @param int   $index
      * @param mixed $value
      * @throws OutOfRangeException
      */
     public function set($index, $value)
     {
-        if ($index >= $this->count()) {
+        if($index >= $this->count())
             throw new OutOfRangeException('Index out of range');
-        }
 
         $this->_collection[$index] = $value;
     }
 
     /**
      * Remove a value from the collection
-     * @param int $index index to remove
+     * @param integer $index index to remove
      * @throws OutOfRangeException if index is out of range
      */
     public function remove($index)
     {
-        if ($index >= $this->count()) {
+        if($index >= $this->count())
             throw new OutOfRangeException('Index out of range');
-        }
 
         array_splice($this->_collection, $index, 1);
     }
 
     /**
      * Return value at index
-     * @param int $index
+     * @param integer $index
      * @return mixed
      * @throws OutOfRangeException
      */
     public function get($index)
     {
-        if ($index >= $this->count()) {
+        if($index >= $this->count())
             throw new OutOfRangeException('Index out of range');
-        }
 
         return $this->_collection[$index];
     }
 
     /**
      * Determine if index exists
-     * @param int $index
-     * @return bool
+     * @param integer $index
+     * @return boolean
      */
     public function exists($index)
     {
-        if ($index >= $this->count()) {
+        if($index >= $this->count())
             return false;
-        }
 
         return true;
     }
     /**
      * Return count of items in collection
      * Implements countable
-     * @return int
+     * @return integer
      */
     public function count()
     {
         return count($this->_collection);
     }
+
 
     /**
      * Return an iterator
@@ -118,7 +115,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * Set offset to value
      * Implements ArrayAccess
      * @see set
-     * @param int   $offset
+     * @param integer $offset
      * @param mixed $value
      */
     public function offsetSet($offset, $value)
@@ -130,7 +127,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * Unset offset
      * Implements ArrayAccess
      * @see remove
-     * @param int $offset
+     * @param integer $offset
      */
     public function offsetUnset($offset)
     {
@@ -141,7 +138,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * get an offset's value
      * Implements ArrayAccess
      * @see get
-     * @param int $offset
+     * @param integer $offset
      * @return mixed
      */
     public function offsetGet($offset)
@@ -153,11 +150,12 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * Determine if offset exists
      * Implements ArrayAccess
      * @see exists
-     * @param int $offset
-     * @return bool
+     * @param integer $offset
+     * @return boolean
      */
     public function offsetExists($offset)
     {
         return $this->exists($offset);
     }
+
 }

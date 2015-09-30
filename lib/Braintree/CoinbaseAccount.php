@@ -37,7 +37,6 @@ class CoinbaseAccount extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
-
         return $instance;
     }
 
@@ -46,7 +45,7 @@ class CoinbaseAccount extends Braintree
     /**
      * returns false if default is null or false
      *
-     * @return bool
+     * @return boolean
      */
     public function isDefault()
     {
@@ -56,6 +55,7 @@ class CoinbaseAccount extends Braintree
     /**
      * sets instance properties from an array of values
      *
+     * @access protected
      * @param array $coinbaseAccountAttribs array of coinbaseAccount data
      * @return none
      */
@@ -66,7 +66,7 @@ class CoinbaseAccount extends Braintree
 
         $subscriptionArray = array();
         if (isset($coinbaseAccountAttribs['subscriptions'])) {
-            foreach ($coinbaseAccountAttribs['subscriptions'] as $subscription) {
+            foreach ($coinbaseAccountAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
@@ -79,11 +79,12 @@ class CoinbaseAccount extends Braintree
      * ClassName[property=value, property=value]
      * @return string
      */
-    public function __toString()
+    public function  __toString()
     {
-        return __CLASS__.'['.
-                Util::attributesToString($this->_attributes).']';
+        return __CLASS__ . '[' .
+                Util::attributesToString($this->_attributes) .']';
     }
+
 
     // static methods redirecting to gateway
 
