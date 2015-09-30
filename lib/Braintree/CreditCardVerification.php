@@ -6,9 +6,9 @@ class CreditCardVerification extends Result\CreditCardVerification
     public static function factory($attributes)
     {
         $instance = new self($attributes);
-
         return $instance;
     }
+
 
     // static methods redirecting to gateway
 

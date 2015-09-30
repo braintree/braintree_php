@@ -3,54 +3,44 @@ namespace Braintree;
 
 class CreditCardVerificationSearch
 {
-    public static function id()
-    {
-        return new TextNode('id');
+    public static function id() {
+	    return new TextNode('id');
     }
 
-    public static function creditCardCardholderName()
-    {
+    public static function creditCardCardholderName() {
         return new TextNode('credit_card_cardholder_name');
     }
 
-    public static function billingAddressDetailsPostalCode()
-    {
+    public static function billingAddressDetailsPostalCode() {
         return new TextNode('billing_address_details_postal_code');
     }
 
-    public static function customerEmail()
-    {
+    public static function customerEmail() {
         return new TextNode('customer_email');
     }
 
-    public static function customerId()
-    {
+    public static function customerId() {
         return new TextNode('customer_id');
     }
 
-    public static function paymentMethodToken()
-    {
+    public static function paymentMethodToken(){
         return new TextNode('payment_method_token');
     }
 
-    public static function creditCardExpirationDate()
-    {
+    public static function creditCardExpirationDate() {
         return new EqualityNode('credit_card_expiration_date');
     }
 
-    public static function creditCardNumber()
-    {
-        return new PartialMatchNode('credit_card_number');
+    public static function creditCardNumber() {
+	    return new PartialMatchNode('credit_card_number');
     }
 
-    public static function ids()
-    {
+    public static function ids() {
         return new MultipleValueNode('ids');
     }
 
-    public static function createdAt()
-    {
-        return new RangeNode("created_at");
+    public static function createdAt() {
+	    return new RangeNode("created_at");
     }
 
     public static function creditCardCardType()
