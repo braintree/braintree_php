@@ -34,8 +34,7 @@ class Address extends Braintree
      * or is a Address with a different id
      *
      * @param object $other address to compare against
-     *
-     * @return bool
+     * @return boolean
      */
     public function isEqual($other)
     {
@@ -52,9 +51,9 @@ class Address extends Braintree
      *
      * @return var
      */
-    public function __toString()
+    public function  __toString()
     {
-        return __CLASS__.'['.
+        return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes).']';
     }
 
@@ -62,9 +61,8 @@ class Address extends Braintree
      * sets instance properties from an array of values
      *
      * @ignore
-     *
+     * @access protected
      * @param array $addressAttribs array of address data
-     *
      * @return none
      */
     protected function _initialize($addressAttribs)
@@ -76,19 +74,19 @@ class Address extends Braintree
     /**
      *  factory method: returns an instance of Address
      *  to the requesting method, with populated properties
-     *
      * @ignore
-     *
      * @return object instance of Address
      */
     public static function factory($attributes)
     {
         $instance = new self();
         $instance->_initialize($attributes);
-
         return $instance;
+
     }
 
+
+    // static methods redirecting to gateway
 
     /**
      *
@@ -133,7 +131,6 @@ class Address extends Braintree
     {
         return Configuration::gateway()->address()->find($customerOrId, $addressId);
     }
-
 
     /**
      *

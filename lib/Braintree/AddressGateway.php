@@ -25,13 +25,13 @@ class AddressGateway
 
     /**
      *
-     * @var Braintree_Configuration
+     * @var Braintree\Configuration
      */
     private $_config;
 
     /**
      *
-     * @var Braintree_Http
+     * @var Braintree\Http
      */
     private $_http;
 
@@ -46,6 +46,7 @@ class AddressGateway
         $this->_config->assertHasAccessTokenOrKeys();
         $this->_http = new Http($gateway->config);
     }
+
 
     /* public class methods */
     /**
@@ -63,9 +64,8 @@ class AddressGateway
 
         $this->_validateCustomerId($customerId);
         unset($attribs['customerId']);
-
         return $this->_doCreate(
-            '/customers/'.$customerId.'/addresses',
+            '/customers/' . $customerId . '/addresses',
             array('address' => $attribs)
         );
     }
@@ -82,23 +82,22 @@ class AddressGateway
     public function createNoValidate($attribs)
     {
         $result = $this->create($attribs);
-
         return Util::returnObjectOrThrowException(__CLASS__, $result);
+
     }
 
     /**
      * delete an address by id
      *
-     * @param mixed  $customerOrId
+     * @param mixed $customerOrId
      * @param string $addressId
      */
     public function delete($customerOrId = null, $addressId = null)
     {
         $this->_validateId($addressId);
         $customerId = $this->_determineCustomerId($customerOrId);
-        $path = $this->_config->merchantPath().'/customers/'.$customerId.'/addresses/'.$addressId;
+        $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
         $this->_http->delete($path);
-
         return new Result\Successful();
     }
 
@@ -110,27 +109,29 @@ class AddressGateway
      * If the address cannot be found, a NotFound exception will be thrown.
      *
      *
-     * @param mixed  $customerOrId
+     * @access public
+     * @param mixed $customerOrId
      * @param string $addressId
      * @return object Address
      * @throws Exception\NotFound
      */
     public function find($customerOrId, $addressId)
     {
+
         $customerId = $this->_determineCustomerId($customerOrId);
         $this->_validateId($addressId);
 
         try {
-            $path = $this->_config->merchantPath().'/customers/'.$customerId.'/addresses/'.$addressId;
+            $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
             $response = $this->_http->get($path);
-
             return Address::factory($response['address']);
         } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
-            'address for customer '.$customerId.
-                ' with id '.$addressId.' not found.'
+            'address for customer ' . $customerId .
+                ' with id ' . $addressId . ' not found.'
             );
         }
+
     }
 
     /**
@@ -141,10 +142,10 @@ class AddressGateway
      * customerOrId & addressId are not sent in object context.
      *
      *
-     * @param array  $attributes
-     * @param mixed  $customerOrId (only used in call)
-     * @param string $addressId    (only used in call)
-     *
+     * @access public
+     * @param array $attributes
+     * @param mixed $customerOrId (only used in call)
+     * @param string $addressId (only used in call)
      * @return object Result\Successful or Result\Error
      */
     public function update($customerOrId, $addressId, $attributes)
@@ -153,10 +154,11 @@ class AddressGateway
         $customerId = $this->_determineCustomerId($customerOrId);
         Util::verifyKeys(self::updateSignature(), $attributes);
 
-        $path = $this->_config->merchantPath().'/customers/'.$customerId.'/addresses/'.$addressId;
+        $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
         $response = $this->_http->put($path, array('address' => $attributes));
 
         return $this->_verifyGatewayResponse($response);
+
     }
 
     /**
@@ -166,25 +168,21 @@ class AddressGateway
      * customerOrId is the 2nd attribute, addressId 3rd.
      * customerOrId & addressId are not sent in object context.
      *
-     * @param array  $transactionAttribs
+     * @access public
+     * @param array $transactionAttribs
      * @param string $customerId
-     *
      * @return object Transaction
-     *
      * @throws Exception\ValidationsFailed
-     *
      * @see Address::update()
      */
     public function updateNoValidate($customerOrId, $addressId, $attributes)
     {
         $result = $this->update($customerOrId, $addressId, $attributes);
-
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
 
     /**
      * creates a full array signature of a valid create request
-     *
      * @return array gateway create request format
      */
     public static function createSignature()
@@ -192,101 +190,91 @@ class AddressGateway
         return array(
             'company', 'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
             'countryName', 'customerId', 'extendedAddress', 'firstName',
-            'lastName', 'locality', 'postalCode', 'region', 'streetAddress',
+            'lastName', 'locality', 'postalCode', 'region', 'streetAddress'
         );
     }
 
     /**
      * creates a full array signature of a valid update request
-     *
      * @return array gateway update request format
      */
     public static function updateSignature()
     {
         // TODO: remove customerId from update signature
         return self::createSignature();
+
     }
 
     /**
      * verifies that a valid address id is being used
-     *
      * @ignore
-     *
      * @param string $id address id
-     *
      * @throws InvalidArgumentException
      */
     private function _validateId($id = null)
     {
-        if (empty($id) || trim($id) == '') {
+        if (empty($id) || trim($id) == "") {
             throw new InvalidArgumentException(
             'expected address id to be set'
             );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
             throw new InvalidArgumentException(
-            $id.' is an invalid address id.'
+            $id . ' is an invalid address id.'
             );
         }
     }
 
     /**
      * verifies that a valid customer id is being used
-     *
      * @ignore
-     *
      * @param string $id customer id
-     *
      * @throws InvalidArgumentException
      */
     private function _validateCustomerId($id = null)
     {
-        if (empty($id) || trim($id) == '') {
+        if (empty($id) || trim($id) == "") {
             throw new InvalidArgumentException(
             'expected customer id to be set'
             );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
             throw new InvalidArgumentException(
-            $id.' is an invalid customer id.'
+            $id . ' is an invalid customer id.'
             );
         }
+
     }
 
     /**
      * determines if a string id or Customer object was passed
-     *
      * @ignore
-     *
      * @param mixed $customerOrId
-     *
      * @return string customerId
      */
     private function _determineCustomerId($customerOrId)
     {
         $customerId = ($customerOrId instanceof Customer) ? $customerOrId->id : $customerOrId;
         $this->_validateCustomerId($customerId);
-
         return $customerId;
+
     }
 
     /* private class methods */
     /**
      * sends the create request to the gateway
-     *
      * @ignore
-     *
      * @param string $subPath
-     * @param array  $params
-     *
+     * @param array $params
      * @return mixed
      */
     private function _doCreate($subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath().$subPath;
+        $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
+
     }
 
     /**
@@ -298,11 +286,8 @@ class AddressGateway
      * alternatively, throws an Unexpected exception if the response is invalid
      *
      * @ignore
-     *
      * @param array $response gateway response values
-     *
      * @return object Result\Successful or Result\Error
-     *
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)
@@ -312,12 +297,13 @@ class AddressGateway
             return new Result\Successful(
                 Address::factory($response['address'])
             );
-        } elseif (isset($response['apiErrorResponse'])) {
+        } else if (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            'Expected address or apiErrorResponse'
+            "Expected address or apiErrorResponse"
             );
         }
+
     }
 }
