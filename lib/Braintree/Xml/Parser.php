@@ -46,7 +46,7 @@ class Parser
             $type = $node->getAttribute('type');
         }
 
-        switch ($type) {
+        switch($type) {
         case 'array':
             $array = array();
             foreach ($node->childNodes as $child) {
@@ -96,7 +96,7 @@ class Parser
             $type = $node->getAttribute('type');
         }
 
-        switch ($type) {
+        switch($type) {
         case 'datetime':
             return self::_timestampToUTC((string) $node->nodeValue);
         case 'date':
@@ -105,7 +105,7 @@ class Parser
             return (int) $node->nodeValue;
         case 'boolean':
             $value =  (string) $node->nodeValue;
-            if (is_numeric($value)) {
+            if(is_numeric($value)) {
                 return (bool) $value;
             } else {
                 return ($value !== "true") ? false : true;
