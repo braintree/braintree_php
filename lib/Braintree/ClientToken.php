@@ -13,7 +13,7 @@ class ClientToken
      * @param array $params
      * @return array
      */
-    public static function generate($params = array())
+    public static function generate($params=array())
     {
         return Configuration::gateway()->clientToken()->generate($params);
     }
@@ -30,8 +30,7 @@ class ClientToken
 
     /**
      *
-     * @param type $params
-     * @throws InvalidArgumentException
+     * @return string client token retrieved from server
      */
     public static function generateWithCustomerIdSignature()
     {
@@ -40,8 +39,7 @@ class ClientToken
 
     /**
      *
-     * @param type $params
-     * @throws InvalidArgumentException
+     * @return string client token retrieved from server
      */
     public static function generateWithoutCustomerIdSignature()
     {

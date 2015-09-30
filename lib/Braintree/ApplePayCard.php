@@ -15,6 +15,7 @@ namespace Braintree;
  *
  * @property-read string $cardType
  * @property-read string $createdAt
+ * @property-read string $customerId
  * @property-read string $expirationDate
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
@@ -36,7 +37,7 @@ class ApplePayCard extends Braintree
     /**
      * returns false if default is null or false
      *
-     * @return bool
+     * @return boolean
      */
     public function isDefault()
     {
@@ -46,7 +47,7 @@ class ApplePayCard extends Braintree
     /**
      * checks whether the card is expired based on the current date
      *
-     * @return bool
+     * @return boolean
      */
     public function isExpired()
     {
@@ -58,7 +59,6 @@ class ApplePayCard extends Braintree
      *  to the requesting method, with populated properties
      *
      * @ignore
-     *
      * @return object instance of ApplePayCard
      */
     public static function factory($attributes)
@@ -71,15 +71,14 @@ class ApplePayCard extends Braintree
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
-
         return $instance;
     }
 
     /**
      * sets instance properties from an array of values
      *
+     * @access protected
      * @param array $applePayCardAttribs array of Apple Pay card properties
-     *
      * @return none
      */
     protected function _initialize($applePayCardAttribs)
@@ -89,12 +88,12 @@ class ApplePayCard extends Braintree
 
         $subscriptionArray = array();
         if (isset($applePayCardAttribs['subscriptions'])) {
-            foreach ($applePayCardAttribs['subscriptions'] as $subscription) {
+            foreach ($applePayCardAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
 
         $this->_set('subscriptions', $subscriptionArray);
-        $this->_set('expirationDate', $this->expirationMonth.'/'.$this->expirationYear);
+        $this->_set('expirationDate', $this->expirationMonth . '/' . $this->expirationYear);
     }
 }

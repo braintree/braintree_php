@@ -16,6 +16,7 @@ namespace Braintree;
  * @property-read string $bin
  * @property-read string $cardType
  * @property-read string $createdAt
+ * @property-read string $customerId
  * @property-read string $default
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
@@ -78,7 +79,7 @@ class AndroidPayCard extends Braintree
 
         $subscriptionArray = array();
         if (isset($androidPayCardAttribs['subscriptions'])) {
-            foreach ($androidPayCardAttribs['subscriptions'] as $subscription) {
+            foreach ($androidPayCardAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }

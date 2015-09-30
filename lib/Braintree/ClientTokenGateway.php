@@ -10,17 +10,20 @@ class ClientTokenGateway
      * @var Braintree\Gateway
      */
     private $_gateway;
-     /**
+
+    /**
      *
      * @var Braintree\Configuration
      */
     private $_config;
-     /**
+
+    /**
      *
      * @var Braintree\Http
      */
     private $_http;
-     /**
+
+    /**
      *
      * @param Braintree\Gateway $gateway
      */
@@ -32,14 +35,14 @@ class ClientTokenGateway
         $this->_http = new Http($gateway->config);
     }
 
-    public function generate($params = array())
+    public function generate($params=array())
     {
-        if (!array_key_exists('version', $params)) {
-            $params['version'] = ClientToken::DEFAULT_VERSION;
+        if (!array_key_exists("version", $params)) {
+            $params["version"] = ClientToken::DEFAULT_VERSION;
         }
 
         $this->conditionallyVerifyKeys($params);
-        $generateParams = array('client_token' => $params);
+        $generateParams = array("client_token" => $params);
 
         return $this->_doGenerate('/client_token', $generateParams);
     }
@@ -48,15 +51,13 @@ class ClientTokenGateway
      * sends the generate request to the gateway
      *
      * @ignore
-     *
-     * @param var   $url
+     * @param var $url
      * @param array $params
-     *
      * @return mixed
      */
     public function _doGenerate($subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath().$subPath;
+        $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
@@ -69,7 +70,7 @@ class ClientTokenGateway
      */
     public function conditionallyVerifyKeys($params)
     {
-        if (array_key_exists('customerId', $params)) {
+        if (array_key_exists("customerId", $params)) {
             Util::verifyKeys($this->generateWithCustomerIdSignature(), $params);
         } else {
             Util::verifyKeys($this->generateWithoutCustomerIdSignature(), $params);
@@ -83,9 +84,9 @@ class ClientTokenGateway
     public function generateWithCustomerIdSignature()
     {
         return array(
-            'version', 'customerId', 'proxyMerchantId',
-            array('options' => array('makeDefault', 'verifyCard', 'failOnDuplicatePaymentMethod')),
-            'merchantAccountId', 'sepaMandateType', 'sepaMandateAcceptanceLocation');
+            "version", "customerId", "proxyMerchantId",
+            array("options" => array("makeDefault", "verifyCard", "failOnDuplicatePaymentMethod")),
+            "merchantAccountId", "sepaMandateType", "sepaMandateAcceptanceLocation");
     }
 
     /**
@@ -94,7 +95,7 @@ class ClientTokenGateway
      */
     public function generateWithoutCustomerIdSignature()
     {
-        return array('version', 'proxyMerchantId', 'merchantAccountId');
+        return array("version", "proxyMerchantId", "merchantAccountId");
     }
 
     /**
@@ -119,8 +120,9 @@ class ClientTokenGateway
             );
         } else {
             throw new Exception\Unexpected(
-                'Expected clientToken or apiErrorResponse'
+                "Expected clientToken or apiErrorResponse"
             );
         }
     }
+
 }
