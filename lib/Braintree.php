@@ -5,7 +5,8 @@
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-require_once('./lib/autoload.php');
+
+require_once('autoload.php');
 
 class_alias('Braintree\Modification', 'Braintree_Modification');
 class_alias('Braintree\Instance', 'Braintree_Instance');

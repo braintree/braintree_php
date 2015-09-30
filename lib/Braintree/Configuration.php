@@ -474,3 +474,5 @@ class Configuration
         error_log('[Braintree] ' . $message);
     }
 }
+
+Configuration::reset();
