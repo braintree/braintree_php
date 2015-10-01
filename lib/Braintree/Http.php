@@ -20,7 +20,7 @@ class Http
     public function delete($path)
     {
         $response = $this->_doRequest('DELETE', $path);
-        if ($response['status'] === 200) {
+        if($response['status'] === 200) {
             return true;
         } else {
             Util::throwStatusCodeException($response['status']);
@@ -41,7 +41,7 @@ class Http
     {
         $response = $this->_doRequest('POST', $path, $this->_buildXml($params));
         $responseCode = $response['status'];
-        if ($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
+        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode == 400) {
             return Xml::buildArrayFromXml($response['body']);
         } else {
             Util::throwStatusCodeException($responseCode);
@@ -52,7 +52,7 @@ class Http
     {
         $response = $this->_doRequest('PUT', $path, $this->_buildXml($params));
         $responseCode = $response['status'];
-        if ($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode === 400) {
+        if($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode == 400) {
             return Xml::buildArrayFromXml($response['body']);
         } else {
             Util::throwStatusCodeException($responseCode);
@@ -79,7 +79,7 @@ class Http
                 'user' => $this->_config->getClientId(),
                 'password' => $this->_config->getClientSecret(),
             );
-        } elseif ($this->_config->isAccessToken()) {
+        } else if ($this->_config->isAccessToken()) {
             return array(
                 'token' => $this->_config->getAccessToken(),
             );
@@ -117,7 +117,7 @@ class Http
         if (isset($authorization['user'])) {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_USERPWD, $authorization['user'] . ':' . $authorization['password']);
-        } elseif (isset($authorization['token'])) {
+        } else if (isset($authorization['token'])) {
             $headers[] = 'Authorization: Bearer ' . $authorization['token'];
         }
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -129,11 +129,11 @@ class Http
             curl_setopt($curl, CURLOPT_CAINFO, $this->getCaFile());
         }
 
-        if (!empty($requestBody)) {
+        if(!empty($requestBody)) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
         }
 
-       if($this->_config->isUsingProxy()) {
+        if($this->_config->isUsingProxy()) {
             $proxyHost = $this->_config->getProxyHost();
             $proxyPort = $this->_config->getProxyPort();
             $proxyType = $this->_config->getProxyType();
@@ -155,8 +155,8 @@ class Http
         return array('status' => $httpStatus, 'body' => $response);
     }
 
-   private function getCaFile()
-   {
+    private function getCaFile()
+    {
         static $memo;
 
         if ($memo === null) {
@@ -177,5 +177,5 @@ class Http
         }
 
         return $memo;
-   }
+    }
 }

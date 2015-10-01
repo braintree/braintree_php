@@ -21,7 +21,6 @@ class Gateway
         if (is_array($config)) {
             $config = new Configuration($config);
         }
-
         $this->config = $config;
     }
 
