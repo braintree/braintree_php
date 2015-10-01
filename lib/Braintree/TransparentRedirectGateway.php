@@ -9,8 +9,8 @@ use DateTimeZone;
  * Braintree Transparent Redirect Gateway module
  * Static class providing methods to build Transparent Redirect urls
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class TransparentRedirectGateway
@@ -26,6 +26,7 @@ class TransparentRedirectGateway
     }
 
     /**
+     *
      * @ignore
      */
     private static $_transparentRedirectKeys = 'redirectUrl';
@@ -37,7 +38,6 @@ class TransparentRedirectGateway
 
     /**
      * create signatures for different call types
-     *
      * @ignore
      */
     public static function init()
@@ -80,15 +80,12 @@ class TransparentRedirectGateway
             TransparentRedirect::UPDATE_PAYMENT_METHOD => 'Braintree\CreditCardGateway',
         );
         $confirmationGateway = new $confirmationKlasses[$params['kind']]($this->_gateway);
-
         return $confirmationGateway->_doCreate('/transparent_redirect_requests/'.$params['id'].'/confirm', array());
     }
 
     /**
      * returns the trData string for creating a credit card,
-     *
      * @param array $params
-     *
      * @return string
      */
     public function createCreditCardData($params)
@@ -97,16 +94,13 @@ class TransparentRedirectGateway
                 self::$_createCreditCardSignature,
                 $params
                 );
-        $params['kind'] = TransparentRedirect::CREATE_PAYMENT_METHOD;
-
+        $params["kind"] = TransparentRedirect::CREATE_PAYMENT_METHOD;
         return $this->_data($params);
     }
 
     /**
-     * returns the trData string for creating a customer
-     *
+     * returns the trData string for creating a customer.
      * @param array $params
-     *
      * @return string
      */
     public function createCustomerData($params)
@@ -115,9 +109,9 @@ class TransparentRedirectGateway
                 self::$_createCustomerSignature,
                 $params
                 );
-        $params['kind'] = TransparentRedirect::CREATE_CUSTOMER;
-
+        $params["kind"] = TransparentRedirect::CREATE_CUSTOMER;
         return $this->_data($params);
+
     }
 
     public function url()
@@ -127,9 +121,7 @@ class TransparentRedirectGateway
 
     /**
      * returns the trData string for creating a transaction
-     *
      * @param array $params
-     *
      * @return string
      */
     public function transactionData($params)
@@ -138,13 +130,13 @@ class TransparentRedirectGateway
                 self::$_transactionSignature,
                 $params
                 );
-        $params['kind'] = TransparentRedirect::CREATE_TRANSACTION;
+        $params["kind"] = TransparentRedirect::CREATE_TRANSACTION;
         $transactionType = isset($params['transaction']['type']) ?
             $params['transaction']['type'] :
             null;
         if ($transactionType != Transaction::SALE && $transactionType != Transaction::CREDIT) {
-            throw new InvalidArgumentException(
-                   'expected transaction[type] of sale or credit, was: '.
+           throw new InvalidArgumentException(
+                   'expected transaction[type] of sale or credit, was: ' .
                    $transactionType
                    );
         }
@@ -153,9 +145,9 @@ class TransparentRedirectGateway
     }
 
     /**
-     * Returns the trData string for updating a credit card
+     * Returns the trData string for updating a credit card.
      *
-     *  The paymentMethodToken of the credit card to update is required
+     *  The paymentMethodToken of the credit card to update is required.
      *
      * <code>
      * $trData = TransparentRedirect::updateCreditCardData(array(
@@ -165,7 +157,6 @@ class TransparentRedirectGateway
      * </code>
      *
      * @param array $params
-     *
      * @return string
      */
     public function updateCreditCardData($params)
@@ -179,15 +170,14 @@ class TransparentRedirectGateway
                    'expected params to contain paymentMethodToken.'
                    );
         }
-        $params['kind'] = TransparentRedirect::UPDATE_PAYMENT_METHOD;
-
+        $params["kind"] = TransparentRedirect::UPDATE_PAYMENT_METHOD;
         return $this->_data($params);
     }
 
     /**
-     * Returns the trData string for updating a customer
+     * Returns the trData string for updating a customer.
      *
-     *  The customerId of the customer to update is required
+     *  The customerId of the customer to update is required.
      *
      * <code>
      * $trData = TransparentRedirect::updateCustomerData(array(
@@ -197,7 +187,6 @@ class TransparentRedirectGateway
      * </code>
      *
      * @param array $params
-     *
      * @return string
      */
     public function updateCustomerData($params)
@@ -211,8 +200,7 @@ class TransparentRedirectGateway
                    'expected params to contain customerId of customer to update'
                    );
         }
-        $params['kind'] = TransparentRedirect::UPDATE_CUSTOMER;
-
+        $params["kind"] = TransparentRedirect::UPDATE_CUSTOMER;
         return $this->_data($params);
     }
 
@@ -242,7 +230,9 @@ class TransparentRedirectGateway
         }
     }
 
+
     /**
+     *
      * @ignore
      */
     private function _data($params)
@@ -262,27 +252,29 @@ class TransparentRedirectGateway
             )
         );
         ksort($trDataParams);
-        $urlEncodedData = http_build_query($trDataParams, null, '&');
+        $urlEncodedData = http_build_query($trDataParams, null, "&");
         $signatureService = new SignatureService(
             $this->_config->privateKey(),
             "Braintree\Digest::hexDigestSha1"
         );
-
         return $signatureService->sign($urlEncodedData);
     }
 
     private function _underscoreKeys($array)
     {
-        foreach ($array as $key => $value) {
+        foreach($array as $key=>$value)
+        {
             $newKey = Util::camelCaseToDelimiter($key, '_');
             unset($array[$key]);
-            if (is_array($value)) {
+            if (is_array($value))
+            {
                 $array[$newKey] = $this->_underscoreKeys($value);
-            } else {
+            }
+            else
+            {
                 $array[$newKey] = $value;
             }
         }
-
         return $array;
     }
 

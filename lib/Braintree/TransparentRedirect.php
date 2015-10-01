@@ -32,8 +32,8 @@ namespace Braintree;
  *
  *  </code>
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class TransparentRedirect
@@ -52,7 +52,9 @@ class TransparentRedirect
      */
     protected function __construct()
     {
+
     }
+
 
     // static methods redirecting to gateway
 
