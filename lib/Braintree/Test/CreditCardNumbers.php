@@ -8,6 +8,8 @@ namespace Braintree\Test;
  * credit card numbers that should be used when working in the sandbox environment.
  * The sandbox will not accept any credit card numbers other than the ones listed below.
  *
+ * @package    Braintree
+ * @subpackage Test
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class CreditCardNumbers
@@ -17,8 +19,8 @@ class CreditCardNumbers
         '371449635398431',
         '378734493671000',
         );
-    public static $carteBlanches = array('30569309025904');
-    public static $dinersClubs   = array('38520000023237');
+    public static $carteBlanches = array('30569309025904',);
+    public static $dinersClubs   = array('38520000023237',);
     public static $discoverCards = array(
         '6011111111111117',
         '6011000990139424',
@@ -56,8 +58,8 @@ class CreditCardNumbers
         );
 
     public static $amexPayWithPoints = array(
-        'Success'            => "371260714673002",
-        'IneligibleCard'     => "378267515471109",
+        'Success' => "371260714673002",
+        'IneligibleCard' => "378267515471109",
         'InsufficientPoints' => "371544868764018",
         );
 
