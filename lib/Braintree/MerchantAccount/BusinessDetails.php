@@ -17,7 +17,6 @@ final class BusinessDetails extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
-
         return $instance;
     }
 }
