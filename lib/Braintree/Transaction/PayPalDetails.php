@@ -6,6 +6,8 @@ use Braintree\Instance;
 /**
  * PayPal details from a transaction
  *
+ * @package    Braintree
+ * @subpackage Transaction
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
@@ -13,6 +15,8 @@ use Braintree\Instance;
  * creates an instance of PayPalDetails
  *
  *
+ * @package    Braintree
+ * @subpackage Transaction
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $payerEmail
@@ -23,7 +27,6 @@ use Braintree\Instance;
  * @property-read string $transactionFeeAmount
  * @property-read string $transactionFeeCurrencyIsoCode
  * @property-read string $description
- *
  * @uses Instance inherits methods
  */
 class PayPalDetails extends Instance
