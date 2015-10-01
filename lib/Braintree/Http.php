@@ -170,7 +170,7 @@ class Http
 
             if (!file_exists($extractedCaFile) || sha1_file($extractedCaFile) != sha1_file($caFile)) {
                 if (!copy($caFile, $extractedCaFile)) {
-                    throw new Braintree_Exception_SSLCaFileNotFound();
+                    throw new Exception\SSLCaFileNotFound();
                 }
             }
             $memo = $extractedCaFile;

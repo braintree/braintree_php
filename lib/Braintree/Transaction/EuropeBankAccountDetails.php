@@ -18,7 +18,7 @@ use Braintree\Instance;
  * @property-read string $mandateReferenceNumber
  * @property-read string $maskedIban
  * @property-read string $token
- * @uses Braintree_Instance inherits methods
+ * @uses Braintree\Instance inherits methods
  */
 class EuropeBankAccountDetails extends Instance
 {

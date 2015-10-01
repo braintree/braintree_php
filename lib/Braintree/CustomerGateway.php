@@ -295,7 +295,7 @@ class CustomerGateway
      * For more detailed information and examples, see {@link http://www.braintreepayments.com/gateway/customer-api#searching http://www.braintreepaymentsolutions.com/gateway/customer-api}
      *
      * @param mixed $query search query
-     * @return object Braintree_ResourceCollection
+     * @return object Braintree\ResourceCollection
      * @throws InvalidArgumentException
      */
     public function search($query)

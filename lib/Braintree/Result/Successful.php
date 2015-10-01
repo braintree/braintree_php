@@ -83,7 +83,7 @@ class Successful extends Instance
        if(count($objsToReturn) != count($propertyNames)) {
            $propertyNames = array();
            foreach ($objsToReturn as $obj) {
-               array_push($propertyNames, Braintree_Util::cleanClassName(get_class($obj)));
+               array_push($propertyNames, Util::cleanClassName(get_class($obj)));
            }
        }
        return array_combine($propertyNames, $objsToReturn);
