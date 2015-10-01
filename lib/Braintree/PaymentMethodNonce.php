@@ -47,7 +47,7 @@ class PaymentMethodNonce extends Braintree
         $this->_set('nonce', $nonceAttributes['nonce']);
         $this->_set('type', $nonceAttributes['type']);
 
-        if (isset($nonceAttributes['threeDSecureInfo'])) {
+        if(isset($nonceAttributes['threeDSecureInfo'])) {
             $this->_set('threeDSecureInfo', ThreeDSecureInfo::factory($nonceAttributes['threeDSecureInfo']));
         }
     }

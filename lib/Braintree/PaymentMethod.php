@@ -4,8 +4,8 @@ namespace Braintree;
 /**
  * Braintree PaymentMethod module
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
@@ -15,9 +15,10 @@ namespace Braintree;
  * <b>== More information ==</b>
  *
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
+ *
  */
 class PaymentMethod extends Braintree
 {

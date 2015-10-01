@@ -6,8 +6,8 @@ use InvalidArgumentException;
 /**
  * Braintree PaymentMethodGateway module
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
@@ -17,9 +17,10 @@ use InvalidArgumentException;
  * <b>== More information ==</b>
  *
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
+ *
  */
 class PaymentMethodGateway
 {
@@ -35,10 +36,10 @@ class PaymentMethodGateway
         $this->_http = new Http($gateway->config);
     }
 
+
     public function create($attribs)
     {
         Util::verifyKeys(self::createSignature(), $attribs);
-
         return $this->_doCreate('/payment_methods', array('payment_method' => $attribs));
     }
 
@@ -46,35 +47,33 @@ class PaymentMethodGateway
      * find a PaymentMethod by token
      *
      * @param string $token payment method unique id
-     *
      * @return object CreditCard or PayPalAccount
-     *
      * @throws Exception\NotFound
      */
     public function find($token)
     {
         $this->_validateId($token);
         try {
-            $path = $this->_config->merchantPath().'/payment_methods/any/'.$token;
+            $path = $this->_config->merchantPath() . '/payment_methods/any/' . $token;
             $response = $this->_http->get($path);
             if (isset($response['creditCard'])) {
                 return CreditCard::factory($response['creditCard']);
-            } elseif (isset($response['paypalAccount'])) {
+            } else if (isset($response['paypalAccount'])) {
                 return PayPalAccount::factory($response['paypalAccount']);
-            } elseif (isset($response['coinbaseAccount'])) {
+            } else if (isset($response['coinbaseAccount'])) {
                 return CoinbaseAccount::factory($response['coinbaseAccount']);
-            } elseif (isset($response['applePayCard'])) {
+            } else if (isset($response['applePayCard'])) {
                 return ApplePayCard::factory($response['applePayCard']);
-            } elseif (isset($response['androidPayCard'])) {
+            } else if (isset($response['androidPayCard'])) {
                 return AndroidPayCard::factory($response['androidPayCard']);
-            } elseif (isset($response['europeBankAccount'])) {
+            } else if (isset($response['europeBankAccount'])) {
                 return EuropeBankAccount::factory($response['europeBankAccount']);
-            } elseif (is_array($response)) {
+            } else if (is_array($response)) {
                 return UnknownPaymentMethod::factory($response);
             }
         } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
-                'payment method with token '.$token.' not found'
+                'payment method with token ' . $token . ' not found'
             );
         }
     }
@@ -82,16 +81,14 @@ class PaymentMethodGateway
     public function update($token, $attribs)
     {
         Util::verifyKeys(self::updateSignature(), $attribs);
-
-        return $this->_doUpdate('/payment_methods/any/'.$token, array('payment_method' => $attribs));
+        return $this->_doUpdate('/payment_methods/any/' . $token, array('payment_method' => $attribs));
     }
 
     public function delete($token)
     {
         $this->_validateId($token);
-        $path = $this->_config->merchantPath().'/payment_methods/any/'.$token;
+        $path = $this->_config->merchantPath() . '/payment_methods/any/' . $token;
         $this->_http->delete($path);
-
         return new Result\Successful();
     }
 
@@ -102,9 +99,8 @@ class PaymentMethodGateway
             'failOnDuplicatePaymentMethod',
             'makeDefault',
             'verificationMerchantAccountId',
-            'verifyCard',
+            'verifyCard'
         );
-
         return array(
             'billingAddressId',
             'cardholderName',
@@ -117,14 +113,13 @@ class PaymentMethodGateway
             'paymentMethodNonce',
             'token',
             array('options' => $optionsSignature),
-            array('billingAddress' => $billingAddressSignature),
+            array('billingAddress' => $billingAddressSignature)
         );
     }
 
     public static function createSignature()
     {
         $signature = array_merge(self::baseSignature(), array('customerId'));
-
         return $signature;
     }
 
@@ -133,16 +128,15 @@ class PaymentMethodGateway
         $billingAddressSignature = AddressGateway::updateSignature();
         array_push($billingAddressSignature, array(
             'options' => array(
-                'updateExisting',
-            ),
+                'updateExisting'
+            )
         ));
         $signature = array_merge(self::baseSignature(), array(
             'deviceSessionId',
             'venmoSdkPaymentMethodCode',
             'fraudMerchantId',
-            array('billingAddress' => $billingAddressSignature),
+            array('billingAddress' => $billingAddressSignature)
         ));
-
         return $signature;
     }
 
@@ -150,15 +144,13 @@ class PaymentMethodGateway
      * sends the create request to the gateway
      *
      * @ignore
-     *
      * @param string $subPath
-     * @param array  $params
-     *
+     * @param array $params
      * @return mixed
      */
     public function _doCreate($subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath().$subPath;
+        $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
@@ -168,15 +160,13 @@ class PaymentMethodGateway
      * sends the update request to the gateway
      *
      * @ignore
-     *
      * @param string $subPath
-     * @param array  $params
-     *
+     * @param array $params
      * @return mixed
      */
     public function _doUpdate($subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath().$subPath;
+        $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->put($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
@@ -188,14 +178,11 @@ class PaymentMethodGateway
      * creates a new CreditCard or PayPalAccount object
      * and encapsulates it inside a Result\Successful object, or
      * encapsulates a Errors object inside a Result\Error
-     * alternatively, throws an Unexpected exception if the response is invalid
+     * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
-     *
      * @param array $response gateway response values
-     *
      * @return object Result\Successful or Result\Error
-     *
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)
@@ -206,70 +193,67 @@ class PaymentMethodGateway
                 CreditCard::factory($response['creditCard']),
                 'paymentMethod'
             );
-        } elseif (isset($response['paypalAccount'])) {
+        } else if (isset($response['paypalAccount'])) {
             // return a populated instance of PayPalAccount
             return new Result\Successful(
                 PayPalAccount::factory($response['paypalAccount']),
-                'paymentMethod'
+                "paymentMethod"
             );
-        } elseif (isset($response['coinbaseAccount'])) {
+        } else if (isset($response['coinbaseAccount'])) {
             // return a populated instance of CoinbaseAccount
             return new Result\Successful(
                 CoinbaseAccount::factory($response['coinbaseAccount']),
-                'paymentMethod'
+                "paymentMethod"
             );
-        } elseif (isset($response['applePayCard'])) {
+        } else if (isset($response['applePayCard'])) {
             // return a populated instance of ApplePayCard
             return new Result\Successful(
                 ApplePayCard::factory($response['applePayCard']),
-                'paymentMethod'
+                "paymentMethod"
             );
-        } elseif (isset($response['androidPayCard'])) {
+        } else if (isset($response['androidPayCard'])) {
             // return a populated instance of AndroidPayCard
             return new Result\Successful(
                 AndroidPayCard::factory($response['androidPayCard']),
-                'paymentMethod'
+                "paymentMethod"
             );
-        } elseif (isset($response['europeBankAccount'])) {
+        } else if (isset($response['europeBankAccount'])) {
             // return a populated instance of EuropeBankAccount
             return new Result\Successful(
                 EuropeBankAccount::factory($response['europeBankAccount']),
-                'paymentMethod'
+                "paymentMethod"
             );
-        } elseif (isset($response['apiErrorResponse'])) {
+        } else if (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
-        } elseif (is_array($response)) {
+        } else if (is_array($response)) {
             return new Result\Successful(
                 UnknownPaymentMethod::factory($response),
-                'paymentMethod'
+                "paymentMethod"
             );
         } else {
             throw new Exception\Unexpected(
-                'Expected payment method or apiErrorResponse'
+            'Expected payment method or apiErrorResponse'
             );
         }
     }
 
     /**
      * verifies that a valid payment method identifier is being used
-     *
      * @ignore
-     *
-     * @param string   $identifier
-     * @param Optional $string     $identifierType type of identifier supplied, default 'token'
-     *
+     * @param string $identifier
+     * @param Optional $string $identifierType type of identifier supplied, default 'token'
      * @throws InvalidArgumentException
      */
     private function _validateId($identifier = null, $identifierType = 'token')
     {
         if (empty($identifier)) {
-            throw new InvalidArgumentException(
+           throw new InvalidArgumentException(
                    'expected payment method id to be set'
                    );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $identifier)) {
             throw new InvalidArgumentException(
-                    $identifier.' is an invalid payment method '.$identifierType.'.'
+                    $identifier . ' is an invalid payment method ' . $identifierType . '.'
                     );
         }
     }
