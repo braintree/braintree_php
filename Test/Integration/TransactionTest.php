@@ -3104,7 +3104,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Braintree_TestHelper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
@@ -3131,7 +3131,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Braintree_TestHelper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['IneligibleCard'],
@@ -3158,7 +3158,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Braintree_TestHelper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['InsufficientPoints'],
@@ -3185,7 +3185,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Braintree_TestHelper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
@@ -3215,7 +3215,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Braintree_TestHelper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['IneligibleCard'],
@@ -3245,7 +3245,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Braintree_TestHelper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['InsufficientPoints'],
