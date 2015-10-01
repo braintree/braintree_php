@@ -14,16 +14,18 @@ final class Version
      */
     const MAJOR = 3;
     const MINOR = 5;
-    const TINY  = 0;
+    const TINY = 0;
 
     /**
      * @ignore
+     * @access protected
      */
-    protected function __construct()
+    protected function  __construct()
     {
     }
 
     /**
+     *
      * @return string the current library version
      */
     public static function get()

@@ -5,12 +5,12 @@ class WebhookTesting
 {
     public static function sampleNotification($kind, $id)
     {
-        $payload = base64_encode(self::_sampleXml($kind, $id))."\n";
-        $signature = Configuration::publicKey().'|'.Digest::hexDigestSha1(Configuration::privateKey(), $payload);
+        $payload = base64_encode(self::_sampleXml($kind, $id)) . "\n";
+        $signature = Configuration::publicKey() . "|" . Digest::hexDigestSha1(Configuration::privateKey(), $payload);
 
         return array(
             'bt_signature' => $signature,
-            'bt_payload' => $payload,
+            'bt_payload' => $payload
         );
     }
 
@@ -58,7 +58,6 @@ class WebhookTesting
                 break;
         }
         $timestamp = self::_timestamp();
-
         return "
         <notification>
             <timestamp type=\"datetime\">{$timestamp}</timestamp>
@@ -267,7 +266,7 @@ class WebhookTesting
 
     private static function _partnerMerchantConnectedSampleXml($id)
     {
-        return '
+        return "
         <partner-merchant>
           <merchant-public-id>public_id</merchant-public-id>
           <public-key>public_key</public-key>
@@ -275,25 +274,25 @@ class WebhookTesting
           <partner-merchant-id>abc123</partner-merchant-id>
           <client-side-encryption-key>cse_key</client-side-encryption-key>
         </partner-merchant>
-        ';
+        ";
     }
 
     private static function _partnerMerchantDisconnectedSampleXml($id)
     {
-        return '
+        return "
         <partner-merchant>
           <partner-merchant-id>abc123</partner-merchant-id>
         </partner-merchant>
-        ';
+        ";
     }
 
     private static function _partnerMerchantDeclinedSampleXml($id)
     {
-        return '
+        return "
         <partner-merchant>
           <partner-merchant-id>abc123</partner-merchant-id>
         </partner-merchant>
-        ';
+        ";
     }
 
     private static function _timestamp()
