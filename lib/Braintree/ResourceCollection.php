@@ -18,6 +18,8 @@ use Iterator;
  * }
  * </code>
  *
+ * @package    Braintree
+ * @subpackage Utility
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class ResourceCollection implements Iterator
@@ -36,10 +38,10 @@ class ResourceCollection implements Iterator
      * @param array $attributes
      * @param array $pagerAttribs
      */
-    public function __construct($response, $pager)
+    public function  __construct($response, $pager)
     {
-        $this->_pageSize = $response['searchResults']['pageSize'];
-        $this->_ids = $response['searchResults']['ids'];
+        $this->_pageSize = $response["searchResults"]["pageSize"];
+        $this->_ids = $response["searchResults"]["ids"];
         $this->_pager = $pager;
     }
 
@@ -60,13 +62,12 @@ class ResourceCollection implements Iterator
     {
         $ids = $this->_ids;
         $page = $this->_getPage(array($ids[0]));
-
         return $page[0];
     }
 
     public function key()
     {
-        return;
+        return null;
     }
 
     /**
@@ -109,9 +110,12 @@ class ResourceCollection implements Iterator
 
     private function _getNextPage()
     {
-        if (empty($this->_ids)) {
+        if (empty($this->_ids))
+        {
             $this->_items = array();
-        } else {
+        }
+        else
+        {
             $this->_items = $this->_getPage(array_slice($this->_ids, $this->_batchIndex, $this->_pageSize));
             $this->_batchIndex += $this->_pageSize;
             $this->_index = 0;
