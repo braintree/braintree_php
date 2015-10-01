@@ -19,8 +19,9 @@ final class Merchant extends Braintree
      * returns a string representation of the merchant
      * @return string
      */
-    public function __toString()
+    public function  __toString()
     {
-        return __CLASS__.'['.Util::attributesToString($this->_attributes).']';
+        return __CLASS__ . '[' .
+                Util::attributesToString($this->_attributes) .']';
     }
 }

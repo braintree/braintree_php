@@ -15,7 +15,6 @@ final class MerchantAccount extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
-
         return $instance;
     }
 
@@ -43,6 +42,7 @@ final class MerchantAccount extends Braintree
             $this->_set('masterMerchantAccount', self::Factory($masterMerchantAccount));
         }
     }
+
 
     // static methods redirecting to gateway
 

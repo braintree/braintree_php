@@ -18,34 +18,30 @@ final class MerchantAccountGateway
     public function create($attribs)
     {
         Util::verifyKeys(self::detectSignature($attribs), $attribs);
-
         return $this->_doCreate('/merchant_accounts/create_via_api', array('merchant_account' => $attribs));
     }
 
     public function find($merchant_account_id)
     {
         try {
-            $path = $this->_config->merchantPath().'/merchant_accounts/'.$merchant_account_id;
+            $path = $this->_config->merchantPath() . '/merchant_accounts/' . $merchant_account_id;
             $response = $this->_http->get($path);
-
             return MerchantAccount::factory($response['merchantAccount']);
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound('merchant account with id '.$merchant_account_id.' not found');
+            throw new Exception\NotFound('merchant account with id ' . $merchant_account_id . ' not found');
         }
     }
 
     public function update($merchant_account_id, $attributes)
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
-
-        return $this->_doUpdate('/merchant_accounts/'.$merchant_account_id.'/update_via_api', array('merchant_account' => $attributes));
+        return $this->_doUpdate('/merchant_accounts/' . $merchant_account_id . '/update_via_api', array('merchant_account' => $attributes));
     }
 
     public static function detectSignature($attribs)
     {
         if (isset($attribs['applicantDetails'])) {
-            trigger_error('DEPRECATED: Passing applicantDetails to create is deprecated. Please use individual, business, and funding', E_USER_NOTICE);
-
+            trigger_error("DEPRECATED: Passing applicantDetails to create is deprecated. Please use individual, business, and funding", E_USER_NOTICE);
             return self::createDeprecatedSignature();
         } else {
             return self::createSignature();
@@ -56,7 +52,6 @@ final class MerchantAccountGateway
     {
         $signature = self::createSignature();
         unset($signature['tosAccepted']);
-
         return $signature;
     }
 
@@ -70,14 +65,14 @@ final class MerchantAccountGateway
             'phone',
             'dateOfBirth',
             'ssn',
-            array('address' => $addressSignature),
+            array('address' => $addressSignature)
         );
 
         $businessSignature = array(
             'dbaName',
             'legalName',
             'taxId',
-            array('address' => $addressSignature),
+            array('address' => $addressSignature)
         );
 
         $fundingSignature = array(
@@ -95,7 +90,7 @@ final class MerchantAccountGateway
             'masterMerchantAccountId',
             array('individual' => $individualSignature),
             array('funding' => $fundingSignature),
-            array('business' => $businessSignature),
+            array('business' => $businessSignature)
         );
     }
 
@@ -113,20 +108,20 @@ final class MerchantAccountGateway
             'taxId',
             'routingNumber',
             'accountNumber',
-            array('address' => $applicantDetailsAddressSignature),
+            array('address' => $applicantDetailsAddressSignature)
         );
 
         return array(
             array('applicantDetails' =>  $applicantDetailsSignature),
             'id',
             'tosAccepted',
-            'masterMerchantAccountId',
+            'masterMerchantAccountId'
         );
     }
 
     public function _doCreate($subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath().$subPath;
+        $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
@@ -134,7 +129,7 @@ final class MerchantAccountGateway
 
     private function _doUpdate($subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath().$subPath;
+        $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->put($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
@@ -147,11 +142,11 @@ final class MerchantAccountGateway
             return new Result\Successful(
                     MerchantAccount::factory($response['merchantAccount'])
             );
-        } elseif (isset($response['apiErrorResponse'])) {
+        } else if (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            'Expected merchant account or apiErrorResponse'
+            "Expected merchant account or apiErrorResponse"
             );
         }
     }

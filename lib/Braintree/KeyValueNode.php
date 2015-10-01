@@ -6,13 +6,12 @@ class KeyValueNode
     public function __construct($name)
     {
         $this->name = $name;
-        $this->searchTerm = true;
+        $this->searchTerm = True;
     }
 
     public function is($value)
     {
         $this->searchTerm = $value;
-
         return $this;
     }
 
