@@ -4,8 +4,8 @@ namespace Braintree;
 /**
  * Braintree UnknownPaymentMethod module
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
@@ -15,8 +15,8 @@ namespace Braintree;
  * <b>== More information ==</b>
  *
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $token
@@ -24,12 +24,13 @@ namespace Braintree;
  */
 class UnknownPaymentMethod extends Braintree
 {
+
+
     /**
      *  factory method: returns an instance of UnknownPaymentMethod
      *  to the requesting method, with populated properties
      *
      * @ignore
-     *
      * @return object instance of UnknownPaymentMethod
      */
     public static function factory($attributes)
@@ -37,7 +38,6 @@ class UnknownPaymentMethod extends Braintree
         $instance = new self();
         $values = array_values($attributes);
         $instance->_initialize(array_shift($values));
-
         return $instance;
     }
 
@@ -46,7 +46,7 @@ class UnknownPaymentMethod extends Braintree
     /**
      * returns false if default is null or false
      *
-     * @return bool
+     * @return boolean
      */
     public function isDefault()
     {
@@ -56,8 +56,8 @@ class UnknownPaymentMethod extends Braintree
     /**
      * sets instance properties from an array of values
      *
+     * @access protected
      * @param array $unknownPaymentMethodAttribs array of unknownPaymentMethod data
-     *
      * @return none
      */
     protected function _initialize($unknownPaymentMethodAttribs)
@@ -66,4 +66,5 @@ class UnknownPaymentMethod extends Braintree
         $this->imageUrl = 'https://assets.braintreegateway.com/payment_method_logo/unknown.png';
         $this->_attributes = $unknownPaymentMethodAttribs;
     }
+
 }
