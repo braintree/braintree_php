@@ -30,10 +30,12 @@ final class MerchantGateway
                 Merchant::factory($response['response']['merchant']),
                 OAuthCredentials::factory($response['response']['credentials']),
             ));
-        } elseif (isset($response['apiErrorResponse'])) {
+        } else if (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
-            throw new Exception\Unexpected('Expected merchant or apiErrorResponse');
+            throw new Exception\Unexpected(
+            "Expected merchant or apiErrorResponse"
+            );
         }
     }
 }

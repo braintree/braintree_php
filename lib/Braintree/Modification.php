@@ -12,12 +12,10 @@ class Modification extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
-
         return $instance;
     }
 
-    public function __toString()
-    {
-        return get_called_class().'['.Util::attributesToString($this->_attributes).']';
+    public function __toString() {
+        return get_called_class() . '[' . Util::attributesToString($this->_attributes) . ']';
     }
 }

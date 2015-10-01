@@ -12,35 +12,30 @@ class MultipleValueOrTextNode extends MultipleValueNode
     public function contains($value)
     {
         $this->textNode->contains($value);
-
         return $this;
     }
 
     public function endsWith($value)
     {
         $this->textNode->endsWith($value);
-
         return $this;
     }
 
     public function is($value)
     {
         $this->textNode->is($value);
-
         return $this;
     }
 
     public function isNot($value)
     {
         $this->textNode->isNot($value);
-
         return $this;
     }
 
     public function startsWith($value)
     {
         $this->textNode->startsWith($value);
-
         return $this;
     }
 

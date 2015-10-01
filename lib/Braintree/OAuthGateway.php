@@ -51,7 +51,7 @@ class OAuthGateway
                 OAuthCredentials::factory($response['credentials'])
             );
             return $this->_mapSuccess($result);
-        } elseif (isset($response['apiErrorResponse'])) {
+        } else if (isset($response['apiErrorResponse'])) {
             $result = new Result\Error($response['apiErrorResponse']);
             return $this->_mapError($result);
         } else {
@@ -67,9 +67,9 @@ class OAuthGateway
 
         if ($error->code == Error\Codes::OAUTH_INVALID_GRANT) {
             $result->error = 'invalid_grant';
-        } elseif ($error->code == Error\Codes::OAUTH_INVALID_CREDENTIALS) {
+        } else if ($error->code == Error\Codes::OAUTH_INVALID_CREDENTIALS) {
             $result->error = 'invalid_credentials';
-        } elseif ($error->code == Error\Codes::OAUTH_INVALID_SCOPE) {
+        } else if ($error->code == Error\Codes::OAUTH_INVALID_SCOPE) {
             $result->error = 'invalid_scope';
         }
         $result->errorDescription = explode(': ', $error->message)[1];
@@ -93,7 +93,7 @@ class OAuthGateway
         $queryString = preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($query));
         $url = $this->_config->baseUrl() . '/oauth/connect?' . $queryString;
 
-        return $url.'&signature='.$this->computeSignature($url).'&algorithm=SHA256';
+        return $url . '&signature=' . $this->computeSignature($url) . '&algorithm=SHA256';
     }
 
     public function computeSignature($url)
