@@ -76,7 +76,7 @@ class SubscriptionGateway
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
-        $criteria['ids'] = SubscriptionSearch::ids()->in($ids)->toparam();
+        $criteria["ids"] = SubscriptionSearch::ids()->in($ids)->toparam();
         $path = $this->_config->merchantPath() . '/subscriptions/advanced_search';
         $response = $this->_http->post($path, array('search' => $criteria));
 
