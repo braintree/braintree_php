@@ -39,6 +39,11 @@ class Helper
         return 'three_d_secure_merchant_account';
     }
 
+    public static function fakeAmexDirectMerchantAccountId()
+    {
+        return 'fake_amex_direct_usd';
+    }
+
     public static function createViaTr($regularParams, $trParams)
     {
         $trData = Braintree\TransparentRedirect::transactionData(
