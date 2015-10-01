@@ -4,8 +4,8 @@ namespace Braintree;
 /**
  * Braintree PayPalAccount module
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
@@ -15,10 +15,11 @@ namespace Braintree;
  * <b>== More information ==</b>
  *
  *
+ * @package    Braintree
  * @category   Resources
+ * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
- * @copyright  2014 Braintree, a division of PayPal, Inc
- *
+ * @property-read string $customerId
  * @property-read string $email
  * @property-read string $token
  * @property-read string $imageUrl
@@ -30,14 +31,12 @@ class PayPalAccount extends Braintree
      *  to the requesting method, with populated properties
      *
      * @ignore
-     *
      * @return object instance of PayPalAccount
      */
     public static function factory($attributes)
     {
         $instance = new self();
         $instance->_initialize($attributes);
-
         return $instance;
     }
 
@@ -46,7 +45,7 @@ class PayPalAccount extends Braintree
     /**
      * returns false if default is null or false
      *
-     * @return bool
+     * @return boolean
      */
     public function isDefault()
     {
@@ -56,8 +55,8 @@ class PayPalAccount extends Braintree
     /**
      * sets instance properties from an array of values
      *
+     * @access protected
      * @param array $paypalAccountAttribs array of paypalAccount data
-     *
      * @return none
      */
     protected function _initialize($paypalAccountAttribs)
@@ -67,7 +66,7 @@ class PayPalAccount extends Braintree
 
         $subscriptionArray = array();
         if (isset($paypalAccountAttribs['subscriptions'])) {
-            foreach ($paypalAccountAttribs['subscriptions'] as $subscription) {
+            foreach ($paypalAccountAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
@@ -78,14 +77,14 @@ class PayPalAccount extends Braintree
     /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
-     *
      * @return string
      */
-    public function __toString()
+    public function  __toString()
     {
-        return __CLASS__.'['.
+        return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes).']';
     }
+
 
     // static methods redirecting to gateway
 

@@ -17,7 +17,7 @@ class Plan extends Braintree
 
         $addOnArray = array();
         if (isset($attributes['addOns'])) {
-            foreach ($attributes['addOns'] as $addOn) {
+            foreach ($attributes['addOns'] AS $addOn) {
                 $addOnArray[] = AddOn::factory($addOn);
             }
         }
@@ -25,7 +25,7 @@ class Plan extends Braintree
 
         $discountArray = array();
         if (isset($attributes['discounts'])) {
-            foreach ($attributes['discounts'] as $discount) {
+            foreach ($attributes['discounts'] AS $discount) {
                 $discountArray[] = Discount::factory($discount);
             }
         }
@@ -33,12 +33,13 @@ class Plan extends Braintree
 
         $planArray = array();
         if (isset($attributes['plans'])) {
-            foreach ($attributes['plans'] as $plan) {
+            foreach ($attributes['plans'] AS $plan) {
                 $planArray[] = self::factory($plan);
             }
         }
         $this->_attributes['plans'] = $planArray;
     }
+
 
     // static methods redirecting to gateway
 

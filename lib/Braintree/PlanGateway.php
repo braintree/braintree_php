@@ -17,15 +17,17 @@ class PlanGateway
 
     public function all()
     {
-        $path = $this->_config->merchantPath().'/plans';
+        $path = $this->_config->merchantPath() . '/plans';
         $response = $this->_http->get($path);
-
-        if (key_exists('plans', $response)) {
-            $plans = array('plan' => $response['plans']);
+        if (key_exists('plans', $response)){
+            $plans = array("plan" => $response['plans']);
         } else {
-            $plans = array('plan' => array());
+            $plans = array("plan" => array());
         }
 
-        return Util::extractAttributeAsArray($plans, 'plan');
+        return Util::extractAttributeAsArray(
+            $plans,
+            'plan'
+        );
     }
 }

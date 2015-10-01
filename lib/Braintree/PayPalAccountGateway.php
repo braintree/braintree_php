@@ -6,8 +6,8 @@ use InvalidArgumentException;
 /**
  * Braintree PayPalAccountGateway module
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
@@ -17,8 +17,8 @@ use InvalidArgumentException;
  * <b>== More information ==</b>
  *
  *
+ * @package    Braintree
  * @category   Resources
- *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 class PayPalAccountGateway
@@ -35,55 +35,53 @@ class PayPalAccountGateway
         $this->_http = new Http($gateway->config);
     }
 
+
     /**
      * find a paypalAccount by token
      *
+     * @access public
      * @param string $token paypal accountunique id
-     *
      * @return object PayPalAccount
-     *
      * @throws Exception\NotFound
      */
     public function find($token)
     {
         $this->_validateId($token);
         try {
-            $path = $this->_config->merchantPath().'/payment_methods/paypal_account/'.$token;
+            $path = $this->_config->merchantPath() . '/payment_methods/paypal_account/' . $token;
             $response = $this->_http->get($path);
-
             return PayPalAccount::factory($response['paypalAccount']);
         } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
-                'paypal account with token '.$token.' not found'
+                'paypal account with token ' . $token . ' not found'
             );
         }
+
     }
 
     /**
      * updates the paypalAccount record
      *
      * if calling this method in context, $token
-     * is the 2nd attribute. $token is not sent in object context
+     * is the 2nd attribute. $token is not sent in object context.
      *
-     * @param array  $attributes
-     * @param string $token      (optional)
-     *
-     * @return object Result\Successful or Result\Error
+     * @access public
+     * @param array $attributes
+     * @param string $token (optional)
+     * @return object Braintree_Result_Successful or Braintree_Result_Error
      */
     public function update($token, $attributes)
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
         $this->_validateId($token);
-
-        return $this->_doUpdate('put', '/payment_methods/paypal_account/'.$token, array('paypalAccount' => $attributes));
+        return $this->_doUpdate('put', '/payment_methods/paypal_account/' . $token, array('paypalAccount' => $attributes));
     }
 
     public function delete($token)
     {
         $this->_validateId($token);
-        $path = $this->_config->merchantPath().'/payment_methods/paypal_account/'.$token;
+        $path = $this->_config->merchantPath() . '/payment_methods/paypal_account/' . $token;
         $this->_http->delete($path);
-
         return new Result\Successful();
     }
 
@@ -91,16 +89,13 @@ class PayPalAccountGateway
      * create a new sale for the current PayPal account
      *
      * @param string $token
-     * @param array  $transactionAttribs
-     *
+     * @param array $transactionAttribs
      * @return object Result\Successful or Result\Error
-     *
      * @see Transaction::sale()
      */
     public function sale($token, $transactionAttribs)
     {
         $this->_validateId($token);
-
         return Transaction::sale(
             array_merge(
                 $transactionAttribs,
@@ -113,7 +108,7 @@ class PayPalAccountGateway
     {
         return array(
             'token',
-            array('options' => array('makeDefault')),
+            array('options' => array('makeDefault'))
         );
     }
 
@@ -121,17 +116,14 @@ class PayPalAccountGateway
      * sends the update request to the gateway
      *
      * @ignore
-     *
      * @param string $subPath
-     * @param array  $params
-     *
+     * @param array $params
      * @return mixed
      */
     private function _doUpdate($httpVerb, $subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath().$subPath;
+        $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->$httpVerb($fullPath, $params);
-
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -141,14 +133,11 @@ class PayPalAccountGateway
      * creates a new PayPalAccount object and encapsulates
      * it inside a Result\Successful object, or
      * encapsulates a Errors object inside a Result\Error
-     * alternatively, throws an Unexpected exception if the response is invalid
+     * alternatively, throws an Unexpected exception if the response is invalid.
      *
      * @ignore
-     *
      * @param array $response gateway response values
-     *
      * @return object Result\Successful or Result\Error
-     *
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)
@@ -158,7 +147,7 @@ class PayPalAccountGateway
             return new Result\Successful(
                     PayPalAccount::factory($response['paypalAccount'])
             );
-        } elseif (isset($response['apiErrorResponse'])) {
+        } else if (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
@@ -169,24 +158,21 @@ class PayPalAccountGateway
 
     /**
      * verifies that a valid paypal account identifier is being used
-     *
      * @ignore
-     *
-     * @param string   $identifier
-     * @param Optional $string     $identifierType type of identifier supplied, default 'token'
-     *
+     * @param string $identifier
+     * @param Optional $string $identifierType type of identifier supplied, default 'token'
      * @throws InvalidArgumentException
      */
     private function _validateId($identifier = null, $identifierType = 'token')
     {
         if (empty($identifier)) {
-            throw new InvalidArgumentException(
+           throw new InvalidArgumentException(
                    'expected paypal account id to be set'
                    );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $identifier)) {
             throw new InvalidArgumentException(
-                    $identifier.' is an invalid paypal account '.$identifierType.'.'
+                    $identifier . ' is an invalid paypal account ' . $identifierType . '.'
                     );
         }
     }
