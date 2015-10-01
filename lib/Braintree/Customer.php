@@ -232,7 +232,8 @@ class Customer extends Braintree
         // map each address into its own object
         $addressArray = array();
         if (isset($customerAttribs['addresses'])) {
-            foreach ($customerAttribs['addresses'] as $address) {
+
+            foreach ($customerAttribs['addresses'] AS $address) {
                 $addressArray[] = Address::factory($address);
             }
         }
@@ -241,7 +242,7 @@ class Customer extends Braintree
         // map each creditCard into its own object
         $creditCardArray = array();
         if (isset($customerAttribs['creditCards'])) {
-            foreach ($customerAttribs['creditCards'] as $creditCard) {
+            foreach ($customerAttribs['creditCards'] AS $creditCard) {
                 $creditCardArray[] = CreditCard::factory($creditCard);
             }
         }
@@ -250,7 +251,7 @@ class Customer extends Braintree
         // map each coinbaseAccount into its own object
         $coinbaseAccountArray = array();
         if (isset($customerAttribs['coinbaseAccounts'])) {
-            foreach ($customerAttribs['coinbaseAccounts'] as $coinbaseAccount) {
+            foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
                 $coinbaseAccountArray[] = CoinbaseAccount::factory($coinbaseAccount);
             }
         }
@@ -259,7 +260,7 @@ class Customer extends Braintree
         // map each paypalAccount into its own object
         $paypalAccountArray = array();
         if (isset($customerAttribs['paypalAccounts'])) {
-            foreach ($customerAttribs['paypalAccounts'] as $paypalAccount) {
+            foreach ($customerAttribs['paypalAccounts'] AS $paypalAccount) {
                 $paypalAccountArray[] = PayPalAccount::factory($paypalAccount);
             }
         }
@@ -268,7 +269,7 @@ class Customer extends Braintree
         // map each applePayCard into its own object
         $applePayCardArray = array();
         if (isset($customerAttribs['applePayCards'])) {
-            foreach ($customerAttribs['applePayCards'] as $applePayCard) {
+            foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
                 $applePayCardArray[] = ApplePayCard::factory($applePayCard);
             }
         }
@@ -277,7 +278,7 @@ class Customer extends Braintree
         // map each androidPayCard into its own object
         $androidPayCardArray = array();
         if (isset($customerAttribs['androidPayCards'])) {
-            foreach ($customerAttribs['androidPayCards'] as $androidPayCard) {
+            foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
                 $androidPayCardArray[] = AndroidPayCard::factory($androidPayCard);
             }
         }
@@ -290,7 +291,7 @@ class Customer extends Braintree
      * returns a string representation of the customer
      * @return string
      */
-    public function __toString()
+    public function  __toString()
     {
         return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes) .']';

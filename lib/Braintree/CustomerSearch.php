@@ -29,5 +29,5 @@ class CustomerSearch
 
     public static function ids()                              { return new MultipleValueNode('ids'); }
 
-    public static function createdAt()                        { return new RangeNode('created_at'); }
+    public static function createdAt()                        { return new RangeNode("created_at"); }
 }
