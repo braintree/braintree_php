@@ -7,9 +7,9 @@ class Discount extends Modification
     {
         $instance = new self();
         $instance->_initialize($attributes);
-
         return $instance;
     }
+
 
     // static methods redirecting to gateway
 

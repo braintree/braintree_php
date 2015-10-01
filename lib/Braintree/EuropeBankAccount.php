@@ -13,16 +13,18 @@ namespace Braintree;
  * @category   Resources
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
- * @property-read string $token
- * @property-read string $default
- * @property-read string $masked-iban
- * @property-read string $bic
- * @property-read string $mandate-reference-number
  * @property-read string $account-holder-name
+ * @property-read string $bic
+ * @property-read string $customerId
+ * @property-read string $default
  * @property-read string $image-url
+ * @property-read string $mandate-reference-number
+ * @property-read string $masked-iban
+ * @property-read string $token
  */
 class EuropeBankAccount extends Braintree
 {
+
     /* instance methods */
     /**
      * returns false if default is null or false
@@ -43,9 +45,11 @@ class EuropeBankAccount extends Braintree
      */
     public static function factory($attributes)
     {
-        $instance = new self();
-        $instance->_initialize($attributes);
+        $defaultAttributes = array(
+        );
 
+        $instance = new self();
+        $instance->_initialize(array_merge($defaultAttributes, $attributes));
         return $instance;
     }
 

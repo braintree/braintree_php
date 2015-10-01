@@ -5,6 +5,7 @@ namespace Braintree;
  * Creates an instance of Dispute as returned from a transaction
  *
  *
+ * @package    Braintree
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $amount
@@ -40,6 +41,7 @@ final class Dispute extends Braintree
     const TRANSACTION_AMOUNT_DIFFERS      = "transaction_amount_differs";
     const RETRIEVAL                       = "retrieval";
 
+
     protected function _initialize($disputeAttribs)
     {
         $this->_attributes = $disputeAttribs;
@@ -55,23 +57,21 @@ final class Dispute extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
-
         return $instance;
     }
 
-    public function __toString()
+    public function  __toString()
     {
         $display = array(
             'amount', 'reason', 'status',
-            'replyByDate', 'receivedDate', 'currencyIsoCode',
+            'replyByDate', 'receivedDate', 'currencyIsoCode'
             );
 
         $displayAttributes = array();
-        foreach ($display as $attrib) {
+        foreach ($display AS $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
-
-        return __CLASS__.'['.
-                Util::attributesToString($displayAttributes).']';
+        return __CLASS__ . '[' .
+                Util::attributesToString($displayAttributes) .']';
     }
 }

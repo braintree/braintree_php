@@ -30,24 +30,22 @@ final class Disbursement extends Braintree
     {
         $instance = new self();
         $instance->_initialize($attributes);
-
         return $instance;
     }
 
-    public function __toString()
+    public function  __toString()
     {
         $display = array(
             'id', 'merchantAccountDetails', 'exceptionMessage', 'amount',
             'disbursementDate', 'followUpAction', 'retry', 'success',
-            'transactionIds',
+            'transactionIds'
             );
 
         $displayAttributes = array();
-        foreach ($display as $attrib) {
+        foreach ($display AS $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
-
-        return __CLASS__.'['.
-                Util::attributesToString($displayAttributes).']';
+        return __CLASS__ . '[' .
+                Util::attributesToString($displayAttributes) .']';
     }
 }

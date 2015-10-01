@@ -17,10 +17,10 @@ class DiscountGateway
 
     public function all()
     {
-        $path = $this->_config->merchantPath().'/discounts';
+        $path = $this->_config->merchantPath() . '/discounts';
         $response = $this->_http->get($path);
 
-        $discounts = array('discount' => $response['discounts']);
+        $discounts = array("discount" => $response['discounts']);
 
         return Util::extractAttributeAsArray(
             $discounts,
