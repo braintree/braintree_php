@@ -37,10 +37,8 @@ final class TestingGateway
     private function _doTestRequest($testPath, $transactionId)
     {
         self::_checkEnvironment();
-
-        $path = $this->_config->merchantPath().'/transactions/'.$transactionId.$testPath;
+        $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . $testPath;
         $response = $this->_http->put($path);
-
         return Transaction::factory($response['transaction']);
     }
 

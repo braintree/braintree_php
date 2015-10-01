@@ -124,7 +124,7 @@ class Address extends Braintree
      *
      * @param Braintree\Customer|int $customerOrId
      * @param int $addressId
-     * @throws Braintree\Exception_NotFound
+     * @throws Braintree\Exception\NotFound
      * @return Braintree\Address
      */
     public static function find($customerOrId, $addressId)
@@ -137,7 +137,7 @@ class Address extends Braintree
      * @param Braintree\Customer|int $customerOrId
      * @param int $addressId
      * @param array $attributes
-     * @throws Braintree\Exception_Unexpected
+     * @throws Braintree\Exception\Unexpected
      * @return Braintree\Result_Successful|Braintree\Result_Error
      */
     public static function update($customerOrId, $addressId, $attributes)
