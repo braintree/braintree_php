@@ -523,4 +523,9 @@ final class Braintree_Transaction extends Braintree_Base
     {
         return Braintree_Configuration::gateway()->transaction()->refund($transactionId, $amount);
     }
+
+    public static function submitForPartialSettlement($transactionId, $amount)
+    {
+        return Braintree_Configuration::gateway()->transaction()->submitForPartialSettlement($transactionId, $amount);
+    }
 }

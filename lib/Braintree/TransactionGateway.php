@@ -388,6 +388,15 @@ final class Braintree_TransactionGateway
         return $this->_verifyGatewayResponse($response);
     }
 
+    public function submitForPartialSettlement($transactionId, $amount)
+    {
+        $this->_validateId($transactionId);
+
+        $path = $this->_config->merchantPath() . '/transactions/'. $transactionId . '/submit_for_partial_settlement';
+        $response = $this->_http->post($path, array('transaction' => array('amount' => $amount)));
+        return $this->_verifyGatewayResponse($response);
+    }
+
     /**
      * sends the create request to the gateway
      *
