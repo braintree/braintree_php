@@ -425,6 +425,7 @@ class Codes
     const TRANSACTION_CANNOT_REFUND_WITH_SUSPENDED_MERCHANT_ACCOUNT                   = '91538';
     const TRANSACTION_CANNOT_RELEASE_FROM_ESCROW                                      = '91561';
     const TRANSACTION_CANNOT_SIMULATE_SETTLEMENT                                      = '91575';
+    const TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT                            = '915103';
     const TRANSACTION_CANNOT_SUBMIT_FOR_SETTLEMENT                                    = '91507';
     const TRANSACTION_CHANNEL_IS_TOO_LONG                                             = '91550';
     const TRANSACTION_CREDIT_CARD_IS_REQUIRED                                         = '91508';
@@ -447,6 +448,7 @@ class Codes
     const TRANSACTION_OPTIONS_VAULT_IS_DISABLED                                       = '91525';
     const TRANSACTION_ORDER_ID_IS_TOO_LONG                                            = '91501';
     const TRANSACTION_PAYMENT_INSTRUMENT_NOT_SUPPORTED_BY_MERCHANT_ACCOUNT            = '91577';
+    const TRANSACTION_PAYMENT_INSTRUMENT_TYPE_IS_NOT_ACCEPTED                         = '915101';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT                                         = '91515';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT_WITH_VENMO_SDK                          = '91549';
     const TRANSACTION_PAYMENT_METHOD_DOES_NOT_BELONG_TO_CUSTOMER                      = '91516';
@@ -465,6 +467,7 @@ class Codes
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_IS_INVALID                         = '81520';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_AUTHS                                = '915104';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_CREDITS                              = '91546';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_PARTIAL_SETTLEMENT                   = '915102';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_VOICE_AUTHORIZATIONS                 = '91545';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID                                = '91548';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                               = '91537';
