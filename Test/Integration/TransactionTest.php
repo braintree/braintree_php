@@ -3273,44 +3273,44 @@ class TransactionTest extends Setup
 
     function testSubmitForPartialSettlement()
     {
-        $authorizedTransaction = Braintree_Transaction::saleNoValidate(array(
+        $authorizedTransaction = Braintree\Transaction::saleNoValidate(array(
             'amount' => '100.00',
             'creditCard' => array(
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $authorizedTransaction->status);
-        $partialSettlementResult1 = Braintree_Transaction::submitForPartialSettlement($authorizedTransaction->id, '60.00');
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $authorizedTransaction->status);
+        $partialSettlementResult1 = Braintree\Transaction::submitForPartialSettlement($authorizedTransaction->id, '60.00');
         $this->assertTrue($partialSettlementResult1->success);
-        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $partialSettlementResult1->transaction->status);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $partialSettlementResult1->transaction->status);
         $this->assertEquals('60.00', $partialSettlementResult1->transaction->amount);
 
-        $partialSettlementResult2 = Braintree_Transaction::submitForPartialSettlement($authorizedTransaction->id, '40.00');
+        $partialSettlementResult2 = Braintree\Transaction::submitForPartialSettlement($authorizedTransaction->id, '40.00');
         $this->assertTrue($partialSettlementResult2->success);
-        $this->assertEquals(Braintree_Transaction::SUBMITTED_FOR_SETTLEMENT, $partialSettlementResult2->transaction->status);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $partialSettlementResult2->transaction->status);
         $this->assertEquals('40.00', $partialSettlementResult2->transaction->amount);
 
-        $refreshedAuthorizedTransaction = Braintree_Transaction::find($authorizedTransaction->id);
+        $refreshedAuthorizedTransaction = Braintree\Transaction::find($authorizedTransaction->id);
         $this->assertEquals(2, count($refreshedAuthorizedTransaction->partialSettlementTransactionIds));
     }
 
     function testSubmitForPartialSettlementUnsuccesful()
     {
-        $authorizedTransaction = Braintree_Transaction::saleNoValidate(array(
+        $authorizedTransaction = Braintree\Transaction::saleNoValidate(array(
             'amount' => '100.00',
             'creditCard' => array(
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
             )
         ));
-        $this->assertEquals(Braintree_Transaction::AUTHORIZED, $authorizedTransaction->status);
-        $partialSettlementResult1 = Braintree_Transaction::submitForPartialSettlement($authorizedTransaction->id, '60.00');
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $authorizedTransaction->status);
+        $partialSettlementResult1 = Braintree\Transaction::submitForPartialSettlement($authorizedTransaction->id, '60.00');
         $this->assertTrue($partialSettlementResult1->success);
 
-        $partialSettlementResult2 = Braintree_Transaction::submitForPartialSettlement($partialSettlementResult1->transaction->id, '10.00');
+        $partialSettlementResult2 = Braintree\Transaction::submitForPartialSettlement($partialSettlementResult1->transaction->id, '10.00');
         $this->assertFalse($partialSettlementResult2->success);
         $baseErrors = $partialSettlementResult2->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree_Error_Codes::TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT, $baseErrors[0]->code);
+        $this->assertEquals(Braintree\Error_Codes::TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT, $baseErrors[0]->code);
     }
 }

@@ -68,7 +68,7 @@ class PayPalAccountGateway
      * @access public
      * @param array $attributes
      * @param string $token (optional)
-     * @return object Braintree_Result_Successful or Braintree_Result_Error
+     * @return object Braintree\Result\Successful or Braintree\Result\Error
      */
     public function update($token, $attributes)
     {
