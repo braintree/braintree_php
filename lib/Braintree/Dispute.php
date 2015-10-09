@@ -39,6 +39,10 @@ final class Braintree_Dispute extends Braintree_Base
     const TRANSACTION_AMOUNT_DIFFERS      = "transaction_amount_differs";
     const RETRIEVAL                       = "retrieval";
 
+    /* Dispute Kind */
+    const CHARGEBACK      = 'chargeback';
+    const PRE_ARBITRATION = 'pre_arbitration';
+    // RETRIEVAL for kind already defined under Dispute Reason
 
     protected function _initialize($disputeAttribs)
     {
