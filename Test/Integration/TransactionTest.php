@@ -3104,7 +3104,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
@@ -3131,7 +3131,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['IneligibleCard'],
@@ -3158,7 +3158,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['InsufficientPoints'],
@@ -3185,7 +3185,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
@@ -3215,7 +3215,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['IneligibleCard'],
@@ -3245,7 +3245,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Helper::fakeAmexDirectMerchantAccountId(),
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
             'creditCard' => array(
                 'cardholderName' => 'The Cardholder',
                 'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['InsufficientPoints'],
@@ -3311,6 +3311,6 @@ class TransactionTest extends Setup
         $partialSettlementResult2 = Braintree\Transaction::submitForPartialSettlement($partialSettlementResult1->transaction->id, '10.00');
         $this->assertFalse($partialSettlementResult2->success);
         $baseErrors = $partialSettlementResult2->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree\Error_Codes::TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT, $baseErrors[0]->code);
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT, $baseErrors[0]->code);
     }
 }
