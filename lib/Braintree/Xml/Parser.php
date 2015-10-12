@@ -6,7 +6,7 @@ use DateTimeZone;
 use DOMDocument;
 use DOMElement;
 use DOMText;
-use Braintree;
+use Braintree\Util;
 
 /**
  * Braintree XML Parser
@@ -28,7 +28,7 @@ class Parser
 
         $root = $document->documentElement->nodeName;
 
-        return Braintree\Util::delimiterToCamelCaseArray(array(
+        return Util::delimiterToCamelCaseArray(array(
             $root => self::_nodeToValue($document->childNodes->item(0)),
         ));
     }

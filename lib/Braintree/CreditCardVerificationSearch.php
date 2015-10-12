@@ -32,7 +32,7 @@ class CreditCardVerificationSearch
     }
 
     public static function creditCardNumber() {
-	    return new PartialMatchNode('credit_card_number');
+        return new PartialMatchNode('credit_card_number');
     }
 
     public static function ids() {
@@ -40,7 +40,7 @@ class CreditCardVerificationSearch
     }
 
     public static function createdAt() {
-	    return new RangeNode("created_at");
+        return new RangeNode("created_at");
     }
 
     public static function creditCardCardType()

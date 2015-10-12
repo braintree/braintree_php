@@ -400,7 +400,7 @@ final class Transaction extends Braintree
             return null;
         }
         else {
-            return Braintree\CreditCard::find($token);
+            return CreditCard::find($token);
         }
     }
 
@@ -411,7 +411,7 @@ final class Transaction extends Braintree
             return null;
         }
         else {
-            return Braintree\Customer::find($customerId);
+            return Customer::find($customerId);
         }
     }
 
@@ -528,6 +528,6 @@ final class Transaction extends Braintree
 
     public static function submitForPartialSettlement($transactionId, $amount)
     {
-        return Braintree\Configuration::gateway()->transaction()->submitForPartialSettlement($transactionId, $amount);
+        return Configuration::gateway()->transaction()->submitForPartialSettlement($transactionId, $amount);
     }
 }

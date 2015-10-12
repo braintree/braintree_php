@@ -72,7 +72,7 @@ class Util
             throw new Exception\DownForMaintenance();
             break;
         default:
-            throw new Exception\Unexpected('Unexpected HTTP_RESPONSE #'.$statusCode);
+            throw new Exception\Unexpected('Unexpected HTTP_RESPONSE #' . $statusCode);
             break;
         }
     }
@@ -340,7 +340,7 @@ class Util
         if(!empty($invalidKeys)) {
             asort($invalidKeys);
             $sortedList = join(', ', $invalidKeys);
-            throw new InvalidArgumentException('invalid keys: '. $sortedList);
+            throw new InvalidArgumentException('invalid keys: ' . $sortedList);
         }
     }
     /**

@@ -433,7 +433,7 @@ class CustomerGateway
         $coinbaseAccountArray = array();
         if (isset($customerAttribs['coinbaseAccounts'])) {
             foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
-                $coinbaseAccountArray[] = Braintree\CoinbaseAccount::factory($coinbaseAccount);
+                $coinbaseAccountArray[] = CoinbaseAccount::factory($coinbaseAccount);
             }
         }
         $this->_set('coinbaseAccounts', $coinbaseAccountArray);
@@ -507,7 +507,7 @@ class CustomerGateway
      */
     public function defaultPaymentMethod()
     {
-        $defaultPaymentMethods = array_filter($this->paymentMethods, 'Braintree\Customer::_defaultPaymentMethodFilter');
+        $defaultPaymentMethods = array_filter($this->paymentMethods, 'Braintree\\Customer::_defaultPaymentMethodFilter');
         return current($defaultPaymentMethods);
     }
 
