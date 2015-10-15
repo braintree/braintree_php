@@ -5,7 +5,7 @@ spl_autoload_register(function ($className) {
         return;
     }
 
-    $fileName = dirname(__DIR__).'/lib/';
+    $fileName = dirname(__DIR__) . '/lib/';
 
     if ($lastNsPos = strripos($className, '\\')) {
         $namespace = substr($className, 0, $lastNsPos);

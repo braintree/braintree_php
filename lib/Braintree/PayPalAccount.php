@@ -82,7 +82,7 @@ class PayPalAccount extends Braintree
     public function  __toString()
     {
         return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes).']';
+                Util::attributesToString($this->_attributes) . ']';
     }
 
 

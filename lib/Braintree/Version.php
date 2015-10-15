@@ -30,6 +30,6 @@ final class Version
      */
     public static function get()
     {
-        return self::MAJOR.'.'.self::MINOR.'.'.self::TINY;
+        return self::MAJOR . '.' . self::MINOR . '.' . self::TINY;
     }
 }

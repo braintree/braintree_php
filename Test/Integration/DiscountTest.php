@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
 use Braintree;
@@ -23,7 +23,7 @@ class DiscountTest extends Setup
         );
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/modifications/create_modification_for_tests';
+        $path = Braintree\Configuration::$global->merchantPath() . '/modifications/create_modification_for_tests';
         $http->post($path, array('modification' => $discountParams));
 
         $discounts = Braintree\Discount::all();
@@ -59,7 +59,7 @@ class DiscountTest extends Setup
         );
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/modifications/create_modification_for_tests';
+        $path = Braintree\Configuration::$global->merchantPath() . '/modifications/create_modification_for_tests';
         $http->post($path, array('modification' => $discountParams));
 
         $gateway = new Braintree\Gateway(array(

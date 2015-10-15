@@ -83,7 +83,7 @@ class CreditCardVerification
     public function  __toString()
     {
         return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes).']';
+                Util::attributesToString($this->_attributes) . ']';
     }
 
     public static function allStatuses()

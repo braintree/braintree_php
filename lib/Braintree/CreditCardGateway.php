@@ -404,7 +404,7 @@ class CreditCardGateway
      */
     public function _doCreate($subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath().$subPath;
+        $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
@@ -427,7 +427,7 @@ class CreditCardGateway
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $identifier)) {
             throw new InvalidArgumentException(
-                    $identifier.' is an invalid credit card '.$identifierType.'.'
+                    $identifier . ' is an invalid credit card ' . $identifierType . '.'
                     );
         }
     }
@@ -442,7 +442,7 @@ class CreditCardGateway
      */
     private function _doUpdate($httpVerb, $subPath, $params)
     {
-        $fullPath = $this->_config->merchantPath().$subPath;
+        $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->$httpVerb($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);

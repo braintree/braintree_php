@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test;
 use Test\Setup;
@@ -43,7 +43,7 @@ class OAuthTest extends Setup
             'clientId' => 'client_id$development$integration_client_id'
         ));
         $gateway->oauth()->createTokenFromCode(array(
-            'code' => 'integration_oauth_auth_code_'.rand(0, 299)
+            'code' => 'integration_oauth_auth_code_' . rand(0, 299)
         ));
     }
 

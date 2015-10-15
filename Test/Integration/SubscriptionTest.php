@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use DateTime;
 use Test;
@@ -671,7 +671,7 @@ class SubscriptionTest extends Setup
 
     public function testCreate_fromPayPalACcount()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree\Customer::createNoValidate();
         $plan = SubscriptionHelper::triallessPlan();
         $http = new HttpClientApi(Braintree\Configuration::$global);
@@ -1166,7 +1166,7 @@ class SubscriptionTest extends Setup
     {
         $subscription = SubscriptionHelper::createSubscription();
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/subscriptions/'.$subscription->id.'/make_past_due';
+        $path = Braintree\Configuration::$global->merchantPath() . '/subscriptions/' . $subscription->id . '/make_past_due';
         $http->put($path);
 
         $result = Braintree\Subscription::retryCharge($subscription->id);
@@ -1184,7 +1184,7 @@ class SubscriptionTest extends Setup
     {
         $subscription = SubscriptionHelper::createSubscription();
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/subscriptions/'.$subscription->id.'/make_past_due';
+        $path = Braintree\Configuration::$global->merchantPath() . '/subscriptions/' . $subscription->id . '/make_past_due';
         $http->put($path);
 
         $result = Braintree\Subscription::retryCharge($subscription->id, 1000);

@@ -33,7 +33,7 @@ abstract class Instance
         if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
         } else {
-            trigger_error('Undefined property on '.get_class($this).': '.$name, E_USER_NOTICE);
+            trigger_error('Undefined property on ' . get_class($this) . ': ' . $name, E_USER_NOTICE);
             return null;
         }
     }
@@ -57,7 +57,7 @@ abstract class Instance
     public function  __toString()
     {
         $objOutput = Util::implodeAssociativeArray($this->_attributes);
-        return get_class($this) .'['.$objOutput.']';
+        return get_class($this) .'[' . $objOutput . ']';
     }
     /**
      * initializes instance properties from the keys/values of an array

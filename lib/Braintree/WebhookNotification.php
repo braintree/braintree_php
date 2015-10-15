@@ -81,7 +81,7 @@ class WebhookNotification extends Braintree
             throw new Exception\InvalidSignature("no matching public key");
         }
 
-        if (!(self::_payloadMatches($signature, $payload) || self::_payloadMatches($signature, $payload."\n"))) {
+        if (!(self::_payloadMatches($signature, $payload) || self::_payloadMatches($signature, $payload . "\n"))) {
             throw new Exception\InvalidSignature("signature does not match payload - one has been modified");
         }
     }

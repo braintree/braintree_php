@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use DateTime;
 use Test;
@@ -2414,7 +2414,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withVaultedPayPal()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree\Customer::createNoValidate();
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
@@ -2441,7 +2441,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withFuturePayPal()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2466,7 +2466,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withPayeeEmail()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2495,7 +2495,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withPayeeEmailInOptions()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2525,7 +2525,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withPayeeEmailInOptionsPayPal()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2557,7 +2557,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withPayPalCustomField()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2588,7 +2588,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withPayPalDescription()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2615,7 +2615,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withPayPalReturnsPaymentInstrumentType()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2637,7 +2637,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withFuturePayPalAndVault()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2665,7 +2665,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withOnetimePayPal()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -2690,7 +2690,7 @@ class TransactionTest extends Setup
 
     public function testCreate_withOnetimePayPalAndDoesNotVault()
     {
-        $paymentMethodToken = 'PAYPAL_TOKEN-'.strval(rand());
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(

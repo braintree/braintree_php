@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use DateTime;
 use Test;
@@ -154,19 +154,19 @@ class SubscriptionSearchTest extends Setup
         $subscription_1 = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'id' => 'subscription_123_id_'.$rand_id,
+            'id' => 'subscription_123_id_' . $rand_id,
         ))->subscription;
 
         $subscription_2 = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'id' => 'subscription_23_id_'.$rand_id,
+            'id' => 'subscription_23_id_' . $rand_id,
         ))->subscription;
 
         $subscription_3 = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'id' => 'subscription_3_id_'.$rand_id,
+            'id' => 'subscription_3_id_' . $rand_id,
         ))->subscription;
 
         $collection = Braintree\Subscription::search(array(
@@ -188,20 +188,20 @@ class SubscriptionSearchTest extends Setup
         $subscription_1 = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'id' => strval(rand()).'_subscription_'.$rand_id,
+            'id' => strval(rand()) . '_subscription_' . $rand_id,
             'price' => '2',
         ))->subscription;
 
         $subscription_2 = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'id' => strval(rand()).'_subscription_'.$rand_id,
+            'id' => strval(rand()) . '_subscription_' . $rand_id,
             'merchantAccountId' => Test\Helper::nonDefaultMerchantAccountId(),
             'price' => '2',
         ))->subscription;
 
         $collection = Braintree\Subscription::search(array(
-            Braintree\SubscriptionSearch::id()->endsWith('subscription_'.$rand_id),
+            Braintree\SubscriptionSearch::id()->endsWith('subscription_' . $rand_id),
             Braintree\SubscriptionSearch::merchantAccountId()->in(array(Test\Helper::nonDefaultMerchantAccountId())),
             Braintree\SubscriptionSearch::price()->is('2'),
         ));
@@ -220,12 +220,12 @@ class SubscriptionSearchTest extends Setup
         $subscription = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'id' => strval(rand()).'_subscription_'.$rand_id,
+            'id' => strval(rand()) . '_subscription_' . $rand_id,
             'price' => '11.38',
         ))->subscription;
 
         $collection = Braintree\Subscription::search(array(
-            Braintree\SubscriptionSearch::id()->endsWith('subscription_'.$rand_id),
+            Braintree\SubscriptionSearch::id()->endsWith('subscription_' . $rand_id),
             Braintree\SubscriptionSearch::merchantAccountId()->in(array('bogus_merchant_account')),
             Braintree\SubscriptionSearch::price()->is('11.38'),
         ));
@@ -244,7 +244,7 @@ class SubscriptionSearchTest extends Setup
         ))->subscription;
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/subscriptions/'.$subscription->id.'/make_past_due';
+        $path = Braintree\Configuration::$global->merchantPath() . '/subscriptions/' . $subscription->id . '/make_past_due';
         $http->put($path, array('daysPastDue' => 5));
 
         $found = false;

@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
 use Braintree;
@@ -23,7 +23,7 @@ class AddOnsTest extends Setup
         );
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/modifications/create_modification_for_tests';
+        $path = Braintree\Configuration::$global->merchantPath() . '/modifications/create_modification_for_tests';
         $http->post($path, array('modification' => $addOnParams));
 
         $addOns = Braintree\AddOn::all();
@@ -59,7 +59,7 @@ class AddOnsTest extends Setup
         );
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/modifications/create_modification_for_tests';
+        $path = Braintree\Configuration::$global->merchantPath() . '/modifications/create_modification_for_tests';
         $http->post($path, array('modification' => $addOnParams));
 
         $gateway = new Braintree\Gateway(array(

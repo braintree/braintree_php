@@ -332,7 +332,7 @@ class Configuration
      */
     public function merchantPath()
     {
-        return '/merchants/'.$this->_merchantId;
+        return '/merchants/' . $this->_merchantId;
     }
 
     /**

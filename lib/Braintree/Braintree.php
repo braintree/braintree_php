@@ -47,7 +47,7 @@ abstract class Braintree
         if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
         } else {
-            trigger_error('Undefined property on '.get_class($this).': '.$name, E_USER_NOTICE);
+            trigger_error('Undefined property on ' . get_class($this) . ': ' . $name, E_USER_NOTICE);
 
             return;
         }
@@ -80,7 +80,7 @@ abstract class Braintree
 
         foreach ($requiredExtensions as $ext) {
             if (!extension_loaded($ext)) {
-                throw new Exception('The Braintree library requires the '.$ext.' extension.');
+                throw new Exception('The Braintree library requires the ' . $ext . ' extension.');
             }
         }
 

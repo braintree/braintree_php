@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use DateTime;
 use DateTimeZone;
@@ -37,9 +37,9 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function testSearchOnTextFields()
     {
-        $firstName  = 'Tim'.rand();
-        $token      = 'creditcard'.rand();
-        $customerId = 'customer'.rand();
+        $firstName  = 'Tim' . rand();
+        $token      = 'creditcard' . rand();
+        $customerId = 'customer' . rand();
 
         $transaction = Braintree\Transaction::saleNoValidate(array(
             'amount' => Braintree\Test\TransactionAmounts::$authorize,
@@ -587,7 +587,7 @@ class TransactionAdvancedSearchTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $creditCard = Braintree\CreditCard::create(array(
             'customerId' => $customer->id,
-            'cardholderName' => 'Joe Everyman'.rand(),
+            'cardholderName' => 'Joe Everyman' . rand(),
             'number' => '5105105105105100',
             'expirationDate' => '05/12',
         ))->creditCard;
@@ -598,7 +598,7 @@ class TransactionAdvancedSearchTest extends Setup
             'options' => array('submitForSettlement' => true),
         ));
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/transactions/'.$sale->id.'/settle';
+        $path = Braintree\Configuration::$global->merchantPath() . '/transactions/' . $sale->id . '/settle';
         $http->put($path);
         $refund = Braintree\Transaction::refund($sale->id)->transaction;
 
@@ -641,7 +641,7 @@ class TransactionAdvancedSearchTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $creditCard = Braintree\CreditCard::create(array(
             'customerId' => $customer->id,
-            'cardholderName' => 'Joe Everyman'.rand(),
+            'cardholderName' => 'Joe Everyman' . rand(),
             'number' => '5105105105105100',
             'expirationDate' => '05/12',
         ))->creditCard;
@@ -652,7 +652,7 @@ class TransactionAdvancedSearchTest extends Setup
             'options' => array('submitForSettlement' => true),
         ));
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/transactions/'.$sale->id.'/settle';
+        $path = Braintree\Configuration::$global->merchantPath() . '/transactions/' . $sale->id . '/settle';
         $http->put($path);
         $refund = Braintree\Transaction::refund($sale->id)->transaction;
 
@@ -683,7 +683,7 @@ class TransactionAdvancedSearchTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $creditCard = Braintree\CreditCard::create(array(
             'customerId' => $customer->id,
-            'cardholderName' => 'Jane Everywoman'.rand(),
+            'cardholderName' => 'Jane Everywoman' . rand(),
             'number' => '5105105105105100',
             'expirationDate' => '05/12',
         ))->creditCard;
@@ -979,7 +979,7 @@ class TransactionAdvancedSearchTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate(array(
             'amount' => '1000.00',
             'creditCard' => array(
-                'cardholderName' => 'Ted Everywoman'.rand(),
+                'cardholderName' => 'Ted Everywoman' . rand(),
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
             ),
@@ -1016,7 +1016,7 @@ class TransactionAdvancedSearchTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate(array(
             'amount' => '1000.00',
             'creditCard' => array(
-                'cardholderName' => 'Ted Everyman'.rand(),
+                'cardholderName' => 'Ted Everyman' . rand(),
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
             ),
@@ -1053,7 +1053,7 @@ class TransactionAdvancedSearchTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate(array(
             'amount' => '1000.00',
             'creditCard' => array(
-                'cardholderName' => 'Ted Everyman'.rand(),
+                'cardholderName' => 'Ted Everyman' . rand(),
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
             ),
@@ -1099,7 +1099,7 @@ class TransactionAdvancedSearchTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate(array(
             'amount' => '1000.00',
             'creditCard' => array(
-                'cardholderName' => 'Ted Everyman'.rand(),
+                'cardholderName' => 'Ted Everyman' . rand(),
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
             ),
@@ -1135,7 +1135,7 @@ class TransactionAdvancedSearchTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate(array(
             'amount' => '1000.00',
             'creditCard' => array(
-                'cardholderName' => 'Pingu Penguin'.rand(),
+                'cardholderName' => 'Pingu Penguin' . rand(),
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
             ),
@@ -1158,7 +1158,7 @@ class TransactionAdvancedSearchTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate(array(
             'amount' => '1000.00',
             'creditCard' => array(
-                'cardholderName' => 'Pingu Penguin'.rand(),
+                'cardholderName' => 'Pingu Penguin' . rand(),
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
             ),
@@ -1347,7 +1347,7 @@ class TransactionAdvancedSearchTest extends Setup
         ));
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/transactions/'.$transaction->id.'/settle';
+        $path = Braintree\Configuration::$global->merchantPath() . '/transactions/' . $transaction->id . '/settle';
         $http->put($path);
         $transaction = Braintree\Transaction::find($transaction->id);
 

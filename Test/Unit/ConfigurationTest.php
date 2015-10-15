@@ -1,7 +1,7 @@
 <?php
 namespace Test\Unit;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
 use Braintree;
@@ -179,7 +179,7 @@ class ConfigurationTest extends Setup
     {
         $this->config->setEnvironment('development');
         $bu = $this->config->baseUrl();
-        $this->assertEquals('http://localhost:'.$this->config->portNumber(), $bu);
+        $this->assertEquals('http://localhost:' . $this->config->portNumber(), $bu);
 
         $this->config->setEnvironment('qa');
         $bu = $this->config->baseUrl();

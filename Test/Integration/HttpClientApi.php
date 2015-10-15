@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Exception;
 use Braintree;
@@ -11,7 +11,7 @@ class HttpClientApi extends Braintree\Http
 {
     protected function _doRequest($httpVerb, $path, $requestBody = null)
     {
-        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl().'/merchants/'.$this->_config->getMerchantId().$path, $requestBody);
+        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . '/merchants/' . $this->_config->getMerchantId() . $path, $requestBody);
     }
 
     public function get($path)
@@ -33,9 +33,9 @@ class HttpClientApi extends Braintree\Http
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
-            'X-ApiVersion: '.Braintree\Configuration::API_VERSION,
+            'X-ApiVersion: ' . Braintree\Configuration::API_VERSION,
         ));
-        curl_setopt($curl, CURLOPT_USERPWD, $this->_config->publicKey().':'.$this->_config->privateKey());
+        curl_setopt($curl, CURLOPT_USERPWD, $this->_config->publicKey() . ':' . $this->_config->privateKey());
 
         if (!empty($requestBody)) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
@@ -55,9 +55,9 @@ class HttpClientApi extends Braintree\Http
     {
         $encoded_fingerprint = urlencode($options['authorization_fingerprint']);
         $url = '/client_api/v1/payment_methods.json?';
-        $url .= 'authorizationFingerprint='.$encoded_fingerprint;
-        $url .= '&sharedCustomerIdentifier='.$options['shared_customer_identifier'];
-        $url .= '&sharedCustomerIdentifierType='.$options['shared_customer_identifier_type'];
+        $url .= 'authorizationFingerprint=' . $encoded_fingerprint;
+        $url .= '&sharedCustomerIdentifier=' . $options['shared_customer_identifier'];
+        $url .= '&sharedCustomerIdentifierType=' . $options['shared_customer_identifier_type'];
 
         return $this->get($url);
     }
@@ -74,7 +74,7 @@ class HttpClientApi extends Braintree\Http
         $clientToken = json_decode(Test\Helper::decodedClientToken($clientTokenOptions));
 
         $options['authorization_fingerprint'] = $clientToken->authorizationFingerprint;
-        $options['shared_customer_identifier'] = 'fake_identifier_'.rand();
+        $options['shared_customer_identifier'] = 'fake_identifier_' . rand();
         $options['shared_customer_identifier_type'] = 'testing';
         $response = $this->post('/client_api/v1/payment_methods/credit_cards.json', json_encode($options));
 

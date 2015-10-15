@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
 use Braintree;
@@ -61,7 +61,7 @@ class HttpTest extends Setup
         ));
 
         $http = new Braintree\Http($config);
-        $result = $http->_doUrlRequest('GET', $config->baseUrl().'/merchants/integration_merchant_id/customers');
+        $result = $http->_doUrlRequest('GET', $config->baseUrl() . '/merchants/integration_merchant_id/customers');
         $this->assertEquals(401, $result['status']);
     }
 }

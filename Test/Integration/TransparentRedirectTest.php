@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test;
 use Test\Setup;
@@ -17,7 +17,7 @@ class TransparentRedirectTest extends Setup
         );
         $config = Braintree\Configuration::$global;
         $queryString = Test\Helper::submitTrRequest(
-            $config->baseUrl().$config->merchantPath().'/test/maintenance',
+            $config->baseUrl() . $config->merchantPath() . '/test/maintenance',
             array(),
             $trData
         );
@@ -33,7 +33,7 @@ class TransparentRedirectTest extends Setup
         );
         $config = Braintree\Configuration::$global;
         $queryString = Test\Helper::submitTrRequest(
-            $config->baseUrl().$config->merchantPath().'/test/maintenance',
+            $config->baseUrl() . $config->merchantPath() . '/test/maintenance',
             array(),
             $trData
         );
@@ -352,6 +352,6 @@ class TransparentRedirectTest extends Setup
     {
         $url = Braintree\TransparentRedirect::url();
         $developmentPort = getenv('GATEWAY_PORT') ? getenv('GATEWAY_PORT') : 3000;
-        $this->assertEquals('http://localhost:'.$developmentPort.'/merchants/integration_merchant_id/transparent_redirect_requests', $url);
+        $this->assertEquals('http://localhost:' . $developmentPort . '/merchants/integration_merchant_id/transparent_redirect_requests', $url);
     }
 }

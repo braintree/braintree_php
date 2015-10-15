@@ -1,7 +1,7 @@
 <?php
 namespace Test\Unit;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use stdClass;
 use DateTime;

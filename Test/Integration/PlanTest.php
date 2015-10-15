@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
 use Test\Helper;
@@ -33,7 +33,7 @@ class PlanTest extends Setup
         );
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/plans/create_plan_for_tests';
+        $path = Braintree\Configuration::$global->merchantPath() . '/plans/create_plan_for_tests';
         $http->post($path, array('plan' => $params));
 
         $addOnParams = array(
@@ -44,7 +44,7 @@ class PlanTest extends Setup
         );
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/modifications/create_modification_for_tests';
+        $path = Braintree\Configuration::$global->merchantPath() . '/modifications/create_modification_for_tests';
         $http->post($path, array('modification' => $addOnParams));
 
         $discountParams = array(
@@ -55,7 +55,7 @@ class PlanTest extends Setup
         );
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/modifications/create_modification_for_tests';
+        $path = Braintree\Configuration::$global->merchantPath() . '/modifications/create_modification_for_tests';
         $http->post($path, array('modification' => $discountParams));
 
         $plans = Braintree\Plan::all();
@@ -98,7 +98,7 @@ class PlanTest extends Setup
         );
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/plans/create_plan_for_tests';
+        $path = Braintree\Configuration::$global->merchantPath() . '/plans/create_plan_for_tests';
         $http->post($path, array('plan' => $params));
 
         $gateway = new Braintree\Gateway(array(

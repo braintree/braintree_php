@@ -1,7 +1,7 @@
 <?php
 namespace Test;
 
-require_once __DIR__.'/Setup.php';
+require_once __DIR__ . '/Setup.php';
 
 use DateTime;
 use DateTimeZone;
@@ -85,7 +85,7 @@ class Helper
     public static function _errorHandler($errno, $errstr, $errfile, $errline)
     {
         if (preg_match('/^DEPRECATED/', $errstr) == 0) {
-            trigger_error('Unknown error received: '.$errstr, E_USER_ERROR);
+            trigger_error('Unknown error received: ' . $errstr, E_USER_ERROR);
         }
     }
 
@@ -102,20 +102,20 @@ class Helper
 
     public static function assertPrintable($object)
     {
-        ' '.$object;
+        ' ' . $object;
     }
 
     public static function escrow($transactionId)
     {
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/transactions/'.$transactionId.'/escrow';
+        $path = Braintree\Configuration::$global->merchantPath() . '/transactions/' . $transactionId . '/escrow';
         $http->put($path);
     }
 
     public static function create3DSVerification($merchantAccountId, $params)
     {
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath().'/three_d_secure/create_verification/'.$merchantAccountId;
+        $path = Braintree\Configuration::$global->merchantPath() . '/three_d_secure/create_verification/' . $merchantAccountId;
         $response = $http->post($path, array('threeDSecureVerification' => $params));
 
         return $response['threeDSecureVerification']['threeDSecureToken'];

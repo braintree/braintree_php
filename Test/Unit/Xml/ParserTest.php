@@ -1,7 +1,7 @@
 <?php
 namespace Test\Unit\Xml;
 
-require_once dirname(dirname(__DIR__)).'/Setup.php';
+require_once dirname(dirname(__DIR__)) . '/Setup.php';
 
 use DateTime;
 use DateTimeZone;

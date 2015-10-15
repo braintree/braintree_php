@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test;
 use Test\Setup;
@@ -783,7 +783,7 @@ class CustomerTest extends Setup
                 ),
             ),
         ));
-        $paypalAccountToken = 'PAYPALToken-'.strval(rand());
+        $paypalAccountToken = 'PAYPALToken-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -814,7 +814,7 @@ class CustomerTest extends Setup
                 ),
             ),
         ));
-        $paypalAccountToken = 'PAYPALToken-'.strval(rand());
+        $paypalAccountToken = 'PAYPALToken-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(

@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
 use Braintree;
@@ -54,12 +54,12 @@ class CustomerAdvancedSearchTest extends Setup
 
     public function test_searchOnTextFields()
     {
-        $token  = 'cctoken'.rand();
+        $token  = 'cctoken' . rand();
 
         $search_criteria = array(
             'firstName' => 'Timmy',
             'lastName' => 'OToole',
-            'company' => 'OToole and Son(s)'.rand(),
+            'company' => 'OToole and Son(s)' . rand(),
             'email' => 'timmy@example.com',
             'website' => 'http://example.com',
             'phone' => '3145551234',
@@ -170,7 +170,7 @@ class CustomerAdvancedSearchTest extends Setup
             ),
         ));
 
-        $customerId = 'UNIQUE_CUSTOMER_ID-'.strval(rand());
+        $customerId = 'UNIQUE_CUSTOMER_ID-' . strval(rand());
         $customerResult = Braintree\Customer::create(array(
             'paymentMethodNonce' => $nonce,
             'id' => $customerId,

@@ -112,6 +112,6 @@ class Error extends Braintree
         if (isset($this->_creditCardVerification)) {
             $output .= sprintf('%s', $this->_creditCardVerification);
         }
-        return __CLASS__ .'['.$output.']';
+        return __CLASS__ .'[' . $output . ']';
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Test\Integration;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
 use Braintree;
@@ -10,7 +10,7 @@ class PayPalAccountTest extends Setup
 {
     public function testFind()
     {
-        $paymentMethodToken = 'PAYPALToken-'.strval(rand());
+        $paymentMethodToken = 'PAYPALToken-' . strval(rand());
         $customer = Braintree\Customer::createNoValidate();
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
@@ -34,7 +34,7 @@ class PayPalAccountTest extends Setup
 
     public function testGatewayFind()
     {
-        $paymentMethodToken = 'PAYPALToken-'.strval(rand());
+        $paymentMethodToken = 'PAYPALToken-' . strval(rand());
         $customer = Braintree\Customer::createNoValidate();
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
@@ -64,7 +64,7 @@ class PayPalAccountTest extends Setup
 
     public function testFind_doesNotReturnIncorrectPaymentMethodType()
     {
-        $creditCardToken = 'creditCardToken-'.strval(rand());
+        $creditCardToken = 'creditCardToken-' . strval(rand());
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\CreditCard::create(array(
             'customerId' => $customer->id,
@@ -127,7 +127,7 @@ class PayPalAccountTest extends Setup
     public function testFind_returnsSubscriptionsAssociatedWithAPaypalAccount()
     {
         $customer = Braintree\Customer::createNoValidate();
-        $paymentMethodToken = 'paypal-account-'.strval(rand());
+        $paymentMethodToken = 'paypal-account-' . strval(rand());
 
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
@@ -165,7 +165,7 @@ class PayPalAccountTest extends Setup
 
     public function testUpdate()
     {
-        $originalToken = 'ORIGINAL_PAYPALToken-'.strval(rand());
+        $originalToken = 'ORIGINAL_PAYPALToken-' . strval(rand());
         $customer = Braintree\Customer::createNoValidate();
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
@@ -181,7 +181,7 @@ class PayPalAccountTest extends Setup
         ));
         $this->assertTrue($createResult->success);
 
-        $newToken = 'NEW_PAYPALToken-'.strval(rand());
+        $newToken = 'NEW_PAYPALToken-' . strval(rand());
         $updateResult = Braintree\PayPalAccount::update($originalToken, array(
             'token' => $newToken,
         ));
@@ -229,7 +229,7 @@ class PayPalAccountTest extends Setup
     {
         $customer = Braintree\Customer::createNoValidate();
 
-        $firstToken = 'FIRST_PAYPALToken-'.strval(rand());
+        $firstToken = 'FIRST_PAYPALToken-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $firstNonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -243,7 +243,7 @@ class PayPalAccountTest extends Setup
         ));
         $this->assertTrue($firstPaypalAccount->success);
 
-        $secondToken = 'SECOND_PAYPALToken-'.strval(rand());
+        $secondToken = 'SECOND_PAYPALToken-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $secondNonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
@@ -268,7 +268,7 @@ class PayPalAccountTest extends Setup
 
     public function testDelete()
     {
-        $paymentMethodToken = 'PAYPALToken-'.strval(rand());
+        $paymentMethodToken = 'PAYPALToken-' . strval(rand());
         $customer = Braintree\Customer::createNoValidate();
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(

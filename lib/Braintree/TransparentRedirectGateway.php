@@ -80,7 +80,7 @@ class TransparentRedirectGateway
             TransparentRedirect::UPDATE_PAYMENT_METHOD => 'Braintree\CreditCardGateway',
         );
         $confirmationGateway = new $confirmationKlasses[$params['kind']]($this->_gateway);
-        return $confirmationGateway->_doCreate('/transparent_redirect_requests/'.$params['id'].'/confirm', array());
+        return $confirmationGateway->_doCreate('/transparent_redirect_requests/' . $params['id'] . '/confirm', array());
     }
 
     /**
@@ -116,7 +116,7 @@ class TransparentRedirectGateway
 
     public function url()
     {
-        return $this->_config->baseUrl().$this->_config->merchantPath().'/transparent_redirect_requests';
+        return $this->_config->baseUrl() . $this->_config->merchantPath() . '/transparent_redirect_requests';
     }
 
     /**

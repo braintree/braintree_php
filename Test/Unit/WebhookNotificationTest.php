@@ -1,7 +1,7 @@
 <?php
 namespace Test\Unit;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use DateTime;
 use Test\Setup;
@@ -69,7 +69,7 @@ class WebhookNotificationTest extends Setup
         $this->setExpectedException('Braintree\Exception\InvalidSignature', 'signature does not match payload - one has been modified');
 
         $webhookNotification = Braintree\WebhookNotification::parse(
-            $sampleNotification['bt_signature'].'bad',
+            $sampleNotification['bt_signature'] . 'bad',
             $sampleNotification['bt_payload']
         );
     }
@@ -109,7 +109,7 @@ class WebhookNotificationTest extends Setup
 
         $webhookNotification = Braintree\WebhookNotification::parse(
             $sampleNotification['bt_signature'],
-            'bad'.$sampleNotification['bt_payload']
+            'bad' . $sampleNotification['bt_payload']
         );
     }
 
@@ -124,7 +124,7 @@ class WebhookNotificationTest extends Setup
 
         $webhookNotification = Braintree\WebhookNotification::parse(
             $sampleNotification['bt_signature'],
-            'bad'.$sampleNotification['bt_payload']
+            'bad' . $sampleNotification['bt_payload']
         );
     }
 
@@ -138,7 +138,7 @@ class WebhookNotificationTest extends Setup
         $this->setExpectedException('Braintree\Exception\InvalidSignature');
 
         $webhookNotification = Braintree\WebhookNotification::parse(
-            'bad'.$sampleNotification['bt_signature'],
+            'bad' . $sampleNotification['bt_signature'],
             $sampleNotification['bt_payload']
         );
     }

@@ -1,7 +1,7 @@
 <?php
 namespace Test\Unit;
 
-require_once dirname(__DIR__).'/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
 use Braintree;
@@ -15,7 +15,7 @@ class TestResource
 
     public function fetch($ids)
     {
-        return array_map(__NAMESPACE__.'\TestResource::lookup', $ids);
+        return array_map(__NAMESPACE__ . '\TestResource::lookup', $ids);
     }
 }
 
