@@ -27,7 +27,7 @@ namespace Braintree;
  * @property-read string $streetAddress
  * @property-read string $updatedAt
  */
-class Address extends Braintree
+class Address extends Base
 {
     /**
      * returns false if comparing object is not a Address,

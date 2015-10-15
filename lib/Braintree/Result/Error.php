@@ -1,7 +1,7 @@
 <?php
 namespace Braintree\Result;
 
-use Braintree\Braintree;
+use Braintree\Base;
 use Braintree\Transaction;
 use Braintree\Subscription;
 use Braintree\MerchantAccount;
@@ -34,7 +34,7 @@ use Braintree\Error\ErrorCollection;
  * @property-read object $errors Error\ErrorCollection
  * @property-read object $creditCardVerification credit card verification data
  */
-class Error extends Braintree
+class Error extends Base
 {
     /**
     * @var bool always false

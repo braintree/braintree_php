@@ -26,7 +26,7 @@ namespace Braintree;
  * @property-read string $sourceDescription
  * @property-read string $updatedAt
  */
-class ApplePayCard extends Braintree
+class ApplePayCard extends Base
 {
     // Card Type
     const AMEX = 'Apple Pay - American Express';

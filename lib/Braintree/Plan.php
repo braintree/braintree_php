@@ -1,7 +1,7 @@
 <?php
 namespace Braintree;
 
-class Plan extends Braintree
+class Plan extends Base
 {
     public static function factory($attributes)
     {

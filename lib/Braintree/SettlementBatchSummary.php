@@ -1,7 +1,7 @@
 <?php
 namespace Braintree;
 
-class SettlementBatchSummary extends Braintree
+class SettlementBatchSummary extends Base
 {
     /**
      *

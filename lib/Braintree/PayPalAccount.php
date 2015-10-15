@@ -24,7 +24,7 @@ namespace Braintree;
  * @property-read string $token
  * @property-read string $imageUrl
  */
-class PayPalAccount extends Braintree
+class PayPalAccount extends Base
 {
     /**
      *  factory method: returns an instance of PayPalAccount

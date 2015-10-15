@@ -1,7 +1,7 @@
 <?php
 namespace Braintree;
 
-class Modification extends Braintree
+class Modification extends Base
 {
     protected function _initialize($attributes)
     {

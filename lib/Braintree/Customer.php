@@ -31,7 +31,7 @@ namespace Braintree;
  * @property-read string $updatedAt
  * @property-read string $website
  */
-class Customer extends Braintree
+class Customer extends Base
 {
     /**
      *

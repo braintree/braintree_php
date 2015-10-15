@@ -1,7 +1,7 @@
 <?php
 namespace Braintree;
 
-class ThreeDSecureInfo extends Braintree
+class ThreeDSecureInfo extends Base
 {
     public static function factory($attributes)
     {

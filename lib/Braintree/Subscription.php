@@ -13,7 +13,7 @@ namespace Braintree;
  * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
-class Subscription extends Braintree
+class Subscription extends Base
 {
     const ACTIVE = 'Active';
     const CANCELED = 'Canceled';

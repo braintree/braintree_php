@@ -24,7 +24,7 @@ namespace Braintree;
  * @property-read string $userName
  * @property-read string $userEmail
  */
-class CoinbaseAccount extends Braintree
+class CoinbaseAccount extends Base
 {
     /**
      *  factory method: returns an instance of CoinbaseAccount

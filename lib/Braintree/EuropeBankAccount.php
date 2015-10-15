@@ -22,7 +22,7 @@ namespace Braintree;
  * @property-read string $masked-iban
  * @property-read string $token
  */
-class EuropeBankAccount extends Braintree
+class EuropeBankAccount extends Base
 {
 
     /* instance methods */

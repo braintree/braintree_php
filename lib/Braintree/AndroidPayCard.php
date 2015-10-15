@@ -31,7 +31,7 @@ namespace Braintree;
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
  */
-class AndroidPayCard extends Braintree
+class AndroidPayCard extends Base
 {
     /* instance methods */
     /**

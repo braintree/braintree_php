@@ -1,7 +1,7 @@
 <?php
 namespace Braintree;
 
-final class Merchant extends Braintree
+final class Merchant extends Base
 {
     protected function _initialize($attribs)
     {

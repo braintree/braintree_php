@@ -20,7 +20,7 @@ namespace Braintree;
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  */
-class PaymentMethodNonce extends Braintree
+class PaymentMethodNonce extends Base
 {
     // static methods redirecting to gateway
 

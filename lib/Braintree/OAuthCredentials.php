@@ -9,7 +9,7 @@ namespace Braintree;
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  */
-class OAuthCredentials extends Braintree
+class OAuthCredentials extends Base
 {
     protected function _initialize($attribs)
     {

@@ -13,7 +13,7 @@ use Exception;
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-abstract class Braintree
+abstract class Base
 {
     protected $_attributes = array();
 

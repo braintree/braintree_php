@@ -17,7 +17,7 @@ namespace Braintree;
  * @property-read string $partnerMerchantId
  * @uses Instance inherits methods
  */
-class PartnerMerchant extends Braintree
+class PartnerMerchant extends Base
 {
     protected $_attributes = array();
 

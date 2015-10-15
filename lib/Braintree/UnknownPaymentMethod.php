@@ -22,7 +22,7 @@ namespace Braintree;
  * @property-read string $token
  * @property-read string $imageUrl
  */
-class UnknownPaymentMethod extends Braintree
+class UnknownPaymentMethod extends Base
 {
 
 

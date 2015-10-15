@@ -1,7 +1,7 @@
 <?php
 namespace Braintree;
 
-class RiskData extends Braintree
+class RiskData extends Base
 {
     public static function factory($attributes)
     {

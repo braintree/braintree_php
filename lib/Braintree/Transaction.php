@@ -169,7 +169,7 @@ namespace Braintree;
  *
  */
 
-final class Transaction extends Braintree
+final class Transaction extends Base
 {
     // Transaction Status
     const AUTHORIZATION_EXPIRED    = 'authorization_expired';

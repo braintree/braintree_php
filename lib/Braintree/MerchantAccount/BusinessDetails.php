@@ -1,9 +1,9 @@
 <?php
 namespace Braintree\MerchantAccount;
 
-use Braintree\Braintree;
+use Braintree\Base;
 
-final class BusinessDetails extends Braintree
+final class BusinessDetails extends Base
 {
     protected function _initialize($businessAttribs)
     {
