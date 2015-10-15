@@ -366,32 +366,31 @@ class CreditCardGateway
     public static function createSignature()
     {
         $options = self::baseOptions();
-        $options[] = 'failOnDuplicatePaymentMethod';
+        $options[] = "failOnDuplicatePaymentMethod";
         $signature = self::baseSignature($options);
         $signature[] = 'customerId';
-
         return $signature;
     }
 
     public static function updateSignature()
     {
-        $signature = self::baseSignature(self::baseOptions());
+         $signature = self::baseSignature(self::baseOptions());
 
-        $updateExistingBillingSignature = array(
+         $updateExistingBillingSignature = array(
              array(
                  'options' => array(
-                     'updateExisting',
-                 ),
-             ),
+                     'updateExisting'
+                 )
+             )
          );
 
-        foreach ($signature as $key => $value) {
-            if (is_array($value) and array_key_exists('billingAddress', $value)) {
-                $signature[$key]['billingAddress'] = array_merge_recursive($value['billingAddress'], $updateExistingBillingSignature);
-            }
-        }
+         foreach($signature AS $key => $value) {
+             if(is_array($value) and array_key_exists('billingAddress', $value)) {
+                 $signature[$key]['billingAddress'] = array_merge_recursive($value['billingAddress'], $updateExistingBillingSignature);
+             }
+         }
 
-        return $signature;
+         return $signature;
     }
 
     /**
@@ -399,7 +398,7 @@ class CreditCardGateway
      *
      * @ignore
      * @param string $subPath
-     * @param array  $params
+     * @param array $params
      * @return mixed
      */
     public function _doCreate($subPath, $params)
@@ -412,16 +411,15 @@ class CreditCardGateway
 
     /**
      * verifies that a valid credit card identifier is being used
-     *
      * @ignore
-     * @param string   $identifier
-     * @param Optional $string     $identifierType type of identifier supplied, default "token"
+     * @param string $identifier
+     * @param Optional $string $identifierType type of identifier supplied, default "token"
      * @throws InvalidArgumentException
      */
-    private function _validateId($identifier = null, $identifierType = 'token')
+    private function _validateId($identifier = null, $identifierType = "token")
     {
         if (empty($identifier)) {
-            throw new InvalidArgumentException(
+           throw new InvalidArgumentException(
                    'expected credit card id to be set'
                    );
         }
@@ -437,14 +435,13 @@ class CreditCardGateway
      *
      * @ignore
      * @param string $url
-     * @param array  $params
+     * @param array $params
      * @return mixed
      */
     private function _doUpdate($httpVerb, $subPath, $params)
     {
         $fullPath = $this->_config->merchantPath() . $subPath;
         $response = $this->_http->$httpVerb($fullPath, $params);
-
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -472,7 +469,7 @@ class CreditCardGateway
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            'Expected address or apiErrorResponse'
+            "Expected address or apiErrorResponse"
             );
         }
     }
