@@ -9,7 +9,7 @@ class MultipleValueNode
     {
         $this->name = $name;
         $this->items = array();
-        $this->allowedValues = $allowedValues;
+		$this->allowedValues = $allowedValues;
     }
 
     public function in($values)
