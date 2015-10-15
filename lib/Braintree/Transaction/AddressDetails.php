@@ -20,7 +20,6 @@ use Braintree\Instance;
  * @property-read string $region
  * @property-read string $postalCode
  * @property-read string $countryName
- * @uses Instance inherits methods
  */
 class AddressDetails extends Instance
 {

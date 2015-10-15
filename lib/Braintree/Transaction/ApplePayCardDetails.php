@@ -25,7 +25,6 @@ use Braintree\Instance;
  * @property-read string $expirationYear
  * @property-read string $cardholderName
  * @property-read string $sourceDescription
- * @uses Instance inherits methods
  */
 class ApplePayCardDetails extends Instance
 {

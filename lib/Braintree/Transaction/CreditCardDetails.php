@@ -20,7 +20,6 @@ use Braintree\Instance;
  * @property-read string $last4
  * @property-read string $maskedNumber
  * @property-read string $token
- * @uses Instance inherits methods
  */
 class CreditCardDetails extends Instance
 {

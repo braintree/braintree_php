@@ -15,7 +15,6 @@ namespace Braintree;
  * @property-read string $privateKey
  * @property-read string $clientSideEncryptionKey
  * @property-read string $partnerMerchantId
- * @uses Instance inherits methods
  */
 class PartnerMerchant extends Base
 {

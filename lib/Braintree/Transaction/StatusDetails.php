@@ -15,7 +15,6 @@ use Braintree\Instance;
  * @property-read string $timestamp
  * @property-read string $transactionSource
  * @property-read string $user
- * @uses Instance inherits methods
  */
 class StatusDetails extends Instance
 {

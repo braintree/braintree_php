@@ -16,7 +16,6 @@ use Braintree\Instance;
  * @property-read string $timestamp
  * @property-read string $subscriptionSource
  * @property-read string $user
- * @uses Instance inherits methods
  */
 class StatusDetails extends Instance
 {

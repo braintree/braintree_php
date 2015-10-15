@@ -19,7 +19,6 @@ use Braintree\Instance;
  *
  * @property-read string $amount
  * @property-read string $id
- * @uses Instance inherits methods
  */
 class TransactionDetails extends Instance
 {

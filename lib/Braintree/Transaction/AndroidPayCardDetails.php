@@ -31,7 +31,6 @@ use Braintree\Instance;
  * @property-read string $token
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
- * @uses Braintree\Instance inherits methods
  */
 class AndroidPayCardDetails extends Instance
 {

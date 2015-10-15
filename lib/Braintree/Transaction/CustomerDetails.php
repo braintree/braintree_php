@@ -19,7 +19,6 @@ use Braintree\Instance;
  * @property-read string $lastName
  * @property-read string $phone
  * @property-read string $website
- * @uses Instance inherits methods
  */
 class CustomerDetails extends Instance
 {

@@ -15,7 +15,6 @@ namespace Braintree;
  * @property-read string $fundsHeld
  * @property-read string $success
  * @property-read string $disbursementDate
- * @uses Instance inherits methods
  */
 class DisbursementDetails extends Instance
 {

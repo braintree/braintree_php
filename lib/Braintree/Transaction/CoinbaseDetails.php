@@ -24,7 +24,6 @@ use Braintree\Instance;
  * @property-read string $userName
  * @property-read string $userEmail
  * @property-read string $imageUrl
- * @uses Instance inherits methods
  */
 class CoinbaseDetails extends Instance
 {
