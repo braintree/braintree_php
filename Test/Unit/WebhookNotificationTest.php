@@ -294,6 +294,7 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals(Braintree\WebhookNotification::DISPUTE_OPENED, $webhookNotification->kind);
         $this->assertEquals('my_id', $webhookNotification->dispute->id);
         $this->assertEquals(Braintree\Dispute::OPEN, $webhookNotification->dispute->status);
+        $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
     }
 
     public function testBuildsASampleNotificationForADisputeLostWebhook()
@@ -311,6 +312,7 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals(Braintree\WebhookNotification::DISPUTE_LOST, $webhookNotification->kind);
         $this->assertEquals('my_id', $webhookNotification->dispute->id);
         $this->assertEquals(Braintree\Dispute::LOST, $webhookNotification->dispute->status);
+        $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
     }
 
     public function testBuildsASampleNotificationForADisputeWonWebhook()
@@ -328,6 +330,7 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals(Braintree\WebhookNotification::DISPUTE_WON, $webhookNotification->kind);
         $this->assertEquals('my_id', $webhookNotification->dispute->id);
         $this->assertEquals(Braintree\Dispute::WON, $webhookNotification->dispute->status);
+        $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
     }
 
     public function testBuildsASampleNotificationForADisbursementExceptionWebhook()
