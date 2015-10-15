@@ -10,7 +10,6 @@ require_once('autoload.php');
 
 class_alias('Braintree\Modification', 'Braintree_Modification');
 class_alias('Braintree\Instance', 'Braintree_Instance');
-
 class_alias('Braintree\OAuthCredentials', 'Braintree_OAuthCredentials');
 class_alias('Braintree\Address', 'Braintree_Address');
 class_alias('Braintree\AddressGateway', 'Braintree_AddressGateway');
