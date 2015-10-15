@@ -8,7 +8,7 @@ class CreditCardVerificationSearch
     }
 
     public static function creditCardCardholderName() {
-        return new TextNode('credit_card_cardholder_name');
+	    return new TextNode('credit_card_cardholder_name');
     }
 
     public static function billingAddressDetailsPostalCode() {
@@ -28,11 +28,11 @@ class CreditCardVerificationSearch
     }
 
     public static function creditCardExpirationDate() {
-        return new EqualityNode('credit_card_expiration_date');
+	    return new EqualityNode('credit_card_expiration_date');
     }
 
     public static function creditCardNumber() {
-        return new PartialMatchNode('credit_card_number');
+	    return new PartialMatchNode('credit_card_number');
     }
 
     public static function ids() {
@@ -40,7 +40,7 @@ class CreditCardVerificationSearch
     }
 
     public static function createdAt() {
-        return new RangeNode("created_at");
+	    return new RangeNode("created_at");
     }
 
     public static function creditCardCardType()

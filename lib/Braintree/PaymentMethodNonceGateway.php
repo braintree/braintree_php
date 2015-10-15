@@ -61,5 +61,6 @@ class PaymentMethodNonceGateway
             'payment method nonce with id ' . $nonce . ' not found'
             );
         }
+
     }
 }
