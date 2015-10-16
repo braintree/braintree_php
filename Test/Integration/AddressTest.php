@@ -24,7 +24,7 @@ class AddressTest extends Setup
             'countryName' => 'Vatican City',
             'countryCodeAlpha2' => 'VA',
             'countryCodeAlpha3' => 'VAT',
-            'countryCodeNumeric' => '336',
+            'countryCodeNumeric' => '336'
         ));
         $this->assertTrue($result->success);
         $address = $result->address;
@@ -50,7 +50,7 @@ class AddressTest extends Setup
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
-            'privateKey' => 'integration_private_key',
+            'privateKey' => 'integration_private_key'
         ));
         $result = $gateway->address()->create(array(
             'customerId' => $customer->id,
@@ -73,7 +73,7 @@ class AddressTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\Address::create(array(
             'customerId' => $customer->id,
-            'countryName' => 'Invalid States of America',
+            'countryName' => 'Invalid States of America'
         ));
         $this->assertFalse($result->success);
         $countryErrors = $result->errors->forKey('address')->onAttribute('countryName');
@@ -85,7 +85,7 @@ class AddressTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\Address::create(array(
             'customerId' => $customer->id,
-            'countryCodeAlpha2' => 'ZZ',
+            'countryCodeAlpha2' => 'ZZ'
         ));
         $this->assertFalse($result->success);
         $countryErrors = $result->errors->forKey('address')->onAttribute('countryCodeAlpha2');
@@ -105,7 +105,7 @@ class AddressTest extends Setup
             'locality' => 'Chicago',
             'region' => 'IL',
             'postalCode' => '60622',
-            'countryName' => 'United States of America',
+            'countryName' => 'United States of America'
         ));
         $this->assertEquals('Dan', $address->firstName);
         $this->assertEquals('Smith', $address->lastName);
@@ -133,7 +133,7 @@ class AddressTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $address = Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
-            'streetAddress' => '1 E Main St',
+            'streetAddress' => '1 E Main St'
         ));
         Braintree\Address::find($customer->id, $address->id);
         Braintree\Address::delete($customer->id, $address->id);
@@ -154,7 +154,7 @@ class AddressTest extends Setup
             'locality' => 'Chicago',
             'region' => 'IL',
             'postalCode' => '60622',
-            'countryName' => 'United States of America',
+            'countryName' => 'United States of America'
         ));
         $this->assertTrue($result->success);
         $address = Braintree\Address::find($customer->id, $result->address->id);
@@ -192,7 +192,7 @@ class AddressTest extends Setup
             'countryName' => 'United States of America',
             'countryCodeAlpha2' => 'US',
             'countryCodeAlpha3' => 'USA',
-            'countryCodeNumeric' => '840',
+            'countryCodeNumeric' => '840'
         ));
         $result = Braintree\Address::update($customer->id, $address->id, array(
             'firstName' => 'New First',
@@ -206,7 +206,7 @@ class AddressTest extends Setup
             'countryName' => 'Mexico',
             'countryCodeAlpha2' => 'MX',
             'countryCodeAlpha3' => 'MEX',
-            'countryCodeNumeric' => '484',
+            'countryCodeNumeric' => '484'
         ));
         $this->assertTrue($result->success);
         $address = $result->address;
@@ -229,13 +229,13 @@ class AddressTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $address = Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
-            'streetAddress' => '1 E Main St',
+            'streetAddress' => '1 E Main St'
         ));
         $result = Braintree\Address::update(
             $customer->id,
             $address->id,
             array(
-                'countryName' => 'Invalid States of America',
+                'countryName' => 'Invalid States of America'
             )
         );
         $this->assertFalse($result->success);
@@ -248,14 +248,14 @@ class AddressTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $address = Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
-            'streetAddress' => '1 E Main St',
+            'streetAddress' => '1 E Main St'
         ));
         $result = Braintree\Address::update(
             $customer->id,
             $address->id,
             array(
                 'countryCodeAlpha2' => 'MU',
-                'countryCodeAlpha3' => 'MYT',
+                'countryCodeAlpha3' => 'MYT'
             )
         );
         $this->assertFalse($result->success);
@@ -276,7 +276,7 @@ class AddressTest extends Setup
             'locality' => 'Old Chicago',
             'region' => 'Old Region',
             'postalCode' => 'Old Postal',
-            'countryName' => 'United States of America',
+            'countryName' => 'United States of America'
         ));
         $address = Braintree\Address::updateNoValidate($customer->id, $createdAddress->id, array(
             'firstName' => 'New First',
@@ -287,7 +287,7 @@ class AddressTest extends Setup
             'locality' => 'New Chicago',
             'region' => 'New Region',
             'postalCode' => 'New Postal',
-            'countryName' => 'Mexico',
+            'countryName' => 'Mexico'
         ));
         $this->assertEquals('New First', $address->firstName);
         $this->assertEquals('New Last', $address->lastName);

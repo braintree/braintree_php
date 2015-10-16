@@ -11,7 +11,7 @@ class CustomerAdvancedSearchTest extends Setup
     public function test_noMatches()
     {
         $collection = Braintree\Customer::search(array(
-            Braintree\CustomerSearch::company()->is('badname'),
+            Braintree\CustomerSearch::company()->is('badname')
         ));
 
         $this->assertEquals(0, $collection->maximumCount());
@@ -21,7 +21,7 @@ class CustomerAdvancedSearchTest extends Setup
     {
         $resultsReturned = false;
         $collection = Braintree\Customer::search(array(
-            Braintree\CustomerSearch::firstName()->is('badname'),
+            Braintree\CustomerSearch::firstName()->is('badname')
         ));
 
         foreach ($collection as $customer) {
@@ -44,7 +44,8 @@ class CustomerAdvancedSearchTest extends Setup
         $collection = Braintree\Customer::search($query);
 
         $customerIds = array();
-        foreach ($collection as $customer) {
+        foreach($collection as $customer)
+        {
             $customerIds[] = $customer->id;
         }
 
@@ -99,13 +100,13 @@ class CustomerAdvancedSearchTest extends Setup
                     'locality' => $search_criteria['addressLocality'],
                     'region' => $search_criteria['addressRegion'],
                     'postalCode' => $search_criteria['addressPostalCode'],
-                    'countryName' => 'United States of America',
-                ),
-            ),
+                    'countryName' => 'United States of America'
+                )
+            )
         ));
 
         $query = array(Braintree\CustomerSearch::id()->is($customer->id));
-        foreach ($search_criteria as $criterion => $value) {
+        foreach ($search_criteria AS $criterion => $value) {
             $query[] = Braintree\CustomerSearch::$criterion()->is($value);
         }
 
@@ -114,7 +115,7 @@ class CustomerAdvancedSearchTest extends Setup
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
 
-        foreach ($search_criteria as $criterion => $value) {
+        foreach ($search_criteria AS $criterion => $value) {
             $collection = Braintree\Customer::search(array(
                 Braintree\CustomerSearch::$criterion()->is($value),
                 Braintree\CustomerSearch::id()->is($customer->id),
@@ -135,9 +136,9 @@ class CustomerAdvancedSearchTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
 
         $past = clone $customer->createdAt;
-        $past->modify('-1 hour');
+        $past->modify("-1 hour");
         $future = clone $customer->createdAt;
-        $future->modify('+1 hour');
+        $future->modify("+1 hour");
 
         $collection = Braintree\Customer::search(array(
             Braintree\CustomerSearch::id()->is($customer->id),
@@ -167,13 +168,13 @@ class CustomerAdvancedSearchTest extends Setup
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
-            ),
+            )
         ));
 
         $customerId = 'UNIQUE_CUSTOMER_ID-' . strval(rand());
         $customerResult = Braintree\Customer::create(array(
             'paymentMethodNonce' => $nonce,
-            'id' => $customerId,
+            'id' => $customerId
         ));
 
         $this->assertTrue($customerResult->success);
@@ -182,7 +183,7 @@ class CustomerAdvancedSearchTest extends Setup
 
         $collection = Braintree\Customer::search(array(
             Braintree\CustomerSearch::id()->is($customer->id),
-            Braintree\CustomerSearch::paypalAccountEmail()->is('jane.doe@example.com'),
+            Braintree\CustomerSearch::paypalAccountEmail()->is('jane.doe@example.com')
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
@@ -192,7 +193,7 @@ class CustomerAdvancedSearchTest extends Setup
     {
         $this->setExpectedException('InvalidArgumentException', 'Operator must be provided');
         Braintree\Customer::search(array(
-            Braintree\CustomerSearch::creditCardExpirationDate(),
+            Braintree\CustomerSearch::creditCardExpirationDate()
         ));
     }
 }

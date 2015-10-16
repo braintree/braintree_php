@@ -79,7 +79,7 @@ class Helper
 
     public static function suppressDeprecationWarnings()
     {
-        set_error_handler('Test\Helper::_errorHandler', E_USER_NOTICE);
+        set_error_handler("Test\Helper::_errorHandler", E_USER_NOTICE);
     }
 
     public static function _errorHandler($errno, $errstr, $errfile, $errline)
@@ -91,7 +91,7 @@ class Helper
 
     public static function includes($collection, $targetItem)
     {
-        foreach ($collection as $item) {
+        foreach ($collection AS $item) {
             if ($item->id == $targetItem->id) {
                 return true;
             }
@@ -102,7 +102,7 @@ class Helper
 
     public static function assertPrintable($object)
     {
-        ' ' . $object;
+        " " . $object;
     }
 
     public static function escrow($transactionId)
@@ -117,7 +117,6 @@ class Helper
         $http = new Braintree\Http(Braintree\Configuration::$global);
         $path = Braintree\Configuration::$global->merchantPath() . '/three_d_secure/create_verification/' . $merchantAccountId;
         $response = $http->post($path, array('threeDSecureVerification' => $params));
-
         return $response['threeDSecureVerification']['threeDSecureToken'];
     }
 
@@ -132,7 +131,6 @@ class Helper
     public static function decodedClientToken($params = array())
     {
         $encodedClientToken = Braintree\ClientToken::generate($params);
-
         return base64_decode($encodedClientToken);
     }
 }
