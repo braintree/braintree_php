@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
+         bootstrap="./vendor/autoload.php"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
@@ -14,7 +15,7 @@
 
     <testsuites>
         <testsuite name="unit">
-          <directory>./Test/Unit</directory>
+          <directory>./tests/unit</directory>
         </testsuite>
         <testsuite name="integration">
           <directory>./Test/Integration</directory>
