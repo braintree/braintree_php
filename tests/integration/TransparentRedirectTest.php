@@ -13,7 +13,7 @@ class TransparentRedirectTest extends Setup
     {
         Test\Helper::suppressDeprecationWarnings();
         $trData = Braintree\TransparentRedirect::createCustomerData(
-            array('redirectUrl' => 'http://www.example.com?foo=bar')
+            array("redirectUrl" => "http://www.example.com?foo=bar")
         );
         $config = Braintree\Configuration::$global;
         $queryString = Test\Helper::submitTrRequest(
@@ -29,7 +29,7 @@ class TransparentRedirectTest extends Setup
     {
         Test\Helper::suppressDeprecationWarnings();
         $trData = Braintree\TransparentRedirect::createCustomerData(
-            array('redirectUrl' => 'http://www.example.com')
+            array("redirectUrl" => "http://www.example.com")
         );
         $config = Braintree\Configuration::$global;
         $queryString = Test\Helper::submitTrRequest(
@@ -48,7 +48,7 @@ class TransparentRedirectTest extends Setup
         Braintree\Configuration::privateKey('incorrect');
         try {
             $trData = Braintree\TransparentRedirect::createCustomerData(
-                array('redirectUrl' => 'http://www.example.com')
+                array("redirectUrl" => "http://www.example.com")
             );
             $queryString = Test\Helper::submitTrRequest(
                 Braintree\Customer::createCustomerUrl(),
@@ -59,11 +59,8 @@ class TransparentRedirectTest extends Setup
             Braintree\Customer::createFromTransparentRedirect($queryString);
         } catch (Braintree\Exception $e) {
         }
-
         $privateKey = Braintree\Configuration::privateKey($privateKey);
-        if (isset($e)) {
-            throw $e;
-        }
+        if (isset($e)) throw $e;
     }
 
     public function testCreateTransactionFromTransparentRedirect()
@@ -71,23 +68,23 @@ class TransparentRedirectTest extends Setup
         $params = array(
             'transaction' => array(
                 'customer' => array(
-                    'first_name' => 'First',
+                    'first_name' => 'First'
                 ),
                 'credit_card' => array(
                     'number' => '5105105105105100',
-                    'expiration_date' => '05/12',
-                ),
-            ),
+                    'expiration_date' => '05/12'
+                )
+            )
         );
         $trParams = array(
             'transaction' => array(
                 'type' => Braintree\Transaction::SALE,
-                'amount' => '100.00',
-            ),
+                'amount' => '100.00'
+            )
         );
 
         $trData = Braintree\TransparentRedirect::transactionData(
-            array_merge($trParams, array('redirectUrl' => 'http://www.example.com'))
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
 
         $queryString = Test\Helper::submitTrRequest(
@@ -117,29 +114,29 @@ class TransparentRedirectTest extends Setup
         $params = array(
             'transaction' => array(
                 'customer' => array(
-                    'first_name' => 'First',
+                    'first_name' => 'First'
                 ),
                 'credit_card' => array(
                     'number' => '5105105105105100',
-                    'expiration_date' => '05/12',
-                ),
-            ),
+                    'expiration_date' => '05/12'
+                )
+            )
         );
         $trParams = array(
             'transaction' => array(
                 'type' => Braintree\Transaction::SALE,
-                'amount' => '100.00',
-            ),
+                'amount' => '100.00'
+            )
         );
 
         $gateway = new Braintree\Gateway(array(
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
-            'privateKey' => 'integration_private_key',
+            'privateKey' => 'integration_private_key'
         ));
         $trData = $gateway->transparentRedirect()->transactionData(
-            array_merge($trParams, array('redirectUrl' => 'http://www.example.com'))
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
 
         $queryString = Test\Helper::submitTrRequest(
@@ -166,25 +163,25 @@ class TransparentRedirectTest extends Setup
         $params = array(
             'transaction' => array(
                 'customer' => array(
-                    'first_name' => 'First',
+                    'first_name' => 'First'
                 ),
                 'credit_card' => array(
                     'number' => '5105105105105100',
-                    'expiration_date' => '05/12',
+                    'expiration_date' => '05/12'
                 ),
                 'service_fee_amount' => '1.00',
                 'merchant_account_id' => Test\Helper::nonDefaultSubMerchantAccountId(),
-            ),
+            )
         );
         $trParams = array(
             'transaction' => array(
                 'type' => Braintree\Transaction::SALE,
-                'amount' => '100.00',
-            ),
+                'amount' => '100.00'
+            )
         );
 
         $trData = Braintree\TransparentRedirect::transactionData(
-            array_merge($trParams, array('redirectUrl' => 'http://www.example.com'))
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
 
         $queryString = Test\Helper::submitTrRequest(
@@ -202,17 +199,17 @@ class TransparentRedirectTest extends Setup
     {
         $params = array(
             'customer' => array(
-                'first_name' => 'Second',
-            ),
+                'first_name' => 'Second'
+            )
         );
         $trParams = array(
             'customer' => array(
-                'lastName' => 'Penultimate',
-            ),
+                'lastName' => 'Penultimate'
+            )
         );
 
         $trData = Braintree\TransparentRedirect::createCustomerData(
-            array_merge($trParams, array('redirectUrl' => 'http://www.example.com'))
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
 
         $queryString = Test\Helper::submitTrRequest(
@@ -233,22 +230,22 @@ class TransparentRedirectTest extends Setup
     {
         $customer = Braintree\Customer::create(array(
             'firstName' => 'Mike',
-            'lastName' => 'Jonez',
+            'lastName' => 'Jonez'
         ))->customer;
         $params = array(
             'customer' => array(
-                'first_name' => 'Second',
-            ),
+                'first_name' => 'Second'
+            )
         );
         $trParams = array(
             'customerId' => $customer->id,
             'customer' => array(
-                'lastName' => 'Penultimate',
-            ),
+                'lastName' => 'Penultimate'
+            )
         );
 
         $trData = Braintree\TransparentRedirect::updateCustomerData(
-            array_merge($trParams, array('redirectUrl' => 'http://www.example.com'))
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
 
         $queryString = Test\Helper::submitTrRequest(
@@ -269,24 +266,24 @@ class TransparentRedirectTest extends Setup
     {
         $customer = Braintree\Customer::create(array(
             'firstName' => 'Mike',
-            'lastName' => 'Jonez',
+            'lastName' => 'Jonez'
         ))->customer;
 
         $params = array(
             'credit_card' => array(
-                'number' => Braintree\Test\CreditCardNumbers::$visa,
-            ),
+                'number' => Braintree\Test\CreditCardNumbers::$visa
+            )
         );
         $trParams = array(
             'creditCard' => array(
                 'customerId' => $customer->id,
                 'expirationMonth' => '01',
-                'expirationYear' => '10',
-            ),
+                'expirationYear' => '10'
+            )
         );
 
         $trData = Braintree\TransparentRedirect::createCreditCardData(
-            array_merge($trParams, array('redirectUrl' => 'http://www.example.com'))
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
 
         $queryString = Test\Helper::submitTrRequest(
@@ -308,30 +305,30 @@ class TransparentRedirectTest extends Setup
     {
         $customer = Braintree\Customer::create(array(
             'firstName' => 'Mike',
-            'lastName' => 'Jonez',
+            'lastName' => 'Jonez'
         ))->customer;
         $creditCard = Braintree\CreditCard::create(array(
             'customerId' => $customer->id,
             'number' => Braintree\Test\CreditCardNumbers::$masterCard,
             'expirationMonth' => '10',
-            'expirationYear' => '10',
+            'expirationYear' => '10'
         ))->creditCard;
 
         $params = array(
             'credit_card' => array(
                 'number' => Braintree\Test\CreditCardNumbers::$visa,
-            ),
+            )
         );
         $trParams = array(
             'paymentMethodToken' => $creditCard->token,
             'creditCard' => array(
                 'expirationMonth' => '11',
-                'expirationYear' => '11',
-            ),
+                'expirationYear' => '11'
+            )
         );
 
         $trData = Braintree\TransparentRedirect::updateCreditCardData(
-            array_merge($trParams, array('redirectUrl' => 'http://www.example.com'))
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
 
         $queryString = Test\Helper::submitTrRequest(
@@ -351,7 +348,7 @@ class TransparentRedirectTest extends Setup
     public function testUrl()
     {
         $url = Braintree\TransparentRedirect::url();
-        $developmentPort = getenv('GATEWAY_PORT') ? getenv('GATEWAY_PORT') : 3000;
-        $this->assertEquals('http://localhost:' . $developmentPort . '/merchants/integration_merchant_id/transparent_redirect_requests', $url);
+        $developmentPort = getenv("GATEWAY_PORT") ? getenv("GATEWAY_PORT") : 3000;
+        $this->assertEquals("http://localhost:" . $developmentPort . "/merchants/integration_merchant_id/transparent_redirect_requests", $url);
     }
 }
