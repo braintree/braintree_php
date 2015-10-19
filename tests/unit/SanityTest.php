@@ -11,11 +11,9 @@ class SanityTest extends Setup
     {
         $codeFiles = explode("\n", shell_exec("find ./lib -name \*.php"));
         foreach ($codeFiles as $codeFile) {
-            if ($codeFile == '') {
-                continue;
-            }
+            if ($codeFile == "") continue;
             $code = file_get_contents($codeFile);
-            $this->assertNotContains('?>', $code, "$codeFile should not contain a PHP close tag");
+            $this->assertNotContains("?>", $code, "$codeFile should not contain a PHP close tag");
         }
     }
 }

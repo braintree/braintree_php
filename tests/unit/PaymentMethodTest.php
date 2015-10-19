@@ -31,10 +31,10 @@ class PaymentMethodTest extends Setup
                 'failOnDuplicatePaymentMethod',
                 'makeDefault',
                 'verificationMerchantAccountId',
-                'verifyCard',
+                'verifyCard'
             )),
             array('billingAddress' => Braintree\AddressGateway::createSignature()),
-            'customerId',
+            'customerId'
         );
         $this->assertEquals($expected, Braintree\PaymentMethodGateway::createSignature());
     }
