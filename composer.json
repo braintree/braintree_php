@@ -24,6 +24,8 @@
         "psr-0": {
             "Braintree": "lib"
         },
+    },
+    "autoload-dev": {
         "psr-4": {
             "Test": "tests"
         }
