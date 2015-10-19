@@ -26,9 +26,9 @@ class AddressTest extends Setup
 
         $this->assertTrue($first->isEqual($second));
         $this->assertTrue($second->isEqual($first));
+
     }
-    public function testIsNotEqual()
-    {
+    public function testIsNotEqual() {
         $first = Braintree\Address::factory(
                 array('customerId' => 'c1', 'id' => 'a1')
                 );
