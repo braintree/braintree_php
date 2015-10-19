@@ -9,7 +9,6 @@ use Braintree;
 
 class OAuthTest extends Setup
 {
-
     public function testCreateTokenFromCode()
     {
         $gateway = new Braintree\Gateway(array(
@@ -35,7 +34,7 @@ class OAuthTest extends Setup
 
     /**
     * @expectedException Braintree\Exception\Configuration
-    * @expectedExceptionMessage clientSecret needs to be passed to Braintree\Gateway
+    * @expectedExceptionMessage clientSecret needs to be passed to Braintree\Gateway.
     */
     public function testAssertsHasCredentials()
     {
@@ -43,9 +42,10 @@ class OAuthTest extends Setup
             'clientId' => 'client_id$development$integration_client_id'
         ));
         $gateway->oauth()->createTokenFromCode(array(
-            'code' => 'integration_oauth_auth_code_' . rand(0, 299)
+            'code' => 'integration_oauth_auth_code_' . rand(0,299)
         ));
     }
+
 
     public function testCreateTokenFromCodeWithMixedCredentials()
     {
@@ -283,18 +283,16 @@ class OAuthTest extends Setup
         $this->assertEquals(array('credit_card', 'paypal'), $query['payment_methods']);
     }
 
-
     public function testComputeSignature()
     {
         $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
-
         $urlToSign = 'http://localhost:3000/oauth/connect?business%5Bname%5D=We+Like+Spaces&client_id=client_id%24development%24integration_client_id';
 
         $signature = $gateway->oauth()->computeSignature($urlToSign);
 
-        $this->assertEquals('a36bcf10dd982e2e47e0d6a2cb930aea47ade73f954b7d59c58dae6167894d41', $signature);
+        $this->assertEquals("a36bcf10dd982e2e47e0d6a2cb930aea47ade73f954b7d59c58dae6167894d41", $signature);
     }
 }

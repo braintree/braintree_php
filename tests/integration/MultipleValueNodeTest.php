@@ -17,13 +17,13 @@ class MultipleValueNodeTest extends Setup
         $activeSubscription = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'price' => '3',
+            'price' => '3'
         ))->subscription;
 
         $canceledSubscription = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'price' => '3',
+            'price' => '3'
         ))->subscription;
         Braintree\Subscription::cancel($canceledSubscription->id);
 
@@ -31,7 +31,7 @@ class MultipleValueNodeTest extends Setup
             Braintree\SubscriptionSearch::status()->in(array(Braintree\Subscription::ACTIVE)),
             Braintree\SubscriptionSearch::price()->is('3'),
         ));
-        foreach ($collection as $item) {
+        foreach ($collection AS $item) {
             $this->assertEquals(Braintree\Subscription::ACTIVE, $item->status);
         }
 
@@ -43,9 +43,9 @@ class MultipleValueNodeTest extends Setup
     {
         $found = false;
         $collection = Braintree\Subscription::search(array(
-            Braintree\SubscriptionSearch::status()->is(Braintree\Subscription::PAST_DUE),
+            Braintree\SubscriptionSearch::status()->is(Braintree\Subscription::PAST_DUE)
         ));
-        foreach ($collection as $item) {
+        foreach ($collection AS $item) {
             $found = true;
             $this->assertEquals(Braintree\Subscription::PAST_DUE, $item->status);
         }
@@ -56,9 +56,9 @@ class MultipleValueNodeTest extends Setup
     {
         $found = false;
         $collection = Braintree\Subscription::search(array(
-            Braintree\SubscriptionSearch::status()->in(array(Braintree\Subscription::EXPIRED)),
+            Braintree\SubscriptionSearch::status()->in(array(Braintree\Subscription::EXPIRED))
         ));
-        foreach ($collection as $item) {
+        foreach ($collection AS $item) {
             $found = true;
             $this->assertEquals(Braintree\Subscription::EXPIRED, $item->status);
         }
@@ -73,19 +73,19 @@ class MultipleValueNodeTest extends Setup
         $activeSubscription = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'price' => '4',
+            'price' => '4'
         ))->subscription;
 
         $canceledSubscription = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
-            'price' => '4',
+            'price' => '4'
         ))->subscription;
         Braintree\Subscription::cancel($canceledSubscription->id);
 
         $collection = Braintree\Subscription::search(array(
             Braintree\SubscriptionSearch::status()->in(array(Braintree\Subscription::ACTIVE, Braintree\Subscription::CANCELED)),
-            Braintree\SubscriptionSearch::price()->is('4'),
+            Braintree\SubscriptionSearch::price()->is('4')
         ));
 
         $this->assertTrue(Test\Helper::includes($collection, $activeSubscription));
