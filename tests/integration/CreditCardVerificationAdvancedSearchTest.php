@@ -31,7 +31,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $verification = $result->creditCardVerification;
 
         $query = array(Braintree\CreditCardVerificationSearch::id()->is($verification->id));
-        foreach ($searchCriteria as $criterion => $value) {
+        foreach ($searchCriteria AS $criterion => $value) {
             $query[] = Braintree\CreditCardVerificationSearch::$criterion()->is($value);
         }
 
@@ -39,7 +39,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($result->creditCardVerification->id, $collection->firstItem()->id);
 
-        foreach ($searchCriteria as $criterion => $value) {
+        foreach ($searchCriteria AS $criterion => $value) {
             $collection = Braintree\CreditCardVerification::search(array(
                 Braintree\CreditCardVerificationSearch::$criterion()->is($value),
                 Braintree\CreditCardVerificationSearch::id()->is($result->creditCardVerification->id)
@@ -76,14 +76,14 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $customer = $result->customer;
 
         $query = array();
-        foreach ($searchCriteria as $criterion => $value) {
+        foreach ($searchCriteria AS $criterion => $value) {
             $query[] = Braintree\CreditCardVerificationSearch::$criterion()->is($value);
         }
 
         $collection = Braintree\CreditCardVerification::search($query);
         $this->assertEquals(1, $collection->maximumCount());
 
-        foreach ($searchCriteria as $criterion => $value) {
+        foreach ($searchCriteria AS $criterion => $value) {
             $collection = Braintree\CreditCardVerification::search(array(
                 Braintree\CreditCardVerificationSearch::$criterion()->is($value),
             ));
@@ -173,7 +173,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
 
         $collection = Braintree\CreditCardVerification::search(array(
             Braintree\CreditCardVerificationSearch::ids()->in(
-                array($creditCardVerification->id, '1234')
+                array($creditCardVerification->id,'1234')
             )
         ));
         $this->assertEquals(1, $collection->maximumCount());

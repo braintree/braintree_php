@@ -12,7 +12,6 @@ class ValidationErrorCollectionTest extends Setup
     {
         $codes = array_map(create_function('$validationError', 'return $validationError->code;'), $validationErrors);
         sort($codes);
-
         return $codes;
     }
 
@@ -24,9 +23,9 @@ class ValidationErrorCollectionTest extends Setup
                 'number' => '1234123412341234',
                 'expirationDate' => 'invalid',
                 'billingAddress' => array(
-                    'countryName' => 'invalid',
-                ),
-            ),
+                    'countryName' => 'invalid'
+                )
+            )
         ));
 
         $this->assertEquals(array(), $result->errors->shallowAll());
@@ -51,9 +50,9 @@ class ValidationErrorCollectionTest extends Setup
                 'number' => '1234123412341234',
                 'expirationDate' => 'invalid',
                 'billingAddress' => array(
-                    'countryName' => 'invalid',
-                ),
-            ),
+                    'countryName' => 'invalid'
+                )
+            )
         ));
 
         $expectedErrors = array(

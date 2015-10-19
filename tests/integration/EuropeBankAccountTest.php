@@ -22,33 +22,33 @@ class EuropeBankAccountTest extends Setup
         $customer = $result->customer;
         $clientApi = new HttpClientApi($gateway->config);
         $nonce = $clientApi->nonceForNewEuropeanBankAccount(array(
-            'customerId' => $customer->id,
-            'sepa_mandate' => array(
-                'locale' => 'de-DE',
-                'bic' => 'DEUTDEFF',
-                'iban' => 'DE89370400440532013000',
-                'accountHolderName' => 'Bob Holder',
-                'billingAddress' => array(
-                    'streetAddress' => '123 Currywurst Way',
-                    'extendedAddress' => 'Lager Suite',
-                    'firstName' => 'Wilhelm',
-                    'lastName' => 'Dix',
-                    'locality' => 'Frankfurt',
-                    'postalCode' => '60001',
-                    'countryCodeAlpha2' => 'DE',
-                    'region' => 'Hesse'
+            "customerId" => $customer->id,
+            "sepa_mandate" => array(
+                "locale" => "de-DE",
+                "bic" => "DEUTDEFF",
+                "iban" => "DE89370400440532013000",
+                "accountHolderName" => "Bob Holder",
+                "billingAddress" => array(
+                    "streetAddress" => "123 Currywurst Way",
+                    "extendedAddress" => "Lager Suite",
+                    "firstName" => "Wilhelm",
+                    "lastName" => "Dix",
+                    "locality" => "Frankfurt",
+                    "postalCode" => "60001",
+                    "countryCodeAlpha2" => "DE",
+                    "region" => "Hesse"
                 )
             )
         ));
         $result = $gateway->paymentMethod()->create(array(
-            'customerId' => $customer->id,
-            'paymentMethodNonce' => $nonce
+            "customerId" => $customer->id,
+            "paymentMethodNonce" => $nonce
         ));
 
         $this->assertTrue($result->success);
         $paymentMethod = $result->paymentMethod;
         $account = $gateway->paymentMethod()->find($paymentMethod->token);
         $this->assertEquals($paymentMethod->token, $account->token);
-        $this->assertEquals($account->bic, 'DEUTDEFF');
+        $this->assertEquals($account->bic, "DEUTDEFF");
     }
 }

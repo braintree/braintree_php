@@ -24,7 +24,7 @@ class CustomerAdvancedSearchTest extends Setup
             Braintree\CustomerSearch::firstName()->is('badname')
         ));
 
-        foreach ($collection as $customer) {
+        foreach($collection as $customer) {
             $resultsReturned = true;
             break;
         }
@@ -76,7 +76,7 @@ class CustomerAdvancedSearchTest extends Setup
             'addressLocality' => 'Chicago',
             'addressRegion' => 'Illinois',
             'addressPostalCode' => '60622',
-            'addressCountryName' => 'United States of America',
+            'addressCountryName' => 'United States of America'
         );
 
         $customer = Braintree\Customer::createNoValidate(array(

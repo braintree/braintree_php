@@ -124,7 +124,7 @@ class AddressTest extends Setup
         $this->setExpectedException('Braintree\Exception\ValidationsFailed');
         Braintree\Address::createNoValidate(array(
             'customerId' => $customer->id,
-            'countryName' => 'Invalid States of America',
+            'countryName' => 'Invalid States of America'
         ));
     }
 
@@ -262,6 +262,7 @@ class AddressTest extends Setup
         $countryErrors = $result->errors->forKey('address')->onAttribute('base');
         $this->assertEquals(Braintree\Error\Codes::ADDRESS_INCONSISTENT_COUNTRY, $countryErrors[0]->code);
     }
+
 
     public function testUpdateNoValidate()
     {

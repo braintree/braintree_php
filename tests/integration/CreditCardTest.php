@@ -17,7 +17,7 @@ class CreditCardTest extends Setup
             'customerId' => $customer->id,
             'cardholderName' => 'Cardholder',
             'number' => '5105105105105100',
-            'expirationDate' => '05/12',
+            'expirationDate' => '05/12'
         ));
         $this->assertTrue($result->success);
         $this->assertEquals($customer->id, $result->creditCard->customerId);
@@ -44,7 +44,7 @@ class CreditCardTest extends Setup
             'customerId' => $customer->id,
             'cardholderName' => 'Cardholder',
             'number' => '5105105105105100',
-            'expirationDate' => '05/12',
+            'expirationDate' => '05/12'
         ));
 
         $this->assertTrue($result->success);
@@ -144,7 +144,7 @@ class CreditCardTest extends Setup
             'customerId' => $customer->id,
             'number' => '5105105105105100',
             'expirationDate' => '05/2011',
-            'token' => $token,
+            'token' => $token
         ));
         $this->assertTrue($result->success);
         $this->assertEquals($token, $result->creditCard->token);
@@ -264,7 +264,7 @@ class CreditCardTest extends Setup
                 'countryCodeAlpha2' => 'FM',
                 'countryCodeAlpha3' => 'FSM',
                 'countryCodeNumeric' => '583'
-            ),
+            )
         ));
         $this->assertTrue($result->success);
         $this->assertEquals($customer->id, $result->creditCard->customerId);
@@ -314,7 +314,7 @@ class CreditCardTest extends Setup
             'billingAddress' => array(
                 'countryName' => 'Tuvalu',
                 'countryCodeAlpha2' => 'US'
-            ),
+            )
         ));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('creditCard')->onAttribute('expirationDate');
@@ -348,6 +348,7 @@ class CreditCardTest extends Setup
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('creditCard')->onAttribute('venmoSdkPaymentMethodCode');
         $this->assertEquals($errors[0]->code, Braintree\Error\Codes::CREDIT_CARD_INVALID_VENMO_SDK_PAYMENT_METHOD_CODE);
+
     }
 
     public function testCreate_with_venmoSdkSession()
@@ -359,7 +360,7 @@ class CreditCardTest extends Setup
             'expirationDate' => '05/12',
             'options' => array(
                 'venmoSdkSession' => Braintree\Test\VenmoSdk::getTestSession()
-            ),
+            )
         ));
         $this->assertTrue($result->success);
         $this->assertTrue($result->creditCard->isVenmoSdk());
@@ -382,6 +383,7 @@ class CreditCardTest extends Setup
 
     public function testCreateNoValidate_throwsIfValidationsFail()
     {
+
         $this->setExpectedException('Braintree\Exception\ValidationsFailed');
         $customer = Braintree\Customer::createNoValidate();
         Braintree\CreditCard::createNoValidate(array(
@@ -536,7 +538,7 @@ class CreditCardTest extends Setup
                         'region' => 'MO',
                         'postalCode' => '63119',
                         'options' => array(
-                            'updateExisting' => true
+                            'updateExisting' => True
                         )
                     )
                 )
@@ -681,13 +683,14 @@ class CreditCardTest extends Setup
         $this->assertTrue($collection->maximumCount() > 1);
 
         $arr = array();
-        foreach ($collection as $creditCard) {
+        foreach($collection as $creditCard) {
             $this->assertTrue($creditCard->isExpired());
             array_push($arr, $creditCard->token);
         }
         $uniqueCreditCardTokens = array_unique(array_values($arr));
         $this->assertEquals($collection->maximumCount(), count($uniqueCreditCardTokens));
     }
+
 
     public function testExpiringBetween()
     {
@@ -698,7 +701,7 @@ class CreditCardTest extends Setup
         $this->assertTrue($collection->maximumCount() > 1);
 
         $arr = array();
-        foreach ($collection as $creditCard) {
+        foreach($collection as $creditCard) {
             $this->assertEquals('2010', $creditCard->expirationYear);
             array_push($arr, $creditCard->token);
         }
@@ -760,7 +763,7 @@ class CreditCardTest extends Setup
                 'region' => 'IL',
                 'postalCode' => '60622',
                 'countryName' => 'United States of America'
-            ),
+            )
         ));
         $id = strval(rand());
         Braintree\Subscription::create(array(
@@ -801,7 +804,7 @@ class CreditCardTest extends Setup
             "credit_card" => array(
                 "number" => "4009348888881881",
                 "expirationMonth" => "11",
-                "expirationYear" => "2099",
+                "expirationYear" => "2099"
             ),
             "customerId" => $customer->id
         ));
@@ -819,7 +822,7 @@ class CreditCardTest extends Setup
             "credit_card" => array(
                 "number" => "4009348888881881",
                 "expirationMonth" => "11",
-                "expirationYear" => "2099",
+                "expirationYear" => "2099"
             ),
             "share" => true
         ));
@@ -836,13 +839,13 @@ class CreditCardTest extends Setup
             "credit_card" => array(
                 "number" => "4009348888881881",
                 "expirationMonth" => "11",
-                "expirationYear" => "2099",
+                "expirationYear" => "2099"
             ),
             "customerId" => $customer->id
         ));
 
         Braintree\CreditCard::fromNonce($nonce);
-        $this->setExpectedException('Braintree\Exception\NotFound', 'consumed');
+        $this->setExpectedException('Braintree\Exception\NotFound', "consumed");
         Braintree\CreditCard::fromNonce($nonce);
     }
 
@@ -853,7 +856,7 @@ class CreditCardTest extends Setup
             'customerId' => $customer->id,
             'cardholderName' => 'Old Cardholder',
             'number' => '5105105105105100',
-            'expirationDate' => '05/12',
+            'expirationDate' => '05/12'
         ));
         $this->assertTrue($createResult->success);
         $updateResult = Braintree\CreditCard::update($createResult->creditCard->token, array(
@@ -1236,7 +1239,7 @@ class CreditCardTest extends Setup
             'expirationDate' => '05/12',
             'options' => array('verifyCard' => true)
         ));
-        $this->assertEquals('USA', $result->creditCard->countryOfIssuance);
+        $this->assertEquals("USA", $result->creditCard->countryOfIssuance);
     }
 
     public function testIssuingBankCard()
@@ -1249,7 +1252,7 @@ class CreditCardTest extends Setup
             'expirationDate' => '05/12',
             'options' => array('verifyCard' => true)
         ));
-        $this->assertEquals('NETWORK ONLY', $result->creditCard->issuingBank);
+        $this->assertEquals("NETWORK ONLY", $result->creditCard->issuingBank);
     }
 
     public function testNegativeCardTypeIndicators()

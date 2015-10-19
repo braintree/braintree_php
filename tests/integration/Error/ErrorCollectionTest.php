@@ -16,9 +16,9 @@ class ErrorCollectionTest extends Setup
                 'number' => 'invalid',
                 'expirationDate' => 'invalid',
                 'billingAddress' => array(
-                    'countryName' => 'invaild',
-                ),
-            ),
+                    'countryName' => 'invaild'
+                )
+            )
         ));
         $this->assertEquals(false, $result->success);
         $this->assertEquals(4, $result->errors->deepSize());
@@ -32,9 +32,9 @@ class ErrorCollectionTest extends Setup
                 'number' => 'invalid',
                 'expirationDate' => 'invalid',
                 'billingAddress' => array(
-                    'countryName' => 'invaild',
-                ),
-            ),
+                    'countryName' => 'invaild'
+                )
+            )
         ));
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->onHtmlField('customer[email]');
@@ -53,9 +53,9 @@ class ErrorCollectionTest extends Setup
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
                 'billingAddress' => array(
-                    'streetAddress' => '1 E Main St',
-                ),
-            ),
+                    'streetAddress' => '1 E Main St'
+                )
+            )
         ));
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->onHtmlField('customer[email]');
@@ -72,7 +72,7 @@ class ErrorCollectionTest extends Setup
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
             ),
-            'customFields' => array('storeMe' => 'value'),
+            'customFields' => array('storeMe' => 'value')
         ));
         $this->assertEquals(false, $result->success);
         $this->assertEquals(array(), $result->errors->onHtmlField('customer[custom_fields][store_me]'));

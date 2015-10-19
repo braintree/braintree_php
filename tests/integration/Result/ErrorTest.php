@@ -16,12 +16,12 @@ class ErrorTest extends Setup
                 'number' => 'invalid-number',
                 'expirationDate' => 'invalid-exp',
                 'billingAddress' => array(
-                    'countryName' => 'invalid-country',
-                ),
+                    'countryName' => 'invalid-country'
+                )
             ),
             'customFields' => array(
-                'store_me' => 'some custom value',
-            ),
+                'store_me' => 'some custom value'
+            )
         ));
         $this->assertEquals(false, $result->success);
         $this->assertEquals('invalid-email', $result->valueForHtmlField('customer[email]'));

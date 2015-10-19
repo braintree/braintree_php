@@ -56,7 +56,6 @@ class CustomerTest extends Setup
 
         $this->assertEquals(true, $result->success);
         $this->assertEquals($result->customer->id, '0');
-
         $customer = Braintree\Customer::find('0');
 
         $this->assertEquals('0', $customer->id);
@@ -106,7 +105,6 @@ class CustomerTest extends Setup
         $this->assertNotNull($customer->merchantId);
     }
 
-
     public function testCreateCustomerWithCardUsingNonce()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
@@ -122,12 +120,12 @@ class CustomerTest extends Setup
         $result = Braintree\Customer::create(array(
             'creditCard' => array(
                 'paymentMethodNonce' => $nonce
-            ),
+            )
         ));
 
         $this->assertTrue($result->success);
-        $this->assertSame('411111', $result->customer->creditCards[0]->bin);
-        $this->assertSame('1111', $result->customer->creditCards[0]->last4);
+        $this->assertSame("411111", $result->customer->creditCards[0]->bin);
+        $this->assertSame("1111", $result->customer->creditCards[0]->last4);
     }
 
     public function testCreateCustomerWithApplePayCard()
@@ -192,7 +190,7 @@ class CustomerTest extends Setup
     public function testCreate_withUnicode()
     {
         $result = Braintree\Customer::create(array(
-            'firstName' => 'Здравствуйте',
+            'firstName' => "Здравствуйте",
             'lastName' => 'Jones',
             'company' => 'Jones Co.',
             'email' => 'mike.jones@example.com',
@@ -202,7 +200,7 @@ class CustomerTest extends Setup
         ));
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
-        $this->assertEquals('Здравствуйте', $customer->firstName);
+        $this->assertEquals("Здравствуйте", $customer->firstName);
         $this->assertEquals('Jones', $customer->lastName);
         $this->assertEquals('Jones Co.', $customer->company);
         $this->assertEquals('mike.jones@example.com', $customer->email);
@@ -266,7 +264,7 @@ class CustomerTest extends Setup
         ));
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
-        $this->assertEquals('411111', $customer->creditCards[0]->bin);
+        $this->assertEquals("411111", $customer->creditCards[0]->bin);
     }
 
     public function testCreate_blankCustomer()
@@ -567,7 +565,7 @@ class CustomerTest extends Setup
             'email' => 'mike.jones@example.com',
             'phone' => '419.555.1234',
             'fax' => '419.555.1235',
-            'website' => 'http://example.com',
+            'website' => 'http://example.com'
         ));
         $this->assertEquals(true, $result->success);
         $customer = Braintree\Customer::find($result->customer->id);
@@ -583,7 +581,7 @@ class CustomerTest extends Setup
     public function testFind_throwsExceptionIfNotFound()
     {
         $this->setExpectedException('Braintree\Exception\NotFound');
-        Braintree\Customer::find('does-not-exist');
+        Braintree\Customer::find("does-not-exist");
     }
 
     public function testUpdate()
@@ -606,7 +604,7 @@ class CustomerTest extends Setup
             'email' => 'new.email@example.com',
             'phone' => 'new phone',
             'fax' => 'new fax',
-            'website' => 'http://new.example.com',
+            'website' => 'http://new.example.com'
         ));
         $this->assertEquals(true, $updateResult->success);
         $this->assertEquals('New First', $updateResult->customer->firstName);
@@ -639,9 +637,9 @@ class CustomerTest extends Setup
             'firstName' => 'Bat',
             'lastName' => 'Manderson',
             'creditCard' => array(
-                'options' => array(
-                    'updateExistingToken' => $customer->creditCards[0]->token
-                ),
+				'options' => array(
+					'updateExistingToken' => $customer->creditCards[0]->token
+				),
                 'billingAddress' => array(
                     'countryName' => 'Gabon',
                     'countryCodeAlpha2' => 'GA',
@@ -650,7 +648,7 @@ class CustomerTest extends Setup
                     'options' => array(
                         'updateExisting' => true
                     )
-                )
+            	)
             )
         ));
 
@@ -834,6 +832,7 @@ class CustomerTest extends Setup
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('customer')->forKey('paypalAccount')->errors;
         $this->assertEquals(Braintree\Error\Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT, $errors[0]->code);
+
     }
 
     public function testUpdateNoValidate()
@@ -1203,9 +1202,8 @@ class CustomerTest extends Setup
     {
         Test\Helper::suppressDeprecationWarnings();
         $trData = Braintree\TransparentRedirect::createCustomerData(
-            array_merge($trParams, array('redirectUrl' => 'http://www.example.com'))
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
-
         return Test\Helper::submitTrRequest(
             Braintree\Customer::createCustomerUrl(),
             $regularParams,
@@ -1217,9 +1215,8 @@ class CustomerTest extends Setup
     {
         Test\Helper::suppressDeprecationWarnings();
         $trData = Braintree\TransparentRedirect::updateCustomerData(
-            array_merge($trParams, array('redirectUrl' => 'http://www.example.com'))
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
-
         return Test\Helper::submitTrRequest(
             Braintree\Customer::updateCustomerUrl(),
             $regularParams,

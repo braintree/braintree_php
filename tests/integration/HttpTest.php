@@ -57,7 +57,7 @@ class HttpTest extends Setup
             'environment' => 'development',
             'merchant_id' => 'integration_merchant_id',
             'publicKey' => 'badPublicKey',
-            'privateKey' => 'badPrivateKey',
+            'privateKey' => 'badPrivateKey'
         ));
 
         $http = new Braintree\Http($config);
