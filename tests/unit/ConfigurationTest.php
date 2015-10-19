@@ -194,7 +194,33 @@ class ConfigurationTest extends Setup
         $this->assertEquals('https://api.braintreegateway.com:443', $bu);
     }
 
-    /**
+    function testProxyHost()
+    {
+        $this->config->proxyHost('example.com');
+        $this->assertEquals('example.com', $this->config->proxyHost());
+    }
+
+    function testProxyPort()
+    {
+        $this->config->proxyPort('1234');
+        $this->assertEquals('1234', $this->config->proxyPort());
+    }
+
+    function testProxyType()
+    {
+        $this->config->proxyType('MY_PROXY');
+        $this->assertEquals('MY_PROXY', $this->config->proxyType());
+    }
+
+    function testProxyIsConfigured()
+    {
+        $this->config->proxyHost('example.com');
+        $this->config->proxyPort('1234');
+
+        $this->assertTrue($this->config->isUsingProxy());
+    }
+
+     /**
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage environment needs to be set
      */
