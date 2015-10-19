@@ -29,7 +29,7 @@ class SettlementBatchSummaryTest extends Setup
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
-            'privateKey' => 'integration_private_key',
+            'privateKey' => 'integration_private_key'
         ));
         $result = $gateway->settlementBatchSummary()->generate('2000-01-01');
 
@@ -52,14 +52,13 @@ class SettlementBatchSummaryTest extends Setup
             'amount' => '100.00',
             'creditCard' => array(
                 'number' => '5105105105105100',
-                'expirationDate' => '05/12',
+                'expirationDate' => '05/12'
             ),
-            'options' => array('submitForSettlement' => true),
+            'options' => array('submitForSettlement' => true)
         ));
-
         Braintree\Test\Transaction::settle($transaction->id);
 
-        $today = new DateTime();
+        $today = new Datetime;
         $result = Braintree\SettlementBatchSummary::generate(Test\Helper::nowInEastern());
 
         $this->assertTrue($result->success);
@@ -76,17 +75,17 @@ class SettlementBatchSummaryTest extends Setup
             'amount' => '100.00',
             'creditCard' => array(
                 'number' => '5105105105105100',
-                'expirationDate' => '05/12',
+                'expirationDate' => '05/12'
             ),
             'customFields' => array(
-                'store_me' => 'custom value',
+                'store_me' => 'custom value'
             ),
-            'options' => array('submitForSettlement' => true),
+            'options' => array('submitForSettlement' => true)
         ));
 
         Braintree\Test\Transaction::settle($transaction->id);
 
-        $today = new DateTime();
+        $today = new Datetime;
         $result = Braintree\SettlementBatchSummary::generate(Test\Helper::nowInEastern(), 'store_me');
 
         $this->assertTrue($result->success);
