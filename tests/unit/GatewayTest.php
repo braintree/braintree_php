@@ -23,7 +23,7 @@ class GatewayTest extends Setup
 
     /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage merchantId needs to be set
+    * @expectedExceptionMessage needs to be set (or accessToken needs to be passed to Braintree\Gateway).
      */
     public function testConfigGetsAssertedValid()
     {
@@ -42,7 +42,7 @@ class GatewayTest extends Setup
             'environment' => 'sandbox',
             'merchantId' => 'sandbox_merchant_id',
             'publicKey' => 'sandbox_public_key',
-            'privateKey' => 'sandbox_private_key',
+            'privateKey' => 'sandbox_private_key'
         ));
 
         $this->assertEquals('sandbox', $gateway->config->getEnvironment());

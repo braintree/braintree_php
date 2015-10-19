@@ -12,7 +12,7 @@ class DisbursementDetailsTest extends Setup
     public function testIsValidReturnsTrue()
     {
         $details = new Braintree\DisbursementDetails(array(
-            'disbursementDate' => new DateTime('2013-04-10'),
+            "disbursementDate" => new DateTime("2013-04-10")
         ));
 
         $this->assertTrue($details->isValid());
@@ -21,7 +21,7 @@ class DisbursementDetailsTest extends Setup
     public function testIsValidReturnsFalse()
     {
         $details = new Braintree\DisbursementDetails(array(
-            'disbursementDate' => null,
+            "disbursementDate" => null
         ));
 
         $this->assertFalse($details->isValid());

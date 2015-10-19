@@ -10,7 +10,7 @@ class InstanceTest extends Setup
 {
     public function test__isset()
     {
-        $transaction = Braintree\Transaction::factory(array(
+      $transaction = Braintree\Transaction::factory(array(
         'creditCard' => array(
           'expirationMonth' => '05',
           'expirationYear' => '2010',
@@ -19,11 +19,11 @@ class InstanceTest extends Setup
           'cardType' => 'MasterCard',
         ),
       ));
-        $this->assertEquals('MasterCard', $transaction->creditCardDetails->cardType);
-        $this->assertFalse(empty($transaction->creditCardDetails->cardType));
-        $this->assertTrue(isset($transaction->creditCardDetails->cardType));
+      $this->assertEquals('MasterCard', $transaction->creditCardDetails->cardType);
+      $this->assertFalse(empty($transaction->creditCardDetails->cardType));
+      $this->assertTrue(isset($transaction->creditCardDetails->cardType));
 
-        $transaction = Braintree\Transaction::factory(array(
+      $transaction = Braintree\Transaction::factory(array(
         'creditCard' => array(
           'expirationMonth' => '05',
           'expirationYear' => '2010',
@@ -31,7 +31,7 @@ class InstanceTest extends Setup
           'last4' => '5100',
         ),
       ));
-        $this->assertTrue(empty($transaction->creditCardDetails->cardType));
-        $this->assertFalse(isset($transaction->creditCardDetails->cardType));
+      $this->assertTrue(empty($transaction->creditCardDetails->cardType));
+      $this->assertFalse(isset($transaction->creditCardDetails->cardType));
     }
 }

@@ -10,22 +10,22 @@ class DigestTest extends Setup
 {
     public function testSecureCompareReturnsTrueForMatches()
     {
-        $this->assertTrue(Braintree\Digest::secureCompare('a_string', 'a_string'));
+        $this->assertTrue(Braintree\Digest::secureCompare("a_string", "a_string"));
     }
 
     public function testSecureCompareReturnsFalseForDifferentLengths()
     {
-        $this->assertFalse(Braintree\Digest::secureCompare('a_string', 'a_string_that_is_longer'));
+        $this->assertFalse(Braintree\Digest::secureCompare("a_string", "a_string_that_is_longer"));
     }
 
     public function testSecureCompareReturnsFalseForNonmatchingSameLengthStrings()
     {
-        $this->assertFalse(Braintree\Digest::secureCompare('a_string', 'a_strong'));
+        $this->assertFalse(Braintree\Digest::secureCompare("a_string", "a_strong"));
     }
 
     public function testHexDigestSha1()
     {
-        $key = str_repeat(chr(0xaa), 80);
+        $key = str_repeat(chr(0xaa),80);
         $message = 'Test Using Larger Than Block-Size Key - Hash Key First';
         $d =  Braintree\Digest::hexDigestSha1($key, $message);
 
@@ -34,7 +34,7 @@ class DigestTest extends Setup
 
     public function testHexDigestSha1_again()
     {
-        $key = str_repeat(chr(0xaa), 80);
+        $key = str_repeat(chr(0xaa),80);
         $message = 'Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data';
         $d =  Braintree\Digest::hexDigestSha1($key, $message);
 
@@ -43,7 +43,7 @@ class DigestTest extends Setup
 
     public function testHexDigestSha256()
     {
-        $key = str_repeat(chr(0xaa), 80);
+        $key = str_repeat(chr(0xaa),80);
         $message = 'Test Using Larger Than Block-Size Key - Hash Key First';
         $d =  Braintree\Digest::hexDigestSha256($key, $message);
 
@@ -52,7 +52,7 @@ class DigestTest extends Setup
 
     public function testHexDigestSha256_again()
     {
-        $key = str_repeat(chr(0xaa), 80);
+        $key = str_repeat(chr(0xaa),80);
         $message = 'Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data';
         $d =  Braintree\Digest::hexDigestSha256($key, $message);
 
@@ -61,7 +61,7 @@ class DigestTest extends Setup
 
     public function testBuiltInHmacSha1()
     {
-        Braintree\Configuration::privateKey(str_repeat(chr(0xaa), 80));
+        Braintree\Configuration::privateKey(str_repeat(chr(0xaa),80));
         $message = 'Test Using Larger Than Block-Size Key - Hash Key First';
         $d =  Braintree\Digest::_builtInHmacSha1($message, Braintree\Configuration::privateKey());
 
@@ -70,7 +70,7 @@ class DigestTest extends Setup
 
     public function testBuiltInHmacSha1_again()
     {
-        Braintree\Configuration::privateKey(str_repeat(chr(0xaa), 80));
+        Braintree\Configuration::privateKey(str_repeat(chr(0xaa),80));
         $message = 'Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data';
         $d =  Braintree\Digest::_builtInHmacSha1($message, Braintree\Configuration::privateKey());
 
@@ -79,7 +79,7 @@ class DigestTest extends Setup
 
     public function testHmacSha1()
     {
-        Braintree\Configuration::privateKey(str_repeat(chr(0xaa), 80));
+        Braintree\Configuration::privateKey(str_repeat(chr(0xaa),80));
         $message = 'Test Using Larger Than Block-Size Key - Hash Key First';
         $d =  Braintree\Digest::_hmacSha1($message, Braintree\Configuration::privateKey());
 
@@ -88,7 +88,7 @@ class DigestTest extends Setup
 
     public function testHmacSha1_again()
     {
-        Braintree\Configuration::privateKey(str_repeat(chr(0xaa), 80));
+        Braintree\Configuration::privateKey(str_repeat(chr(0xaa),80));
         $message = 'Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data';
         $d =  Braintree\Digest::_hmacSha1($message, Braintree\Configuration::privateKey());
 

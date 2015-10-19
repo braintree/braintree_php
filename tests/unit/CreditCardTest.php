@@ -60,7 +60,7 @@ class CreditCardTest extends Setup
                     'streetAddress',
                 ),
             ),
-            'customerId',
+            'customerId'
         );
         $this->assertEquals($expected, Braintree\CreditCardGateway::createSignature());
     }
@@ -88,9 +88,9 @@ class CreditCardTest extends Setup
                     'streetAddress',
                     array(
                         'options' => array(
-                            'updateExisting',
-                        ),
-                    ),
+                            'updateExisting'
+                        )
+                    )
                 ),
             ),
         );
@@ -122,17 +122,17 @@ class CreditCardTest extends Setup
                 'verifications' => array(
                     array(
                         'id' => '123',
-                        'createdAt' => DateTime::createFromFormat('Ymd', '20121212'),
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121212')
                     ),
                     array(
                         'id' => '932',
-                        'createdAt' => DateTime::createFromFormat('Ymd', '20121215'),
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121215')
                     ),
                     array(
                         'id' => '456',
-                        'createdAt' => DateTime::createFromFormat('Ymd', '20121213'),
-                    ),
-                ),
+                        'createdAt' => DateTime::createFromFormat('Ymd', '20121213')
+                    )
+                )
             )
         );
 
