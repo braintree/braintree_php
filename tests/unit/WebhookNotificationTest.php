@@ -56,7 +56,7 @@ class WebhookNotificationTest extends Setup
 
         $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE, $webhookNotification->kind);
         $this->assertNotNull($webhookNotification->timestamp);
-        $this->assertEquals('my_id', $webhookNotification->subscription->id);
+        $this->assertEquals("my_id", $webhookNotification->subscription->id);
     }
 
     public function testParsingModifiedSignatureRaisesError()
@@ -69,7 +69,7 @@ class WebhookNotificationTest extends Setup
         $this->setExpectedException('Braintree\Exception\InvalidSignature', 'signature does not match payload - one has been modified');
 
         $webhookNotification = Braintree\WebhookNotification::parse(
-            $sampleNotification['bt_signature'] . 'bad',
+            $sampleNotification['bt_signature'] . "bad",
             $sampleNotification['bt_payload']
         );
     }
@@ -109,7 +109,7 @@ class WebhookNotificationTest extends Setup
 
         $webhookNotification = Braintree\WebhookNotification::parse(
             $sampleNotification['bt_signature'],
-            'bad' . $sampleNotification['bt_payload']
+            "bad" . $sampleNotification['bt_payload']
         );
     }
 
@@ -124,7 +124,7 @@ class WebhookNotificationTest extends Setup
 
         $webhookNotification = Braintree\WebhookNotification::parse(
             $sampleNotification['bt_signature'],
-            'bad' . $sampleNotification['bt_payload']
+            "bad" . $sampleNotification['bt_payload']
         );
     }
 
@@ -138,7 +138,7 @@ class WebhookNotificationTest extends Setup
         $this->setExpectedException('Braintree\Exception\InvalidSignature');
 
         $webhookNotification = Braintree\WebhookNotification::parse(
-            'bad' . $sampleNotification['bt_signature'],
+            "bad" . $sampleNotification['bt_signature'],
             $sampleNotification['bt_payload']
         );
     }
@@ -153,7 +153,7 @@ class WebhookNotificationTest extends Setup
         $this->setExpectedException('Braintree\Exception\InvalidSignature');
 
         $webhookNotification = Braintree\WebhookNotification::parse(
-            'bad_signature',
+            "bad_signature",
             $sampleNotification['bt_payload']
         );
     }
@@ -169,7 +169,7 @@ class WebhookNotificationTest extends Setup
 
         $webhookNotification = Braintree\WebhookNotification::parse(
             $sampleNotification['bt_signature'],
-            '~*~*invalid*~*~'
+            "~*~*invalid*~*~"
         );
     }
 
@@ -207,14 +207,16 @@ class WebhookNotificationTest extends Setup
             Braintree\WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY,
             "my_id"
         );
+
         $webhookNotification = Braintree\WebhookNotification::parse(
             $sampleNotification['bt_signature'],
             $sampleNotification['bt_payload']
         );
+
         $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY, $webhookNotification->kind);
         $this->assertEquals("my_id", $webhookNotification->subscription->id);
-
         $this->assertEquals(1, count($webhookNotification->subscription->transactions));
+
         $transaction = $webhookNotification->subscription->transactions[0];
         $this->assertEquals('submitted_for_settlement', $transaction->status);
         $this->assertEquals('49.99', $transaction->amount);
@@ -224,7 +226,7 @@ class WebhookNotificationTest extends Setup
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -233,9 +235,9 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED, $webhookNotification->kind);
-        $this->assertEquals('my_id', $webhookNotification->merchantAccount->id);
+        $this->assertEquals("my_id", $webhookNotification->merchantAccount->id);
         $this->assertEquals(Braintree\MerchantAccount::STATUS_ACTIVE, $webhookNotification->merchantAccount->status);
-        $this->assertEquals('master_ma_for_my_id', $webhookNotification->merchantAccount->masterMerchantAccount->id);
+        $this->assertEquals("master_ma_for_my_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
         $this->assertEquals(Braintree\MerchantAccount::STATUS_ACTIVE, $webhookNotification->merchantAccount->masterMerchantAccount->status);
     }
 
@@ -243,7 +245,7 @@ class WebhookNotificationTest extends Setup
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -252,11 +254,11 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED, $webhookNotification->kind);
-        $this->assertEquals('my_id', $webhookNotification->merchantAccount->id);
+        $this->assertEquals("my_id", $webhookNotification->merchantAccount->id);
         $this->assertEquals(Braintree\MerchantAccount::STATUS_SUSPENDED, $webhookNotification->merchantAccount->status);
-        $this->assertEquals('master_ma_for_my_id', $webhookNotification->merchantAccount->masterMerchantAccount->id);
+        $this->assertEquals("master_ma_for_my_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
         $this->assertEquals(Braintree\MerchantAccount::STATUS_SUSPENDED, $webhookNotification->merchantAccount->masterMerchantAccount->status);
-        $this->assertEquals('Credit score is too low', $webhookNotification->message);
+        $this->assertEquals("Credit score is too low", $webhookNotification->message);
         $errors = $webhookNotification->errors->forKey('merchantAccount')->onAttribute('base');
         $this->assertEquals(Braintree\Error\Codes::MERCHANT_ACCOUNT_DECLINED_OFAC, $errors[0]->code);
     }
@@ -265,7 +267,7 @@ class WebhookNotificationTest extends Setup
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::TRANSACTION_DISBURSED,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -274,7 +276,7 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::TRANSACTION_DISBURSED, $webhookNotification->kind);
-        $this->assertEquals('my_id', $webhookNotification->transaction->id);
+        $this->assertEquals("my_id", $webhookNotification->transaction->id);
         $this->assertEquals(100, $webhookNotification->transaction->amount);
         $this->assertNotNull($webhookNotification->transaction->disbursementDetails->disbursementDate);
     }
@@ -283,7 +285,7 @@ class WebhookNotificationTest extends Setup
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::DISPUTE_OPENED,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -292,7 +294,7 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::DISPUTE_OPENED, $webhookNotification->kind);
-        $this->assertEquals('my_id', $webhookNotification->dispute->id);
+        $this->assertEquals("my_id", $webhookNotification->dispute->id);
         $this->assertEquals(Braintree\Dispute::OPEN, $webhookNotification->dispute->status);
         $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
     }
@@ -301,7 +303,7 @@ class WebhookNotificationTest extends Setup
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::DISPUTE_LOST,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -310,7 +312,7 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::DISPUTE_LOST, $webhookNotification->kind);
-        $this->assertEquals('my_id', $webhookNotification->dispute->id);
+        $this->assertEquals("my_id", $webhookNotification->dispute->id);
         $this->assertEquals(Braintree\Dispute::LOST, $webhookNotification->dispute->status);
         $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
     }
@@ -319,7 +321,7 @@ class WebhookNotificationTest extends Setup
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::DISPUTE_WON,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -328,7 +330,7 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::DISPUTE_WON, $webhookNotification->kind);
-        $this->assertEquals('my_id', $webhookNotification->dispute->id);
+        $this->assertEquals("my_id", $webhookNotification->dispute->id);
         $this->assertEquals(Braintree\Dispute::WON, $webhookNotification->dispute->status);
         $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
     }
@@ -337,7 +339,7 @@ class WebhookNotificationTest extends Setup
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::DISBURSEMENT_EXCEPTION,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -345,23 +347,24 @@ class WebhookNotificationTest extends Setup
             $sampleNotification['bt_payload']
         );
 
+
         $this->assertEquals(Braintree\WebhookNotification::DISBURSEMENT_EXCEPTION, $webhookNotification->kind);
-        $this->assertEquals('my_id', $webhookNotification->disbursement->id);
+        $this->assertEquals("my_id", $webhookNotification->disbursement->id);
         $this->assertEquals(false, $webhookNotification->disbursement->retry);
         $this->assertEquals(false, $webhookNotification->disbursement->success);
-        $this->assertEquals('bank_rejected', $webhookNotification->disbursement->exceptionMessage);
+        $this->assertEquals("bank_rejected", $webhookNotification->disbursement->exceptionMessage);
         $this->assertEquals(100.00, $webhookNotification->disbursement->amount);
-        $this->assertEquals('update_funding_information', $webhookNotification->disbursement->followUpAction);
-        $this->assertEquals('merchant_account_token', $webhookNotification->disbursement->merchantAccount->id);
-        $this->assertEquals(new DateTime('2014-02-10'), $webhookNotification->disbursement->disbursementDate);
-        $this->assertEquals(array('asdfg', 'qwert'), $webhookNotification->disbursement->transactionIds);
+        $this->assertEquals("update_funding_information", $webhookNotification->disbursement->followUpAction);
+        $this->assertEquals("merchant_account_token", $webhookNotification->disbursement->merchantAccount->id);
+        $this->assertEquals(new DateTime("2014-02-10"), $webhookNotification->disbursement->disbursementDate);
+        $this->assertEquals(array("asdfg", "qwert"), $webhookNotification->disbursement->transactionIds);
     }
 
     public function testBuildsASampleNotificationForADisbursementWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::DISBURSEMENT,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -369,22 +372,23 @@ class WebhookNotificationTest extends Setup
             $sampleNotification['bt_payload']
         );
 
+
         $this->assertEquals(Braintree\WebhookNotification::DISBURSEMENT, $webhookNotification->kind);
-        $this->assertEquals('my_id', $webhookNotification->disbursement->id);
+        $this->assertEquals("my_id", $webhookNotification->disbursement->id);
         $this->assertEquals(false, $webhookNotification->disbursement->retry);
         $this->assertEquals(true, $webhookNotification->disbursement->success);
-        $this->assertEquals(null, $webhookNotification->disbursement->exceptionMessage);
+        $this->assertEquals(NULL, $webhookNotification->disbursement->exceptionMessage);
         $this->assertEquals(100.00, $webhookNotification->disbursement->amount);
-        $this->assertEquals(null, $webhookNotification->disbursement->followUpAction);
-        $this->assertEquals('merchant_account_token', $webhookNotification->disbursement->merchantAccount->id);
-        $this->assertEquals(new DateTime('2014-02-10'), $webhookNotification->disbursement->disbursementDate);
-        $this->assertEquals(array('asdfg', 'qwert'), $webhookNotification->disbursement->transactionIds);
+        $this->assertEquals(NULL, $webhookNotification->disbursement->followUpAction);
+        $this->assertEquals("merchant_account_token", $webhookNotification->disbursement->merchantAccount->id);
+        $this->assertEquals(new DateTime("2014-02-10"), $webhookNotification->disbursement->disbursementDate);
+        $this->assertEquals(array("asdfg", "qwert"), $webhookNotification->disbursement->transactionIds);
     }
     public function testBuildsASampleNotificationForAPartnerMerchantConnectedWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::PARTNER_MERCHANT_CONNECTED,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -393,18 +397,18 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::PARTNER_MERCHANT_CONNECTED, $webhookNotification->kind);
-        $this->assertEquals('public_id', $webhookNotification->partnerMerchant->merchantPublicId);
-        $this->assertEquals('public_key', $webhookNotification->partnerMerchant->publicKey);
-        $this->assertEquals('private_key', $webhookNotification->partnerMerchant->privateKey);
-        $this->assertEquals('abc123', $webhookNotification->partnerMerchant->partnerMerchantId);
-        $this->assertEquals('cse_key', $webhookNotification->partnerMerchant->clientSideEncryptionKey);
+        $this->assertEquals("public_id", $webhookNotification->partnerMerchant->merchantPublicId);
+        $this->assertEquals("public_key", $webhookNotification->partnerMerchant->publicKey);
+        $this->assertEquals("private_key", $webhookNotification->partnerMerchant->privateKey);
+        $this->assertEquals("abc123", $webhookNotification->partnerMerchant->partnerMerchantId);
+        $this->assertEquals("cse_key", $webhookNotification->partnerMerchant->clientSideEncryptionKey);
     }
 
     public function testBuildsASampleNotificationForAPartnerMerchantDisconnectedWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::PARTNER_MERCHANT_DISCONNECTED,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -413,14 +417,14 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::PARTNER_MERCHANT_DISCONNECTED, $webhookNotification->kind);
-        $this->assertEquals('abc123', $webhookNotification->partnerMerchant->partnerMerchantId);
+        $this->assertEquals("abc123", $webhookNotification->partnerMerchant->partnerMerchantId);
     }
 
     public function testBuildsASampleNotificationForAPartnerMerchantDeclinedWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::PARTNER_MERCHANT_DECLINED,
-            'my_id'
+            "my_id"
         );
 
         $webhookNotification = Braintree\WebhookNotification::parse(
@@ -429,6 +433,6 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::PARTNER_MERCHANT_DECLINED, $webhookNotification->kind);
-        $this->assertEquals('abc123', $webhookNotification->partnerMerchant->partnerMerchantId);
+        $this->assertEquals("abc123", $webhookNotification->partnerMerchant->partnerMerchantId);
     }
 }
