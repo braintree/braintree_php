@@ -14,7 +14,7 @@ class SubscriptionTest extends Setup
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad');
         $result = Braintree\Subscription::create(array(
-            'bad' => 'value',
+            'bad' => 'value'
         ));
     }
 
@@ -24,7 +24,7 @@ class SubscriptionTest extends Setup
         $plan = SubscriptionHelper::triallessPlan();
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
 
         ));
         Test\Helper::assertPrintable($result);
@@ -62,11 +62,11 @@ class SubscriptionTest extends Setup
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
-            'privateKey' => 'integration_private_key',
+            'privateKey' => 'integration_private_key'
         ));
         $result = $gateway->subscription()->create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
 
         ));
         Test\Helper::assertPrintable($result);
@@ -84,25 +84,25 @@ class SubscriptionTest extends Setup
         $customerId = Braintree\Customer::create()->customer->id;
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonce_for_new_card(array(
-            'creditCard' => array(
-                'number' => '4111111111111111',
-                'expirationMonth' => '11',
-                'expirationYear' => '2099',
+            "creditCard" => array(
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
             ),
-            'customerId' => $customerId,
-            'share' => true,
+            "customerId" => $customerId,
+            "share" => true
         ));
         $plan = SubscriptionHelper::triallessPlan();
         $result = Braintree\Subscription::create(array(
             'paymentMethodNonce' => $nonce,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ));
 
         $this->assertTrue($result->success);
 
         $transaction = $result->subscription->transactions[0];
-        $this->assertEquals('411111', $transaction->creditCardDetails->bin);
-        $this->assertEquals('1111', $transaction->creditCardDetails->last4);
+        $this->assertEquals("411111", $transaction->creditCardDetails->bin);
+        $this->assertEquals("1111", $transaction->creditCardDetails->last4);
     }
 
     public function testCreate_returnsTransactionWhenTransactionFails()
@@ -112,7 +112,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'price' => Braintree\Test\TransactionAmounts::$decline,
+            'price' => Braintree\Test\TransactionAmounts::$decline
 
         ));
         Test\Helper::assertPrintable($result);
@@ -128,7 +128,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'id' => $newId,
+            'id' => $newId
         ));
 
         $this->assertTrue($result->success);
@@ -143,7 +143,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'merchantAccountId' => Test\Helper::nonDefaultMerchantAccountId(),
+            'merchantAccountId' => Test\Helper::nonDefaultMerchantAccountId()
         ));
 
         $this->assertTrue($result->success);
@@ -187,7 +187,7 @@ class SubscriptionTest extends Setup
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
             'trialDuration' => 5,
-            'trialDurationUnit' => 'month',
+            'trialDurationUnit' => 'month'
         ));
         $subscription = $result->subscription;
         $this->assertTrue($subscription->trialPeriod);
@@ -258,7 +258,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'price' => '2.00',
+            'price' => '2.00'
         ));
         $subscription = $result->subscription;
         $this->assertEquals('2.00', $subscription->price);
@@ -270,7 +270,7 @@ class SubscriptionTest extends Setup
         $plan = SubscriptionHelper::billingDayOfMonthPlan();
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ));
         $subscription = $result->subscription;
         $this->assertEquals(5, $subscription->billingDayOfMonth);
@@ -283,7 +283,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'billingDayOfMonth' => 14,
+            'billingDayOfMonth' => 14
         ));
         $subscription = $result->subscription;
         $this->assertEquals(14, $subscription->billingDayOfMonth);
@@ -296,7 +296,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'options' => array('startImmediately' => true),
+            'options' => array('startImmediately' => true)
         ));
         $subscription = $result->subscription;
         $this->assertEquals(1, sizeof($subscription->transactions));
@@ -307,13 +307,13 @@ class SubscriptionTest extends Setup
         $creditCard = SubscriptionHelper::createCreditCard();
         $plan = SubscriptionHelper::billingDayOfMonthPlan();
 
-        $tomorrow = new DateTime('now + 1 day');
-        $tomorrow->setTime(0, 0, 0);
+        $tomorrow = new DateTime("now + 1 day");
+        $tomorrow->setTime(0,0,0);
 
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'firstBillingDate' => $tomorrow,
+            'firstBillingDate' => $tomorrow
         ));
 
         $subscription = $result->subscription;
@@ -326,13 +326,13 @@ class SubscriptionTest extends Setup
         $creditCard = SubscriptionHelper::createCreditCard();
         $plan = SubscriptionHelper::billingDayOfMonthPlan();
 
-        $past = new DateTime('now - 3 days');
-        $past->setTime(0, 0, 0);
+        $past = new DateTime("now - 3 days");
+        $past->setTime(0,0,0);
 
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'firstBillingDate' => $past,
+            'firstBillingDate' => $past
         ));
 
         $this->assertFalse($result->success);
@@ -346,7 +346,7 @@ class SubscriptionTest extends Setup
         $plan = SubscriptionHelper::trialPlan();
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ));
         $subscription = $result->subscription;
         $this->assertEquals($plan['numberOfBillingCycles'], $subscription->numberOfBillingCycles);
@@ -354,7 +354,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::create(array(
             'numberOfBillingCycles' => '10',
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ));
         $subscription = $result->subscription;
         $this->assertEquals(10, $subscription->numberOfBillingCycles);
@@ -367,7 +367,7 @@ class SubscriptionTest extends Setup
         $plan = SubscriptionHelper::trialPlan();
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ));
         $subscription = $result->subscription;
         $this->assertEquals($plan['numberOfBillingCycles'], $subscription->numberOfBillingCycles);
@@ -375,7 +375,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::create(array(
             'neverExpires' => true,
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ));
         $subscription = $result->subscription;
         $this->assertNull($subscription->numberOfBillingCycles);
@@ -389,7 +389,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'options' => array('doNotInheritAddOnsOrDiscounts' => true),
+            'options' => array('doNotInheritAddOnsOrDiscounts' => true)
         ));
         $subscription = $result->subscription;
         $this->assertEquals(0, sizeof($subscription->addOns));
@@ -409,13 +409,13 @@ class SubscriptionTest extends Setup
         $addOns = $subscription->addOns;
         SubscriptionHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->amount, '10.00');
+        $this->assertEquals($addOns[0]->amount, "10.00");
         $this->assertEquals($addOns[0]->quantity, 1);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[0]->neverExpires, true);
         $this->assertEquals($addOns[0]->currentBillingCycle, 0);
 
-        $this->assertEquals($addOns[1]->amount, '20.00');
+        $this->assertEquals($addOns[1]->amount, "20.00");
         $this->assertEquals($addOns[1]->quantity, 1);
         $this->assertEquals($addOns[1]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[1]->neverExpires, true);
@@ -425,13 +425,13 @@ class SubscriptionTest extends Setup
         $discounts = $subscription->discounts;
         SubscriptionHelper::sortModificationsById($discounts);
 
-        $this->assertEquals($discounts[0]->amount, '11.00');
+        $this->assertEquals($discounts[0]->amount, "11.00");
         $this->assertEquals($discounts[0]->quantity, 1);
         $this->assertEquals($discounts[0]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[0]->neverExpires, true);
         $this->assertEquals($discounts[0]->currentBillingCycle, 0);
 
-        $this->assertEquals($discounts[1]->amount, '7.00');
+        $this->assertEquals($discounts[1]->amount, "7.00");
         $this->assertEquals($discounts[1]->quantity, 1);
         $this->assertEquals($discounts[1]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[1]->neverExpires, true);
@@ -451,14 +451,14 @@ class SubscriptionTest extends Setup
                         'amount' => '50.00',
                         'existingId' => 'increase_10',
                         'quantity' => 2,
-                        'numberOfBillingCycles' => 5,
+                        'numberOfBillingCycles' => 5
                     ),
                     array(
                         'amount' => '60.00',
                         'existingId' => 'increase_20',
                         'quantity' => 4,
-                        'numberOfBillingCycles' => 9,
-                    ),
+                        'numberOfBillingCycles' => 9
+                    )
                 ),
             ),
             'discounts' => array(
@@ -467,23 +467,23 @@ class SubscriptionTest extends Setup
                         'amount' => '15.00',
                         'existingId' => 'discount_7',
                         'quantity' => 2,
-                        'neverExpires' => true,
-                    ),
-                ),
-            ),
+                        'neverExpires' => true
+                    )
+                )
+            )
         ));
         $subscription = $result->subscription;
         $this->assertEquals(2, sizeof($subscription->addOns));
         $addOns = $subscription->addOns;
         SubscriptionHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->amount, '50.00');
+        $this->assertEquals($addOns[0]->amount, "50.00");
         $this->assertEquals($addOns[0]->quantity, 2);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, 5);
         $this->assertEquals($addOns[0]->neverExpires, false);
         $this->assertEquals($addOns[0]->currentBillingCycle, 0);
 
-        $this->assertEquals($addOns[1]->amount, '60.00');
+        $this->assertEquals($addOns[1]->amount, "60.00");
         $this->assertEquals($addOns[1]->quantity, 4);
         $this->assertEquals($addOns[1]->numberOfBillingCycles, 9);
         $this->assertEquals($addOns[1]->neverExpires, false);
@@ -493,13 +493,13 @@ class SubscriptionTest extends Setup
         $discounts = $subscription->discounts;
         SubscriptionHelper::sortModificationsById($discounts);
 
-        $this->assertEquals($discounts[0]->amount, '11.00');
+        $this->assertEquals($discounts[0]->amount, "11.00");
         $this->assertEquals($discounts[0]->quantity, 1);
         $this->assertEquals($discounts[0]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[0]->neverExpires, true);
         $this->assertEquals($discounts[0]->currentBillingCycle, 0);
 
-        $this->assertEquals($discounts[1]->amount, '15.00');
+        $this->assertEquals($discounts[1]->amount, "15.00");
         $this->assertEquals($discounts[1]->quantity, 2);
         $this->assertEquals($discounts[1]->numberOfBillingCycles, null);
         $this->assertEquals($discounts[1]->neverExpires, true);
@@ -514,18 +514,18 @@ class SubscriptionTest extends Setup
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
             'addOns' => array(
-                'remove' => array('increase_10', 'increase_20'),
+                'remove' => array('increase_10', 'increase_20')
             ),
             'discounts' => array(
-                'remove' => array('discount_7'),
-            ),
+                'remove' => array('discount_7')
+            )
         ));
         $subscription = $result->subscription;
         $this->assertEquals(0, sizeof($subscription->addOns));
 
         $this->assertEquals(1, sizeof($subscription->discounts));
 
-        $this->assertEquals($subscription->discounts[0]->amount, '11.00');
+        $this->assertEquals($subscription->discounts[0]->amount, "11.00");
         $this->assertEquals($subscription->discounts[0]->quantity, 1);
         $this->assertEquals($subscription->discounts[0]->numberOfBillingCycles, null);
         $this->assertEquals($subscription->discounts[0]->neverExpires, true);
@@ -545,7 +545,7 @@ class SubscriptionTest extends Setup
                         'inheritedFromId' => 'increase_30',
                         'amount' => '35.00',
                         'neverExpires' => true,
-                        'quantity' => 2,
+                        'quantity' => 2
                     ),
                 ),
             ),
@@ -555,10 +555,10 @@ class SubscriptionTest extends Setup
                         'inheritedFromId' => 'discount_15',
                         'amount' => '15.50',
                         'numberOfBillingCycles' => 10,
-                        'quantity' => 3,
-                    ),
-                ),
-            ),
+                        'quantity' => 3
+                    )
+                )
+            )
         ));
 
         $subscription = $result->subscription;
@@ -566,29 +566,30 @@ class SubscriptionTest extends Setup
         $addOns = $subscription->addOns;
         SubscriptionHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->amount, '10.00');
-        $this->assertEquals($addOns[1]->amount, '20.00');
-        $this->assertEquals($addOns[2]->id, 'increase_30');
-        $this->assertEquals($addOns[2]->amount, '35.00');
+        $this->assertEquals($addOns[0]->amount, "10.00");
+        $this->assertEquals($addOns[1]->amount, "20.00");
+        $this->assertEquals($addOns[2]->id, "increase_30");
+        $this->assertEquals($addOns[2]->amount, "35.00");
         $this->assertEquals($addOns[2]->neverExpires, true);
         $this->assertEquals($addOns[2]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[2]->quantity, 2);
         $this->assertEquals($addOns[2]->currentBillingCycle, 0);
 
+
         $this->assertEquals(3, sizeof($subscription->discounts));
         $discounts = $subscription->discounts;
         SubscriptionHelper::sortModificationsById($discounts);
 
-        $this->assertEquals($discounts[0]->amount, '11.00');
+        $this->assertEquals($discounts[0]->amount, "11.00");
 
-        $this->assertEquals($discounts[1]->amount, '15.50');
-        $this->assertEquals($discounts[1]->id, 'discount_15');
+        $this->assertEquals($discounts[1]->amount, "15.50");
+        $this->assertEquals($discounts[1]->id, "discount_15");
         $this->assertEquals($discounts[1]->neverExpires, false);
         $this->assertEquals($discounts[1]->numberOfBillingCycles, 10);
         $this->assertEquals($discounts[1]->quantity, 3);
         $this->assertEquals($discounts[1]->currentBillingCycle, 0);
 
-        $this->assertEquals($discounts[2]->amount, '7.00');
+        $this->assertEquals($discounts[2]->amount, "7.00");
     }
 
     public function testCreate_properlyParsesValidationErrorsForArrays()
@@ -607,9 +608,9 @@ class SubscriptionTest extends Setup
                     array(
                         'existingId' => 'increase_20',
                         'quantity' => -10,
-                    ),
-                ),
-            ),
+                    )
+                )
+            )
         ));
 
         $this->assertFalse($result->success);
@@ -629,8 +630,8 @@ class SubscriptionTest extends Setup
             'descriptor' => array(
                 'name' => '123*123456789012345678',
                 'phone' => '3334445555',
-                'url' => 'ebay.com',
-            ),
+                'url' => 'ebay.com'
+            )
         ));
         $this->assertTrue($result->success);
         $subscription = $result->subscription;
@@ -653,8 +654,8 @@ class SubscriptionTest extends Setup
             'descriptor' => array(
                 'name' => 'xxxxxx',
                 'phone' => 'xxxx',
-                'url' => '12345678901234',
-            ),
+                'url' => '12345678901234'
+            )
         ));
         $this->assertFalse($result->success);
         $subscription = $result->subscription;
@@ -678,18 +679,18 @@ class SubscriptionTest extends Setup
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
-                'token' => $paymentMethodToken,
-            ),
+                'token' => $paymentMethodToken
+            )
         ));
 
         $paypalResult = Braintree\PaymentMethod::create(array(
             'customerId' => $customer->id,
-            'paymentMethodNonce' => $nonce,
+            'paymentMethodNonce' => $nonce
         ));
 
         $subscriptionResult = Braintree\Subscription::create(array(
             'paymentMethodToken' => $paymentMethodToken,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
 
         ));
         $this->assertTrue($subscriptionResult->success);
@@ -704,7 +705,7 @@ class SubscriptionTest extends Setup
 
         $subscriptionResult = Braintree\Subscription::create(array(
             'paymentMethodNonce' => $nonce,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
 
         ));
         $this->assertFalse($subscriptionResult->success);
@@ -719,7 +720,7 @@ class SubscriptionTest extends Setup
 
         $subscriptionResult = Braintree\Subscription::create(array(
             'paymentMethodNonce' => $nonce,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
 
         ));
         $this->assertFalse($subscriptionResult->success);
@@ -734,7 +735,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
-            'id' => 'invalid token',
+            'id' => 'invalid token'
         ));
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('subscription')->onAttribute('id');
@@ -747,7 +748,7 @@ class SubscriptionTest extends Setup
         $plan = SubscriptionHelper::triallessPlan();
         $result = Braintree\Subscription::create(array(
             'paymentMethodToken' => $creditCard->token,
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ));
         $this->assertTrue($result->success);
         $subscription = Braintree\Subscription::find($result->subscription->id);
@@ -759,6 +760,7 @@ class SubscriptionTest extends Setup
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'subscription with id does-not-exist not found');
         Braintree\Subscription::find('does-not-exist');
+
     }
 
     public function testUpdate_whenSuccessful()
@@ -769,7 +771,7 @@ class SubscriptionTest extends Setup
         $result = Braintree\Subscription::update($subscription->id, array(
             'id' => $newId,
             'price' => '999.99',
-            'planId' => $newPlan['id'],
+            'planId' => $newPlan['id']
         ));
         $this->assertTrue($result->success);
         $this->assertEquals($newId, $result->subscription->id);
@@ -781,7 +783,7 @@ class SubscriptionTest extends Setup
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad');
         $result = Braintree\Subscription::update('id', array(
-            'bad' => 'value',
+            'bad' => 'value'
         ));
     }
 
@@ -792,7 +794,7 @@ class SubscriptionTest extends Setup
         $this->assertEquals($plan['numberOfBillingCycles'], $subscription->numberOfBillingCycles);
 
         $updatedSubscription = Braintree\Subscription::update($subscription->id, array(
-            'numberOfBillingCycles' => 15,
+            'numberOfBillingCycles' => 15
         ))->subscription;
         $this->assertEquals(15, $updatedSubscription->numberOfBillingCycles);
     }
@@ -804,7 +806,7 @@ class SubscriptionTest extends Setup
         $this->assertEquals($plan['numberOfBillingCycles'], $subscription->numberOfBillingCycles);
 
         $updatedSubscription = Braintree\Subscription::update($subscription->id, array(
-            'neverExpires' => true,
+            'neverExpires' => true
         ))->subscription;
         $this->assertNull($updatedSubscription->numberOfBillingCycles);
     }
@@ -824,7 +826,7 @@ class SubscriptionTest extends Setup
         $subscription = SubscriptionHelper::createSubscription();
         $result = Braintree\Subscription::update($subscription->id, array(
             'price' => $subscription->price + 1,
-            'options' => array('prorateCharges' => true),
+            'options' => array('prorateCharges' => true)
         ));
         $this->assertTrue($result->success);
         $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
@@ -835,7 +837,7 @@ class SubscriptionTest extends Setup
         $subscription = SubscriptionHelper::createSubscription();
         $result = Braintree\Subscription::update($subscription->id, array(
             'price' => $subscription->price + 1,
-            'options' => array('prorateCharges' => false),
+            'options' => array('prorateCharges' => false)
         ));
         $this->assertTrue($result->success);
         $this->assertEquals(sizeof($subscription->transactions), sizeof($result->subscription->transactions));
@@ -846,12 +848,12 @@ class SubscriptionTest extends Setup
         $subscription = SubscriptionHelper::createSubscription();
         $result = Braintree\Subscription::update($subscription->id, array(
             'price' => $subscription->price + 2100,
-            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => true),
+            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => true)
         ));
         $this->assertFalse($result->success);
         $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
         $this->assertEquals(Braintree\Transaction::PROCESSOR_DECLINED, $result->subscription->transactions[0]->status);
-        $this->assertEquals('0.00', $result->subscription->balance);
+        $this->assertEquals("0.00", $result->subscription->balance);
         $this->assertEquals($subscription->price, $result->subscription->price);
     }
 
@@ -860,7 +862,7 @@ class SubscriptionTest extends Setup
         $subscription = SubscriptionHelper::createSubscription();
         $result = Braintree\Subscription::update($subscription->id, array(
             'price' => $subscription->price + 2100,
-            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => false),
+            'options' => array('prorateCharges' => true, 'revertSubscriptionOnProrationFailure' => false)
         ));
         $this->assertTrue($result->success);
         $this->assertEquals(sizeof($subscription->transactions) + 1, sizeof($result->subscription->transactions));
@@ -901,17 +903,17 @@ class SubscriptionTest extends Setup
         $subscription = Braintree\Subscription::create(array(
             'paymentMethodToken' => $oldCreditCard->token,
             'price' => '54.99',
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ))->subscription;
 
         $newCreditCard = Braintree\CreditCard::createNoValidate(array(
             'number' => '5105105105105100',
             'expirationDate' => '05/2010',
-            'customerId' => $oldCreditCard->customerId,
+            'customerId' => $oldCreditCard->customerId
         ));
 
         $result = Braintree\Subscription::update($subscription->id, array(
-            'paymentMethodToken' => $newCreditCard->token,
+            'paymentMethodToken' => $newCreditCard->token
         ));
         $this->assertTrue($result->success);
         $this->assertEquals($newCreditCard->token, $result->subscription->paymentMethodToken);
@@ -924,30 +926,30 @@ class SubscriptionTest extends Setup
         $subscription = Braintree\Subscription::create(array(
             'paymentMethodToken' => $oldCreditCard->token,
             'price' => '54.99',
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ))->subscription;
 
         $customerId = Braintree\Customer::create()->customer->id;
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonce_for_new_card(array(
-            'creditCard' => array(
-                'number' => '4111111111111111',
-                'expirationMonth' => '11',
-                'expirationYear' => '2099',
+            "creditCard" => array(
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
             ),
-            'customerId' => $oldCreditCard->customerId,
-            'share' => true,
+            "customerId" => $oldCreditCard->customerId,
+            "share" => true
         ));
 
         $result = Braintree\Subscription::update($subscription->id, array(
-            'paymentMethodNonce' => $nonce,
+            'paymentMethodNonce' => $nonce
         ));
 
         $this->assertTrue($result->success);
 
         $newCreditCard = Braintree\CreditCard::find($result->subscription->paymentMethodToken);
 
-        $this->assertEquals('1111', $newCreditCard->last4);
+        $this->assertEquals("1111", $newCreditCard->last4);
         $this->assertNotEquals($oldCreditCard->last4, $newCreditCard->last4);
     }
 
@@ -958,7 +960,7 @@ class SubscriptionTest extends Setup
         $subscription = Braintree\Subscription::create(array(
             'paymentMethodToken' => $oldCreditCard->token,
             'price' => '54.99',
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ))->subscription;
 
         $result = Braintree\Subscription::update($subscription->id, array(
@@ -968,14 +970,14 @@ class SubscriptionTest extends Setup
                         'amount' => '99.99',
                         'existingId' => 'increase_10',
                         'quantity' => 99,
-                        'numberOfBillingCycles' => 99,
+                        'numberOfBillingCycles' => 99
                     ),
                     array(
                         'amount' => '22.22',
                         'existingId' => 'increase_20',
                         'quantity' => 22,
-                        'neverExpires' => true,
-                    ),
+                        'neverExpires' => true
+                    )
                 ),
             ),
             'discounts' => array(
@@ -984,8 +986,8 @@ class SubscriptionTest extends Setup
                         'amount' => '33.33',
                         'existingId' => 'discount_11',
                         'quantity' => 33,
-                        'numberOfBillingCycles' => 33,
-                    ),
+                        'numberOfBillingCycles' => 33
+                    )
                 ),
             ),
         ));
@@ -996,14 +998,14 @@ class SubscriptionTest extends Setup
         $addOns = $subscription->addOns;
         SubscriptionHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->id, 'increase_10');
-        $this->assertEquals($addOns[0]->amount, '99.99');
+        $this->assertEquals($addOns[0]->id, "increase_10");
+        $this->assertEquals($addOns[0]->amount, "99.99");
         $this->assertEquals($addOns[0]->neverExpires, false);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, 99);
         $this->assertEquals($addOns[0]->quantity, 99);
 
-        $this->assertEquals($addOns[1]->id, 'increase_20');
-        $this->assertEquals($addOns[1]->amount, '22.22');
+        $this->assertEquals($addOns[1]->id, "increase_20");
+        $this->assertEquals($addOns[1]->amount, "22.22");
         $this->assertEquals($addOns[1]->neverExpires, true);
         $this->assertEquals($addOns[1]->numberOfBillingCycles, null);
         $this->assertEquals($addOns[1]->quantity, 22);
@@ -1012,8 +1014,8 @@ class SubscriptionTest extends Setup
         $discounts = $subscription->discounts;
         SubscriptionHelper::sortModificationsById($discounts);
 
-        $this->assertEquals($discounts[0]->id, 'discount_11');
-        $this->assertEquals($discounts[0]->amount, '33.33');
+        $this->assertEquals($discounts[0]->id, "discount_11");
+        $this->assertEquals($discounts[0]->amount, "33.33");
         $this->assertEquals($discounts[0]->neverExpires, false);
         $this->assertEquals($discounts[0]->numberOfBillingCycles, 33);
         $this->assertEquals($discounts[0]->quantity, 33);
@@ -1026,7 +1028,7 @@ class SubscriptionTest extends Setup
         $subscription = Braintree\Subscription::create(array(
             'paymentMethodToken' => $oldCreditCard->token,
             'price' => '54.99',
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ))->subscription;
 
         $result = Braintree\Subscription::update($subscription->id, array(
@@ -1036,18 +1038,18 @@ class SubscriptionTest extends Setup
                         'amount' => '33.33',
                         'inheritedFromId' => 'increase_30',
                         'quantity' => 33,
-                        'numberOfBillingCycles' => 33,
-                    ),
+                        'numberOfBillingCycles' => 33
+                    )
                 ),
-                'remove' => array('increase_10', 'increase_20'),
+                'remove' => array('increase_10', 'increase_20')
             ),
             'discounts' => array(
                 'add' => array(
                     array(
                         'inheritedFromId' => 'discount_15',
-                    ),
+                    )
                 ),
-                'remove' => array('discount_7'),
+                'remove' => array('discount_7')
             ),
         ));
         $this->assertTrue($result->success);
@@ -1057,8 +1059,8 @@ class SubscriptionTest extends Setup
         $addOns = $subscription->addOns;
         SubscriptionHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->id, 'increase_30');
-        $this->assertEquals($addOns[0]->amount, '33.33');
+        $this->assertEquals($addOns[0]->id, "increase_30");
+        $this->assertEquals($addOns[0]->amount, "33.33");
         $this->assertEquals($addOns[0]->neverExpires, false);
         $this->assertEquals($addOns[0]->numberOfBillingCycles, 33);
         $this->assertEquals($addOns[0]->quantity, 33);
@@ -1067,9 +1069,9 @@ class SubscriptionTest extends Setup
         $discounts = $subscription->discounts;
         SubscriptionHelper::sortModificationsById($discounts);
 
-        $this->assertEquals($discounts[0]->id, 'discount_11');
-        $this->assertEquals($discounts[1]->id, 'discount_15');
-        $this->assertEquals($discounts[1]->amount, '15.00');
+        $this->assertEquals($discounts[0]->id, "discount_11");
+        $this->assertEquals($discounts[1]->id, "discount_15");
+        $this->assertEquals($discounts[1]->amount, "15.00");
         $this->assertEquals($discounts[1]->neverExpires, true);
         $this->assertNull($discounts[1]->numberOfBillingCycles);
         $this->assertEquals($discounts[1]->quantity, 1);
@@ -1082,22 +1084,22 @@ class SubscriptionTest extends Setup
         $subscription = Braintree\Subscription::create(array(
             'paymentMethodToken' => $oldCreditCard->token,
             'price' => '54.99',
-            'planId' => $plan['id'],
+            'planId' => $plan['id']
         ))->subscription;
 
         $result = Braintree\Subscription::update($subscription->id, array(
             'addOns' => array(
                 'add' => array(
                     array('inheritedFromId' => 'increase_30'),
-                    array('inheritedFromId' => 'increase_20'),
-                ),
+                    array('inheritedFromId' => 'increase_20')
+                )
             ),
             'discounts' => array(
                 'add' => array(
-                    array('inheritedFromId' => 'discount_15'),
-                ),
+                    array('inheritedFromId' => 'discount_15')
+                )
             ),
-            'options' => array('replaceAllAddOnsAndDiscounts' => true),
+            'options' => array('replaceAllAddOnsAndDiscounts' => true)
         ));
         $this->assertTrue($result->success);
         $subscription = $result->subscription;
@@ -1106,13 +1108,13 @@ class SubscriptionTest extends Setup
         $addOns = $subscription->addOns;
         SubscriptionHelper::sortModificationsById($addOns);
 
-        $this->assertEquals($addOns[0]->id, 'increase_20');
-        $this->assertEquals($addOns[1]->id, 'increase_30');
+        $this->assertEquals($addOns[0]->id, "increase_20");
+        $this->assertEquals($addOns[1]->id, "increase_30");
 
         $this->assertEquals(1, sizeof($subscription->discounts));
         $discounts = $subscription->discounts;
 
-        $this->assertEquals($discounts[0]->id, 'discount_15');
+        $this->assertEquals($discounts[0]->id, "discount_15");
     }
 
     public function testUpdate_withDescriptor()
@@ -1124,14 +1126,14 @@ class SubscriptionTest extends Setup
             'planId' => $plan['id'],
             'descriptor' => array(
                 'name' => '123*123456789012345678',
-                'phone' => '3334445555',
-            ),
+                'phone' => '3334445555'
+            )
         ))->subscription;
         $result = Braintree\Subscription::update($subscription->id, array(
             'descriptor' => array(
                 'name' => '999*9999999',
-                'phone' => '8887776666',
-            ),
+                'phone' => '8887776666'
+            )
         ));
         $updatedSubscription = $result->subscription;
         $this->assertEquals('999*9999999', $updatedSubscription->descriptor->name);
