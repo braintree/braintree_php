@@ -35,7 +35,7 @@ class ConfigurationTest extends Setup
             $this->fail();
         }
 
-        $this->assertTrue(true);
+        $this->assertTrue(TRUE);
     }
 
      /**
@@ -74,7 +74,7 @@ class ConfigurationTest extends Setup
 
     /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage "invalid" is not a valid environment
+     * @expectedExceptionMessage "invalid" is not a valid environment.
      */
     public function testSetInvalidEnvironment()
     {
@@ -115,7 +115,7 @@ class ConfigurationTest extends Setup
     {
         $this->config->setEnvironment('development');
         $pn = $this->config->portNumber();
-        $this->assertEquals(getenv('GATEWAY_PORT') ? getenv('GATEWAY_PORT') : 3000, $pn);
+        $this->assertEquals(getenv("GATEWAY_PORT") ? getenv("GATEWAY_PORT") : 3000, $pn);
 
         $this->config->setEnvironment('sandbox');
         $pn = $this->config->portNumber();
@@ -125,6 +125,7 @@ class ConfigurationTest extends Setup
         $pn = $this->config->portNumber();
         $this->assertEquals(443, $pn);
     }
+
 
     public function testProtocol()
     {
@@ -233,7 +234,7 @@ class ConfigurationTest extends Setup
 
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-    /**
+     /**
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage merchantId needs to be set
      */
@@ -246,7 +247,7 @@ class ConfigurationTest extends Setup
 
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-    /**
+     /**
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage publicKey needs to be set
      */
@@ -259,7 +260,7 @@ class ConfigurationTest extends Setup
 
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-    /**
+     /**
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage privateKey needs to be set
      */
@@ -363,7 +364,7 @@ class ConfigurationTest extends Setup
 
      /**
      * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage "invalid" is not a valid environment
+     * @expectedExceptionMessage "invalid" is not a valid environment.
      */
     public function testInvalidAccessTokenEnvironment()
     {
