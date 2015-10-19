@@ -69,12 +69,12 @@ class UtilTest extends Setup
     public function testExtractAttributeAsArrayReturnsEmptyArray()
     {
         $attributes = array();
-        $this->assertEquals(array(), Braintree\Util::extractAttributeAsArray($attributes, 'foo'));
+        $this->assertEquals(array(), Braintree\Util::extractAttributeAsArray($attributes, "foo"));
     }
 
     public function testDelimeterToUnderscore()
     {
-        $this->assertEquals('a_b_c', Braintree\Util::delimiterToUnderscore('a-b-c'));
+        $this->assertEquals("a_b_c", Braintree\Util::delimiterToUnderscore("a-b-c"));
     }
 
     public function testCleanClassName()
@@ -82,6 +82,7 @@ class UtilTest extends Setup
         $cn = Braintree\Util::cleanClassName('Braintree\Transaction');
         $this->assertEquals('transaction', $cn);
     }
+
     public function testimplodeAssociativeArray()
     {
         $array = array(
@@ -92,31 +93,32 @@ class UtilTest extends Setup
         $string = Braintree\Util::implodeAssociativeArray($array);
         $this->assertEquals('test1=val1, test2=val2, test3=Fri, 15 May 2015 17:21:00 +0000', $string);
     }
+
     public function testVerifyKeys_withThreeLevels()
     {
         $signature = array(
             'firstName',
-            array('creditCard' => array('number', array('billingAddress' => array('streetAddress')))),
+            array('creditCard' => array('number', array('billingAddress' => array('streetAddress'))))
         );
         $data = array(
             'firstName' => 'Dan',
             'creditCard' => array(
                 'number' => '5100',
                 'billingAddress' => array(
-                    'streetAddress' => '1 E Main St',
-                ),
-            ),
+                    'streetAddress' => '1 E Main St'
+                )
+            )
         );
         Braintree\Util::verifyKeys($signature, $data);
     }
 
-    public function testVerifyKeys_withArrayOfArrays()
-    {
+	public function testVerifyKeys_withArrayOfArrays()
+	{
         $signature = array(
-            array('addOns' => array(array('update' => array('amount', 'existingId')))),
-        );
+			array('addOns' => array(array('update' => array('amount', 'existingId'))))
+		);
 
-        $goodData = array(
+		$goodData = array(
             'addOns' => array(
                 'update' => array(
                     array(
@@ -126,26 +128,26 @@ class UtilTest extends Setup
                     array(
                         'amount' => '60.00',
                         'existingId' => 'increase_20',
-                    ),
-                ),
-            ),
-        );
+                    )
+                )
+            )
+		);
 
         Braintree\Util::verifyKeys($signature, $goodData);
 
-        $badData = array(
+		$badData = array(
             'addOns' => array(
                 'update' => array(
                     array(
                         'invalid' => '50.00',
-                    ),
-                ),
-            ),
-        );
+                    )
+                )
+            )
+		);
 
         $this->setExpectedException('InvalidArgumentException');
         Braintree\Util::verifyKeys($signature, $badData);
-    }
+	}
 
     public function testVerifyKeys_arrayAsValue()
     {
@@ -160,27 +162,32 @@ class UtilTest extends Setup
         $signature = array(
                 'amount', 'customerId', 'orderId', 'channel', 'paymentMethodToken', 'type',
 
-                array('creditCard'   => array('token', 'cvv', 'expirationDate', 'number'),
+                array('creditCard'   =>
+                    array('token', 'cvv', 'expirationDate', 'number'),
                 ),
-                array('customer'      => array(
+                array('customer'      =>
+                    array(
                         'id', 'company', 'email', 'fax', 'firstName',
-                        'lastName', 'phone', 'website', ),
+                        'lastName', 'phone', 'website'),
                 ),
-                array('billing'       => array(
+                array('billing'       =>
+                    array(
                         'firstName', 'lastName', 'company', 'countryName',
                         'extendedAddress', 'locality', 'postalCode', 'region',
-                        'streetAddress', ),
+                        'streetAddress'),
                 ),
-                array('shipping'      => array(
+                array('shipping'      =>
+                    array(
                         'firstName', 'lastName', 'company', 'countryName',
                         'extendedAddress', 'locality', 'postalCode', 'region',
-                        'streetAddress', ),
+                        'streetAddress'),
                 ),
-                array('options'       => array(
+                array('options'       =>
+                    array(
                         'storeInVault', 'submitForSettlement',
-                        'addBillingAddressToPaymentMethod', ),
+                        'addBillingAddressToPaymentMethod'),
                 ),
-                array('customFields' => array('_anyKey_'),
+                array('customFields' => array('_anyKey_')
                 ),
         );
 
@@ -188,7 +195,7 @@ class UtilTest extends Setup
         $userKeys = array(
                 'amount' => '100.00',
                 'customFields'   => array('HEY' => 'HO',
-                                          'WAY' => 'NO', ),
+                                          'WAY' => 'NO'),
                 'creditCard' => array(
                     'number' => '5105105105105100',
                     'expirationDate' => '05/12',
@@ -201,7 +208,7 @@ class UtilTest extends Setup
         $userKeys = array(
                 'amount' => '100.00',
                 'customFields'   => array('HEY' => 'HO',
-                                          'WAY' => 'NO', ),
+                                          'WAY' => 'NO'),
                 'bogus' => 'FAKE',
                 'totallyFake' => 'boom',
                 'creditCard' => array(

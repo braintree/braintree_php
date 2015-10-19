@@ -13,8 +13,8 @@ class UnknownPaymentMethodTest extends Setup
         $response = array(
             'unkownPaymentMethod' => array(
                 'token' => 'SOME_TOKEN',
-                'default' => true,
-            ),
+                'default' => true
+            )
         );
         $unknownPaymentMethodObject = Braintree\UnknownPaymentMethod::factory($response);
         $this->assertEquals('SOME_TOKEN', $unknownPaymentMethodObject->token);
@@ -22,3 +22,4 @@ class UnknownPaymentMethodTest extends Setup
         $this->assertEquals('https://assets.braintreegateway.com/payment_method_logo/unknown.png', $unknownPaymentMethodObject->imageUrl);
     }
 }
+
