@@ -1,9 +1,12 @@
 <?php
 namespace Test;
 
-require_once __DIR__ . '/autoload.php';
 require_once __DIR__ . '/Helper.php';
-require_once dirname(__DIR__) . '/lib/autoload.php';
+require_once __DIR__ . '/integration/HttpClientApi.php';
+require_once __DIR__ . '/integration/SubscriptionHelper.php';
+require_once __DIR__ . '/Braintree/CreditCardNumbers/CardTypeIndicators.php';
+require_once __DIR__ . '/Braintree/CreditCardDefaults.php';
+require_once __DIR__ . '/Braintree/OAuthTestHelper.php';
 
 date_default_timezone_set('UTC');
 
