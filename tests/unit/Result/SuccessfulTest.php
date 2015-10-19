@@ -8,7 +8,7 @@ use Braintree;
 
 class SuccessfulTest extends Setup
 {
-    /**
+     /**
      * @expectedException        PHPUnit_Framework_Error_Notice
      * @expectedExceptionMessage Undefined property on Braintree\Result\Successful: notAProperty
      */
