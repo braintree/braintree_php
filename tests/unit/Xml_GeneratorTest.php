@@ -1,7 +1,7 @@
 <?php
 namespace Test\Unit\Xml;
 
-require_once dirname(dirname(__DIR__)) . '/Setup.php';
+require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
 use Braintree;
@@ -19,7 +19,7 @@ class GeneratorTest extends Setup
 
 XML;
         $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('yes' => true, 'no' => false),
+            'root' => array('yes' => true, 'no' => false)
         ));
         $this->assertEquals($expected, $xml);
     }
@@ -37,7 +37,7 @@ XML;
 
 XML;
         $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => array('foo', 'bar')),
+            'root' => array('stuff' => array('foo', 'bar'))
         ));
         $this->assertEquals($expected, $xml);
     }
@@ -73,7 +73,7 @@ XML;
 
 XML;
         $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => array(true, false)),
+            'root' => array('stuff' => array(true, false))
         ));
         $this->assertEquals($expected, $xml);
     }
@@ -88,7 +88,7 @@ XML;
 
 XML;
         $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => array()),
+            'root' => array('stuff' => array())
         ));
         $this->assertEquals($expected, $xml);
     }
@@ -103,7 +103,7 @@ XML;
 
 XML;
         $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => '<>&\'"'),
+            'root' => array('stuff' => '<>&\'"')
         ));
         $this->assertEquals($expected, $xml);
     }
