@@ -60,3 +60,19 @@ class_alias('Braintree\PaymentMethodNonceGateway', 'Braintree_PaymentMethodNonce
 class_alias('Braintree\PaymentInstrumentType', 'Braintree_PaymentInstrumentType');
 class_alias('Braintree\UnknownPaymentMethod', 'Braintree_UnknownPaymentMethod');
 class_alias('Braintree\TestingGateway', 'Braintree_TestingGateway');
+
+if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+    throw new Braintree_Exception('PHP version >= 5.4.0 required');
+}
+
+
+function requireDependencies() {
+    $requiredExtensions = array('xmlwriter', 'openssl', 'dom', 'hash', 'curl');
+    foreach ($requiredExtensions AS $ext) {
+        if (!extension_loaded($ext)) {
+            throw new Braintree_Exception('The Braintree library requires the ' . $ext . ' extension.');
+        }
+    }
+}
+
+requireDependencies();

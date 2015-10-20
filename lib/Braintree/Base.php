@@ -25,65 +25,55 @@ abstract class Base
     protected function __construct()
     {
     }
+
     /**
+     * Disable cloning of objects
+     *
      * @ignore
-     *  don't permit cloning the instances (like $x = clone $v)
      */
     protected function __clone()
     {
     }
 
     /**
-     * returns private/nonexistent instance properties
+     * Accessor for instance properties stored in the private $_attributes property
      *
      * @ignore
-     *
-     * @param string $name property name
-     *
-     * @return mixed contents of instance properties
+     * @param string $name
+     * @return mixed
      */
     public function __get($name)
     {
         if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
-        } else {
+        }
+        else {
             trigger_error('Undefined property on ' . get_class($this) . ': ' . $name, E_USER_NOTICE);
-
-            return;
+            return null;
         }
     }
 
     /**
-     * used by isset() and empty()
+     * Checks for the existance of a property stored in the private $_attributes property
      *
-     * @param string $name property name
-     *
-     * @return bool
+     * @ignore
+     * @param string $name
+     * @return boolean
      */
     public function __isset($name)
     {
         return array_key_exists($name, $this->_attributes);
     }
 
+    /**
+     * Mutator for instance properties stored in the private $_attributes property
+     *
+     * @ignore
+     * @param string $key
+     * @param mixed $value
+     */
     public function _set($key, $value)
     {
         $this->_attributes[$key] = $value;
-    }
-
-    public static function check()
-    {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            throw new Exception('PHP version >= 5.4.0 required');
-        }
-
-        $requiredExtensions = array('xmlwriter', 'openssl', 'dom', 'hash', 'curl');
-
-        foreach ($requiredExtensions as $ext) {
-            if (!extension_loaded($ext)) {
-                throw new Exception('The Braintree library requires the ' . $ext . ' extension.');
-            }
-        }
-
-        return 'Ok';
     }
 }

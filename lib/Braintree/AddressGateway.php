@@ -282,7 +282,7 @@ class AddressGateway
      *
      * creates a new Address object and encapsulates
      * it inside a Result\Successful object, or
-     * encapsulates a Errors object inside a Result\Error
+     * encapsulates an Errors object inside a Result\Error
      * alternatively, throws an Unexpected exception if the response is invalid
      *
      * @ignore
