@@ -11,7 +11,7 @@ use Braintree;
 class UtilTest extends Setup
 {
     /**
-     * @expectedException Braintree\Exception\Authentication
+     * @expectedException Exception\Authentication
      */
     public function testThrow401Exception()
     {
@@ -19,7 +19,7 @@ class UtilTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception\Authorization
+     * @expectedException Exception\Authorization
      */
     public function testThrow403Exception()
     {
@@ -27,7 +27,7 @@ class UtilTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception\NotFound
+     * @expectedException Exception\NotFound
      */
     public function testThrow404Exception()
     {
@@ -35,7 +35,7 @@ class UtilTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception\UpgradeRequired
+     * @expectedException Exception\UpgradeRequired
      */
     public function testThrow426Exception()
     {
@@ -43,7 +43,7 @@ class UtilTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception\ServerError
+     * @expectedException Exception\ServerError
      */
     public function testThrow500Exception()
     {
@@ -51,7 +51,7 @@ class UtilTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception\DownForMaintenance
+     * @expectedException Exception\DownForMaintenance
      */
     public function testThrow503Exception()
     {
@@ -59,7 +59,7 @@ class UtilTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception\Unexpected
+     * @expectedException Exception\Unexpected
      */
     public function testThrowUnknownException()
     {
@@ -224,7 +224,7 @@ class UtilTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception\ValidationsFailed
+     * @expectedException Exception\ValidationsFailed
      */
     public function testReturnException()
     {
