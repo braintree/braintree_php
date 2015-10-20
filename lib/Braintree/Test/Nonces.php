@@ -65,3 +65,4 @@ class Nonces
    public static $sepa = "fake-sepa-bank-account-nonce";
    public static $gatewayRejectedFraud = "fake-gateway-rejected-fraud-nonce";
 }
+class_alias('Braintree\Test\Nonces', 'Braintree_Test_Nonces');

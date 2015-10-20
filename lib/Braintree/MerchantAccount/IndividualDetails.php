@@ -20,3 +20,4 @@ final class IndividualDetails extends Base
         return $instance;
     }
 }
+class_alias('Braintree\MerchantAccount\IndividualDetails', 'Braintree_MerchantAccount_IndividualDetails');

@@ -25,3 +25,4 @@ class AddressDetails extends Instance
 {
     protected $_attributes = array();
 }
+class_alias('Braintree\Transaction\AddressDetails', 'Braintree_Transaction_AddressDetails');

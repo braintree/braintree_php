@@ -96,3 +96,4 @@ class CreditCardVerification
         );
     }
 }
+class_alias('Braintree\Result\CreditCardVerification', 'Braintree_Result_CreditCardVerification');
