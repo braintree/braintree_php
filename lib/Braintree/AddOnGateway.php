@@ -50,3 +50,4 @@ class AddOnGateway
         );
     }
 }
+class_alias('Braintree\AddOnGateway', 'Braintree_AddOnGateway');

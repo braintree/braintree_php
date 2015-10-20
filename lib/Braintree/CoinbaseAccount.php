@@ -108,3 +108,4 @@ class CoinbaseAccount extends Base
         return Configuration::gateway()->coinbaseAccount()->sale($token, $transactionAttribs);
     }
 }
+class_alias('Braintree\CoinbaseAccount', 'Braintree_CoinbaseAccount');

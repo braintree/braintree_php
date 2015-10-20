@@ -22,3 +22,4 @@ class CreditCardVerification extends Result\CreditCardVerification
         return Configuration::gateway()->creditCardVerification()->search($query);
     }
 }
+class_alias('Braintree\CreditCardVerification', 'Braintree_CreditCardVerification');

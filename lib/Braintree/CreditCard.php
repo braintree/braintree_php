@@ -311,3 +311,4 @@ class CreditCard extends Base
         );
     }
 }
+class_alias('Braintree\CreditCard', 'Braintree_CreditCard');

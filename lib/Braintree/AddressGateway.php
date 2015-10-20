@@ -307,3 +307,4 @@ class AddressGateway
 
     }
 }
+class_alias('Braintree\AddressGateway', 'Braintree_AddressGateway');

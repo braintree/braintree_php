@@ -28,3 +28,4 @@ class DiscountGateway
         );
     }
 }
+class_alias('Braintree\DiscountGateway', 'Braintree_DiscountGateway');

@@ -159,3 +159,4 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
 }
+class_alias('Braintree\Collection', 'Braintree_Collection');

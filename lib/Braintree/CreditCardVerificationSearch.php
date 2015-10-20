@@ -53,3 +53,4 @@ class CreditCardVerificationSearch
         return new MultipleValueNode("status", Result\CreditCardVerification::allStatuses());
     }
 }
+class_alias('Braintree\CreditCardVerificationSearch', 'Braintree_CreditCardVerificationSearch');
