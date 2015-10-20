@@ -291,6 +291,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("my_id", $webhookNotification->dispute->id);
         $this->assertEquals(Braintree_Dispute::OPEN, $webhookNotification->dispute->status);
         $this->assertEquals(Braintree_Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
+        $this->assertEquals(new DateTime('2014-03-21'), $webhookNotification->dispute->dateOpened);
     }
 
     function testBuildsASampleNotificationForADisputeLostWebhook()
@@ -309,6 +310,7 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("my_id", $webhookNotification->dispute->id);
         $this->assertEquals(Braintree_Dispute::LOST, $webhookNotification->dispute->status);
         $this->assertEquals(Braintree_Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
+        $this->assertEquals(new DateTime('2014-03-21'), $webhookNotification->dispute->dateOpened);
     }
 
     function testBuildsASampleNotificationForADisputeWonWebhook()
@@ -327,6 +329,8 @@ class Braintree_WebhookNotificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("my_id", $webhookNotification->dispute->id);
         $this->assertEquals(Braintree_Dispute::WON, $webhookNotification->dispute->status);
         $this->assertEquals(Braintree_Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
+        $this->assertEquals(new DateTime('2014-03-21'), $webhookNotification->dispute->dateOpened);
+        $this->assertEquals(new DateTime('2014-03-22'), $webhookNotification->dispute->dateWon);
     }
 
     function testBuildsASampleNotificationForADisbursementExceptionWebhook()
