@@ -19,13 +19,13 @@ class CustomerTest extends Setup
     {
         Braintree\CustomerGateway::updateSignature();
         foreach (Braintree\CreditCardGateway::updateSignature() as $key => $value) {
-            if (is_array($value) and array_key_exists('options', $value)) {
+            if(is_array($value) and array_key_exists('options', $value)) {
                 $this->assertEquals(array(
                     'makeDefault',
                     'verificationMerchantAccountId',
                     'verifyCard',
                     'verificationAmount',
-                    'venmoSdkSession',
+                    'venmoSdkSession'
                 ), $value['options']);
             }
         }
@@ -36,8 +36,10 @@ class CustomerTest extends Setup
         $signature = Braintree\CustomerGateway::createSignature();
         $creditCardSignatures = array_filter($signature, 'Test\Unit\CustomerTest::findCreditCardArray');
         $creditCardSignature = array_shift($creditCardSignatures)['creditCard'];
+
         $this->assertNotContains('customerId', $creditCardSignature);
     }
+
     public function findCreditCardArray($el)
     {
         return is_array($el) && array_key_exists('creditCard', $el);
