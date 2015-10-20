@@ -1019,7 +1019,7 @@ class CustomerTest extends Setup
         $queryString = $this->updateCustomerViaTr(
             array(
                 'customer' => array(
-                    'first_name' => str_repeat('x', 256)
+                    'first_name' => str_repeat('x', 256),
                 )
             ),
             array(
