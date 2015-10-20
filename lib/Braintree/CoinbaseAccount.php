@@ -19,6 +19,7 @@ namespace Braintree;
  * @category   Resources
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
+ * @property-read string $customerId
  * @property-read string $token
  * @property-read string $userId
  * @property-read string $userName

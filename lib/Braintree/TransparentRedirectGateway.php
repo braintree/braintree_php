@@ -79,7 +79,7 @@ class TransparentRedirectGateway
             TransparentRedirect::CREATE_PAYMENT_METHOD => 'Braintree\CreditCardGateway',
             TransparentRedirect::UPDATE_PAYMENT_METHOD => 'Braintree\CreditCardGateway',
         );
-        $confirmationGateway = new $confirmationKlasses[$params['kind']]($this->_gateway);
+        $confirmationGateway = new $confirmationKlasses[$params["kind"]]($this->_gateway);
         return $confirmationGateway->_doCreate('/transparent_redirect_requests/' . $params['id'] . '/confirm', array());
     }
 
@@ -214,9 +214,9 @@ class TransparentRedirectGateway
             $queryStringWithoutHash = $match[1];
         }
 
-        if (empty($params['http_status']) || ($params['http_status'] != '200')) {
+        if($params['http_status'] != '200') {
             $message = null;
-            if (array_key_exists('bt_message', $params)) {
+            if(array_key_exists('bt_message', $params)) {
                 $message = $params['bt_message'];
             }
             Util::throwStatusCodeException(isset($params['http_status']) ? $params['http_status'] : null, $message);

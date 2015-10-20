@@ -13,12 +13,12 @@ class MerchantTest extends Setup
     {
         $gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret'
+            'clientSecret' => 'client_secret$development$integration_client_secret',
         ));
         $result = $gateway->merchant()->create(array(
             'email' => 'name@email.com',
             'countryCodeAlpha3' => 'USA',
-            'paymentMethods' => ['credit_card', 'paypal']
+            'paymentMethods' => ['credit_card', 'paypal'],
         ));
 
         $this->assertEquals(true, $result->success);
@@ -35,7 +35,7 @@ class MerchantTest extends Setup
     public function testAssertsHasCredentials()
     {
         $gateway = new Braintree\Gateway(array(
-            'clientSecret' => 'client_secret$development$integration_client_secret'
+            'clientSecret' => 'client_secret$development$integration_client_secret',
         ));
         $gateway->merchant()->create(array(
             'email' => 'name@email.com',

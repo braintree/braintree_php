@@ -47,9 +47,8 @@ class Helper
     public static function createViaTr($regularParams, $trParams)
     {
         $trData = Braintree\TransparentRedirect::transactionData(
-            array_merge($trParams, array('redirectUrl' => 'http://www.example.com'))
+            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
-
         return self::submitTrRequest(
             Braintree\TransparentRedirect::url(),
             $regularParams,
@@ -73,8 +72,7 @@ class Helper
         $response = curl_exec($curl);
         curl_close($curl);
         preg_match('/Location: .*\?(.*)/i', $response, $match);
-
-        return $match ? trim($match[1]) : null;
+        return trim($match[1]);
     }
 
     public static function suppressDeprecationWarnings()
@@ -96,7 +94,6 @@ class Helper
                 return true;
             }
         }
-
         return false;
     }
 
@@ -124,12 +121,10 @@ class Helper
     {
         $eastern = new DateTimeZone('America/New_York');
         $now = new DateTime('now', $eastern);
-
         return $now->format('Y-m-d');
     }
 
-    public static function decodedClientToken($params = array())
-    {
+    public static function decodedClientToken($params=array()) {
         $encodedClientToken = Braintree\ClientToken::generate($params);
         return base64_decode($encodedClientToken);
     }
