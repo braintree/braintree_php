@@ -129,3 +129,4 @@ class ValidationErrorCollection extends Collection
         return $eOutput;
     }
 }
+class_alias('Braintree\Error\ValidationErrorCollection', 'Braintree_Error_ValidationErrorCollection');

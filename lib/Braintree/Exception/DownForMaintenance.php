@@ -14,3 +14,4 @@ class DownForMaintenance extends Exception
 {
 
 }
+class_alias('Braintree\Exception\DownForMaintenance', 'Braintree_Exception_DownForMaintenance');

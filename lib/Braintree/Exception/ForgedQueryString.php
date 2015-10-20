@@ -18,3 +18,4 @@ class ForgedQueryString extends Exception
 {
 
 }
+class_alias('Braintree\Exception\ForgedQueryString', 'Braintree_Exception_ForgedQueryString');

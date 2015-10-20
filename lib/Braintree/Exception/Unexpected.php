@@ -15,3 +15,4 @@ class Unexpected extends Exception
 {
 
 }
+class_alias('Braintree\Exception\Unexpected', 'Braintree_Exception_Unexpected');

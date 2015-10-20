@@ -14,3 +14,4 @@ class Configuration extends Exception
 {
 
 }
+class_alias('Braintree\Exception\Configuration', 'Braintree_Exception_Configuration');

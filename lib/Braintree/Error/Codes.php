@@ -496,3 +496,4 @@ class Codes
     const TRANSACTION_TYPE_IS_REQUIRED                                          = '91524';
     const TRANSACTION_UNSUPPORTED_VOICE_AUTHORIZATION                           = '91539';
 }
+class_alias('Braintree\Error\Codes', 'Braintree_Error_Codes');

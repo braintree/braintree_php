@@ -111,3 +111,4 @@ class ErrorCollection
         return sprintf('%s', $this->_errors);
     }
 }
+class_alias('Braintree\Error\ErrorCollection', 'Braintree_Error_ErrorCollection');
