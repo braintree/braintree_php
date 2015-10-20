@@ -17,3 +17,4 @@ use Braintree\Instance;
 class SubscriptionDetails extends Instance
 {
 }
+class_alias('Braintree\Transaction\SubscriptionDetails', 'Braintree_Transaction_SubscriptionDetails');

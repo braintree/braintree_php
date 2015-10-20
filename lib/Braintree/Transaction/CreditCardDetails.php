@@ -36,3 +36,4 @@ class CreditCardDetails extends Instance
 
     }
 }
+class_alias('Braintree\Transaction\CreditCardDetails', 'Braintree_Transaction_CreditCardDetails');

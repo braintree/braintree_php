@@ -149,3 +149,4 @@ class Generator
         }
     }
 }
+class_alias('Braintree\Xml\Generator', 'Braintree_Xml_Generator');

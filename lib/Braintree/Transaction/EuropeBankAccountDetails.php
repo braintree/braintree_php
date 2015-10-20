@@ -22,3 +22,4 @@ use Braintree\Instance;
 class EuropeBankAccountDetails extends Instance
 {
 }
+class_alias('Braintree\Transaction\EuropeBankAccountDetails', 'Braintree_Transaction_EuropeBankAccountDetails');
