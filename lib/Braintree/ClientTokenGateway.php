@@ -7,25 +7,25 @@ class ClientTokenGateway
 {
     /**
      *
-     * @var Braintree\Gateway
+     * @var Gateway
      */
     private $_gateway;
 
     /**
      *
-     * @var Braintree\Configuration
+     * @var Configuration
      */
     private $_config;
 
     /**
      *
-     * @var Braintree\Http
+     * @var Http
      */
     private $_http;
 
     /**
      *
-     * @param Braintree\Gateway $gateway
+     * @param Gateway $gateway
      */
     public function __construct($gateway)
     {

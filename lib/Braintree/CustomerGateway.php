@@ -187,7 +187,7 @@ class CustomerGateway
      *
      * @access public
      * @param string id customer Id
-     * @return object Braintree\Customer
+     * @return object Customer
      * @return object Customer|boolean false
      */
     public function find($id)
@@ -230,8 +230,8 @@ class CustomerGateway
      * @access public
      * @param int $customerId
      * @param array $transactionAttribs
-     * @return Braintree\Transaction
-     * @throws Braintree\Exception\ValidationError
+     * @return Transaction
+     * @throws Exception\ValidationError
      */
     public function creditNoValidate($customerId, $transactionAttribs)
     {
@@ -277,7 +277,7 @@ class CustomerGateway
      * @access public
      * @param string $customerId
      * @param array $transactionAttribs
-     * @return object Braintree\Transaction
+     * @return object Transaction
      * @throws Exception\ValidationsFailed
      * @see Transaction::sale()
      */
@@ -295,7 +295,7 @@ class CustomerGateway
      * For more detailed information and examples, see {@link http://www.braintreepayments.com/gateway/customer-api#searching http://www.braintreepaymentsolutions.com/gateway/customer-api}
      *
      * @param mixed $query search query
-     * @return object Braintree\ResourceCollection
+     * @return object ResourceCollection
      * @throws InvalidArgumentException
      */
     public function search($query)

@@ -22,8 +22,8 @@ class GatewayTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception\Configuration
-    * @expectedExceptionMessage needs to be set (or accessToken needs to be passed to Braintree\Gateway).
+     * @expectedException Exception\Configuration
+    * @expectedExceptionMessage needs to be set (or accessToken needs to be passed to Gateway).
      */
     public function testConfigGetsAssertedValid()
     {

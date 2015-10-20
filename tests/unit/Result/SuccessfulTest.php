@@ -10,7 +10,7 @@ class SuccessfulTest extends Setup
 {
      /**
      * @expectedException        PHPUnit_Framework_Error_Notice
-     * @expectedExceptionMessage Undefined property on Braintree\Result\Successful: notAProperty
+     * @expectedExceptionMessage Undefined property on Result\Successful: notAProperty
      */
     public function testCallingNonExsitingFieldReturnsNull()
     {

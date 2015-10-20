@@ -37,11 +37,11 @@ class EuropeBankAccount extends Base
     }
 
     /**
-     *  factory method: returns an instance of Braintree\EuropeBankAccount
+     *  factory method: returns an instance of EuropeBankAccount
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree\EuropeBankAccount
+     * @return object instance of EuropeBankAccount
      */
     public static function factory($attributes)
     {

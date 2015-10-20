@@ -6,7 +6,7 @@ class AddOn extends Modification
     /**
      *
      * @param array $attributes
-     * @return Braintree\AddOn
+     * @return AddOn
      */
     public static function factory($attributes)
     {
@@ -19,7 +19,7 @@ class AddOn extends Modification
     /**
      * static methods redirecting to gateway
      *
-     * @return Braintree\AddOn[]
+     * @return AddOn[]
      */
     public static function all()
     {
