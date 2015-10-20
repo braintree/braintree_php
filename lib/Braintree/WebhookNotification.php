@@ -126,3 +126,4 @@ class WebhookNotification extends Base
         }
     }
 }
+class_alias('Braintree\WebhookNotification', 'Braintree_WebhookNotification');

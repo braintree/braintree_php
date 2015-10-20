@@ -287,3 +287,4 @@ class TransparentRedirectGateway
     }
 }
 TransparentRedirectGateway::init();
+class_alias('Braintree\TransparentRedirectGateway', 'Braintree_TransparentRedirectGateway');

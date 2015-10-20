@@ -462,3 +462,4 @@ final class TransactionGateway
         }
     }
 }
+class_alias('Braintree\TransactionGateway', 'Braintree_TransactionGateway');

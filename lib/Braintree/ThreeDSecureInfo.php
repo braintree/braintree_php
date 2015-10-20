@@ -27,3 +27,4 @@ class ThreeDSecureInfo extends Base
     }
 
 }
+class_alias('Braintree\ThreeDSecureInfo', 'Braintree_ThreeDSecureInfo');

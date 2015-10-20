@@ -9,3 +9,4 @@ class TextNode extends PartialMatchNode
         return $this;
     }
 }
+class_alias('Braintree\TextNode', 'Braintree_TextNode');

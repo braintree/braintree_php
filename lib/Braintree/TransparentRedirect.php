@@ -98,3 +98,4 @@ class TransparentRedirect
         return Configuration::gateway()->transparentRedirect()->parseAndValidateQueryString($queryString);
     }
 }
+class_alias('Braintree\TransparentRedirect', 'Braintree_TransparentRedirect');
