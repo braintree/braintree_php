@@ -1,7 +1,6 @@
 <?php
 namespace Braintree\Xml;
 
-use Exception;
 use DateTime;
 use DateTimeZone;
 use XMLWriter;

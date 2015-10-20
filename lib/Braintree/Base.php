@@ -1,8 +1,6 @@
 <?php
 namespace Braintree;
 
-use Exception;
-
 /**
  * Braintree PHP Library.
  *

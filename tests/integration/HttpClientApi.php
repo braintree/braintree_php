@@ -3,7 +3,6 @@ namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
 
-use Exception;
 use Braintree;
 use Test;
 
