@@ -131,3 +131,4 @@ class_alias('Braintree\PaymentMethodNonceGateway', 'Braintree_PaymentMethodNonce
 class_alias('Braintree\PaymentInstrumentType', 'Braintree_PaymentInstrumentType');
 class_alias('Braintree\UnknownPaymentMethod', 'Braintree_UnknownPaymentMethod');
 class_alias('Braintree\Test\Transaction', 'Braintree_Test_Transaction');
+class_alias('Braintree\TestingGateway', 'Braintree_TestingGateway');
