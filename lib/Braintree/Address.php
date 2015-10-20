@@ -89,7 +89,7 @@ class Address extends Base
     /**
      *
      * @param array $attribs
-     * @return Braintree\Address
+     * @return Address
      */
     public static function create($attribs)
     {
@@ -99,7 +99,7 @@ class Address extends Base
     /**
      *
      * @param array $attribs
-     * @return Braintree\Address
+     * @return Address
      */
     public static function createNoValidate($attribs)
     {
@@ -108,10 +108,10 @@ class Address extends Base
 
     /**
      *
-     * @param Braintree\Customer|int $customerOrId
+     * @param Customer|int $customerOrId
      * @param int $addressId
      * @throws InvalidArgumentException
-     * @return Braintree\Result_Successful
+     * @return Result_Successful
      */
     public static function delete($customerOrId = null, $addressId = null)
     {
@@ -120,10 +120,10 @@ class Address extends Base
 
     /**
      *
-     * @param Braintree\Customer|int $customerOrId
+     * @param Customer|int $customerOrId
      * @param int $addressId
-     * @throws Braintree\Exception\NotFound
-     * @return Braintree\Address
+     * @throws Exception\NotFound
+     * @return Address
      */
     public static function find($customerOrId, $addressId)
     {
@@ -132,11 +132,11 @@ class Address extends Base
 
     /**
      *
-     * @param Braintree\Customer|int $customerOrId
+     * @param Customer|int $customerOrId
      * @param int $addressId
      * @param array $attributes
-     * @throws Braintree\Exception\Unexpected
-     * @return Braintree\Result_Successful|Braintree\Result_Error
+     * @throws Exception\Unexpected
+     * @return Result_Successful|Result_Error
      */
     public static function update($customerOrId, $addressId, $attributes)
     {

@@ -39,8 +39,8 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage Braintree\Configuration::publicKey needs to be set
+     * @expectedException Exception\Configuration
+     * @expectedExceptionMessage Configuration::publicKey needs to be set
      */
     public function testAssertGlobalHasAccessTokenOrKeysWithoutPublicKey()
     {
@@ -73,7 +73,7 @@ class ConfigurationTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage "invalid" is not a valid environment.
      */
     public function testSetInvalidEnvironment()
@@ -222,7 +222,7 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage environment needs to be set
      */
     public function testValidateEmptyEnvironment()
@@ -235,7 +235,7 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage merchantId needs to be set
      */
     public function testMerchantId()
@@ -248,7 +248,7 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage publicKey needs to be set
      */
     public function testPublicKey()
@@ -261,7 +261,7 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage privateKey needs to be set
      */
     public function testPrivateKey()
@@ -285,7 +285,7 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage clientSecret needs to be passed
      */
     public function testInvalidWithOAuthClientCredentials()
@@ -308,7 +308,7 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage Mismatched credential environments: clientId environment is sandbox and clientSecret environment is development
      */
     public function testDetectEnvironmentFromClientIdFail()
@@ -320,7 +320,7 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage Value passed for clientId is not a clientId
      */
     public function testClientIdTypeFail()
@@ -341,7 +341,7 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage Value passed for accessToken is not an accessToken
      */
     public function testInvalidAccessTokenType()
@@ -352,7 +352,7 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage Incorrect accessToken syntax. Expected: type$environment$merchant_id$token
      */
     public function testInvalidAccessTokenSyntax()
@@ -363,7 +363,7 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage "invalid" is not a valid environment.
      */
     public function testInvalidAccessTokenEnvironment()
@@ -387,7 +387,7 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage Mismatched credential environments: clientId environment is development and accessToken environment is sandbox
      */
     public function testInvalidEnvironmentWithOAuthClientCredentialsAndAccessToken()
@@ -400,7 +400,7 @@ class ConfigurationTest extends Setup
     }
 
      /**
-     * @expectedException Braintree\Exception\Configuration
+     * @expectedException Exception\Configuration
      * @expectedExceptionMessage Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId)
      */
     public function testCannotMixKeysWithOAuthCredentials()

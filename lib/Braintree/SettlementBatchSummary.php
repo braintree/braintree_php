@@ -6,7 +6,7 @@ class SettlementBatchSummary extends Base
     /**
      *
      * @param array $attributes
-     * @return Braintree\SettlementBatchSummary
+     * @return SettlementBatchSummary
      */
     public static function factory($attributes)
     {
@@ -35,7 +35,7 @@ class SettlementBatchSummary extends Base
      *
      * @param string $settlement_date Date YYYY-MM-DD
      * @param string $groupByCustomField
-     * @return Braintree\Result_Successful|Braintree\Result_Error
+     * @return Result_Successful|Result_Error
      */
     public static function generate($settlement_date, $groupByCustomField = NULL)
     {

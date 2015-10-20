@@ -18,7 +18,7 @@ final class Transaction
      *
      * @param string $id transaction id
      * @param Configuration $config gateway config
-     * @return object Braintree\Transaction
+     * @return Transaction
      */
     public static function settle($transactionId)
     {
@@ -30,7 +30,7 @@ final class Transaction
      *
      * @param string $id transaction id
      * @param Configuration $config gateway config
-     * @return object Braintree\Transaction
+     * @return Transaction
      */
     public static function settlementConfirm($transactionId)
     {
@@ -42,7 +42,7 @@ final class Transaction
      *
      * @param string $id transaction id
      * @param Configuration $config gateway config
-     * @return object Braintree\Transaction
+     * @return Transaction
      */
     public static function settlementDecline($transactionId)
     {
@@ -54,7 +54,7 @@ final class Transaction
      *
      * @param string $id transaction id
      * @param Configuration $config gateway config
-     * @return object Braintree\Transaction
+     * @return Transaction
      */
     public static function settlementPending($transactionId)
     {

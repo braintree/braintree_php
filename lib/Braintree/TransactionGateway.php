@@ -318,7 +318,7 @@ final class TransactionGateway
      * void a transaction by id
      *
      * @param string $id transaction id
-     * @return object Result\Successful|Braintree\Result\Error
+     * @return object Result\Successful|Result\Error
      */
     public function void($transactionId)
     {

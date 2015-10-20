@@ -24,7 +24,7 @@ class TestTransactionTest extends Setup
     }
 
     /**
-     * @expectedException Braintree\Exception\TestOperationPerformedInProduction
+     * @expectedException Exception\TestOperationPerformedInProduction
      */
     public function testThrowingExceptionWhenProduction()
     {
