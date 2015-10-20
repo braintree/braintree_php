@@ -179,3 +179,4 @@ class Http
         return $memo;
     }
 }
+class_alias('Braintree\Http', 'Braintree_Http');

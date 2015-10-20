@@ -19,3 +19,4 @@ class Modification extends Base
         return get_called_class() . '[' . Util::attributesToString($this->_attributes) . ']';
     }
 }
+class_alias('Braintree\Modification', 'Braintree_Modification');

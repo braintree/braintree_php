@@ -44,3 +44,4 @@ class MultipleValueOrTextNode extends MultipleValueNode
         return array_merge(parent::toParam(), $this->textNode->toParam());
     }
 }
+class_alias('Braintree\MultipleValueOrTextNode', 'Braintree_MultipleValueOrTextNode');

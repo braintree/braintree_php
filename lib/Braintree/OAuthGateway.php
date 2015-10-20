@@ -102,3 +102,4 @@ class OAuthGateway
         return hash_hmac('sha256', $url, $key);
     }
 }
+class_alias('Braintree\OAuthGateway', 'Braintree_OAuthGateway');

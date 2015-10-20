@@ -10,3 +10,4 @@ final class PaymentInstrumentType
     const APPLE_PAY_CARD      = 'apple_pay_card';
     const ANDROID_PAY_CARD    = 'android_pay_card';
 }
+class_alias('Braintree\PaymentInstrumentType', 'Braintree_PaymentInstrumentType');

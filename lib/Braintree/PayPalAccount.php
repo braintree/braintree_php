@@ -108,3 +108,4 @@ class PayPalAccount extends Base
         return Configuration::gateway()->payPalAccount()->sale($token, $transactionAttribs);
     }
 }
+class_alias('Braintree\PayPalAccount', 'Braintree_PayPalAccount');

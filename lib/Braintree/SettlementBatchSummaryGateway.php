@@ -103,3 +103,4 @@ class SettlementBatchSummaryGateway
         }
     }
 }
+class_alias('Braintree\SettlementBatchSummaryGateway', 'Braintree_SettlementBatchSummaryGateway');

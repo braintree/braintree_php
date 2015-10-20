@@ -65,3 +65,4 @@ class EuropeBankAccount extends Base
         $this->_attributes = $europeBankAccountAttribs;
     }
 }
+class_alias('Braintree\EuropeBankAccount', 'Braintree_EuropeBankAccount');

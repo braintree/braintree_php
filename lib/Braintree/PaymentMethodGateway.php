@@ -258,3 +258,4 @@ class PaymentMethodGateway
         }
     }
 }
+class_alias('Braintree\PaymentMethodGateway', 'Braintree_PaymentMethodGateway');

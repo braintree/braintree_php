@@ -151,3 +151,4 @@ final class MerchantAccountGateway
         }
     }
 }
+class_alias('Braintree\MerchantAccountGateway', 'Braintree_MerchantAccountGateway');

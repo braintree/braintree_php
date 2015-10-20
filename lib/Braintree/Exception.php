@@ -11,3 +11,4 @@ namespace Braintree;
 class Exception extends \Exception
 {
 }
+class_alias('Braintree\Exception', 'Braintree_Exception');

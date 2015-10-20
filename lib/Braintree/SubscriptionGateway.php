@@ -212,3 +212,4 @@ class SubscriptionGateway
         }
     }
 }
+class_alias('Braintree\SubscriptionGateway', 'Braintree_SubscriptionGateway');
