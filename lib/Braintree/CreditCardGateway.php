@@ -474,3 +474,4 @@ class CreditCardGateway
         }
     }
 }
+class_alias('Braintree\CreditCardGateway', 'Braintree_CreditCardGateway');

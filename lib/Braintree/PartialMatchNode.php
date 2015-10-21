@@ -15,3 +15,4 @@ class PartialMatchNode extends EqualityNode
         return $this;
     }
 }
+class_alias('Braintree\PartialMatchNode', 'Braintree_PartialMatchNode');

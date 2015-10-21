@@ -37,3 +37,4 @@ class RangeNode
         return $this->searchTerms;
     }
 }
+class_alias('Braintree\RangeNode', 'Braintree_RangeNode');

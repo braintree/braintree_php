@@ -38,3 +38,4 @@ final class Xml
         return Xml\Generator::arrayToXml($array);
     }
 }
+class_alias('Braintree\Xml', 'Braintree_Xml');

@@ -64,3 +64,4 @@ class SubscriptionSearch
         return new MultipleValueNode('ids');
     }
 }
+class_alias('Braintree\SubscriptionSearch', 'Braintree_SubscriptionSearch');

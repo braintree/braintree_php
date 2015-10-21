@@ -195,3 +195,4 @@ class Gateway
         return new TransparentRedirectGateway($this);
     }
 }
+class_alias('Braintree\Gateway', 'Braintree_Gateway');

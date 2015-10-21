@@ -312,3 +312,4 @@ class WebhookTesting
         return $timestamp;
     }
 }
+class_alias('Braintree\WebhookTesting', 'Braintree_WebhookTesting');

@@ -46,3 +46,4 @@ class AndroidPayCardDetails extends Instance
         $this->_attributes['last4'] = $this->virtualCardLast4;
     }
 }
+class_alias('Braintree\Transaction\AndroidPayCardDetails', 'Braintree_Transaction_AndroidPayCardDetails');

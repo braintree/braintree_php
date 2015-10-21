@@ -73,3 +73,4 @@ class CreditCardNumbers
                 );
     }
 }
+class_alias('Braintree\Test\CreditCardNumbers', 'Braintree_Test_CreditCardNumbers');

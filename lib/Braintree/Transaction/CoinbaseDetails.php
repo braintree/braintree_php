@@ -37,3 +37,4 @@ class CoinbaseDetails extends Instance
         parent::__construct($attributes);
     }
 }
+class_alias('Braintree\Transaction\CoinbaseDetails', 'Braintree_Transaction_CoinbaseDetails');

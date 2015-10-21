@@ -22,3 +22,4 @@ class DisbursementDetails extends Instance
         return !is_null($this->disbursementDate);
     }
 }
+class_alias('Braintree\DisbursementDetails', 'Braintree_DisbursementDetails');

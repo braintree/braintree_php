@@ -31,3 +31,4 @@ class CustomerSearch
 
     public static function createdAt()                        { return new RangeNode("created_at"); }
 }
+class_alias('Braintree\CustomerSearch', 'Braintree_CustomerSearch');

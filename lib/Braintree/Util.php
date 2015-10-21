@@ -412,3 +412,4 @@ class Util
         return $invalidKeys;
     }
 }
+class_alias('Braintree\Util', 'Braintree_Util');

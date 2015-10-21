@@ -46,3 +46,4 @@ class ClientToken
         return Configuration::gateway()->clientToken()->generateWithoutCustomerIdSignature();
     }
 }
+class_alias('Braintree\ClientToken', 'Braintree_ClientToken');

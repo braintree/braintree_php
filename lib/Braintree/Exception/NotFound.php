@@ -14,3 +14,4 @@ class NotFound extends Exception
 {
 
 }
+class_alias('Braintree\Exception\NotFound', 'Braintree_Exception_NotFound');

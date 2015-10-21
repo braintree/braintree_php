@@ -49,3 +49,4 @@ final class Disbursement extends Base
                 Util::attributesToString($displayAttributes) .']';
     }
 }
+class_alias('Braintree\Disbursement', 'Braintree_Disbursement');

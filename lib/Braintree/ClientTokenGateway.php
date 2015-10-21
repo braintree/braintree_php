@@ -126,3 +126,4 @@ class ClientTokenGateway
     }
 
 }
+class_alias('Braintree\ClientTokenGateway', 'Braintree_ClientTokenGateway');

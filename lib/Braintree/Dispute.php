@@ -79,3 +79,4 @@ final class Dispute extends Base
                 Util::attributesToString($displayAttributes) .']';
     }
 }
+class_alias('Braintree\Dispute', 'Braintree_Dispute');

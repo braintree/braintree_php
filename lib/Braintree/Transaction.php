@@ -531,3 +531,4 @@ final class Transaction extends Base
         return Configuration::gateway()->transaction()->submitForPartialSettlement($transactionId, $amount);
     }
 }
+class_alias('Braintree\Transaction', 'Braintree_Transaction');

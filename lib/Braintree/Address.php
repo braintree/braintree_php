@@ -148,3 +148,4 @@ class Address extends Base
         return Configuration::gateway()->address()->updateNoValidate($customerOrId, $addressId, $attributes);
     }
 }
+class_alias('Braintree\Address', 'Braintree_Address');

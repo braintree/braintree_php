@@ -130,3 +130,4 @@ class TransactionSearch
         ));
     }
 }
+class_alias('Braintree\TransactionSearch', 'Braintree_TransactionSearch');

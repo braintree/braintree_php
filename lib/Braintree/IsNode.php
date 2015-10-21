@@ -21,3 +21,4 @@ class IsNode
         return $this->searchTerms;
     }
 }
+class_alias('Braintree\IsNode', 'Braintree_IsNode');

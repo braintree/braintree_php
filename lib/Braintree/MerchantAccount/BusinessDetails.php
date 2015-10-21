@@ -20,3 +20,4 @@ final class BusinessDetails extends Base
         return $instance;
     }
 }
+class_alias('Braintree\MerchantAccount\BusinessDetails', 'Braintree_MerchantAccount_BusinessDetails');

@@ -472,3 +472,4 @@ class Configuration
     }
 }
 Configuration::reset();
+class_alias('Braintree\Configuration', 'Braintree_Configuration');

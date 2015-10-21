@@ -38,3 +38,4 @@ class MultipleValueNode
         return $this->items;
     }
 }
+class_alias('Braintree\MultipleValueNode', 'Braintree_MultipleValueNode');

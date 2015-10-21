@@ -138,3 +138,4 @@ class Subscription extends Base
         return Configuration::gateway()->subscription()->cancel($subscriptionId);
     }
 }
+class_alias('Braintree\Subscription', 'Braintree_Subscription');

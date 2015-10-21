@@ -33,3 +33,4 @@ class OAuthCredentials extends Base
                 Util::attributesToString($this->_attributes) .']';
     }
 }
+class_alias('Braintree\OAuthCredentials', 'Braintree_OAuthCredentials');

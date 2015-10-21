@@ -14,3 +14,4 @@ class ServerError extends Exception
 {
 
 }
+class_alias('Braintree\Exception\ServerError', 'Braintree_Exception_ServerError');

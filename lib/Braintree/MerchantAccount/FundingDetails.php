@@ -7,3 +7,4 @@ final class FundingDetails extends Instance
 {
     protected $_attributes = array();
 }
+class_alias('Braintree\MerchantAccount\FundingDetails', 'Braintree_MerchantAccount_FundingDetails');

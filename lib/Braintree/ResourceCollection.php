@@ -143,3 +143,4 @@ class ResourceCollection implements Iterator
         );
     }
 }
+class_alias('Braintree\ResourceCollection', 'Braintree_ResourceCollection');

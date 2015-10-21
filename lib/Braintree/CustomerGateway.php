@@ -620,3 +620,4 @@ class CustomerGateway
         }
     }
 }
+class_alias('Braintree\CustomerGateway', 'Braintree_CustomerGateway');
