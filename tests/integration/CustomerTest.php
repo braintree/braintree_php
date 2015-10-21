@@ -167,6 +167,22 @@ class Braintree_CustomerTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($androidPayCard->expirationYear);
     }
 
+    function testCreateCustomerWithAmexExpressCheckoutCard()
+    {
+        $nonce = Braintree_Test_Nonces::$amexExpressCheckout;
+        $result = Braintree_Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $this->assertNotNull($customer->amexExpressCheckoutCards[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
+        $amexExpressCheckoutCard = $customer->amexExpressCheckoutCards[0];
+        $this->assertTrue($amexExpressCheckoutCard instanceof Braintree_AmexExpressCheckoutCard);
+        $this->assertNotNull($amexExpressCheckoutCard->token);
+        $this->assertNotNull($amexExpressCheckoutCard->expirationYear);
+    }
+
     function testCreateCustomerWithCoinbase()
     {
         $nonce = Braintree_Test_Nonces::$coinbase;

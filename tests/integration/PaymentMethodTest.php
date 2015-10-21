@@ -131,6 +131,33 @@ class Braintree_PaymentMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame($customer->id, $androidPayCard->customerId);
     }
 
+    function testCreate_fromFakeAmexExpressCheckoutCardNonce()
+    {
+        $customer = Braintree_Customer::createNoValidate();
+        $result = Braintree_PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree_Test_Nonces::$amexExpressCheckout
+        ));
+
+        $this->assertTrue($result->success);
+        $amexExpressCheckoutCard = $result->paymentMethod;
+        $this->assertInstanceOf('Braintree_AmexExpressCheckoutCard', $amexExpressCheckoutCard);
+
+        $this->assertNotNull($amexExpressCheckoutCard->token);
+        $this->assertSame(Braintree_CreditCard::AMEX, $amexExpressCheckoutCard->cardType);
+        $this->assertSame("341111", $amexExpressCheckoutCard->bin);
+        $this->assertSame("12/21", $amexExpressCheckoutCard->cardMemberExpiryDate);
+        $this->assertSame("0005", $amexExpressCheckoutCard->cardMemberNumber);
+        $this->assertSame("American Express", $amexExpressCheckoutCard->cardType);
+        $this->assertNotNull($amexExpressCheckoutCard->sourceDescription);
+        $this->assertContains(".png", $amexExpressCheckoutCard->imageUrl);
+        $this->assertTrue(intval($amexExpressCheckoutCard->expirationMonth) > 0);
+        $this->assertTrue(intval($amexExpressCheckoutCard->expirationYear) > 0);
+        $this->assertTrue($amexExpressCheckoutCard->default);
+        $this->assertSame($customer->id, $amexExpressCheckoutCard->customerId);
+        $this->assertEquals(array(), $amexExpressCheckoutCard->subscriptions);
+    }
+
     function testCreate_fromUnvalidatedCreditCardNonce()
     {
         $customer = Braintree_Customer::createNoValidate();

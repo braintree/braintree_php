@@ -376,6 +376,31 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
     }
 
+    function testCreateTransactionUsingFakeAmexExpressCheckoutNonce()
+    {
+        $result = Braintree_Transaction::sale(array(
+            'amount' => '47.00',
+            'merchantAccountId' => Braintree_TestHelper::fakeAmexDirectMerchantAccountId(),
+            'paymentMethodNonce' => Braintree_Test_Nonces::$amexExpressCheckout
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('47.00', $transaction->amount);
+        $amexExpressCheckoutCardDetails = $transaction->amexExpressCheckoutCardDetails;
+
+        $this->assertSame(Braintree_CreditCard::AMEX, $amexExpressCheckoutCardDetails->cardType);
+        $this->assertSame("341111", $amexExpressCheckoutCardDetails->bin);
+        $this->assertSame("12/21", $amexExpressCheckoutCardDetails->cardMemberExpiryDate);
+        $this->assertSame("0005", $amexExpressCheckoutCardDetails->cardMemberNumber);
+        $this->assertSame("American Express", $amexExpressCheckoutCardDetails->cardType);
+        $this->assertNull($amexExpressCheckoutCardDetails->token);
+        $this->assertNotNull($amexExpressCheckoutCardDetails->sourceDescription);
+        $this->assertContains(".png", $amexExpressCheckoutCardDetails->imageUrl);
+        $this->assertTrue(intval($amexExpressCheckoutCardDetails->expirationMonth) > 0);
+        $this->assertTrue(intval($amexExpressCheckoutCardDetails->expirationYear) > 0);
+    }
+
     function testCreateTransactionUsingFakeCoinbaseNonce()
     {
         $result = Braintree_Transaction::sale(array(
