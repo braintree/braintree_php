@@ -204,6 +204,11 @@ final class TransactionGateway
         );
     }
 
+    public static function submitForSettlementSignature()
+    {
+        return array('orderId', array('descriptor' => array('name', 'phone', 'url')));
+    }
+
     /**
      *
      * @access public
@@ -341,18 +346,20 @@ final class TransactionGateway
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
 
-    public function submitForSettlement($transactionId, $amount = null)
+    public function submitForSettlement($transactionId, $amount = null, $attribs = array())
     {
         $this->_validateId($transactionId);
+        Util::verifyKeys(self::submitForSettlementSignature(), $attribs);
+        $attribs['amount'] = $amount;
 
         $path = $this->_config->merchantPath() . '/transactions/'. $transactionId . '/submit_for_settlement';
-        $response = $this->_http->put($path, array('transaction' => array('amount' => $amount)));
+        $response = $this->_http->put($path, array('transaction' => $attribs));
         return $this->_verifyGatewayResponse($response);
     }
 
-    public function submitForSettlementNoValidate($transactionId, $amount = null)
+    public function submitForSettlementNoValidate($transactionId, $amount = null, $attribs = array())
     {
-        $result = $this->submitForSettlement($transactionId, $amount);
+        $result = $this->submitForSettlement($transactionId, $amount, $attribs);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
 

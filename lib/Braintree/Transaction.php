@@ -508,14 +508,14 @@ final class Transaction extends Base
         return Configuration::gateway()->transaction()->voidNoValidate($transactionId);
     }
 
-    public static function submitForSettlement($transactionId, $amount = null)
+    public static function submitForSettlement($transactionId, $amount = null, $attribs = array())
     {
-        return Configuration::gateway()->transaction()->submitForSettlement($transactionId, $amount);
+        return Configuration::gateway()->transaction()->submitForSettlement($transactionId, $amount, $attribs);
     }
 
-    public static function submitForSettlementNoValidate($transactionId, $amount = null)
+    public static function submitForSettlementNoValidate($transactionId, $amount = null, $attribs = array())
     {
-        return Configuration::gateway()->transaction()->submitForSettlementNoValidate($transactionId, $amount);
+        return Configuration::gateway()->transaction()->submitForSettlementNoValidate($transactionId, $amount, $attribs);
     }
 
     public static function holdInEscrow($transactionId)

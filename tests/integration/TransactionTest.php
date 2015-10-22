@@ -1253,6 +1253,111 @@ class TransactionTest extends Setup
         $this->assertEquals('50.00', $submitResult->transaction->amount);
     }
 
+  public function testSubmitForSettlement_withOrderId()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '67.00', array('orderId' => 'ABC123'));
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
+        $this->assertEquals('ABC123', $submitResult->transaction->orderId);
+        $this->assertEquals('67.00', $submitResult->transaction->amount);
+    }
+
+  public function testSubmitForSettlement_withDescriptor()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        $params = array(
+            'descriptor' => array(
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            )
+        );
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '67.00', $params);
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
+        $this->assertEquals('123*123456789012345678', $submitResult->transaction->descriptor->name);
+        $this->assertEquals('3334445555', $submitResult->transaction->descriptor->phone);
+        $this->assertEquals('ebay.com', $submitResult->transaction->descriptor->url);
+    }
+
+  public function testSubmitForSettlement_withInvalidParams()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'creditCard' => array(
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        $params = array('invalid' => 'invalid');
+
+        $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalid');
+        Braintree\Transaction::submitForSettlement($transaction->id, '67.00', $params);
+    }
+
+  public function testSubmitForSettlement_withDescriptorOnUnsupportedProcessor()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        $params = array(
+            'descriptor' => array(
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            )
+        );
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '67.00', $params);
+        $errors = $submitResult->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DESCRIPTOR, $errors[0]->code);
+    }
+
+  public function testSubmitForSettlement_withOrderIdOnUnsupportedProcessor()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate(array(
+            'amount' => '100.00',
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
+            'creditCard' => array(
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
+                'expirationDate' => '05/12'
+            )
+        ));
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '67.00', array('orderId' => 'ABC123'));
+        $errors = $submitResult->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_ORDER_ID, $errors[0]->code);
+    }
+
   public function testSubmitForSettlementNoValidate_whenValidWithoutAmount()
     {
         $transaction = Braintree\Transaction::saleNoValidate(array(
