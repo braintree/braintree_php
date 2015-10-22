@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree CoinbaseAccount module
  *
@@ -23,14 +25,14 @@
  * @property-read string $userName
  * @property-read string $userEmail
  */
-class Braintree_CoinbaseAccount extends Braintree_Base
+class CoinbaseAccount extends Base
 {
     /**
-     *  factory method: returns an instance of Braintree_CoinbaseAccount
+     *  factory method: returns an instance of CoinbaseAccount
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_CoinbaseAccount
+     * @return object instance of CoinbaseAccount
      */
     public static function factory($attributes)
     {
@@ -66,7 +68,7 @@ class Braintree_CoinbaseAccount extends Braintree_Base
         $subscriptionArray = array();
         if (isset($coinbaseAccountAttribs['subscriptions'])) {
             foreach ($coinbaseAccountAttribs['subscriptions'] AS $subscription) {
-                $subscriptionArray[] = Braintree_Subscription::factory($subscription);
+                $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
 
@@ -81,7 +83,7 @@ class Braintree_CoinbaseAccount extends Braintree_Base
     public function  __toString()
     {
         return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) .']';
     }
 
 
@@ -89,21 +91,22 @@ class Braintree_CoinbaseAccount extends Braintree_Base
 
     public static function find($token)
     {
-        return Braintree_Configuration::gateway()->coinbaseAccount()->find($token);
+        return Configuration::gateway()->coinbaseAccount()->find($token);
     }
 
     public static function update($token, $attributes)
     {
-        return Braintree_Configuration::gateway()->coinbaseAccount()->update($token, $attributes);
+        return Configuration::gateway()->coinbaseAccount()->update($token, $attributes);
     }
 
     public static function delete($token)
     {
-        return Braintree_Configuration::gateway()->coinbaseAccount()->delete($token);
+        return Configuration::gateway()->coinbaseAccount()->delete($token);
     }
 
     public static function sale($token, $transactionAttribs)
     {
-        return Braintree_Configuration::gateway()->coinbaseAccount()->sale($token, $transactionAttribs);
+        return Configuration::gateway()->coinbaseAccount()->sale($token, $transactionAttribs);
     }
 }
+class_alias('Braintree\CoinbaseAccount', 'Braintree_CoinbaseAccount');

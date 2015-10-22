@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree AmexExpressCheckoutCard module
  * Creates and manages Braintree Amex Express Checkout cards
@@ -26,7 +28,7 @@
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
  */
-class Braintree_AmexExpressCheckoutCard extends Braintree_Base
+class AmexExpressCheckoutCard extends Base
 {
     /* instance methods */
     /**
@@ -40,11 +42,11 @@ class Braintree_AmexExpressCheckoutCard extends Braintree_Base
     }
 
     /**
-     *  factory method: returns an instance of Braintree_AmexExpressCheckoutCard
+     *  factory method: returns an instance of AmexExpressCheckoutCard
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_AmexExpressCheckoutCard
+     * @return object instance of AmexExpressCheckoutCard
      */
     public static function factory($attributes)
     {
@@ -69,10 +71,11 @@ class Braintree_AmexExpressCheckoutCard extends Braintree_Base
         $subscriptionArray = array();
         if (isset($amexExpressCheckoutCardAttribs['subscriptions'])) {
             foreach ($amexExpressCheckoutCardAttribs['subscriptions'] AS $subscription) {
-                $subscriptionArray[] = Braintree_Subscription::factory($subscription);
+                $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
 
         $this->_set('subscriptions', $subscriptionArray);
     }
 }
+class_alias('Braintree\AmexExpressCheckoutCard', 'Braintree_AmexExpressCheckoutCard');

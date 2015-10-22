@@ -1,23 +1,27 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
-require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
+namespace Test\Integration;
 
-class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class CustomerAdvancedSearchTest extends Setup
 {
-    function test_noMatches()
+    public function test_noMatches()
     {
-        $collection = Braintree_Customer::search(array(
-            Braintree_CustomerSearch::company()->is('badname')
+        $collection = Braintree\Customer::search(array(
+            Braintree\CustomerSearch::company()->is('badname')
         ));
 
         $this->assertEquals(0, $collection->maximumCount());
     }
 
-    function test_noRequestsWhenIterating()
+    public function test_noRequestsWhenIterating()
     {
         $resultsReturned = false;
-        $collection = Braintree_Customer::search(array(
-            Braintree_CustomerSearch::firstName()->is('badname')
+        $collection = Braintree\Customer::search(array(
+            Braintree\CustomerSearch::firstName()->is('badname')
         ));
 
         foreach($collection as $customer) {
@@ -29,15 +33,15 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $resultsReturned);
     }
 
-    function test_findDuplicateCardsGivenPaymentMethodToken()
+    public function test_findDuplicateCardsGivenPaymentMethodToken()
     {
         $creditCardRequest = array('number' => '63049580000009', 'expirationDate' => '05/2012');
 
-        $jim = Braintree_Customer::create(array('firstName' => 'Jim', 'creditCard' => $creditCardRequest))->customer;
-        $joe = Braintree_Customer::create(array('firstName' => 'Joe', 'creditCard' => $creditCardRequest))->customer;
+        $jim = Braintree\Customer::create(array('firstName' => 'Jim', 'creditCard' => $creditCardRequest))->customer;
+        $joe = Braintree\Customer::create(array('firstName' => 'Joe', 'creditCard' => $creditCardRequest))->customer;
 
-        $query = array(Braintree_CustomerSearch::paymentMethodTokenWithDuplicates()->is($jim->creditCards[0]->token));
-        $collection = Braintree_Customer::search($query);
+        $query = array(Braintree\CustomerSearch::paymentMethodTokenWithDuplicates()->is($jim->creditCards[0]->token));
+        $collection = Braintree\Customer::search($query);
 
         $customerIds = array();
         foreach($collection as $customer)
@@ -49,7 +53,7 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(in_array($joe->id, $customerIds));
     }
 
-    function test_searchOnTextFields()
+    public function test_searchOnTextFields()
     {
         $token  = 'cctoken' . rand();
 
@@ -75,7 +79,7 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
             'addressCountryName' => 'United States of America'
         );
 
-        $customer = Braintree_Customer::createNoValidate(array(
+        $customer = Braintree\Customer::createNoValidate(array(
             'firstName' => $search_criteria['firstName'],
             'lastName' => $search_criteria['lastName'],
             'company' => $search_criteria['company'],
@@ -101,66 +105,66 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
             )
         ));
 
-        $query = array(Braintree_CustomerSearch::id()->is($customer->id));
+        $query = array(Braintree\CustomerSearch::id()->is($customer->id));
         foreach ($search_criteria AS $criterion => $value) {
-            $query[] = Braintree_CustomerSearch::$criterion()->is($value);
+            $query[] = Braintree\CustomerSearch::$criterion()->is($value);
         }
 
-        $collection = Braintree_Customer::search($query);
+        $collection = Braintree\Customer::search($query);
 
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
 
         foreach ($search_criteria AS $criterion => $value) {
-            $collection = Braintree_Customer::search(array(
-                Braintree_CustomerSearch::$criterion()->is($value),
-                Braintree_CustomerSearch::id()->is($customer->id)
+            $collection = Braintree\Customer::search(array(
+                Braintree\CustomerSearch::$criterion()->is($value),
+                Braintree\CustomerSearch::id()->is($customer->id),
             ));
             $this->assertEquals(1, $collection->maximumCount());
             $this->assertEquals($customer->id, $collection->firstItem()->id);
 
-            $collection = Braintree_Customer::search(array(
-                Braintree_CustomerSearch::$criterion()->is('invalid_attribute'),
-                Braintree_CustomerSearch::id()->is($customer->id)
+            $collection = Braintree\Customer::search(array(
+                Braintree\CustomerSearch::$criterion()->is('invalid_attribute'),
+                Braintree\CustomerSearch::id()->is($customer->id),
             ));
             $this->assertEquals(0, $collection->maximumCount());
         }
     }
 
-    function test_createdAt()
+    public function test_createdAt()
     {
-        $customer = Braintree_Customer::createNoValidate();
+        $customer = Braintree\Customer::createNoValidate();
 
         $past = clone $customer->createdAt;
         $past->modify("-1 hour");
         $future = clone $customer->createdAt;
         $future->modify("+1 hour");
 
-        $collection = Braintree_Customer::search(array(
-            Braintree_CustomerSearch::id()->is($customer->id),
-            Braintree_CustomerSearch::createdAt()->between($past, $future)
+        $collection = Braintree\Customer::search(array(
+            Braintree\CustomerSearch::id()->is($customer->id),
+            Braintree\CustomerSearch::createdAt()->between($past, $future),
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
 
-        $collection = Braintree_Customer::search(array(
-            Braintree_CustomerSearch::id()->is($customer->id),
-            Braintree_CustomerSearch::createdAt()->lessThanOrEqualTo($future)
+        $collection = Braintree\Customer::search(array(
+            Braintree\CustomerSearch::id()->is($customer->id),
+            Braintree\CustomerSearch::createdAt()->lessThanOrEqualTo($future),
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
 
-        $collection = Braintree_Customer::search(array(
-            Braintree_CustomerSearch::id()->is($customer->id),
-            Braintree_CustomerSearch::createdAt()->greaterThanOrEqualTo($past)
+        $collection = Braintree\Customer::search(array(
+            Braintree\CustomerSearch::id()->is($customer->id),
+            Braintree\CustomerSearch::createdAt()->greaterThanOrEqualTo($past),
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
     }
 
-    function test_paypalAccountEmail()
+    public function test_paypalAccountEmail()
     {
-        $http = new Braintree_HttpClientApi(Braintree_Configuration::$global);
+        $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount(array(
             'paypal_account' => array(
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
@@ -168,7 +172,7 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
         ));
 
         $customerId = 'UNIQUE_CUSTOMER_ID-' . strval(rand());
-        $customerResult = Braintree_Customer::create(array(
+        $customerResult = Braintree\Customer::create(array(
             'paymentMethodNonce' => $nonce,
             'id' => $customerId
         ));
@@ -177,19 +181,19 @@ class Braintree_CustomerAdvancedSearchTest extends PHPUnit_Framework_TestCase
 
         $customer = $customerResult->customer;
 
-        $collection = Braintree_Customer::search(array(
-            Braintree_CustomerSearch::id()->is($customer->id),
-            Braintree_CustomerSearch::paypalAccountEmail()->is('jane.doe@example.com')
+        $collection = Braintree\Customer::search(array(
+            Braintree\CustomerSearch::id()->is($customer->id),
+            Braintree\CustomerSearch::paypalAccountEmail()->is('jane.doe@example.com')
         ));
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
     }
 
-    function test_throwsIfNoOperatorNodeGiven()
+    public function test_throwsIfNoOperatorNodeGiven()
     {
         $this->setExpectedException('InvalidArgumentException', 'Operator must be provided');
-        Braintree_Customer::search(array(
-            Braintree_CustomerSearch::creditCardExpirationDate()
+        Braintree\Customer::search(array(
+            Braintree\CustomerSearch::creditCardExpirationDate()
         ));
     }
 }

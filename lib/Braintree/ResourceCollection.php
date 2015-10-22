@@ -1,4 +1,8 @@
 <?php
+namespace Braintree;
+
+use Iterator;
+
 /**
  * Braintree ResourceCollection
  * ResourceCollection is a container object for result data
@@ -7,7 +11,7 @@
  *
  * example:
  * <code>
- * $result = Braintree_Customer::all();
+ * $result = Customer::all();
  *
  * foreach($result as $transaction) {
  *   print_r($transaction->id);
@@ -18,7 +22,7 @@
  * @subpackage Utility
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_ResourceCollection implements Iterator
+class ResourceCollection implements Iterator
 {
     private $_index;
     private $_batchIndex;
@@ -139,3 +143,4 @@ class Braintree_ResourceCollection implements Iterator
         );
     }
 }
+class_alias('Braintree\ResourceCollection', 'Braintree_ResourceCollection');

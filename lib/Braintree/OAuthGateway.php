@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree OAuthGateway module
  * PHP Version 5
@@ -7,7 +9,7 @@
  * @package   Braintree
  * @copyright 2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_OAuthGateway
+class OAuthGateway
 {
     private $_gateway;
     private $_config;
@@ -17,7 +19,7 @@ class Braintree_OAuthGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
         $this->_http->useClientCredentials();
 
         $this->_config->assertHasClientCredentials();
@@ -45,15 +47,15 @@ class Braintree_OAuthGateway
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['credentials'])) {
-            $result =  new Braintree_Result_Successful(
-                Braintree_OAuthCredentials::factory($response['credentials'])
+            $result =  new Result\Successful(
+                OAuthCredentials::factory($response['credentials'])
             );
             return $this->_mapSuccess($result);
         } else if (isset($response['apiErrorResponse'])) {
-            $result = new Braintree_Result_Error($response['apiErrorResponse']);
+            $result = new Result\Error($response['apiErrorResponse']);
             return $this->_mapError($result);
         } else {
-            throw new Braintree_Exception_Unexpected(
+            throw new Exception\Unexpected(
                 "Expected credentials or apiErrorResponse"
             );
         }
@@ -63,11 +65,11 @@ class Braintree_OAuthGateway
     {
         $error = $result->errors->deepAll()[0];
 
-        if ($error->code == Braintree_Error_Codes::OAUTH_INVALID_GRANT) {
+        if ($error->code == Error\Codes::OAUTH_INVALID_GRANT) {
             $result->error = 'invalid_grant';
-        } else if ($error->code == Braintree_Error_Codes::OAUTH_INVALID_CREDENTIALS) {
+        } else if ($error->code == Error\Codes::OAUTH_INVALID_CREDENTIALS) {
             $result->error = 'invalid_credentials';
-        } else if ($error->code == Braintree_Error_Codes::OAUTH_INVALID_SCOPE) {
+        } else if ($error->code == Error\Codes::OAUTH_INVALID_SCOPE) {
             $result->error = 'invalid_scope';
         }
         $result->errorDescription = explode(': ', $error->message)[1];
@@ -86,7 +88,7 @@ class Braintree_OAuthGateway
 
     public function connectUrl($params = array())
     {
-        $query = Braintree_Util::camelCaseToDelimiterArray($params, '_');
+        $query = Util::camelCaseToDelimiterArray($params, '_');
         $query['client_id'] = $this->_config->getClientId();
         $queryString = preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($query));
         $url = $this->_config->baseUrl() . '/oauth/connect?' . $queryString;
@@ -100,3 +102,4 @@ class Braintree_OAuthGateway
         return hash_hmac('sha256', $url, $key);
     }
 }
+class_alias('Braintree\OAuthGateway', 'Braintree_OAuthGateway');

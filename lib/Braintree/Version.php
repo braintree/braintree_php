@@ -1,11 +1,13 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree Library Version
  * stores version information about the Braintree library
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-final class Braintree_Version
+final class Version
 {
     /**
      * class constants
@@ -28,6 +30,7 @@ final class Braintree_Version
      */
     public static function get()
     {
-        return self::MAJOR.'.'.self::MINOR.'.'.self::TINY;
+        return self::MAJOR . '.' . self::MINOR . '.' . self::TINY;
     }
 }
+class_alias('Braintree\Version', 'Braintree_Version');

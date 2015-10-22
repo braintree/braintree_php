@@ -1,11 +1,19 @@
 <?php
+namespace Braintree\Xml;
+
+use DateTime;
+use DateTimeZone;
+use DOMDocument;
+use DOMElement;
+use DOMText;
+use Braintree\Util;
 
 /**
  * Braintree XML Parser
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Xml_Parser
+class Parser
 {
     /**
      * Converts an XML string into a multidimensional array
@@ -20,7 +28,7 @@ class Braintree_Xml_Parser
 
         $root = $document->documentElement->nodeName;
 
-        return Braintree_Util::delimiterToCamelCaseArray(array(
+        return Util::delimiterToCamelCaseArray(array(
             $root => self::_nodeToValue($document->childNodes->item(0)),
         ));
     }
@@ -131,3 +139,4 @@ class Braintree_Xml_Parser
         return $dateTime;
     }
 }
+class_alias('Braintree\Xml\Parser', 'Braintree_Xml_Parser');

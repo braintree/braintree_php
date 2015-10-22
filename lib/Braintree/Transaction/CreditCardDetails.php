@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Transaction;
+
+use Braintree\Instance;
+
 /**
  * CreditCard details from a transaction
  * creates an instance of CreditCardDetails
@@ -16,9 +20,8 @@
  * @property-read string $last4
  * @property-read string $maskedNumber
  * @property-read string $token
- * @uses Braintree_Instance inherits methods
  */
-class Braintree_Transaction_CreditCardDetails extends Braintree_Instance
+class CreditCardDetails extends Instance
 {
     protected $_attributes = array();
 
@@ -33,3 +36,4 @@ class Braintree_Transaction_CreditCardDetails extends Braintree_Instance
 
     }
 }
+class_alias('Braintree\Transaction\CreditCardDetails', 'Braintree_Transaction_CreditCardDetails');

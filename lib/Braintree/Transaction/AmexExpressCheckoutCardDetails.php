@@ -1,4 +1,7 @@
 <?php
+namespace Braintree\Transaction;
+
+use Braintree\Instance;
 /**
  * Amex Express Checkout card details from a transaction
  *
@@ -25,9 +28,9 @@
  * @property-read string $imageUrl
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
- * @uses Braintree_Instance inherits methods
+ * @uses Instance inherits methods
  */
-class Braintree_Transaction_AmexExpressCheckoutCardDetails extends Braintree_Instance
+class AmexExpressCheckoutCardDetails extends Instance
 {
     protected $_attributes = array();
 
@@ -39,3 +42,4 @@ class Braintree_Transaction_AmexExpressCheckoutCardDetails extends Braintree_Ins
         parent::__construct($attributes);
     }
 }
+class_alias('Braintree\Transaction\AmexExpressCheckoutCardDetails', 'Braintree_Transaction_AmexExpressCheckoutCardDetails');

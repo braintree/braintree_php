@@ -1,9 +1,13 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_SanityTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+
+class SanityTest extends Setup
 {
-    function testCodeFiles_allOmitPHPCloseTag()
+    public function testCodeFiles_allOmitPHPCloseTag()
     {
         $codeFiles = explode("\n", shell_exec("find ./lib -name \*.php"));
         foreach ($codeFiles as $codeFile) {

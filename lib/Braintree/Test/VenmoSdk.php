@@ -1,4 +1,6 @@
 <?php
+namespace Braintree\Test;
+
 /**
  * VenmoSdk payment method codes used for testing purposes
  *
@@ -6,7 +8,7 @@
  * @subpackage Test
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Test_VenmoSdk
+class VenmoSdk
 {
     public static $visaPaymentMethodCode = "stub-4111111111111111";
 
@@ -26,3 +28,4 @@ class Braintree_Test_VenmoSdk
         return "stub-invalid-session";
     }
 }
+class_alias('Braintree\Test\VenmoSdk', 'Braintree_Test_VenmoSdk');

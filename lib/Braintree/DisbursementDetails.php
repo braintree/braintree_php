@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Disbursement details from a transaction
  * Creates an instance of DisbursementDetails as returned from a transaction
@@ -13,11 +15,11 @@
  * @property-read string $fundsHeld
  * @property-read string $success
  * @property-read string $disbursementDate
- * @uses Braintree_Instance inherits methods
  */
-class Braintree_DisbursementDetails extends Braintree_Instance
+class DisbursementDetails extends Instance
 {
-    function isValid() {
+    public function isValid() {
         return !is_null($this->disbursementDate);
     }
 }
+class_alias('Braintree\DisbursementDetails', 'Braintree_DisbursementDetails');

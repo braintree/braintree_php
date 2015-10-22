@@ -1,38 +1,24 @@
 <?php
+namespace Test;
 
-set_include_path(
-  get_include_path() . PATH_SEPARATOR .
-  realpath(dirname(__FILE__)) . '/../lib'
-);
+require_once __DIR__ . '/Setup.php';
 
-require_once "Braintree.php";
-require_once "Braintree/CreditCardNumbers/CardTypeIndicators.php";
-require_once "Braintree/CreditCardDefaults.php";
-require_once "Braintree/OAuthTestHelper.php";
-require_once "Braintree/PaymentInstrumentType.php";
+use DateTime;
+use DateTimeZone;
+use Braintree;
 
-function integrationMerchantConfig()
+class Helper
 {
-    Braintree_Configuration::environment('development');
-    Braintree_Configuration::merchantId('integration_merchant_id');
-    Braintree_Configuration::publicKey('integration_public_key');
-    Braintree_Configuration::privateKey('integration_private_key');
-}
+    public static function testMerchantConfig()
+    {
+        Braintree\Configuration::reset();
 
-function testMerchantConfig()
-{
-    Braintree_Configuration::environment('development');
-    Braintree_Configuration::merchantId('test_merchant_id');
-    Braintree_Configuration::publicKey('test_public_key');
-    Braintree_Configuration::privateKey('test_private_key');
-}
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('test_merchant_id');
+        Braintree\Configuration::publicKey('test_public_key');
+        Braintree\Configuration::privateKey('test_private_key');
+    }
 
-integrationMerchantConfig();
-
-date_default_timezone_set("UTC");
-
-class Braintree_TestHelper
-{
     public static function defaultMerchantAccountId()
     {
         return 'sandbox_credit_card';
@@ -60,11 +46,11 @@ class Braintree_TestHelper
 
     public static function createViaTr($regularParams, $trParams)
     {
-        $trData = Braintree_TransparentRedirect::transactionData(
+        $trData = Braintree\TransparentRedirect::transactionData(
             array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
         );
-        return Braintree_TestHelper::submitTrRequest(
-            TransparentRedirect::url(),
+        return self::submitTrRequest(
+            Braintree\TransparentRedirect::url(),
             $regularParams,
             $trData
         );
@@ -91,10 +77,10 @@ class Braintree_TestHelper
 
     public static function suppressDeprecationWarnings()
     {
-        set_error_handler("Braintree_TestHelper::_errorHandler", E_USER_NOTICE);
+        set_error_handler("Test\Helper::_errorHandler", E_USER_NOTICE);
     }
 
-    static function _errorHandler($errno, $errstr, $errfile, $errline)
+    public static function _errorHandler($errno, $errstr, $errfile, $errline)
     {
         if (preg_match('/^DEPRECATED/', $errstr) == 0) {
             trigger_error('Unknown error received: ' . $errstr, E_USER_ERROR);
@@ -118,15 +104,15 @@ class Braintree_TestHelper
 
     public static function escrow($transactionId)
     {
-        $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . '/transactions/' . $transactionId . '/escrow';
+        $http = new Braintree\Http(Braintree\Configuration::$global);
+        $path = Braintree\Configuration::$global->merchantPath() . '/transactions/' . $transactionId . '/escrow';
         $http->put($path);
     }
 
     public static function create3DSVerification($merchantAccountId, $params)
     {
-        $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . '/three_d_secure/create_verification/' . $merchantAccountId;
+        $http = new Braintree\Http(Braintree\Configuration::$global);
+        $path = Braintree\Configuration::$global->merchantPath() . '/three_d_secure/create_verification/' . $merchantAccountId;
         $response = $http->post($path, array('threeDSecureVerification' => $params));
         return $response['threeDSecureVerification']['threeDSecureToken'];
     }
@@ -139,7 +125,7 @@ class Braintree_TestHelper
     }
 
     public static function decodedClientToken($params=array()) {
-        $encodedClientToken = Braintree_ClientToken::generate($params);
+        $encodedClientToken = Braintree\ClientToken::generate($params);
         return base64_decode($encodedClientToken);
     }
 }

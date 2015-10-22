@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Transaction;
+
+use Braintree\Instance;
+
 /**
  * Coinbase details from a transaction
  *
@@ -20,9 +24,8 @@
  * @property-read string $userName
  * @property-read string $userEmail
  * @property-read string $imageUrl
- * @uses Braintree_Instance inherits methods
  */
-class Braintree_Transaction_CoinbaseDetails extends Braintree_Instance
+class CoinbaseDetails extends Instance
 {
     protected $_attributes = array();
 
@@ -34,3 +37,4 @@ class Braintree_Transaction_CoinbaseDetails extends Braintree_Instance
         parent::__construct($attributes);
     }
 }
+class_alias('Braintree\Transaction\CoinbaseDetails', 'Braintree_Transaction_CoinbaseDetails');

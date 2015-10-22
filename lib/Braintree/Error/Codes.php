@@ -1,4 +1,6 @@
 <?php
+namespace Braintree\Error;
+
 /**
  *
  * Validation Error codes and messages
@@ -14,7 +16,7 @@
  * @category   Validation
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Error_Codes
+class Codes
 {
     const ADDRESS_CANNOT_BE_BLANK                        = '81801';
     const ADDRESS_COMPANY_IS_INVALID                     = '91821';
@@ -494,3 +496,4 @@ class Braintree_Error_Codes
     const TRANSACTION_TYPE_IS_REQUIRED                                          = '91524';
     const TRANSACTION_UNSUPPORTED_VOICE_AUTHORIZATION                           = '91539';
 }
+class_alias('Braintree\Error\Codes', 'Braintree_Error_Codes');

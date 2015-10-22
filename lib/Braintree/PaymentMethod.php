@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree PaymentMethod module
  *
@@ -18,27 +20,28 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  */
-class Braintree_PaymentMethod extends Braintree_Base
+class PaymentMethod extends Base
 {
     // static methods redirecting to gateway
 
     public static function create($attribs)
     {
-        return Braintree_Configuration::gateway()->paymentMethod()->create($attribs);
+        return Configuration::gateway()->paymentMethod()->create($attribs);
     }
 
     public static function find($token)
     {
-        return Braintree_Configuration::gateway()->paymentMethod()->find($token);
+        return Configuration::gateway()->paymentMethod()->find($token);
     }
 
     public static function update($token, $attribs)
     {
-        return Braintree_Configuration::gateway()->paymentMethod()->update($token, $attribs);
+        return Configuration::gateway()->paymentMethod()->update($token, $attribs);
     }
 
     public static function delete($token)
     {
-        return Braintree_Configuration::gateway()->paymentMethod()->delete($token);
+        return Configuration::gateway()->paymentMethod()->delete($token);
     }
 }
+class_alias('Braintree\PaymentMethod', 'Braintree_PaymentMethod');

@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Error;
+
+use Braintree\Collection;
+
 /**
  * collection of errors enumerating all validation errors for a given request
  *
@@ -13,7 +17,7 @@
  * @property-read array $errors
  * @property-read array $nested
  */
-class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
+class ValidationErrorCollection extends Collection
 {
     private $_errors = array();
     private $_nested = array();
@@ -27,10 +31,10 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
             // map errors to new collections recursively
             if ($key == 'errors') {
                 foreach ($errorData AS $error) {
-                    $this->_errors[] = new Braintree_Error_Validation($error);
+                    $this->_errors[] = new Validation($error);
                 }
             } else {
-                $this->_nested[$key] = new Braintree_Error_ValidationErrorCollection($errorData);
+                $this->_nested[$key] = new ValidationErrorCollection($errorData);
             }
 
     }
@@ -125,3 +129,4 @@ class Braintree_Error_ValidationErrorCollection extends Braintree_Collection
         return $eOutput;
     }
 }
+class_alias('Braintree\Error\ValidationErrorCollection', 'Braintree_Error_ValidationErrorCollection');

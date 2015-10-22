@@ -1,5 +1,7 @@
 <?php
-class Braintree_CreditCardNumbers_CardTypeIndicators {
+namespace Test\Braintree\CreditCardNumbers;
+
+class CardTypeIndicators {
     const PREPAID             = "4111111111111210";
     const COMMERCIAL          = "4111111111131010";
     const PAYROLL             = "4111111114101010";

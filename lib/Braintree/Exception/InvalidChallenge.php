@@ -1,5 +1,9 @@
 <?php
-class Braintree_Exception_InvalidChallenge extends Braintree_Exception
-{
+namespace Braintree\Exception;
 
+use Braintree\Exception;
+
+class InvalidChallenge extends Exception
+{
 }
+class_alias('Braintree\Exception\InvalidChallenge', 'Braintree_Exception_InvalidChallenge');

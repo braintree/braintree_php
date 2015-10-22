@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  *
  * Configuration registry
@@ -8,7 +10,7 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
-class Braintree_Configuration
+class Configuration
 {
     public static $global;
 
@@ -33,7 +35,7 @@ class Braintree_Configuration
     {
         foreach ($attribs as $kind => $value) {
             if ($kind == 'environment') {
-                Braintree_CredentialsParser::assertValidEnvironment($value);
+                CredentialsParser::assertValidEnvironment($value);
                 $this->_environment = $value;
             }
             if ($kind == 'merchantId') {
@@ -49,9 +51,9 @@ class Braintree_Configuration
 
         if (isset($attribs['clientId']) || isset($attribs['accessToken'])) {
             if (isset($attribs['environment']) || isset($attribs['merchantId']) || isset($attribs['publicKey']) || isset($attribs['privateKey'])) {
-                throw new Braintree_Exception_Configuration('Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId).');
+                throw new Exception\Configuration('Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId).');
             }
-            $parsedCredentials = new Braintree_CredentialsParser($attribs);
+            $parsedCredentials = new CredentialsParser($attribs);
 
             $this->_environment = $parsedCredentials->getEnvironment();
             $this->_merchantId = $parsedCredentials->getMerchantId();
@@ -67,12 +69,12 @@ class Braintree_Configuration
      */
     public static function reset()
     {
-        self::$global = new Braintree_Configuration();
+        self::$global = new Configuration();
     }
 
     public static function gateway()
     {
-        return new Braintree_Gateway(self::$global);
+        return new Gateway(self::$global);
     }
 
     public static function environment($value=null)
@@ -80,7 +82,7 @@ class Braintree_Configuration
         if (empty($value)) {
             return self::$global->getEnvironment();
         }
-        Braintree_CredentialsParser::assertValidEnvironment($value);
+        CredentialsParser::assertValidEnvironment($value);
         self::$global->setEnvironment($value);
     }
 
@@ -172,13 +174,13 @@ class Braintree_Configuration
     {
         if (empty($this->_accessToken)) {
             if (empty($this->_merchantId)) {
-                throw new Braintree_Exception_Configuration('Braintree_Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree_Gateway).');
+                throw new Exception\Configuration('Braintree\\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\\Gateway).');
             } else if (empty($this->_environment)) {
-                throw new Braintree_Exception_Configuration('Braintree_Configuration::environment needs to be set.');
+                throw new Exception\Configuration('Braintree\\Configuration::environment needs to be set.');
             } else if (empty($this->_publicKey)) {
-                throw new Braintree_Exception_Configuration('Braintree_Configuration::publicKey needs to be set.');
+                throw new Exception\Configuration('Braintree\\Configuration::publicKey needs to be set.');
             } else if (empty($this->_privateKey)) {
-                throw new Braintree_Exception_Configuration('Braintree_Configuration::privateKey needs to be set.');
+                throw new Exception\Configuration('Braintree\\Configuration::privateKey needs to be set.');
             }
         }
     }
@@ -192,14 +194,14 @@ class Braintree_Configuration
     public function assertHasClientId()
     {
         if (empty($this->_clientId)) {
-            throw new Braintree_Exception_Configuration('clientId needs to be passed to Braintree_Gateway.');
+            throw new Exception\Configuration('clientId needs to be passed to Braintree\\Gateway.');
         }
     }
 
     public function assertHasClientSecret()
     {
         if (empty($this->_clientSecret)) {
-            throw new Braintree_Exception_Configuration('clientSecret needs to be passed to Braintree_Gateway.');
+            throw new Exception\Configuration('clientSecret needs to be passed to Braintree\\Gateway.');
         }
     }
 
@@ -330,7 +332,7 @@ class Braintree_Configuration
      */
     public function merchantPath()
     {
-        return '/merchants/'.$this->_merchantId;
+        return '/merchants/' . $this->_merchantId;
     }
 
     /**
@@ -348,7 +350,7 @@ class Braintree_Configuration
 
         if (!file_exists($caPath))
         {
-            throw new Braintree_Exception_SSLCaFileNotFound();
+            throw new Exception\SSLCaFileNotFound();
         }
 
         return $caPath;
@@ -469,4 +471,5 @@ class Braintree_Configuration
         error_log('[Braintree] ' . $message);
     }
 }
-Braintree_Configuration::reset();
+Configuration::reset();
+class_alias('Braintree\Configuration', 'Braintree_Configuration');

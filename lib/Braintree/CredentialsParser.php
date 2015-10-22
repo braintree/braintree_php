@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  *
  * CredentialsParser registry
@@ -8,7 +10,7 @@
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
-class Braintree_CredentialsParser
+class CredentialsParser
 {
     private $_clientId;
     private $_clientSecret;
@@ -63,7 +65,7 @@ class Braintree_CredentialsParser
         $checkEnv = $environments[0];
         foreach ($environments as $env) {
             if ($env[1] !== $checkEnv[1]) {
-                throw new Braintree_Exception_Configuration(
+                throw new Exception\Configuration(
                     'Mismatched credential environments: ' . $checkEnv[0] . ' environment is ' . $checkEnv[1] .
                     ' and ' . $env[0] . ' environment is ' . $env[1]);
             }
@@ -75,7 +77,7 @@ class Braintree_CredentialsParser
 
     public static function assertValidEnvironment($environment) {
         if (!in_array($environment, self::$_validEnvironments)) {
-            throw new Braintree_Exception_Configuration('"' .
+            throw new Exception\Configuration('"' .
                                     $environment . '" is not a valid environment.');
         }
     }
@@ -84,7 +86,7 @@ class Braintree_CredentialsParser
     {
         $explodedCredential = explode('$', $value);
         if (sizeof($explodedCredential) != 3) {
-            throw new Braintree_Exception_Configuration('Incorrect ' . $credentialType . ' format. Expected: type$environment$token');
+            throw new Exception\Configuration('Incorrect ' . $credentialType . ' format. Expected: type$environment$token');
         }
 
         $gotValuePrefix = $explodedCredential[0];
@@ -92,7 +94,7 @@ class Braintree_CredentialsParser
         $token = $explodedCredential[2];
 
         if ($gotValuePrefix != $expectedValuePrefix) {
-            throw new Braintree_Exception_Configuration('Value passed for ' . $credentialType . ' is not a ' . $credentialType);
+            throw new Exception\Configuration('Value passed for ' . $credentialType . ' is not a ' . $credentialType);
         }
 
         return $environment;
@@ -102,7 +104,7 @@ class Braintree_CredentialsParser
     {
         $accessTokenExploded = explode('$', $this->_accessToken);
         if (sizeof($accessTokenExploded) != 4) {
-            throw new Braintree_Exception_Configuration('Incorrect accessToken syntax. Expected: type$environment$merchant_id$token');
+            throw new Exception\Configuration('Incorrect accessToken syntax. Expected: type$environment$merchant_id$token');
         }
 
         $gotValuePrefix = $accessTokenExploded[0];
@@ -111,7 +113,7 @@ class Braintree_CredentialsParser
         $token = $accessTokenExploded[3];
 
         if ($gotValuePrefix != 'access_token') {
-            throw new Braintree_Exception_Configuration('Value passed for accessToken is not an accessToken');
+            throw new Exception\Configuration('Value passed for accessToken is not an accessToken');
         }
 
         $this->_merchantId = $merchantId;
@@ -143,3 +145,4 @@ class Braintree_CredentialsParser
         return $this->_merchantId;
     }
 }
+class_alias('Braintree\CredentialsParser', 'Braintree_CredentialsParser');

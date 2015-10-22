@@ -1,11 +1,17 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Integration;
 
-class Braintree_DisbursementTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use DateTime;
+use Test\Setup;
+use Braintree;
+
+class DisbursementTest extends Setup
 {
-    function testTransactions()
+    public function testTransactions()
     {
-        $disbursement = Braintree_Disbursement::factory(array(
+        $disbursement = Braintree\Disbursement::factory(array(
             "id" => "123456",
             "merchantAccount" => array(
                 "id" => "sandbox_sub_merchant_account",

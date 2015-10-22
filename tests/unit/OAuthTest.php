@@ -1,13 +1,18 @@
 <?php
-require_once __DIR__ . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class OAuthTest extends Setup
 {
     protected $gateway;
 
     public function setUp()
     {
-        $this->gateway = new Braintree_Gateway(array(
+        $this->gateway = new Braintree\Gateway(array(
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
         ));
@@ -54,7 +59,7 @@ class Braintree_OAuthTest extends PHPUnit_Framework_TestCase
 
     protected function _buildResult($error)
     {
-        return new Braintree_Result_Error(array(
+        return new Braintree\Result\Error(array(
             'errors' => array(
                 'errors' => array(),
                 'credentials' => array(

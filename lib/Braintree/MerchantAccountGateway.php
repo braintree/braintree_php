@@ -1,6 +1,7 @@
 <?php
+namespace Braintree;
 
-final class Braintree_MerchantAccountGateway
+final class MerchantAccountGateway
 {
     private $_gateway;
     private $_config;
@@ -11,12 +12,12 @@ final class Braintree_MerchantAccountGateway
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasAccessTokenOrKeys();
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
     }
 
     public function create($attribs)
     {
-        Braintree_Util::verifyKeys(self::detectSignature($attribs), $attribs);
+        Util::verifyKeys(self::detectSignature($attribs), $attribs);
         return $this->_doCreate('/merchant_accounts/create_via_api', array('merchant_account' => $attribs));
     }
 
@@ -25,15 +26,15 @@ final class Braintree_MerchantAccountGateway
         try {
             $path = $this->_config->merchantPath() . '/merchant_accounts/' . $merchant_account_id;
             $response = $this->_http->get($path);
-            return Braintree_MerchantAccount::factory($response['merchantAccount']);
-        } catch (Braintree_Exception_NotFound $e) {
-            throw new Braintree_Exception_NotFound('merchant account with id ' . $merchant_account_id . ' not found');
+            return MerchantAccount::factory($response['merchantAccount']);
+        } catch (Exception\NotFound $e) {
+            throw new Exception\NotFound('merchant account with id ' . $merchant_account_id . ' not found');
         }
     }
 
     public function update($merchant_account_id, $attributes)
     {
-        Braintree_Util::verifyKeys(self::updateSignature(), $attributes);
+        Util::verifyKeys(self::updateSignature(), $attributes);
         return $this->_doUpdate('/merchant_accounts/' . $merchant_account_id . '/update_via_api', array('merchant_account' => $attributes));
     }
 
@@ -137,16 +138,17 @@ final class Braintree_MerchantAccountGateway
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['merchantAccount'])) {
-            // return a populated instance of Braintree_merchantAccount
-            return new Braintree_Result_Successful(
-                    Braintree_MerchantAccount::factory($response['merchantAccount'])
+            // return a populated instance of merchantAccount
+            return new Result\Successful(
+                    MerchantAccount::factory($response['merchantAccount'])
             );
         } else if (isset($response['apiErrorResponse'])) {
-            return new Braintree_Result_Error($response['apiErrorResponse']);
+            return new Result\Error($response['apiErrorResponse']);
         } else {
-            throw new Braintree_Exception_Unexpected(
+            throw new Exception\Unexpected(
             "Expected merchant account or apiErrorResponse"
             );
         }
     }
 }
+class_alias('Braintree\MerchantAccountGateway', 'Braintree_MerchantAccountGateway');

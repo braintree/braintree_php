@@ -1,4 +1,5 @@
 <?php
+namespace Test\Braintree;
 
 class CreditCardDefaults
 {
