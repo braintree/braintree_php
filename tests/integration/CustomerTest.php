@@ -174,7 +174,7 @@ class CustomerTest extends Setup
 
     public function testCreateCustomerWithAmexExpressCheckoutCard()
     {
-        $nonce = Braintree\Test_Nonces::$amexExpressCheckout;
+        $nonce = Braintree\Test\Nonces::$amexExpressCheckout;
         $result = Braintree\Customer::create(array(
             'paymentMethodNonce' => $nonce
         ));

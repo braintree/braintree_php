@@ -29,8 +29,8 @@ class MerchantTest extends Setup
     }
 
     /**
-    * @expectedException Exception\Configuration
-    * @expectedExceptionMessage clientId needs to be passed to Gateway
+    * @expectedException Braintree\Exception\Configuration
+    * @expectedExceptionMessage clientId needs to be passed to Braintree\Gateway
     */
     public function testAssertsHasCredentials()
     {

@@ -220,9 +220,9 @@ class PaymentMethodGateway
                 "paymentMethod"
             );
         } else if (isset($response['amexExpressCheckoutCard'])) {
-            // return a populated instance of Braintree_AmexExpressCheckoutCard
-            return new Braintree_Result_Successful(
-                Braintree_AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']),
+            // return a populated instance of AmexExpressCheckoutCard
+            return new Result\Successful(
+                AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']),
                 "paymentMethod"
             );
         } else if (isset($response['europeBankAccount'])) {

@@ -288,7 +288,7 @@ class Customer extends Base
         $amexExpressCheckoutCardArray = array();
         if (isset($customerAttribs['amexExpressCheckoutCards'])) {
             foreach ($customerAttribs['amexExpressCheckoutCards'] AS $amexExpressCheckoutCard) {
-                $amexExpressCheckoutCardArray[] = Braintree_AmexExpressCheckoutCard::factory($amexExpressCheckoutCard);
+                $amexExpressCheckoutCardArray[] = AmexExpressCheckoutCard::factory($amexExpressCheckoutCard);
             }
         }
         $this->_set('amexExpressCheckoutCards', $amexExpressCheckoutCardArray);

@@ -141,7 +141,7 @@ class PaymentMethodTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\PaymentMethod::create(array(
             'customerId' => $customer->id,
-            'paymentMethodNonce' => Braintree\Test_Nonces::$amexExpressCheckout
+            'paymentMethodNonce' => Braintree\Test\Nonces::$amexExpressCheckout
         ));
 
         $this->assertTrue($result->success);

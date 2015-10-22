@@ -385,8 +385,8 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale(array(
             'amount' => '47.00',
-            'merchantAccountId' => Braintree\TestHelper::fakeAmexDirectMerchantAccountId(),
-            'paymentMethodNonce' => Braintree\Test_Nonces::$amexExpressCheckout
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
+            'paymentMethodNonce' => Braintree\Test\Nonces::$amexExpressCheckout
         ));
 
         $this->assertTrue($result->success);
