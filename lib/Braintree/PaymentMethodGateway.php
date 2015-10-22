@@ -66,6 +66,8 @@ class PaymentMethodGateway
                 return ApplePayCard::factory($response['applePayCard']);
             } else if (isset($response['androidPayCard'])) {
                 return AndroidPayCard::factory($response['androidPayCard']);
+            } else if (isset($response['amexExpressCheckoutCard'])) {
+                return AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']);
             } else if (isset($response['europeBankAccount'])) {
                 return EuropeBankAccount::factory($response['europeBankAccount']);
             } else if (is_array($response)) {
@@ -215,6 +217,12 @@ class PaymentMethodGateway
             // return a populated instance of AndroidPayCard
             return new Result\Successful(
                 AndroidPayCard::factory($response['androidPayCard']),
+                "paymentMethod"
+            );
+        } else if (isset($response['amexExpressCheckoutCard'])) {
+            // return a populated instance of Braintree_AmexExpressCheckoutCard
+            return new Braintree_Result_Successful(
+                Braintree_AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']),
                 "paymentMethod"
             );
         } else if (isset($response['europeBankAccount'])) {

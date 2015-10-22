@@ -284,7 +284,16 @@ class Customer extends Base
         }
         $this->_set('androidPayCards', $androidPayCardArray);
 
-        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards));
+        // map each amexExpressCheckoutCard into its own object
+        $amexExpressCheckoutCardArray = array();
+        if (isset($customerAttribs['amexExpressCheckoutCards'])) {
+            foreach ($customerAttribs['amexExpressCheckoutCards'] AS $amexExpressCheckoutCard) {
+                $amexExpressCheckoutCardArray[] = Braintree_AmexExpressCheckoutCard::factory($amexExpressCheckoutCard);
+            }
+        }
+        $this->_set('amexExpressCheckoutCards', $amexExpressCheckoutCardArray);
+
+        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards, $this->amexExpressCheckoutCards));
     }
 
     /**
