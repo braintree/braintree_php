@@ -21,7 +21,7 @@ class WebhookNotificationTest extends Setup
     }
 
     /**
-     * @expectedException Exception\InvalidChallenge
+     * @expectedException Braintree\Exception\InvalidChallenge
      * @expectedExceptionMessage challenge contains non-hex characters
      */
     public function testVerifyRaisesErrorWithInvalidChallenge()
@@ -32,8 +32,8 @@ class WebhookNotificationTest extends Setup
     }
 
     /**
-     * @expectedException Exception\Configuration
-     * @expectedExceptionMessage Configuration::merchantId needs to be set (or accessToken needs to be passed to Gateway)
+     * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage Braintree\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\Gateway)
      */
     public function testVerifyRaisesErrorWhenEnvironmentNotSet()
     {
@@ -75,8 +75,8 @@ class WebhookNotificationTest extends Setup
     }
 
     /**
-     * @expectedException Exception\Configuration
-     * @expectedExceptionMessage Configuration::merchantId needs to be set (or accessToken needs to be passed to Gateway)
+     * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage Braintree\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\Gateway)
      */
     public function testParsingWithNoKeysRaisesError()
     {
