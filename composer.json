@@ -1,5 +1,5 @@
 {
-    "name": "eusonlito/braintree_php",
+    "name": "braintree/braintree_php",
     "type": "library",
     "description": "Braintree PHP Client Library",
     "license": "MIT",
