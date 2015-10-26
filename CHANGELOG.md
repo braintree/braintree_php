@@ -1,3 +1,10 @@
+## 3.6.0
+* Add support for proxy servers
+* Add PSR-4 namespacing support
+* Add support for AMEX Express Checkout
+* Add support for new fields in dispute webhooks (`dateWon`, `dateOpened`, `kind`)
+* Add transaction data to sucessful subscription webhook
+
 ## 3.5.0
 * Add support for raw ApplePay params on Transaction create
 
