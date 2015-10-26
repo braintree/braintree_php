@@ -19,20 +19,20 @@ The following PHP extensions are required:
 ```php
 <?php
 
+namespace Braintree;
+
 require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
 
-Braintree_Configuration::environment('sandbox');
-Braintree_Configuration::merchantId('your_merchant_id');
-Braintree_Configuration::publicKey('your_public_key');
-Braintree_Configuration::privateKey('your_private_key');
+Configuration::environment('sandbox');
+Configuration::merchantId('your_merchant_id');
+Configuration::publicKey('your_public_key');
+Configuration::privateKey('your_private_key');
 
-$result = Braintree_Transaction::sale(array(
+$result = Transaction::sale([
     'amount' => '1000.00',
     'paymentMethodNonce' => 'nonceFromTheClient',
-    'options' => array(
-        'submitForSettlement' => true
-    )
-));
+    'options' => [ 'submitForSettlement' => true ]
+]);
 
 if ($result->success) {
     print_r("success!: " . $result->transaction->id);
@@ -44,8 +44,6 @@ if ($result->success) {
     print_r("Validation errors: \n");
     print_r($result->errors->deepAll());
 }
-
-?>
 ```
 
 ## HHVM Support
