@@ -1,13 +1,16 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
-require_once realpath(dirname(__FILE__)) . '/HttpClientApi.php';
+namespace Test\Integration;
 
-class Braintree_EuropeBankAccountTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class EuropeBankAccountTest extends Setup
 {
-
-    function testCanExchangeNonceForEuropeBankAccount()
+    public function testCanExchangeNonceForEuropeBankAccount()
     {
-        $gateway = new Braintree_Gateway(array(
+        $gateway = new Braintree\Gateway(array(
             'environment' => 'development',
             'merchantId' => 'altpay_merchant',
             'publicKey' => 'altpay_merchant_public_key',
@@ -17,7 +20,7 @@ class Braintree_EuropeBankAccountTest extends PHPUnit_Framework_TestCase
         $result = $gateway->customer()->create();
         $this->assertTrue($result->success);
         $customer = $result->customer;
-        $clientApi = new Braintree_HttpClientApi($gateway->config);
+        $clientApi = new HttpClientApi($gateway->config);
         $nonce = $clientApi->nonceForNewEuropeanBankAccount(array(
             "customerId" => $customer->id,
             "sepa_mandate" => array(

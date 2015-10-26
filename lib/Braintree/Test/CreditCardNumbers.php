@@ -1,9 +1,10 @@
 <?php
+namespace Braintree\Test;
 
 /**
  * Credit card information used for testing purposes
  *
- * The constants contained in the Braintree_Test_CreditCardNumbers class provide
+ * The constants contained in the Test\CreditCardNumbers class provide
  * credit card numbers that should be used when working in the sandbox environment.
  * The sandbox will not accept any credit card numbers other than the ones listed below.
  *
@@ -11,7 +12,7 @@
  * @subpackage Test
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Test_CreditCardNumbers
+class CreditCardNumbers
 {
     public static $amExes = array(
         '378282246310005',
@@ -56,6 +57,11 @@ class Braintree_Test_CreditCardNumbers
         'Visa'       => '4000111111111115',
         );
 
+    public static $amexPayWithPoints = array(
+        'Success' => "371260714673002",
+        'IneligibleCard' => "378267515471109",
+        'InsufficientPoints' => "371544868764018",
+        );
 
     public static function getAll()
     {
@@ -67,3 +73,4 @@ class Braintree_Test_CreditCardNumbers
                 );
     }
 }
+class_alias('Braintree\Test\CreditCardNumbers', 'Braintree_Test_CreditCardNumbers');

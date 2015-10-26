@@ -1,20 +1,25 @@
 <?php
+namespace Braintree\Result;
+
+use Braintree\Instance;
+use Braintree\Util;
+
 /**
  * Braintree Successful Result
  *
  * A Successful Result will be returned from gateway methods when
  * validations pass. It will provide access to the created resource.
  *
- * For example, when creating a customer, Braintree_Result_Successful will
+ * For example, when creating a customer, Successful will
  * respond to <b>customer</b> like so:
  *
  * <code>
- * $result = Braintree_Customer::create(array('first_name' => "John"));
+ * $result = Customer::create(array('first_name' => "John"));
  * if ($result->success) {
- *     // Braintree_Result_Successful
+ *     // Successful
  *     echo "Created customer {$result->customer->id}";
  * } else {
- *     // Braintree_Result_Error
+ *     // Error
  * }
  * </code>
  *
@@ -23,7 +28,7 @@
  * @subpackage Result
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Result_Successful extends Braintree_Instance
+class Successful extends Instance
 {
     /**
      *
@@ -78,9 +83,10 @@ class Braintree_Result_Successful extends Braintree_Instance
        if(count($objsToReturn) != count($propertyNames)) {
            $propertyNames = array();
            foreach ($objsToReturn as $obj) {
-               array_push($propertyNames, Braintree_Util::cleanClassName(get_class($obj)));
+               array_push($propertyNames, Util::cleanClassName(get_class($obj)));
            }
        }
        return array_combine($propertyNames, $objsToReturn);
    }
 }
+class_alias('Braintree\Result\Successful', 'Braintree_Result_Successful');

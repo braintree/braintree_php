@@ -1,11 +1,16 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../../TestHelper.php';
+namespace Test\Unit\Result;
 
-class Braintree_Result_ErrorTest extends PHPUnit_Framework_TestCase
+require_once dirname(dirname(__DIR__)) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class ErrorTest extends Setup
 {
-    function testCallingNonExsitingFieldReturnsNull()
+    public function testCallingNonExsitingFieldReturnsNull()
     {
-        $result = new Braintree_Result_Error(array('errors' => array(), 'params' => array(), 'message' => 'briefly describe'));
+        $result = new Braintree\Result\Error(array('errors' => array(), 'params' => array(), 'message' => 'briefly describe'));
         $this->assertNull($result->transaction);
     }
 }

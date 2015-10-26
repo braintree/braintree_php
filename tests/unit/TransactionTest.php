@@ -1,11 +1,16 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class TransactionTest extends Setup
 {
-    function testGet_givesErrorIfInvalidProperty()
+    public function testGet_givesErrorIfInvalidProperty()
     {
-        $t = Braintree_Transaction::factory(array(
+        $t = Braintree\Transaction::factory(array(
             'creditCard' => array('expirationMonth' => '05', 'expirationYear' => '2010', 'bin' => '510510', 'last4' => '5100'),
             'customer' => array(),
             'billing' => array(),
@@ -14,32 +19,32 @@ class Braintree_TransactionTest extends PHPUnit_Framework_TestCase
             'subscription' => array('billingPeriodStartDate' => '1983-07-12'),
             'statusHistory' => array()
         ));
-        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree_Transaction: foo');
+        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\Transaction: foo');
         $t->foo;
     }
 
-	function testCloneTransaction_RaisesErrorOnInvalidProperty()
+	public function testCloneTransaction_RaisesErrorOnInvalidProperty()
 	{
         $this->setExpectedException('InvalidArgumentException');
-		Braintree_Transaction::cloneTransaction('an id', array('amount' => '123.45', 'invalidProperty' => 'foo'));
+		Braintree\Transaction::cloneTransaction('an id', array('amount' => '123.45', 'invalidProperty' => 'foo'));
 	}
 
-	function testErrorsWhenFindWithBlankString()
+	public function testErrorsWhenFindWithBlankString()
 	{
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_Transaction::find('');
+        Braintree\Transaction::find('');
 	}
 
-	function testErrorsWhenFindWithWhitespaceString()
+	public function testErrorsWhenFindWithWhitespaceString()
 	{
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_Transaction::find('\t');
+        Braintree\Transaction::find('\t');
 	}
 
-    function testInitializationWithoutArguments()
+    public function testInitializationWithoutArguments()
     {
-        $transaction = Braintree_Transaction::factory(array());
+        $transaction = Braintree\Transaction::factory(array());
 
-        $this->assertTrue($transaction instanceof Braintree_Transaction);
+        $this->assertTrue($transaction instanceof Braintree\Transaction);
     }
 }

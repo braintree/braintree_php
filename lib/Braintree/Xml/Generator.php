@@ -1,4 +1,11 @@
 <?php
+namespace Braintree\Xml;
+
+use DateTime;
+use DateTimeZone;
+use XMLWriter;
+use Braintree\Util;
+
 /**
  * PHP version 5
  *
@@ -11,7 +18,7 @@
  *
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Xml_Generator
+class Generator
 {
     /**
      * arrays passed to this method should have a single root element
@@ -21,7 +28,7 @@ class Braintree_Xml_Generator
      */
     public static function arrayToXml($aData)
     {
-        $aData = Braintree_Util::camelCaseToDelimiterArray($aData, '-');
+        $aData = Util::camelCaseToDelimiterArray($aData, '-');
         // set up the XMLWriter
         $writer = new XMLWriter();
         $writer->openMemory();
@@ -141,3 +148,4 @@ class Braintree_Xml_Generator
         }
     }
 }
+class_alias('Braintree\Xml\Generator', 'Braintree_Xml_Generator');

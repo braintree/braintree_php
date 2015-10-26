@@ -1,5 +1,7 @@
 <?php
-class Braintree_PlanGateway
+namespace Braintree;
+
+class PlanGateway
 {
     private $_gateway;
     private $_config;
@@ -10,7 +12,7 @@ class Braintree_PlanGateway
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasAccessTokenOrKeys();
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
     }
 
     public function all()
@@ -23,9 +25,10 @@ class Braintree_PlanGateway
             $plans = array("plan" => array());
         }
 
-        return Braintree_Util::extractAttributeAsArray(
+        return Util::extractAttributeAsArray(
             $plans,
             'plan'
         );
     }
 }
+class_alias('Braintree\PlanGateway', 'Braintree_PlanGateway');

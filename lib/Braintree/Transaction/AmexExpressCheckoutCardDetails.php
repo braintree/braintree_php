@@ -2,9 +2,8 @@
 namespace Braintree\Transaction;
 
 use Braintree\Instance;
-
 /**
- * Apple Pay card details from a transaction
+ * Amex Express Checkout card details from a transaction
  *
  * @package    Braintree
  * @subpackage Transaction
@@ -12,7 +11,7 @@ use Braintree\Instance;
  */
 
 /**
- * creates an instance of ApplePayCardDetails
+ * creates an instance of AmexExpressCheckoutCardDetails
  *
  *
  * @package    Braintree
@@ -20,13 +19,18 @@ use Braintree\Instance;
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $cardType
- * @property-read string $paymentInstrumentName
+ * @property-read string $bin
+ * @property-read string $cardMemberExpiryDate
+ * @property-read string $cardMemberNumber
+ * @property-read string $cardType
+ * @property-read string $sourceDescription
+ * @property-read string $token
+ * @property-read string $imageUrl
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
- * @property-read string $cardholderName
- * @property-read string $sourceDescription
+ * @uses Instance inherits methods
  */
-class ApplePayCardDetails extends Instance
+class AmexExpressCheckoutCardDetails extends Instance
 {
     protected $_attributes = array();
 
@@ -38,4 +42,4 @@ class ApplePayCardDetails extends Instance
         parent::__construct($attributes);
     }
 }
-class_alias('Braintree\Transaction\ApplePayCardDetails', 'Braintree_Transaction_ApplePayCardDetails');
+class_alias('Braintree\Transaction\AmexExpressCheckoutCardDetails', 'Braintree_Transaction_AmexExpressCheckoutCardDetails');

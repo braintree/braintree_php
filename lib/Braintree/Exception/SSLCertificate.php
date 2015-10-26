@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Exception;
+
+use Braintree\Exception;
+
 /**
  * Raised when the SSL certificate fails verification.
  *
@@ -6,7 +10,8 @@
  * @subpackage Exception
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Exception_SSLCertificate extends Braintree_Exception
+class SSLCertificate extends Exception
 {
 
 }
+class_alias('Braintree\Exception\SSLCertificate', 'Braintree_Exception_SSLCertificate');

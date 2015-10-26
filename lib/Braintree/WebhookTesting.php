@@ -1,10 +1,12 @@
 <?php
-class Braintree_WebhookTesting
+namespace Braintree;
+
+class WebhookTesting
 {
     public static function sampleNotification($kind, $id)
     {
         $payload = base64_encode(self::_sampleXml($kind, $id)) . "\n";
-        $signature = Braintree_Configuration::publicKey() . "|" . Braintree_Digest::hexDigestSha1(Braintree_Configuration::privateKey(), $payload);
+        $signature = Configuration::publicKey() . "|" . Digest::hexDigestSha1(Configuration::privateKey(), $payload);
 
         return array(
             'bt_signature' => $signature,
@@ -15,38 +17,41 @@ class Braintree_WebhookTesting
     private static function _sampleXml($kind, $id)
     {
         switch ($kind) {
-            case Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED:
+            case WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED:
                 $subjectXml = self::_merchantAccountApprovedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED:
+            case WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED:
                 $subjectXml = self::_merchantAccountDeclinedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::TRANSACTION_DISBURSED:
+            case WebhookNotification::TRANSACTION_DISBURSED:
                 $subjectXml = self::_transactionDisbursedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::DISBURSEMENT_EXCEPTION:
+            case WebhookNotification::DISBURSEMENT_EXCEPTION:
                 $subjectXml = self::_disbursementExceptionSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::DISBURSEMENT:
+            case WebhookNotification::DISBURSEMENT:
                 $subjectXml = self::_disbursementSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::PARTNER_MERCHANT_CONNECTED:
+            case WebhookNotification::PARTNER_MERCHANT_CONNECTED:
                 $subjectXml = self::_partnerMerchantConnectedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::PARTNER_MERCHANT_DISCONNECTED:
+            case WebhookNotification::PARTNER_MERCHANT_DISCONNECTED:
                 $subjectXml = self::_partnerMerchantDisconnectedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::PARTNER_MERCHANT_DECLINED:
+            case WebhookNotification::PARTNER_MERCHANT_DECLINED:
                 $subjectXml = self::_partnerMerchantDeclinedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::DISPUTE_OPENED:
+            case WebhookNotification::DISPUTE_OPENED:
                 $subjectXml = self::_disputeOpenedSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::DISPUTE_LOST:
+            case WebhookNotification::DISPUTE_LOST:
                 $subjectXml = self::_disputeLostSampleXml($id);
                 break;
-            case Braintree_WebhookNotification::DISPUTE_WON:
+            case WebhookNotification::DISPUTE_WON:
                 $subjectXml = self::_disputeWonSampleXml($id);
+                break;
+            case WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
+                $subjectXml = self::_subscriptionChargedSuccessfullySampleXml($id);
                 break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
@@ -176,6 +181,7 @@ class Braintree_WebhookTesting
           <currency-iso-code>USD</currency-iso-code>
           <received-date type=\"date\">2014-03-01</received-date>
           <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <kind>chargeback</kind>
           <status>open</status>
           <reason>fraud</reason>
           <id>${id}</id>
@@ -183,6 +189,7 @@ class Braintree_WebhookTesting
             <id>${id}</id>
             <amount>250.00</amount>
           </transaction>
+          <date-opened type=\"date\">2014-03-21</date-opened>
         </dispute>
         ";
     }
@@ -195,6 +202,7 @@ class Braintree_WebhookTesting
           <currency-iso-code>USD</currency-iso-code>
           <received-date type=\"date\">2014-03-01</received-date>
           <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <kind>chargeback</kind>
           <status>lost</status>
           <reason>fraud</reason>
           <id>${id}</id>
@@ -202,6 +210,7 @@ class Braintree_WebhookTesting
             <id>${id}</id>
             <amount>250.00</amount>
           </transaction>
+          <date-opened type=\"date\">2014-03-21</date-opened>
         </dispute>
         ";
     }
@@ -214,6 +223,7 @@ class Braintree_WebhookTesting
           <currency-iso-code>USD</currency-iso-code>
           <received-date type=\"date\">2014-03-01</received-date>
           <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <kind>chargeback</kind>
           <status>won</status>
           <reason>fraud</reason>
           <id>${id}</id>
@@ -221,6 +231,8 @@ class Braintree_WebhookTesting
             <id>${id}</id>
             <amount>250.00</amount>
           </transaction>
+          <date-opened type=\"date\">2014-03-21</date-opened>
+          <date-won type=\"date\">2014-03-22</date-won>
         </dispute>
         ";
     }
@@ -231,6 +243,25 @@ class Braintree_WebhookTesting
         <subscription>
             <id>{$id}</id>
             <transactions type=\"array\">
+            </transactions>
+            <add_ons type=\"array\">
+            </add_ons>
+            <discounts type=\"array\">
+            </discounts>
+        </subscription>
+        ";
+    }
+
+    private static function _subscriptionChargedSuccessfullySampleXml($id)
+    {
+        return "
+        <subscription>
+            <id>{$id}</id>
+            <transactions type=\"array\">
+                <transaction>
+                    <status>submitted_for_settlement</status>
+                    <amount>49.99</amount>
+                </transaction>
             </transactions>
             <add_ons type=\"array\">
             </add_ons>
@@ -281,3 +312,4 @@ class Braintree_WebhookTesting
         return $timestamp;
     }
 }
+class_alias('Braintree\WebhookTesting', 'Braintree_WebhookTesting');

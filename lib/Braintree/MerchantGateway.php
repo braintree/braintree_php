@@ -1,6 +1,7 @@
 <?php
+namespace Braintree;
 
-final class Braintree_MerchantGateway
+final class MerchantGateway
 {
     private $_gateway;
     private $_config;
@@ -11,7 +12,7 @@ final class Braintree_MerchantGateway
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasClientCredentials();
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
         $this->_http->useClientCredentials();
     }
 
@@ -24,17 +25,18 @@ final class Braintree_MerchantGateway
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['response']['merchant'])) {
-            // return a populated instance of Braintree_merchant
-            return new Braintree_Result_Successful(array(
-                Braintree_Merchant::factory($response['response']['merchant']),
-                Braintree_OAuthCredentials::factory($response['response']['credentials']),
+            // return a populated instance of merchant
+            return new Result\Successful(array(
+                Merchant::factory($response['response']['merchant']),
+                OAuthCredentials::factory($response['response']['credentials']),
             ));
         } else if (isset($response['apiErrorResponse'])) {
-            return new Braintree_Result_Error($response['apiErrorResponse']);
+            return new Result\Error($response['apiErrorResponse']);
         } else {
-            throw new Braintree_Exception_Unexpected(
+            throw new Exception\Unexpected(
             "Expected merchant or apiErrorResponse"
             );
         }
     }
 }
+class_alias('Braintree\MerchantGateway', 'Braintree_MerchantGateway');

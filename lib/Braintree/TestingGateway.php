@@ -1,5 +1,7 @@
 <?php
-final class Braintree_TestingGateway
+namespace Braintree;
+
+final class TestingGateway
 {
     private $_gateway;
     private $_config;
@@ -9,7 +11,7 @@ final class Braintree_TestingGateway
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
-        $this->_http = new Braintree_Http($this->_config);
+        $this->_http = new Http($this->_config);
     }
 
     public function settle($transactionId)
@@ -37,13 +39,14 @@ final class Braintree_TestingGateway
         self::_checkEnvironment();
         $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . $testPath;
         $response = $this->_http->put($path);
-        return Braintree_Transaction::factory($response['transaction']);
+        return Transaction::factory($response['transaction']);
     }
 
     private function _checkEnvironment()
     {
-        if (Braintree_Configuration::$global->getEnvironment() == 'production') {
-            throw new Braintree_Exception_TestOperationPerformedInProduction();
+        if (Configuration::$global->getEnvironment() === 'production') {
+            throw new Exception\TestOperationPerformedInProduction();
         }
     }
 }
+class_alias('Braintree\TestingGateway', 'Braintree_TestingGateway');

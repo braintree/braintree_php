@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree Customer module
  * Creates and manages Customers
@@ -29,56 +31,56 @@
  * @property-read string $updatedAt
  * @property-read string $website
  */
-class Braintree_Customer extends Braintree_Base
+class Customer extends Base
 {
     /**
-     * 
-     * @return Braintree_Customer[]
+     *
+     * @return Customer[]
      */
     public static function all()
     {
-        return Braintree_Configuration::gateway()->customer()->all();
+        return Configuration::gateway()->customer()->all();
     }
 
     /**
-     * 
+     *
      * @param string $query
      * @param int[] $ids
-     * @return Braintree_Customer|Braintree_Customer[]
+     * @return Customer|Customer[]
      */
     public static function fetch($query, $ids)
     {
-        return Braintree_Configuration::gateway()->customer()->fetch($query, $ids);
+        return Configuration::gateway()->customer()->fetch($query, $ids);
     }
 
     /**
-     * 
+     *
      * @param array $attribs
-     * @return Braintree_Customer
+     * @return Customer
      */
     public static function create($attribs = array())
     {
-        return Braintree_Configuration::gateway()->customer()->create($attribs);
+        return Configuration::gateway()->customer()->create($attribs);
     }
 
     /**
-     * 
+     *
      * @param array $attribs
-     * @return Braintree_Customer
+     * @return Customer
      */
     public static function createNoValidate($attribs = array())
     {
-        return Braintree_Configuration::gateway()->customer()->createNoValidate($attribs);
+        return Configuration::gateway()->customer()->createNoValidate($attribs);
     }
 
     /**
      * @deprecated since version 2.3.0
      * @param string $queryString
-     * @return Braintree_Result_Successful
+     * @return Result\Successful
      */
     public static function createFromTransparentRedirect($queryString)
     {
-        return Braintree_Configuration::gateway()->customer()->createFromTransparentRedirect($queryString);
+        return Configuration::gateway()->customer()->createFromTransparentRedirect($queryString);
     }
 
     /**
@@ -87,130 +89,130 @@ class Braintree_Customer extends Braintree_Base
      */
     public static function createCustomerUrl()
     {
-        return Braintree_Configuration::gateway()->customer()->createCustomerUrl();
+        return Configuration::gateway()->customer()->createCustomerUrl();
     }
 
     /**
-     * 
-     * @throws Braintree_Exception_NotFound
+     *
+     * @throws Exception\NotFound
      * @param int $id
-     * @return Braintree_Customer
+     * @return Customer
      */
     public static function find($id)
     {
-        return Braintree_Configuration::gateway()->customer()->find($id);
+        return Configuration::gateway()->customer()->find($id);
     }
 
     /**
-     * 
+     *
      * @param int $customerId
      * @param array $transactionAttribs
-     * @return Braintree_Result_Successful|Braintree_Result_Error
+     * @return Result\Successful|Result\Error
      */
     public static function credit($customerId, $transactionAttribs)
     {
-        return Braintree_Configuration::gateway()->customer()->credit($customerId, $transactionAttribs);
+        return Configuration::gateway()->customer()->credit($customerId, $transactionAttribs);
     }
 
     /**
-     * 
-     * @throws Braintree_Exception_ValidationError
+     *
+     * @throws Exception\ValidationError
      * @param type $customerId
      * @param type $transactionAttribs
-     * @return Braintree_Transaction
+     * @return Transaction
      */
     public static function creditNoValidate($customerId, $transactionAttribs)
     {
-        return Braintree_Configuration::gateway()->customer()->creditNoValidate($customerId, $transactionAttribs);
+        return Configuration::gateway()->customer()->creditNoValidate($customerId, $transactionAttribs);
     }
 
     /**
-     * 
-     * @throws Braintree_Exception on invalid id or non-200 http response code
+     *
+     * @throws Exception on invalid id or non-200 http response code
      * @param int $customerId
-     * @return Braintree_Result_Successful
+     * @return Result\Successful
      */
     public static function delete($customerId)
     {
-        return Braintree_Configuration::gateway()->customer()->delete($customerId);
+        return Configuration::gateway()->customer()->delete($customerId);
     }
 
     /**
-     * 
+     *
      * @param int $customerId
      * @param array $transactionAttribs
-     * @return Braintree_Transaction
+     * @return Transaction
      */
     public static function sale($customerId, $transactionAttribs)
     {
-        return Braintree_Configuration::gateway()->customer()->sale($customerId, $transactionAttribs);
+        return Configuration::gateway()->customer()->sale($customerId, $transactionAttribs);
     }
 
     /**
-     * 
+     *
      * @param int $customerId
      * @param array $transactionAttribs
-     * @return Braintree_Transaction
-     */    
+     * @return Transaction
+     */
     public static function saleNoValidate($customerId, $transactionAttribs)
     {
-        return Braintree_Configuration::gateway()->customer()->saleNoValidate($customerId, $transactionAttribs);
+        return Configuration::gateway()->customer()->saleNoValidate($customerId, $transactionAttribs);
     }
 
     /**
-     * 
+     *
      * @throws InvalidArgumentException
      * @param string $query
-     * @return Braintree_ResourceCollection
+     * @return ResourceCollection
      */
     public static function search($query)
     {
-        return Braintree_Configuration::gateway()->customer()->search($query);
+        return Configuration::gateway()->customer()->search($query);
     }
 
     /**
-     * 
-     * @throws Braintree_Exception_Unexpected
+     *
+     * @throws Exception\Unexpected
      * @param int $customerId
      * @param array $attributes
-     * @return Braintree_Result_Successful|Braintree_Result_Error
+     * @return Result\Successful|Result\Error
      */
     public static function update($customerId, $attributes)
     {
-        return Braintree_Configuration::gateway()->customer()->update($customerId, $attributes);
+        return Configuration::gateway()->customer()->update($customerId, $attributes);
     }
 
     /**
-     * 
-     * @throws Braintree_Exception_Unexpected
+     *
+     * @throws Exception\Unexpected
      * @param int $customerId
      * @param array $attributes
-     * @return Braintree_CustomerGateway
+     * @return CustomerGateway
      */
     public static function updateNoValidate($customerId, $attributes)
     {
-        return Braintree_Configuration::gateway()->customer()->updateNoValidate($customerId, $attributes);
+        return Configuration::gateway()->customer()->updateNoValidate($customerId, $attributes);
     }
 
     /**
-     * 
+     *
      * @deprecated since version 2.3.0
      * @return string
      */
     public static function updateCustomerUrl()
     {
-        return Braintree_Configuration::gateway()->customer()->updateCustomerUrl();
+        return Configuration::gateway()->customer()->updateCustomerUrl();
     }
 
     /**
-     * 
+     *
      * @deprecated since version 2.3.0
      * @param string $queryString
-     * @return Braintree_Result_Successful|Braintree_Result_Error
+     * @return Result\Successful|Result\Error
      */
     public static function updateFromTransparentRedirect($queryString)
     {
-        return Braintree_Configuration::gateway()->customer()->updateFromTransparentRedirect($queryString);
+        return Configuration::gateway()->customer()->updateFromTransparentRedirect($queryString);
     }
 
     /* instance methods */
@@ -232,7 +234,7 @@ class Braintree_Customer extends Braintree_Base
         if (isset($customerAttribs['addresses'])) {
 
             foreach ($customerAttribs['addresses'] AS $address) {
-                $addressArray[] = Braintree_Address::factory($address);
+                $addressArray[] = Address::factory($address);
             }
         }
         $this->_set('addresses', $addressArray);
@@ -241,7 +243,7 @@ class Braintree_Customer extends Braintree_Base
         $creditCardArray = array();
         if (isset($customerAttribs['creditCards'])) {
             foreach ($customerAttribs['creditCards'] AS $creditCard) {
-                $creditCardArray[] = Braintree_CreditCard::factory($creditCard);
+                $creditCardArray[] = CreditCard::factory($creditCard);
             }
         }
         $this->_set('creditCards', $creditCardArray);
@@ -250,7 +252,7 @@ class Braintree_Customer extends Braintree_Base
         $coinbaseAccountArray = array();
         if (isset($customerAttribs['coinbaseAccounts'])) {
             foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
-                $coinbaseAccountArray[] = Braintree_CoinbaseAccount::factory($coinbaseAccount);
+                $coinbaseAccountArray[] = CoinbaseAccount::factory($coinbaseAccount);
             }
         }
         $this->_set('coinbaseAccounts', $coinbaseAccountArray);
@@ -259,7 +261,7 @@ class Braintree_Customer extends Braintree_Base
         $paypalAccountArray = array();
         if (isset($customerAttribs['paypalAccounts'])) {
             foreach ($customerAttribs['paypalAccounts'] AS $paypalAccount) {
-                $paypalAccountArray[] = Braintree_PayPalAccount::factory($paypalAccount);
+                $paypalAccountArray[] = PayPalAccount::factory($paypalAccount);
             }
         }
         $this->_set('paypalAccounts', $paypalAccountArray);
@@ -268,7 +270,7 @@ class Braintree_Customer extends Braintree_Base
         $applePayCardArray = array();
         if (isset($customerAttribs['applePayCards'])) {
             foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
-                $applePayCardArray[] = Braintree_ApplePayCard::factory($applePayCard);
+                $applePayCardArray[] = ApplePayCard::factory($applePayCard);
             }
         }
         $this->_set('applePayCards', $applePayCardArray);
@@ -277,12 +279,21 @@ class Braintree_Customer extends Braintree_Base
         $androidPayCardArray = array();
         if (isset($customerAttribs['androidPayCards'])) {
             foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
-                $androidPayCardArray[] = Braintree_AndroidPayCard::factory($androidPayCard);
+                $androidPayCardArray[] = AndroidPayCard::factory($androidPayCard);
             }
         }
         $this->_set('androidPayCards', $androidPayCardArray);
 
-        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards));
+        // map each amexExpressCheckoutCard into its own object
+        $amexExpressCheckoutCardArray = array();
+        if (isset($customerAttribs['amexExpressCheckoutCards'])) {
+            foreach ($customerAttribs['amexExpressCheckoutCards'] AS $amexExpressCheckoutCard) {
+                $amexExpressCheckoutCardArray[] = AmexExpressCheckoutCard::factory($amexExpressCheckoutCard);
+            }
+        }
+        $this->_set('amexExpressCheckoutCards', $amexExpressCheckoutCardArray);
+
+        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards, $this->amexExpressCheckoutCards));
     }
 
     /**
@@ -292,19 +303,19 @@ class Braintree_Customer extends Braintree_Base
     public function  __toString()
     {
         return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) .']';
     }
 
     /**
-     * returns false if comparing object is not a Braintree_Customer,
-     * or is a Braintree_Customer with a different id
+     * returns false if comparing object is not a Customer,
+     * or is a Customer with a different id
      *
      * @param object $otherCust customer to compare against
      * @return boolean
      */
     public function isEqual($otherCust)
     {
-        return !($otherCust instanceof Braintree_Customer) ? false : $this->id === $otherCust->id;
+        return !($otherCust instanceof Customer) ? false : $this->id === $otherCust->id;
     }
 
     /**
@@ -322,11 +333,11 @@ class Braintree_Customer extends Braintree_Base
     /**
      * returns the customer's default payment method
      *
-     * @return object Braintree_CreditCard or Braintree_PayPalAccount
+     * @return object CreditCard or PayPalAccount
      */
     public function defaultPaymentMethod()
     {
-        $defaultPaymentMethods = array_filter($this->paymentMethods, 'Braintree_Customer::_defaultPaymentMethodFilter');
+        $defaultPaymentMethods = array_filter($this->paymentMethods, 'Braintree\Customer::_defaultPaymentMethodFilter');
         return current($defaultPaymentMethods);
     }
 
@@ -357,17 +368,18 @@ class Braintree_Customer extends Braintree_Base
         );
 
     /**
-     *  factory method: returns an instance of Braintree_Customer
+     *  factory method: returns an instance of Customer
      *  to the requesting method, with populated properties
      *
      * @ignore
      * @param array $attributes
-     * @return Braintree_Customer
+     * @return Customer
      */
     public static function factory($attributes)
     {
-        $instance = new Braintree_Customer();
+        $instance = new Customer();
         $instance->_initialize($attributes);
         return $instance;
     }
 }
+class_alias('Braintree\Customer', 'Braintree_Customer');

@@ -1,9 +1,11 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Integration;
 
-class Braintree_SubscriptionTestHelper
+use Braintree;
+
+class SubscriptionHelper
 {
-    static function addOnDiscountPlan()
+    public static function addOnDiscountPlan()
     {
         return array(
             'description' => "Plan for integration tests -- with add-ons and discounts",
@@ -15,7 +17,7 @@ class Braintree_SubscriptionTestHelper
         );
     }
 
-    static function billingDayOfMonthPlan()
+    public static function billingDayOfMonthPlan()
     {
         return array(
             'description' => 'Plan for integration tests -- with billing day of month',
@@ -26,7 +28,7 @@ class Braintree_SubscriptionTestHelper
         );
     }
 
-    static function trialPlan()
+    public static function trialPlan()
     {
         return array(
             'description' => 'Plan for integration tests -- with trial',
@@ -39,7 +41,7 @@ class Braintree_SubscriptionTestHelper
         );
     }
 
-    static function triallessPlan()
+    public static function triallessPlan()
     {
         return array(
             'description' => 'Plan for integration tests -- without a trial',
@@ -50,9 +52,9 @@ class Braintree_SubscriptionTestHelper
         );
     }
 
-    static function createCreditCard()
+    public static function createCreditCard()
     {
-        $customer = Braintree_Customer::createNoValidate(array(
+        $customer = Braintree\Customer::createNoValidate(array(
             'creditCard' => array(
                 'number' => '5105105105105100',
                 'expirationDate' => '05/2010'
@@ -61,24 +63,24 @@ class Braintree_SubscriptionTestHelper
         return $customer->creditCards[0];
     }
 
-    static function createSubscription()
+    public static function createSubscription()
     {
-        $plan = Braintree_SubscriptionTestHelper::triallessPlan();
-        $result = Braintree_Subscription::create(array(
-            'paymentMethodToken' => Braintree_SubscriptionTestHelper::createCreditCard()->token,
+        $plan = self::triallessPlan();
+        $result = Braintree\Subscription::create(array(
+            'paymentMethodToken' => self::createCreditCard()->token,
             'price' => '54.99',
             'planId' => $plan['id']
         ));
         return $result->subscription;
     }
 
-    static function compareModificationsById($left, $right)
+    public static function compareModificationsById($left, $right)
     {
         return strcmp($left->id, $right->id);
     }
 
-    static function sortModificationsById(&$modifications)
+    public static function sortModificationsById(&$modifications)
     {
-        usort($modifications, array("Braintree_SubscriptionTestHelper", "compareModificationsById"));
+        usort($modifications, array('Test\Integration\SubscriptionHelper', 'compareModificationsById'));
     }
 }

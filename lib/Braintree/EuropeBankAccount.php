@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree EuropeBankAccount module
  * Creates and manages Braintree Europe Bank Accounts
@@ -11,15 +13,16 @@
  * @category   Resources
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
- * @property-read string $token
- * @property-read string $default
- * @property-read string $masked-iban
- * @property-read string $bic
- * @property-read string $mandate-reference-number
  * @property-read string $account-holder-name
+ * @property-read string $bic
+ * @property-read string $customerId
+ * @property-read string $default
  * @property-read string $image-url
+ * @property-read string $mandate-reference-number
+ * @property-read string $masked-iban
+ * @property-read string $token
  */
-class Braintree_EuropeBankAccount extends Braintree_Base
+class EuropeBankAccount extends Base
 {
 
     /* instance methods */
@@ -34,11 +37,11 @@ class Braintree_EuropeBankAccount extends Braintree_Base
     }
 
     /**
-     *  factory method: returns an instance of Braintree_EuropeBankAccount
+     *  factory method: returns an instance of EuropeBankAccount
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_EuropeBankAccount
+     * @return object instance of EuropeBankAccount
      */
     public static function factory($attributes)
     {
@@ -62,3 +65,4 @@ class Braintree_EuropeBankAccount extends Braintree_Base
         $this->_attributes = $europeBankAccountAttribs;
     }
 }
+class_alias('Braintree\EuropeBankAccount', 'Braintree_EuropeBankAccount');

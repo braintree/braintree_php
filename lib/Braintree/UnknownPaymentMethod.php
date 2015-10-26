@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree UnknownPaymentMethod module
  *
@@ -20,16 +22,16 @@
  * @property-read string $token
  * @property-read string $imageUrl
  */
-class Braintree_UnknownPaymentMethod extends Braintree_Base
+class UnknownPaymentMethod extends Base
 {
 
 
     /**
-     *  factory method: returns an instance of Braintree_UnknownPaymentMethod
+     *  factory method: returns an instance of UnknownPaymentMethod
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_UnknownPaymentMethod
+     * @return object instance of UnknownPaymentMethod
      */
     public static function factory($attributes)
     {
@@ -66,3 +68,4 @@ class Braintree_UnknownPaymentMethod extends Braintree_Base
     }
 
 }
+class_alias('Braintree\UnknownPaymentMethod', 'Braintree_UnknownPaymentMethod');

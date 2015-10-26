@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Transaction;
+
+use Braintree\Instance;
+
 /**
  * PayPal details from a transaction
  *
@@ -23,9 +27,8 @@
  * @property-read string $transactionFeeAmount
  * @property-read string $transactionFeeCurrencyIsoCode
  * @property-read string $description
- * @uses Braintree_Instance inherits methods
  */
-class Braintree_Transaction_PayPalDetails extends Braintree_Instance
+class PayPalDetails extends Instance
 {
     protected $_attributes = array();
 
@@ -37,3 +40,4 @@ class Braintree_Transaction_PayPalDetails extends Braintree_Instance
         parent::__construct($attributes);
     }
 }
+class_alias('Braintree\Transaction\PayPalDetails', 'Braintree_Transaction_PayPalDetails');

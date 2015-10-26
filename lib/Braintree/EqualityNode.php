@@ -1,6 +1,7 @@
 <?php
+namespace Braintree;
 
-class Braintree_EqualityNode extends Braintree_IsNode
+class EqualityNode extends IsNode
 {
     function isNot($value)
     {
@@ -8,3 +9,4 @@ class Braintree_EqualityNode extends Braintree_IsNode
         return $this;
     }
 }
+class_alias('Braintree\EqualityNode', 'Braintree_EqualityNode');

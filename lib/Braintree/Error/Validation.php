@@ -1,4 +1,8 @@
 <?php
+namespace Braintree\Error;
+
+use Braintree\Util;
+
 /**
  * error object returned as part of a validation error collection
  * provides read-only access to $attribute, $code, and $message
@@ -15,11 +19,11 @@
  * @property-read string $code
  * @property-read string $message
  */
-class Braintree_Error_Validation
+class Validation
 {
-   private $_attribute;
-   private $_code;
-   private $_message;
+    private $_attribute;
+    private $_code;
+    private $_message;
 
     /**
      * @ignore
@@ -40,7 +44,7 @@ class Braintree_Error_Validation
     {
         foreach($attributes AS $name => $value) {
             $varName = "_$name";
-            $this->$varName = Braintree_Util::delimiterToCamelCase($value, '_');
+            $this->$varName = Util::delimiterToCamelCase($value, '_');
         }
     }
 
@@ -54,3 +58,4 @@ class Braintree_Error_Validation
         return isset($this->$varName) ? $this->$varName : null;
     }
 }
+class_alias('Braintree\Error\Validation', 'Braintree_Error_Validation');

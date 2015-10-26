@@ -19,20 +19,20 @@ The following PHP extensions are required:
 ```php
 <?php
 
+namespace Braintree;
+
 require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
 
-Braintree_Configuration::environment('sandbox');
-Braintree_Configuration::merchantId('your_merchant_id');
-Braintree_Configuration::publicKey('your_public_key');
-Braintree_Configuration::privateKey('your_private_key');
+Configuration::environment('sandbox');
+Configuration::merchantId('your_merchant_id');
+Configuration::publicKey('your_public_key');
+Configuration::privateKey('your_private_key');
 
-$result = Braintree_Transaction::sale(array(
+$result = Transaction::sale([
     'amount' => '1000.00',
-    'creditCard' => array(
-        'number' => '5105105105105100',
-        'expirationDate' => '05/12'
-    )
-));
+    'paymentMethodNonce' => 'nonceFromTheClient',
+    'options' => [ 'submitForSettlement' => true ]
+]);
 
 if ($result->success) {
     print_r("success!: " . $result->transaction->id);
@@ -44,8 +44,6 @@ if ($result->success) {
     print_r("Validation errors: \n");
     print_r($result->errors->deepAll());
 }
-
-?>
 ```
 
 ## HHVM Support
@@ -62,13 +60,12 @@ Version [2.40.0](https://github.com/braintree/braintree_php/releases/tag/2.40.0)
 
 ## Testing
 
-Tests are written in PHPunit (installed by composer). Unit tests should run on
-any system meeting the base requirements:
+The unit specs can be run by anyone on any system, but the integration specs are meant to be run against a local development server of our gateway code. These integration specs are not meant for public consumption and will likely fail if run on your system. To run unit tests use rake: `rake test:unit`.
 
-    phpunit tests/unit/
-
-Please note that the integration tests require access to services internal to 
-Braintree, and so will not run in your test environment.
+The benefit of the `rake` tasks is that testing covers default `hhvm` and `php` interpreters. However, if you want to run tests manually simply use the following command:
+```
+phpunit tests/unit/
+```
 
 ## Open Source Attribution
 

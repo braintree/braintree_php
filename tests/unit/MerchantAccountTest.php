@@ -1,9 +1,14 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class MerchantAccountTest extends Setup
 {
-    function testCreateMerchantAccountWithAllParams()
+    public function testCreateMerchantAccountWithAllParams()
     {
         $params = array(
             "id" => "sub_merchant_account",
@@ -36,7 +41,7 @@ class Braintree_MerchantAccountTest extends PHPUnit_Framework_TestCase
                 "descriptor" => "Joes Bloggs MI",
             )
         );
-        $merchantAccount = Braintree_MerchantAccount::factory($params);
+        $merchantAccount = Braintree\MerchantAccount::factory($params);
 
 
         $this->assertEquals($merchantAccount->status, "active");

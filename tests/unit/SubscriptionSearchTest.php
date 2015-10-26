@@ -1,59 +1,64 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_SubscriptionSearchTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class SubscriptionSearchTest extends Setup
 {
-    function testSearch_billingCyclesRemaining_isRangeNode()
+    public function testSearch_billingCyclesRemaining_isRangeNode()
     {
-        $node = Braintree_SubscriptionSearch::billingCyclesRemaining();
-        $this->assertInstanceOf('Braintree_RangeNode', $node);
+        $node = Braintree\SubscriptionSearch::billingCyclesRemaining();
+        $this->assertInstanceOf('Braintree\RangeNode', $node);
     }
 
-    function testSearch_price_isRangeNode()
+    public function testSearch_price_isRangeNode()
     {
-        $node = Braintree_SubscriptionSearch::price();
-        $this->assertInstanceOf('Braintree_RangeNode', $node);
+        $node = Braintree\SubscriptionSearch::price();
+        $this->assertInstanceOf('Braintree\RangeNode', $node);
     }
 
-    function testSearch_daysPastDue_isRangeNode()
+    public function testSearch_daysPastDue_isRangeNode()
     {
-        $node = Braintree_SubscriptionSearch::daysPastDue();
-        $this->assertInstanceOf('Braintree_RangeNode', $node);
+        $node = Braintree\SubscriptionSearch::daysPastDue();
+        $this->assertInstanceOf('Braintree\RangeNode', $node);
     }
 
-    function testSearch_id_isTextNode()
+    public function testSearch_id_isTextNode()
     {
-        $node = Braintree_SubscriptionSearch::id();
-        $this->assertInstanceOf('Braintree_TextNode', $node);
+        $node = Braintree\SubscriptionSearch::id();
+        $this->assertInstanceOf('Braintree\TextNode', $node);
     }
 
-    function testSearch_ids_isMultipleValueNode()
+    public function testSearch_ids_isMultipleValueNode()
     {
-        $node = Braintree_SubscriptionSearch::ids();
-        $this->assertInstanceOf('Braintree_MultipleValueNode', $node);
+        $node = Braintree\SubscriptionSearch::ids();
+        $this->assertInstanceOf('Braintree\MultipleValueNode', $node);
     }
 
-    function testSearch_inTrialPeriod_isMultipleValueNode()
+    public function testSearch_inTrialPeriod_isMultipleValueNode()
     {
-        $node = Braintree_SubscriptionSearch::inTrialPeriod();
-        $this->assertInstanceOf('Braintree_MultipleValueNode', $node);
+        $node = Braintree\SubscriptionSearch::inTrialPeriod();
+        $this->assertInstanceOf('Braintree\MultipleValueNode', $node);
     }
 
-    function testSearch_merchantAccountId_isMultipleValueNode()
+    public function testSearch_merchantAccountId_isMultipleValueNode()
     {
-        $node = Braintree_SubscriptionSearch::merchantAccountId();
-        $this->assertInstanceOf('Braintree_MultipleValueNode', $node);
+        $node = Braintree\SubscriptionSearch::merchantAccountId();
+        $this->assertInstanceOf('Braintree\MultipleValueNode', $node);
     }
 
-    function testSearch_planId_isMultipleValueOrTextNode()
+    public function testSearch_planId_isMultipleValueOrTextNode()
     {
-        $node = Braintree_SubscriptionSearch::planId();
-        $this->assertInstanceOf('Braintree_MultipleValueOrTextNode', $node);
+        $node = Braintree\SubscriptionSearch::planId();
+        $this->assertInstanceOf('Braintree\MultipleValueOrTextNode', $node);
     }
 
-    function testSearch_status_isMultipleValueNode()
+    public function testSearch_status_isMultipleValueNode()
     {
-        $node = Braintree_SubscriptionSearch::status();
-        $this->assertInstanceOf('Braintree_MultipleValueNode', $node);
+        $node = Braintree\SubscriptionSearch::status();
+        $this->assertInstanceOf('Braintree\MultipleValueNode', $node);
     }
 }

@@ -1,4 +1,6 @@
 <?php
+namespace Braintree\Error;
+
 /**
  *
  * Validation Error codes and messages
@@ -14,7 +16,7 @@
  * @category   Validation
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Error_Codes
+class Codes
 {
     const ADDRESS_CANNOT_BE_BLANK                        = '81801';
     const ADDRESS_COMPANY_IS_INVALID                     = '91821';
@@ -423,6 +425,7 @@ class Braintree_Error_Codes
     const TRANSACTION_CANNOT_REFUND_WITH_SUSPENDED_MERCHANT_ACCOUNT                   = '91538';
     const TRANSACTION_CANNOT_RELEASE_FROM_ESCROW                                      = '91561';
     const TRANSACTION_CANNOT_SIMULATE_SETTLEMENT                                      = '91575';
+    const TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT                            = '915103';
     const TRANSACTION_CANNOT_SUBMIT_FOR_SETTLEMENT                                    = '91507';
     const TRANSACTION_CHANNEL_IS_TOO_LONG                                             = '91550';
     const TRANSACTION_CREDIT_CARD_IS_REQUIRED                                         = '91508';
@@ -445,6 +448,7 @@ class Braintree_Error_Codes
     const TRANSACTION_OPTIONS_VAULT_IS_DISABLED                                       = '91525';
     const TRANSACTION_ORDER_ID_IS_TOO_LONG                                            = '91501';
     const TRANSACTION_PAYMENT_INSTRUMENT_NOT_SUPPORTED_BY_MERCHANT_ACCOUNT            = '91577';
+    const TRANSACTION_PAYMENT_INSTRUMENT_TYPE_IS_NOT_ACCEPTED                         = '915101';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT                                         = '91515';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT_WITH_VENMO_SDK                          = '91549';
     const TRANSACTION_PAYMENT_METHOD_DOES_NOT_BELONG_TO_CUSTOMER                      = '91516';
@@ -461,7 +465,9 @@ class Braintree_Error_Codes
     const TRANSACTION_PAY_PAL_VAULT_RECORD_MISSING_DATA                               = '91583';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_CANNOT_BE_SET                      = '91519';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_IS_INVALID                         = '81520';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_AUTHS                                = '915104';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_CREDITS                              = '91546';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_PARTIAL_SETTLEMENT                   = '915102';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_VOICE_AUTHORIZATIONS                 = '91545';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID                                = '91548';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                               = '91537';
@@ -490,3 +496,4 @@ class Braintree_Error_Codes
     const TRANSACTION_TYPE_IS_REQUIRED                                          = '91524';
     const TRANSACTION_UNSUPPORTED_VOICE_AUTHORIZATION                           = '91539';
 }
+class_alias('Braintree\Error\Codes', 'Braintree_Error_Codes');

@@ -1,4 +1,6 @@
 <?php
+namespace Braintree\Test;
+
 /**
  * Nonces used for testing purposes
  *
@@ -17,7 +19,7 @@
  * @subpackage Test
  * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Test_Nonces
+class Nonces
 {
    public static $transactable = "fake-valid-nonce";
    public static $consumed = "fake-consumed-nonce";
@@ -32,6 +34,7 @@ class Braintree_Test_Nonces
    public static $androidPayVisa = "fake-android-pay-visa-nonce";
    public static $androidPayMasterCard = "fake-android-pay-mastercard-nonce";
    public static $androidPayAmEx = "fake-android-pay-amex-nonce";
+   public static $amexExpressCheckout = "fake-amex-express-checkout-nonce";
    public static $abstractTransactable = "fake-abstract-transactable-nonce";
    public static $europe = "fake-europe-bank-account-nonce";
    public static $coinbase = "fake-coinbase-nonce";
@@ -63,3 +66,4 @@ class Braintree_Test_Nonces
    public static $sepa = "fake-sepa-bank-account-nonce";
    public static $gatewayRejectedFraud = "fake-gateway-rejected-fraud-nonce";
 }
+class_alias('Braintree\Test\Nonces', 'Braintree_Test_Nonces');
