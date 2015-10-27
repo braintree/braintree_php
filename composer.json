@@ -21,6 +21,9 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
+        "psr-0": {
+            "Braintree": "lib/"
+        },
         "psr-4": {
             "Braintree\\": "lib/Braintree"
         }
