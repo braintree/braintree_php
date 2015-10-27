@@ -1,3 +1,6 @@
+## 3.6.1
+* Fix PSR-0 style namespacing when using Symfony
+
 ## 3.6.0
 * Add support for proxy servers
 * Add PSR-4 namespacing support
