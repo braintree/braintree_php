@@ -1,3 +1,6 @@
+## 2.40.1
+* Bugfix for accessing transaction details on dispute webhooks
+
 ## 2.40.0
 * Add missing criteria to credit card verification search
 * Bugfix for autoloading files with Composer
