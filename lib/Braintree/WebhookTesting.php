@@ -53,6 +53,9 @@ class WebhookTesting
             case WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
                 $subjectXml = self::_subscriptionChargedSuccessfullySampleXml($id);
                 break;
+            case WebhookNotification::CHECK:
+                $subjectXml = self::_checkSampleXml();
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -268,6 +271,13 @@ class WebhookTesting
             <discounts type=\"array\">
             </discounts>
         </subscription>
+        ";
+    }
+
+    private static function _checkSampleXml()
+    {
+        return "
+            <check type=\"boolean\">true</check>
         ";
     }
 

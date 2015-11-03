@@ -439,4 +439,19 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals(Braintree\WebhookNotification::PARTNER_MERCHANT_DECLINED, $webhookNotification->kind);
         $this->assertEquals("abc123", $webhookNotification->partnerMerchant->partnerMerchantId);
     }
+
+    public function testBuildsASampleNotificationForACheckWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::CHECK,
+            ""
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification["bt_signature"],
+            $sampleNotification["bt_payload"]
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::CHECK, $webhookNotification->kind);
+    }
 }
