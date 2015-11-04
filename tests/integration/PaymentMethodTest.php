@@ -1219,4 +1219,182 @@ class PaymentMethodTest extends Setup
         Braintree\PaymentMethod::find($paymentMethodToken);
     }
 
+    public function testGrant_returnsASingleUseNonce()
+    {
+        $partnerMerchantGateway = new Braintree\Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_public_id',
+            'publicKey' => 'oauth_app_partner_user_public_key',
+            'privateKey' => 'oauth_app_partner_user_private_key'
+        ));
+
+        $customer = $partnerMerchantGateway->customer()->create(array(
+            'firstName' => 'Joe',
+            'lastName' => 'Brown'
+        ))->customer;
+        $creditCard = $partnerMerchantGateway->creditCard()->create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Adam Davis',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2009'
+        ))->creditCard;
+
+        $oauthAppGateway = new Braintree\Gateway(array(
+            'clientId' =>  'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($oauthAppGateway, array(
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'grant_payment_method'
+        ));
+
+        $credentials = $oauthAppGateway->oauth()->createTokenFromCode(array(
+            'code' => $code,
+        ));
+
+        $grantingGateway = new Braintree\Gateway(array(
+            'accessToken' => $credentials->accessToken
+        ));
+
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, false);
+
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '100.00',
+            'paymentMethodNonce' => $grantResult->nonce
+        ));
+        $this->assertTrue($result->success);
+
+        $secondResult = Braintree\Transaction::sale(array(
+            'amount' => '100.00',
+            'paymentMethodNonce' => $grantResult->nonce
+        ));
+        $this->assertFalse($secondResult->success);
+    }
+
+    public function testGrant_returnsANonceThatIsNotVaultable()
+    {
+        $partnerMerchantGateway = new Braintree\Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_public_id',
+            'publicKey' => 'oauth_app_partner_user_public_key',
+            'privateKey' => 'oauth_app_partner_user_private_key'
+        ));
+
+        $customer = $partnerMerchantGateway->customer()->create(array(
+            'firstName' => 'Joe',
+            'lastName' => 'Brown'
+        ))->customer;
+        $creditCard = $partnerMerchantGateway->creditCard()->create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Adam Davis',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2009'
+        ))->creditCard;
+
+        $oauthAppGateway = new Braintree\Gateway(array(
+            'clientId' =>  'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($oauthAppGateway, array(
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'grant_payment_method'
+        ));
+
+        $credentials = $oauthAppGateway->oauth()->createTokenFromCode(array(
+            'code' => $code,
+        ));
+
+        $grantingGateway = new Braintree\Gateway(array(
+            'accessToken' => $credentials->accessToken
+        ));
+
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, false);
+
+        $customer = $partnerMerchantGateway->customer()->create(array(
+            'firstName' => 'Bob',
+            'lastName' => 'Rob'
+        ))->customer;
+        $result = Braintree\PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $grantResult->nonce
+        ));
+        $this->assertFalse($result->success);
+    }
+
+    public function testGrant_returnsANonceThatIsVaultable()
+    {
+        $partnerMerchantGateway = new Braintree\Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_public_id',
+            'publicKey' => 'oauth_app_partner_user_public_key',
+            'privateKey' => 'oauth_app_partner_user_private_key'
+        ));
+
+        $customer = $partnerMerchantGateway->customer()->create(array(
+            'firstName' => 'Joe',
+            'lastName' => 'Brown'
+        ))->customer;
+        $creditCard = $partnerMerchantGateway->creditCard()->create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Adam Davis',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2009'
+        ))->creditCard;
+
+        $oauthAppGateway = new Braintree\Gateway(array(
+            'clientId' =>  'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($oauthAppGateway, array(
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'grant_payment_method'
+        ));
+
+        $credentials = $oauthAppGateway->oauth()->createTokenFromCode(array(
+            'code' => $code,
+        ));
+
+        $grantingGateway = new Braintree\Gateway(array(
+            'accessToken' => $credentials->accessToken
+        ));
+
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, true);
+
+        $customer = Braintree\Customer::create(array(
+            'firstName' => 'Bob',
+            'lastName' => 'Rob'
+        ))->customer;
+        $result = Braintree\PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $grantResult->nonce
+        ));
+        $this->assertTrue($result->success);
+    }
+
+    public function testGrant_raisesAnErrorIfTokenIsNotFound()
+    {
+        $oauthAppGateway = new Braintree\Gateway(array(
+            'clientId' =>  'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($oauthAppGateway, array(
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'grant_payment_method'
+        ));
+
+        $credentials = $oauthAppGateway->oauth()->createTokenFromCode(array(
+            'code' => $code,
+        ));
+
+        $grantingGateway = new Braintree\Gateway(array(
+            'accessToken' => $credentials->accessToken
+        ));
+
+        $this->setExpectedException('Braintree\Exception\NotFound');
+        $grantResult = $grantingGateway->paymentMethod()->grant("not_a_real_token", false);
+    }
 }

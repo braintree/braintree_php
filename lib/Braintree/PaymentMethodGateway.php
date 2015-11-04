@@ -94,6 +94,22 @@ class PaymentMethodGateway
         return new Result\Successful();
     }
 
+    public function grant($sharedPaymentMethodToken, $allowVaulting)
+    {
+        $fullPath = $this->_config->merchantPath() . '/payment_methods/grant';
+        $response = $this->_http->post(
+            $fullPath,
+            array(
+                'payment_method' => array(
+                    'shared_payment_method_token' => $sharedPaymentMethodToken,
+                    'allow_vaulting' => $allowVaulting
+                )
+            )
+        );
+
+        return PaymentMethodNonce::factory($response['paymentMethodNonce']);
+    }
+
     private static function baseSignature()
     {
         $billingAddressSignature = AddressGateway::createSignature();
