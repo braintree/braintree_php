@@ -375,6 +375,9 @@ final class Transaction extends Base
         if(isset($transactionAttribs['threeDSecureInfo'])) {
             $this->_set('threeDSecureInfo', ThreeDSecureInfo::factory($transactionAttribs['threeDSecureInfo']));
         }
+        if(isset($transactionAttribs['facilitatorDetails'])) {
+            $this->_set('facilitatorDetails', FacilitatorDetails::factory($transactionAttribs['facilitatorDetails']));
+        }
     }
 
     /**

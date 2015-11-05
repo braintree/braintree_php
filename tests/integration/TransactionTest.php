@@ -3337,4 +3337,59 @@ class TransactionTest extends Setup
         $baseErrors = $partialSettlementResult2->errors->forKey('transaction')->onAttribute('base');
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT, $baseErrors[0]->code);
     }
+
+    public function testFacilitatorDetailsAreReturnedOnTransactionsCreatedViaNonceGranting()
+    {
+        $partnerMerchantGateway = new Braintree\Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_public_id',
+            'publicKey' => 'oauth_app_partner_user_public_key',
+            'privateKey' => 'oauth_app_partner_user_private_key'
+        ));
+
+        $customer = $partnerMerchantGateway->customer()->create(array(
+            'firstName' => 'Joe',
+            'lastName' => 'Brown'
+        ))->customer;
+        $creditCard = $partnerMerchantGateway->creditCard()->create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Adam Davis',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2009'
+        ))->creditCard;
+
+        $oauthAppGateway = new Braintree\Gateway(array(
+            'clientId' =>  'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($oauthAppGateway, array(
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'grant_payment_method'
+        ));
+
+        $credentials = $oauthAppGateway->oauth()->createTokenFromCode(array(
+            'code' => $code,
+        ));
+
+        $grantingGateway = new Braintree\Gateway(array(
+            'accessToken' => $credentials->accessToken
+        ));
+
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, false);
+
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '100.00',
+            'paymentMethodNonce' => $grantResult->nonce
+        ));
+
+        $this->assertEquals(
+            $result->transaction->facilitatorDetails->oauthApplicationClientId,
+            "client_id\$development\$integration_client_id"
+        );
+        $this->assertEquals(
+            $result->transaction->facilitatorDetails->oauthApplicationName,
+            "PseudoShop"
+        );
+    }
 }
