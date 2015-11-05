@@ -579,14 +579,6 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals(0, $collection->maximumCount());
     }
 
-    public function test_multipleValueNode_source_allowedValues()
-    {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for source: noSuchSource');
-        $collection = Braintree\Transaction::search(array(
-            Braintree\TransactionSearch::source()->is('noSuchSource')
-        ));
-    }
-
     public function test_multipleValueNode_type()
     {
         $customer = Braintree\Customer::createNoValidate();

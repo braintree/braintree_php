@@ -97,11 +97,7 @@ class TransactionSearch
 
     public static function source()
     {
-        return new MultipleValueNode('source', array(
-            Transaction::API,
-            Transaction::CONTROL_PANEL,
-            Transaction::RECURRING,
-        ));
+        return new MultipleValueNode('source', array());
     }
 
     public static function status()
