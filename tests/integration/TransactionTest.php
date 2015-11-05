@@ -3392,4 +3392,65 @@ class TransactionTest extends Setup
             "PseudoShop"
         );
     }
+
+    public function testTransactionsCanBeCreatedWithSharedParams()
+    {
+        $partnerMerchantGateway = new Braintree\Gateway(array(
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_public_id',
+            'publicKey' => 'oauth_app_partner_user_public_key',
+            'privateKey' => 'oauth_app_partner_user_private_key'
+        ));
+
+        $customer = $partnerMerchantGateway->customer()->create(array(
+            'firstName' => 'Joe',
+            'lastName' => 'Brown'
+        ))->customer;
+        $address = $partnerMerchantGateway->address()->create(array(
+            'customerId' => $customer->id,
+            'firstName' => 'Dan',
+            'lastName' => 'Smith',
+        ))->address;
+        $creditCard = $partnerMerchantGateway->creditCard()->create(array(
+            'customerId' => $customer->id,
+            'cardholderName' => 'Adam Davis',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2009'
+        ))->creditCard;
+
+        $oauthAppGateway = new Braintree\Gateway(array(
+            'clientId' =>  'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ));
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($oauthAppGateway, array(
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'read_write,shared_vault_transactions'
+        ));
+
+        $credentials = $oauthAppGateway->oauth()->createTokenFromCode(array(
+            'code' => $code,
+        ));
+
+        $oauthAccesTokenGateway = new Braintree\Gateway(array(
+            'accessToken' => $credentials->accessToken
+        ));
+
+        $result = $oauthAccesTokenGateway->transaction()->sale(array(
+            'amount' => '100.00',
+            'sharedPaymentMethodToken' => $creditCard->token,
+            'sharedCustomerId' => $customer->id,
+            'sharedShippingAddressId' => $address->id,
+            'sharedBillingAddressId' => $address->id
+        ));
+
+        $this->assertEquals(
+            $result->transaction->shippingDetails->firstName,
+            $address->firstName
+        );
+        $this->assertEquals(
+            $result->transaction->billingDetails->firstName,
+            $address->firstName
+        );
+    }
 }
