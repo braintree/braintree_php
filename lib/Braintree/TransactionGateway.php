@@ -215,7 +215,7 @@ final class TransactionGateway
      *
      * @access public
      * @param array $attribs
-     * @return object
+     * @return Result\Successful|Result\Error
      */
     public function credit($attribs)
     {
@@ -226,7 +226,7 @@ final class TransactionGateway
      *
      * @access public
      * @param array $attribs
-     * @return object
+     * @return Result\Successful|Result\Error
      * @throws Exception\ValidationError
      */
     public function creditNoValidate($attribs)
@@ -285,7 +285,7 @@ final class TransactionGateway
      *
      * @param mixed $query search query
      * @param array $options options such as page number
-     * @return object ResourceCollection
+     * @return ResourceCollection
      * @throws InvalidArgumentException
      */
     public function search($query)
@@ -330,7 +330,7 @@ final class TransactionGateway
      * void a transaction by id
      *
      * @param string $id transaction id
-     * @return object Result\Successful|Result\Error
+     * @return Result\Successful|Result\Error
      */
     public function void($transactionId)
     {
@@ -457,7 +457,7 @@ final class TransactionGateway
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)

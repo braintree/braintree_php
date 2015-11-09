@@ -35,7 +35,7 @@ class SettlementBatchSummary extends Base
      *
      * @param string $settlement_date Date YYYY-MM-DD
      * @param string $groupByCustomField
-     * @return Result_Successful|Result_Error
+     * @return Result\Successful|Result\Error
      */
     public static function generate($settlement_date, $groupByCustomField = NULL)
     {

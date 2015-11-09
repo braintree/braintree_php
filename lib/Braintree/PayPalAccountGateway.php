@@ -41,7 +41,7 @@ class PayPalAccountGateway
      *
      * @access public
      * @param string $token paypal accountunique id
-     * @return object PayPalAccount
+     * @return PayPalAccount
      * @throws Exception\NotFound
      */
     public function find($token)
@@ -90,7 +90,7 @@ class PayPalAccountGateway
      *
      * @param string $token
      * @param array $transactionAttribs
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @see Transaction::sale()
      */
     public function sale($token, $transactionAttribs)
@@ -137,7 +137,7 @@ class PayPalAccountGateway
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)

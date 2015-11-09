@@ -111,7 +111,7 @@ class Address extends Base
      * @param Customer|int $customerOrId
      * @param int $addressId
      * @throws InvalidArgumentException
-     * @return Result_Successful
+     * @return Result\Successful
      */
     public static function delete($customerOrId = null, $addressId = null)
     {
@@ -136,7 +136,7 @@ class Address extends Base
      * @param int $addressId
      * @param array $attributes
      * @throws Exception\Unexpected
-     * @return Result_Successful|Result_Error
+     * @return Result\Successful|Result\Error
      */
     public static function update($customerOrId, $addressId, $attributes)
     {

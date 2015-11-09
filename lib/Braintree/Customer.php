@@ -333,7 +333,7 @@ class Customer extends Base
     /**
      * returns the customer's default payment method
      *
-     * @return object CreditCard or PayPalAccount
+     * @return CreditCard|PayPalAccount
      */
     public function defaultPaymentMethod()
     {

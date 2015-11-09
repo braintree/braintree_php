@@ -47,7 +47,7 @@ class PaymentMethodGateway
      * find a PaymentMethod by token
      *
      * @param string $token payment method unique id
-     * @return object CreditCard or PayPalAccount
+     * @return CreditCard|PayPalAccount
      * @throws Exception\NotFound
      */
     public function find($token)
@@ -200,7 +200,7 @@ class PaymentMethodGateway
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)

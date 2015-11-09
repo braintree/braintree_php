@@ -53,7 +53,7 @@ class AddressGateway
      *
      * @access public
      * @param  array  $attribs
-     * @return object Result, either Successful or Error
+     * @return Braintree_Result_Successful|Braintre_Result_Error
      */
     public function create($attribs)
     {
@@ -76,7 +76,7 @@ class AddressGateway
      *
      * @access public
      * @param  array $attribs
-     * @return object
+     * @return self
      * @throws Exception\ValidationError
      */
     public function createNoValidate($attribs)
@@ -112,7 +112,7 @@ class AddressGateway
      * @access public
      * @param mixed $customerOrId
      * @param string $addressId
-     * @return object Address
+     * @return Address
      * @throws Exception\NotFound
      */
     public function find($customerOrId, $addressId)
@@ -146,7 +146,7 @@ class AddressGateway
      * @param array $attributes
      * @param mixed $customerOrId (only used in call)
      * @param string $addressId (only used in call)
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      */
     public function update($customerOrId, $addressId, $attributes)
     {
@@ -171,7 +171,7 @@ class AddressGateway
      * @access public
      * @param array $transactionAttribs
      * @param string $customerId
-     * @return object Transaction
+     * @return Transaction
      * @throws Exception\ValidationsFailed
      * @see Address::update()
      */
@@ -266,7 +266,7 @@ class AddressGateway
      * @ignore
      * @param string $subPath
      * @param array $params
-     * @return mixed
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
     private function _doCreate($subPath, $params)
     {
@@ -287,7 +287,7 @@ class AddressGateway
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)
