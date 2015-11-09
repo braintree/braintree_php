@@ -41,7 +41,7 @@ class EuropeBankAccount extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of EuropeBankAccount
+     * @return EuropeBankAccount
      */
     public static function factory($attributes)
     {

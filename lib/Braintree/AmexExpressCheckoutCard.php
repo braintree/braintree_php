@@ -46,7 +46,7 @@ class AmexExpressCheckoutCard extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of AmexExpressCheckoutCard
+     * @return AmexExpressCheckoutCard
      */
     public static function factory($attributes)
     {

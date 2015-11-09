@@ -73,7 +73,7 @@ class Address extends Base
      *  factory method: returns an instance of Address
      *  to the requesting method, with populated properties
      * @ignore
-     * @return object instance of Address
+     * @return Address
      */
     public static function factory($attributes)
     {

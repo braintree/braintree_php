@@ -49,7 +49,7 @@ class AndroidPayCard extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of AndroidPayCard
+     * @return AndroidPayCard
      */
     public static function factory($attributes)
     {

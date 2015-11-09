@@ -32,7 +32,7 @@ class CoinbaseAccount extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of CoinbaseAccount
+     * @return CoinbaseAccount
      */
     public static function factory($attributes)
     {

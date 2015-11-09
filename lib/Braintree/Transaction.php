@@ -436,7 +436,7 @@ final class Transaction extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Transaction
+     * @return Transaction
      */
     public static function factory($attributes)
     {

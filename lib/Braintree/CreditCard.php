@@ -178,7 +178,7 @@ class CreditCard extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of CreditCard
+     * @return CreditCard
      */
     public static function factory($attributes)
     {

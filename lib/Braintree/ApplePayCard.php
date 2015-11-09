@@ -59,7 +59,7 @@ class ApplePayCard extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of ApplePayCard
+     * @return ApplePayCard
      */
     public static function factory($attributes)
     {

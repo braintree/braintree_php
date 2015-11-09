@@ -31,7 +31,7 @@ class UnknownPaymentMethod extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of UnknownPaymentMethod
+     * @return UnknownPaymentMethod
      */
     public static function factory($attributes)
     {
