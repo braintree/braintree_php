@@ -125,7 +125,7 @@ class ResourceCollection implements Iterator
     /**
      * requests the next page of results for the collection
      *
-     * @return none
+     * @return void
      */
     private function _getPage($ids)
     {

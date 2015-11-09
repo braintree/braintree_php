@@ -60,7 +60,7 @@ class Generator
      * @static
      * @param object $writer XMLWriter object
      * @param array $aData contains attributes and values
-     * @return none
+     * @return void
      */
     private static function _createElementsFromArray(&$writer, $aData)
     {

@@ -61,7 +61,7 @@ class AmexExpressCheckoutCard extends Base
      *
      * @access protected
      * @param array $amexExpressCheckoutCardAttribs array of Amex Express Checkout card properties
-     * @return none
+     * @return void
      */
     protected function _initialize($amexExpressCheckoutCardAttribs)
     {

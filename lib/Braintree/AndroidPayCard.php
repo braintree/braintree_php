@@ -70,7 +70,7 @@ class AndroidPayCard extends Base
      *
      * @access protected
      * @param array $androidPayCardAttribs array of Android Pay card properties
-     * @return none
+     * @return void
      */
     protected function _initialize($androidPayCardAttribs)
     {

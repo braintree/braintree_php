@@ -58,7 +58,7 @@ class UnknownPaymentMethod extends Base
      *
      * @access protected
      * @param array $unknownPaymentMethodAttribs array of unknownPaymentMethod data
-     * @return none
+     * @return void
      */
     protected function _initialize($unknownPaymentMethodAttribs)
     {

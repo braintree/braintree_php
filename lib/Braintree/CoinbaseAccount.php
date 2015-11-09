@@ -58,7 +58,7 @@ class CoinbaseAccount extends Base
      *
      * @access protected
      * @param array $coinbaseAccountAttribs array of coinbaseAccount data
-     * @return none
+     * @return void
      */
     protected function _initialize($coinbaseAccountAttribs)
     {

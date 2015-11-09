@@ -61,7 +61,7 @@ class Address extends Base
      * @ignore
      * @access protected
      * @param array $addressAttribs array of address data
-     * @return none
+     * @return void
      */
     protected function _initialize($addressAttribs)
     {

@@ -79,7 +79,7 @@ class ApplePayCard extends Base
      *
      * @access protected
      * @param array $applePayCardAttribs array of Apple Pay card properties
-     * @return none
+     * @return void
      */
     protected function _initialize($applePayCardAttribs)
     {

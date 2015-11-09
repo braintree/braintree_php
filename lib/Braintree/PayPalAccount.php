@@ -57,7 +57,7 @@ class PayPalAccount extends Base
      *
      * @access protected
      * @param array $paypalAccountAttribs array of paypalAccount data
-     * @return none
+     * @return void
      */
     protected function _initialize($paypalAccountAttribs)
     {

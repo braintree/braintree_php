@@ -58,7 +58,7 @@ class EuropeBankAccount extends Base
      *
      * @access protected
      * @param array $europeBankAccountAttribs array of EuropeBankAccount properties
-     * @return none
+     * @return void
      */
     protected function _initialize($europeBankAccountAttribs)
     {

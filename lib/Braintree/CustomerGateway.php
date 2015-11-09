@@ -403,7 +403,7 @@ class CustomerGateway
      * @ignore
      * @access protected
      * @param array $customerAttribs array of customer data
-     * @return none
+     * @return void
      */
     protected function _initialize($customerAttribs)
     {
