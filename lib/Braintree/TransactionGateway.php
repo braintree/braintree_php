@@ -63,6 +63,7 @@ final class TransactionGateway
     }
     /**
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param array $attribs
      * @return object
@@ -80,6 +81,7 @@ final class TransactionGateway
     }
     /**
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param none
      * @return string
@@ -235,7 +237,8 @@ final class TransactionGateway
 
     /**
      * @access public
-     *
+     * @param string id
+     * @return Transaction
      */
     public function find($id)
     {

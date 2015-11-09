@@ -53,6 +53,7 @@ class CreditCardGateway
     /**
      * create a customer from a TransparentRedirect operation
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param array $attribs
      * @return object
@@ -71,6 +72,7 @@ class CreditCardGateway
 
     /**
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param none
      * @return string
@@ -307,6 +309,7 @@ class CreditCardGateway
     /**
      * update a customer from a TransparentRedirect operation
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param array $attribs
      * @return object
