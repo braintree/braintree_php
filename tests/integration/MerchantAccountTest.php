@@ -153,6 +153,13 @@ class MerchantAccountTest extends Setup
         $this->assertEquals($params['individual']['lastName'], $merchantAccount->individualDetails->lastName);
     }
 
+    public function testRetrievesMasterMerchantAccountCurrencyIsoCode()
+    {
+        $merchantAccount = Braintree\MerchantAccount::find("sandbox_master_merchant_account");
+
+        $this->assertEquals("USD", $merchantAccount->currencyIsoCode);
+    }
+
     public function testFind_throwsIfNotFound()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'merchant account with id does-not-exist not found');
