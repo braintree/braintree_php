@@ -228,15 +228,7 @@ class Util
      */
     public static function camelCaseToDelimiter($string, $delimiter = '-')
     {
-        // php doesn't garbage collect functions created by create_function()
-        // so use a static variable to avoid adding a new function to memory
-        // every time this function is called.
-        static $callbacks = array();
-        if (!isset($callbacks[$delimiter])) {
-            $callbacks[$delimiter] = create_function('$matches', "return '$delimiter' . strtolower(\$matches[1]);");
-        }
-
-        return preg_replace_callback('/([A-Z])/', $callbacks[$delimiter], $string);
+        return strtolower(preg_replace('/([A-Z])/', "$delimiter\\1", $string));
     }
 
     public static function delimiterToCamelCaseArray($array, $delimiter = '[\-\_]')
