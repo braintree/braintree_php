@@ -168,7 +168,8 @@ final class TransactionGateway
                         array(
                             'payeeEmail',
                             'customField',
-                            'description'
+                            'description',
+                            array('supplementaryData' => array('_anyKey_')),
                         )
                     ),
                     array('amexRewards' =>
@@ -181,8 +182,7 @@ final class TransactionGateway
                     )
                 ),
             ),
-            array('customFields' => array('_anyKey_')
-            ),
+            array('customFields' => array('_anyKey_')),
             array('descriptor' => array('name', 'phone', 'url')),
             array('paypalAccount' => array('payeeEmail')),
             array('apple_pay_card' => array('number', 'cardholder_name', 'cryptogram', 'expiration_month', 'expiration_year')),
