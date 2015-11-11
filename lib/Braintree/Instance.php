@@ -52,7 +52,7 @@ abstract class Instance
     /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
-     * @return var
+     * @return string
      */
     public function  __toString()
     {

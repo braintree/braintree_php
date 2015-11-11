@@ -224,7 +224,7 @@ class Util
      *
      * @access public
      * @param var $string
-     * @return var modified string
+     * @return string modified string
      */
     public static function camelCaseToDelimiter($string, $delimiter = '-')
     {
