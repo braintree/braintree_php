@@ -13,7 +13,7 @@ abstract class Instance
 
     /**
      *
-     * @param array $aAttribs
+     * @param array $attributes
      */
     public function  __construct($attributes)
     {
@@ -25,7 +25,7 @@ abstract class Instance
     /**
      * returns private/nonexistent instance properties
      * @access public
-     * @param var $name property name
+     * @param string $name property name
      * @return mixed contents of instance properties
      */
     public function __get($name)

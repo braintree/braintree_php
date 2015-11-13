@@ -95,7 +95,7 @@ class Customer extends Base
     /**
      *
      * @throws Exception\NotFound
-     * @param int $id
+     * @param string $id customer id
      * @return Customer
      */
     public static function find($id)

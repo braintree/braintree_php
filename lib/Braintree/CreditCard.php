@@ -292,6 +292,7 @@ class CreditCard extends Base
         return Configuration::gateway()->creditCard()->delete($token);
     }
 
+    /** @return array */
     public static function allCardTypes()
     {
         return array(

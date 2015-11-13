@@ -43,7 +43,8 @@ class Successful extends Instance
 
     /**
      * @ignore
-     * @param string $classToReturn name of class to instantiate
+     * @param array|null $objsToReturn
+     * @param array|null $propertyNames
      */
     public function __construct($objsToReturn = array(), $propertyNames = array())
     {

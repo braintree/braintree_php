@@ -35,8 +35,8 @@ class ResourceCollection implements Iterator
      *
      * expects an array of attributes with literal keys
      *
-     * @param array $attributes
-     * @param array $pagerAttribs
+     * @param array $response
+     * @param array $pager
      */
     public function  __construct($response, $pager)
     {

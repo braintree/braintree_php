@@ -47,8 +47,9 @@ class Util
     /**
      * throws an exception based on the type of error
      * @param string $statusCode HTTP status code to throw exception from
+     * @param null|string $message
      * @throws Exception multiple types depending on the error
-     *
+     * @return void
      */
     public static function throwStatusCodeException($statusCode, $message=null)
     {
@@ -191,6 +192,7 @@ class Util
      *
      * @access public
      * @param string $string
+     * @param null|string $delimiter
      * @return string modified string
      */
     public static function delimiterToCamelCase($string, $delimiter = '[\-\_]')
@@ -223,7 +225,8 @@ class Util
      * find capitals and convert to delimiter + lowercase
      *
      * @access public
-     * @param var $string
+     * @param string $string
+     * @param null|string $delimiter
      * @return string modified string
      */
     public static function camelCaseToDelimiter($string, $delimiter = '-')
@@ -291,6 +294,7 @@ class Util
      * @param array $array associative array to implode
      * @param string $separator (optional, defaults to =)
      * @param string $glue (optional, defaults to ', ')
+     * @return bool
      */
     public static function implodeAssociativeArray($array, $separator = '=', $glue = ', ')
     {
