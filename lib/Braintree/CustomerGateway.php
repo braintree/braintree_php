@@ -187,7 +187,6 @@ class CustomerGateway
      *
      * @access public
      * @param string id customer Id
-     * @return Customer
      * @return Customer|boolean The customer object or false if the request fails.
      * @throws Exception\NotFound
      */

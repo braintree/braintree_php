@@ -53,7 +53,7 @@ class AddressGateway
      *
      * @access public
      * @param  array  $attribs
-     * @return Braintree_Result_Successful|Braintre_Result_Error
+     * @return Result\Successful|Result\Error
      */
     public function create($attribs)
     {
@@ -266,7 +266,7 @@ class AddressGateway
      * @ignore
      * @param string $subPath
      * @param array $params
-     * @return Braintree_Result_Successful|Braintree_Result_Error
+     * @return Result\Successful|Result\Error
      */
     private function _doCreate($subPath, $params)
     {
