@@ -31,7 +31,7 @@ class PayPalAccount extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of PayPalAccount
+     * @return PayPalAccount
      */
     public static function factory($attributes)
     {
@@ -57,7 +57,7 @@ class PayPalAccount extends Base
      *
      * @access protected
      * @param array $paypalAccountAttribs array of paypalAccount data
-     * @return none
+     * @return void
      */
     protected function _initialize($paypalAccountAttribs)
     {

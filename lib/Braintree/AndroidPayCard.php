@@ -49,7 +49,7 @@ class AndroidPayCard extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of AndroidPayCard
+     * @return AndroidPayCard
      */
     public static function factory($attributes)
     {
@@ -70,7 +70,7 @@ class AndroidPayCard extends Base
      *
      * @access protected
      * @param array $androidPayCardAttribs array of Android Pay card properties
-     * @return none
+     * @return void
      */
     protected function _initialize($androidPayCardAttribs)
     {

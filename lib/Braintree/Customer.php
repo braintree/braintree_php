@@ -95,7 +95,7 @@ class Customer extends Base
     /**
      *
      * @throws Exception\NotFound
-     * @param int $id
+     * @param string $id customer id
      * @return Customer
      */
     public static function find($id)
@@ -333,7 +333,7 @@ class Customer extends Base
     /**
      * returns the customer's default payment method
      *
-     * @return object CreditCard or PayPalAccount
+     * @return CreditCard|PayPalAccount
      */
     public function defaultPaymentMethod()
     {

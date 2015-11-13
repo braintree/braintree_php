@@ -148,25 +148,25 @@ namespace Braintree;
  * @property-read string $cvvResponseCode
  * @property-read string $id transaction id
  * @property-read string $amount transaction amount
- * @property-read object $billingDetails transaction billing address
+ * @property-read Braintree\Transaction\AddressDetails $billingDetails transaction billing address
  * @property-read string $createdAt transaction created timestamp
- * @property-read object $applePayCardDetails transaction Apple Pay card info
- * @property-read object $androidPayCardDetails transaction Android Pay card info
- * @property-read object $amexExpressCheckoutCardDetails transaction Amex Express Checkout card info
- * @property-read object $creditCardDetails transaction credit card info
- * @property-read object $coinbaseDetails transaction Coinbase account info
- * @property-read object $paypalDetails transaction paypal account info
- * @property-read object $customerDetails transaction customer info
+ * @property-read Braintree\ApplePayCard $applePayCardDetails transaction Apple Pay card info
+ * @property-read Braintree\AndroidPayCard $androidPayCardDetails transaction Android Pay card info
+ * @property-read Braintree\AmexExpressCheckoutCard $amexExpressCheckoutCardDetails transaction Amex Express Checkout card info
+ * @property-read Braintree\CreditCard $creditCardDetails transaction credit card info
+ * @property-read Braintree\CoinbaseAccount $coinbaseDetails transaction Coinbase account info
+ * @property-read Braintree\PayPalAccount $paypalDetails transaction paypal account info
+ * @property-read Braintree\Customer $customerDetails transaction customer info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
  * @property-read string $additionalProcessorResponse raw response from processor
- * @property-read object $shippingDetails transaction shipping address
+ * @property-read Braintree\Transaction\AddressDetails $shippingDetails transaction shipping address
  * @property-read string $status transaction status
  * @property-read array  $statusHistory array of StatusDetails objects
  * @property-read string $type transaction type
  * @property-read string $updatedAt transaction updated timestamp
- * @property-read object $disbursementDetails populated when transaction is disbursed
- * @property-read object $disputes populated when transaction is disputed
+ * @property-read Braintree\Disbursement $disbursementDetails populated when transaction is disbursed
+ * @property-read Braintree\Dispute $disputes populated when transaction is disputed
  *
  */
 
@@ -227,7 +227,7 @@ final class Transaction extends Base
      * @ignore
      * @access protected
      * @param array $transactionAttribs array of transaction data
-     * @return none
+     * @return void
      */
     protected function _initialize($transactionAttribs)
     {
@@ -416,6 +416,7 @@ final class Transaction extends Base
         }
     }
 
+    /** @return void|Braintree\Customer */
     public function vaultCustomer()
     {
         $customerId = $this->customerDetails->id;
@@ -427,6 +428,7 @@ final class Transaction extends Base
         }
     }
 
+    /** @return bool */
     public function isDisbursed() {
         return $this->disbursementDetails->isValid();
     }
@@ -436,7 +438,7 @@ final class Transaction extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Transaction
+     * @return Transaction
      */
     public static function factory($attributes)
     {

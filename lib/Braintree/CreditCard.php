@@ -113,7 +113,7 @@ class CreditCard extends Base
      *
      * @access protected
      * @param array $creditCardAttribs array of creditcard data
-     * @return none
+     * @return void
      */
     protected function _initialize($creditCardAttribs)
     {
@@ -178,7 +178,7 @@ class CreditCard extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of CreditCard
+     * @return CreditCard
      */
     public static function factory($attributes)
     {
@@ -292,6 +292,7 @@ class CreditCard extends Base
         return Configuration::gateway()->creditCard()->delete($token);
     }
 
+    /** @return array */
     public static function allCardTypes()
     {
         return array(

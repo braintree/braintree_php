@@ -85,7 +85,7 @@ class SettlementBatchSummaryGateway
     /**
      *
      * @param array $response
-     * @return Result_Successful|Result_Error
+     * @return Result\Successful|Result\Error
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)

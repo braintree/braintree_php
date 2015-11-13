@@ -32,7 +32,7 @@ class CoinbaseAccount extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of CoinbaseAccount
+     * @return CoinbaseAccount
      */
     public static function factory($attributes)
     {
@@ -58,7 +58,7 @@ class CoinbaseAccount extends Base
      *
      * @access protected
      * @param array $coinbaseAccountAttribs array of coinbaseAccount data
-     * @return none
+     * @return void
      */
     protected function _initialize($coinbaseAccountAttribs)
     {

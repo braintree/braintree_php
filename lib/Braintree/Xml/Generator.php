@@ -24,7 +24,7 @@ class Generator
      * arrays passed to this method should have a single root element
      * with an array as its value
      * @param array $aData the array of data
-     * @return var XML string
+     * @return string XML string
      */
     public static function arrayToXml($aData)
     {
@@ -60,7 +60,7 @@ class Generator
      * @static
      * @param object $writer XMLWriter object
      * @param array $aData contains attributes and values
-     * @return none
+     * @return void
      */
     private static function _createElementsFromArray(&$writer, $aData)
     {
@@ -126,7 +126,7 @@ class Generator
      * converts datetime back to xml schema format
      * @access protected
      * @param object $dateTime
-     * @return var XML schema formatted timestamp
+     * @return string XML schema formatted timestamp
      */
     private static function _dateTimeToXmlTimestamp($dateTime)
     {

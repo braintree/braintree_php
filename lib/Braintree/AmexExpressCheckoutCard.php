@@ -46,7 +46,7 @@ class AmexExpressCheckoutCard extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of AmexExpressCheckoutCard
+     * @return AmexExpressCheckoutCard
      */
     public static function factory($attributes)
     {
@@ -61,7 +61,7 @@ class AmexExpressCheckoutCard extends Base
      *
      * @access protected
      * @param array $amexExpressCheckoutCardAttribs array of Amex Express Checkout card properties
-     * @return none
+     * @return void
      */
     protected function _initialize($amexExpressCheckoutCardAttribs)
     {

@@ -13,7 +13,7 @@ abstract class Instance
 
     /**
      *
-     * @param array $aAttribs
+     * @param array $attributes
      */
     public function  __construct($attributes)
     {
@@ -25,7 +25,7 @@ abstract class Instance
     /**
      * returns private/nonexistent instance properties
      * @access public
-     * @param var $name property name
+     * @param string $name property name
      * @return mixed contents of instance properties
      */
     public function __get($name)
@@ -52,7 +52,7 @@ abstract class Instance
     /**
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
-     * @return var
+     * @return string
      */
     public function  __toString()
     {
@@ -64,7 +64,7 @@ abstract class Instance
      * @ignore
      * @access protected
      * @param <type> $aAttribs array of properties to set - single level
-     * @return none
+     * @return void
      */
     private function _initializeFromArray($attributes)
     {

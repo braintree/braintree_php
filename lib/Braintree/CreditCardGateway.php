@@ -42,7 +42,7 @@ class CreditCardGateway
      *
      * @access public
      * @param array $attribs
-     * @return object
+     * @return CreditCard
      * @throws Exception\ValidationError
      */
     public function createNoValidate($attribs)
@@ -53,9 +53,10 @@ class CreditCardGateway
     /**
      * create a customer from a TransparentRedirect operation
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param array $attribs
-     * @return object
+     * @return Result\Successful|Result\Error
      */
     public function createFromTransparentRedirect($queryString)
     {
@@ -71,6 +72,7 @@ class CreditCardGateway
 
     /**
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param none
      * @return string
@@ -84,7 +86,7 @@ class CreditCardGateway
 
     /**
      * returns a ResourceCollection of expired credit cards
-     * @return object ResourceCollection
+     * @return ResourceCollection
      */
     public function expired()
     {
@@ -112,7 +114,7 @@ class CreditCardGateway
     /**
      * returns a ResourceCollection of credit cards expiring between start/end
      *
-     * @return object ResourceCollection
+     * @return ResourceCollection
      */
     public function expiringBetween($startDate, $endDate)
     {
@@ -143,7 +145,7 @@ class CreditCardGateway
      *
      * @access public
      * @param string $token credit card unique id
-     * @return object CreditCard
+     * @return CreditCard
      * @throws Exception\NotFound
      */
     public function find($token)
@@ -166,7 +168,7 @@ class CreditCardGateway
      *
      * @access public
      * @param string $nonce payment method nonce
-     * @return object CreditCard
+     * @return CreditCard
      * @throws Exception\NotFound
      */
     public function fromNonce($nonce)
@@ -189,7 +191,7 @@ class CreditCardGateway
      *
      * @access public
      * @param array $attribs
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      */
     public function credit($token, $transactionAttribs)
     {
@@ -209,7 +211,7 @@ class CreditCardGateway
      *
      * @access public
      * @param array $attribs
-     * @return object Transaction
+     * @return Transaction
      * @throws Exception\ValidationError
      */
     public function creditNoValidate($token, $transactionAttribs)
@@ -223,7 +225,7 @@ class CreditCardGateway
      *
      * @param string $token
      * @param array $transactionAttribs
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @see Transaction::sale()
      */
     public function sale($token, $transactionAttribs)
@@ -245,7 +247,7 @@ class CreditCardGateway
      * @access public
      * @param array $transactionAttribs
      * @param string $token
-     * @return object Transaction
+     * @return Transaction
      * @throws Exception\ValidationsFailed
      * @see Transaction::sale()
      */
@@ -264,7 +266,7 @@ class CreditCardGateway
      * @access public
      * @param array $attributes
      * @param string $token (optional)
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      */
     public function update($token, $attributes)
     {
@@ -283,7 +285,7 @@ class CreditCardGateway
      * @access public
      * @param array $attributes
      * @param string $token
-     * @return object CreditCard
+     * @return CreditCard
      * @throws Exception\ValidationsFailed
      */
     public function updateNoValidate($token, $attributes)
@@ -307,6 +309,7 @@ class CreditCardGateway
     /**
      * update a customer from a TransparentRedirect operation
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param array $attribs
      * @return object
@@ -455,7 +458,7 @@ class CreditCardGateway
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)
