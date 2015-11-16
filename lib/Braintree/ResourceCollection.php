@@ -61,7 +61,7 @@ class ResourceCollection implements Iterator
     public function firstItem()
     {
         $ids = $this->_ids;
-        $page = $this->_getPage(array($ids[0]));
+        $page = $this->_getPage([$ids[0]]);
         return $page[0];
     }
 
@@ -112,7 +112,7 @@ class ResourceCollection implements Iterator
     {
         if (empty($this->_ids))
         {
-            $this->_items = array();
+            $this->_items = [];
         }
         else
         {
@@ -131,14 +131,14 @@ class ResourceCollection implements Iterator
     {
         $object = $this->_pager['object'];
         $method = $this->_pager['method'];
-        $methodArgs = array();
+        $methodArgs = [];
         foreach ($this->_pager['methodArgs'] as $arg) {
             array_push($methodArgs, $arg);
         }
         array_push($methodArgs, $ids);
 
         return call_user_func_array(
-            array($object, $method),
+            [$object, $method],
             $methodArgs
         );
     }

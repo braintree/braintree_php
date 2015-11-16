@@ -27,7 +27,7 @@ class Util
     public static function extractAttributeAsArray(&$attribArray, $attributeName)
     {
         if(!isset($attribArray[$attributeName])):
-            return array();
+            return [];
         endif;
 
         // get what should be an array from the passed array
@@ -38,7 +38,7 @@ class Util
             // create an object from the data in each element
             $objectArray = array_map($classFactory, $data);
         else:
-            return array($data);
+            return [$data];
         endif;
 
         unset($attribArray[$attributeName]);
@@ -103,7 +103,7 @@ class Util
      */
     public static function cleanClassName($name)
     {
-        $classNamesToResponseKeys = array(
+        $classNamesToResponseKeys = [
             'Braintree\CreditCard' => 'creditCard',
             'Braintree_CreditCard' => 'creditCard',
             'Braintree\CreditCardGateway' => 'creditCard',
@@ -158,7 +158,7 @@ class Util
             'Braintree_PayPalAccount' => 'paypalAccount',
             'Braintree\PayPalAccountGateway' => 'paypalAccount',
             'Braintree_PayPalAccountGateway' => 'paypalAccount',
-        );
+        ];
 
         return $classNamesToResponseKeys[$name];
     }
@@ -170,7 +170,7 @@ class Util
      */
     public static function buildClassName($name)
     {
-        $responseKeysToClassNames = array(
+        $responseKeysToClassNames = [
             'creditCard' => 'Braintree\CreditCard',
             'customer' => 'Braintree\Customer',
             'subscription' => 'Braintree\Subscription',
@@ -182,7 +182,7 @@ class Util
             'address' => 'Braintree\Address',
             'settlementBatchSummary' => 'Braintree\SettlementBatchSummary',
             'merchantAccount' => 'Braintree\MerchantAccount',
-        );
+        ];
 
         return (string) $responseKeysToClassNames[$name];
     }
@@ -236,7 +236,7 @@ class Util
 
     public static function delimiterToCamelCaseArray($array, $delimiter = '[\-\_]')
     {
-        $converted = array();
+        $converted = [];
         foreach ($array as $key => $value) {
             if (is_string($key)) {
                 $key = self::delimiterToCamelCase($key, $delimiter);
@@ -258,7 +258,7 @@ class Util
 
     public static function camelCaseToDelimiterArray($array, $delimiter = '-')
     {
-        $converted = array();
+        $converted = [];
         foreach ($array as $key => $value) {
             if (is_string($key)) {
                 $key = self::camelCaseToDelimiter($key, $delimiter);
@@ -273,7 +273,7 @@ class Util
 
     public static function delimiterToUnderscoreArray($array)
     {
-        $converted = array();
+        $converted = [];
         foreach ($array as $key => $value) {
             $key = self::delimiterToUnderscore($key);
             $converted[$key] = $value;
@@ -303,7 +303,7 @@ class Util
     }
 
     public static function attributesToString($attributes) {
-        $printableAttribs = array();
+        $printableAttribs = [];
         foreach ($attributes AS $key => $value) {
             if (is_array($value)) {
                 $pAttrib = self::attributesToString($value);
@@ -347,7 +347,7 @@ class Util
      */
     private static function _flattenArray($keys, $namespace = null)
     {
-        $flattenedArray = array();
+        $flattenedArray = [];
         foreach($keys AS $key) {
             if(is_array($key)) {
                 $theKeys = array_keys($key);
@@ -366,7 +366,7 @@ class Util
 
     private static function _flattenUserKeys($keys, $namespace = null)
     {
-       $flattenedArray = array();
+       $flattenedArray = [];
 
        foreach($keys AS $key => $value) {
            $fullKey = empty($namespace) ? $key : $namespace;

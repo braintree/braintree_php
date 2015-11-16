@@ -45,8 +45,8 @@ class EuropeBankAccount extends Base
      */
     public static function factory($attributes)
     {
-        $defaultAttributes = array(
-        );
+        $defaultAttributes = [
+        ];
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));

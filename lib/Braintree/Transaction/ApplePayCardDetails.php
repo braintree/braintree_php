@@ -28,7 +28,7 @@ use Braintree\Instance;
  */
 class ApplePayCardDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore

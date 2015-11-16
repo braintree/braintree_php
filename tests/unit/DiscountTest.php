@@ -10,14 +10,14 @@ class DiscountTest extends Setup
 {
     public function testFactory()
     {
-        $discount = Braintree\Discount::factory(array());
+        $discount = Braintree\Discount::factory([]);
 
         $this->assertInstanceOf('Braintree\Discount', $discount);
     }
 
     public function testToString()
     {
-        $discountParams = array (
+        $discountParams = [
             "amount" => "100.00",
             "description" => "some description",
             "id" => "1",
@@ -25,7 +25,7 @@ class DiscountTest extends Setup
             "name" => "php_discount",
             "neverExpires" => "false",
             "numberOfBillingCycles" => "1"
-        );
+        ];
 
         $discount = Braintree\Discount::factory($discountParams);
 

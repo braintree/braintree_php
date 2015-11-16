@@ -26,7 +26,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @var array collection storage
      */
-    protected $_collection = array();
+    protected $_collection = [];
 
     /**
      * Add a value into the collection

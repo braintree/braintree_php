@@ -15,7 +15,7 @@ class Plan extends Base
     {
         $this->_attributes = $attributes;
 
-        $addOnArray = array();
+        $addOnArray = [];
         if (isset($attributes['addOns'])) {
             foreach ($attributes['addOns'] AS $addOn) {
                 $addOnArray[] = AddOn::factory($addOn);
@@ -23,7 +23,7 @@ class Plan extends Base
         }
         $this->_attributes['addOns'] = $addOnArray;
 
-        $discountArray = array();
+        $discountArray = [];
         if (isset($attributes['discounts'])) {
             foreach ($attributes['discounts'] AS $discount) {
                 $discountArray[] = Discount::factory($discount);
@@ -31,7 +31,7 @@ class Plan extends Base
         }
         $this->_attributes['discounts'] = $discountArray;
 
-        $planArray = array();
+        $planArray = [];
         if (isset($attributes['plans'])) {
             foreach ($attributes['plans'] AS $plan) {
                 $planArray[] = self::factory($plan);

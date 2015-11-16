@@ -65,7 +65,7 @@ class CoinbaseAccount extends Base
         // set the attributes
         $this->_attributes = $coinbaseAccountAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($coinbaseAccountAttribs['subscriptions'])) {
             foreach ($coinbaseAccountAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);

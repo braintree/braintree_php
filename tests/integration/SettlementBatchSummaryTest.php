@@ -25,12 +25,12 @@ class SettlementBatchSummaryTest extends Setup
 
     public function testGatewayGenerate_returnsAnEmptyCollectionWhenThereIsNoData()
     {
-        $gateway = new Braintree\Gateway(array(
+        $gateway = new Braintree\Gateway([
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
             'privateKey' => 'integration_private_key'
-        ));
+        ]);
         $result = $gateway->settlementBatchSummary()->generate('2000-01-01');
 
         $this->assertTrue($result->success);
@@ -48,14 +48,14 @@ class SettlementBatchSummaryTest extends Setup
 
     public function testGenerate_returnsTransactionsSettledOnAGivenDay()
     {
-        $transaction = Braintree\Transaction::saleNoValidate(array(
+        $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
-            ),
-            'options' => array('submitForSettlement' => true)
-        ));
+            ],
+            'options' => ['submitForSettlement' => true]
+        ]);
         Braintree\Test\Transaction::settle($transaction->id);
 
         $today = new Datetime;
@@ -71,17 +71,17 @@ class SettlementBatchSummaryTest extends Setup
 
     public function testGenerate_canBeGroupedByACustomField()
     {
-        $transaction = Braintree\Transaction::saleNoValidate(array(
+        $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
-            ),
-            'customFields' => array(
+            ],
+            'customFields' => [
                 'store_me' => 'custom value'
-            ),
-            'options' => array('submitForSettlement' => true)
-        ));
+            ],
+            'options' => ['submitForSettlement' => true]
+        ]);
 
         Braintree\Test\Transaction::settle($transaction->id);
 

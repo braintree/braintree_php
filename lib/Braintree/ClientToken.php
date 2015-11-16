@@ -13,7 +13,7 @@ class ClientToken
      * @param array $params
      * @return array
      */
-    public static function generate($params=array())
+    public static function generate($params=[])
     {
         return Configuration::gateway()->clientToken()->generate($params);
     }

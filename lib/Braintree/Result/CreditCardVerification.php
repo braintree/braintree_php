@@ -88,12 +88,12 @@ class CreditCardVerification
 
     public static function allStatuses()
     {
-        return array(
+        return [
             CreditCardVerification::FAILED,
             CreditCardVerification::GATEWAY_REJECTED,
             CreditCardVerification::PROCESSOR_DECLINED,
             CreditCardVerification::VERIFIED
-        );
+        ];
     }
 }
 class_alias('Braintree\Result\CreditCardVerification', 'Braintree_Result_CreditCardVerification');

@@ -64,7 +64,7 @@ class PayPalAccount extends Base
         // set the attributes
         $this->_attributes = $paypalAccountAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($paypalAccountAttribs['subscriptions'])) {
             foreach ($paypalAccountAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);

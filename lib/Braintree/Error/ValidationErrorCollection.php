@@ -19,8 +19,8 @@ use Braintree\Collection;
  */
 class ValidationErrorCollection extends Collection
 {
-    private $_errors = array();
-    private $_nested = array();
+    private $_errors = [];
+    private $_nested = [];
 
     /**
      * @ignore
@@ -41,7 +41,7 @@ class ValidationErrorCollection extends Collection
 
     public function deepAll()
     {
-        $validationErrors = array_merge(array(), $this->_errors);
+        $validationErrors = array_merge([], $this->_errors);
         foreach($this->_nested as $nestedErrors)
         {
             $validationErrors = array_merge($validationErrors, $nestedErrors->deepAll());
@@ -71,7 +71,7 @@ class ValidationErrorCollection extends Collection
 
     public function onAttribute($attribute)
     {
-        $matches = array();
+        $matches = [];
         foreach ($this->_errors AS $key => $error) {
            if($error->attribute == $attribute) {
                $matches[] = $error;
@@ -101,7 +101,7 @@ class ValidationErrorCollection extends Collection
      */
     public function __toString()
     {
-        $output = array();
+        $output = [];
 
         // TODO: implement scope
         if (!empty($this->_errors)) {

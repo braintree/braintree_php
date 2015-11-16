@@ -335,7 +335,7 @@ final class Transaction extends Base
             );
         }
 
-        $disputes = array();
+        $disputes = [];
         if (isset($transactionAttribs['disputes'])) {
             foreach ($transactionAttribs['disputes'] AS $dispute) {
                 $disputes[] = Dispute::factory($dispute);
@@ -344,7 +344,7 @@ final class Transaction extends Base
 
         $this->_set('disputes', $disputes);
 
-        $statusHistory = array();
+        $statusHistory = [];
         if (isset($transactionAttribs['statusHistory'])) {
             foreach ($transactionAttribs['statusHistory'] AS $history) {
                 $statusHistory[] = new Transaction\StatusDetails($history);
@@ -353,7 +353,7 @@ final class Transaction extends Base
 
         $this->_set('statusHistory', $statusHistory);
 
-        $addOnArray = array();
+        $addOnArray = [];
         if (isset($transactionAttribs['addOns'])) {
             foreach ($transactionAttribs['addOns'] AS $addOn) {
                 $addOnArray[] = AddOn::factory($addOn);
@@ -361,7 +361,7 @@ final class Transaction extends Base
         }
         $this->_set('addOns', $addOnArray);
 
-        $discountArray = array();
+        $discountArray = [];
         if (isset($transactionAttribs['discounts'])) {
             foreach ($transactionAttribs['discounts'] AS $discount) {
                 $discountArray[] = Discount::factory($discount);
@@ -387,12 +387,12 @@ final class Transaction extends Base
     public function  __toString()
     {
         // array of attributes to print
-        $display = array(
+        $display = [
             'id', 'type', 'amount', 'status',
             'createdAt', 'creditCardDetails', 'customerDetails'
-            );
+            ];
 
-        $displayAttributes = array();
+        $displayAttributes = [];
         foreach ($display AS $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
@@ -510,12 +510,12 @@ final class Transaction extends Base
         return Configuration::gateway()->transaction()->voidNoValidate($transactionId);
     }
 
-    public static function submitForSettlement($transactionId, $amount = null, $attribs = array())
+    public static function submitForSettlement($transactionId, $amount = null, $attribs = [])
     {
         return Configuration::gateway()->transaction()->submitForSettlement($transactionId, $amount, $attribs);
     }
 
-    public static function submitForSettlementNoValidate($transactionId, $amount = null, $attribs = array())
+    public static function submitForSettlementNoValidate($transactionId, $amount = null, $attribs = [])
     {
         return Configuration::gateway()->transaction()->submitForSettlementNoValidate($transactionId, $amount, $attribs);
     }

@@ -30,7 +30,7 @@ use Braintree\Instance;
  */
 class PayPalDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore

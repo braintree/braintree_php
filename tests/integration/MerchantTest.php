@@ -11,15 +11,15 @@ class MerchantTest extends Setup
 {
     public function testCreateMerchant()
     {
-        $gateway = new Braintree\Gateway(array(
+        $gateway = new Braintree\Gateway([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',
-        ));
-        $result = $gateway->merchant()->create(array(
+        ]);
+        $result = $gateway->merchant()->create([
             'email' => 'name@email.com',
             'countryCodeAlpha3' => 'USA',
             'paymentMethods' => ['credit_card', 'paypal'],
-        ));
+        ]);
 
         $this->assertEquals(true, $result->success);
         $merchant = $result->merchant;
@@ -34,26 +34,26 @@ class MerchantTest extends Setup
     */
     public function testAssertsHasCredentials()
     {
-        $gateway = new Braintree\Gateway(array(
+        $gateway = new Braintree\Gateway([
             'clientSecret' => 'client_secret$development$integration_client_secret',
-        ));
-        $gateway->merchant()->create(array(
+        ]);
+        $gateway->merchant()->create([
             'email' => 'name@email.com',
             'countryCodeAlpha3' => 'USA',
-        ));
+        ]);
     }
 
     public function testBadPaymentMethods()
     {
-        $gateway = new Braintree\Gateway(array(
+        $gateway = new Braintree\Gateway([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',
-        ));
-        $result = $gateway->merchant()->create(array(
+        ]);
+        $result = $gateway->merchant()->create([
             'email' => 'name@email.com',
             'countryCodeAlpha3' => 'USA',
             'paymentMethods' => ['fake_money'],
-        ));
+        ]);
 
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('merchant')->onAttribute('paymentMethods');

@@ -12,34 +12,34 @@ class TextNodeTest extends Setup
   {
       $node = new Braintree\TextNode('field');
       $node->is('value');
-      $this->assertEquals(array('is' => 'value'), $node->toParam());
+      $this->assertEquals(['is' => 'value'], $node->toParam());
   }
 
   public function testIsNot()
   {
       $node = new Braintree\TextNode('field');
       $node->isNot('value');
-      $this->assertEquals(array('is_not' => 'value'), $node->toParam());
+      $this->assertEquals(['is_not' => 'value'], $node->toParam());
   }
 
   public function testStartsWith()
   {
       $node = new Braintree\TextNode('field');
       $node->startsWith('beginning');
-      $this->assertEquals(array('starts_with' => 'beginning'), $node->toParam());
+      $this->assertEquals(['starts_with' => 'beginning'], $node->toParam());
   }
 
   public function testEndsWith()
   {
       $node = new Braintree\TextNode('field');
       $node->endsWith('end');
-      $this->assertEquals(array('ends_with' => 'end'), $node->toParam());
+      $this->assertEquals(['ends_with' => 'end'], $node->toParam());
   }
 
   public function testContains()
   {
       $node = new Braintree\TextNode('field');
       $node->contains('middle');
-      $this->assertEquals(array('contains' => 'middle'), $node->toParam());
+      $this->assertEquals(['contains' => 'middle'], $node->toParam());
   }
 }

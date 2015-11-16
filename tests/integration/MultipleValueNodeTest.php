@@ -14,23 +14,23 @@ class MultipleValueNodeTest extends Setup
         $creditCard = SubscriptionHelper::createCreditCard();
         $triallessPlan = SubscriptionHelper::triallessPlan();
 
-        $activeSubscription = Braintree\Subscription::create(array(
+        $activeSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
             'price' => '3'
-        ))->subscription;
+        ])->subscription;
 
-        $canceledSubscription = Braintree\Subscription::create(array(
+        $canceledSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
             'price' => '3'
-        ))->subscription;
+        ])->subscription;
         Braintree\Subscription::cancel($canceledSubscription->id);
 
-        $collection = Braintree\Subscription::search(array(
-            Braintree\SubscriptionSearch::status()->in(array(Braintree\Subscription::ACTIVE)),
+        $collection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::status()->in([Braintree\Subscription::ACTIVE]),
             Braintree\SubscriptionSearch::price()->is('3'),
-        ));
+        ]);
         foreach ($collection AS $item) {
             $this->assertEquals(Braintree\Subscription::ACTIVE, $item->status);
         }
@@ -42,9 +42,9 @@ class MultipleValueNodeTest extends Setup
     public function testIs()
     {
         $found = false;
-        $collection = Braintree\Subscription::search(array(
+        $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::status()->is(Braintree\Subscription::PAST_DUE)
-        ));
+        ]);
         foreach ($collection AS $item) {
             $found = true;
             $this->assertEquals(Braintree\Subscription::PAST_DUE, $item->status);
@@ -55,9 +55,9 @@ class MultipleValueNodeTest extends Setup
     public function testSearch_statusIsExpired()
     {
         $found = false;
-        $collection = Braintree\Subscription::search(array(
-            Braintree\SubscriptionSearch::status()->in(array(Braintree\Subscription::EXPIRED))
-        ));
+        $collection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::status()->in([Braintree\Subscription::EXPIRED])
+        ]);
         foreach ($collection AS $item) {
             $found = true;
             $this->assertEquals(Braintree\Subscription::EXPIRED, $item->status);
@@ -70,23 +70,23 @@ class MultipleValueNodeTest extends Setup
         $creditCard = SubscriptionHelper::createCreditCard();
         $triallessPlan = SubscriptionHelper::triallessPlan();
 
-        $activeSubscription = Braintree\Subscription::create(array(
+        $activeSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
             'price' => '4'
-        ))->subscription;
+        ])->subscription;
 
-        $canceledSubscription = Braintree\Subscription::create(array(
+        $canceledSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
             'price' => '4'
-        ))->subscription;
+        ])->subscription;
         Braintree\Subscription::cancel($canceledSubscription->id);
 
-        $collection = Braintree\Subscription::search(array(
-            Braintree\SubscriptionSearch::status()->in(array(Braintree\Subscription::ACTIVE, Braintree\Subscription::CANCELED)),
+        $collection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::status()->in([Braintree\Subscription::ACTIVE, Braintree\Subscription::CANCELED]),
             Braintree\SubscriptionSearch::price()->is('4')
-        ));
+        ]);
 
         $this->assertTrue(Test\Helper::includes($collection, $activeSubscription));
         $this->assertTrue(Test\Helper::includes($collection, $canceledSubscription));

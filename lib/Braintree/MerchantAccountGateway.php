@@ -18,7 +18,7 @@ final class MerchantAccountGateway
     public function create($attribs)
     {
         Util::verifyKeys(self::detectSignature($attribs), $attribs);
-        return $this->_doCreate('/merchant_accounts/create_via_api', array('merchant_account' => $attribs));
+        return $this->_doCreate('/merchant_accounts/create_via_api', ['merchant_account' => $attribs]);
     }
 
     public function find($merchant_account_id)
@@ -35,7 +35,7 @@ final class MerchantAccountGateway
     public function update($merchant_account_id, $attributes)
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
-        return $this->_doUpdate('/merchant_accounts/' . $merchant_account_id . '/update_via_api', array('merchant_account' => $attributes));
+        return $this->_doUpdate('/merchant_accounts/' . $merchant_account_id . '/update_via_api', ['merchant_account' => $attributes]);
     }
 
     public static function detectSignature($attribs)
@@ -57,47 +57,47 @@ final class MerchantAccountGateway
 
     public static function createSignature()
     {
-        $addressSignature = array('streetAddress', 'postalCode', 'locality', 'region');
-        $individualSignature = array(
+        $addressSignature = ['streetAddress', 'postalCode', 'locality', 'region'];
+        $individualSignature = [
             'firstName',
             'lastName',
             'email',
             'phone',
             'dateOfBirth',
             'ssn',
-            array('address' => $addressSignature)
-        );
+            ['address' => $addressSignature]
+        ];
 
-        $businessSignature = array(
+        $businessSignature = [
             'dbaName',
             'legalName',
             'taxId',
-            array('address' => $addressSignature)
-        );
+            ['address' => $addressSignature]
+        ];
 
-        $fundingSignature = array(
+        $fundingSignature = [
             'routingNumber',
             'accountNumber',
             'destination',
             'email',
             'mobilePhone',
             'descriptor',
-        );
+        ];
 
-        return array(
+        return [
             'id',
             'tosAccepted',
             'masterMerchantAccountId',
-            array('individual' => $individualSignature),
-            array('funding' => $fundingSignature),
-            array('business' => $businessSignature)
-        );
+            ['individual' => $individualSignature],
+            ['funding' => $fundingSignature],
+            ['business' => $businessSignature]
+        ];
     }
 
     public static function createDeprecatedSignature()
     {
-        $applicantDetailsAddressSignature = array('streetAddress', 'postalCode', 'locality', 'region');
-        $applicantDetailsSignature = array(
+        $applicantDetailsAddressSignature = ['streetAddress', 'postalCode', 'locality', 'region'];
+        $applicantDetailsSignature = [
             'companyName',
             'firstName',
             'lastName',
@@ -108,15 +108,15 @@ final class MerchantAccountGateway
             'taxId',
             'routingNumber',
             'accountNumber',
-            array('address' => $applicantDetailsAddressSignature)
-        );
+            ['address' => $applicantDetailsAddressSignature]
+        ];
 
-        return array(
-            array('applicantDetails' =>  $applicantDetailsSignature),
+        return [
+            ['applicantDetails' =>  $applicantDetailsSignature],
             'id',
             'tosAccepted',
             'masterMerchantAccountId'
-        );
+        ];
     }
 
     public function _doCreate($subPath, $params)

@@ -15,22 +15,22 @@ class TextNodeTest extends Setup
         $triallessPlan = SubscriptionHelper::triallessPlan();
         $trialPlan = SubscriptionHelper::trialPlan();
 
-        $trialSubscription = Braintree\Subscription::create(array(
+        $trialSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $trialPlan['id'],
             'price' => '5',
-        ))->subscription;
+        ])->subscription;
 
-        $triallessSubscription = Braintree\Subscription::create(array(
+        $triallessSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
             'price' => '5',
-        ))->subscription;
+        ])->subscription;
 
-        $collection = Braintree\Subscription::search(array(
+        $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::planId()->is("integration_trial_plan"),
             Braintree\SubscriptionSearch::price()->is('5')
-        ));
+        ]);
 
         $this->assertTrue(Test\Helper::includes($collection, $trialSubscription));
         $this->assertFalse(Test\Helper::includes($collection, $triallessSubscription));
@@ -42,22 +42,22 @@ class TextNodeTest extends Setup
         $triallessPlan = SubscriptionHelper::triallessPlan();
         $trialPlan = SubscriptionHelper::trialPlan();
 
-        $trialSubscription = Braintree\Subscription::create(array(
+        $trialSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $trialPlan['id'],
             'price' => '6',
-        ))->subscription;
+        ])->subscription;
 
-        $triallessSubscription = Braintree\Subscription::create(array(
+        $triallessSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
             'price' => '6'
-        ))->subscription;
+        ])->subscription;
 
-        $collection = Braintree\Subscription::search(array(
+        $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::planId()->isNot("integration_trialless_plan"),
             Braintree\SubscriptionSearch::price()->is("6")
-        ));
+        ]);
 
         $this->assertTrue(Test\Helper::includes($collection, $trialSubscription));
         $this->assertFalse(Test\Helper::includes($collection, $triallessSubscription));
@@ -69,22 +69,22 @@ class TextNodeTest extends Setup
         $triallessPlan = SubscriptionHelper::triallessPlan();
         $trialPlan = SubscriptionHelper::trialPlan();
 
-        $trialSubscription = Braintree\Subscription::create(array(
+        $trialSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $trialPlan['id'],
             'price' => '7',
-        ))->subscription;
+        ])->subscription;
 
-        $triallessSubscription = Braintree\Subscription::create(array(
+        $triallessSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
             'price' => '7',
-        ))->subscription;
+        ])->subscription;
 
-        $collection = Braintree\Subscription::search(array(
+        $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::planId()->startsWith("integration_trial_pl"),
             Braintree\SubscriptionSearch::price()->is('7')
-        ));
+        ]);
 
         $this->assertTrue(Test\Helper::includes($collection, $trialSubscription));
         $this->assertFalse(Test\Helper::includes($collection, $triallessSubscription));
@@ -96,22 +96,22 @@ class TextNodeTest extends Setup
         $triallessPlan = SubscriptionHelper::triallessPlan();
         $trialPlan = SubscriptionHelper::trialPlan();
 
-        $trialSubscription = Braintree\Subscription::create(array(
+        $trialSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $trialPlan['id'],
             'price' => '8'
-        ))->subscription;
+        ])->subscription;
 
-        $triallessSubscription = Braintree\Subscription::create(array(
+        $triallessSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
             'price' => '8'
-        ))->subscription;
+        ])->subscription;
 
-        $collection = Braintree\Subscription::search(array(
+        $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::planId()->endsWith("rial_plan"),
             Braintree\SubscriptionSearch::price()->is("8")
-        ));
+        ]);
 
         $this->assertTrue(Test\Helper::includes($collection, $trialSubscription));
         $this->assertFalse(Test\Helper::includes($collection, $triallessSubscription));
@@ -124,22 +124,22 @@ class TextNodeTest extends Setup
         $triallessPlan = SubscriptionHelper::triallessPlan();
         $trialPlan = SubscriptionHelper::trialPlan();
 
-        $trialSubscription = Braintree\Subscription::create(array(
+        $trialSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $trialPlan['id'],
             'price' => '9'
-        ))->subscription;
+        ])->subscription;
 
-        $triallessSubscription = Braintree\Subscription::create(array(
+        $triallessSubscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $triallessPlan['id'],
             'price' => '9'
-        ))->subscription;
+        ])->subscription;
 
-        $collection = Braintree\Subscription::search(array(
+        $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::planId()->contains("ration_trial_pl"),
             Braintree\SubscriptionSearch::price()->is("9")
-        ));
+        ]);
 
         $this->assertTrue(Test\Helper::includes($collection, $trialSubscription));
         $this->assertFalse(Test\Helper::includes($collection, $triallessSubscription));

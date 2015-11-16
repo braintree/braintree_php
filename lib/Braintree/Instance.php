@@ -9,7 +9,7 @@ namespace Braintree;
  */
 abstract class Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      *

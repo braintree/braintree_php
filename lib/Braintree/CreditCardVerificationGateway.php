@@ -17,13 +17,13 @@ class CreditCardVerificationGateway
 
     public function fetch($query, $ids)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = CreditCardVerificationSearch::ids()->in($ids)->toparam();
         $path = $this->_config->merchantPath() . '/verifications/advanced_search';
-        $response = $this->_http->post($path, array('search' => $criteria));
+        $response = $this->_http->post($path, ['search' => $criteria]);
 
         return Util::extractattributeasarray(
             $response['creditCardVerifications'],
@@ -33,18 +33,18 @@ class CreditCardVerificationGateway
 
     public function search($query)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
 
         $path = $this->_config->merchantPath() . '/verifications/advanced_search_ids';
-        $response = $this->_http->post($path, array('search' => $criteria));
-        $pager = array(
+        $response = $this->_http->post($path, ['search' => $criteria]);
+        $pager = [
             'object' => $this,
             'method' => 'fetch',
-            'methodArgs' => array($query)
-            );
+            'methodArgs' => [$query]
+            ];
 
         return new ResourceCollection($response, $pager);
     }

@@ -110,16 +110,16 @@ class Generator
     private static function _generateXmlAttribute($value)
     {
         if ($value instanceof DateTime) {
-            return array('type', 'datetime', self::_dateTimeToXmlTimestamp($value));
+            return ['type', 'datetime', self::_dateTimeToXmlTimestamp($value)];
         }
         if (is_int($value)) {
-            return array('type', 'integer', $value);
+            return ['type', 'integer', $value];
         }
         if (is_bool($value)) {
-            return array('type', 'boolean', ($value ? 'true' : 'false'));
+            return ['type', 'boolean', ($value ? 'true' : 'false')];
         }
         if ($value === NULL) {
-            return array('nil', 'true', $value);
+            return ['nil', 'true', $value];
         }
     }
     /**

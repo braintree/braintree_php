@@ -8,10 +8,10 @@ class WebhookTesting
         $payload = base64_encode(self::_sampleXml($kind, $id)) . "\n";
         $signature = Configuration::publicKey() . "|" . Digest::hexDigestSha1(Configuration::privateKey(), $payload);
 
-        return array(
+        return [
             'bt_signature' => $signature,
             'bt_payload' => $payload
-        );
+        ];
     }
 
     private static function _sampleXml($kind, $id)

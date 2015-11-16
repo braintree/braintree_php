@@ -28,9 +28,9 @@ class Parser
 
         $root = $document->documentElement->nodeName;
 
-        return Util::delimiterToCamelCaseArray(array(
+        return Util::delimiterToCamelCaseArray([
             $root => self::_nodeToValue($document->childNodes->item(0)),
-        ));
+        ]);
     }
 
     /**
@@ -48,7 +48,7 @@ class Parser
 
         switch($type) {
         case 'array':
-            $array = array();
+            $array = [];
             foreach ($node->childNodes as $child) {
                 $value = self::_nodeToValue($child);
                 if ($value !== null) {
@@ -57,19 +57,19 @@ class Parser
             }
             return $array;
         case 'collection':
-            $collection = array();
+            $collection = [];
             foreach ($node->childNodes as $child) {
                 $value = self::_nodetoValue($child);
                 if ($value !== null) {
                     if (!isset($collection[$child->nodeName])) {
-                        $collection[$child->nodeName] = array();
+                        $collection[$child->nodeName] = [];
                     }
                     $collection[$child->nodeName][] = self::_nodeToValue($child);
                 }
             }
             return $collection;
         default:
-            $values = array();
+            $values = [];
             if ($node->childNodes->length === 1 && $node->childNodes->item(0) instanceof DOMText) {
                 return $node->childNodes->item(0)->nodeValue;
             } else {

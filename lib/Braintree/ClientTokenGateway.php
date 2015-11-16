@@ -35,14 +35,14 @@ class ClientTokenGateway
         $this->_http = new Http($gateway->config);
     }
 
-    public function generate($params=array())
+    public function generate($params=[])
     {
         if (!array_key_exists("version", $params)) {
             $params["version"] = ClientToken::DEFAULT_VERSION;
         }
 
         $this->conditionallyVerifyKeys($params);
-        $generateParams = array("client_token" => $params);
+        $generateParams = ["client_token" => $params];
 
         return $this->_doGenerate('/client_token', $generateParams);
     }
@@ -83,10 +83,10 @@ class ClientTokenGateway
      */
     public function generateWithCustomerIdSignature()
     {
-        return array(
+        return [
             "version", "customerId", "proxyMerchantId",
-            array("options" => array("makeDefault", "verifyCard", "failOnDuplicatePaymentMethod")),
-            "merchantAccountId", "sepaMandateType", "sepaMandateAcceptanceLocation");
+            ["options" => ["makeDefault", "verifyCard", "failOnDuplicatePaymentMethod"]],
+            "merchantAccountId", "sepaMandateType", "sepaMandateAcceptanceLocation"];
     }
 
     /**
@@ -95,7 +95,7 @@ class ClientTokenGateway
      */
     public function generateWithoutCustomerIdSignature()
     {
-        return array("version", "proxyMerchantId", "merchantAccountId");
+        return ["version", "proxyMerchantId", "merchantAccountId"];
     }
 
     /**

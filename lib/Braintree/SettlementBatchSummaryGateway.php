@@ -41,12 +41,12 @@ class SettlementBatchSummaryGateway
      */
     public function generate($settlement_date, $groupByCustomField = NULL)
     {
-        $criteria = array('settlement_date' => $settlement_date);
+        $criteria = ['settlement_date' => $settlement_date];
         if (isset($groupByCustomField))
         {
             $criteria['group_by_custom_field'] = $groupByCustomField;
         }
-        $params = array('settlement_batch_summary' => $criteria);
+        $params = ['settlement_batch_summary' => $criteria];
         $path = $this->_config->merchantPath() . '/settlement_batch_summary';
         $response = $this->_http->post($path, $params);
 
@@ -69,7 +69,7 @@ class SettlementBatchSummaryGateway
     */
     private function _underscoreCustomField($groupByCustomField, $records)
     {
-        $updatedRecords = array();
+        $updatedRecords = [];
 
         foreach ($records as $record)
         {

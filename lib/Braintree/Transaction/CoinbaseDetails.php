@@ -27,7 +27,7 @@ use Braintree\Instance;
  */
 class CoinbaseDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore

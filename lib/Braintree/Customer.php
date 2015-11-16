@@ -58,7 +58,7 @@ class Customer extends Base
      * @param array $attribs
      * @return Customer
      */
-    public static function create($attribs = array())
+    public static function create($attribs = [])
     {
         return Configuration::gateway()->customer()->create($attribs);
     }
@@ -68,7 +68,7 @@ class Customer extends Base
      * @param array $attribs
      * @return Customer
      */
-    public static function createNoValidate($attribs = array())
+    public static function createNoValidate($attribs = [])
     {
         return Configuration::gateway()->customer()->createNoValidate($attribs);
     }
@@ -230,7 +230,7 @@ class Customer extends Base
         $this->_attributes = $customerAttribs;
 
         // map each address into its own object
-        $addressArray = array();
+        $addressArray = [];
         if (isset($customerAttribs['addresses'])) {
 
             foreach ($customerAttribs['addresses'] AS $address) {
@@ -240,7 +240,7 @@ class Customer extends Base
         $this->_set('addresses', $addressArray);
 
         // map each creditCard into its own object
-        $creditCardArray = array();
+        $creditCardArray = [];
         if (isset($customerAttribs['creditCards'])) {
             foreach ($customerAttribs['creditCards'] AS $creditCard) {
                 $creditCardArray[] = CreditCard::factory($creditCard);
@@ -249,7 +249,7 @@ class Customer extends Base
         $this->_set('creditCards', $creditCardArray);
 
         // map each coinbaseAccount into its own object
-        $coinbaseAccountArray = array();
+        $coinbaseAccountArray = [];
         if (isset($customerAttribs['coinbaseAccounts'])) {
             foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
                 $coinbaseAccountArray[] = CoinbaseAccount::factory($coinbaseAccount);
@@ -258,7 +258,7 @@ class Customer extends Base
         $this->_set('coinbaseAccounts', $coinbaseAccountArray);
 
         // map each paypalAccount into its own object
-        $paypalAccountArray = array();
+        $paypalAccountArray = [];
         if (isset($customerAttribs['paypalAccounts'])) {
             foreach ($customerAttribs['paypalAccounts'] AS $paypalAccount) {
                 $paypalAccountArray[] = PayPalAccount::factory($paypalAccount);
@@ -267,7 +267,7 @@ class Customer extends Base
         $this->_set('paypalAccounts', $paypalAccountArray);
 
         // map each applePayCard into its own object
-        $applePayCardArray = array();
+        $applePayCardArray = [];
         if (isset($customerAttribs['applePayCards'])) {
             foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
                 $applePayCardArray[] = ApplePayCard::factory($applePayCard);
@@ -276,7 +276,7 @@ class Customer extends Base
         $this->_set('applePayCards', $applePayCardArray);
 
         // map each androidPayCard into its own object
-        $androidPayCardArray = array();
+        $androidPayCardArray = [];
         if (isset($customerAttribs['androidPayCards'])) {
             foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
                 $androidPayCardArray[] = AndroidPayCard::factory($androidPayCard);
@@ -285,7 +285,7 @@ class Customer extends Base
         $this->_set('androidPayCards', $androidPayCardArray);
 
         // map each amexExpressCheckoutCard into its own object
-        $amexExpressCheckoutCardArray = array();
+        $amexExpressCheckoutCardArray = [];
         if (isset($customerAttribs['amexExpressCheckoutCards'])) {
             foreach ($customerAttribs['amexExpressCheckoutCards'] AS $amexExpressCheckoutCard) {
                 $amexExpressCheckoutCardArray[] = AmexExpressCheckoutCard::factory($amexExpressCheckoutCard);
@@ -352,7 +352,7 @@ class Customer extends Base
      * @access protected
      * @var array registry of customer data
      */
-    protected $_attributes = array(
+    protected $_attributes = [
         'addresses'   => '',
         'company'     => '',
         'creditCards' => '',
@@ -365,7 +365,7 @@ class Customer extends Base
         'createdAt'   => '',
         'updatedAt'   => '',
         'website'     => '',
-        );
+        ];
 
     /**
      *  factory method: returns an instance of Customer

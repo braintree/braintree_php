@@ -34,7 +34,7 @@ use Braintree\Instance;
  */
 class AndroidPayCardDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore

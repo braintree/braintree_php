@@ -10,7 +10,7 @@ class ErrorTest extends Setup
 {
     public function testCallingNonExsitingFieldReturnsNull()
     {
-        $result = new Braintree\Result\Error(array('errors' => array(), 'params' => array(), 'message' => 'briefly describe'));
+        $result = new Braintree\Result\Error(['errors' => [], 'params' => [], 'message' => 'briefly describe']);
         $this->assertNull($result->transaction);
     }
 }

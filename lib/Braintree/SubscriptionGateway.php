@@ -33,7 +33,7 @@ class SubscriptionGateway
     {
         Util::verifyKeys(self::_createSignature(), $attributes);
         $path = $this->_config->merchantPath() . '/subscriptions';
-        $response = $this->_http->post($path, array('subscription' => $attributes));
+        $response = $this->_http->post($path, ['subscription' => $attributes]);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -53,32 +53,32 @@ class SubscriptionGateway
 
     public function search($query)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
 
 
         $path = $this->_config->merchantPath() . '/subscriptions/advanced_search_ids';
-        $response = $this->_http->post($path, array('search' => $criteria));
-        $pager = array(
+        $response = $this->_http->post($path, ['search' => $criteria]);
+        $pager = [
             'object' => $this,
             'method' => 'fetch',
-            'methodArgs' => array($query)
-            );
+            'methodArgs' => [$query]
+            ];
 
         return new ResourceCollection($response, $pager);
     }
 
     public function fetch($query, $ids)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = SubscriptionSearch::ids()->in($ids)->toparam();
         $path = $this->_config->merchantPath() . '/subscriptions/advanced_search';
-        $response = $this->_http->post($path, array('search' => $criteria));
+        $response = $this->_http->post($path, ['search' => $criteria]);
 
         return Util::extractAttributeAsArray(
             $response['subscriptions'],
@@ -90,20 +90,20 @@ class SubscriptionGateway
     {
         Util::verifyKeys(self::_updateSignature(), $attributes);
         $path = $this->_config->merchantPath() . '/subscriptions/' . $subscriptionId;
-        $response = $this->_http->put($path, array('subscription' => $attributes));
+        $response = $this->_http->put($path, ['subscription' => $attributes]);
         return $this->_verifyGatewayResponse($response);
     }
 
     public function retryCharge($subscriptionId, $amount = null)
     {
-        $transaction_params = array('type' => Transaction::SALE,
-            'subscriptionId' => $subscriptionId);
+        $transaction_params = ['type' => Transaction::SALE,
+            'subscriptionId' => $subscriptionId];
         if (isset($amount)) {
             $transaction_params['amount'] = $amount;
         }
 
         $path = $this->_config->merchantPath() . '/transactions';
-        $response = $this->_http->post($path, array('transaction' => $transaction_params));
+        $response = $this->_http->post($path, ['transaction' => $transaction_params]);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -117,7 +117,7 @@ class SubscriptionGateway
     private static function _createSignature()
     {
         return array_merge(
-            array(
+            [
                 'billingDayOfMonth',
                 'firstBillingDate',
                 'createdAt',
@@ -133,9 +133,9 @@ class SubscriptionGateway
                 'trialDuration',
                 'trialDurationUnit',
                 'trialPeriod',
-                array('descriptor' => array('name', 'phone', 'url')),
-                array('options' => array('doNotInheritAddOnsOrDiscounts', 'startImmediately')),
-            ),
+                ['descriptor' => ['name', 'phone', 'url']],
+                ['options' => ['doNotInheritAddOnsOrDiscounts', 'startImmediately']],
+            ],
             self::_addOnDiscountSignature()
         );
     }
@@ -143,34 +143,34 @@ class SubscriptionGateway
     private static function _updateSignature()
     {
         return array_merge(
-            array(
+            [
                 'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
                 'paymentMethodNonce', 'id', 'neverExpires', 'price',
-                array('descriptor' => array('name', 'phone', 'url')),
-                array('options' => array('prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure')),
-            ),
+                ['descriptor' => ['name', 'phone', 'url']],
+                ['options' => ['prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure']],
+            ],
             self::_addOnDiscountSignature()
         );
     }
 
     private static function _addOnDiscountSignature()
     {
-        return array(
-            array(
-                'addOns' => array(
-                    array('add' => array('amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('remove' => array('_anyKey_')),
-                )
-            ),
-            array(
-                'discounts' => array(
-                    array('add' => array('amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('remove' => array('_anyKey_')),
-                )
-            )
-        );
+        return [
+            [
+                'addOns' => [
+                    ['add' => ['amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity']],
+                    ['update' => ['amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity']],
+                    ['remove' => ['_anyKey_']],
+                ]
+            ],
+            [
+                'discounts' => [
+                    ['add' => ['amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity']],
+                    ['update' => ['amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity']],
+                    ['remove' => ['_anyKey_']],
+                ]
+            ]
+        ];
     }
 
     /**

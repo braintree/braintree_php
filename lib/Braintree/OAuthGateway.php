@@ -39,7 +39,7 @@ class OAuthGateway
 
     private function _createToken($params)
     {
-        $params = array('credentials' => $params);
+        $params = ['credentials' => $params];
         $response = $this->_http->post('/oauth/access_tokens', $params);
         return $this->_verifyGatewayResponse($response);
     }
@@ -86,7 +86,7 @@ class OAuthGateway
         return $result;
     }
 
-    public function connectUrl($params = array())
+    public function connectUrl($params = [])
     {
         $query = Util::camelCaseToDelimiterArray($params, '_');
         $query['client_id'] = $this->_config->getClientId();

@@ -63,11 +63,11 @@ class ApplePayCard extends Base
      */
     public static function factory($attributes)
     {
-        $defaultAttributes = array(
+        $defaultAttributes = [
             'expirationMonth'    => '',
             'expirationYear'    => '',
             'last4'  => '',
-        );
+        ];
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
@@ -86,7 +86,7 @@ class ApplePayCard extends Base
         // set the attributes
         $this->_attributes = $applePayCardAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($applePayCardAttribs['subscriptions'])) {
             foreach ($applePayCardAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);

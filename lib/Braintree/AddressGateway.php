@@ -66,7 +66,7 @@ class AddressGateway
         unset($attribs['customerId']);
         return $this->_doCreate(
             '/customers/' . $customerId . '/addresses',
-            array('address' => $attribs)
+            ['address' => $attribs]
         );
     }
 
@@ -155,7 +155,7 @@ class AddressGateway
         Util::verifyKeys(self::updateSignature(), $attributes);
 
         $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
-        $response = $this->_http->put($path, array('address' => $attributes));
+        $response = $this->_http->put($path, ['address' => $attributes]);
 
         return $this->_verifyGatewayResponse($response);
 
@@ -187,11 +187,11 @@ class AddressGateway
      */
     public static function createSignature()
     {
-        return array(
+        return [
             'company', 'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
             'countryName', 'customerId', 'extendedAddress', 'firstName',
             'lastName', 'locality', 'postalCode', 'region', 'streetAddress'
-        );
+        ];
     }
 
     /**

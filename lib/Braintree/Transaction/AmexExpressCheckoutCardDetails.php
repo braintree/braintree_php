@@ -32,7 +32,7 @@ use Braintree\Instance;
  */
 class AmexExpressCheckoutCardDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore

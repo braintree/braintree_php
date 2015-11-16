@@ -18,7 +18,7 @@ namespace Braintree;
  */
 class PartnerMerchant extends Base
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore

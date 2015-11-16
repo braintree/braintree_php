@@ -40,26 +40,26 @@ class CredentialsParser
      * @static
      * @var array valid environments, used for validation
      */
-    private static $_validEnvironments = array(
+    private static $_validEnvironments = [
         'development',
         'integration',
         'sandbox',
         'production',
         'qa',
-    );
+    ];
 
 
     public function parse()
     {
-        $environments = array();
+        $environments = [];
         if (!empty($this->_clientId)) {
-            $environments[] = array('clientId', $this->_parseClientCredential('clientId', $this->_clientId, 'client_id'));
+            $environments[] = ['clientId', $this->_parseClientCredential('clientId', $this->_clientId, 'client_id')];
         }
         if (!empty($this->_clientSecret)) {
-            $environments[] = array('clientSecret', $this->_parseClientCredential('clientSecret', $this->_clientSecret, 'client_secret'));
+            $environments[] = ['clientSecret', $this->_parseClientCredential('clientSecret', $this->_clientSecret, 'client_secret')];
         }
         if (!empty($this->_accessToken)) {
-            $environments[] = array('accessToken', $this->_parseAccessToken());
+            $environments[] = ['accessToken', $this->_parseAccessToken()];
         }
 
         $checkEnv = $environments[0];

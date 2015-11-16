@@ -20,7 +20,7 @@ class DiscountGateway
         $path = $this->_config->merchantPath() . '/discounts';
         $response = $this->_http->get($path);
 
-        $discounts = array("discount" => $response['discounts']);
+        $discounts = ["discount" => $response['discounts']];
 
         return Util::extractAttributeAsArray(
             $discounts,

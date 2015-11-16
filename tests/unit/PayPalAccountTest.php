@@ -11,16 +11,16 @@ class PayPalAccountTest extends Setup
     public function testGet_givesErrorIfInvalidProperty()
     {
         $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\PayPalAccount: foo');
-        $paypalAccount = Braintree\PayPalAccount::factory(array());
+        $paypalAccount = Braintree\PayPalAccount::factory([]);
         $paypalAccount->foo;
     }
 
     public function testIsDefault()
     {
-        $paypalAccount = Braintree\PayPalAccount::factory(array('default' => true));
+        $paypalAccount = Braintree\PayPalAccount::factory(['default' => true]);
         $this->assertTrue($paypalAccount->isDefault());
 
-        $paypalAccount = Braintree\PayPalAccount::factory(array('default' => false));
+        $paypalAccount = Braintree\PayPalAccount::factory(['default' => false]);
         $this->assertFalse($paypalAccount->isDefault());
     }
 

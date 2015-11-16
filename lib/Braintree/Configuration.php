@@ -31,7 +31,7 @@ class Configuration
      */
      const API_VERSION =  4;
 
-    public function __construct($attribs = array())
+    public function __construct($attribs = [])
     {
         foreach ($attribs as $kind => $value) {
             if ($kind == 'environment') {

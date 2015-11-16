@@ -12,27 +12,27 @@ class RangeNodeTest extends Setup
     {
         $node = new Braintree\RangeNode('field');
         $node->greaterThanOrEqualTo('smallest');
-        $this->assertEquals(array('min' => 'smallest'), $node->toParam());
+        $this->assertEquals(['min' => 'smallest'], $node->toParam());
     }
 
     public function testLessThanOrEqualTo()
     {
         $node = new Braintree\RangeNode('field');
         $node->lessThanOrEqualTo('biggest');
-        $this->assertEquals(array('max' => 'biggest'), $node->toParam());
+        $this->assertEquals(['max' => 'biggest'], $node->toParam());
     }
 
     public function testBetween()
     {
         $node = new Braintree\RangeNode('field');
         $node->between('alpha', 'omega');
-        $this->assertEquals(array('min' => 'alpha', 'max' => 'omega'), $node->toParam());
+        $this->assertEquals(['min' => 'alpha', 'max' => 'omega'], $node->toParam());
     }
 
     public function testIs()
     {
         $node = new Braintree\RangeNode('field');
         $node->is('something');
-        $this->assertEquals(array('is' => 'something'), $node->toParam());
+        $this->assertEquals(['is' => 'something'], $node->toParam());
     }
 }

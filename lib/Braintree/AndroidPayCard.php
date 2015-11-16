@@ -53,12 +53,12 @@ class AndroidPayCard extends Base
      */
     public static function factory($attributes)
     {
-        $defaultAttributes = array(
+        $defaultAttributes = [
             'expirationMonth'    => '',
             'expirationYear'    => '',
             'last4'  => $attributes['virtualCardLast4'],
             'cardType'  => $attributes['virtualCardType'],
-        );
+        ];
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
@@ -77,7 +77,7 @@ class AndroidPayCard extends Base
         // set the attributes
         $this->_attributes = $androidPayCardAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($androidPayCardAttribs['subscriptions'])) {
             foreach ($androidPayCardAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);

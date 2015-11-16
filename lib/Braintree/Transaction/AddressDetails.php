@@ -23,6 +23,6 @@ use Braintree\Instance;
  */
 class AddressDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 }
 class_alias('Braintree\Transaction\AddressDetails', 'Braintree_Transaction_AddressDetails');

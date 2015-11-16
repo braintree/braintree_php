@@ -40,7 +40,7 @@ class PaymentMethodGateway
     public function create($attribs)
     {
         Util::verifyKeys(self::createSignature(), $attribs);
-        return $this->_doCreate('/payment_methods', array('payment_method' => $attribs));
+        return $this->_doCreate('/payment_methods', ['payment_method' => $attribs]);
     }
 
     /**
@@ -83,7 +83,7 @@ class PaymentMethodGateway
     public function update($token, $attribs)
     {
         Util::verifyKeys(self::updateSignature(), $attribs);
-        return $this->_doUpdate('/payment_methods/any/' . $token, array('payment_method' => $attribs));
+        return $this->_doUpdate('/payment_methods/any/' . $token, ['payment_method' => $attribs]);
     }
 
     public function delete($token)
@@ -99,12 +99,12 @@ class PaymentMethodGateway
         $fullPath = $this->_config->merchantPath() . '/payment_methods/grant';
         $response = $this->_http->post(
             $fullPath,
-            array(
-                'payment_method' => array(
+            [
+                'payment_method' => [
                     'shared_payment_method_token' => $sharedPaymentMethodToken,
                     'allow_vaulting' => $allowVaulting
-                )
-            )
+                ]
+            ]
         );
 
         return PaymentMethodNonce::factory($response['paymentMethodNonce']);
@@ -113,13 +113,13 @@ class PaymentMethodGateway
     private static function baseSignature()
     {
         $billingAddressSignature = AddressGateway::createSignature();
-        $optionsSignature = array(
+        $optionsSignature = [
             'failOnDuplicatePaymentMethod',
             'makeDefault',
             'verificationMerchantAccountId',
             'verifyCard'
-        );
-        return array(
+        ];
+        return [
             'billingAddressId',
             'cardholderName',
             'cvv',
@@ -130,31 +130,31 @@ class PaymentMethodGateway
             'number',
             'paymentMethodNonce',
             'token',
-            array('options' => $optionsSignature),
-            array('billingAddress' => $billingAddressSignature)
-        );
+            ['options' => $optionsSignature],
+            ['billingAddress' => $billingAddressSignature]
+        ];
     }
 
     public static function createSignature()
     {
-        $signature = array_merge(self::baseSignature(), array('customerId'));
+        $signature = array_merge(self::baseSignature(), ['customerId']);
         return $signature;
     }
 
     public static function updateSignature()
     {
         $billingAddressSignature = AddressGateway::updateSignature();
-        array_push($billingAddressSignature, array(
-            'options' => array(
+        array_push($billingAddressSignature, [
+            'options' => [
                 'updateExisting'
-            )
-        ));
-        $signature = array_merge(self::baseSignature(), array(
+            ]
+        ]);
+        $signature = array_merge(self::baseSignature(), [
             'deviceSessionId',
             'venmoSdkPaymentMethodCode',
             'fraudMerchantId',
-            array('billingAddress' => $billingAddressSignature)
-        ));
+            ['billingAddress' => $billingAddressSignature]
+        ]);
         return $signature;
     }
 

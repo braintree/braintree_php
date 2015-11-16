@@ -33,7 +33,7 @@ class CreditCardGateway
     public function create($attribs)
     {
         Util::verifyKeys(self::createSignature(), $attribs);
-        return $this->_doCreate('/payment_methods', array('credit_card' => $attribs));
+        return $this->_doCreate('/payment_methods', ['credit_card' => $attribs]);
     }
 
     /**
@@ -66,7 +66,7 @@ class CreditCardGateway
         );
         return $this->_doCreate(
             '/payment_methods/all/confirm_transparent_redirect_request',
-            array('id' => $params['id'])
+            ['id' => $params['id']]
         );
     }
 
@@ -92,11 +92,11 @@ class CreditCardGateway
     {
         $path = $this->_config->merchantPath() . '/payment_methods/all/expired_ids';
         $response = $this->_http->post($path);
-        $pager = array(
+        $pager = [
             'object' => $this,
             'method' => 'fetchExpired',
-            'methodArgs' => array()
-        );
+            'methodArgs' => []
+        ];
 
         return new ResourceCollection($response, $pager);
     }
@@ -104,7 +104,7 @@ class CreditCardGateway
     public function fetchExpired($ids)
     {
         $path = $this->_config->merchantPath() . "/payment_methods/all/expired";
-        $response = $this->_http->post($path, array('search' => array('ids' => $ids)));
+        $response = $this->_http->post($path, ['search' => ['ids' => $ids]]);
 
         return Util::extractattributeasarray(
             $response['paymentMethods'],
@@ -120,11 +120,11 @@ class CreditCardGateway
     {
         $queryPath = $this->_config->merchantPath() . '/payment_methods/all/expiring_ids?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
         $response = $this->_http->post($queryPath);
-        $pager = array(
+        $pager = [
             'object' => $this,
             'method' => 'fetchExpiring',
-            'methodArgs' => array($startDate, $endDate)
-        );
+            'methodArgs' => [$startDate, $endDate]
+        ];
 
         return new ResourceCollection($response, $pager);
     }
@@ -132,7 +132,7 @@ class CreditCardGateway
     public function fetchExpiring($startDate, $endDate, $ids)
     {
         $queryPath = $this->_config->merchantPath() . '/payment_methods/all/expiring?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
-        $response = $this->_http->post($queryPath, array('search' => array('ids' => $ids)));
+        $response = $this->_http->post($queryPath, ['search' => ['ids' => $ids]]);
 
         return Util::extractAttributeAsArray(
             $response['paymentMethods'],
@@ -199,7 +199,7 @@ class CreditCardGateway
         return Transaction::credit(
             array_merge(
                 $transactionAttribs,
-                array('paymentMethodToken' => $token)
+                ['paymentMethodToken' => $token]
             )
         );
     }
@@ -234,7 +234,7 @@ class CreditCardGateway
         return Transaction::sale(
             array_merge(
                 $transactionAttribs,
-                array('paymentMethodToken' => $token)
+                ['paymentMethodToken' => $token]
             )
         );
     }
@@ -272,7 +272,7 @@ class CreditCardGateway
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
         $this->_validateId($token);
-        return $this->_doUpdate('put', '/payment_methods/credit_card/' . $token, array('creditCard' => $attributes));
+        return $this->_doUpdate('put', '/payment_methods/credit_card/' . $token, ['creditCard' => $attributes]);
     }
 
     /**
@@ -323,7 +323,7 @@ class CreditCardGateway
         return $this->_doUpdate(
             'post',
             '/payment_methods/all/confirm_transparent_redirect_request',
-            array('id' => $params['id'])
+            ['id' => $params['id']]
         );
     }
 
@@ -337,18 +337,18 @@ class CreditCardGateway
 
     private static function baseOptions()
     {
-        return array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'venmoSdkSession');
+        return ['makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'venmoSdkSession'];
     }
 
     private static function baseSignature($options)
     {
-         return array(
+         return [
              'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
              'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
              'deviceData', 'fraudMerchantId', 'paymentMethodNonce',
-             array('options' => $options),
-             array(
-                 'billingAddress' => array(
+             ['options' => $options],
+             [
+                 'billingAddress' => [
                      'firstName',
                      'lastName',
                      'company',
@@ -361,9 +361,9 @@ class CreditCardGateway
                      'region',
                      'postalCode',
                      'streetAddress'
-                 ),
-             ),
-         );
+                 ],
+             ],
+         ];
     }
 
     public static function createSignature()
@@ -379,13 +379,13 @@ class CreditCardGateway
     {
          $signature = self::baseSignature(self::baseOptions());
 
-         $updateExistingBillingSignature = array(
-             array(
-                 'options' => array(
+         $updateExistingBillingSignature = [
+             [
+                 'options' => [
                      'updateExisting'
-                 )
-             )
-         );
+                 ]
+             ]
+         ];
 
          foreach($signature AS $key => $value) {
              if(is_array($value) and array_key_exists('billingAddress', $value)) {

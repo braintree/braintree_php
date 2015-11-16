@@ -74,7 +74,7 @@ class PayPalAccountGateway
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
         $this->_validateId($token);
-        return $this->_doUpdate('put', '/payment_methods/paypal_account/' . $token, array('paypalAccount' => $attributes));
+        return $this->_doUpdate('put', '/payment_methods/paypal_account/' . $token, ['paypalAccount' => $attributes]);
     }
 
     public function delete($token)
@@ -99,17 +99,17 @@ class PayPalAccountGateway
         return Transaction::sale(
             array_merge(
                 $transactionAttribs,
-                array('paymentMethodToken' => $token)
+                ['paymentMethodToken' => $token]
             )
         );
     }
 
     public static function updateSignature()
     {
-        return array(
+        return [
             'token',
-            array('options' => array('makeDefault'))
-        );
+            ['options' => ['makeDefault']]
+        ];
     }
 
     /**

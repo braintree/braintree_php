@@ -34,7 +34,7 @@ final class TransactionGateway
     public function cloneTransaction($transactionId, $attribs)
     {
         Util::verifyKeys(self::cloneSignature(), $attribs);
-        return $this->_doCreate('/transactions/' . $transactionId . '/clone', array('transactionClone' => $attribs));
+        return $this->_doCreate('/transactions/' . $transactionId . '/clone', ['transactionClone' => $attribs]);
     }
 
     /**
@@ -46,7 +46,7 @@ final class TransactionGateway
     private function create($attribs)
     {
         Util::verifyKeys(self::createSignature(), $attribs);
-        return $this->_doCreate('/transactions', array('transaction' => $attribs));
+        return $this->_doCreate('/transactions', ['transaction' => $attribs]);
     }
 
     /**
@@ -76,7 +76,7 @@ final class TransactionGateway
         );
         return $this->_doCreate(
                 '/transactions/all/confirm_transparent_redirect_request',
-                array('id' => $params['id'])
+                ['id' => $params['id']]
         );
     }
     /**
@@ -95,7 +95,7 @@ final class TransactionGateway
 
     public static function cloneSignature()
     {
-        return array('amount', 'channel', array('options' => array('submitForSettlement')));
+        return ['amount', 'channel', ['options' => ['submitForSettlement']]];
     }
 
     /**
@@ -104,7 +104,7 @@ final class TransactionGateway
      */
     public static function createSignature()
     {
-        return array(
+        return [
             'amount',
             'billingAddressId',
             'channel',
@@ -129,30 +129,30 @@ final class TransactionGateway
             'threeDSecureToken',
             'type',
             'venmoSdkPaymentMethodCode',
-            array('creditCard' =>
-                array('token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'),
-            ),
-            array('customer' =>
-                array(
+            ['creditCard' =>
+                ['token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'],
+            ],
+            ['customer' =>
+                [
                     'id', 'company', 'email', 'fax', 'firstName',
-                    'lastName', 'phone', 'website'),
-            ),
-            array('billing' =>
-                array(
+                    'lastName', 'phone', 'website'],
+            ],
+            ['billing' =>
+                [
                     'firstName', 'lastName', 'company', 'countryName',
                     'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
                     'extendedAddress', 'locality', 'postalCode', 'region',
-                    'streetAddress'),
-            ),
-            array('shipping' =>
-                array(
+                    'streetAddress'],
+            ],
+            ['shipping' =>
+                [
                     'firstName', 'lastName', 'company', 'countryName',
                     'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
                     'extendedAddress', 'locality', 'postalCode', 'region',
-                    'streetAddress'),
-            ),
-            array('options' =>
-                array(
+                    'streetAddress'],
+            ],
+            ['options' =>
+                [
                     'holdInEscrow',
                     'storeInVault',
                     'storeInVaultOnSuccess',
@@ -161,35 +161,35 @@ final class TransactionGateway
                     'venmoSdkSession',
                     'storeShippingAddressInVault',
                     'payeeEmail',
-                    array('three_d_secure' =>
-                        array('required')
-                    ),
-                    array('paypal' =>
-                        array(
+                    ['three_d_secure' =>
+                        ['required']
+                    ],
+                    ['paypal' =>
+                        [
                             'payeeEmail',
                             'customField',
                             'description'
-                        )
-                    ),
-                    array('amexRewards' =>
-                        array(
+                        ]
+                    ],
+                    ['amexRewards' =>
+                        [
                             'requestId',
                             'points',
                             'currencyAmount',
                             'currencyIsoCode'
-                        )
-                    )
-                ),
-            ),
-            array('customFields' => array('_anyKey_')
-            ),
-            array('descriptor' => array('name', 'phone', 'url')),
-            array('paypalAccount' => array('payeeEmail')),
-            array('apple_pay_card' => array('number', 'cardholder_name', 'cryptogram', 'expiration_month', 'expiration_year')),
-            array('industry' =>
-                array('industryType',
-                    array('data' =>
-                        array(
+                        ]
+                    ]
+                ],
+            ],
+            ['customFields' => ['_anyKey_']
+            ],
+            ['descriptor' => ['name', 'phone', 'url']],
+            ['paypalAccount' => ['payeeEmail']],
+            ['apple_pay_card' => ['number', 'cardholder_name', 'cryptogram', 'expiration_month', 'expiration_year']],
+            ['industry' =>
+                ['industryType',
+                    ['data' =>
+                        [
                             'folioNumber',
                             'checkInDate',
                             'checkOutDate',
@@ -199,16 +199,16 @@ final class TransactionGateway
                             'lodgingCheckOutDate',
                             'lodgingName',
                             'roomRate'
-                        )
-                    )
-                )
-            )
-        );
+                        ]
+                    ]
+                ]
+            ]
+        ];
     }
 
     public static function submitForSettlementSignature()
     {
-        return array('orderId', array('descriptor' => array('name', 'phone', 'url')));
+        return ['orderId', ['descriptor' => ['name', 'phone', 'url']]];
     }
 
     /**
@@ -219,7 +219,7 @@ final class TransactionGateway
      */
     public function credit($attribs)
     {
-        return $this->create(array_merge($attribs, array('type' => Transaction::CREDIT)));
+        return $this->create(array_merge($attribs, ['type' => Transaction::CREDIT]));
     }
 
     /**
@@ -260,7 +260,7 @@ final class TransactionGateway
      */
     public function sale($attribs)
     {
-        return $this->create(array_merge(array('type' => Transaction::SALE), $attribs));
+        return $this->create(array_merge(['type' => Transaction::SALE], $attribs));
     }
 
     /**
@@ -290,19 +290,19 @@ final class TransactionGateway
      */
     public function search($query)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
 
         $path = $this->_config->merchantPath() . '/transactions/advanced_search_ids';
-        $response = $this->_http->post($path, array('search' => $criteria));
+        $response = $this->_http->post($path, ['search' => $criteria]);
         if (array_key_exists('searchResults', $response)) {
-            $pager = array(
+            $pager = [
                 'object' => $this,
                 'method' => 'fetch',
-                'methodArgs' => array($query)
-                );
+                'methodArgs' => [$query]
+                ];
 
             return new ResourceCollection($response, $pager);
         } else {
@@ -312,13 +312,13 @@ final class TransactionGateway
 
     public function fetch($query, $ids)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = TransactionSearch::ids()->in($ids)->toparam();
         $path = $this->_config->merchantPath() . '/transactions/advanced_search';
-        $response = $this->_http->post($path, array('search' => $criteria));
+        $response = $this->_http->post($path, ['search' => $criteria]);
 
         return Util::extractattributeasarray(
             $response['creditCardTransactions'],
@@ -349,18 +349,18 @@ final class TransactionGateway
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
 
-    public function submitForSettlement($transactionId, $amount = null, $attribs = array())
+    public function submitForSettlement($transactionId, $amount = null, $attribs = [])
     {
         $this->_validateId($transactionId);
         Util::verifyKeys(self::submitForSettlementSignature(), $attribs);
         $attribs['amount'] = $amount;
 
         $path = $this->_config->merchantPath() . '/transactions/'. $transactionId . '/submit_for_settlement';
-        $response = $this->_http->put($path, array('transaction' => $attribs));
+        $response = $this->_http->put($path, ['transaction' => $attribs]);
         return $this->_verifyGatewayResponse($response);
     }
 
-    public function submitForSettlementNoValidate($transactionId, $amount = null, $attribs = array())
+    public function submitForSettlementNoValidate($transactionId, $amount = null, $attribs = [])
     {
         $result = $this->submitForSettlement($transactionId, $amount, $attribs);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
@@ -371,7 +371,7 @@ final class TransactionGateway
         $this->_validateId($transactionId);
 
         $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/hold_in_escrow';
-        $response = $this->_http->put($path, array());
+        $response = $this->_http->put($path, []);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -380,7 +380,7 @@ final class TransactionGateway
         $this->_validateId($transactionId);
 
         $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/release_from_escrow';
-        $response = $this->_http->put($path, array());
+        $response = $this->_http->put($path, []);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -389,7 +389,7 @@ final class TransactionGateway
         $this->_validateId($transactionId);
 
         $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/cancel_release';
-        $response = $this->_http->put($path, array());
+        $response = $this->_http->put($path, []);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -397,7 +397,7 @@ final class TransactionGateway
     {
         self::_validateId($transactionId);
 
-        $params = array('transaction' => array('amount' => $amount));
+        $params = ['transaction' => ['amount' => $amount]];
         $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/refund';
         $response = $this->_http->post($path, $params);
         return $this->_verifyGatewayResponse($response);
@@ -408,7 +408,7 @@ final class TransactionGateway
         $this->_validateId($transactionId);
 
         $path = $this->_config->merchantPath() . '/transactions/'. $transactionId . '/submit_for_partial_settlement';
-        $response = $this->_http->post($path, array('transaction' => array('amount' => $amount)));
+        $response = $this->_http->post($path, ['transaction' => ['amount' => $amount]]);
         return $this->_verifyGatewayResponse($response);
     }
 

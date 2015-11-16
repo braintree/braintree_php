@@ -18,7 +18,7 @@ namespace Braintree;
  */
 final class Dispute extends Base
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /* Dispute Status */
     const OPEN  = 'open';
@@ -66,12 +66,12 @@ final class Dispute extends Base
 
     public function  __toString()
     {
-        $display = array(
+        $display = [
             'amount', 'reason', 'status',
             'replyByDate', 'receivedDate', 'currencyIsoCode'
-            );
+            ];
 
-        $displayAttributes = array();
+        $displayAttributes = [];
         foreach ($display AS $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }

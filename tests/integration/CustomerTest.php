@@ -27,7 +27,7 @@ class CustomerTest extends Setup
 
     public function testCreate()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Mike',
             'lastName' => 'Jones',
             'company' => 'Jones Co.',
@@ -35,7 +35,7 @@ class CustomerTest extends Setup
             'phone' => '419.555.1234',
             'fax' => '419.555.1235',
             'website' => 'http://example.com'
-        ));
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals('Mike', $customer->firstName);
@@ -50,9 +50,9 @@ class CustomerTest extends Setup
 
     public function testCreateWithIdOfZero()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'id' => '0'
-        ));
+        ]);
 
         $this->assertEquals(true, $result->success);
         $this->assertEquals($result->customer->id, '0');
@@ -65,16 +65,16 @@ class CustomerTest extends Setup
 
     public function testGatewayCreate()
     {
-        $gateway = new Braintree\Gateway(array(
+        $gateway = new Braintree\Gateway([
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
             'privateKey' => 'integration_private_key'
-        ));
-        $result = $gateway->customer()->create(array(
+        ]);
+        $result = $gateway->customer()->create([
             'firstName' => 'Mike',
             'lastName' => 'Jones',
-        ));
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals('Mike', $customer->firstName);
@@ -84,20 +84,20 @@ class CustomerTest extends Setup
 
     public function testCreateWithAccessToken()
     {
-        $credentials = Test\Braintree\OAuthTestHelper::createCredentials(array(
+        $credentials = Test\Braintree\OAuthTestHelper::createCredentials([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',
             'merchantId' => 'integration_merchant_id',
-        ));
+        ]);
 
-        $gateway = new Braintree\Gateway(array(
+        $gateway = new Braintree\Gateway([
             'accessToken' => $credentials->accessToken,
-        ));
+        ]);
 
-        $result = $gateway->customer()->create(array(
+        $result = $gateway->customer()->create([
             'firstName' => 'Mike',
             'lastName' => 'Jones',
-        ));
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals('Mike', $customer->firstName);
@@ -108,20 +108,20 @@ class CustomerTest extends Setup
     public function testCreateCustomerWithCardUsingNonce()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
-        $nonce = $http->nonce_for_new_card(array(
-            "creditCard" => array(
+        $nonce = $http->nonce_for_new_card([
+            "creditCard" => [
                 "number" => "4111111111111111",
                 "expirationMonth" => "11",
                 "expirationYear" => "2099"
-            ),
+            ],
             "share" => true
-        ));
+        ]);
 
-        $result = Braintree\Customer::create(array(
-            'creditCard' => array(
+        $result = Braintree\Customer::create([
+            'creditCard' => [
                 'paymentMethodNonce' => $nonce
-            )
-        ));
+            ]
+        ]);
 
         $this->assertTrue($result->success);
         $this->assertSame("411111", $result->customer->creditCards[0]->bin);
@@ -131,9 +131,9 @@ class CustomerTest extends Setup
     public function testCreateCustomerWithApplePayCard()
     {
         $nonce = Braintree\Test\Nonces::$applePayVisa;
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
-        ));
+        ]);
         $this->assertTrue($result->success);
         $customer = $result->customer;
         $this->assertNotNull($customer->applePayCards[0]);
@@ -143,9 +143,9 @@ class CustomerTest extends Setup
     public function testCreateCustomerWithAndroidPayProxyCard()
     {
         $nonce = Braintree\Test\Nonces::$androidPayDiscover;
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
-        ));
+        ]);
         $this->assertTrue($result->success);
         $customer = $result->customer;
         $this->assertNotNull($customer->androidPayCards[0]);
@@ -159,9 +159,9 @@ class CustomerTest extends Setup
     public function testCreateCustomerWithAndroidPayNetworkToken()
     {
         $nonce = Braintree\Test\Nonces::$androidPayMasterCard;
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
-        ));
+        ]);
         $this->assertTrue($result->success);
         $customer = $result->customer;
         $this->assertNotNull($customer->androidPayCards[0]);
@@ -175,9 +175,9 @@ class CustomerTest extends Setup
     public function testCreateCustomerWithAmexExpressCheckoutCard()
     {
         $nonce = Braintree\Test\Nonces::$amexExpressCheckout;
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
-        ));
+        ]);
         $this->assertTrue($result->success);
         $customer = $result->customer;
         $this->assertNotNull($customer->amexExpressCheckoutCards[0]);
@@ -191,9 +191,9 @@ class CustomerTest extends Setup
     public function testCreateCustomerWithCoinbase()
     {
         $nonce = Braintree\Test\Nonces::$coinbase;
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
-        ));
+        ]);
         $this->assertTrue($result->success);
         $customer = $result->customer;
         $this->assertNotNull($customer->coinbaseAccounts[0]);
@@ -205,7 +205,7 @@ class CustomerTest extends Setup
 
     public function testCreate_withUnicode()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => "Здравствуйте",
             'lastName' => 'Jones',
             'company' => 'Jones Co.',
@@ -213,7 +213,7 @@ class CustomerTest extends Setup
             'phone' => '419.555.1234',
             'fax' => '419.555.1235',
             'website' => 'http://example.com'
-        ));
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals("Здравствуйте", $customer->firstName);
@@ -228,20 +228,20 @@ class CustomerTest extends Setup
 
     public function testCreate_withCountry()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Bat',
             'lastName' => 'Manderson',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
-                'billingAddress' => array(
+                'billingAddress' => [
                    'countryName' => 'Gabon',
                    'countryCodeAlpha2' => 'GA',
                    'countryCodeAlpha3' => 'GAB',
                    'countryCodeNumeric' => '266'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals('Gabon', $customer->creditCards[0]->billingAddress->countryName);
@@ -253,17 +253,17 @@ class CustomerTest extends Setup
 
     public function testCreate_withVenmoSdkSession()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Bat',
             'lastName' => 'Manderson',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
-                'options' => array(
+                'options' => [
                     'venmoSdkSession' => Braintree\Test\VenmoSdk::getTestSession()
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals(true, $customer->creditCards[0]->venmoSdk);
@@ -271,13 +271,13 @@ class CustomerTest extends Setup
 
     public function testCreate_withVenmoSdkPaymentMethodCode()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Bat',
             'lastName' => 'Manderson',
-            'creditCard' => array(
+            'creditCard' => [
                 'venmoSdkPaymentMethodCode' => Braintree\Test\VenmoSdk::$visaPaymentMethodCode
-            ),
-        ));
+            ],
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals("411111", $customer->creditCards[0]->bin);
@@ -289,26 +289,26 @@ class CustomerTest extends Setup
         $this->assertEquals(true, $result->success);
         $this->assertNotNull($result->customer->id);
 
-        $result = Braintree\Customer::create(array());
+        $result = Braintree\Customer::create([]);
         $this->assertEquals(true, $result->success);
         $this->assertNotNull($result->customer->id);
     }
 
     public function testCreate_withSpecialChars()
     {
-        $result = Braintree\Customer::create(array('firstName' => '<>&"\''));
+        $result = Braintree\Customer::create(['firstName' => '<>&"\'']);
         $this->assertEquals(true, $result->success);
         $this->assertEquals('<>&"\'', $result->customer->firstName);
     }
 
     public function testCreate_withCustomFields()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Mike',
-            'customFields' => array(
+            'customFields' => [
                 'store_me' => 'some custom value'
-            )
-        ));
+            ]
+        ]);
         $this->assertEquals(true, $result->success);
         $customFields = $result->customer->customFields;
         $this->assertEquals('some custom value', $customFields['store_me']);
@@ -316,23 +316,23 @@ class CustomerTest extends Setup
 
     public function testCreate_withFraudParams()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Mike',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
                 'cvv' => '123',
                 'cardholderName' => 'Mike Jones',
                 'deviceSessionId' => 'abc123',
                 'fraudMerchantId' => '456'
-            )
-        ));
+            ]
+        ]);
         $this->assertEquals(true, $result->success);
     }
 
     public function testCreate_withCreditCard()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Mike',
             'lastName' => 'Jones',
             'company' => 'Jones Co.',
@@ -340,13 +340,13 @@ class CustomerTest extends Setup
             'phone' => '419.555.1234',
             'fax' => '419.555.1235',
             'website' => 'http://example.com',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
                 'cvv' => '123',
                 'cardholderName' => 'Mike Jones'
-            )
-        ));
+            ]
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals('Mike', $customer->firstName);
@@ -369,7 +369,7 @@ class CustomerTest extends Setup
     {
         $customer = Braintree\Customer::createNoValidate();
 
-        $attributes = array(
+        $attributes = [
             'firstName' => 'Mike',
             'lastName' => 'Jones',
             'company' => 'Jones Co.',
@@ -377,16 +377,16 @@ class CustomerTest extends Setup
             'phone' => '419.555.1234',
             'fax' => '419.555.1235',
             'website' => 'http://example.com',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
                 'cvv' => '123',
                 'cardholderName' => 'Mike Jones',
-                'options' => array(
+                'options' => [
                     'failOnDuplicatePaymentMethod' => true
-                )
-            )
-        );
+                ]
+            ]
+        ];
         Braintree\Customer::create($attributes);
         $result = Braintree\Customer::create($attributes);
 
@@ -398,7 +398,7 @@ class CustomerTest extends Setup
 
     public function testCreate_withCreditCardAndSpecificVerificationMerchantAccount()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Mike',
             'lastName' => 'Jones',
             'company' => 'Jones Co.',
@@ -406,17 +406,17 @@ class CustomerTest extends Setup
             'phone' => '419.555.1234',
             'fax' => '419.555.1235',
             'website' => 'http://example.com',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
                 'cvv' => '123',
                 'cardholderName' => 'Mike Jones',
-                'options' => array(
+                'options' => [
                     'verificationMerchantAccountId' => Test\Helper::nonDefaultMerchantAccountId(),
                     'verifyCard' => true
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         Test\Helper::assertPrintable($result);
         $this->assertFalse($result->success);
         $this->assertEquals(Braintree\Result\CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
@@ -430,7 +430,7 @@ class CustomerTest extends Setup
 
     public function testCreate_withCreditCardAndBillingAddress()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Mike',
             'lastName' => 'Jones',
             'company' => 'Jones Co.',
@@ -438,12 +438,12 @@ class CustomerTest extends Setup
             'phone' => '419.555.1234',
             'fax' => '419.555.1235',
             'website' => 'http://example.com',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
                 'cvv' => '123',
                 'cardholderName' => 'Mike Jones',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'firstName' => 'Drew',
                     'lastName' => 'Smith',
                     'company' => 'Smith Co.',
@@ -453,9 +453,9 @@ class CustomerTest extends Setup
                     'region' => 'IL',
                     'postalCode' => '60622',
                     'countryName' => 'United States of America'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         Test\Helper::assertPrintable($result);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
@@ -488,15 +488,15 @@ class CustomerTest extends Setup
 
     public function testCreate_withValidationErrors()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'email' => 'invalid',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => 'invalid',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'streetAddress' => str_repeat('x', 256)
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         Test\Helper::assertPrintable($result);
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('customer')->onAttribute('email');
@@ -509,14 +509,14 @@ class CustomerTest extends Setup
 
     public function testCreate_countryValidations_inconsistency()
     {
-        $result = Braintree\Customer::create(array(
-            'creditCard' => array(
-                'billingAddress' => array(
+        $result = Braintree\Customer::create([
+            'creditCard' => [
+                'billingAddress' => [
                     'countryName' => 'Georgia',
                     'countryCodeAlpha2' => 'TF'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('customer')->forKey('creditCard')->forKey('billingAddress')->onAttribute('base');
         $this->assertEquals(Braintree\Error\Codes::ADDRESS_INCONSISTENT_COUNTRY, $errors[0]->code);
@@ -524,10 +524,10 @@ class CustomerTest extends Setup
 
     public function testCreateNoValidate_returnsCustomer()
     {
-        $customer = Braintree\Customer::createNoValidate(array(
+        $customer = Braintree\Customer::createNoValidate([
             'firstName' => 'Paul',
             'lastName' => 'Martin'
-        ));
+        ]);
         $this->assertEquals('Paul', $customer->firstName);
         $this->assertEquals('Martin', $customer->lastName);
     }
@@ -535,16 +535,16 @@ class CustomerTest extends Setup
     public function testCreateNoValidate_throwsIfInvalid()
     {
         $this->setExpectedException('Braintree\Exception\ValidationsFailed');
-        $customer = Braintree\Customer::createNoValidate(array('email' => 'invalid'));
+        $customer = Braintree\Customer::createNoValidate(['email' => 'invalid']);
     }
 
     public function testCreate_worksWithFuturePayPalNonce()
     {
         $nonce = Braintree\Test\Nonces::$paypalFuturePayment;
 
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
-        ));
+        ]);
 
         $this->assertTrue($result->success);
     }
@@ -553,9 +553,9 @@ class CustomerTest extends Setup
     {
         $nonce = Braintree\Test\Nonces::$paypalOneTimePayment;
 
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
-        ));
+        ]);
 
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('customer')->forKey('paypalAccount')->errors;
@@ -564,7 +564,7 @@ class CustomerTest extends Setup
 
     public function testDelete_deletesTheCustomer()
     {
-        $result = Braintree\Customer::create(array());
+        $result = Braintree\Customer::create([]);
         $this->assertEquals(true, $result->success);
         Braintree\Customer::find($result->customer->id);
         Braintree\Customer::delete($result->customer->id);
@@ -574,7 +574,7 @@ class CustomerTest extends Setup
 
     public function testFind()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Mike',
             'lastName' => 'Jones',
             'company' => 'Jones Co.',
@@ -582,7 +582,7 @@ class CustomerTest extends Setup
             'phone' => '419.555.1234',
             'fax' => '419.555.1235',
             'website' => 'http://example.com'
-        ));
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = Braintree\Customer::find($result->customer->id);
         $this->assertEquals('Mike', $customer->firstName);
@@ -602,7 +602,7 @@ class CustomerTest extends Setup
 
     public function testUpdate()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Old First',
             'lastName' => 'Old Last',
             'company' => 'Old Company',
@@ -610,10 +610,10 @@ class CustomerTest extends Setup
             'phone' => 'old phone',
             'fax' => 'old fax',
             'website' => 'http://old.example.com'
-        ));
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
-        $updateResult = Braintree\Customer::update($customer->id, array(
+        $updateResult = Braintree\Customer::update($customer->id, [
             'firstName' => 'New First',
             'lastName' => 'New Last',
             'company' => 'New Company',
@@ -621,7 +621,7 @@ class CustomerTest extends Setup
             'phone' => 'new phone',
             'fax' => 'new fax',
             'website' => 'http://new.example.com'
-        ));
+        ]);
         $this->assertEquals(true, $updateResult->success);
         $this->assertEquals('New First', $updateResult->customer->firstName);
         $this->assertEquals('New Last', $updateResult->customer->lastName);
@@ -634,39 +634,39 @@ class CustomerTest extends Setup
 
     public function testUpdate_withCountry()
     {
-        $customer = Braintree\Customer::create(array(
+        $customer = Braintree\Customer::create([
             'firstName' => 'Bat',
             'lastName' => 'Manderson',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'countryName' => 'United States of America',
                     'countryCodeAlpha2' => 'US',
                     'countryCodeAlpha3' => 'USA',
                     'countryCodeNumeric' => '840'
-                )
-            )
-        ))->customer;
+                ]
+            ]
+        ])->customer;
 
-        $result = Braintree\Customer::update($customer->id, array(
+        $result = Braintree\Customer::update($customer->id, [
             'firstName' => 'Bat',
             'lastName' => 'Manderson',
-            'creditCard' => array(
-				'options' => array(
+            'creditCard' => [
+				'options' => [
 					'updateExistingToken' => $customer->creditCards[0]->token
-				),
-                'billingAddress' => array(
+				],
+                'billingAddress' => [
                     'countryName' => 'Gabon',
                     'countryCodeAlpha2' => 'GA',
                     'countryCodeAlpha3' => 'GAB',
                     'countryCodeNumeric' => '266',
-                    'options' => array(
+                    'options' => [
                         'updateExisting' => true
-                    )
-            	)
-            )
-        ));
+                    ]
+            	]
+            ]
+        ]);
 
         $this->assertEquals(true, $result->success);
         $updatedCustomer = $result->customer;
@@ -678,31 +678,31 @@ class CustomerTest extends Setup
 
     public function testUpdate_withUpdatingExistingCreditCard()
     {
-        $create_result = Braintree\Customer::create(array(
+        $create_result = Braintree\Customer::create([
             'firstName' => 'Old First',
             'lastName' => 'Old Last',
             'website' => 'http://old.example.com',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
                 'cardholderName' => 'Old Cardholder'
-            )
-        ));
+            ]
+        ]);
         $this->assertEquals(true, $create_result->success);
         $customer = $create_result->customer;
         $creditCard = $customer->creditCards[0];
-        $result = Braintree\Customer::update($customer->id, array(
+        $result = Braintree\Customer::update($customer->id, [
             'firstName' => 'New First',
             'lastName' => 'New Last',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '4111111111111111',
                 'expirationDate' => '11/14',
                 'cardholderName' => 'New Cardholder',
-                'options' => array(
+                'options' => [
                     'updateExistingToken' => $creditCard->token
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $this->assertEquals(true, $result->success);
         $this->assertEquals('New First', $result->customer->firstName);
         $this->assertEquals('New Last', $result->customer->lastName);
@@ -715,41 +715,41 @@ class CustomerTest extends Setup
 
     public function testUpdate_forBillingAddressAndExistingCreditCardAndCustomerDetailsTogether()
     {
-        $create_result = Braintree\Customer::create(array(
+        $create_result = Braintree\Customer::create([
             'firstName' => 'Old First',
             'lastName' => 'Old Last',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
                 'cvv' => '123',
                 'cardholderName' => 'Old Cardholder',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'firstName' => 'Drew',
                     'lastName' => 'Smith'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $this->assertEquals(true, $create_result->success);
         $customer = $create_result->customer;
         $creditCard = $customer->creditCards[0];
-        $result = Braintree\Customer::update($customer->id, array(
+        $result = Braintree\Customer::update($customer->id, [
             'firstName' => 'New Customer First',
             'lastName' => 'New Customer Last',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '4111111111111111',
                 'expirationDate' => '11/14',
-                'options' => array(
+                'options' => [
                     'updateExistingToken' => $creditCard->token
-                ),
-                'billingAddress' => array(
+                ],
+                'billingAddress' => [
                     'firstName' => 'New Billing First',
                     'lastName' => 'New Billing Last',
-                    'options' => array(
+                    'options' => [
                         'updateExisting' => true
-                    )
-                )
-            )
-        ));
+                    ]
+                ]
+            ]
+        ]);
         $this->assertEquals(true, $result->success);
         $this->assertEquals('New Customer First', $result->customer->firstName);
         $this->assertEquals('New Customer Last', $result->customer->lastName);
@@ -768,18 +768,18 @@ class CustomerTest extends Setup
     public function testUpdate_withNewCreditCardAndExistingBillingAddress()
     {
         $customer = Braintree\Customer::create()->customer;
-        $address = Braintree\Address::create(array(
+        $address = Braintree\Address::create([
             'customerId' => $customer->id,
             'firstName' => 'Dan'
-        ))->address;
+        ])->address;
 
-        $result = Braintree\Customer::update($customer->id, array(
-            'creditCard' => array(
+        $result = Braintree\Customer::update($customer->id, [
+            'creditCard' => [
                 'number' => '4111111111111111',
                 'expirationDate' => '11/14',
                 'billingAddressId' => $address->id
-            )
-        ));
+            ]
+        ]);
 
         $billingAddress = $result->customer->creditCards[0]->billingAddress;
         $this->assertEquals($address->id, $billingAddress->id);
@@ -788,30 +788,30 @@ class CustomerTest extends Setup
 
     public function testUpdate_worksWithFuturePayPalNonce()
     {
-        $customerResult = Braintree\Customer::create(array(
-            'creditCard' => array(
+        $customerResult = Braintree\Customer::create([
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
-                'options' => array(
+                'options' => [
                     'makeDefault' => true
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $paypalAccountToken = 'PAYPALToken-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
-        $nonce = $http->nonceForPayPalAccount(array(
-            'paypal_account' => array(
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
                 'consent_code' => 'PAYPAL_CONSENT_CODE',
                 'token' => $paypalAccountToken,
-                'options' => array(
+                'options' => [
                     'makeDefault' => true
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
 
-        $result = Braintree\Customer::update($customerResult->customer->id, array(
+        $result = Braintree\Customer::update($customerResult->customer->id, [
             'paymentMethodNonce' => $nonce
-        ));
+        ]);
 
         $this->assertTrue($result->success);
         $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
@@ -820,30 +820,30 @@ class CustomerTest extends Setup
 
     public function testUpdate_doesNotWorkWithOnetimePayPalNonce()
     {
-        $customerResult = Braintree\Customer::create(array(
-            'creditCard' => array(
+        $customerResult = Braintree\Customer::create([
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
-                'options' => array(
+                'options' => [
                     'makeDefault' => true
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $paypalAccountToken = 'PAYPALToken-' . strval(rand());
         $http = new HttpClientApi(Braintree\Configuration::$global);
-        $nonce = $http->nonceForPayPalAccount(array(
-            'paypal_account' => array(
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
                 'access_token' => 'PAYPAL_ACCESS_TOKEN',
                 'token' => $paypalAccountToken,
-                'options' => array(
+                'options' => [
                     'makeDefault' => true
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
 
-        $result = Braintree\Customer::update($customerResult->customer->id, array(
+        $result = Braintree\Customer::update($customerResult->customer->id, [
             'paymentMethodNonce' => $nonce
-        ));
+        ]);
 
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('customer')->forKey('paypalAccount')->errors;
@@ -853,7 +853,7 @@ class CustomerTest extends Setup
 
     public function testUpdateNoValidate()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => 'Old First',
             'lastName' => 'Old Last',
             'company' => 'Old Company',
@@ -861,10 +861,10 @@ class CustomerTest extends Setup
             'phone' => 'old phone',
             'fax' => 'old fax',
             'website' => 'http://old.example.com'
-        ));
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
-        $updated = Braintree\Customer::updateNoValidate($customer->id, array(
+        $updated = Braintree\Customer::updateNoValidate($customer->id, [
             'firstName' => 'New First',
             'lastName' => 'New Last',
             'company' => 'New Company',
@@ -872,7 +872,7 @@ class CustomerTest extends Setup
             'phone' => 'new phone',
             'fax' => 'new fax',
             'website' => 'http://new.example.com'
-        ));
+        ]);
         $this->assertEquals('New First', $updated->firstName);
         $this->assertEquals('New Last', $updated->lastName);
         $this->assertEquals('New Company', $updated->company);
@@ -886,18 +886,18 @@ class CustomerTest extends Setup
     {
         Test\Helper::suppressDeprecationWarnings();
         $queryString = $this->createCustomerViaTr(
-            array(
-                'customer' => array(
+            [
+                'customer' => [
                     'first_name' => 'Joe',
                     'last_name' => 'Martin',
-                    'credit_card' => array(
+                    'credit_card' => [
                         'number' => '5105105105105100',
                         'expiration_date' => '05/12'
-                    )
-                )
-            ),
-            array(
-            )
+                    ]
+                ]
+            ],
+            [
+            ]
         );
         $result = Braintree\Customer::createFromTransparentRedirect($queryString);
         $this->assertTrue($result->success);
@@ -913,18 +913,18 @@ class CustomerTest extends Setup
     {
         Test\Helper::suppressDeprecationWarnings();
         $queryString = $this->createCustomerViaTr(
-            array(
-            ),
-            array(
-                'customer' => array(
+            [
+            ],
+            [
+                'customer' => [
                     'firstName' => 'Joe',
                     'lastName' => 'Martin',
-                    'creditCard' => array(
+                    'creditCard' => [
                         'number' => '5105105105105100',
                         'expirationDate' => '05/12'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
         $result = Braintree\Customer::createFromTransparentRedirect($queryString);
         $this->assertTrue($result->success);
@@ -940,17 +940,17 @@ class CustomerTest extends Setup
     {
         Test\Helper::suppressDeprecationWarnings();
         $queryString = $this->createCustomerViaTr(
-            array(
-                'customer' => array(
+            [
+                'customer' => [
                     'first_name' => str_repeat('x', 256),
-                    'credit_card' => array(
+                    'credit_card' => [
                         'number' => 'invalid',
                         'expiration_date' => ''
-                    )
-                )
-            ),
-            array(
-            )
+                    ]
+                ]
+            ],
+            [
+            ]
         );
         $result = Braintree\Customer::createFromTransparentRedirect($queryString);
         $this->assertFalse($result->success);
@@ -964,9 +964,9 @@ class CustomerTest extends Setup
 
     public function testCreateWithInvalidUTF8Bytes()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => "Jos\xe8 Maria"
-        ));
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals("Jos\xc3\xa8 Maria", $customer->firstName);
@@ -974,9 +974,9 @@ class CustomerTest extends Setup
 
     public function testCreateWithValidUTF8Bytes()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'firstName' => "Jos\303\251"
-        ));
+        ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals("Jos\303\251", $customer->firstName);
@@ -987,16 +987,16 @@ class CustomerTest extends Setup
         Test\Helper::suppressDeprecationWarnings();
         $customer = Braintree\Customer::createNoValidate();
         $queryString = $this->updateCustomerViaTr(
-            array(
-                'customer' => array(
+            [
+                'customer' => [
                     'first_name' => 'Joe',
                     'last_name' => 'Martin',
                     'email' => 'joe.martin@example.com'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'customerId' => $customer->id
-            )
+            ]
         );
         $result = Braintree\Customer::updateFromTransparentRedirect($queryString);
         $this->assertTrue($result->success);
@@ -1010,16 +1010,16 @@ class CustomerTest extends Setup
         Test\Helper::suppressDeprecationWarnings();
         $customer = Braintree\Customer::createNoValidate();
         $queryString = $this->updateCustomerViaTr(
-            array(
-            ),
-            array(
+            [
+            ],
+            [
                 'customerId' => $customer->id,
-                'customer' => array(
+                'customer' => [
                     'firstName' => 'Joe',
                     'lastName' => 'Martin',
                     'email' => 'joe.martin@example.com'
-                )
-            )
+                ]
+            ]
         );
         $result = Braintree\Customer::updateFromTransparentRedirect($queryString);
         $this->assertTrue($result->success);
@@ -1033,14 +1033,14 @@ class CustomerTest extends Setup
         Test\Helper::suppressDeprecationWarnings();
         $customer = Braintree\Customer::createNoValidate();
         $queryString = $this->updateCustomerViaTr(
-            array(
-                'customer' => array(
+            [
+                'customer' => [
                     'first_name' => str_repeat('x', 256),
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'customerId' => $customer->id
-            )
+            ]
         );
         $result = Braintree\Customer::updateFromTransparentRedirect($queryString);
         $this->assertFalse($result->success);
@@ -1051,44 +1051,44 @@ class CustomerTest extends Setup
     public function testUpdateFromTransparentRedirect_withUpdateExisting()
     {
         Test\Helper::suppressDeprecationWarnings();
-        $customer = Braintree\Customer::create(array(
+        $customer = Braintree\Customer::create([
             'firstName' => 'Mike',
             'lastName' => 'Jones',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
                 'cardholderName' => 'Mike Jones',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'firstName' => 'Drew',
                     'lastName' => 'Smith'
-                )
-            )
-        ))->customer;
+                ]
+            ]
+        ])->customer;
 
         $queryString = $this->updateCustomerViaTr(
-            array(),
-            array(
+            [],
+            [
                 'customerId' => $customer->id,
-                'customer' => array(
+                'customer' => [
                     'firstName' => 'New First',
                     'lastName' => 'New Last',
-                    'creditCard' => array(
+                    'creditCard' => [
                         'number' => '4111111111111111',
                         'expirationDate' => '05/13',
                         'cardholderName' => 'New Cardholder',
-                        'options' => array(
+                        'options' => [
                             'updateExistingToken' => $customer->creditCards[0]->token
-                        ),
-                        'billingAddress' => array(
+                        ],
+                        'billingAddress' => [
                             'firstName' => 'New First Billing',
                             'lastName' => 'New Last Billing',
-                            'options' => array(
+                            'options' => [
                                 'updateExisting' => true
-                            )
-                        )
-                    )
-                )
-            )
+                            ]
+                        ]
+                    ]
+                ]
+            ]
         );
         $result = Braintree\Customer::updateFromTransparentRedirect($queryString);
         $this->assertTrue($result->success);
@@ -1114,16 +1114,16 @@ class CustomerTest extends Setup
 
     public function testSale_createsASaleUsingGivenToken()
     {
-        $customer = Braintree\Customer::createNoValidate(array(
-            'creditCard' => array(
+        $customer = Braintree\Customer::createNoValidate([
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
-            )
-        ));
+            ]
+        ]);
         $creditCard = $customer->creditCards[0];
-        $result = Braintree\Customer::sale($customer->id, array(
+        $result = Braintree\Customer::sale($customer->id, [
             'amount' => '100.00'
-        ));
+        ]);
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
         $this->assertEquals($customer->id, $result->transaction->customerDetails->id);
@@ -1132,16 +1132,16 @@ class CustomerTest extends Setup
 
     public function testSaleNoValidate_createsASaleUsingGivenToken()
     {
-        $customer = Braintree\Customer::createNoValidate(array(
-            'creditCard' => array(
+        $customer = Braintree\Customer::createNoValidate([
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
-            )
-        ));
+            ]
+        ]);
         $creditCard = $customer->creditCards[0];
-        $transaction = Braintree\Customer::saleNoValidate($customer->id, array(
+        $transaction = Braintree\Customer::saleNoValidate($customer->id, [
             'amount' => '100.00'
-        ));
+        ]);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals($customer->id, $transaction->customerDetails->id);
         $this->assertEquals($creditCard->token, $transaction->creditCardDetails->token);
@@ -1149,31 +1149,31 @@ class CustomerTest extends Setup
 
     public function testSaleNoValidate_throwsIfInvalid()
     {
-        $customer = Braintree\Customer::createNoValidate(array(
-            'creditCard' => array(
+        $customer = Braintree\Customer::createNoValidate([
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
-            )
-        ));
+            ]
+        ]);
         $creditCard = $customer->creditCards[0];
         $this->setExpectedException('Braintree\Exception\ValidationsFailed');
-        Braintree\Customer::saleNoValidate($customer->id, array(
+        Braintree\Customer::saleNoValidate($customer->id, [
             'amount' => 'invalid'
-        ));
+        ]);
     }
 
     public function testCredit_createsACreditUsingGivenCustomerId()
     {
-        $customer = Braintree\Customer::createNoValidate(array(
-            'creditCard' => array(
+        $customer = Braintree\Customer::createNoValidate([
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
-            )
-        ));
+            ]
+        ]);
         $creditCard = $customer->creditCards[0];
-        $result = Braintree\Customer::credit($customer->id, array(
+        $result = Braintree\Customer::credit($customer->id, [
             'amount' => '100.00'
-        ));
+        ]);
         $this->assertTrue($result->success);
         $this->assertEquals('100.00', $result->transaction->amount);
         $this->assertEquals(Braintree\Transaction::CREDIT, $result->transaction->type);
@@ -1183,16 +1183,16 @@ class CustomerTest extends Setup
 
     public function testCreditNoValidate_createsACreditUsingGivenId()
     {
-        $customer = Braintree\Customer::createNoValidate(array(
-            'creditCard' => array(
+        $customer = Braintree\Customer::createNoValidate([
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
-            )
-        ));
+            ]
+        ]);
         $creditCard = $customer->creditCards[0];
-        $transaction = Braintree\Customer::creditNoValidate($customer->id, array(
+        $transaction = Braintree\Customer::creditNoValidate($customer->id, [
             'amount' => '100.00'
-        ));
+        ]);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals(Braintree\Transaction::CREDIT, $transaction->type);
         $this->assertEquals($customer->id, $transaction->customerDetails->id);
@@ -1201,24 +1201,24 @@ class CustomerTest extends Setup
 
     public function testCreditNoValidate_throwsIfInvalid()
     {
-        $customer = Braintree\Customer::createNoValidate(array(
-            'creditCard' => array(
+        $customer = Braintree\Customer::createNoValidate([
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
-            )
-        ));
+            ]
+        ]);
         $creditCard = $customer->creditCards[0];
         $this->setExpectedException('Braintree\Exception\ValidationsFailed');
-        Braintree\Customer::creditNoValidate($customer->id, array(
+        Braintree\Customer::creditNoValidate($customer->id, [
             'amount' => 'invalid'
-        ));
+        ]);
     }
 
     public function createCustomerViaTr($regularParams, $trParams)
     {
         Test\Helper::suppressDeprecationWarnings();
         $trData = Braintree\TransparentRedirect::createCustomerData(
-            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+            array_merge($trParams, ["redirectUrl" => "http://www.example.com"])
         );
         return Test\Helper::submitTrRequest(
             Braintree\Customer::createCustomerUrl(),
@@ -1231,7 +1231,7 @@ class CustomerTest extends Setup
     {
         Test\Helper::suppressDeprecationWarnings();
         $trData = Braintree\TransparentRedirect::updateCustomerData(
-            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+            array_merge($trParams, ["redirectUrl" => "http://www.example.com"])
         );
         return Test\Helper::submitTrRequest(
             Braintree\Customer::updateCustomerUrl(),

@@ -18,9 +18,9 @@ class GeneratorTest extends Setup
 </root>
 
 XML;
-        $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('yes' => true, 'no' => false)
-        ));
+        $xml = Braintree\Xml::buildXmlFromArray([
+            'root' => ['yes' => true, 'no' => false]
+        ]);
         $this->assertEquals($expected, $xml);
     }
 
@@ -36,9 +36,9 @@ XML;
 </root>
 
 XML;
-        $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => array('foo', 'bar'))
-        ));
+        $xml = Braintree\Xml::buildXmlFromArray([
+            'root' => ['stuff' => ['foo', 'bar']]
+        ]);
         $this->assertEquals($expected, $xml);
     }
 
@@ -54,9 +54,9 @@ XML;
 </root>
 
 XML;
-        $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('someStuff' => array('innerFoo' => 42, 'barBarBar' => 3))
-        ));
+        $xml = Braintree\Xml::buildXmlFromArray([
+            'root' => ['someStuff' => ['innerFoo' => 42, 'barBarBar' => 3]]
+        ]);
         $this->assertEquals($expected, $xml);
     }
 
@@ -72,9 +72,9 @@ XML;
 </root>
 
 XML;
-        $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => array(true, false))
-        ));
+        $xml = Braintree\Xml::buildXmlFromArray([
+            'root' => ['stuff' => [true, false]]
+        ]);
         $this->assertEquals($expected, $xml);
     }
 
@@ -87,9 +87,9 @@ XML;
 </root>
 
 XML;
-        $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => array())
-        ));
+        $xml = Braintree\Xml::buildXmlFromArray([
+            'root' => ['stuff' => []]
+        ]);
         $this->assertEquals($expected, $xml);
     }
 
@@ -102,9 +102,9 @@ XML;
 </root>
 
 XML;
-        $xml = Braintree\Xml::buildXmlFromArray(array(
-            'root' => array('stuff' => '<>&\'"')
-        ));
+        $xml = Braintree\Xml::buildXmlFromArray([
+            'root' => ['stuff' => '<>&\'"']
+        ]);
         $this->assertEquals($expected, $xml);
     }
 }

@@ -12,7 +12,7 @@ class DiscountTest extends Setup
     {
         $newId = strval(rand());
 
-        $discountParams = array (
+        $discountParams = [
             "amount" => "100.00",
             "description" => "some description",
             "id" => $newId,
@@ -20,11 +20,11 @@ class DiscountTest extends Setup
             "name" => "php_discount",
             "neverExpires" => "false",
             "numberOfBillingCycles" => "1"
-        );
+        ];
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
         $path = Braintree\Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
-        $http->post($path, array("modification" => $discountParams));
+        $http->post($path, ["modification" => $discountParams]);
 
         $discounts = Braintree\Discount::all();
 
@@ -50,7 +50,7 @@ class DiscountTest extends Setup
     {
         $newId = strval(rand());
 
-        $discountParams = array (
+        $discountParams = [
             "amount" => "100.00",
             "description" => "some description",
             "id" => $newId,
@@ -58,18 +58,18 @@ class DiscountTest extends Setup
             "name" => "php_discount",
             "neverExpires" => "false",
             "numberOfBillingCycles" => "1"
-        );
+        ];
 
         $http = new Braintree\Http(Braintree\Configuration::$global);
         $path = Braintree\Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
-        $http->post($path, array("modification" => $discountParams));
+        $http->post($path, ["modification" => $discountParams]);
 
-        $gateway = new Braintree\Gateway(array(
+        $gateway = new Braintree\Gateway([
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
             'privateKey' => 'integration_private_key'
-        ));
+        ]);
         $discounts = $gateway->discount()->all();
 
         foreach ($discounts as $discount)

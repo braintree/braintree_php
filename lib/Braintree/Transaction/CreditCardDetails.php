@@ -23,7 +23,7 @@ use Braintree\Instance;
  */
 class CreditCardDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore

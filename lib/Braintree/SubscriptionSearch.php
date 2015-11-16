@@ -20,7 +20,7 @@ class SubscriptionSearch
 
     public static function inTrialPeriod()
     {
-        return new MultipleValueNode('in_trial_period', array(true, false));
+        return new MultipleValueNode('in_trial_period', [true, false]);
     }
 
     public static function merchantAccountId()
@@ -45,13 +45,13 @@ class SubscriptionSearch
 
     public static function status()
     {
-        return new MultipleValueNode('status', array(
+        return new MultipleValueNode('status', [
             Subscription::ACTIVE,
             Subscription::CANCELED,
             Subscription::EXPIRED,
             Subscription::PAST_DUE,
             Subscription::PENDING,
-        ));
+        ]);
     }
 
     public static function transactionId()

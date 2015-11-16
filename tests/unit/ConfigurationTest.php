@@ -54,12 +54,12 @@ class ConfigurationTest extends Setup
 
     public function testConstructWithArrayOfCredentials()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'environment' => 'sandbox',
             'merchantId' => 'sandbox_merchant_id',
             'publicKey' => 'sandbox_public_key',
             'privateKey' => 'sandbox_private_key',
-        ));
+        ]);
 
         $this->assertEquals('sandbox', $config->getEnvironment());
         $this->assertEquals('sandbox_merchant_id', $config->getMerchantId());
@@ -276,10 +276,10 @@ class ConfigurationTest extends Setup
 
     public function testValidWithOAuthClientCredentials()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
-        ));
+        ]);
 
         $config->assertHasClientCredentials();
     }
@@ -290,19 +290,19 @@ class ConfigurationTest extends Setup
      */
     public function testInvalidWithOAuthClientCredentials()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id'
-        ));
+        ]);
 
         $config->assertHasClientCredentials();
     }
 
     public function testDetectEnvironmentFromClientId()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
-        ));
+        ]);
 
         $this->assertEquals('development', $config->getEnvironment());
     }
@@ -313,10 +313,10 @@ class ConfigurationTest extends Setup
      */
     public function testDetectEnvironmentFromClientIdFail()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'clientId' => 'client_id$sandbox$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
-        ));
+        ]);
     }
 
      /**
@@ -325,17 +325,17 @@ class ConfigurationTest extends Setup
      */
     public function testClientIdTypeFail()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'clientId' => 'client_secret$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
-        ));
+        ]);
     }
 
     public function testValidWithAccessToken()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'accessToken' => 'access_token$development$integration_merchant_id$integration_access_token',
-        ));
+        ]);
 
         $config->assertHasAccessTokenOrKeys();
     }
@@ -346,9 +346,9 @@ class ConfigurationTest extends Setup
      */
     public function testInvalidAccessTokenType()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'accessToken' => 'client_id$development$integration_merchant_id$integration_access_token',
-        ));
+        ]);
     }
 
      /**
@@ -357,9 +357,9 @@ class ConfigurationTest extends Setup
      */
     public function testInvalidAccessTokenSyntax()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'accessToken' => 'client_id$development$integration_client_id',
-        ));
+        ]);
     }
 
      /**
@@ -368,19 +368,19 @@ class ConfigurationTest extends Setup
      */
     public function testInvalidAccessTokenEnvironment()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'accessToken' => 'access_token$invalid$integration_merchant_id$integration_access_token',
-        ));
+        ]);
     }
 
 
     public function testValidWithOAuthClientCredentialsAndAccessToken()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',
             'accessToken' => 'access_token$development$integration_merchant_id$integration_access_token',
-        ));
+        ]);
 
         $config->assertHasClientCredentials();
         $config->assertHasAccessTokenOrKeys();
@@ -392,11 +392,11 @@ class ConfigurationTest extends Setup
      */
     public function testInvalidEnvironmentWithOAuthClientCredentialsAndAccessToken()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',
             'accessToken' => 'access_token$sandbox$integration_merchant_id$integration_access_token',
-        ));
+        ]);
     }
 
      /**
@@ -405,13 +405,13 @@ class ConfigurationTest extends Setup
      */
     public function testCannotMixKeysWithOAuthCredentials()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
             'privateKey' => 'integration_private_key'
-        ));
+        ]);
     }
 }

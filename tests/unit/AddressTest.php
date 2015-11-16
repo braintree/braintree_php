@@ -11,17 +11,17 @@ class AddressTest extends Setup
     public function testGet_givesErrorIfInvalidProperty()
     {
         $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\Address: foo');
-        $a = Braintree\Address::factory(array());
+        $a = Braintree\Address::factory([]);
         $a->foo;
     }
 
     public function testIsEqual()
     {
         $first = Braintree\Address::factory(
-                array('customerId' => 'c1', 'id' => 'a1')
+                ['customerId' => 'c1', 'id' => 'a1']
                 );
         $second = Braintree\Address::factory(
-                array('customerId' => 'c1', 'id' => 'a1')
+                ['customerId' => 'c1', 'id' => 'a1']
                 );
 
         $this->assertTrue($first->isEqual($second));
@@ -30,10 +30,10 @@ class AddressTest extends Setup
     }
     public function testIsNotEqual() {
         $first = Braintree\Address::factory(
-                array('customerId' => 'c1', 'id' => 'a1')
+                ['customerId' => 'c1', 'id' => 'a1']
                 );
         $second = Braintree\Address::factory(
-                array('customerId' => 'c1', 'id' => 'not a1')
+                ['customerId' => 'c1', 'id' => 'not a1']
                 );
 
         $this->assertFalse($first->isEqual($second));
@@ -43,10 +43,10 @@ class AddressTest extends Setup
     public function testCustomerIdNotEqual()
     {
         $first = Braintree\Address::factory(
-                array('customerId' => 'c1', 'id' => 'a1')
+                ['customerId' => 'c1', 'id' => 'a1']
                 );
         $second = Braintree\Address::factory(
-                array('customerId' => 'not c1', 'id' => 'a1')
+                ['customerId' => 'not c1', 'id' => 'a1']
                 );
 
         $this->assertFalse($first->isEqual($second));

@@ -73,7 +73,7 @@ class ErrorCollection
         $errors = $this;
         foreach(array_slice($pieces, 0, -1) as $key) {
             $errors = $errors->forKey(Util::delimiterToCamelCase($key));
-            if (!isset($errors)) { return array(); }
+            if (!isset($errors)) { return []; }
         }
         $finalKey = Util::delimiterToCamelCase(end($pieces));
         return $errors->onAttribute($finalKey);

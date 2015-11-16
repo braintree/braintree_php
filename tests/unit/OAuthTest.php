@@ -12,18 +12,18 @@ class OAuthTest extends Setup
 
     public function setUp()
     {
-        $this->gateway = new Braintree\Gateway(array(
+        $this->gateway = new Braintree\Gateway([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
-        ));
+        ]);
     }
 
     public function testMapInvalidGrantCodeToOldError()
     {
-        $result = $this->_buildResult(array(
+        $result = $this->_buildResult([
             'code' => '93801',
             'message' => 'Invalid grant: code not found'
-        ));
+        ]);
 
         $this->gateway->oauth()->_mapError($result);
 
@@ -33,10 +33,10 @@ class OAuthTest extends Setup
 
     public function testMapInvalidCredentialsCodeToOldError()
     {
-        $result = $this->_buildResult(array(
+        $result = $this->_buildResult([
             'code' => '93802',
             'message' => 'Invalid credentials: wrong client id or secret'
-        ));
+        ]);
 
         $this->gateway->oauth()->_mapError($result);
 
@@ -46,10 +46,10 @@ class OAuthTest extends Setup
 
     public function testMapInvalidScopeCodeToOldError()
     {
-        $result = $this->_buildResult(array(
+        $result = $this->_buildResult([
             'code' => '93803',
             'message' => 'Invalid scope: scope is invalid'
-        ));
+        ]);
 
         $this->gateway->oauth()->_mapError($result);
 
@@ -59,13 +59,13 @@ class OAuthTest extends Setup
 
     protected function _buildResult($error)
     {
-        return new Braintree\Result\Error(array(
-            'errors' => array(
-                'errors' => array(),
-                'credentials' => array(
-                    'errors' => array($error)
-                )
-            )
-        ));
+        return new Braintree\Result\Error([
+            'errors' => [
+                'errors' => [],
+                'credentials' => [
+                    'errors' => [$error]
+                ]
+            ]
+        ]);
     }
 }

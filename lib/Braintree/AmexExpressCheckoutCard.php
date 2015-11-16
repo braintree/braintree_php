@@ -68,7 +68,7 @@ class AmexExpressCheckoutCard extends Base
         // set the attributes
         $this->_attributes = $amexExpressCheckoutCardAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($amexExpressCheckoutCardAttribs['subscriptions'])) {
             foreach ($amexExpressCheckoutCardAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);

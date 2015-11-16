@@ -13,7 +13,7 @@ namespace Braintree;
  */
 abstract class Base
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore
