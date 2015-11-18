@@ -2714,6 +2714,35 @@ class TransactionTest extends Setup
         Braintree\PaymentMethod::find($paymentMethodToken);
     }
 
+  public function testCreate_withPayPalSupplementaryData()
+    {
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            ]
+        ]);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'paypalAccount' => [],
+            'options' => [
+                'paypal' => [
+                    'supplementaryData' => [
+                        'key1' => 'value',
+                        'key2' => 'value'
+                    ]
+                ]
+            ]
+        ]);
+
+        // note - supplementary data is not returned in response
+        $this->assertTrue($result->success);
+    }
+
   public function testCreate_withPayPalDescription()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
