@@ -1,3 +1,9 @@
+## 3.7.0
+* Add VenmoAccount
+* Allow order_id and descriptor to be passed in for Transaction submit_for_settlement
+* Add facilitator details onto transactions
+* Add check webhook constant
+
 ## 3.6.1
 * Fix PSR-0 style namespacing when using Symfony
 
