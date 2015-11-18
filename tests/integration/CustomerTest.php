@@ -188,6 +188,23 @@ class CustomerTest extends Setup
         $this->assertNotNull($amexExpressCheckoutCard->expirationYear);
     }
 
+    public function testCreateCustomerWithVenmoAccount()
+    {
+        $nonce = Braintree\Test\Nonces::$venmoAccount;
+        $result = Braintree\Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $this->assertNotNull($customer->venmoAccounts[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
+        $venmoAccount = $customer->venmoAccounts[0];
+        $this->assertTrue($venmoAccount instanceof Braintree\VenmoAccount);
+        $this->assertNotNull($venmoAccount->token);
+        $this->assertNotNull($venmoAccount->username);
+        $this->assertNotNull($venmoAccount->venmoUserId);
+    }
+
     public function testCreateCustomerWithCoinbase()
     {
         $nonce = Braintree\Test\Nonces::$coinbase;

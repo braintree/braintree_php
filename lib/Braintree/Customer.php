@@ -20,6 +20,9 @@ namespace Braintree;
  * @property-read array  $creditCards
  * @property-read array  $paypalAccounts
  * @property-read array  $applePayCards
+ * @property-read array  $androidPayCards
+ * @property-read array  $amexExpressCheckoutCards
+ * @property-read array  $venmoAccounts
  * @property-read array  $coinbaseAccounts
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $email
@@ -226,10 +229,8 @@ class Customer extends Base
      */
     protected function _initialize($customerAttribs)
     {
-        // set the attributes
         $this->_attributes = $customerAttribs;
 
-        // map each address into its own object
         $addressArray = [];
         if (isset($customerAttribs['addresses'])) {
 
@@ -239,7 +240,6 @@ class Customer extends Base
         }
         $this->_set('addresses', $addressArray);
 
-        // map each creditCard into its own object
         $creditCardArray = [];
         if (isset($customerAttribs['creditCards'])) {
             foreach ($customerAttribs['creditCards'] AS $creditCard) {
@@ -248,7 +248,6 @@ class Customer extends Base
         }
         $this->_set('creditCards', $creditCardArray);
 
-        // map each coinbaseAccount into its own object
         $coinbaseAccountArray = [];
         if (isset($customerAttribs['coinbaseAccounts'])) {
             foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
@@ -257,7 +256,6 @@ class Customer extends Base
         }
         $this->_set('coinbaseAccounts', $coinbaseAccountArray);
 
-        // map each paypalAccount into its own object
         $paypalAccountArray = [];
         if (isset($customerAttribs['paypalAccounts'])) {
             foreach ($customerAttribs['paypalAccounts'] AS $paypalAccount) {
@@ -266,7 +264,6 @@ class Customer extends Base
         }
         $this->_set('paypalAccounts', $paypalAccountArray);
 
-        // map each applePayCard into its own object
         $applePayCardArray = [];
         if (isset($customerAttribs['applePayCards'])) {
             foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
@@ -275,7 +272,6 @@ class Customer extends Base
         }
         $this->_set('applePayCards', $applePayCardArray);
 
-        // map each androidPayCard into its own object
         $androidPayCardArray = [];
         if (isset($customerAttribs['androidPayCards'])) {
             foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
@@ -284,7 +280,6 @@ class Customer extends Base
         }
         $this->_set('androidPayCards', $androidPayCardArray);
 
-        // map each amexExpressCheckoutCard into its own object
         $amexExpressCheckoutCardArray = [];
         if (isset($customerAttribs['amexExpressCheckoutCards'])) {
             foreach ($customerAttribs['amexExpressCheckoutCards'] AS $amexExpressCheckoutCard) {
@@ -293,7 +288,23 @@ class Customer extends Base
         }
         $this->_set('amexExpressCheckoutCards', $amexExpressCheckoutCardArray);
 
-        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards, $this->amexExpressCheckoutCards));
+        $venmoAccountArray = array();
+        if (isset($customerAttribs['venmoAccounts'])) {
+            foreach ($customerAttribs['venmoAccounts'] AS $venmoAccount) {
+                $venmoAccountArray[] = VenmoAccount::factory($venmoAccount);
+            }
+        }
+        $this->_set('venmoAccounts', $venmoAccountArray);
+
+        $this->_set('paymentMethods', array_merge(
+            $this->creditCards,
+            $this->paypalAccounts,
+            $this->applePayCards,
+            $this->coinbaseAccounts,
+            $this->androidPayCards,
+            $this->amexExpressCheckoutCards,
+            $this->venmoAccounts
+        ));
     }
 
     /**

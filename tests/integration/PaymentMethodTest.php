@@ -163,6 +163,28 @@ class PaymentMethodTest extends Setup
         $this->assertEquals([], $amexExpressCheckoutCard->subscriptions);
     }
 
+    public function testCreate_fromFakeVenmoAccountNonce()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$venmoAccount
+        ));
+
+        $this->assertTrue($result->success);
+        $venmoAccount = $result->paymentMethod;
+        $this->assertInstanceOf('Braintree\VenmoAccount', $venmoAccount);
+
+        $this->assertNotNull($venmoAccount->token);
+        $this->assertNotNull($venmoAccount->sourceDescription);
+        $this->assertContains(".png", $venmoAccount->imageUrl);
+        $this->assertTrue($venmoAccount->default);
+        $this->assertSame($customer->id, $venmoAccount->customerId);
+        $this->assertEquals(array(), $venmoAccount->subscriptions);
+        $this->assertSame("venmojoe", $venmoAccount->username);
+        $this->assertSame("Venmo-Joe-1", $venmoAccount->venmoUserId);
+    }
+
     public function testCreate_fromUnvalidatedCreditCardNonce()
     {
         $customer = Braintree\Customer::createNoValidate();

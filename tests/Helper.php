@@ -44,6 +44,11 @@ class Helper
         return 'fake_amex_direct_usd';
     }
 
+    public static function fakeVenmoAccountMerchantAccountId()
+    {
+        return 'fake_first_data_venmo_account';
+    }
+
     public static function createViaTr($regularParams, $trParams)
     {
         $trData = Braintree\TransparentRedirect::transactionData(

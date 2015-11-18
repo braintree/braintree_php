@@ -150,13 +150,14 @@ namespace Braintree;
  * @property-read string $amount transaction amount
  * @property-read Braintree\Transaction\AddressDetails $billingDetails transaction billing address
  * @property-read string $createdAt transaction created timestamp
- * @property-read Braintree\ApplePayCard $applePayCardDetails transaction Apple Pay card info
- * @property-read Braintree\AndroidPayCard $androidPayCardDetails transaction Android Pay card info
- * @property-read Braintree\AmexExpressCheckoutCard $amexExpressCheckoutCardDetails transaction Amex Express Checkout card info
- * @property-read Braintree\CreditCard $creditCardDetails transaction credit card info
- * @property-read Braintree\CoinbaseAccount $coinbaseDetails transaction Coinbase account info
- * @property-read Braintree\PayPalAccount $paypalDetails transaction paypal account info
+ * @property-read Braintree\ApplePayCardDetails $applePayCardDetails transaction Apple Pay card info
+ * @property-read Braintree\AndroidPayCardDetails $androidPayCardDetails transaction Android Pay card info
+ * @property-read Braintree\AmexExpressCheckoutCardDetails $amexExpressCheckoutCardDetails transaction Amex Express Checkout card info
+ * @property-read Braintree\CreditCardDetails $creditCardDetails transaction credit card info
+ * @property-read Braintree\CoinbaseAccountDetails $coinbaseDetails transaction Coinbase account info
+ * @property-read Braintree\PayPalAccountDetails $paypalDetails transaction paypal account info
  * @property-read Braintree\Customer $customerDetails transaction customer info
+ * @property-read Braintree\VenmoAccount $venmoAccountDetails transaction Venmo Account info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
  * @property-read string $additionalProcessorResponse raw response from processor
@@ -253,6 +254,14 @@ final class Transaction extends Base
             $this->_set('amexExpressCheckoutCardDetails',
                 new Transaction\AmexExpressCheckoutCardDetails(
                     $transactionAttribs['amexExpressCheckoutCard']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['venmoAccount'])) {
+            $this->_set('venmoAccountDetails',
+                new Transaction\VenmoAccountDetails(
+                    $transactionAttribs['venmoAccount']
                 )
             );
         }

@@ -398,12 +398,31 @@ class TransactionTest extends Setup
         $this->assertSame("341111", $amexExpressCheckoutCardDetails->bin);
         $this->assertSame("12/21", $amexExpressCheckoutCardDetails->cardMemberExpiryDate);
         $this->assertSame("0005", $amexExpressCheckoutCardDetails->cardMemberNumber);
-        $this->assertSame("American Express", $amexExpressCheckoutCardDetails->cardType);
         $this->assertNull($amexExpressCheckoutCardDetails->token);
         $this->assertNotNull($amexExpressCheckoutCardDetails->sourceDescription);
         $this->assertContains(".png", $amexExpressCheckoutCardDetails->imageUrl);
         $this->assertTrue(intval($amexExpressCheckoutCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($amexExpressCheckoutCardDetails->expirationYear) > 0);
+    }
+
+    public function testCreateTransactionUsingFakeVenmoAccountNonce()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '47.00',
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'paymentMethodNonce' => Braintree\Test\Nonces::$venmoAccount
+        ));
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('47.00', $transaction->amount);
+        $venmoAccountDetails = $transaction->venmoAccountDetails;
+
+        $this->assertNull($venmoAccountDetails->token);
+        $this->assertNotNull($venmoAccountDetails->sourceDescription);
+        $this->assertContains(".png", $venmoAccountDetails->imageUrl);
+        $this->assertSame("venmojoe", $venmoAccountDetails->username);
+        $this->assertSame("Venmo-Joe-1", $venmoAccountDetails->venmoUserId);
     }
 
     public function testCreateTransactionUsingFakeCoinbaseNonce()

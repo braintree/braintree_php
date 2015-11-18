@@ -70,6 +70,8 @@ class PaymentMethodGateway
                 return AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']);
             } else if (isset($response['europeBankAccount'])) {
                 return EuropeBankAccount::factory($response['europeBankAccount']);
+            } else if (isset($response['venmoAccount'])) {
+                return VenmoAccount::factory($response['venmoAccount']);
             } else if (is_array($response)) {
                 return UnknownPaymentMethod::factory($response);
             }
@@ -206,45 +208,43 @@ class PaymentMethodGateway
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['creditCard'])) {
-            // return a populated instance of CreditCard
             return new Result\Successful(
                 CreditCard::factory($response['creditCard']),
                 'paymentMethod'
             );
         } else if (isset($response['paypalAccount'])) {
-            // return a populated instance of PayPalAccount
             return new Result\Successful(
                 PayPalAccount::factory($response['paypalAccount']),
                 "paymentMethod"
             );
         } else if (isset($response['coinbaseAccount'])) {
-            // return a populated instance of CoinbaseAccount
             return new Result\Successful(
                 CoinbaseAccount::factory($response['coinbaseAccount']),
                 "paymentMethod"
             );
         } else if (isset($response['applePayCard'])) {
-            // return a populated instance of ApplePayCard
             return new Result\Successful(
                 ApplePayCard::factory($response['applePayCard']),
                 "paymentMethod"
             );
         } else if (isset($response['androidPayCard'])) {
-            // return a populated instance of AndroidPayCard
             return new Result\Successful(
                 AndroidPayCard::factory($response['androidPayCard']),
                 "paymentMethod"
             );
         } else if (isset($response['amexExpressCheckoutCard'])) {
-            // return a populated instance of AmexExpressCheckoutCard
             return new Result\Successful(
                 AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']),
                 "paymentMethod"
             );
         } else if (isset($response['europeBankAccount'])) {
-            // return a populated instance of EuropeBankAccount
             return new Result\Successful(
                 EuropeBankAccount::factory($response['europeBankAccount']),
+                "paymentMethod"
+            );
+        } else if (isset($response['venmoAccount'])) {
+            return new Result\Successful(
+                VenmoAccount::factory($response['venmoAccount']),
                 "paymentMethod"
             );
         } else if (isset($response['apiErrorResponse'])) {

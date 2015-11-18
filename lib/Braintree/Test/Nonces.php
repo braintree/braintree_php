@@ -65,5 +65,6 @@ class Nonces
    public static $paypalFuturePaymentRefreshToken = "fake-paypal-future-refresh-token-nonce";
    public static $sepa = "fake-sepa-bank-account-nonce";
    public static $gatewayRejectedFraud = "fake-gateway-rejected-fraud-nonce";
+   public static $venmoAccount = "fake-venmo-account-nonce";
 }
 class_alias('Braintree\Test\Nonces', 'Braintree_Test_Nonces');

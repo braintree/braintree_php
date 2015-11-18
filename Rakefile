@@ -49,8 +49,13 @@ namespace :test do
   task :hhvm => %w[hhvm:unit hhvm:integration]
 
   desc "run a single test file"
-  task :single_test, :file_path do |t, args|
+  task :file, :file_path do |t, args|
     run_php_test_file(args[:file_path])
+  end
+
+  desc "run a single test"
+  task :single, :test_name do |t, args|
+    run_php_test(args[:test_name])
   end
 end
 
@@ -64,4 +69,8 @@ end
 
 def run_php_test_file(test_file)
   sh "./vendor/bin/phpunit #{test_file}"
+end
+
+def run_php_test(test_name)
+  sh "./vendor/bin/phpunit --filter #{test_name}"
 end
