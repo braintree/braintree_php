@@ -8,7 +8,7 @@ use InvalidArgumentException;
  * Braintree Utility methods
  * PHP version 5
  *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 class Util

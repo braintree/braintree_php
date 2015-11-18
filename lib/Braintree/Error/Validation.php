@@ -13,7 +13,7 @@ use Braintree\Util;
  *
  * @package    Braintree
  * @subpackage Error
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $attribute
  * @property-read string $code

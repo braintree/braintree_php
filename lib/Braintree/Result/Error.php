@@ -28,7 +28,7 @@ use Braintree\Error\ErrorCollection;
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read array $params original passed params
  * @property-read Braintree\Error\ErrorCollection $errors

@@ -13,7 +13,7 @@ use InvalidArgumentException;
  * as the shipping address when creating a Transaction.
  *
  * @package   Braintree
- * @copyright 2014 Braintree, a division of PayPal, Inc.
+ * @copyright 2015 Braintree, a division of PayPal, Inc.
  */
 class AddressGateway
 {

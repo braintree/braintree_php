@@ -20,7 +20,7 @@ use Iterator;
  *
  * @package    Braintree
  * @subpackage Utility
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class ResourceCollection implements Iterator
 {

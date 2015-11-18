@@ -59,6 +59,11 @@ namespace :test do
   end
 end
 
+desc "update the copyright year"
+task :copyright, :from_year, :to_year do |t, args|
+  sh "find tests lib -type f -name '*.php' -exec sed -i 's/#{args[:from_year]} Braintree/#{args[:to_year]} Braintree/g' {} +"
+end
+
 def print_php_version(interpreter)
   sh "#{interpreter} --version"
 end

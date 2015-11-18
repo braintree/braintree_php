@@ -26,7 +26,7 @@ use Braintree\Util;
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class Successful extends Instance
 {

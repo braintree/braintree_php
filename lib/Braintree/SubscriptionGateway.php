@@ -13,7 +13,7 @@ use InvalidArgumentException;
  * PHP Version 5
  *
  * @package   Braintree
- * @copyright 2014 Braintree, a division of PayPal, Inc.
+ * @copyright 2015 Braintree, a division of PayPal, Inc.
  */
 class SubscriptionGateway
 {
