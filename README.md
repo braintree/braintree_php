@@ -19,16 +19,14 @@ The following PHP extensions are required:
 ```php
 <?php
 
-namespace Braintree;
-
 require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
 
-Configuration::environment('sandbox');
-Configuration::merchantId('your_merchant_id');
-Configuration::publicKey('your_public_key');
-Configuration::privateKey('your_private_key');
+Braintree\Configuration::environment('sandbox');
+Braintree\Configuration::merchantId('your_merchant_id');
+Braintree\Configuration::publicKey('your_public_key');
+Braintree\Configuration::privateKey('your_private_key');
 
-$result = Transaction::sale([
+$result = Braintree\Transaction::sale([
     'amount' => '1000.00',
     'paymentMethodNonce' => 'nonceFromTheClient',
     'options' => [ 'submitForSettlement' => true ]
