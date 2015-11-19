@@ -10,12 +10,12 @@ class UnknownPaymentMethodTest extends Setup
 {
     public function testHandlesUnknownPaymentMethodResponses()
     {
-        $response = array(
-            'unkownPaymentMethod' => array(
+        $response = [
+            'unkownPaymentMethod' => [
                 'token' => 'SOME_TOKEN',
                 'default' => true
-            )
-        );
+            ]
+        ];
         $unknownPaymentMethodObject = Braintree\UnknownPaymentMethod::factory($response);
         $this->assertEquals('SOME_TOKEN', $unknownPaymentMethodObject->token);
         $this->assertTrue($unknownPaymentMethodObject->isDefault());

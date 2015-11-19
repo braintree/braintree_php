@@ -10,15 +10,15 @@ class TransactionTest extends Setup
 {
     public function testGet_givesErrorIfInvalidProperty()
     {
-        $t = Braintree\Transaction::factory(array(
-            'creditCard' => array('expirationMonth' => '05', 'expirationYear' => '2010', 'bin' => '510510', 'last4' => '5100'),
-            'customer' => array(),
-            'billing' => array(),
-            'descriptor' => array(),
-            'shipping' => array(),
-            'subscription' => array('billingPeriodStartDate' => '1983-07-12'),
-            'statusHistory' => array()
-        ));
+        $t = Braintree\Transaction::factory([
+            'creditCard' => ['expirationMonth' => '05', 'expirationYear' => '2010', 'bin' => '510510', 'last4' => '5100'],
+            'customer' => [],
+            'billing' => [],
+            'descriptor' => [],
+            'shipping' => [],
+            'subscription' => ['billingPeriodStartDate' => '1983-07-12'],
+            'statusHistory' => []
+        ]);
         $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\Transaction: foo');
         $t->foo;
     }
@@ -26,7 +26,7 @@ class TransactionTest extends Setup
 	public function testCloneTransaction_RaisesErrorOnInvalidProperty()
 	{
         $this->setExpectedException('InvalidArgumentException');
-		Braintree\Transaction::cloneTransaction('an id', array('amount' => '123.45', 'invalidProperty' => 'foo'));
+		Braintree\Transaction::cloneTransaction('an id', ['amount' => '123.45', 'invalidProperty' => 'foo']);
 	}
 
 	public function testErrorsWhenFindWithBlankString()
@@ -43,7 +43,7 @@ class TransactionTest extends Setup
 
     public function testInitializationWithoutArguments()
     {
-        $transaction = Braintree\Transaction::factory(array());
+        $transaction = Braintree\Transaction::factory([]);
 
         $this->assertTrue($transaction instanceof Braintree\Transaction);
     }

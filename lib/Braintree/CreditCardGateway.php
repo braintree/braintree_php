@@ -14,7 +14,7 @@ use InvalidArgumentException;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class CreditCardGateway
 {
@@ -33,7 +33,7 @@ class CreditCardGateway
     public function create($attribs)
     {
         Util::verifyKeys(self::createSignature(), $attribs);
-        return $this->_doCreate('/payment_methods', array('credit_card' => $attribs));
+        return $this->_doCreate('/payment_methods', ['credit_card' => $attribs]);
     }
 
     /**
@@ -42,7 +42,7 @@ class CreditCardGateway
      *
      * @access public
      * @param array $attribs
-     * @return object
+     * @return CreditCard
      * @throws Exception\ValidationError
      */
     public function createNoValidate($attribs)
@@ -53,9 +53,10 @@ class CreditCardGateway
     /**
      * create a customer from a TransparentRedirect operation
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param array $attribs
-     * @return object
+     * @return Result\Successful|Result\Error
      */
     public function createFromTransparentRedirect($queryString)
     {
@@ -65,12 +66,13 @@ class CreditCardGateway
         );
         return $this->_doCreate(
             '/payment_methods/all/confirm_transparent_redirect_request',
-            array('id' => $params['id'])
+            ['id' => $params['id']]
         );
     }
 
     /**
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param none
      * @return string
@@ -84,17 +86,17 @@ class CreditCardGateway
 
     /**
      * returns a ResourceCollection of expired credit cards
-     * @return object ResourceCollection
+     * @return ResourceCollection
      */
     public function expired()
     {
         $path = $this->_config->merchantPath() . '/payment_methods/all/expired_ids';
         $response = $this->_http->post($path);
-        $pager = array(
+        $pager = [
             'object' => $this,
             'method' => 'fetchExpired',
-            'methodArgs' => array()
-        );
+            'methodArgs' => []
+        ];
 
         return new ResourceCollection($response, $pager);
     }
@@ -102,7 +104,7 @@ class CreditCardGateway
     public function fetchExpired($ids)
     {
         $path = $this->_config->merchantPath() . "/payment_methods/all/expired";
-        $response = $this->_http->post($path, array('search' => array('ids' => $ids)));
+        $response = $this->_http->post($path, ['search' => ['ids' => $ids]]);
 
         return Util::extractattributeasarray(
             $response['paymentMethods'],
@@ -112,17 +114,17 @@ class CreditCardGateway
     /**
      * returns a ResourceCollection of credit cards expiring between start/end
      *
-     * @return object ResourceCollection
+     * @return ResourceCollection
      */
     public function expiringBetween($startDate, $endDate)
     {
         $queryPath = $this->_config->merchantPath() . '/payment_methods/all/expiring_ids?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
         $response = $this->_http->post($queryPath);
-        $pager = array(
+        $pager = [
             'object' => $this,
             'method' => 'fetchExpiring',
-            'methodArgs' => array($startDate, $endDate)
-        );
+            'methodArgs' => [$startDate, $endDate]
+        ];
 
         return new ResourceCollection($response, $pager);
     }
@@ -130,7 +132,7 @@ class CreditCardGateway
     public function fetchExpiring($startDate, $endDate, $ids)
     {
         $queryPath = $this->_config->merchantPath() . '/payment_methods/all/expiring?start=' . date('mY', $startDate) . '&end=' . date('mY', $endDate);
-        $response = $this->_http->post($queryPath, array('search' => array('ids' => $ids)));
+        $response = $this->_http->post($queryPath, ['search' => ['ids' => $ids]]);
 
         return Util::extractAttributeAsArray(
             $response['paymentMethods'],
@@ -143,7 +145,7 @@ class CreditCardGateway
      *
      * @access public
      * @param string $token credit card unique id
-     * @return object CreditCard
+     * @return CreditCard
      * @throws Exception\NotFound
      */
     public function find($token)
@@ -166,7 +168,7 @@ class CreditCardGateway
      *
      * @access public
      * @param string $nonce payment method nonce
-     * @return object CreditCard
+     * @return CreditCard
      * @throws Exception\NotFound
      */
     public function fromNonce($nonce)
@@ -189,7 +191,7 @@ class CreditCardGateway
      *
      * @access public
      * @param array $attribs
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      */
     public function credit($token, $transactionAttribs)
     {
@@ -197,7 +199,7 @@ class CreditCardGateway
         return Transaction::credit(
             array_merge(
                 $transactionAttribs,
-                array('paymentMethodToken' => $token)
+                ['paymentMethodToken' => $token]
             )
         );
     }
@@ -209,7 +211,7 @@ class CreditCardGateway
      *
      * @access public
      * @param array $attribs
-     * @return object Transaction
+     * @return Transaction
      * @throws Exception\ValidationError
      */
     public function creditNoValidate($token, $transactionAttribs)
@@ -223,7 +225,7 @@ class CreditCardGateway
      *
      * @param string $token
      * @param array $transactionAttribs
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @see Transaction::sale()
      */
     public function sale($token, $transactionAttribs)
@@ -232,7 +234,7 @@ class CreditCardGateway
         return Transaction::sale(
             array_merge(
                 $transactionAttribs,
-                array('paymentMethodToken' => $token)
+                ['paymentMethodToken' => $token]
             )
         );
     }
@@ -245,7 +247,7 @@ class CreditCardGateway
      * @access public
      * @param array $transactionAttribs
      * @param string $token
-     * @return object Transaction
+     * @return Transaction
      * @throws Exception\ValidationsFailed
      * @see Transaction::sale()
      */
@@ -264,13 +266,13 @@ class CreditCardGateway
      * @access public
      * @param array $attributes
      * @param string $token (optional)
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      */
     public function update($token, $attributes)
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
         $this->_validateId($token);
-        return $this->_doUpdate('put', '/payment_methods/credit_card/' . $token, array('creditCard' => $attributes));
+        return $this->_doUpdate('put', '/payment_methods/credit_card/' . $token, ['creditCard' => $attributes]);
     }
 
     /**
@@ -283,7 +285,7 @@ class CreditCardGateway
      * @access public
      * @param array $attributes
      * @param string $token
-     * @return object CreditCard
+     * @return CreditCard
      * @throws Exception\ValidationsFailed
      */
     public function updateNoValidate($token, $attributes)
@@ -307,6 +309,7 @@ class CreditCardGateway
     /**
      * update a customer from a TransparentRedirect operation
      *
+     * @deprecated since version 2.3.0
      * @access public
      * @param array $attribs
      * @return object
@@ -320,7 +323,7 @@ class CreditCardGateway
         return $this->_doUpdate(
             'post',
             '/payment_methods/all/confirm_transparent_redirect_request',
-            array('id' => $params['id'])
+            ['id' => $params['id']]
         );
     }
 
@@ -334,18 +337,18 @@ class CreditCardGateway
 
     private static function baseOptions()
     {
-        return array('makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'venmoSdkSession');
+        return ['makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'venmoSdkSession'];
     }
 
     private static function baseSignature($options)
     {
-         return array(
+         return [
              'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
              'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
              'deviceData', 'fraudMerchantId', 'paymentMethodNonce',
-             array('options' => $options),
-             array(
-                 'billingAddress' => array(
+             ['options' => $options],
+             [
+                 'billingAddress' => [
                      'firstName',
                      'lastName',
                      'company',
@@ -358,9 +361,9 @@ class CreditCardGateway
                      'region',
                      'postalCode',
                      'streetAddress'
-                 ),
-             ),
-         );
+                 ],
+             ],
+         ];
     }
 
     public static function createSignature()
@@ -376,13 +379,13 @@ class CreditCardGateway
     {
          $signature = self::baseSignature(self::baseOptions());
 
-         $updateExistingBillingSignature = array(
-             array(
-                 'options' => array(
+         $updateExistingBillingSignature = [
+             [
+                 'options' => [
                      'updateExisting'
-                 )
-             )
-         );
+                 ]
+             ]
+         ];
 
          foreach($signature AS $key => $value) {
              if(is_array($value) and array_key_exists('billingAddress', $value)) {
@@ -455,7 +458,7 @@ class CreditCardGateway
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)

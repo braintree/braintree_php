@@ -9,11 +9,11 @@ namespace Braintree;
  *
  *  PHP version 5
  *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 abstract class Base
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore

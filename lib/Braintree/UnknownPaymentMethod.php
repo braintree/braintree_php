@@ -6,7 +6,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -17,7 +17,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $token
  * @property-read string $imageUrl
@@ -31,7 +31,7 @@ class UnknownPaymentMethod extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of UnknownPaymentMethod
+     * @return UnknownPaymentMethod
      */
     public static function factory($attributes)
     {
@@ -58,7 +58,7 @@ class UnknownPaymentMethod extends Base
      *
      * @access protected
      * @param array $unknownPaymentMethodAttribs array of unknownPaymentMethod data
-     * @return none
+     * @return void
      */
     protected function _initialize($unknownPaymentMethodAttribs)
     {

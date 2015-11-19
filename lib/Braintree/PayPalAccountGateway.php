@@ -8,7 +8,7 @@ use InvalidArgumentException;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -19,7 +19,7 @@ use InvalidArgumentException;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class PayPalAccountGateway
 {
@@ -41,7 +41,7 @@ class PayPalAccountGateway
      *
      * @access public
      * @param string $token paypal accountunique id
-     * @return object PayPalAccount
+     * @return PayPalAccount
      * @throws Exception\NotFound
      */
     public function find($token)
@@ -74,7 +74,7 @@ class PayPalAccountGateway
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
         $this->_validateId($token);
-        return $this->_doUpdate('put', '/payment_methods/paypal_account/' . $token, array('paypalAccount' => $attributes));
+        return $this->_doUpdate('put', '/payment_methods/paypal_account/' . $token, ['paypalAccount' => $attributes]);
     }
 
     public function delete($token)
@@ -90,7 +90,7 @@ class PayPalAccountGateway
      *
      * @param string $token
      * @param array $transactionAttribs
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @see Transaction::sale()
      */
     public function sale($token, $transactionAttribs)
@@ -99,17 +99,17 @@ class PayPalAccountGateway
         return Transaction::sale(
             array_merge(
                 $transactionAttribs,
-                array('paymentMethodToken' => $token)
+                ['paymentMethodToken' => $token]
             )
         );
     }
 
     public static function updateSignature()
     {
-        return array(
+        return [
             'token',
-            array('options' => array('makeDefault'))
-        );
+            ['options' => ['makeDefault']]
+        ];
     }
 
     /**
@@ -137,7 +137,7 @@ class PayPalAccountGateway
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)

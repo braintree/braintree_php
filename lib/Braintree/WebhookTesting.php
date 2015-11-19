@@ -8,10 +8,10 @@ class WebhookTesting
         $payload = base64_encode(self::_sampleXml($kind, $id)) . "\n";
         $signature = Configuration::publicKey() . "|" . Digest::hexDigestSha1(Configuration::privateKey(), $payload);
 
-        return array(
+        return [
             'bt_signature' => $signature,
             'bt_payload' => $payload
-        );
+        ];
     }
 
     private static function _sampleXml($kind, $id)
@@ -52,6 +52,9 @@ class WebhookTesting
                 break;
             case WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
                 $subjectXml = self::_subscriptionChargedSuccessfullySampleXml($id);
+                break;
+            case WebhookNotification::CHECK:
+                $subjectXml = self::_checkSampleXml();
                 break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
@@ -268,6 +271,13 @@ class WebhookTesting
             <discounts type=\"array\">
             </discounts>
         </subscription>
+        ";
+    }
+
+    private static function _checkSampleXml()
+    {
+        return "
+            <check type=\"boolean\">true</check>
         ";
     }
 

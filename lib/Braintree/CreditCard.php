@@ -12,7 +12,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $billingAddress
  * @property-read string $bin
@@ -113,7 +113,7 @@ class CreditCard extends Base
      *
      * @access protected
      * @param array $creditCardAttribs array of creditcard data
-     * @return none
+     * @return void
      */
     protected function _initialize($creditCardAttribs)
     {
@@ -125,7 +125,7 @@ class CreditCard extends Base
             Address::factory($creditCardAttribs['billingAddress']) :
             null;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($creditCardAttribs['subscriptions'])) {
             foreach ($creditCardAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
@@ -139,7 +139,7 @@ class CreditCard extends Base
 
         if(isset($creditCardAttribs['verifications']) && count($creditCardAttribs['verifications']) > 0) {
             $verifications = $creditCardAttribs['verifications'];
-            usort($verifications, array($this, '_compareCreatedAtOnVerifications'));
+            usort($verifications, [$this, '_compareCreatedAtOnVerifications']);
 
             $this->_set('verification', CreditCardVerification::factory($verifications[0]));
         }
@@ -178,16 +178,16 @@ class CreditCard extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of CreditCard
+     * @return CreditCard
      */
     public static function factory($attributes)
     {
-        $defaultAttributes = array(
+        $defaultAttributes = [
             'bin' => '',
             'expirationMonth'    => '',
             'expirationYear'    => '',
             'last4'  => '',
-        );
+        ];
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
@@ -292,9 +292,10 @@ class CreditCard extends Base
         return Configuration::gateway()->creditCard()->delete($token);
     }
 
+    /** @return array */
     public static function allCardTypes()
     {
-        return array(
+        return [
             CreditCard::AMEX,
             CreditCard::CARTE_BLANCHE,
             CreditCard::CHINA_UNION_PAY,
@@ -308,7 +309,7 @@ class CreditCard extends Base
             CreditCard::SWITCH_TYPE,
             CreditCard::VISA,
             CreditCard::UNKNOWN
-        );
+        ];
     }
 }
 class_alias('Braintree\CreditCard', 'Braintree_CreditCard');

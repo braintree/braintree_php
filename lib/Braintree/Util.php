@@ -8,7 +8,7 @@ use InvalidArgumentException;
  * Braintree Utility methods
  * PHP version 5
  *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 class Util
@@ -27,7 +27,7 @@ class Util
     public static function extractAttributeAsArray(&$attribArray, $attributeName)
     {
         if(!isset($attribArray[$attributeName])):
-            return array();
+            return [];
         endif;
 
         // get what should be an array from the passed array
@@ -38,7 +38,7 @@ class Util
             // create an object from the data in each element
             $objectArray = array_map($classFactory, $data);
         else:
-            return array($data);
+            return [$data];
         endif;
 
         unset($attribArray[$attributeName]);
@@ -47,8 +47,9 @@ class Util
     /**
      * throws an exception based on the type of error
      * @param string $statusCode HTTP status code to throw exception from
+     * @param null|string $message
      * @throws Exception multiple types depending on the error
-     *
+     * @return void
      */
     public static function throwStatusCodeException($statusCode, $message=null)
     {
@@ -102,7 +103,7 @@ class Util
      */
     public static function cleanClassName($name)
     {
-        $classNamesToResponseKeys = array(
+        $classNamesToResponseKeys = [
             'Braintree\CreditCard' => 'creditCard',
             'Braintree_CreditCard' => 'creditCard',
             'Braintree\CreditCardGateway' => 'creditCard',
@@ -157,7 +158,7 @@ class Util
             'Braintree_PayPalAccount' => 'paypalAccount',
             'Braintree\PayPalAccountGateway' => 'paypalAccount',
             'Braintree_PayPalAccountGateway' => 'paypalAccount',
-        );
+        ];
 
         return $classNamesToResponseKeys[$name];
     }
@@ -169,7 +170,7 @@ class Util
      */
     public static function buildClassName($name)
     {
-        $responseKeysToClassNames = array(
+        $responseKeysToClassNames = [
             'creditCard' => 'Braintree\CreditCard',
             'customer' => 'Braintree\Customer',
             'subscription' => 'Braintree\Subscription',
@@ -181,7 +182,7 @@ class Util
             'address' => 'Braintree\Address',
             'settlementBatchSummary' => 'Braintree\SettlementBatchSummary',
             'merchantAccount' => 'Braintree\MerchantAccount',
-        );
+        ];
 
         return (string) $responseKeysToClassNames[$name];
     }
@@ -191,6 +192,7 @@ class Util
      *
      * @access public
      * @param string $string
+     * @param null|string $delimiter
      * @return string modified string
      */
     public static function delimiterToCamelCase($string, $delimiter = '[\-\_]')
@@ -223,25 +225,18 @@ class Util
      * find capitals and convert to delimiter + lowercase
      *
      * @access public
-     * @param var $string
-     * @return var modified string
+     * @param string $string
+     * @param null|string $delimiter
+     * @return string modified string
      */
     public static function camelCaseToDelimiter($string, $delimiter = '-')
     {
-        // php doesn't garbage collect functions created by create_function()
-        // so use a static variable to avoid adding a new function to memory
-        // every time this function is called.
-        static $callbacks = array();
-        if (!isset($callbacks[$delimiter])) {
-            $callbacks[$delimiter] = create_function('$matches', "return '$delimiter' . strtolower(\$matches[1]);");
-        }
-
-        return preg_replace_callback('/([A-Z])/', $callbacks[$delimiter], $string);
+        return strtolower(preg_replace('/([A-Z])/', "$delimiter\\1", $string));
     }
 
     public static function delimiterToCamelCaseArray($array, $delimiter = '[\-\_]')
     {
-        $converted = array();
+        $converted = [];
         foreach ($array as $key => $value) {
             if (is_string($key)) {
                 $key = self::delimiterToCamelCase($key, $delimiter);
@@ -263,7 +258,7 @@ class Util
 
     public static function camelCaseToDelimiterArray($array, $delimiter = '-')
     {
-        $converted = array();
+        $converted = [];
         foreach ($array as $key => $value) {
             if (is_string($key)) {
                 $key = self::camelCaseToDelimiter($key, $delimiter);
@@ -278,7 +273,7 @@ class Util
 
     public static function delimiterToUnderscoreArray($array)
     {
-        $converted = array();
+        $converted = [];
         foreach ($array as $key => $value) {
             $key = self::delimiterToUnderscore($key);
             $converted[$key] = $value;
@@ -291,6 +286,7 @@ class Util
      * @param array $array associative array to implode
      * @param string $separator (optional, defaults to =)
      * @param string $glue (optional, defaults to ', ')
+     * @return bool
      */
     public static function implodeAssociativeArray($array, $separator = '=', $glue = ', ')
     {
@@ -307,7 +303,7 @@ class Util
     }
 
     public static function attributesToString($attributes) {
-        $printableAttribs = array();
+        $printableAttribs = [];
         foreach ($attributes AS $key => $value) {
             if (is_array($value)) {
                 $pAttrib = self::attributesToString($value);
@@ -351,7 +347,7 @@ class Util
      */
     private static function _flattenArray($keys, $namespace = null)
     {
-        $flattenedArray = array();
+        $flattenedArray = [];
         foreach($keys AS $key) {
             if(is_array($key)) {
                 $theKeys = array_keys($key);
@@ -370,7 +366,7 @@ class Util
 
     private static function _flattenUserKeys($keys, $namespace = null)
     {
-       $flattenedArray = array();
+       $flattenedArray = [];
 
        foreach($keys AS $key => $value) {
            $fullKey = empty($namespace) ? $key : $namespace;

@@ -12,15 +12,15 @@ use Braintree\Collection;
  *
  * @package    Braintree
  * @subpackage Error
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read array $errors
  * @property-read array $nested
  */
 class ValidationErrorCollection extends Collection
 {
-    private $_errors = array();
-    private $_nested = array();
+    private $_errors = [];
+    private $_nested = [];
 
     /**
      * @ignore
@@ -41,7 +41,7 @@ class ValidationErrorCollection extends Collection
 
     public function deepAll()
     {
-        $validationErrors = array_merge(array(), $this->_errors);
+        $validationErrors = array_merge([], $this->_errors);
         foreach($this->_nested as $nestedErrors)
         {
             $validationErrors = array_merge($validationErrors, $nestedErrors->deepAll());
@@ -71,7 +71,7 @@ class ValidationErrorCollection extends Collection
 
     public function onAttribute($attribute)
     {
-        $matches = array();
+        $matches = [];
         foreach ($this->_errors AS $key => $error) {
            if($error->attribute == $attribute) {
                $matches[] = $error;
@@ -101,7 +101,7 @@ class ValidationErrorCollection extends Collection
      */
     public function __toString()
     {
-        $output = array();
+        $output = [];
 
         // TODO: implement scope
         if (!empty($this->_errors)) {

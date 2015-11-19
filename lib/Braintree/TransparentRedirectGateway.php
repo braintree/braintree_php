@@ -11,7 +11,7 @@ use DateTimeZone;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class TransparentRedirectGateway
 {
@@ -43,28 +43,28 @@ class TransparentRedirectGateway
     public static function init()
     {
 
-        self::$_createCustomerSignature = array(
+        self::$_createCustomerSignature = [
             self::$_transparentRedirectKeys,
-            array('customer' => CustomerGateway::createSignature()),
-            );
-        self::$_updateCustomerSignature = array(
+            ['customer' => CustomerGateway::createSignature()],
+            ];
+        self::$_updateCustomerSignature = [
             self::$_transparentRedirectKeys,
             'customerId',
-            array('customer' => CustomerGateway::updateSignature()),
-            );
-        self::$_transactionSignature = array(
+            ['customer' => CustomerGateway::updateSignature()],
+            ];
+        self::$_transactionSignature = [
             self::$_transparentRedirectKeys,
-            array('transaction' => TransactionGateway::createSignature()),
-            );
-        self::$_createCreditCardSignature = array(
+            ['transaction' => TransactionGateway::createSignature()],
+            ];
+        self::$_createCreditCardSignature = [
             self::$_transparentRedirectKeys,
-            array('creditCard' => CreditCardGateway::createSignature()),
-            );
-        self::$_updateCreditCardSignature = array(
+            ['creditCard' => CreditCardGateway::createSignature()],
+            ];
+        self::$_updateCreditCardSignature = [
             self::$_transparentRedirectKeys,
             'paymentMethodToken',
-            array('creditCard' => CreditCardGateway::updateSignature()),
-            );
+            ['creditCard' => CreditCardGateway::updateSignature()],
+            ];
     }
 
     public function confirm($queryString)
@@ -72,15 +72,15 @@ class TransparentRedirectGateway
         $params = TransparentRedirect::parseAndValidateQueryString(
                 $queryString
         );
-        $confirmationKlasses = array(
+        $confirmationKlasses = [
             TransparentRedirect::CREATE_TRANSACTION => 'Braintree\TransactionGateway',
             TransparentRedirect::CREATE_CUSTOMER => 'Braintree\CustomerGateway',
             TransparentRedirect::UPDATE_CUSTOMER => 'Braintree\CustomerGateway',
             TransparentRedirect::CREATE_PAYMENT_METHOD => 'Braintree\CreditCardGateway',
             TransparentRedirect::UPDATE_PAYMENT_METHOD => 'Braintree\CreditCardGateway',
-        );
+        ];
         $confirmationGateway = new $confirmationKlasses[$params["kind"]]($this->_gateway);
-        return $confirmationGateway->_doCreate('/transparent_redirect_requests/' . $params['id'] . '/confirm', array());
+        return $confirmationGateway->_doCreate('/transparent_redirect_requests/' . $params['id'] . '/confirm', []);
     }
 
     /**
@@ -245,11 +245,11 @@ class TransparentRedirectGateway
         $params = $this->_underscoreKeys($params);
         $now = new DateTime('now', new DateTimeZone('UTC'));
         $trDataParams = array_merge($params,
-            array(
+            [
                 'api_version' => Configuration::API_VERSION,
                 'public_key'  => $this->_config->publicKey(),
                 'time'        => $now->format('YmdHis'),
-            )
+            ]
         );
         ksort($trDataParams);
         $urlEncodedData = http_build_query($trDataParams, null, "&");

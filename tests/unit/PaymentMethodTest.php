@@ -11,12 +11,12 @@ class PaymentMethodTest extends Setup
     public function testCreate_throwsIfInvalidKey()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalidKey');
-        Braintree\PaymentMethod::create(array('invalidKey' => 'foo'));
+        Braintree\PaymentMethod::create(['invalidKey' => 'foo']);
     }
 
     public function testCreateSignature()
     {
-        $expected = array(
+        $expected = [
             'billingAddressId',
             'cardholderName',
             'cvv',
@@ -27,15 +27,15 @@ class PaymentMethodTest extends Setup
             'number',
             'paymentMethodNonce',
             'token',
-            array('options' => array(
+            ['options' => [
                 'failOnDuplicatePaymentMethod',
                 'makeDefault',
                 'verificationMerchantAccountId',
                 'verifyCard'
-            )),
-            array('billingAddress' => Braintree\AddressGateway::createSignature()),
+            ]],
+            ['billingAddress' => Braintree\AddressGateway::createSignature()],
             'customerId'
-        );
+        ];
         $this->assertEquals($expected, Braintree\PaymentMethodGateway::createSignature());
     }
 

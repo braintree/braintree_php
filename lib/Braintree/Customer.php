@@ -11,7 +11,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read array  $addresses
  * @property-read array  $paymentMethods
@@ -20,6 +20,9 @@ namespace Braintree;
  * @property-read array  $creditCards
  * @property-read array  $paypalAccounts
  * @property-read array  $applePayCards
+ * @property-read array  $androidPayCards
+ * @property-read array  $amexExpressCheckoutCards
+ * @property-read array  $venmoAccounts
  * @property-read array  $coinbaseAccounts
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $email
@@ -58,7 +61,7 @@ class Customer extends Base
      * @param array $attribs
      * @return Customer
      */
-    public static function create($attribs = array())
+    public static function create($attribs = [])
     {
         return Configuration::gateway()->customer()->create($attribs);
     }
@@ -68,7 +71,7 @@ class Customer extends Base
      * @param array $attribs
      * @return Customer
      */
-    public static function createNoValidate($attribs = array())
+    public static function createNoValidate($attribs = [])
     {
         return Configuration::gateway()->customer()->createNoValidate($attribs);
     }
@@ -95,7 +98,7 @@ class Customer extends Base
     /**
      *
      * @throws Exception\NotFound
-     * @param int $id
+     * @param string $id customer id
      * @return Customer
      */
     public static function find($id)
@@ -226,11 +229,9 @@ class Customer extends Base
      */
     protected function _initialize($customerAttribs)
     {
-        // set the attributes
         $this->_attributes = $customerAttribs;
 
-        // map each address into its own object
-        $addressArray = array();
+        $addressArray = [];
         if (isset($customerAttribs['addresses'])) {
 
             foreach ($customerAttribs['addresses'] AS $address) {
@@ -239,8 +240,7 @@ class Customer extends Base
         }
         $this->_set('addresses', $addressArray);
 
-        // map each creditCard into its own object
-        $creditCardArray = array();
+        $creditCardArray = [];
         if (isset($customerAttribs['creditCards'])) {
             foreach ($customerAttribs['creditCards'] AS $creditCard) {
                 $creditCardArray[] = CreditCard::factory($creditCard);
@@ -248,8 +248,7 @@ class Customer extends Base
         }
         $this->_set('creditCards', $creditCardArray);
 
-        // map each coinbaseAccount into its own object
-        $coinbaseAccountArray = array();
+        $coinbaseAccountArray = [];
         if (isset($customerAttribs['coinbaseAccounts'])) {
             foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
                 $coinbaseAccountArray[] = CoinbaseAccount::factory($coinbaseAccount);
@@ -257,8 +256,7 @@ class Customer extends Base
         }
         $this->_set('coinbaseAccounts', $coinbaseAccountArray);
 
-        // map each paypalAccount into its own object
-        $paypalAccountArray = array();
+        $paypalAccountArray = [];
         if (isset($customerAttribs['paypalAccounts'])) {
             foreach ($customerAttribs['paypalAccounts'] AS $paypalAccount) {
                 $paypalAccountArray[] = PayPalAccount::factory($paypalAccount);
@@ -266,8 +264,7 @@ class Customer extends Base
         }
         $this->_set('paypalAccounts', $paypalAccountArray);
 
-        // map each applePayCard into its own object
-        $applePayCardArray = array();
+        $applePayCardArray = [];
         if (isset($customerAttribs['applePayCards'])) {
             foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
                 $applePayCardArray[] = ApplePayCard::factory($applePayCard);
@@ -275,8 +272,7 @@ class Customer extends Base
         }
         $this->_set('applePayCards', $applePayCardArray);
 
-        // map each androidPayCard into its own object
-        $androidPayCardArray = array();
+        $androidPayCardArray = [];
         if (isset($customerAttribs['androidPayCards'])) {
             foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
                 $androidPayCardArray[] = AndroidPayCard::factory($androidPayCard);
@@ -284,8 +280,7 @@ class Customer extends Base
         }
         $this->_set('androidPayCards', $androidPayCardArray);
 
-        // map each amexExpressCheckoutCard into its own object
-        $amexExpressCheckoutCardArray = array();
+        $amexExpressCheckoutCardArray = [];
         if (isset($customerAttribs['amexExpressCheckoutCards'])) {
             foreach ($customerAttribs['amexExpressCheckoutCards'] AS $amexExpressCheckoutCard) {
                 $amexExpressCheckoutCardArray[] = AmexExpressCheckoutCard::factory($amexExpressCheckoutCard);
@@ -293,7 +288,23 @@ class Customer extends Base
         }
         $this->_set('amexExpressCheckoutCards', $amexExpressCheckoutCardArray);
 
-        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards, $this->amexExpressCheckoutCards));
+        $venmoAccountArray = array();
+        if (isset($customerAttribs['venmoAccounts'])) {
+            foreach ($customerAttribs['venmoAccounts'] AS $venmoAccount) {
+                $venmoAccountArray[] = VenmoAccount::factory($venmoAccount);
+            }
+        }
+        $this->_set('venmoAccounts', $venmoAccountArray);
+
+        $this->_set('paymentMethods', array_merge(
+            $this->creditCards,
+            $this->paypalAccounts,
+            $this->applePayCards,
+            $this->coinbaseAccounts,
+            $this->androidPayCards,
+            $this->amexExpressCheckoutCards,
+            $this->venmoAccounts
+        ));
     }
 
     /**
@@ -333,7 +344,7 @@ class Customer extends Base
     /**
      * returns the customer's default payment method
      *
-     * @return object CreditCard or PayPalAccount
+     * @return CreditCard|PayPalAccount
      */
     public function defaultPaymentMethod()
     {
@@ -352,7 +363,7 @@ class Customer extends Base
      * @access protected
      * @var array registry of customer data
      */
-    protected $_attributes = array(
+    protected $_attributes = [
         'addresses'   => '',
         'company'     => '',
         'creditCards' => '',
@@ -365,7 +376,7 @@ class Customer extends Base
         'createdAt'   => '',
         'updatedAt'   => '',
         'website'     => '',
-        );
+        ];
 
     /**
      *  factory method: returns an instance of Customer

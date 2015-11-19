@@ -6,7 +6,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -17,7 +17,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $customerId
  * @property-read string $email
@@ -31,7 +31,7 @@ class PayPalAccount extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of PayPalAccount
+     * @return PayPalAccount
      */
     public static function factory($attributes)
     {
@@ -57,14 +57,14 @@ class PayPalAccount extends Base
      *
      * @access protected
      * @param array $paypalAccountAttribs array of paypalAccount data
-     * @return none
+     * @return void
      */
     protected function _initialize($paypalAccountAttribs)
     {
         // set the attributes
         $this->_attributes = $paypalAccountAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($paypalAccountAttribs['subscriptions'])) {
             foreach ($paypalAccountAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);

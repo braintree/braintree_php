@@ -10,32 +10,32 @@ class ErrorCollectionTest extends Setup
 {
     public function testDeepSize_withNestedErrors()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'email' => 'invalid',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => 'invalid',
                 'expirationDate' => 'invalid',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'countryName' => 'invaild'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $this->assertEquals(false, $result->success);
         $this->assertEquals(4, $result->errors->deepSize());
     }
 
     public function testOnHtmlField()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'email' => 'invalid',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => 'invalid',
                 'expirationDate' => 'invalid',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'countryName' => 'invaild'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->onHtmlField('customer[email]');
         $this->assertEquals(Braintree\Error\Codes::CUSTOMER_EMAIL_IS_INVALID, $errors[0]->code);
@@ -47,34 +47,34 @@ class ErrorCollectionTest extends Setup
 
     public function testOnHtmlField_returnsEmptyArrayIfNone()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'email' => 'invalid',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'streetAddress' => '1 E Main St'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->onHtmlField('customer[email]');
         $this->assertEquals(Braintree\Error\Codes::CUSTOMER_EMAIL_IS_INVALID, $errors[0]->code);
-        $this->assertEquals(array(), $result->errors->onHtmlField('customer[credit_card][number]'));
-        $this->assertEquals(array(), $result->errors->onHtmlField('customer[credit_card][billing_address][country_name]'));
+        $this->assertEquals([], $result->errors->onHtmlField('customer[credit_card][number]'));
+        $this->assertEquals([], $result->errors->onHtmlField('customer[credit_card][billing_address][country_name]'));
     }
 
     public function testOnHtmlField_returnsEmptyForCustomFieldsIfNoErrors()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'email' => 'invalid',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
-            ),
-            'customFields' => array('storeMe' => 'value')
-        ));
+            ],
+            'customFields' => ['storeMe' => 'value']
+        ]);
         $this->assertEquals(false, $result->success);
-        $this->assertEquals(array(), $result->errors->onHtmlField('customer[custom_fields][store_me]'));
+        $this->assertEquals([], $result->errors->onHtmlField('customer[custom_fields][store_me]'));
     }
 }

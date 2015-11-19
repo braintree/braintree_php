@@ -11,7 +11,7 @@ namespace Braintree;
  * as the shipping address when creating a Transaction.
  *
  * @package   Braintree
- * @copyright 2014 Braintree, a division of PayPal, Inc.
+ * @copyright 2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $company
  * @property-read string $countryName
@@ -47,7 +47,7 @@ class Address extends Base
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
      * @ignore
-     * @return var
+     * @return string
      */
     public function  __toString()
     {
@@ -61,7 +61,7 @@ class Address extends Base
      * @ignore
      * @access protected
      * @param array $addressAttribs array of address data
-     * @return none
+     * @return void
      */
     protected function _initialize($addressAttribs)
     {
@@ -73,7 +73,7 @@ class Address extends Base
      *  factory method: returns an instance of Address
      *  to the requesting method, with populated properties
      * @ignore
-     * @return object instance of Address
+     * @return Address
      */
     public static function factory($attributes)
     {
@@ -111,7 +111,7 @@ class Address extends Base
      * @param Customer|int $customerOrId
      * @param int $addressId
      * @throws InvalidArgumentException
-     * @return Result_Successful
+     * @return Result\Successful
      */
     public static function delete($customerOrId = null, $addressId = null)
     {
@@ -136,7 +136,7 @@ class Address extends Base
      * @param int $addressId
      * @param array $attributes
      * @throws Exception\Unexpected
-     * @return Result_Successful|Result_Error
+     * @return Result\Successful|Result\Error
      */
     public static function update($customerOrId, $addressId, $attributes)
     {

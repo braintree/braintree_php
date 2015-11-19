@@ -8,7 +8,7 @@ namespace Braintree;
  * Creates an instance of PartnerMerchants
  *
  * @package    Braintree
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $merchantPublicId
  * @property-read string $publicKey
@@ -18,7 +18,7 @@ namespace Braintree;
  */
 class PartnerMerchant extends Base
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore

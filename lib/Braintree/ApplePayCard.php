@@ -11,7 +11,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $cardType
  * @property-read string $createdAt
@@ -59,15 +59,15 @@ class ApplePayCard extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of ApplePayCard
+     * @return ApplePayCard
      */
     public static function factory($attributes)
     {
-        $defaultAttributes = array(
+        $defaultAttributes = [
             'expirationMonth'    => '',
             'expirationYear'    => '',
             'last4'  => '',
-        );
+        ];
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
@@ -79,14 +79,14 @@ class ApplePayCard extends Base
      *
      * @access protected
      * @param array $applePayCardAttribs array of Apple Pay card properties
-     * @return none
+     * @return void
      */
     protected function _initialize($applePayCardAttribs)
     {
         // set the attributes
         $this->_attributes = $applePayCardAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($applePayCardAttribs['subscriptions'])) {
             foreach ($applePayCardAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);

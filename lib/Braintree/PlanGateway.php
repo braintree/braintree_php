@@ -20,9 +20,9 @@ class PlanGateway
         $path = $this->_config->merchantPath() . '/plans';
         $response = $this->_http->get($path);
         if (key_exists('plans', $response)){
-            $plans = array("plan" => $response['plans']);
+            $plans = ["plan" => $response['plans']];
         } else {
-            $plans = array("plan" => array());
+            $plans = ["plan" => []];
         }
 
         return Util::extractAttributeAsArray(

@@ -11,7 +11,7 @@ namespace Braintree;
  * PHP Version 5
  *
  * @package   Braintree
- * @copyright 2014 Braintree, a division of PayPal, Inc.
+ * @copyright 2015 Braintree, a division of PayPal, Inc.
  */
 class Subscription extends Base
 {
@@ -44,7 +44,7 @@ class Subscription extends Base
     {
         $this->_attributes = $attributes;
 
-        $addOnArray = array();
+        $addOnArray = [];
         if (isset($attributes['addOns'])) {
             foreach ($attributes['addOns'] AS $addOn) {
                 $addOnArray[] = AddOn::factory($addOn);
@@ -52,7 +52,7 @@ class Subscription extends Base
         }
         $this->_attributes['addOns'] = $addOnArray;
 
-        $discountArray = array();
+        $discountArray = [];
         if (isset($attributes['discounts'])) {
             foreach ($attributes['discounts'] AS $discount) {
                 $discountArray[] = Discount::factory($discount);
@@ -64,7 +64,7 @@ class Subscription extends Base
             $this->_set('descriptor', new Descriptor($attributes['descriptor']));
         }
 
-        $statusHistory = array();
+        $statusHistory = [];
         if (isset($attributes['statusHistory'])) {
             foreach ($attributes['statusHistory'] AS $history) {
                 $statusHistory[] = new Subscription\StatusDetails($history);
@@ -72,7 +72,7 @@ class Subscription extends Base
         }
         $this->_attributes['statusHistory'] = $statusHistory;
 
-        $transactionArray = array();
+        $transactionArray = [];
         if (isset($attributes['transactions'])) {
             foreach ($attributes['transactions'] AS $transaction) {
                 $transactionArray[] = Transaction::factory($transaction);
@@ -87,9 +87,9 @@ class Subscription extends Base
      */
     public function  __toString()
     {
-        $excludedAttributes = array('statusHistory');
+        $excludedAttributes = ['statusHistory'];
 
-        $displayAttributes = array();
+        $displayAttributes = [];
         foreach($this->_attributes as $key => $val) {
             if (!in_array($key, $excludedAttributes)) {
                 $displayAttributes[$key] = $val;

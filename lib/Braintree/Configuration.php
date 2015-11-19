@@ -7,7 +7,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @subpackage Utility
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 class Configuration
@@ -31,7 +31,7 @@ class Configuration
      */
      const API_VERSION =  4;
 
-    public function __construct($attribs = array())
+    public function __construct($attribs = [])
     {
         foreach ($attribs as $kind => $value) {
             if ($kind == 'environment') {

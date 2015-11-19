@@ -6,7 +6,7 @@ namespace Braintree;
  * PHP version 5
  * superclass for Braintree XML parsing and generation
  *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 final class Xml
 {

@@ -5,7 +5,7 @@ namespace Braintree;
  * Braintree HTTP Client
  * processes Http requests using curl
  *
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class Http
 {
@@ -66,28 +66,28 @@ class Http
 
     private function _getHeaders()
     {
-        return array(
+        return [
             'Accept: application/xml',
             'Content-Type: application/xml',
-        );
+        ];
     }
 
     private function _getAuthorization()
     {
         if ($this->_useClientCredentials) {
-            return array(
+            return [
                 'user' => $this->_config->getClientId(),
                 'password' => $this->_config->getClientSecret(),
-            );
+            ];
         } else if ($this->_config->isAccessToken()) {
-            return array(
+            return [
                 'token' => $this->_config->getAccessToken(),
-            );
+            ];
         } else {
-            return array(
+            return [
                 'user' => $this->_config->getPublicKey(),
                 'password' => $this->_config->getPrivateKey(),
-            );
+            ];
         }
     }
 
@@ -152,7 +152,7 @@ class Http
                 throw new Exception\SSLCertificate();
             }
         }
-        return array('status' => $httpStatus, 'body' => $response);
+        return ['status' => $httpStatus, 'body' => $response];
     }
 
     private function getCaFile()

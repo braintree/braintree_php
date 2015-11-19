@@ -42,7 +42,7 @@ class AddOnGateway
         $path = $this->_config->merchantPath() . '/add_ons';
         $response = $this->_http->get($path);
 
-        $addOns = array("addOn" => $response['addOns']);
+        $addOns = ["addOn" => $response['addOns']];
 
         return Util::extractAttributeAsArray(
             $addOns,

@@ -62,15 +62,15 @@ class TransactionSearch
 
     public static function createdUsing()
     {
-        return new MultipleValueNode('created_using', array(
+        return new MultipleValueNode('created_using', [
             Transaction::FULL_INFORMATION,
             Transaction::TOKEN
-        ));
+        ]);
     }
 
     public static function creditCardCardType()
     {
-        return new MultipleValueNode('credit_card_card_type', array(
+        return new MultipleValueNode('credit_card_card_type', [
             CreditCard::AMEX,
             CreditCard::CARTE_BLANCHE,
             CreditCard::CHINA_UNION_PAY,
@@ -84,29 +84,25 @@ class TransactionSearch
             CreditCard::SWITCH_TYPE,
             CreditCard::VISA,
             CreditCard::UNKNOWN
-        ));
+        ]);
     }
 
     public static function creditCardCustomerLocation()
     {
-        return new MultipleValueNode('credit_card_customer_location', array(
+        return new MultipleValueNode('credit_card_customer_location', [
             CreditCard::INTERNATIONAL,
             CreditCard::US
-        ));
+        ]);
     }
 
     public static function source()
     {
-        return new MultipleValueNode('source', array(
-            Transaction::API,
-            Transaction::CONTROL_PANEL,
-            Transaction::RECURRING,
-        ));
+        return new MultipleValueNode('source', []);
     }
 
     public static function status()
     {
-        return new MultipleValueNode('status', array(
+        return new MultipleValueNode('status', [
             Transaction::AUTHORIZATION_EXPIRED,
             Transaction::AUTHORIZING,
             Transaction::AUTHORIZED,
@@ -119,15 +115,15 @@ class TransactionSearch
             Transaction::VOIDED,
             Transaction::SETTLEMENT_DECLINED,
             Transaction::SETTLEMENT_PENDING
-        ));
+        ]);
     }
 
     public static function type()
     {
-        return new MultipleValueNode('type', array(
+        return new MultipleValueNode('type', [
             Transaction::SALE,
             Transaction::CREDIT
-        ));
+        ]);
     }
 }
 class_alias('Braintree\TransactionSearch', 'Braintree_TransactionSearch');

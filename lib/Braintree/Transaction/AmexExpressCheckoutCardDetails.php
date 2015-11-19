@@ -7,7 +7,7 @@ use Braintree\Instance;
  *
  * @package    Braintree
  * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -16,7 +16,7 @@ use Braintree\Instance;
  *
  * @package    Braintree
  * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $cardType
  * @property-read string $bin
@@ -32,7 +32,7 @@ use Braintree\Instance;
  */
 class AmexExpressCheckoutCardDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore

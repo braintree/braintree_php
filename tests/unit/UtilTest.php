@@ -68,8 +68,8 @@ class UtilTest extends Setup
 
     public function testExtractAttributeAsArrayReturnsEmptyArray()
     {
-        $attributes = array();
-        $this->assertEquals(array(), Braintree\Util::extractAttributeAsArray($attributes, "foo"));
+        $attributes = [];
+        $this->assertEquals([], Braintree\Util::extractAttributeAsArray($attributes, "foo"));
     }
 
     public function testDelimeterToUnderscore()
@@ -85,65 +85,65 @@ class UtilTest extends Setup
 
     public function testimplodeAssociativeArray()
     {
-        $array = array(
+        $array = [
             'test1' => 'val1',
             'test2' => 'val2',
             'test3' => new DateTime('2015-05-15 17:21:00'),
-        );
+        ];
         $string = Braintree\Util::implodeAssociativeArray($array);
         $this->assertEquals('test1=val1, test2=val2, test3=Fri, 15 May 2015 17:21:00 +0000', $string);
     }
 
     public function testVerifyKeys_withThreeLevels()
     {
-        $signature = array(
+        $signature = [
             'firstName',
-            array('creditCard' => array('number', array('billingAddress' => array('streetAddress'))))
-        );
-        $data = array(
+            ['creditCard' => ['number', ['billingAddress' => ['streetAddress']]]]
+        ];
+        $data = [
             'firstName' => 'Dan',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => '5100',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'streetAddress' => '1 E Main St'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         Braintree\Util::verifyKeys($signature, $data);
     }
 
 	public function testVerifyKeys_withArrayOfArrays()
 	{
-        $signature = array(
-			array('addOns' => array(array('update' => array('amount', 'existingId'))))
-		);
+        $signature = [
+			['addOns' => [['update' => ['amount', 'existingId']]]]
+		];
 
-		$goodData = array(
-            'addOns' => array(
-                'update' => array(
-                    array(
+		$goodData = [
+            'addOns' => [
+                'update' => [
+                    [
                         'amount' => '50.00',
                         'existingId' => 'increase_10',
-                    ),
-                    array(
+                    ],
+                    [
                         'amount' => '60.00',
                         'existingId' => 'increase_20',
-                    )
-                )
-            )
-		);
+                    ]
+                ]
+            ]
+		];
 
         Braintree\Util::verifyKeys($signature, $goodData);
 
-		$badData = array(
-            'addOns' => array(
-                'update' => array(
-                    array(
+		$badData = [
+            'addOns' => [
+                'update' => [
+                    [
                         'invalid' => '50.00',
-                    )
-                )
-            )
-		);
+                    ]
+                ]
+            ]
+		];
 
         $this->setExpectedException('InvalidArgumentException');
         Braintree\Util::verifyKeys($signature, $badData);
@@ -151,71 +151,71 @@ class UtilTest extends Setup
 
     public function testVerifyKeys_arrayAsValue()
     {
-        $signature = array('key');
-        $data = array('key' => array('value'));
+        $signature = ['key'];
+        $data = ['key' => ['value']];
         $this->setExpectedException('InvalidArgumentException');
         Braintree\Util::verifyKeys($signature, $data);
     }
 
     public function testVerifyKeys()
     {
-        $signature = array(
+        $signature = [
                 'amount', 'customerId', 'orderId', 'channel', 'paymentMethodToken', 'type',
 
-                array('creditCard'   =>
-                    array('token', 'cvv', 'expirationDate', 'number'),
-                ),
-                array('customer'      =>
-                    array(
+                ['creditCard'   =>
+                    ['token', 'cvv', 'expirationDate', 'number'],
+                ],
+                ['customer'      =>
+                    [
                         'id', 'company', 'email', 'fax', 'firstName',
-                        'lastName', 'phone', 'website'),
-                ),
-                array('billing'       =>
-                    array(
+                        'lastName', 'phone', 'website'],
+                ],
+                ['billing'       =>
+                    [
                         'firstName', 'lastName', 'company', 'countryName',
                         'extendedAddress', 'locality', 'postalCode', 'region',
-                        'streetAddress'),
-                ),
-                array('shipping'      =>
-                    array(
+                        'streetAddress'],
+                ],
+                ['shipping'      =>
+                    [
                         'firstName', 'lastName', 'company', 'countryName',
                         'extendedAddress', 'locality', 'postalCode', 'region',
-                        'streetAddress'),
-                ),
-                array('options'       =>
-                    array(
+                        'streetAddress'],
+                ],
+                ['options'       =>
+                    [
                         'storeInVault', 'submitForSettlement',
-                        'addBillingAddressToPaymentMethod'),
-                ),
-                array('customFields' => array('_anyKey_')
-                ),
-        );
+                        'addBillingAddressToPaymentMethod'],
+                ],
+                ['customFields' => ['_anyKey_']
+                ],
+        ];
 
         // test valid
-        $userKeys = array(
+        $userKeys = [
                 'amount' => '100.00',
-                'customFields'   => array('HEY' => 'HO',
-                                          'WAY' => 'NO'),
-                'creditCard' => array(
+                'customFields'   => ['HEY' => 'HO',
+                                          'WAY' => 'NO'],
+                'creditCard' => [
                     'number' => '5105105105105100',
                     'expirationDate' => '05/12',
-                    ),
-                );
+                    ],
+                ];
 
         $n = Braintree\Util::verifyKeys($signature, $userKeys);
         $this->assertNull($n);
 
-        $userKeys = array(
+        $userKeys = [
                 'amount' => '100.00',
-                'customFields'   => array('HEY' => 'HO',
-                                          'WAY' => 'NO'),
+                'customFields'   => ['HEY' => 'HO',
+                                          'WAY' => 'NO'],
                 'bogus' => 'FAKE',
                 'totallyFake' => 'boom',
-                'creditCard' => array(
+                'creditCard' => [
                     'number' => '5105105105105100',
                     'expirationDate' => '05/12',
-                    ),
-                );
+                    ],
+                ];
 
         // test invalid
         $this->setExpectedException('InvalidArgumentException');

@@ -12,7 +12,7 @@ class TransparentRedirectTest extends Setup
     {
         $originalSeparator = ini_get("arg_separator.output");
         ini_set("arg_separator.output", "&amp;");
-        $trData = Braintree\TransparentRedirect::createCustomerData(array('redirectUrl' => 'http://www.example.com'));
+        $trData = Braintree\TransparentRedirect::createCustomerData(['redirectUrl' => 'http://www.example.com']);
         ini_set("arg_separator.output", $originalSeparator);
         $this->assertFalse(strpos($trData, "&amp;"));
     }
@@ -22,7 +22,7 @@ class TransparentRedirectTest extends Setup
         $originalZone = date_default_timezone_get();
         date_default_timezone_set('Europe/London');
 
-        $trData = Braintree\TransparentRedirect::createCustomerData(array('redirectUrl' => 'http://www.example.com'));
+        $trData = Braintree\TransparentRedirect::createCustomerData(['redirectUrl' => 'http://www.example.com']);
         $zoneAfterCall = date_default_timezone_get();
         date_default_timezone_set($originalZone);
 

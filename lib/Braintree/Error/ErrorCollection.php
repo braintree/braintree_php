@@ -13,7 +13,7 @@ use Braintree\Util;
  * @package    Braintree
  * @subpackage Errors
  * @category   Errors
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read object $errors
  */
@@ -73,7 +73,7 @@ class ErrorCollection
         $errors = $this;
         foreach(array_slice($pieces, 0, -1) as $key) {
             $errors = $errors->forKey(Util::delimiterToCamelCase($key));
-            if (!isset($errors)) { return array(); }
+            if (!isset($errors)) { return []; }
         }
         $finalKey = Util::delimiterToCamelCase(end($pieces));
         return $errors->onAttribute($finalKey);

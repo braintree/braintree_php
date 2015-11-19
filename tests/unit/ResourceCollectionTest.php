@@ -21,24 +21,24 @@ class TestResource
 
 class ResourceCollectionTest extends Setup
 {
-    public static $values = array("a", "b", "c", "d", "e");
+    public static $values = ["a", "b", "c", "d", "e"];
 
     public function testIterateOverResults()
     {
 
-        $response = array(
-            'searchResults' => array(
+        $response = [
+            'searchResults' => [
                 'pageSize' => 2,
-                'ids' => array('0', '1', '2', '3', '4')
-            )
-        );
+                'ids' => ['0', '1', '2', '3', '4']
+            ]
+        ];
 
         $object = new TestResource();
-        $pager = array(
+        $pager = [
             'object' => $object,
             'method' => 'fetch',
-            'methodArgs' => array()
-        );
+            'methodArgs' => []
+        ];
 
         $collection = new Braintree\ResourceCollection($response, $pager);
 
@@ -57,19 +57,19 @@ class ResourceCollectionTest extends Setup
     public function testDoesntIterateWhenNoResults()
     {
 
-        $response = array(
-            'searchResults' => array(
+        $response = [
+            'searchResults' => [
                 'pageSize' => 2,
-                'ids' => array()
-            )
-        );
+                'ids' => []
+            ]
+        ];
 
         $object = new TestResource();
-        $pager = array(
+        $pager = [
             'object' => $object,
             'method' => 'fetch',
-            'methodArgs' => array()
-        );
+            'methodArgs' => []
+        ];
 
         $collection = new Braintree\ResourceCollection($response, $pager);
 

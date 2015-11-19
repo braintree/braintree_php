@@ -11,12 +11,12 @@ class PaymentMethodNonceTest extends Setup
     public function testCreate_fromPaymentMethodToken()
     {
         $customer = Braintree\Customer::createNoValidate();
-        $card = Braintree\CreditCard::create(array(
+        $card = Braintree\CreditCard::create([
             'customerId' => $customer->id,
             'cardholderName' => 'Cardholder',
             'number' => '5105105105105100',
             'expirationDate' => '05/12',
-        ))->creditCard;
+        ])->creditCard;
 
         $result = Braintree\PaymentMethodNonce::create($card->token);
 
@@ -47,13 +47,13 @@ class PaymentMethodNonceTest extends Setup
     public function testFind_exposesNullThreeDSecureInfoIfNoneExists()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
-        $nonce = $http->nonce_for_new_card(array(
-            "creditCard" => array(
+        $nonce = $http->nonce_for_new_card([
+            "creditCard" => [
                 "number" => "4111111111111111",
                 "expirationMonth" => "11",
                 "expirationYear" => "2099"
-            )
-        ));
+            ]
+        ]);
 
         $foundNonce = Braintree\PaymentMethodNonce::find($nonce);
         $info = $foundNonce->threeDSecureInfo;

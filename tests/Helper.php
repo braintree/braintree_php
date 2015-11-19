@@ -44,10 +44,15 @@ class Helper
         return 'fake_amex_direct_usd';
     }
 
+    public static function fakeVenmoAccountMerchantAccountId()
+    {
+        return 'fake_first_data_venmo_account';
+    }
+
     public static function createViaTr($regularParams, $trParams)
     {
         $trData = Braintree\TransparentRedirect::transactionData(
-            array_merge($trParams, array("redirectUrl" => "http://www.example.com"))
+            array_merge($trParams, ["redirectUrl" => "http://www.example.com"])
         );
         return self::submitTrRequest(
             Braintree\TransparentRedirect::url(),
@@ -64,10 +69,10 @@ class Helper
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($curl, CURLOPT_HEADER, true);
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array_merge($regularParams, array('tr_data' => $trData))));
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array_merge($regularParams, ['tr_data' => $trData])));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
             'Content-Type: application/x-www-form-urlencoded'
-        ));
+        ]);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         curl_close($curl);
@@ -113,7 +118,7 @@ class Helper
     {
         $http = new Braintree\Http(Braintree\Configuration::$global);
         $path = Braintree\Configuration::$global->merchantPath() . '/three_d_secure/create_verification/' . $merchantAccountId;
-        $response = $http->post($path, array('threeDSecureVerification' => $params));
+        $response = $http->post($path, ['threeDSecureVerification' => $params]);
         return $response['threeDSecureVerification']['threeDSecureToken'];
     }
 
@@ -124,7 +129,7 @@ class Helper
         return $now->format('Y-m-d');
     }
 
-    public static function decodedClientToken($params=array()) {
+    public static function decodedClientToken($params=[]) {
         $encodedClientToken = Braintree\ClientToken::generate($params);
         return base64_decode($encodedClientToken);
     }

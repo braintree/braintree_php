@@ -6,7 +6,7 @@ class IsNode
     public function __construct($name)
     {
         $this->name = $name;
-        $this->searchTerms = array();
+        $this->searchTerms = [];
     }
 
     public function is($value)

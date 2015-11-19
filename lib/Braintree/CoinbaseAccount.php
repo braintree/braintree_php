@@ -6,7 +6,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -17,7 +17,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $customerId
  * @property-read string $token
@@ -32,7 +32,7 @@ class CoinbaseAccount extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of CoinbaseAccount
+     * @return CoinbaseAccount
      */
     public static function factory($attributes)
     {
@@ -58,14 +58,14 @@ class CoinbaseAccount extends Base
      *
      * @access protected
      * @param array $coinbaseAccountAttribs array of coinbaseAccount data
-     * @return none
+     * @return void
      */
     protected function _initialize($coinbaseAccountAttribs)
     {
         // set the attributes
         $this->_attributes = $coinbaseAccountAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($coinbaseAccountAttribs['subscriptions'])) {
             foreach ($coinbaseAccountAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);

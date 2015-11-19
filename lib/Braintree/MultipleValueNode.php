@@ -5,10 +5,10 @@ use InvalidArgumentException;
 
 class MultipleValueNode
 {
-    public function __construct($name, $allowedValues = array())
+    public function __construct($name, $allowedValues = [])
     {
         $this->name = $name;
-        $this->items = array();
+        $this->items = [];
 		$this->allowedValues = $allowedValues;
     }
 
@@ -30,7 +30,7 @@ class MultipleValueNode
 
     public function is($value)
     {
-        return $this->in(array($value));
+        return $this->in([$value]);
     }
 
     public function toParam()

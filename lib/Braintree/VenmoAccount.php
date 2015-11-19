@@ -2,8 +2,8 @@
 namespace Braintree;
 
 /**
- * Braintree AmexExpressCheckoutCard module
- * Creates and manages Braintree Amex Express Checkout cards
+ * Braintree VenmoAccount module
+ * Creates and manages Braintree Venmo accounts
  *
  * <b>== More information ==</b>
  *
@@ -17,18 +17,13 @@ namespace Braintree;
  * @property-read string $default
  * @property-read string $updatedAt
  * @property-read string $customerId
- * @property-read string $cardType
- * @property-read string $bin
- * @property-read string $cardMemberExpiryDate
- * @property-read string $cardMemberNumber
- * @property-read string $cardType
  * @property-read string $sourceDescription
  * @property-read string $token
  * @property-read string $imageUrl
- * @property-read string $expirationMonth
- * @property-read string $expirationYear
+ * @property-read string $username
+ * @property-read string $venmoUserId
  */
-class AmexExpressCheckoutCard extends Base
+class VenmoAccount extends Base
 {
     /* instance methods */
     /**
@@ -42,11 +37,11 @@ class AmexExpressCheckoutCard extends Base
     }
 
     /**
-     *  factory method: returns an instance of AmexExpressCheckoutCard
+     *  factory method: returns an instance of VenmoAccount
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return AmexExpressCheckoutCard
+     * @return VenmoAccount
      */
     public static function factory($attributes)
     {
@@ -60,17 +55,16 @@ class AmexExpressCheckoutCard extends Base
      * sets instance properties from an array of values
      *
      * @access protected
-     * @param array $amexExpressCheckoutCardAttribs array of Amex Express Checkout card properties
+     * @param array $venmoAccountAttribs array of Venmo account properties
      * @return void
      */
-    protected function _initialize($amexExpressCheckoutCardAttribs)
+    protected function _initialize($venmoAccountAttribs)
     {
-        // set the attributes
-        $this->_attributes = $amexExpressCheckoutCardAttribs;
+        $this->_attributes = $venmoAccountAttribs;
 
-        $subscriptionArray = [];
-        if (isset($amexExpressCheckoutCardAttribs['subscriptions'])) {
-            foreach ($amexExpressCheckoutCardAttribs['subscriptions'] AS $subscription) {
+        $subscriptionArray = array();
+        if (isset($venmoAccountAttribs['subscriptions'])) {
+            foreach ($venmoAccountAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
@@ -78,4 +72,4 @@ class AmexExpressCheckoutCard extends Base
         $this->_set('subscriptions', $subscriptionArray);
     }
 }
-class_alias('Braintree\AmexExpressCheckoutCard', 'Braintree_AmexExpressCheckoutCard');
+class_alias('Braintree\VenmoAccount', 'Braintree_VenmoAccount');

@@ -26,7 +26,7 @@ use Braintree\Util;
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class Successful extends Instance
 {
@@ -43,17 +43,18 @@ class Successful extends Instance
 
     /**
      * @ignore
-     * @param string $classToReturn name of class to instantiate
+     * @param array|null $objsToReturn
+     * @param array|null $propertyNames
      */
-    public function __construct($objsToReturn = array(), $propertyNames = array())
+    public function __construct($objsToReturn = [], $propertyNames = [])
     {
         // Sanitize arguments (preserves backwards compatibility)
-        if (!is_array($objsToReturn)) { $objsToReturn = array($objsToReturn); }
-        if (!is_array($propertyNames)) { $propertyNames = array($propertyNames); }
+        if (!is_array($objsToReturn)) { $objsToReturn = [$objsToReturn]; }
+        if (!is_array($propertyNames)) { $propertyNames = [$propertyNames]; }
 
         $objects = $this->_mapPropertyNamesToObjsToReturn($propertyNames, $objsToReturn);
-        $this->_attributes = array();
-        $this->_returnObjectNames = array();
+        $this->_attributes = [];
+        $this->_returnObjectNames = [];
 
         foreach ($objects as $propertyName => $objToReturn) {
 
@@ -72,7 +73,7 @@ class Successful extends Instance
     */
    public function __toString()
    {
-       $objects = array();
+       $objects = [];
        foreach ($this->_returnObjectNames as $returnObjectName) {
            array_push($objects, $this->$returnObjectName);
        }
@@ -81,7 +82,7 @@ class Successful extends Instance
 
    private function _mapPropertyNamesToObjsToReturn($propertyNames, $objsToReturn) {
        if(count($objsToReturn) != count($propertyNames)) {
-           $propertyNames = array();
+           $propertyNames = [];
            foreach ($objsToReturn as $obj) {
                array_push($propertyNames, Util::cleanClassName(get_class($obj)));
            }

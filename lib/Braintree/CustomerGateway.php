@@ -13,7 +13,7 @@ use InvalidArgumentException;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class CustomerGateway
 {
@@ -33,24 +33,24 @@ class CustomerGateway
     {
         $path = $this->_config->merchantPath() . '/customers/advanced_search_ids';
         $response = $this->_http->post($path);
-        $pager = array(
+        $pager = [
             'object' => $this,
             'method' => 'fetch',
-            'methodArgs' => array(array())
-            );
+            'methodArgs' => [[]]
+            ];
 
         return new ResourceCollection($response, $pager);
     }
 
     public function fetch($query, $ids)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = CustomerSearch::ids()->in($ids)->toparam();
         $path = $this->_config->merchantPath() . '/customers/advanced_search';
-        $response = $this->_http->post($path, array('search' => $criteria));
+        $response = $this->_http->post($path, ['search' => $criteria]);
 
         return Util::extractattributeasarray(
             $response['customers'],
@@ -81,12 +81,12 @@ class CustomerGateway
      *
      * @access public
      * @param array $attribs
-     * @return object Result, either Successful or Error
+     * @return Braintree_Result_Successful|Braintree_Result_Error
      */
-    public function create($attribs = array())
+    public function create($attribs = [])
     {
         Util::verifyKeys(self::createSignature(), $attribs);
-        return $this->_doCreate('/customers', array('customer' => $attribs));
+        return $this->_doCreate('/customers', ['customer' => $attribs]);
     }
 
     /**
@@ -95,10 +95,10 @@ class CustomerGateway
      *
      * @access public
      * @param array $attribs
-     * @return object
+     * @return Customer
      * @throws Exception\ValidationError
      */
-    public function createNoValidate($attribs = array())
+    public function createNoValidate($attribs = [])
     {
         $result = $this->create($attribs);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
@@ -109,7 +109,7 @@ class CustomerGateway
      * @deprecated since version 2.3.0
      * @access public
      * @param array $attribs
-     * @return object
+     * @return Customer
      */
     public function createFromTransparentRedirect($queryString)
     {
@@ -119,7 +119,7 @@ class CustomerGateway
                 );
         return $this->_doCreate(
                 '/customers/all/confirm_transparent_redirect_request',
-                array('id' => $params['id'])
+                ['id' => $params['id']]
         );
     }
 
@@ -147,13 +147,13 @@ class CustomerGateway
 
         $creditCardSignature = CreditCardGateway::createSignature();
         unset($creditCardSignature[array_search('customerId', $creditCardSignature)]);
-        $signature = array(
+        $signature = [
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
             'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce',
-            array('creditCard' => $creditCardSignature),
-            array('customFields' => array('_anyKey_')),
-            );
+            ['creditCard' => $creditCardSignature],
+            ['customFields' => ['_anyKey_']],
+            ];
         return $signature;
     }
 
@@ -171,13 +171,13 @@ class CustomerGateway
             }
         }
 
-        $signature = array(
+        $signature = [
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
             'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce',
-            array('creditCard' => $creditCardSignature),
-            array('customFields' => array('_anyKey_')),
-            );
+            ['creditCard' => $creditCardSignature],
+            ['customFields' => ['_anyKey_']],
+            ];
         return $signature;
     }
 
@@ -187,8 +187,8 @@ class CustomerGateway
      *
      * @access public
      * @param string id customer Id
-     * @return object Customer
-     * @return object Customer|boolean false
+     * @return Customer|boolean The customer object or false if the request fails.
+     * @throws Exception\NotFound
      */
     public function find($id)
     {
@@ -210,14 +210,14 @@ class CustomerGateway
      * @access public
      * @param int $customerId
      * @param array $transactionAttribs
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      */
     public function credit($customerId, $transactionAttribs)
     {
         $this->_validateId($customerId);
         return Transaction::credit(
                 array_merge($transactionAttribs,
-                        array('customerId' => $customerId)
+                        ['customerId' => $customerId]
                         )
                 );
     }
@@ -257,7 +257,7 @@ class CustomerGateway
      *
      * @param string $customerId
      * @param array $transactionAttribs
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @see Transaction::sale()
      */
     public function sale($customerId, $transactionAttribs)
@@ -265,7 +265,7 @@ class CustomerGateway
         $this->_validateId($customerId);
         return Transaction::sale(
                 array_merge($transactionAttribs,
-                        array('customerId' => $customerId)
+                        ['customerId' => $customerId]
                         )
                 );
     }
@@ -277,7 +277,7 @@ class CustomerGateway
      * @access public
      * @param string $customerId
      * @param array $transactionAttribs
-     * @return object Transaction
+     * @return Transaction
      * @throws Exception\ValidationsFailed
      * @see Transaction::sale()
      */
@@ -295,12 +295,12 @@ class CustomerGateway
      * For more detailed information and examples, see {@link http://www.braintreepayments.com/gateway/customer-api#searching http://www.braintreepaymentsolutions.com/gateway/customer-api}
      *
      * @param mixed $query search query
-     * @return object ResourceCollection
+     * @return ResourceCollection
      * @throws InvalidArgumentException
      */
     public function search($query)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($query as $term) {
             $result = $term->toparam();
             if(is_null($result) || empty($result)) {
@@ -311,12 +311,12 @@ class CustomerGateway
         }
 
         $path = $this->_config->merchantPath() . '/customers/advanced_search_ids';
-        $response = $this->_http->post($path, array('search' => $criteria));
-        $pager = array(
+        $response = $this->_http->post($path, ['search' => $criteria]);
+        $pager = [
             'object' => $this,
             'method' => 'fetch',
-            'methodArgs' => array($query)
-            );
+            'methodArgs' => [$query]
+            ];
 
         return new ResourceCollection($response, $pager);
     }
@@ -330,7 +330,7 @@ class CustomerGateway
      * @access public
      * @param string $customerId (optional)
      * @param array $attributes
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      */
     public function update($customerId, $attributes)
     {
@@ -339,7 +339,7 @@ class CustomerGateway
         return $this->_doUpdate(
             'put',
             '/customers/' . $customerId,
-            array('customer' => $attributes)
+            ['customer' => $attributes]
         );
     }
 
@@ -353,7 +353,7 @@ class CustomerGateway
      * @access public
      * @param string $customerId
      * @param array $attributes
-     * @return object Customer
+     * @return Customer
      * @throws Exception\ValidationsFailed
      */
     public function updateNoValidate($customerId, $attributes)
@@ -391,7 +391,7 @@ class CustomerGateway
         return $this->_doUpdate(
                 'post',
                 '/customers/all/confirm_transparent_redirect_request',
-                array('id' => $params['id'])
+                ['id' => $params['id']]
         );
     }
 
@@ -403,7 +403,7 @@ class CustomerGateway
      * @ignore
      * @access protected
      * @param array $customerAttribs array of customer data
-     * @return none
+     * @return void
      */
     protected function _initialize($customerAttribs)
     {
@@ -411,7 +411,7 @@ class CustomerGateway
         $this->_attributes = $customerAttribs;
 
         // map each address into its own object
-        $addressArray = array();
+        $addressArray = [];
         if (isset($customerAttribs['addresses'])) {
 
             foreach ($customerAttribs['addresses'] AS $address) {
@@ -421,7 +421,7 @@ class CustomerGateway
         $this->_set('addresses', $addressArray);
 
         // map each creditCard into its own object
-        $creditCardArray = array();
+        $creditCardArray = [];
         if (isset($customerAttribs['creditCards'])) {
             foreach ($customerAttribs['creditCards'] AS $creditCard) {
                 $creditCardArray[] = CreditCard::factory($creditCard);
@@ -430,7 +430,7 @@ class CustomerGateway
         $this->_set('creditCards', $creditCardArray);
 
         // map each coinbaseAccount into its own object
-        $coinbaseAccountArray = array();
+        $coinbaseAccountArray = [];
         if (isset($customerAttribs['coinbaseAccounts'])) {
             foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
                 $coinbaseAccountArray[] = CoinbaseAccount::factory($coinbaseAccount);
@@ -439,7 +439,7 @@ class CustomerGateway
         $this->_set('coinbaseAccounts', $coinbaseAccountArray);
 
         // map each paypalAccount into its own object
-        $paypalAccountArray = array();
+        $paypalAccountArray = [];
         if (isset($customerAttribs['paypalAccounts'])) {
             foreach ($customerAttribs['paypalAccounts'] AS $paypalAccount) {
                 $paypalAccountArray[] = PayPalAccount::factory($paypalAccount);
@@ -448,7 +448,7 @@ class CustomerGateway
         $this->_set('paypalAccounts', $paypalAccountArray);
 
         // map each applePayCard into its own object
-        $applePayCardArray = array();
+        $applePayCardArray = [];
         if (isset($customerAttribs['applePayCards'])) {
             foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
                 $applePayCardArray[] = ApplePayCard::factory($applePayCard);
@@ -457,7 +457,7 @@ class CustomerGateway
         $this->_set('applePayCards', $applePayCardArray);
 
         // map each androidPayCard into its own object
-        $androidPayCardArray = array();
+        $androidPayCardArray = [];
         if (isset($customerAttribs['androidPayCards'])) {
             foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
                 $androidPayCardArray[] = AndroidPayCard::factory($androidPayCard);
@@ -503,7 +503,7 @@ class CustomerGateway
     /**
      * returns the customer's default payment method
      *
-     * @return object CreditCard | PayPalAccount | ApplePayCard | AndroidPayCard
+     * @return CreditCard|PayPalAccount|ApplePayCard|AndroidPayCard
      */
     public function defaultPaymentMethod()
     {
@@ -522,7 +522,7 @@ class CustomerGateway
      * @access protected
      * @var array registry of customer data
      */
-    protected $_attributes = array(
+    protected $_attributes = [
         'addresses'   => '',
         'company'     => '',
         'creditCards' => '',
@@ -535,7 +535,7 @@ class CustomerGateway
         'createdAt'   => '',
         'updatedAt'   => '',
         'website'     => '',
-        );
+        ];
 
     /**
      * sends the create request to the gateway
@@ -601,7 +601,7 @@ class CustomerGateway
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)

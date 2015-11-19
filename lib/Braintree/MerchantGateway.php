@@ -18,7 +18,7 @@ final class MerchantGateway
 
     public function create($attribs)
     {
-        $response = $this->_http->post('/merchants/create_via_api', array('merchant' => $attribs));
+        $response = $this->_http->post('/merchants/create_via_api', ['merchant' => $attribs]);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -26,10 +26,10 @@ final class MerchantGateway
     {
         if (isset($response['response']['merchant'])) {
             // return a populated instance of merchant
-            return new Result\Successful(array(
+            return new Result\Successful([
                 Merchant::factory($response['response']['merchant']),
                 OAuthCredentials::factory($response['response']['credentials']),
-            ));
+            ]);
         } else if (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {

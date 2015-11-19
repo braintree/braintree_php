@@ -13,7 +13,7 @@ use InvalidArgumentException;
  * as the shipping address when creating a Transaction.
  *
  * @package   Braintree
- * @copyright 2014 Braintree, a division of PayPal, Inc.
+ * @copyright 2015 Braintree, a division of PayPal, Inc.
  */
 class AddressGateway
 {
@@ -53,7 +53,7 @@ class AddressGateway
      *
      * @access public
      * @param  array  $attribs
-     * @return object Result, either Successful or Error
+     * @return Result\Successful|Result\Error
      */
     public function create($attribs)
     {
@@ -66,7 +66,7 @@ class AddressGateway
         unset($attribs['customerId']);
         return $this->_doCreate(
             '/customers/' . $customerId . '/addresses',
-            array('address' => $attribs)
+            ['address' => $attribs]
         );
     }
 
@@ -76,7 +76,7 @@ class AddressGateway
      *
      * @access public
      * @param  array $attribs
-     * @return object
+     * @return self
      * @throws Exception\ValidationError
      */
     public function createNoValidate($attribs)
@@ -112,7 +112,7 @@ class AddressGateway
      * @access public
      * @param mixed $customerOrId
      * @param string $addressId
-     * @return object Address
+     * @return Address
      * @throws Exception\NotFound
      */
     public function find($customerOrId, $addressId)
@@ -146,7 +146,7 @@ class AddressGateway
      * @param array $attributes
      * @param mixed $customerOrId (only used in call)
      * @param string $addressId (only used in call)
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      */
     public function update($customerOrId, $addressId, $attributes)
     {
@@ -155,7 +155,7 @@ class AddressGateway
         Util::verifyKeys(self::updateSignature(), $attributes);
 
         $path = $this->_config->merchantPath() . '/customers/' . $customerId . '/addresses/' . $addressId;
-        $response = $this->_http->put($path, array('address' => $attributes));
+        $response = $this->_http->put($path, ['address' => $attributes]);
 
         return $this->_verifyGatewayResponse($response);
 
@@ -171,7 +171,7 @@ class AddressGateway
      * @access public
      * @param array $transactionAttribs
      * @param string $customerId
-     * @return object Transaction
+     * @return Transaction
      * @throws Exception\ValidationsFailed
      * @see Address::update()
      */
@@ -187,11 +187,11 @@ class AddressGateway
      */
     public static function createSignature()
     {
-        return array(
+        return [
             'company', 'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
             'countryName', 'customerId', 'extendedAddress', 'firstName',
             'lastName', 'locality', 'postalCode', 'region', 'streetAddress'
-        );
+        ];
     }
 
     /**
@@ -266,7 +266,7 @@ class AddressGateway
      * @ignore
      * @param string $subPath
      * @param array $params
-     * @return mixed
+     * @return Result\Successful|Result\Error
      */
     private function _doCreate($subPath, $params)
     {
@@ -287,7 +287,7 @@ class AddressGateway
      *
      * @ignore
      * @param array $response gateway response values
-     * @return object Result\Successful or Result\Error
+     * @return Result\Successful|Result\Error
      * @throws Exception\Unexpected
      */
     private function _verifyGatewayResponse($response)

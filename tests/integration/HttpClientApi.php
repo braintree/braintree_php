@@ -29,10 +29,10 @@ class HttpClientApi extends Braintree\Http
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
             'X-ApiVersion: ' . Braintree\Configuration::API_VERSION,
-        ));
+        ]);
         curl_setopt($curl, CURLOPT_USERPWD, $this->_config->publicKey() . ':' . $this->_config->privateKey());
 
         if(!empty($requestBody)) {
@@ -43,7 +43,7 @@ class HttpClientApi extends Braintree\Http
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
-        return array('status' => $httpStatus, 'body' => $response);
+        return ['status' => $httpStatus, 'body' => $response];
     }
 
     public function get_cards($options) {
@@ -57,7 +57,7 @@ class HttpClientApi extends Braintree\Http
     }
 
     public function nonce_for_new_card($options) {
-        $clientTokenOptions = array();
+        $clientTokenOptions = [];
         if (array_key_exists("customerId", $options)) {
             $clientTokenOptions["customerId"] = $options["customerId"];
             unset($options["customerId"]);
@@ -78,10 +78,10 @@ class HttpClientApi extends Braintree\Http
     }
 
     public function nonceForNewEuropeanBankAccount($options) {
-        $clientTokenOptions = array(
+        $clientTokenOptions = [
             'sepaMandateType' => 'business',
             'sepaMandateAcceptanceLocation' => 'Rostock, Germany'
-        );
+        ];
 
         if (array_key_exists("customerId", $options)) {
             $clientTokenOptions["customerId"] = $options["customerId"];

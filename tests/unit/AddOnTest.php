@@ -10,14 +10,14 @@ class AddOnTest extends Setup
 {
     public function testFactory()
     {
-        $addOn = Braintree\AddOn::factory(array());
+        $addOn = Braintree\AddOn::factory([]);
 
         $this->assertInstanceOf('Braintree\AddOn', $addOn);
     }
 
     public function testToString()
     {
-        $addOnParams = array (
+        $addOnParams = [
             "amount" => "100.00",
             "description" => "some description",
             "id" => "1",
@@ -25,7 +25,7 @@ class AddOnTest extends Setup
             "name" => "php_add_on",
             "neverExpires" => "false",
             "numberOfBillingCycles" => "1"
-        );
+        ];
 
         $addOn = Braintree\AddOn::factory($addOnParams);
 

@@ -38,12 +38,12 @@ class GatewayTest extends Setup
 
     public function testConstructWithArrayOfCredentials()
     {
-        $gateway = new Braintree\Gateway(array(
+        $gateway = new Braintree\Gateway([
             'environment' => 'sandbox',
             'merchantId' => 'sandbox_merchant_id',
             'publicKey' => 'sandbox_public_key',
             'privateKey' => 'sandbox_private_key'
-        ));
+        ]);
 
         $this->assertEquals('sandbox', $gateway->config->getEnvironment());
         $this->assertEquals('sandbox_merchant_id', $gateway->config->getMerchantId());

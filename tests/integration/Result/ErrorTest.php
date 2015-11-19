@@ -10,19 +10,19 @@ class ErrorTest extends Setup
 {
     public function testValueForHtmlField()
     {
-        $result = Braintree\Customer::create(array(
+        $result = Braintree\Customer::create([
             'email' => 'invalid-email',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => 'invalid-number',
                 'expirationDate' => 'invalid-exp',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'countryName' => 'invalid-country'
-                )
-            ),
-            'customFields' => array(
+                ]
+            ],
+            'customFields' => [
                 'store_me' => 'some custom value'
-            )
-        ));
+            ]
+        ]);
         $this->assertEquals(false, $result->success);
         $this->assertEquals('invalid-email', $result->valueForHtmlField('customer[email]'));
         $this->assertEquals('', $result->valueForHtmlField('customer[credit_card][number]'));

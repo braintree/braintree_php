@@ -19,9 +19,9 @@ final class Disbursement extends Base
 
     public function transactions()
     {
-        $collection = Transaction::search(array(
+        $collection = Transaction::search([
             TransactionSearch::ids()->in($this->transactionIds),
-        ));
+        ]);
 
         return $collection;
     }
@@ -35,13 +35,13 @@ final class Disbursement extends Base
 
     public function  __toString()
     {
-        $display = array(
+        $display = [
             'id', 'merchantAccountDetails', 'exceptionMessage', 'amount',
             'disbursementDate', 'followUpAction', 'retry', 'success',
             'transactionIds'
-            );
+            ];
 
-        $displayAttributes = array();
+        $displayAttributes = [];
         foreach ($display AS $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }

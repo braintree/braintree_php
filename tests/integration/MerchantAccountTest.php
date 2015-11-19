@@ -9,58 +9,58 @@ use Braintree;
 
 class MerchantAccountTest extends Setup
 {
-    private static $deprecatedValidParams = array(
-      'applicantDetails' => array(
+    private static $deprecatedValidParams = [
+      'applicantDetails' => [
         'companyName' => "Robot City",
         'firstName' => "Joe",
         'lastName' => "Bloggs",
         'email' => "joe@bloggs.com",
         'phone' => "555-555-5555",
-        'address' => array(
+        'address' => [
           'streetAddress' => "123 Credibility St.",
           'postalCode' => "60606",
           'locality' => "Chicago",
           'region' => "IL",
-        ),
+        ],
         'dateOfBirth' => "10/9/1980",
         'ssn' => "123-00-1234",
         'taxId' => "123456789",
         'routingNumber' => "122100024",
         'accountNumber' => "43759348798"
-      ),
+      ],
       'tosAccepted' => true,
       'masterMerchantAccountId' => "sandbox_master_merchant_account"
-    );
+    ];
 
-    private static $validParams = array(
-      'individual' => array(
+    private static $validParams = [
+      'individual' => [
         'firstName' => "Joe",
         'lastName' => "Bloggs",
         'email' => "joe@bloggs.com",
         'phone' => "555-555-5555",
-        'address' => array(
+        'address' => [
           'streetAddress' => "123 Credibility St.",
           'postalCode' => "60606",
           'locality' => "Chicago",
           'region' => "IL",
-        ),
+        ],
         'dateOfBirth' => "10/9/1980",
         'ssn' => "123-00-1234",
-      ),
-      'business' => array(
+      ],
+      'business' => [
         'dbaName' => "Robot City",
         'legalName' => "Robot City INC",
         'taxId' => "123456789",
-      ),
-      'funding' => array(
+      ],
+      'funding' => [
         'routingNumber' => "122100024",
         'accountNumber' => "43759348798",
         'destination' => Braintree\MerchantAccount::FUNDING_DESTINATION_BANK,
         'descriptor' => 'Joes Bloggs MI',
-      ),
+      ],
       'tosAccepted' => true,
       'masterMerchantAccountId' => "sandbox_master_merchant_account"
-    );
+    ];
 
     public function testCreate()
     {
@@ -73,12 +73,12 @@ class MerchantAccountTest extends Setup
 
     public function testGatewayCreate()
     {
-        $gateway = new Braintree\Gateway(array(
+        $gateway = new Braintree\Gateway([
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
             'privateKey' => 'integration_private_key'
-        ));
+        ]);
         $result = $gateway->merchantAccount()->create(self::$validParams);
         $this->assertEquals(true, $result->success);
         $merchantAccount = $result->merchantAccount;
@@ -100,7 +100,7 @@ class MerchantAccountTest extends Setup
     {
         $rand = rand(1, 1000);
         $subMerchantAccountId = "sub_merchant_account_id" + $rand;
-        $validParamsWithId = array_merge(array(), self::$validParams);
+        $validParamsWithId = array_merge([], self::$validParams);
         $validParamsWithId['id'] = $subMerchantAccountId;
         $result = Braintree\MerchantAccount::create($validParamsWithId);
         $this->assertEquals(true, $result->success);
@@ -112,7 +112,7 @@ class MerchantAccountTest extends Setup
 
     public function testFailedCreate()
     {
-        $result = Braintree\MerchantAccount::create(array());
+        $result = Braintree\MerchantAccount::create([]);
         $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('merchantAccount')->onAttribute('masterMerchantAccountId');
         $this->assertEquals(Braintree\Error\Codes::MERCHANT_ACCOUNT_MASTER_MERCHANT_ACCOUNT_ID_IS_REQUIRED, $errors[0]->code);
@@ -120,18 +120,18 @@ class MerchantAccountTest extends Setup
 
     public function testCreateWithFundingDestination()
     {
-        $params = array_merge(array(), self::$validParams);
+        $params = array_merge([], self::$validParams);
         $params['funding']['destination'] = Braintree\MerchantAccount::FUNDING_DESTINATION_BANK;
         $result = Braintree\MerchantAccount::create($params);
         $this->assertEquals(true, $result->success);
 
-        $params = array_merge(array(), self::$validParams);
+        $params = array_merge([], self::$validParams);
         $params['funding']['destination'] = Braintree\MerchantAccount::FUNDING_DESTINATION_EMAIL;
         $params['funding']['email'] = "billgates@outlook.com";
         $result = Braintree\MerchantAccount::create($params);
         $this->assertEquals(true, $result->success);
 
-        $params = array_merge(array(), self::$validParams);
+        $params = array_merge([], self::$validParams);
         $params['funding']['destination'] = Braintree\MerchantAccount::FUNDING_DESTINATION_MOBILE_PHONE;
         $params['funding']['mobilePhone'] = "1112224444";
         $result = Braintree\MerchantAccount::create($params);
@@ -140,7 +140,7 @@ class MerchantAccountTest extends Setup
 
     public function testFind()
     {
-        $params = array_merge(array(), self::$validParams);
+        $params = array_merge([], self::$validParams);
         $result = Braintree\MerchantAccount::create(self::$validParams);
         $this->assertEquals(true, $result->success);
         $this->assertEquals(Braintree\MerchantAccount::STATUS_PENDING, $result->merchantAccount->status);
@@ -153,6 +153,13 @@ class MerchantAccountTest extends Setup
         $this->assertEquals($params['individual']['lastName'], $merchantAccount->individualDetails->lastName);
     }
 
+    public function testRetrievesMasterMerchantAccountCurrencyIsoCode()
+    {
+        $merchantAccount = Braintree\MerchantAccount::find("sandbox_master_merchant_account");
+
+        $this->assertEquals("USD", $merchantAccount->currencyIsoCode);
+    }
+
     public function testFind_throwsIfNotFound()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'merchant account with id does-not-exist not found');
@@ -161,7 +168,7 @@ class MerchantAccountTest extends Setup
 
     public function testUpdate()
     {
-        $params = array_merge(array(), self::$validParams);
+        $params = array_merge([], self::$validParams);
         unset($params["tosAccepted"]);
         unset($params["masterMerchantAccountId"]);
         $params["individual"]["firstName"] = "John";
@@ -220,43 +227,43 @@ class MerchantAccountTest extends Setup
 
     public function testUpdateDoesNotRequireAllFields()
     {
-        $params = array(
-            'individual' => array(
+        $params = [
+            'individual' => [
                 'firstName' => "Joe"
-            )
-        );
+            ]
+        ];
         $result = Braintree\MerchantAccount::update("sandbox_sub_merchant_account", $params);
         $this->assertEquals(true, $result->success);
     }
 
     public function testUpdateWithBlankFields()
     {
-        $params = array(
-            'individual' => array(
+        $params = [
+            'individual' => [
                 'firstName' => "",
                 'lastName' => "",
                 'email' => "",
                 'phone' => "",
-                'address' => array(
+                'address' => [
                     'streetAddress' => "",
                     'postalCode' => "",
                     'locality' => "",
                     'region' => "",
-                ),
+                ],
                 'dateOfBirth' => "",
                 'ssn' => "",
-            ),
-            'business' => array(
+            ],
+            'business' => [
                 'dbaName' => "",
                 'legalName' => "",
                 'taxId' => "",
-            ),
-            'funding' => array(
+            ],
+            'funding' => [
                 'routingNumber' => "",
                 'accountNumber' => "",
                 'destination' => "",
-            ),
-        );
+            ],
+        ];
 
         $result = Braintree\MerchantAccount::update("sandbox_sub_merchant_account", $params);
         $this->assertEquals(false, $result->success);
@@ -283,38 +290,38 @@ class MerchantAccountTest extends Setup
 
     public function testUpdateWithInvalidFields()
     {
-        $params = array(
-          "individual" => array(
+        $params = [
+          "individual" => [
             "firstName" => "<>",
             "lastName" => "<>",
             "email" => "bad",
             "phone" => "999",
-            "address" => array(
+            "address" => [
               "streetAddress" => "nope",
               "postalCode" => "1",
               "region" => "QQ",
-            ),
+            ],
             "dateOfBirth" => "hah",
             "ssn" => "12345",
-          ),
-          "business" => array(
+          ],
+          "business" => [
             "legalName" => "``{}",
             "dbaName" => "{}``",
             "taxId" => "bad",
-            "address" => array(
+            "address" => [
               "streetAddress" => "nope",
               "postalCode" => "1",
               "region" => "QQ",
-            ),
-          ),
-          "funding" => array(
+            ],
+          ],
+          "funding" => [
             "destination" => "MY WALLET",
             "routingNumber" => "LEATHER",
             "accountNumber" => "BACK POCKET",
             "email" => "BILLFOLD",
             "mobilePhone" => "TRIFOLD"
-          ),
-        );
+          ],
+        ];
 
 
         $result = Braintree\MerchantAccount::update("sandbox_sub_merchant_account", $params);
@@ -364,12 +371,12 @@ class MerchantAccountTest extends Setup
 
     public function testUpdateWithInvalidBusinessFields()
     {
-        $params = array(
-          "business" => array(
+        $params = [
+          "business" => [
             "legalName" => "",
             "taxId" => "111223333",
-          )
-        );
+          ]
+        ];
 
         $result = Braintree\MerchantAccount::update("sandbox_sub_merchant_account", $params);
         $this->assertEquals(false, $result->success);
@@ -379,12 +386,12 @@ class MerchantAccountTest extends Setup
         $error = $result->errors->forKey("merchantAccount")->forKey("business")->onAttribute("taxId");
         $this->assertEquals($error[0]->code, Braintree\Error\Codes::MERCHANT_ACCOUNT_BUSINESS_TAX_ID_MUST_BE_BLANK);
 
-        $params = array(
-          "business" => array(
+        $params = [
+          "business" => [
             "legalName" => "legal name",
             "taxId" => "",
-          )
-        );
+          ]
+        ];
 
         $result = Braintree\MerchantAccount::update("sandbox_sub_merchant_account", $params);
         $this->assertEquals(false, $result->success);
@@ -395,12 +402,12 @@ class MerchantAccountTest extends Setup
 
     public function testUpdateWithInvalidFundingFields()
     {
-        $params = array(
-          "funding" => array(
+        $params = [
+          "funding" => [
             "destination" => Braintree\MerchantAccount::FUNDING_DESTINATION_EMAIL,
             "email" => "",
-          )
-        );
+          ]
+        ];
 
         $result = Braintree\MerchantAccount::update("sandbox_sub_merchant_account", $params);
         $this->assertEquals(false, $result->success);
@@ -408,12 +415,12 @@ class MerchantAccountTest extends Setup
         $error = $result->errors->forKey("merchantAccount")->forKey("funding")->onAttribute("email");
         $this->assertEquals($error[0]->code, Braintree\Error\Codes::MERCHANT_ACCOUNT_FUNDING_EMAIL_IS_REQUIRED);
 
-        $params = array(
-          "funding" => array(
+        $params = [
+          "funding" => [
             "destination" => Braintree\MerchantAccount::FUNDING_DESTINATION_MOBILE_PHONE,
             "mobilePhone" => "",
-          )
-        );
+          ]
+        ];
 
         $result = Braintree\MerchantAccount::update("sandbox_sub_merchant_account", $params);
         $this->assertEquals(false, $result->success);

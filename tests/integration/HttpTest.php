@@ -53,12 +53,12 @@ class HttpTest extends Setup
 
     public function testAuthorizationWithConfig()
     {
-        $config = new Braintree\Configuration(array(
+        $config = new Braintree\Configuration([
             'environment' => 'development',
             'merchant_id' => 'integration_merchant_id',
             'publicKey' => 'badPublicKey',
             'privateKey' => 'badPrivateKey'
-        ));
+        ]);
 
         $http = new Braintree\Http($config);
         $result = $http->_doUrlRequest('GET', $config->baseUrl() . '/merchants/integration_merchant_id/customers');

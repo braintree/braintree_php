@@ -11,7 +11,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $bin
  * @property-read string $cardType
@@ -49,16 +49,16 @@ class AndroidPayCard extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of AndroidPayCard
+     * @return AndroidPayCard
      */
     public static function factory($attributes)
     {
-        $defaultAttributes = array(
+        $defaultAttributes = [
             'expirationMonth'    => '',
             'expirationYear'    => '',
             'last4'  => $attributes['virtualCardLast4'],
             'cardType'  => $attributes['virtualCardType'],
-        );
+        ];
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
@@ -70,14 +70,14 @@ class AndroidPayCard extends Base
      *
      * @access protected
      * @param array $androidPayCardAttribs array of Android Pay card properties
-     * @return none
+     * @return void
      */
     protected function _initialize($androidPayCardAttribs)
     {
         // set the attributes
         $this->_attributes = $androidPayCardAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($androidPayCardAttribs['subscriptions'])) {
             foreach ($androidPayCardAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);

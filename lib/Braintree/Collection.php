@@ -17,7 +17,7 @@ use ArrayIterator;
  *
  * @package   Braintree
  * @subpackage Utility
- * @copyright 2014 Braintree, a division of PayPal, Inc.
+ * @copyright 2015 Braintree, a division of PayPal, Inc.
  */
 
 class Collection implements Countable, IteratorAggregate, ArrayAccess
@@ -26,7 +26,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @var array collection storage
      */
-    protected $_collection = array();
+    protected $_collection = [];
 
     /**
      * Add a value into the collection

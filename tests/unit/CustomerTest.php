@@ -11,7 +11,7 @@ class CustomerTest extends Setup
     public function testGet_givesErrorIfInvalidProperty()
     {
         $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\Customer: foo');
-        $c = Braintree\Customer::factory(array());
+        $c = Braintree\Customer::factory([]);
         $c->foo;
     }
 
@@ -20,13 +20,13 @@ class CustomerTest extends Setup
         Braintree\CustomerGateway::updateSignature();
         foreach (Braintree\CreditCardGateway::updateSignature() as $key => $value) {
             if(is_array($value) and array_key_exists('options', $value)) {
-                $this->assertEquals(array(
+                $this->assertEquals([
                     'makeDefault',
                     'verificationMerchantAccountId',
                     'verifyCard',
                     'verificationAmount',
                     'venmoSdkSession'
-                ), $value['options']);
+                ], $value['options']);
             }
         }
     }
