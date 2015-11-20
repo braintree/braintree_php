@@ -1602,6 +1602,9 @@ class TransactionTest extends Setup
         $this->assertEquals(new DateTime('2014-03-21'), $dispute->replyByDate);
         $this->assertEquals("disputedtransaction", $dispute->transactionDetails->id);
         $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
+        $this->assertEquals(Braintree\Dispute::CHARGEBACK, $dispute->kind);
+        $this->assertEquals(new DateTime('2014-03-01'), $dispute->dateOpened);
+        $this->assertEquals(new DateTime('2014-03-07'), $dispute->dateWon);
     }
 
   public function testFindExposesThreeDSecureInfo()
