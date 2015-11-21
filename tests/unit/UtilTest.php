@@ -72,6 +72,19 @@ class UtilTest extends Setup
         $this->assertEquals([], Braintree\Util::extractAttributeAsArray($attributes, "foo"));
     }
 
+    public function testExtractAttributeAsArrayReturnsSingleElementArray()
+    {
+        $attributes = ['verification' => 'val1'];
+        $this->assertEquals(['val1'], Braintree\Util::extractAttributeAsArray($attributes, "verification"));
+    }
+
+    public function testExtractAttributeAsArrayReturnsArrayOfObjects()
+    {
+        $attributes = ['verification' => [['status' => 'val1']]];
+        $expected = new Braintree\CreditCardVerification(['status' => 'val1']);
+        $this->assertEquals([$expected], Braintree\Util::extractAttributeAsArray($attributes, "verification"));
+    }
+
     public function testDelimeterToUnderscore()
     {
         $this->assertEquals("a_b_c", Braintree\Util::delimiterToUnderscore("a-b-c"));
@@ -81,6 +94,12 @@ class UtilTest extends Setup
     {
         $cn = Braintree\Util::cleanClassName('Braintree\Transaction');
         $this->assertEquals('transaction', $cn);
+    }
+
+    public function testBuildClassName()
+    {
+        $cn = Braintree\Util::buildClassName('creditCard');
+        $this->assertEquals('Braintree\CreditCard', $cn);
     }
 
     public function testimplodeAssociativeArray()
