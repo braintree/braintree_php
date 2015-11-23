@@ -1333,50 +1333,6 @@ class TransactionTest extends Setup
         Braintree\Transaction::submitForSettlement($transaction->id, '67.00', $params);
     }
 
-  public function testSubmitForSettlement_withDescriptorOnUnsupportedProcessor()
-    {
-        $transaction = Braintree\Transaction::saleNoValidate([
-            'amount' => '100.00',
-            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
-            'creditCard' => [
-                'cardholderName' => 'The Cardholder',
-                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
-                'expirationDate' => '05/12'
-            ]
-        ]);
-
-        $params = [
-            'descriptor' => [
-                'name' => '123*123456789012345678',
-                'phone' => '3334445555',
-                'url' => 'ebay.com'
-            ]
-        ];
-
-        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
-        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '67.00', $params);
-        $errors = $submitResult->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DESCRIPTOR, $errors[0]->code);
-    }
-
-  public function testSubmitForSettlement_withOrderIdOnUnsupportedProcessor()
-    {
-        $transaction = Braintree\Transaction::saleNoValidate([
-            'amount' => '100.00',
-            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
-            'creditCard' => [
-                'cardholderName' => 'The Cardholder',
-                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
-                'expirationDate' => '05/12'
-            ]
-        ]);
-
-        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
-        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '67.00', ['orderId' => 'ABC123']);
-        $errors = $submitResult->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_ORDER_ID, $errors[0]->code);
-    }
-
   public function testSubmitForSettlementNoValidate_whenValidWithoutAmount()
     {
         $transaction = Braintree\Transaction::saleNoValidate([
