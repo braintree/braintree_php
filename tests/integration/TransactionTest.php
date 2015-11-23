@@ -3536,7 +3536,7 @@ class TransactionTest extends Setup
 
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
-            'paymentMethodNonce' => $grantResult->nonce
+            'paymentMethodNonce' => $grantResult->paymentMethodNonce->nonce
         ]);
 
         $this->assertEquals(

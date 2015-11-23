@@ -98,9 +98,8 @@ class PaymentMethodGateway
 
     public function grant($sharedPaymentMethodToken, $allowVaulting)
     {
-        $fullPath = $this->_config->merchantPath() . '/payment_methods/grant';
-        $response = $this->_http->post(
-            $fullPath,
+        return $this->_doCreate(
+            '/payment_methods/grant',
             [
                 'payment_method' => [
                     'shared_payment_method_token' => $sharedPaymentMethodToken,
@@ -108,8 +107,18 @@ class PaymentMethodGateway
                 ]
             ]
         );
+    }
 
-        return PaymentMethodNonce::factory($response['paymentMethodNonce']);
+    public function revoke($sharedPaymentMethodToken)
+    {
+        return $this->_doCreate(
+            '/payment_methods/revoke',
+            [
+                'payment_method' => [
+                    'shared_payment_method_token' => $sharedPaymentMethodToken
+                ]
+            ]
+        );
     }
 
     private static function baseSignature()
@@ -246,6 +255,11 @@ class PaymentMethodGateway
             return new Result\Successful(
                 VenmoAccount::factory($response['venmoAccount']),
                 "paymentMethod"
+            );
+        } else if (isset($response['paymentMethodNonce'])) {
+            return new Result\Successful(
+                PaymentMethodNonce::factory($response['paymentMethodNonce']),
+                "paymentMethodNonce"
             );
         } else if (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
