@@ -1,5 +1,6 @@
 <?php
 namespace Braintree;
+use Braintree\Logging\CurlAuditLoggerInterface;
 
 /**
  *
@@ -17,6 +18,7 @@ class CredentialsParser
     private $_accessToken;
     private $_environment;
     private $_merchantId;
+    private $_logger;
 
     public function __construct($attribs)
     {
@@ -29,6 +31,9 @@ class CredentialsParser
             }
             if ($kind == 'accessToken') {
                 $this->_accessToken = $value;
+            }
+            if ($kind == 'logger') {
+                $this->_logger = $value;
             }
         }
         $this->parse();
@@ -60,6 +65,9 @@ class CredentialsParser
         }
         if (!empty($this->_accessToken)) {
             $environments[] = ['accessToken', $this->_parseAccessToken()];
+        }
+        if (!empty($this->_logger)) {
+            $environments[] = ['logger', $this->_parseLogger()];
         }
 
         $checkEnv = $environments[0];
@@ -120,6 +128,17 @@ class CredentialsParser
         return $environment;
     }
 
+    private function _parseLogger()
+    {
+        $loggerExploded = explode('$', $this->_logger);
+        $logger = $loggerExploded[0];
+        if (!$logger instanceof CurlAuditLoggerInterface) {
+            throw new Exception\Configuration('Logger is not of type CurlAuditLoggerInterface');
+        }
+        $this->_logger = $logger;
+        return $logger;
+    }
+
     public function getClientId()
     {
         return $this->_clientId;
@@ -143,6 +162,11 @@ class CredentialsParser
     public function getMerchantId()
     {
         return $this->_merchantId;
+    }
+
+    public function getLogger()
+    {
+        return $this->_logger;
     }
 }
 class_alias('Braintree\CredentialsParser', 'Braintree_CredentialsParser');

@@ -3,6 +3,7 @@ namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
 
+use Test\Integration\Mock\TestCurlAuditLoggerInterface;
 use Test\Setup;
 use Braintree;
 
@@ -63,5 +64,50 @@ class HttpTest extends Setup
         $http = new Braintree\Http($config);
         $result = $http->_doUrlRequest('GET', $config->baseUrl() . '/merchants/integration_merchant_id/customers');
         $this->assertEquals(401, $result['status']);
+    }
+
+    public function testLoggingHTTPResponse() {
+        $logger = new TestCurlAuditLoggerInterface();
+
+        $config = new Braintree\Configuration([
+            'environment' => 'development',
+            'merchant_id' => 'integration_merchant_id',
+            'publicKey' => 'badPublicKey',
+            'privateKey' => 'badPrivateKey',
+            'logger' => $logger
+        ]);
+        $http = new Braintree\Http($config);
+        $http->_doUrlRequest('GET', $config->baseUrl() . '/merchants/integration_merchant_id/customers');
+        $this->assertEquals(401, $logger->getHttpResponse());
+    }
+
+    public function testLoggingCURLAction() {
+        $logger = new TestCurlAuditLoggerInterface();
+
+        $config = new Braintree\Configuration([
+            'environment' => 'development',
+            'merchant_id' => 'integration_merchant_id',
+            'publicKey' => 'badPublicKey',
+            'privateKey' => 'badPrivateKey',
+            'logger' => $logger
+        ]);
+        $http = new Braintree\Http($config);
+        $http->_doUrlRequest('GET', $config->baseUrl() . '/merchants/integration_merchant_id/customers');
+        $this->assertContains('merchants/integration_merchant_id/customers', $logger->getAction());
+    }
+
+    public function testLoggingDuration() {
+        $logger = new TestCurlAuditLoggerInterface();
+
+        $config = new Braintree\Configuration([
+            'environment' => 'development',
+            'merchant_id' => 'integration_merchant_id',
+            'publicKey' => 'badPublicKey',
+            'privateKey' => 'badPrivateKey',
+            'logger' => $logger
+        ]);
+        $http = new Braintree\Http($config);
+        $http->_doUrlRequest('GET', $config->baseUrl() . '/merchants/integration_merchant_id/customers');
+        $this->assertLessThanOrEqual(1, $logger->getDuration());
     }
 }
