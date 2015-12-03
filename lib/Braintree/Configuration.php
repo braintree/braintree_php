@@ -65,7 +65,6 @@ class Configuration
             $this->_clientId = $parsedCredentials->getClientId();
             $this->_clientSecret = $parsedCredentials->getClientSecret();
             $this->_accessToken = $parsedCredentials->getAccessToken();
-            $this->_logger = $parsedCredentials->getLogger();
         }
     }
 
