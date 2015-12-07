@@ -5,7 +5,7 @@ namespace Test\Integration\Mock;
 use Braintree\Logging\CurlAuditLoggerInterface;
 use DateTime;
 
-class TestCurlAuditLoggerInterface implements CurlAuditLoggerInterface{
+class TestCurlAuditLogger implements CurlAuditLoggerInterface{
     /**
      *
      * @var CurlAuditLoggerInterface

@@ -3,7 +3,7 @@ namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
 
-use Test\Integration\Mock\TestCurlAuditLoggerInterface;
+use Test\Integration\Mock\TestCurlAuditLogger;
 use Test\Setup;
 use Braintree;
 
@@ -67,7 +67,7 @@ class HttpTest extends Setup
     }
 
     public function testLoggingHTTPResponse() {
-        $logger = new TestCurlAuditLoggerInterface();
+        $logger = new TestCurlAuditLogger();
 
         $config = new Braintree\Configuration([
             'environment' => 'development',
@@ -82,7 +82,7 @@ class HttpTest extends Setup
     }
 
     public function testLoggingCURLAction() {
-        $logger = new TestCurlAuditLoggerInterface();
+        $logger = new TestCurlAuditLogger();
 
         $config = new Braintree\Configuration([
             'environment' => 'development',
@@ -97,7 +97,7 @@ class HttpTest extends Setup
     }
 
     public function testLoggingDuration() {
-        $logger = new TestCurlAuditLoggerInterface();
+        $logger = new TestCurlAuditLogger();
 
         $config = new Braintree\Configuration([
             'environment' => 'development',
