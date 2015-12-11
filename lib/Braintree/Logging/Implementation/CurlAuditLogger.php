@@ -1,13 +1,19 @@
 <?php
 
-namespace Test\Integration\Mock;
+namespace Braintree\Logging;
 
-use Braintree\Logging\CurlAuditLoggerInterface;
 use DateTime;
 
-class TestCurlAuditLogger implements CurlAuditLoggerInterface{
+/**
+ * Braintree Curl Audit Logger
+ * Logger for Request, Response and Duration information of Curl requests
+ *
+ * @package   Braintree
+ */
+
+class CurlAuditLogger implements CurlAuditLoggerInterface{
+
     /**
-     *
      * @var CurlAuditLoggerInterface
      */
     protected $logger;
@@ -151,12 +157,18 @@ class TestCurlAuditLogger implements CurlAuditLoggerInterface{
         return $this;
     }
 
-
+    /**
+     * @return mixed
+     */
     public function getRequest()
     {
         return $this->request;
     }
 
+    /**
+     * @param $requestTime
+     * @return $this
+     */
     public function setRequestTime($requestTime)
     {
         $this->start = $requestTime;
@@ -195,7 +207,10 @@ class TestCurlAuditLogger implements CurlAuditLoggerInterface{
         return $this->response;
     }
 
-
+    /**
+     * @param $responseTime
+     * @return $this
+     */
     public function setResponseTime($responseTime)
     {
         $this->end = $responseTime;

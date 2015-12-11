@@ -2,8 +2,8 @@
 namespace Braintree\Logging;
 
 /**
- * Raised when authentication fails.
- * This may be caused by an incorrect Configuration
+ * Logging interface for curl requests,
+ * to record the request, response and the time taken.
  *
  * @package    Braintree
  * @subpackage Logging
@@ -15,18 +15,24 @@ interface CurlAuditLoggerInterface
     public function log();
 
     /**
-     * @param $responseTime
-     * @return CurlAuditLoggerInterface
-     */
-    public function setResponseTime($responseTime);
-
-    /**
+     * Set the time the curl request was sent
+     *
      * @param $requestTime
      * @return CurlAuditLoggerInterface
      */
     public function setRequestTime($requestTime);
 
     /**
+     * Set the time the curl response was received
+     *
+     * @param $responseTime
+     * @return CurlAuditLoggerInterface
+     */
+    public function setResponseTime($responseTime);
+
+    /**
+     * Set the curl and http response
+     *
      * @param $arrayResponse
      * @param $httpCode
      * @return $this
@@ -34,6 +40,8 @@ interface CurlAuditLoggerInterface
     public function setResponse($arrayResponse, $httpCode);
 
     /**
+     * Set the curl and action request
+     *
      * @param $arrayRequest
      * @param $action
      * @return $this

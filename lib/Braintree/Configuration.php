@@ -297,7 +297,7 @@ class Configuration
     }
 
     /**
-     * Do not use this method directly. Pass in the merchantId to the constructor.
+     * Do not use this method directly. Pass in the logger to the constructor.
      */
     /**
      * @param $value
