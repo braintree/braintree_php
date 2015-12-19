@@ -98,6 +98,12 @@ class Error extends Base
        } else {
            $this->_set('merchantAccount', null);
        }
+
+       if(isset($response['verification'])) {
+           $this->_set('verification', new CreditCardVerification($response['verification']));
+       } else {
+           $this->_set('verification', null);
+       }
    }
 
    /**

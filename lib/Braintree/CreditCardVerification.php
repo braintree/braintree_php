@@ -9,8 +9,12 @@ class CreditCardVerification extends Result\CreditCardVerification
         return $instance;
     }
 
-
     // static methods redirecting to gateway
+    //
+    public static function create($attributes)
+    {
+        return Configuration::gateway()->creditCardVerification()->create($attributes);
+    }
 
     public static function fetch($query, $ids)
     {

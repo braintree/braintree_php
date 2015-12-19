@@ -15,6 +15,28 @@ class CreditCardVerificationGateway
         $this->_http = new Http($gateway->config);
     }
 
+    public function create($attributes)
+    {
+        $response = $this->_http->post($this->_config->merchantPath() . "/verifications", ['verification' => $attributes]);
+        return $this->_verifyGatewayResponse($response);
+    }
+
+    private function _verifyGatewayResponse($response)
+    {
+
+        if(isset($response['verification'])){
+            return new Result\Successful(
+                CreditCardVerification::factory($response['verification'])
+            );
+        } else if (isset($response['apiErrorResponse'])) {
+            return new Result\Error($response['apiErrorResponse']);
+        } else {
+            throw new Exception\Unexpected(
+                "Expected transaction or apiErrorResponse"
+            );
+        }
+    }
+
     public function fetch($query, $ids)
     {
         $criteria = [];
