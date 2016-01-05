@@ -13,6 +13,7 @@ class CreditCardVerification extends Result\CreditCardVerification
     //
     public static function create($attributes)
     {
+        Util::verifyKeys(self::createSignature(), $attributes);
         return Configuration::gateway()->creditCardVerification()->create($attributes);
     }
 
@@ -24,6 +25,14 @@ class CreditCardVerification extends Result\CreditCardVerification
     public static function search($query)
     {
         return Configuration::gateway()->creditCardVerification()->search($query);
+    }
+
+    public static function createSignature()
+    {
+        return [
+            ['options' => ['amount', 'merchantAccountId']],
+            ['creditCard' => CreditCardGateway::createSignature()]
+        ];
     }
 }
 class_alias('Braintree\CreditCardVerification', 'Braintree_CreditCardVerification');
