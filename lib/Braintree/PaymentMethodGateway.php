@@ -128,7 +128,8 @@ class PaymentMethodGateway
             'failOnDuplicatePaymentMethod',
             'makeDefault',
             'verificationMerchantAccountId',
-            'verifyCard'
+            'verifyCard',
+            'verificationAmount'
         ];
         return [
             'billingAddressId',

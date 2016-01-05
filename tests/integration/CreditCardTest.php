@@ -81,6 +81,30 @@ class CreditCardTest extends Setup
         $this->assertTrue($card2->isDefault());
     }
 
+    public function testCreateWithVerificationAmount()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\CreditCard::create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/12',
+            'options' => [
+                'verificationAmount' => '5.00',
+                'verifyCard' => true
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $this->assertEquals($customer->id, $result->creditCard->customerId);
+        $this->assertEquals('411111', $result->creditCard->bin);
+        $this->assertEquals('1111', $result->creditCard->last4);
+        $this->assertEquals('Cardholder', $result->creditCard->cardholderName);
+        $this->assertEquals('05/2012', $result->creditCard->expirationDate);
+        $this->assertEquals(1, preg_match('/\A\w{32}\z/', $result->creditCard->uniqueNumberIdentifier));
+        $this->assertFalse($result->creditCard->isVenmoSdk());
+        $this->assertEquals(1, preg_match('/png/', $result->creditCard->imageUrl));
+    }
+
     public function testAddCardToExistingCustomerUsingNonce()
     {
         $customer = Braintree\Customer::createNoValidate();
