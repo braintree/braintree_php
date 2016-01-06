@@ -498,5 +498,12 @@ class Codes
     const TRANSACTION_TYPE_IS_INVALID                                           = '91523';
     const TRANSACTION_TYPE_IS_REQUIRED                                          = '91524';
     const TRANSACTION_UNSUPPORTED_VOICE_AUTHORIZATION                           = '91539';
+
+    const VERIFICATION_OPTIONS_AMOUNT_CANNOT_BE_NEGATIVE         = '94201';
+    const VERIFICATION_OPTIONS_AMOUNT_FORMAT_IS_INVALID          = '94202';
+    const VERIFICATION_OPTIONS_AMOUNT_NOT_SUPPORTED_BY_PROCESSOR = '94203';
+    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_ID_IS_INVALID    = '94204';
+    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_IS_SUSPENDED     = '94205';
+    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_IS_FORBIDDEN     = '94206';
 }
 class_alias('Braintree\Error\Codes', 'Braintree_Error_Codes');
