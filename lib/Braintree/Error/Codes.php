@@ -108,6 +108,7 @@ class Codes
     const CREDIT_CARD_INVALID_VENMO_SDK_PAYMENT_METHOD_CODE                             = '91727';
     const CREDIT_CARD_NUMBER_INVALID_LENGTH                                             = '81716';
     const CREDIT_CARD_NUMBER_IS_INVALID                                                 = '81715';
+    const CREDIT_CARD_NUMBER_IS_PROHIBITED                                              = '81750';
     const CREDIT_CARD_NUMBER_IS_REQUIRED                                                = '81714';
     const CREDIT_CARD_NUMBER_LENGTH_IS_INVALID                                          = '81716';
     const CREDIT_CARD_NUMBER_MUST_BE_TEST_NUMBER                                        = '81717';
