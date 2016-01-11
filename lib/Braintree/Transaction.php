@@ -529,6 +529,11 @@ final class Transaction extends Base
         return Configuration::gateway()->transaction()->submitForSettlementNoValidate($transactionId, $amount, $attribs);
     }
 
+    public static function submitForPartialSettlement($transactionId, $amount, $attribs = [])
+    {
+        return Configuration::gateway()->transaction()->submitForPartialSettlement($transactionId, $amount, $attribs);
+    }
+
     public static function holdInEscrow($transactionId)
     {
         return Configuration::gateway()->transaction()->holdInEscrow($transactionId);
@@ -547,11 +552,6 @@ final class Transaction extends Base
     public static function refund($transactionId, $amount = null)
     {
         return Configuration::gateway()->transaction()->refund($transactionId, $amount);
-    }
-
-    public static function submitForPartialSettlement($transactionId, $amount)
-    {
-        return Configuration::gateway()->transaction()->submitForPartialSettlement($transactionId, $amount);
     }
 }
 class_alias('Braintree\Transaction', 'Braintree_Transaction');

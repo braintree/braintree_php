@@ -3450,6 +3450,67 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT, $baseErrors[0]->code);
     }
 
+  public function testSubmitForPartialSettlement_withOrderId()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $submitResult = Braintree\Transaction::submitForPartialSettlement($transaction->id, '67.00', ['orderId' => 'ABC123']);
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
+        $this->assertEquals('ABC123', $submitResult->transaction->orderId);
+        $this->assertEquals('67.00', $submitResult->transaction->amount);
+    }
+
+  public function testSubmitForPartialSettlement_withDescriptor()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $params = [
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $submitResult = Braintree\Transaction::submitForPartialSettlement($transaction->id, '67.00', $params);
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
+        $this->assertEquals('123*123456789012345678', $submitResult->transaction->descriptor->name);
+        $this->assertEquals('3334445555', $submitResult->transaction->descriptor->phone);
+        $this->assertEquals('ebay.com', $submitResult->transaction->descriptor->url);
+    }
+
+  public function testSubmitForPartialSettlement_withInvalidParams()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $params = ['invalid' => 'invalid'];
+
+        $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalid');
+        Braintree\Transaction::submitForPartialSettlement($transaction->id, '67.00', $params);
+    }
+
     public function testFacilitatorDetailsAreReturnedOnTransactionsCreatedViaNonceGranting()
     {
         $partnerMerchantGateway = new Braintree\Gateway([

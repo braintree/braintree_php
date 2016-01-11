@@ -366,6 +366,17 @@ final class TransactionGateway
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
 
+    public function submitForPartialSettlement($transactionId, $amount, $attribs = [])
+    {
+        $this->_validateId($transactionId);
+        Util::verifyKeys(self::submitForSettlementSignature(), $attribs);
+        $attribs['amount'] = $amount;
+
+        $path = $this->_config->merchantPath() . '/transactions/'. $transactionId . '/submit_for_partial_settlement';
+        $response = $this->_http->post($path, ['transaction' => $attribs]);
+        return $this->_verifyGatewayResponse($response);
+    }
+
     public function holdInEscrow($transactionId)
     {
         $this->_validateId($transactionId);
@@ -400,15 +411,6 @@ final class TransactionGateway
         $params = ['transaction' => ['amount' => $amount]];
         $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/refund';
         $response = $this->_http->post($path, $params);
-        return $this->_verifyGatewayResponse($response);
-    }
-
-    public function submitForPartialSettlement($transactionId, $amount)
-    {
-        $this->_validateId($transactionId);
-
-        $path = $this->_config->merchantPath() . '/transactions/'. $transactionId . '/submit_for_partial_settlement';
-        $response = $this->_http->post($path, ['transaction' => ['amount' => $amount]]);
         return $this->_verifyGatewayResponse($response);
     }
 
