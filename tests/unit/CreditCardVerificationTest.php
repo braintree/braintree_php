@@ -10,7 +10,7 @@ class CreditCardVerificationTest extends Setup
 {
 	public function test_createWithInvalidArguments()
 	{
-        $this->setExpectedException('InvalidArgumentException');
-		Braintree\CreditCardVerification::create(['amount' => '123.45', 'invalidProperty' => 'foo']);
+        $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalidProperty');
+		Braintree\CreditCardVerification::create(['options' => ['amount' => '123.45'], 'invalidProperty' => 'foo']);
 	}
 }
