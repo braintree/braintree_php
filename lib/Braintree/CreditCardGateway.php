@@ -348,22 +348,27 @@ class CreditCardGateway
              'deviceData', 'fraudMerchantId', 'paymentMethodNonce',
              ['options' => $options],
              [
-                 'billingAddress' => [
-                     'firstName',
-                     'lastName',
-                     'company',
-                     'countryCodeAlpha2',
-                     'countryCodeAlpha3',
-                     'countryCodeNumeric',
-                     'countryName',
-                     'extendedAddress',
-                     'locality',
-                     'region',
-                     'postalCode',
-                     'streetAddress'
-                 ],
+                 'billingAddress' => self::billingAddressSignature()
              ],
          ];
+    }
+
+    public static function billingAddressSignature()
+    {
+        return [
+            'firstName',
+            'lastName',
+            'company',
+            'countryCodeAlpha2',
+            'countryCodeAlpha3',
+            'countryCodeNumeric',
+            'countryName',
+            'extendedAddress',
+            'locality',
+            'region',
+            'postalCode',
+            'streetAddress'
+        ];
     }
 
     public static function createSignature()

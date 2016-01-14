@@ -30,9 +30,14 @@ class CreditCardVerification extends Result\CreditCardVerification
     public static function createSignature()
     {
         return [
-            ['options' => ['amount', 'merchantAccountId']],
-            ['creditCard' => CreditCardGateway::createSignature()]
-        ];
+                ['options' => ['amount', 'merchantAccountId']],
+                ['creditCard' =>
+                    [
+                        'cardholderName', 'cvv', 'number',
+                        'expirationDate', 'expirationMonth', 'expirationYear',
+                        ['billingAddress' => CreditCardGateway::billingAddressSignature()]
+                    ]
+                ]];
     }
 }
 class_alias('Braintree\CreditCardVerification', 'Braintree_CreditCardVerification');
