@@ -1,3 +1,9 @@
+## 3.8.0
+* Add payment method revoke
+* Add support for options in `submit_for_settlement` transaction flows
+* Add verification create API
+* Update https certificate bundle
+
 ## 3.7.0
 * Add VenmoAccount
 * Allow order_id and descriptor to be passed in for Transaction submit_for_settlement
