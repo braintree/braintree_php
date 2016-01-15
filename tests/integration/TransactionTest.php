@@ -1333,50 +1333,6 @@ class TransactionTest extends Setup
         Braintree\Transaction::submitForSettlement($transaction->id, '67.00', $params);
     }
 
-  public function testSubmitForSettlement_withDescriptorOnUnsupportedProcessor()
-    {
-        $transaction = Braintree\Transaction::saleNoValidate([
-            'amount' => '100.00',
-            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
-            'creditCard' => [
-                'cardholderName' => 'The Cardholder',
-                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
-                'expirationDate' => '05/12'
-            ]
-        ]);
-
-        $params = [
-            'descriptor' => [
-                'name' => '123*123456789012345678',
-                'phone' => '3334445555',
-                'url' => 'ebay.com'
-            ]
-        ];
-
-        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
-        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '67.00', $params);
-        $errors = $submitResult->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DESCRIPTOR, $errors[0]->code);
-    }
-
-  public function testSubmitForSettlement_withOrderIdOnUnsupportedProcessor()
-    {
-        $transaction = Braintree\Transaction::saleNoValidate([
-            'amount' => '100.00',
-            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
-            'creditCard' => [
-                'cardholderName' => 'The Cardholder',
-                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
-                'expirationDate' => '05/12'
-            ]
-        ]);
-
-        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
-        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '67.00', ['orderId' => 'ABC123']);
-        $errors = $submitResult->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_ORDER_ID, $errors[0]->code);
-    }
-
   public function testSubmitForSettlementNoValidate_whenValidWithoutAmount()
     {
         $transaction = Braintree\Transaction::saleNoValidate([
@@ -1602,6 +1558,9 @@ class TransactionTest extends Setup
         $this->assertEquals(new DateTime('2014-03-21'), $dispute->replyByDate);
         $this->assertEquals("disputedtransaction", $dispute->transactionDetails->id);
         $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
+        $this->assertEquals(Braintree\Dispute::CHARGEBACK, $dispute->kind);
+        $this->assertEquals(new DateTime('2014-03-01'), $dispute->dateOpened);
+        $this->assertEquals(new DateTime('2014-03-07'), $dispute->dateWon);
     }
 
   public function testFindExposesThreeDSecureInfo()
@@ -3491,6 +3450,67 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT, $baseErrors[0]->code);
     }
 
+  public function testSubmitForPartialSettlement_withOrderId()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $submitResult = Braintree\Transaction::submitForPartialSettlement($transaction->id, '67.00', ['orderId' => 'ABC123']);
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
+        $this->assertEquals('ABC123', $submitResult->transaction->orderId);
+        $this->assertEquals('67.00', $submitResult->transaction->amount);
+    }
+
+  public function testSubmitForPartialSettlement_withDescriptor()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $params = [
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $submitResult = Braintree\Transaction::submitForPartialSettlement($transaction->id, '67.00', $params);
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
+        $this->assertEquals('123*123456789012345678', $submitResult->transaction->descriptor->name);
+        $this->assertEquals('3334445555', $submitResult->transaction->descriptor->phone);
+        $this->assertEquals('ebay.com', $submitResult->transaction->descriptor->url);
+    }
+
+  public function testSubmitForPartialSettlement_withInvalidParams()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $params = ['invalid' => 'invalid'];
+
+        $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalid');
+        Braintree\Transaction::submitForPartialSettlement($transaction->id, '67.00', $params);
+    }
+
     public function testFacilitatorDetailsAreReturnedOnTransactionsCreatedViaNonceGranting()
     {
         $partnerMerchantGateway = new Braintree\Gateway([
@@ -3533,7 +3553,7 @@ class TransactionTest extends Setup
 
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
-            'paymentMethodNonce' => $grantResult->nonce
+            'paymentMethodNonce' => $grantResult->paymentMethodNonce->nonce
         ]);
 
         $this->assertEquals(

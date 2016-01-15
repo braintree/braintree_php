@@ -1280,16 +1280,17 @@ class PaymentMethodTest extends Setup
         ]);
 
         $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, false);
+        $this->assertTrue($grantResult->success);
 
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
-            'paymentMethodNonce' => $grantResult->nonce
+            'paymentMethodNonce' => $grantResult->paymentMethodNonce->nonce
         ]);
         $this->assertTrue($result->success);
 
         $secondResult = Braintree\Transaction::sale([
             'amount' => '100.00',
-            'paymentMethodNonce' => $grantResult->nonce
+            'paymentMethodNonce' => $grantResult->paymentMethodNonce->nonce
         ]);
         $this->assertFalse($secondResult->success);
     }
@@ -1340,7 +1341,7 @@ class PaymentMethodTest extends Setup
         ])->customer;
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => $grantResult->nonce
+            'paymentMethodNonce' => $grantResult->paymentMethodNonce->nonce
         ]);
         $this->assertFalse($result->success);
     }
@@ -1391,7 +1392,7 @@ class PaymentMethodTest extends Setup
         ])->customer;
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => $grantResult->nonce
+            'paymentMethodNonce' => $grantResult->paymentMethodNonce->nonce
         ]);
         $this->assertTrue($result->success);
     }
@@ -1418,5 +1419,78 @@ class PaymentMethodTest extends Setup
 
         $this->setExpectedException('Braintree\Exception\NotFound');
         $grantResult = $grantingGateway->paymentMethod()->grant("not_a_real_token", false);
+    }
+
+    public function testRevoke_rendersANonceUnusable()
+    {
+        $partnerMerchantGateway = new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_public_id',
+            'publicKey' => 'oauth_app_partner_user_public_key',
+            'privateKey' => 'oauth_app_partner_user_private_key'
+        ]);
+
+        $customer = $partnerMerchantGateway->customer()->create([
+            'firstName' => 'Joe',
+            'lastName' => 'Brown'
+        ])->customer;
+        $creditCard = $partnerMerchantGateway->creditCard()->create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Adam Davis',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2009'
+        ])->creditCard;
+
+        $oauthAppGateway = new Braintree\Gateway([
+            'clientId' =>  'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ]);
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($oauthAppGateway, [
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'grant_payment_method'
+        ]);
+
+        $credentials = $oauthAppGateway->oauth()->createTokenFromCode([
+            'code' => $code,
+        ]);
+
+        $grantingGateway = new Braintree\Gateway([
+            'accessToken' => $credentials->accessToken
+        ]);
+
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, false);
+        $revokeResult = $grantingGateway->paymentMethod()->revoke($creditCard->token);
+        $this->assertTrue($revokeResult->success);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'paymentMethodNonce' => $grantResult->paymentMethodNonce->nonce
+        ]);
+        $this->assertFalse($result->success);
+    }
+
+    public function testRevoke_raisesAnErrorIfTokenIsNotFound()
+    {
+        $oauthAppGateway = new Braintree\Gateway([
+            'clientId' =>  'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ]);
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($oauthAppGateway, [
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'grant_payment_method'
+        ]);
+
+        $credentials = $oauthAppGateway->oauth()->createTokenFromCode([
+            'code' => $code,
+        ]);
+
+        $grantingGateway = new Braintree\Gateway([
+            'accessToken' => $credentials->accessToken
+        ]);
+
+        $this->setExpectedException('Braintree\Exception\NotFound');
+        $grantResult = $grantingGateway->paymentMethod()->revoke("not_a_real_token");
     }
 }

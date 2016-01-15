@@ -31,7 +31,8 @@ class PaymentMethodTest extends Setup
                 'failOnDuplicatePaymentMethod',
                 'makeDefault',
                 'verificationMerchantAccountId',
-                'verifyCard'
+                'verifyCard',
+                'verificationAmount',
             ]],
             ['billingAddress' => Braintree\AddressGateway::createSignature()],
             'customerId'
