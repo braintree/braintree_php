@@ -56,6 +56,9 @@ class WebhookTesting
             case WebhookNotification::CHECK:
                 $subjectXml = self::_checkSampleXml();
                 break;
+            case WebhookNotification::ACCOUNT_UPDATER_DAILY_REPORT:
+                $subjectXml = self::_accountUpdaterDailyReportSampleXml($id);
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -309,6 +312,16 @@ class WebhookTesting
         <partner-merchant>
           <partner-merchant-id>abc123</partner-merchant-id>
         </partner-merchant>
+        ";
+    }
+
+    private static function _accountUpdaterDailyReportSampleXml($id)
+    {
+        return "
+        <account-updater-daily-report>
+            <report-date type=\"date\">2016-01-14</report-date>
+            <report-url>link-to-csv-report</report-url>
+        </account-updater-daily-report>
         ";
     }
 
