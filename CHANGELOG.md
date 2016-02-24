@@ -1,3 +1,6 @@
+## 3.9.0
+* Add AccountUpdaterDailyReport webhook parsing
+
 ## 3.8.0
 * Add payment method revoke
 * Add support for options in `submit_for_settlement` transaction flows
