@@ -22,6 +22,7 @@ class WebhookNotification extends Base
     const PARTNER_MERCHANT_DISCONNECTED = 'partner_merchant_disconnected';
     const PARTNER_MERCHANT_DECLINED = 'partner_merchant_declined';
     const CHECK = 'check';
+    const ACCOUNT_UPDATER_DAILY_REPORT = 'account_updater_daily_report';
 
     public static function parse($signature, $payload)
     {
@@ -119,6 +120,10 @@ class WebhookNotification extends Base
 
         if (isset($wrapperNode['dispute'])) {
             $this->_set('dispute', Dispute::factory($wrapperNode['dispute']));
+        }
+
+        if (isset($wrapperNode['accountUpdaterDailyReport'])) {
+            $this->_set('accountUpdaterDailyReport', AccountUpdaterDailyReport::factory($wrapperNode['accountUpdaterDailyReport']));
         }
 
         if (isset($wrapperNode['errors'])) {
