@@ -1,6 +1,8 @@
 <?php
 namespace Braintree;
 
+use Braintree\Logging\CurlAuditLoggerInterface;
+
 /**
  * Braintree HTTP Client
  * processes Http requests using curl
@@ -11,10 +13,17 @@ class Http
 {
     protected $_config;
     private $_useClientCredentials = false;
+    /**
+     * @var CurlAuditLoggerInterface
+     */
+    private $_logger;
 
     public function __construct($config)
     {
         $this->_config = $config;
+        if($this->_config->getLogger()) {
+            $this->_logger = $this->_config->getLogger();
+        }
     }
 
     public function delete($path)
@@ -144,8 +153,20 @@ class Http
         }
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        if(isset($this->_logger)) {
+            $this->_logger->setRequest($requestBody, $url);
+            $this->_logger->setRequestTime(time());
+        }
+
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        if(isset($this->_logger)) {
+            $this->_logger->setResponse($response, $httpStatus);
+            $this->_logger->setResponseTime(time());
+        }
+
         curl_close($curl);
         if ($this->_config->sslOn()) {
             if ($httpStatus == 0) {

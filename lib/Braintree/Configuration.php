@@ -1,5 +1,6 @@
 <?php
 namespace Braintree;
+use Braintree\Logging\CurlAuditLoggerInterface;
 
 /**
  *
@@ -24,6 +25,7 @@ class Configuration
     private $_proxyHost = null;
     private $_proxyPort = null;
     private $_proxyType = null;
+    private $_logger = null;
 
     /**
      * Braintree API version to use
@@ -46,6 +48,9 @@ class Configuration
             }
             if ($kind == 'privateKey') {
                 $this->_privateKey = $value;
+            }
+            if ($kind == 'logger') {
+                $this->_logger = $value;
             }
         }
 
@@ -108,6 +113,22 @@ class Configuration
             return self::$global->getPrivateKey();
         }
         self::$global->setPrivateKey($value);
+    }
+
+    /**
+     * Sets or gets the logger to use
+     *
+     * @param string $value If provided, sets the logger
+     * @return string The logger to be used
+     */
+    public static function logger($value=null)
+    {
+        if (empty($value)) {
+            return self::$global->getLogger();
+        }
+        if ($value instanceof CurlAuditLoggerInterface) {
+            self::$global->setLogger($value);
+        }
     }
 
     /**
@@ -265,6 +286,25 @@ class Configuration
     public function setPrivateKey($value)
     {
         $this->_privateKey = $value;
+    }
+
+    /**
+     * @return CurlAuditLoggerInterface
+     */
+    public function getLogger()
+    {
+        return $this->_logger;
+    }
+
+    /**
+     * Do not use this method directly. Pass in the logger to the constructor.
+     */
+    /**
+     * @param $value
+     */
+    public function setLogger($value)
+    {
+        $this->_logger = $value;
     }
 
     private function setProxyHost($value)
