@@ -1,4 +1,12 @@
 <?php
+namespace Braintree;
+
+use Countable;
+use IteratorAggregate;
+use ArrayAccess;
+use OutOfRangeException;
+use ArrayIterator;
+
 /**
  * Braintree Generic collection
  *
@@ -9,16 +17,16 @@
  *
  * @package   Braintree
  * @subpackage Utility
- * @copyright 2014 Braintree, a division of PayPal, Inc.
+ * @copyright 2015 Braintree, a division of PayPal, Inc.
  */
 
-class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
+class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
     /**
      *
-     * @var array $_collection collection storage
+     * @var array collection storage
      */
-    protected $_collection = array();
+    protected $_collection = [];
 
     /**
      * Add a value into the collection
@@ -151,3 +159,4 @@ class Braintree_Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
 }
+class_alias('Braintree\Collection', 'Braintree_Collection');

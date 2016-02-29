@@ -1,10 +1,14 @@
 <?php
+namespace Braintree\Transaction;
+
+use Braintree\Instance;
+
 /**
  * PayPal details from a transaction
  *
  * @package    Braintree
  * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -13,18 +17,20 @@
  *
  * @package    Braintree
  * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $payerEmail
  * @property-read string $paymentId
  * @property-read string $authorizationId
  * @property-read string $token
  * @property-read string $imageUrl
- * @uses Braintree_Instance inherits methods
+ * @property-read string $transactionFeeAmount
+ * @property-read string $transactionFeeCurrencyIsoCode
+ * @property-read string $description
  */
-class Braintree_Transaction_PayPalDetails extends Braintree_Instance
+class PayPalDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore
@@ -34,3 +40,4 @@ class Braintree_Transaction_PayPalDetails extends Braintree_Instance
         parent::__construct($attributes);
     }
 }
+class_alias('Braintree\Transaction\PayPalDetails', 'Braintree_Transaction_PayPalDetails');

@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree AndroidPayCard module
  * Creates and manages Braintree Android Pay cards
@@ -9,11 +11,12 @@
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $bin
  * @property-read string $cardType
  * @property-read string $createdAt
+ * @property-read string $customerId
  * @property-read string $default
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
@@ -22,12 +25,13 @@
  * @property-read string $last4
  * @property-read string $sourceCardLast4
  * @property-read string $sourceCardType
+ * @property-read string $sourceDescription
  * @property-read string $token
  * @property-read string $updatedAt
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
  */
-class Braintree_AndroidPayCard extends Braintree_Base
+class AndroidPayCard extends Base
 {
     /* instance methods */
     /**
@@ -41,20 +45,20 @@ class Braintree_AndroidPayCard extends Braintree_Base
     }
 
     /**
-     *  factory method: returns an instance of Braintree_AndroidPayCard
+     *  factory method: returns an instance of AndroidPayCard
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_AndroidPayCard
+     * @return AndroidPayCard
      */
     public static function factory($attributes)
     {
-        $defaultAttributes = array(
+        $defaultAttributes = [
             'expirationMonth'    => '',
             'expirationYear'    => '',
             'last4'  => $attributes['virtualCardLast4'],
             'cardType'  => $attributes['virtualCardType'],
-        );
+        ];
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
@@ -66,20 +70,21 @@ class Braintree_AndroidPayCard extends Braintree_Base
      *
      * @access protected
      * @param array $androidPayCardAttribs array of Android Pay card properties
-     * @return none
+     * @return void
      */
     protected function _initialize($androidPayCardAttribs)
     {
         // set the attributes
         $this->_attributes = $androidPayCardAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($androidPayCardAttribs['subscriptions'])) {
             foreach ($androidPayCardAttribs['subscriptions'] AS $subscription) {
-                $subscriptionArray[] = Braintree_Subscription::factory($subscription);
+                $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
 
         $this->_set('subscriptions', $subscriptionArray);
     }
 }
+class_alias('Braintree\AndroidPayCard', 'Braintree_AndroidPayCard');

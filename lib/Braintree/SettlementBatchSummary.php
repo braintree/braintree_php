@@ -1,10 +1,12 @@
 <?php
-class Braintree_SettlementBatchSummary extends Braintree_Base
+namespace Braintree;
+
+class SettlementBatchSummary extends Base
 {
     /**
-     * 
+     *
      * @param array $attributes
-     * @return Braintree_SettlementBatchSummary
+     * @return SettlementBatchSummary
      */
     public static function factory($attributes)
     {
@@ -30,13 +32,14 @@ class Braintree_SettlementBatchSummary extends Braintree_Base
 
     /**
      * static method redirecting to gateway
-     * 
+     *
      * @param string $settlement_date Date YYYY-MM-DD
      * @param string $groupByCustomField
-     * @return Braintree_Result_Successful|Braintree_Result_Error
+     * @return Result\Successful|Result\Error
      */
     public static function generate($settlement_date, $groupByCustomField = NULL)
     {
-        return Braintree_Configuration::gateway()->settlementBatchSummary()->generate($settlement_date, $groupByCustomField);
+        return Configuration::gateway()->settlementBatchSummary()->generate($settlement_date, $groupByCustomField);
     }
 }
+class_alias('Braintree\SettlementBatchSummary', 'Braintree_SettlementBatchSummary');

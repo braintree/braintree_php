@@ -1,5 +1,7 @@
 <?php
-class Braintree_Plan extends Braintree_Base
+namespace Braintree;
+
+class Plan extends Base
 {
     public static function factory($attributes)
     {
@@ -13,26 +15,26 @@ class Braintree_Plan extends Braintree_Base
     {
         $this->_attributes = $attributes;
 
-        $addOnArray = array();
+        $addOnArray = [];
         if (isset($attributes['addOns'])) {
             foreach ($attributes['addOns'] AS $addOn) {
-                $addOnArray[] = Braintree_AddOn::factory($addOn);
+                $addOnArray[] = AddOn::factory($addOn);
             }
         }
         $this->_attributes['addOns'] = $addOnArray;
 
-        $discountArray = array();
+        $discountArray = [];
         if (isset($attributes['discounts'])) {
             foreach ($attributes['discounts'] AS $discount) {
-                $discountArray[] = Braintree_Discount::factory($discount);
+                $discountArray[] = Discount::factory($discount);
             }
         }
         $this->_attributes['discounts'] = $discountArray;
 
-        $planArray = array();
+        $planArray = [];
         if (isset($attributes['plans'])) {
             foreach ($attributes['plans'] AS $plan) {
-                $planArray[] = Braintree_Plan::factory($plan);
+                $planArray[] = self::factory($plan);
             }
         }
         $this->_attributes['plans'] = $planArray;
@@ -43,6 +45,7 @@ class Braintree_Plan extends Braintree_Base
 
     public static function all()
     {
-        return Braintree_Configuration::gateway()->plan()->all();
+        return Configuration::gateway()->plan()->all();
     }
 }
+class_alias('Braintree\Plan', 'Braintree_Plan');

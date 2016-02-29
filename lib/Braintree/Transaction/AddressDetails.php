@@ -1,11 +1,15 @@
 <?php
+namespace Braintree\Transaction;
+
+use Braintree\Instance;
+
 /**
  * Creates an instance of AddressDetails as returned from a transaction
  *
  *
  * @package    Braintree
  * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $firstName
  * @property-read string $lastName
@@ -16,9 +20,9 @@
  * @property-read string $region
  * @property-read string $postalCode
  * @property-read string $countryName
- * @uses Braintree_Instance inherits methods
  */
-class Braintree_Transaction_AddressDetails extends Braintree_Instance
+class AddressDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 }
+class_alias('Braintree\Transaction\AddressDetails', 'Braintree_Transaction_AddressDetails');

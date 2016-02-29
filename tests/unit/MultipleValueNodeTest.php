@@ -1,19 +1,24 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_MultipleValueNodeTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class MultipleValueNodeTest extends Setup
 {
-    function testIs()
+    public function testIs()
     {
-        $node = new Braintree_MultipleValueNode('field');
+        $node = new Braintree\MultipleValueNode('field');
         $node->is('value');
-        $this->assertEquals(array('value'), $node->toParam());
+        $this->assertEquals(['value'], $node->toParam());
     }
 
-    function testIn()
+    public function testIn()
     {
-        $node = new Braintree_MultipleValueNode('field');
-        $node->in(array('firstValue', 'secondValue'));
-        $this->assertEquals(array('firstValue', 'secondValue'), $node->toParam());
+        $node = new Braintree\MultipleValueNode('field');
+        $node->in(['firstValue', 'secondValue']);
+        $this->assertEquals(['firstValue', 'secondValue'], $node->toParam());
     }
 }

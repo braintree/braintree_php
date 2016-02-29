@@ -1,6 +1,7 @@
 <?php
+namespace Braintree;
 
-final class Braintree_PaymentInstrumentType
+final class PaymentInstrumentType
 {
     const PAYPAL_ACCOUNT      = 'paypal_account';
     const COINBASE_ACCOUNT    = 'coinbase_account';
@@ -9,3 +10,4 @@ final class Braintree_PaymentInstrumentType
     const APPLE_PAY_CARD      = 'apple_pay_card';
     const ANDROID_PAY_CARD    = 'android_pay_card';
 }
+class_alias('Braintree\PaymentInstrumentType', 'Braintree_PaymentInstrumentType');

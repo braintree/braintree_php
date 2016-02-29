@@ -1,4 +1,6 @@
 <?php
+namespace Braintree;
+
 /**
  * Braintree ApplePayCard module
  * Creates and manages Braintree Apple Pay cards
@@ -9,10 +11,11 @@
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $cardType
  * @property-read string $createdAt
+ * @property-read string $customerId
  * @property-read string $expirationDate
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
@@ -20,9 +23,10 @@
  * @property-read string $last4
  * @property-read string $token
  * @property-read string $paymentInstrumentName
+ * @property-read string $sourceDescription
  * @property-read string $updatedAt
  */
-class Braintree_ApplePayCard extends Braintree_Base
+class ApplePayCard extends Base
 {
     // Card Type
     const AMEX = 'Apple Pay - American Express';
@@ -51,19 +55,19 @@ class Braintree_ApplePayCard extends Braintree_Base
     }
 
     /**
-     *  factory method: returns an instance of Braintree_ApplePayCard
+     *  factory method: returns an instance of ApplePayCard
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Braintree_ApplePayCard
+     * @return ApplePayCard
      */
     public static function factory($attributes)
     {
-        $defaultAttributes = array(
+        $defaultAttributes = [
             'expirationMonth'    => '',
             'expirationYear'    => '',
             'last4'  => '',
-        );
+        ];
 
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
@@ -75,17 +79,17 @@ class Braintree_ApplePayCard extends Braintree_Base
      *
      * @access protected
      * @param array $applePayCardAttribs array of Apple Pay card properties
-     * @return none
+     * @return void
      */
     protected function _initialize($applePayCardAttribs)
     {
         // set the attributes
         $this->_attributes = $applePayCardAttribs;
 
-        $subscriptionArray = array();
+        $subscriptionArray = [];
         if (isset($applePayCardAttribs['subscriptions'])) {
             foreach ($applePayCardAttribs['subscriptions'] AS $subscription) {
-                $subscriptionArray[] = Braintree_Subscription::factory($subscription);
+                $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
 
@@ -93,3 +97,4 @@ class Braintree_ApplePayCard extends Braintree_Base
         $this->_set('expirationDate', $this->expirationMonth . '/' . $this->expirationYear);
     }
 }
+class_alias('Braintree\ApplePayCard', 'Braintree_ApplePayCard');

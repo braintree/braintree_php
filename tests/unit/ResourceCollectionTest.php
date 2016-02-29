@@ -1,47 +1,52 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_TestResource
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class TestResource
 {
     public function lookup($id) {
-        return Braintree_ResourceCollectionTest::$values[intval($id)];
+        return ResourceCollectionTest::$values[intval($id)];
     }
 
     public function fetch($ids)
     {
 
-        return array_map("Braintree_TestResource::lookup", $ids);
+        return array_map(__NAMESPACE__ . '\TestResource::lookup', $ids);
     }
 }
 
-class Braintree_ResourceCollectionTest extends PHPUnit_Framework_TestCase
+class ResourceCollectionTest extends Setup
 {
-    public static $values = array("a", "b", "c", "d", "e");
+    public static $values = ["a", "b", "c", "d", "e"];
 
-    function testIterateOverResults()
+    public function testIterateOverResults()
     {
 
-        $response = array(
-            'searchResults' => array(
+        $response = [
+            'searchResults' => [
                 'pageSize' => 2,
-                'ids' => array('0', '1', '2', '3', '4')
-            )
-        );
+                'ids' => ['0', '1', '2', '3', '4']
+            ]
+        ];
 
-        $object = new Braintree_TestResource();
-        $pager = array(
+        $object = new TestResource();
+        $pager = [
             'object' => $object,
             'method' => 'fetch',
-            'methodArgs' => array()
-        );
+            'methodArgs' => []
+        ];
 
-        $collection = new Braintree_ResourceCollection($response, $pager);
+        $collection = new Braintree\ResourceCollection($response, $pager);
 
         $count = 0;
         $index = 0;
         foreach ($collection as $value)
         {
-            $this->assertEquals(Braintree_ResourceCollectionTest::$values[$index], $value);
+            $this->assertEquals(self::$values[$index], $value);
             $index += 1;
             $count += 1;
         }
@@ -49,24 +54,24 @@ class Braintree_ResourceCollectionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(5, $count);
     }
 
-    function testDoesntIterateWhenNoResults()
+    public function testDoesntIterateWhenNoResults()
     {
 
-        $response = array(
-            'searchResults' => array(
+        $response = [
+            'searchResults' => [
                 'pageSize' => 2,
-                'ids' => array()
-            )
-        );
+                'ids' => []
+            ]
+        ];
 
-        $object = new Braintree_TestResource();
-        $pager = array(
+        $object = new TestResource();
+        $pager = [
             'object' => $object,
             'method' => 'fetch',
-            'methodArgs' => array()
-        );
+            'methodArgs' => []
+        ];
 
-        $collection = new Braintree_ResourceCollection($response, $pager);
+        $collection = new Braintree\ResourceCollection($response, $pager);
 
         $count = 0;
         $index = 0;

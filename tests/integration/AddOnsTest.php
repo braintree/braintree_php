@@ -1,13 +1,18 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Integration;
 
-class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class AddOnsTest extends Setup
 {
-    function testAll_returnsAllAddOns()
+    public function testAll_returnsAllAddOns()
     {
         $newId = strval(rand());
 
-        $addOnParams = array (
+        $addOnParams = [
             "amount" => "100.00",
             "description" => "some description",
             "id" => $newId,
@@ -15,13 +20,13 @@ class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
             "name" => "php_add_on",
             "neverExpires" => "false",
             "numberOfBillingCycles" => "1"
-        );
+        ];
 
-        $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
-        $http->post($path, array("modification" => $addOnParams));
+        $http = new Braintree\Http(Braintree\Configuration::$global);
+        $path = Braintree\Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
+        $http->post($path, ["modification" => $addOnParams]);
 
-        $addOns = Braintree_AddOn::all();
+        $addOns = Braintree\AddOn::all();
 
         foreach ($addOns as $addOn)
         {
@@ -41,11 +46,11 @@ class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($addOnParams["numberOfBillingCycles"], $actualAddOn->numberOfBillingCycles);
     }
 
-    function testGatewayAll_returnsAllAddOns()
+    public function testGatewayAll_returnsAllAddOns()
     {
         $newId = strval(rand());
 
-        $addOnParams = array (
+        $addOnParams = [
             "amount" => "100.00",
             "description" => "some description",
             "id" => $newId,
@@ -53,18 +58,18 @@ class Braintree_AddOnTest extends PHPUnit_Framework_TestCase
             "name" => "php_add_on",
             "neverExpires" => "false",
             "numberOfBillingCycles" => "1"
-        );
+        ];
 
-        $http = new Braintree_Http(Braintree_Configuration::$global);
-        $path = Braintree_Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
-        $http->post($path, array("modification" => $addOnParams));
+        $http = new Braintree\Http(Braintree\Configuration::$global);
+        $path = Braintree\Configuration::$global->merchantPath() . "/modifications/create_modification_for_tests";
+        $http->post($path, ["modification" => $addOnParams]);
 
-        $gateway = new Braintree_Gateway(array(
+        $gateway = new Braintree\Gateway([
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
             'publicKey' => 'integration_public_key',
             'privateKey' => 'integration_private_key'
-        ));
+        ]);
         $addOns = $gateway->addOn()->all();
 
         foreach ($addOns as $addOn)

@@ -1,4 +1,8 @@
 <?php
+namespace Braintree;
+
+use InvalidArgumentException;
+
 /**
  * Braintree SubscriptionGateway module
  *
@@ -9,9 +13,9 @@
  * PHP Version 5
  *
  * @package   Braintree
- * @copyright 2014 Braintree, a division of PayPal, Inc.
+ * @copyright 2015 Braintree, a division of PayPal, Inc.
  */
-class Braintree_SubscriptionGateway
+class SubscriptionGateway
 {
     private $_gateway;
     private $_config;
@@ -22,14 +26,14 @@ class Braintree_SubscriptionGateway
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasAccessTokenOrKeys();
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
     }
 
     public function create($attributes)
     {
-        Braintree_Util::verifyKeys(self::_createSignature(), $attributes);
+        Util::verifyKeys(self::_createSignature(), $attributes);
         $path = $this->_config->merchantPath() . '/subscriptions';
-        $response = $this->_http->post($path, array('subscription' => $attributes));
+        $response = $this->_http->post($path, ['subscription' => $attributes]);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -40,43 +44,43 @@ class Braintree_SubscriptionGateway
         try {
             $path = $this->_config->merchantPath() . '/subscriptions/' . $id;
             $response = $this->_http->get($path);
-            return Braintree_Subscription::factory($response['subscription']);
-        } catch (Braintree_Exception_NotFound $e) {
-            throw new Braintree_Exception_NotFound('subscription with id ' . $id . ' not found');
+            return Subscription::factory($response['subscription']);
+        } catch (Exception\NotFound $e) {
+            throw new Exception\NotFound('subscription with id ' . $id . ' not found');
         }
 
     }
 
     public function search($query)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
 
 
         $path = $this->_config->merchantPath() . '/subscriptions/advanced_search_ids';
-        $response = $this->_http->post($path, array('search' => $criteria));
-        $pager = array(
+        $response = $this->_http->post($path, ['search' => $criteria]);
+        $pager = [
             'object' => $this,
             'method' => 'fetch',
-            'methodArgs' => array($query)
-            );
+            'methodArgs' => [$query]
+            ];
 
-        return new Braintree_ResourceCollection($response, $pager);
+        return new ResourceCollection($response, $pager);
     }
 
     public function fetch($query, $ids)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
-        $criteria["ids"] = Braintree_SubscriptionSearch::ids()->in($ids)->toparam();
+        $criteria["ids"] = SubscriptionSearch::ids()->in($ids)->toparam();
         $path = $this->_config->merchantPath() . '/subscriptions/advanced_search';
-        $response = $this->_http->post($path, array('search' => $criteria));
+        $response = $this->_http->post($path, ['search' => $criteria]);
 
-        return Braintree_Util::extractAttributeAsArray(
+        return Util::extractAttributeAsArray(
             $response['subscriptions'],
             'subscription'
         );
@@ -84,22 +88,22 @@ class Braintree_SubscriptionGateway
 
     public function update($subscriptionId, $attributes)
     {
-        Braintree_Util::verifyKeys(self::_updateSignature(), $attributes);
+        Util::verifyKeys(self::_updateSignature(), $attributes);
         $path = $this->_config->merchantPath() . '/subscriptions/' . $subscriptionId;
-        $response = $this->_http->put($path, array('subscription' => $attributes));
+        $response = $this->_http->put($path, ['subscription' => $attributes]);
         return $this->_verifyGatewayResponse($response);
     }
 
     public function retryCharge($subscriptionId, $amount = null)
     {
-        $transaction_params = array('type' => Braintree_Transaction::SALE,
-            'subscriptionId' => $subscriptionId);
+        $transaction_params = ['type' => Transaction::SALE,
+            'subscriptionId' => $subscriptionId];
         if (isset($amount)) {
             $transaction_params['amount'] = $amount;
         }
 
         $path = $this->_config->merchantPath() . '/transactions';
-        $response = $this->_http->post($path, array('transaction' => $transaction_params));
+        $response = $this->_http->post($path, ['transaction' => $transaction_params]);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -113,7 +117,7 @@ class Braintree_SubscriptionGateway
     private static function _createSignature()
     {
         return array_merge(
-            array(
+            [
                 'billingDayOfMonth',
                 'firstBillingDate',
                 'createdAt',
@@ -129,9 +133,9 @@ class Braintree_SubscriptionGateway
                 'trialDuration',
                 'trialDurationUnit',
                 'trialPeriod',
-                array('descriptor' => array('name', 'phone', 'url')),
-                array('options' => array('doNotInheritAddOnsOrDiscounts', 'startImmediately')),
-            ),
+                ['descriptor' => ['name', 'phone', 'url']],
+                ['options' => ['doNotInheritAddOnsOrDiscounts', 'startImmediately']],
+            ],
             self::_addOnDiscountSignature()
         );
     }
@@ -139,34 +143,34 @@ class Braintree_SubscriptionGateway
     private static function _updateSignature()
     {
         return array_merge(
-            array(
+            [
                 'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
                 'paymentMethodNonce', 'id', 'neverExpires', 'price',
-                array('descriptor' => array('name', 'phone', 'url')),
-                array('options' => array('prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure')),
-            ),
+                ['descriptor' => ['name', 'phone', 'url']],
+                ['options' => ['prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure']],
+            ],
             self::_addOnDiscountSignature()
         );
     }
 
     private static function _addOnDiscountSignature()
     {
-        return array(
-            array(
-                'addOns' => array(
-                    array('add' => array('amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('remove' => array('_anyKey_')),
-                )
-            ),
-            array(
-                'discounts' => array(
-                    array('add' => array('amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('update' => array('amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity')),
-                    array('remove' => array('_anyKey_')),
-                )
-            )
-        );
+        return [
+            [
+                'addOns' => [
+                    ['add' => ['amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity']],
+                    ['update' => ['amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity']],
+                    ['remove' => ['_anyKey_']],
+                ]
+            ],
+            [
+                'discounts' => [
+                    ['add' => ['amount', 'inheritedFromId', 'neverExpires', 'numberOfBillingCycles', 'quantity']],
+                    ['update' => ['amount', 'existingId', 'neverExpires', 'numberOfBillingCycles', 'quantity']],
+                    ['remove' => ['_anyKey_']],
+                ]
+            ]
+        ];
     }
 
     /**
@@ -191,20 +195,21 @@ class Braintree_SubscriptionGateway
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['subscription'])) {
-            return new Braintree_Result_Successful(
-                Braintree_Subscription::factory($response['subscription'])
+            return new Result\Successful(
+                Subscription::factory($response['subscription'])
             );
         } else if (isset($response['transaction'])) {
-            // return a populated instance of Braintree_Transaction, for subscription retryCharge
-            return new Braintree_Result_Successful(
-                Braintree_Transaction::factory($response['transaction'])
+            // return a populated instance of Transaction, for subscription retryCharge
+            return new Result\Successful(
+                Transaction::factory($response['transaction'])
             );
         } else if (isset($response['apiErrorResponse'])) {
-            return new Braintree_Result_Error($response['apiErrorResponse']);
+            return new Result\Error($response['apiErrorResponse']);
         } else {
-            throw new Braintree_Exception_Unexpected(
+            throw new Exception\Unexpected(
             "Expected subscription, transaction, or apiErrorResponse"
             );
         }
     }
 }
+class_alias('Braintree\SubscriptionGateway', 'Braintree_SubscriptionGateway');

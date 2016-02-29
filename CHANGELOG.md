@@ -1,3 +1,47 @@
+## 3.9.0
+* Add AccountUpdaterDailyReport webhook parsing
+
+## 3.8.0
+* Add payment method revoke
+* Add support for options in `submit_for_settlement` transaction flows
+* Add verification create API
+* Update https certificate bundle
+
+## 3.7.0
+* Add VenmoAccount
+* Allow order_id and descriptor to be passed in for Transaction submit_for_settlement
+* Add facilitator details onto transactions
+* Add check webhook constant
+
+## 3.6.1
+* Fix PSR-0 style namespacing when using Symfony
+
+## 3.6.0
+* Add support for proxy servers
+* Add PSR-4 namespacing support
+* Add support for AMEX Express Checkout
+* Add support for new fields in dispute webhooks (`dateWon`, `dateOpened`, `kind`)
+* Add transaction data to sucessful subscription webhook
+
+## 3.5.0
+* Add support for raw ApplePay params on Transaction create
+
+## 3.4.0
+* Add sourceDescription method to Android Pay and Apple Pay payment methods
+* Add new Android Pay test nonces
+* Add billing agreement ID to PayPal Account
+* Support amex rewards transactions
+
+## 3.3.0
+* Add new test payment method nonces
+* Allow passing description on PayPal transactions
+* Add methods to change transaction settlement status in sandbox
+* Fix issue where customer with an id of 0 could not be found
+* Add Europe Bank Account functionality
+
+## 3.2.0
+* Add additional search criteria
+
 ## 3.1.0
 * Add support for HHVM
 * Validate that configuration is valid before verifying webhooks

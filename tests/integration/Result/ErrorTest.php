@@ -1,23 +1,28 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../../TestHelper.php';
+namespace Test\Integration\Result;
 
-class Braintree_Result_ErrorTest extends PHPUnit_Framework_TestCase
+require_once dirname(dirname(__DIR__)) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class ErrorTest extends Setup
 {
-    function testValueForHtmlField()
+    public function testValueForHtmlField()
     {
-        $result = Braintree_Customer::create(array(
+        $result = Braintree\Customer::create([
             'email' => 'invalid-email',
-            'creditCard' => array(
+            'creditCard' => [
                 'number' => 'invalid-number',
                 'expirationDate' => 'invalid-exp',
-                'billingAddress' => array(
+                'billingAddress' => [
                     'countryName' => 'invalid-country'
-                )
-            ),
-            'customFields' => array(
+                ]
+            ],
+            'customFields' => [
                 'store_me' => 'some custom value'
-            )
-        ));
+            ]
+        ]);
         $this->assertEquals(false, $result->success);
         $this->assertEquals('invalid-email', $result->valueForHtmlField('customer[email]'));
         $this->assertEquals('', $result->valueForHtmlField('customer[credit_card][number]'));

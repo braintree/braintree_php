@@ -1,4 +1,9 @@
 <?php
+namespace Braintree\Result;
+
+use Braintree\RiskData;
+use Braintree\Util;
+
 /**
  * Braintree Credit Card Verification Result
  *
@@ -8,7 +13,7 @@
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $avsErrorResponseCode
  * @property-read string $avsPostalCodeResponseCode
@@ -17,7 +22,7 @@
  * @property-read string $status
  *
  */
-class Braintree_Result_CreditCardVerification
+class CreditCardVerification
 {
     // Status
     const FAILED                   = 'failed';
@@ -46,13 +51,13 @@ class Braintree_Result_CreditCardVerification
      * @ignore
      * @access protected
      * @param <type> $aAttribs array of properties to set - single level
-     * @return none
+     * @return void
      */
     private function _initializeFromArray($attributes)
     {
         if(isset($attributes['riskData']))
         {
-            $attributes['riskData'] = Braintree_RiskData::factory($attributes['riskData']);
+            $attributes['riskData'] = RiskData::factory($attributes['riskData']);
         }
 
         $this->_attributes = $attributes;
@@ -63,7 +68,6 @@ class Braintree_Result_CreditCardVerification
     }
 
     /**
-     *
      * @ignore
      */
     public function  __get($name)
@@ -79,16 +83,17 @@ class Braintree_Result_CreditCardVerification
     public function  __toString()
     {
         return __CLASS__ . '[' .
-                Braintree_Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) . ']';
     }
 
     public static function allStatuses()
     {
-        return array(
-            Braintree_Result_creditCardVerification::FAILED,
-            Braintree_Result_creditCardVerification::GATEWAY_REJECTED,
-            Braintree_Result_creditCardVerification::PROCESSOR_DECLINED,
-            Braintree_Result_creditCardVerification::VERIFIED,
-        );
+        return [
+            CreditCardVerification::FAILED,
+            CreditCardVerification::GATEWAY_REJECTED,
+            CreditCardVerification::PROCESSOR_DECLINED,
+            CreditCardVerification::VERIFIED
+        ];
     }
 }
+class_alias('Braintree\Result\CreditCardVerification', 'Braintree_Result_CreditCardVerification');

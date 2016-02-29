@@ -1,4 +1,13 @@
 <?php
+namespace Braintree\Result;
+
+use Braintree\Base;
+use Braintree\Transaction;
+use Braintree\Subscription;
+use Braintree\MerchantAccount;
+use Braintree\Util;
+use Braintree\Error\ErrorCollection;
+
 /**
  * Braintree Error Result
  *
@@ -9,27 +18,26 @@
  * respond to the void request if it failed:
  *
  * <code>
- * $result = Braintree_Transaction::void('abc123');
+ * $result = Transaction::void('abc123');
  * if ($result->success) {
  *     // Successful Result
  * } else {
- *     // Braintree_Result_Error
+ *     // Result\Error
  * }
  * </code>
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read array $params original passed params
- * @property-read object $errors Braintree_Error_ErrorCollection
- * @property-read object $creditCardVerification credit card verification data
+ * @property-read Braintree\Error\ErrorCollection $errors
+ * @property-read Braintree\Result\CreditCardVerification $creditCardVerification credit card verification data
  */
-class Braintree_Result_Error extends Braintree_Base
+class Error extends Base
 {
-   /**
-    *
-    * @var boolean always false
+    /**
+    * @var bool always false
     */
    public $success = false;
 
@@ -46,10 +54,10 @@ class Braintree_Result_Error extends Braintree_Base
        $pieces = preg_split("/[\[\]]+/", $field, 0, PREG_SPLIT_NO_EMPTY);
        $params = $this->params;
        foreach(array_slice($pieces, 0, -1) as $key) {
-           $params = $params[Braintree_Util::delimiterToCamelCase($key)];
+           $params = $params[Util::delimiterToCamelCase($key)];
        }
        if ($key != 'custom_fields') {
-           $finalKey = Braintree_Util::delimiterToCamelCase(end($pieces));
+           $finalKey = Util::delimiterToCamelCase(end($pieces));
        } else {
            $finalKey = end($pieces);
        }
@@ -65,30 +73,36 @@ class Braintree_Result_Error extends Braintree_Base
    public function  __construct($response)
    {
        $this->_attributes = $response;
-       $this->_set('errors',  new Braintree_Error_ErrorCollection($response['errors']));
+       $this->_set('errors',  new ErrorCollection($response['errors']));
 
        if(isset($response['verification'])) {
-           $this->_set('creditCardVerification', new Braintree_Result_CreditCardVerification($response['verification']));
+           $this->_set('creditCardVerification', new CreditCardVerification($response['verification']));
        } else {
            $this->_set('creditCardVerification', null);
        }
 
        if(isset($response['transaction'])) {
-           $this->_set('transaction', Braintree_Transaction::factory($response['transaction']));
+           $this->_set('transaction', Transaction::factory($response['transaction']));
        } else {
            $this->_set('transaction', null);
        }
 
        if(isset($response['subscription'])) {
-           $this->_set('subscription', Braintree_Subscription::factory($response['subscription']));
+           $this->_set('subscription', Subscription::factory($response['subscription']));
        } else {
            $this->_set('subscription', null);
        }
 
        if(isset($response['merchantAccount'])) {
-           $this->_set('merchantAccount', Braintree_MerchantAccount::factory($response['merchantAccount']));
+           $this->_set('merchantAccount', MerchantAccount::factory($response['merchantAccount']));
        } else {
            $this->_set('merchantAccount', null);
+       }
+
+       if(isset($response['verification'])) {
+           $this->_set('verification', new CreditCardVerification($response['verification']));
+       } else {
+           $this->_set('verification', null);
        }
    }
 
@@ -96,14 +110,15 @@ class Braintree_Result_Error extends Braintree_Base
      * create a printable representation of the object as:
      * ClassName[property=value, property=value]
      * @ignore
-     * @return var
+     * @return string
      */
     public function  __toString()
     {
-        $output = Braintree_Util::attributesToString($this->_attributes);
+        $output = Util::attributesToString($this->_attributes);
         if (isset($this->_creditCardVerification)) {
             $output .= sprintf('%s', $this->_creditCardVerification);
         }
-        return __CLASS__ .'['.$output.']';
+        return __CLASS__ .'[' . $output . ']';
     }
 }
+class_alias('Braintree\Result\Error', 'Braintree_Result_Error');

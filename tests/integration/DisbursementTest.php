@@ -1,28 +1,34 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Integration;
 
-class Braintree_DisbursementTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use DateTime;
+use Test\Setup;
+use Braintree;
+
+class DisbursementTest extends Setup
 {
-    function testTransactions()
+    public function testTransactions()
     {
-        $disbursement = Braintree_Disbursement::factory(array(
+        $disbursement = Braintree\Disbursement::factory([
             "id" => "123456",
-            "merchantAccount" => array(
+            "merchantAccount" => [
                 "id" => "sandbox_sub_merchant_account",
-                "masterMerchantAccount" => array(
+                "masterMerchantAccount" => [
                     "id" => "sandbox_master_merchant_account",
                     "status" => "active"
-                    ),
+                    ],
                 "status" => "active"
-                ),
-            "transactionIds" => array("sub_merchant_transaction"),
+                ],
+            "transactionIds" => ["sub_merchant_transaction"],
             "exceptionMessage" => "invalid_account_number",
             "amount" => "100.00",
             "disbursementDate" => new DateTime("2013-04-10"),
             "followUpAction" => "update",
             "retry" => false,
             "success" => false
-        ));
+        ]);
 
         $transactions = $disbursement->transactions();
 

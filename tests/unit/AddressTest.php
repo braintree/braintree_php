@@ -1,74 +1,79 @@
 <?php
-require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
+namespace Test\Unit;
 
-class Braintree_AddressTest extends PHPUnit_Framework_TestCase
+require_once dirname(__DIR__) . '/Setup.php';
+
+use Test\Setup;
+use Braintree;
+
+class AddressTest extends Setup
 {
-    function testGet_givesErrorIfInvalidProperty()
+    public function testGet_givesErrorIfInvalidProperty()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree_Address: foo');
-        $a = Braintree_Address::factory(array());
+        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\Address: foo');
+        $a = Braintree\Address::factory([]);
         $a->foo;
     }
 
-    function testIsEqual()
+    public function testIsEqual()
     {
-        $first = Braintree_Address::factory(
-                array('customerId' => 'c1', 'id' => 'a1')
+        $first = Braintree\Address::factory(
+                ['customerId' => 'c1', 'id' => 'a1']
                 );
-        $second = Braintree_Address::factory(
-                array('customerId' => 'c1', 'id' => 'a1')
+        $second = Braintree\Address::factory(
+                ['customerId' => 'c1', 'id' => 'a1']
                 );
 
         $this->assertTrue($first->isEqual($second));
         $this->assertTrue($second->isEqual($first));
 
     }
-    function testIsNotEqual() {
-        $first = Braintree_Address::factory(
-                array('customerId' => 'c1', 'id' => 'a1')
+    public function testIsNotEqual() {
+        $first = Braintree\Address::factory(
+                ['customerId' => 'c1', 'id' => 'a1']
                 );
-        $second = Braintree_Address::factory(
-                array('customerId' => 'c1', 'id' => 'not a1')
-                );
-
-        $this->assertFalse($first->isEqual($second));
-        $this->assertFalse($second->isEqual($first));
-    }
-
-    function testCustomerIdNotEqual()
-    {
-        $first = Braintree_Address::factory(
-                array('customerId' => 'c1', 'id' => 'a1')
-                );
-        $second = Braintree_Address::factory(
-                array('customerId' => 'not c1', 'id' => 'a1')
+        $second = Braintree\Address::factory(
+                ['customerId' => 'c1', 'id' => 'not a1']
                 );
 
         $this->assertFalse($first->isEqual($second));
         $this->assertFalse($second->isEqual($first));
     }
 
-    function testFindErrorsOnBlankCustomerId()
+    public function testCustomerIdNotEqual()
     {
-        $this->setExpectedException('InvalidArgumentException');
-        Braintree_Address::find('', '123');
+        $first = Braintree\Address::factory(
+                ['customerId' => 'c1', 'id' => 'a1']
+                );
+        $second = Braintree\Address::factory(
+                ['customerId' => 'not c1', 'id' => 'a1']
+                );
+
+        $this->assertFalse($first->isEqual($second));
+        $this->assertFalse($second->isEqual($first));
     }
 
-    function testFindErrorsOnBlankAddressId()
+    public function testFindErrorsOnBlankCustomerId()
     {
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_Address::find('123', '');
+        Braintree\Address::find('', '123');
     }
 
-    function testFindErrorsOnWhitespaceOnlyId()
+    public function testFindErrorsOnBlankAddressId()
     {
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_Address::find('123', '  ');
+        Braintree\Address::find('123', '');
     }
 
-    function testFindErrorsOnWhitespaceOnlyCustomerId()
+    public function testFindErrorsOnWhitespaceOnlyId()
     {
         $this->setExpectedException('InvalidArgumentException');
-        Braintree_Address::find('  ', '123');
+        Braintree\Address::find('123', '  ');
+    }
+
+    public function testFindErrorsOnWhitespaceOnlyCustomerId()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        Braintree\Address::find('  ', '123');
     }
 }

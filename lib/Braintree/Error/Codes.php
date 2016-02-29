@@ -1,4 +1,6 @@
 <?php
+namespace Braintree\Error;
+
 /**
  *
  * Validation Error codes and messages
@@ -12,9 +14,9 @@
  * @package    Braintree
  * @subpackage Errors
  * @category   Validation
- * @copyright  2014 Braintree, a division of PayPal, Inc.
+ * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Error_Codes
+class Codes
 {
     const ADDRESS_CANNOT_BE_BLANK                        = '81801';
     const ADDRESS_COMPANY_IS_INVALID                     = '91821';
@@ -44,24 +46,24 @@ class Braintree_Error_Codes
     const ADDRESS_STREET_ADDRESS_IS_TOO_LONG             = '81812';
     const ADDRESS_TOO_MANY_ADDRESSES_PER_CUSTOMER        = '91818';
 
-    const APPLE_PAY_CARDS_ARE_NOT_ACCEPTED                                  = "83501";
-    const APPLE_PAY_CUSTOMER_ID_IS_REQUIRED_FOR_VAULTING                    = "83502";
-    const APPLE_PAY_TOKEN_IS_IN_USE                                         = "93503";
-    const APPLE_PAY_PAYMENT_METHOD_NONCE_CONSUMED                           = "93504";
-    const APPLE_PAY_PAYMENT_METHOD_NONCE_UNKNOWN                            = "93505";
-    const APPLE_PAY_PAYMENT_METHOD_NONCE_UNLOCKED                           = "93506";
-    const APPLE_PAY_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED          = "83518";
-    const APPLE_PAY_CANNOT_UPDATE_APPLE_PAY_CARD_USING_PAYMENT_METHOD_NONCE = "93507";
-    const APPLE_PAY_NUMBER_IS_REQUIRED                                      = "93508";
-    const APPLE_PAY_EXPIRATION_MONTH_IS_REQUIRED                            = "93509";
-    const APPLE_PAY_EXPIRATION_YEAR_IS_REQUIRED                             = "93510";
-    const APPLE_PAY_CRYPTOGRAM_IS_REQUIRED                                  = "93511";
-    const APPLE_PAY_DECRYPTION_FAILED                                       = "83512";
-    const APPLE_PAY_DISABLED                                                = "93513";
-    const APPLE_PAY_MERCHANT_NOT_CONFIGURED                                 = "93514";
-    const APPLE_PAY_MERCHANT_KEYS_ALREADY_CONFIGURED                        = "93515";
-    const APPLE_PAY_MERCHANT_KEYS_NOT_CONFIGURED                            = "93516";
-    const APPLE_PAY_CERTIFICATE_INVALID                                     = "93517";
+    const APPLE_PAY_CARDS_ARE_NOT_ACCEPTED                                  = '83501';
+    const APPLE_PAY_CUSTOMER_ID_IS_REQUIRED_FOR_VAULTING                    = '83502';
+    const APPLE_PAY_TOKEN_IS_IN_USE                                         = '93503';
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_CONSUMED                           = '93504';
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_UNKNOWN                            = '93505';
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_UNLOCKED                           = '93506';
+    const APPLE_PAY_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED          = '83518';
+    const APPLE_PAY_CANNOT_UPDATE_APPLE_PAY_CARD_USING_PAYMENT_METHOD_NONCE = '93507';
+    const APPLE_PAY_NUMBER_IS_REQUIRED                                      = '93508';
+    const APPLE_PAY_EXPIRATION_MONTH_IS_REQUIRED                            = '93509';
+    const APPLE_PAY_EXPIRATION_YEAR_IS_REQUIRED                             = '93510';
+    const APPLE_PAY_CRYPTOGRAM_IS_REQUIRED                                  = '93511';
+    const APPLE_PAY_DECRYPTION_FAILED                                       = '83512';
+    const APPLE_PAY_DISABLED                                                = '93513';
+    const APPLE_PAY_MERCHANT_NOT_CONFIGURED                                 = '93514';
+    const APPLE_PAY_MERCHANT_KEYS_ALREADY_CONFIGURED                        = '93515';
+    const APPLE_PAY_MERCHANT_KEYS_NOT_CONFIGURED                            = '93516';
+    const APPLE_PAY_CERTIFICATE_INVALID                                     = '93517';
     const APPLE_PAY_CERTIFICATE_MISMATCH                                    = '93519';
     const APPLE_PAY_INVALID_TOKEN                                           = '83520';
     const APPLE_PAY_PRIVATE_KEY_MISMATCH                                    = '93521';
@@ -106,6 +108,7 @@ class Braintree_Error_Codes
     const CREDIT_CARD_INVALID_VENMO_SDK_PAYMENT_METHOD_CODE                             = '91727';
     const CREDIT_CARD_NUMBER_INVALID_LENGTH                                             = '81716';
     const CREDIT_CARD_NUMBER_IS_INVALID                                                 = '81715';
+    const CREDIT_CARD_NUMBER_IS_PROHIBITED                                              = '81750';
     const CREDIT_CARD_NUMBER_IS_REQUIRED                                                = '81714';
     const CREDIT_CARD_NUMBER_LENGTH_IS_INVALID                                          = '81716';
     const CREDIT_CARD_NUMBER_MUST_BE_TEST_NUMBER                                        = '81717';
@@ -169,12 +172,12 @@ class Braintree_Error_Codes
     const INDUSTRY_DATA_LODGING_CHECK_OUT_DATE_IS_INVALID                = '93405';
     const INDUSTRY_DATA_LODGING_CHECK_OUT_DATE_MUST_FOLLOW_CHECK_IN_DATE = '93406';
     const INDUSTRY_DATA_LODGING_UNKNOWN_DATA_FIELD                       = '93407';
-    const INDUSTRY_DATA_TRAVEL_CRUISE_EMPTY_DATA                         = "93408";
-    const INDUSTRY_DATA_TRAVEL_CRUISE_UNKNOWN_DATA_FIELD                 = "93409";
-    const INDUSTRY_DATA_TRAVEL_CRUISE_TRAVEL_PACKAGE_IS_INVALID          = "93410";
-    const INDUSTRY_DATA_TRAVEL_CRUISE_DEPARTURE_DATE_IS_INVALID          = "93411";
-    const INDUSTRY_DATA_TRAVEL_CRUISE_LODGING_CHECK_IN_DATE_IS_INVALID   = "93412";
-    const INDUSTRY_DATA_TRAVEL_CRUISE_LODGING_CHECK_OUT_DATE_IS_INVALID  = "93413";
+    const INDUSTRY_DATA_TRAVEL_CRUISE_EMPTY_DATA                         = '93408';
+    const INDUSTRY_DATA_TRAVEL_CRUISE_UNKNOWN_DATA_FIELD                 = '93409';
+    const INDUSTRY_DATA_TRAVEL_CRUISE_TRAVEL_PACKAGE_IS_INVALID          = '93410';
+    const INDUSTRY_DATA_TRAVEL_CRUISE_DEPARTURE_DATE_IS_INVALID          = '93411';
+    const INDUSTRY_DATA_TRAVEL_CRUISE_LODGING_CHECK_IN_DATE_IS_INVALID   = '93412';
+    const INDUSTRY_DATA_TRAVEL_CRUISE_LODGING_CHECK_OUT_DATE_IS_INVALID  = '93413';
 
     const MERCHANT_COUNTRY_CANNOT_BE_BLANK              = '83603';
     const MERCHANT_COUNTRY_CODE_ALPHA2_IS_INVALID       = '93607';
@@ -423,6 +426,7 @@ class Braintree_Error_Codes
     const TRANSACTION_CANNOT_REFUND_WITH_SUSPENDED_MERCHANT_ACCOUNT                   = '91538';
     const TRANSACTION_CANNOT_RELEASE_FROM_ESCROW                                      = '91561';
     const TRANSACTION_CANNOT_SIMULATE_SETTLEMENT                                      = '91575';
+    const TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT                            = '915103';
     const TRANSACTION_CANNOT_SUBMIT_FOR_SETTLEMENT                                    = '91507';
     const TRANSACTION_CHANNEL_IS_TOO_LONG                                             = '91550';
     const TRANSACTION_CREDIT_CARD_IS_REQUIRED                                         = '91508';
@@ -445,6 +449,7 @@ class Braintree_Error_Codes
     const TRANSACTION_OPTIONS_VAULT_IS_DISABLED                                       = '91525';
     const TRANSACTION_ORDER_ID_IS_TOO_LONG                                            = '91501';
     const TRANSACTION_PAYMENT_INSTRUMENT_NOT_SUPPORTED_BY_MERCHANT_ACCOUNT            = '91577';
+    const TRANSACTION_PAYMENT_INSTRUMENT_TYPE_IS_NOT_ACCEPTED                         = '915101';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT                                         = '91515';
     const TRANSACTION_PAYMENT_METHOD_CONFLICT_WITH_VENMO_SDK                          = '91549';
     const TRANSACTION_PAYMENT_METHOD_DOES_NOT_BELONG_TO_CUSTOMER                      = '91516';
@@ -461,7 +466,11 @@ class Braintree_Error_Codes
     const TRANSACTION_PAY_PAL_VAULT_RECORD_MISSING_DATA                               = '91583';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_CANNOT_BE_SET                      = '91519';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_IS_INVALID                         = '81520';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_AUTHS                                = '915104';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_CREDITS                              = '91546';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_PARTIAL_SETTLEMENT                   = '915102';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_ORDER_ID                    = '915107';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DESCRIPTOR                  = '915108';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_VOICE_AUTHORIZATIONS                 = '91545';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID                                = '91548';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                               = '91537';
@@ -489,4 +498,12 @@ class Braintree_Error_Codes
     const TRANSACTION_TYPE_IS_INVALID                                           = '91523';
     const TRANSACTION_TYPE_IS_REQUIRED                                          = '91524';
     const TRANSACTION_UNSUPPORTED_VOICE_AUTHORIZATION                           = '91539';
+
+    const VERIFICATION_OPTIONS_AMOUNT_CANNOT_BE_NEGATIVE         = '94201';
+    const VERIFICATION_OPTIONS_AMOUNT_FORMAT_IS_INVALID          = '94202';
+    const VERIFICATION_OPTIONS_AMOUNT_NOT_SUPPORTED_BY_PROCESSOR = '94203';
+    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_ID_IS_INVALID    = '94204';
+    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_IS_SUSPENDED     = '94205';
+    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_IS_FORBIDDEN     = '94206';
 }
+class_alias('Braintree\Error\Codes', 'Braintree_Error_Codes');
