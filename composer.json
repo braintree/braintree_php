@@ -1,5 +1,5 @@
 {
-    "name": "braintree/braintree_php",
+    "name": "inewswire/braintree_php",
     "type": "library",
     "description": "Braintree PHP Client Library",
     "license": "MIT",
