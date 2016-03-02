@@ -42,8 +42,7 @@ class HttpTest extends Setup
             Braintree\Configuration::environment('sandbox');
             $this->setExpectedException('Braintree\Exception\SSLCertificate');
             $http = new Braintree\Http(Braintree\Configuration::$global);
-            //ip address of api.braintreegateway.com
-            $http->_doUrlRequest('get', '204.109.13.121');
+            $http->_doUrlRequest('get', '/');
         } catch (Braintree\Exception $e) {
             Braintree\Configuration::environment('development');
             throw $e;
