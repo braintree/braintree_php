@@ -221,6 +221,18 @@ class ConfigurationTest extends Setup
         $this->assertTrue($this->config->isUsingProxy());
     }
 
+    function testReadTimeout()
+    {
+        $this->config->readTimeout(30);
+
+        $this->assertEquals(30, $this->config->readTimeout());
+    }
+
+    function testReadTimeoutDefaultsToSixty()
+    {
+        $this->assertEquals(60, $this->config->readTimeout());
+    }
+
      /**
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage environment needs to be set

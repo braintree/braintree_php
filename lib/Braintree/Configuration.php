@@ -24,6 +24,7 @@ class Configuration
     private $_proxyHost = null;
     private $_proxyPort = null;
     private $_proxyType = null;
+    private $_readTimeout = 60;
 
     /**
      * Braintree API version to use
@@ -108,6 +109,20 @@ class Configuration
             return self::$global->getPrivateKey();
         }
         self::$global->setPrivateKey($value);
+    }
+
+    /**
+     * Sets or gets the read timeout to use for making requests.
+     *
+     * @param string $value If provided, sets the read timeout
+     * @return string The read timeout used for connecting to Braintree
+     */
+    public static function readTimeout($value=null)
+    {
+        if (empty($value)) {
+            return self::$global->getReadTimeout();
+        }
+        self::$global->setReadTimeout($value);
     }
 
     /**
@@ -295,6 +310,16 @@ class Configuration
     public function getProxyType()
     {
         return $this->_proxyType;
+    }
+
+    private function setReadTimeout($value)
+    {
+        $this->_readTimeout = $value;
+    }
+
+    public function getReadTimeout()
+    {
+        return $this->_readTimeout;
     }
 
     public function getAccessToken()
