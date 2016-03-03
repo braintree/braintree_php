@@ -114,8 +114,8 @@ class Configuration
     /**
      * Sets or gets the read timeout to use for making requests.
      *
-     * @param string $value If provided, sets the read timeout
-     * @return string The read timeout used for connecting to Braintree
+     * @param integer $value If provided, sets the read timeout
+     * @return integer The read timeout used for connecting to Braintree
      */
     public static function readTimeout($value=null)
     {

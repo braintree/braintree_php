@@ -148,10 +148,8 @@ class Http
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $error_code = curl_errno($curl);
 
-        if ($error_code == 28) {
-            if ($httpStatus == 0) {
-                throw new Exception\Timeout();
-            }
+        if ($error_code == 28 && $httpStatus == 0) {
+            throw new Exception\Timeout();
         }
 
         curl_close($curl);

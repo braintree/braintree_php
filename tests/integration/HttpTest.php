@@ -42,7 +42,7 @@ class HttpTest extends Setup
             Braintree\Configuration::environment('sandbox');
             $this->setExpectedException('Braintree\Exception\SSLCertificate');
             $http = new Braintree\Http(Braintree\Configuration::$global);
-            $http->_doUrlRequest('get', '/');
+            $http->_doUrlRequest('get', '/malformed_url');
         } catch (Braintree\Exception $e) {
             Braintree\Configuration::environment('development');
             throw $e;
