@@ -221,16 +221,16 @@ class ConfigurationTest extends Setup
         $this->assertTrue($this->config->isUsingProxy());
     }
 
-    function testReadTimeout()
+    function testTimeout()
     {
-        $this->config->readTimeout(30);
+        $this->config->timeout(30);
 
-        $this->assertEquals(30, $this->config->readTimeout());
+        $this->assertEquals(30, $this->config->timeout());
     }
 
-    function testReadTimeoutDefaultsToSixty()
+    function testTimeoutDefaultsToSixty()
     {
-        $this->assertEquals(60, $this->config->readTimeout());
+        $this->assertEquals(60, $this->config->timeout());
     }
 
      /**
