@@ -215,6 +215,8 @@ class WebhookNotificationTest extends Setup
 
         $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY, $webhookNotification->kind);
         $this->assertEquals("my_id", $webhookNotification->subscription->id);
+        $this->assertEquals(new DateTime('2016-03-21'), $webhookNotification->subscription->billingPeriodStartDate);
+        $this->assertEquals(new DateTime('2017-03-31'), $webhookNotification->subscription->billingPeriodEndDate);
         $this->assertEquals(1, count($webhookNotification->subscription->transactions));
 
         $transaction = $webhookNotification->subscription->transactions[0];
