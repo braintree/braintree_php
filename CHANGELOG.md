@@ -1,3 +1,7 @@
+## 3.10.0
+* Add timeout attribute
+* Add start-date and end-date to SUBSCRIPTION_CHARGED_SUCCESSFULLY test webhook response
+
 ## 3.9.0
 * Add AccountUpdaterDailyReport webhook parsing
 
