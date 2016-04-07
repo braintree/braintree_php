@@ -188,10 +188,12 @@ class Codes
     const MERCHANT_COUNTRY_CODE_NUMERIC_IS_NOT_ACCEPTED = '93608';
     const MERCHANT_COUNTRY_NAME_IS_INVALID              = '93611';
     const MERCHANT_COUNTRY_NAME_IS_NOT_ACCEPTED         = '93610';
+    const MERCHANT_CURRENCIES_ARE_INVALID               = '93614';
     const MERCHANT_EMAIL_FORMAT_IS_INVALID              = '93602';
     const MERCHANT_EMAIL_IS_REQUIRED                    = '83601';
     const MERCHANT_INCONSISTENT_COUNTRY                 = '93612';
     const MERCHANT_ACCOUNT_PAYMENT_METHODS_ARE_INVALID  = '93613';
+    const MERCHANT_PAYMENT_METHODS_ARE_NOT_ALLOWED      = '93615';
 
     const MERCHANT_ACCOUNT_ID_FORMAT_IS_INVALID                         = '82603';
     const MERCHANT_ACCOUNT_ID_IS_IN_USE                                 = '82604';
