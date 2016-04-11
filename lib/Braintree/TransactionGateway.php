@@ -17,7 +17,7 @@ use InvalidArgumentException;
  * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
-final class TransactionGateway
+class TransactionGateway
 {
     private $_gateway;
     private $_config;
