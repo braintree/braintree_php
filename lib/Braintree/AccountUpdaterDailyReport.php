@@ -12,7 +12,7 @@ namespace Braintree;
  * @property-read date   $reportDate
  * @property-read date   $receivedDate
  */
-final class AccountUpdaterDailyReport extends Base
+class AccountUpdaterDailyReport extends Base
 {
     protected $_attributes = [];
 

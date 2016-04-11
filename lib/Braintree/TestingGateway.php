@@ -1,7 +1,7 @@
 <?php
 namespace Braintree;
 
-final class TestingGateway
+class TestingGateway
 {
     private $_gateway;
     private $_config;
