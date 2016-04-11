@@ -445,6 +445,31 @@ class CustomerTest extends Setup
         $this->assertEquals('I', $result->creditCardVerification->avsStreetAddressResponseCode);
     }
 
+    public function testCreate_withCreditCardAndVerificationAmount()
+    {
+        $result = Braintree\Customer::create([
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com',
+            'creditCard' => [
+                'number' => '5555555555554444',
+                'expirationDate' => '05/12',
+                'cvv' => '123',
+                'cardholderName' => 'Mike Jones',
+                'options' => [
+                    'verifyCard' => true,
+                    'verificationAmount' => '2.00'
+                ]
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+    }
+
     public function testCreate_withCreditCardAndBillingAddress()
     {
         $result = Braintree\Customer::create([
@@ -801,6 +826,23 @@ class CustomerTest extends Setup
         $billingAddress = $result->customer->creditCards[0]->billingAddress;
         $this->assertEquals($address->id, $billingAddress->id);
         $this->assertEquals('Dan', $billingAddress->firstName);
+    }
+
+    public function testUpdate_withNewCreditCardAndVerificationAmount()
+    {
+        $customer = Braintree\Customer::create()->customer;
+        $result = Braintree\Customer::update($customer->id, [
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '11/14',
+                'options' => [
+                    'verifyCard' => true,
+                    'verificationAmount' => '2.00'
+                ]
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
     }
 
     public function testUpdate_worksWithFuturePayPalNonce()
