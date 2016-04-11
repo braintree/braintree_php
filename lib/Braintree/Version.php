@@ -7,7 +7,7 @@ namespace Braintree;
  *
  * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
-final class Version
+class Version
 {
     /**
      * class constants
