@@ -1,3 +1,7 @@
+## 3.11.0
+* Remove final from classes. Thanks, @ibrahimlawal!
+* Add currency to Transaction search
+
 ## 3.10.0
 * Add timeout attribute
 * Add start-date and end-date to SUBSCRIPTION_CHARGED_SUCCESSFULLY test webhook response
