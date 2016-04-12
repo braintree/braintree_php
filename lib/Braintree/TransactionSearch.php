@@ -20,6 +20,7 @@ class TransactionSearch
     public static function creditCardExpirationDate()   { return new EqualityNode('credit_card_expiration_date'); }
     public static function creditCardNumber()           { return new PartialMatchNode('credit_card_number'); }
     public static function creditCardUniqueIdentifier() { return new TextNode('credit_card_unique_identifier'); }
+    public static function currency()                   { return new TextNode('currency'); }
     public static function customerCompany()            { return new TextNode('customer_company'); }
     public static function customerEmail()              { return new TextNode('customer_email'); }
     public static function customerFax()                { return new TextNode('customer_fax'); }
