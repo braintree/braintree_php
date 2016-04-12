@@ -43,6 +43,14 @@ class UtilTest extends Setup
     }
 
     /**
+     * @expectedException Braintree\Exception\TooManyRequests
+     */
+    public function testThrow429Exception()
+    {
+        Braintree\Util::throwStatusCodeException(429);
+    }
+
+    /**
      * @expectedException Braintree\Exception\ServerError
      */
     public function testThrow500Exception()
