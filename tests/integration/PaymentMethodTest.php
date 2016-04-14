@@ -830,6 +830,14 @@ class PaymentMethodTest extends Setup
     public function testUpdate_updatesTheCoinbaseAccount()
     {
         $customer = Braintree\Customer::createNoValidate();
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$venmoAccount
+        ]);
+        $this->assertTrue($result->success);
+        $this->assertTrue($result->paymentMethod->isDefault());
+
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
             'paymentMethodNonce' => Braintree\Test\Nonces::$coinbase
