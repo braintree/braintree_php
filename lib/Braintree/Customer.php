@@ -59,7 +59,7 @@ class Customer extends Base
     /**
      *
      * @param array $attribs
-     * @return Customer
+     * @return Braintree\Result\Error|Braintree\Result\Successful
      */
     public static function create($attribs = [])
     {
