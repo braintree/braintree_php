@@ -27,6 +27,12 @@ class ErrorCollection implements \Countable
                 new ValidationErrorCollection($errorData);
     }
 
+    /**
+     * Return count of items in collection
+     * Implements countable
+     * 
+     * @return integer
+     */
     public function count()
     {
         return $this->_errors->count();
