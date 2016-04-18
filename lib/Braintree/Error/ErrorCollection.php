@@ -17,7 +17,7 @@ use Braintree\Util;
  *
  * @property-read object $errors
  */
-class ErrorCollection
+class ErrorCollection implements \Countable
 {
     private $_errors;
 
@@ -27,6 +27,10 @@ class ErrorCollection
                 new ValidationErrorCollection($errorData);
     }
 
+    public function count()
+    {
+        return $this->_errors->count();
+    }
 
     /**
      * Returns all of the validation errors at all levels of nesting in a single, flat array.
