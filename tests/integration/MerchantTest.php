@@ -86,13 +86,23 @@ class MerchantTest extends Setup
         $merchantAccounts = $merchant->merchantAccounts;
         $this->assertEquals(2, count($merchantAccounts));
 
-        $usdMerchantAccount = $merchantAccounts[0];
+        $usdMerchantAccount = $this->getMerchantAccountForCurrency($merchantAccounts, 'USD');
+        $this->assertNotNull($usdMerchantAccount);
         $this->assertEquals(true, $usdMerchantAccount->default);
-        $this->assertEquals('USD', $usdMerchantAccount->currencyIsoCode);
 
-        $gbpMerchantAccount = $merchantAccounts[1];
+        $gbpMerchantAccount = $this->getMerchantAccountForCurrency($merchantAccounts, 'GBP');
+        $this->assertNotNull($gbpMerchantAccount);
         $this->assertEquals(false, $gbpMerchantAccount->default);
-        $this->assertEquals('GBP', $gbpMerchantAccount->currencyIsoCode);
+    }
+
+    private function getMerchantAccountForCurrency($merchantAccounts, $currency)
+    {
+        foreach($merchantAccounts as $merchantAccount) {
+            if($merchantAccount->currencyIsoCode == $currency) {
+                return $merchantAccount;
+            }
+        }
+        return null;
     }
 
     public function testCreatePaypalOnlyMerchantWithNoCurrenciesProvided()
