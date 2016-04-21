@@ -89,16 +89,18 @@ class MerchantTest extends Setup
         $usdMerchantAccount = $this->getMerchantAccountForCurrency($merchantAccounts, 'USD');
         $this->assertNotNull($usdMerchantAccount);
         $this->assertEquals(true, $usdMerchantAccount->default);
+        $this->assertEquals('USD', $usdMerchantAccount->currencyIsoCode);
 
         $gbpMerchantAccount = $this->getMerchantAccountForCurrency($merchantAccounts, 'GBP');
         $this->assertNotNull($gbpMerchantAccount);
         $this->assertEquals(false, $gbpMerchantAccount->default);
+        $this->assertEquals('GBP', $gbpMerchantAccount->currencyIsoCode);
     }
 
     private function getMerchantAccountForCurrency($merchantAccounts, $currency)
     {
         foreach($merchantAccounts as $merchantAccount) {
-            if($merchantAccount->currencyIsoCode == $currency) {
+            if($merchantAccount->id == $currency) {
                 return $merchantAccount;
             }
         }
