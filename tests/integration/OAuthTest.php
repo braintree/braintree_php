@@ -166,6 +166,7 @@ class OAuthTest extends Setup
             'redirectUri' => 'http://bar.example.com',
             'scope' => 'read_write',
             'state' => 'baz_state',
+            'landingPage' => 'login',
             'user' => [
                 'country' => 'USA',
                 'email' => 'foo@example.com',
@@ -212,6 +213,7 @@ class OAuthTest extends Setup
         $this->assertEquals('http://bar.example.com', $query['redirect_uri']);
         $this->assertEquals('read_write', $query['scope']);
         $this->assertEquals('baz_state', $query['state']);
+        $this->assertEquals('login', $query['landing_page']);
 
         $this->assertEquals('USA', $query['user']['country']);
         $this->assertEquals('foo@example.com', $query['user']['email']);
