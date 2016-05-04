@@ -529,6 +529,11 @@ class Transaction extends Base
         return Configuration::gateway()->transaction()->submitForSettlementNoValidate($transactionId, $amount, $attribs);
     }
 
+    public static function updateDetails($transactionId, $attribs = [])
+    {
+        return Configuration::gateway()->transaction()->updateDetails($transactionId, $attribs);
+    }
+
     public static function submitForPartialSettlement($transactionId, $amount, $attribs = [])
     {
         return Configuration::gateway()->transaction()->submitForPartialSettlement($transactionId, $amount, $attribs);

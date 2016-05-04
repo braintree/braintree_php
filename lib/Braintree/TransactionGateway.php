@@ -211,6 +211,11 @@ class TransactionGateway
         return ['orderId', ['descriptor' => ['name', 'phone', 'url']]];
     }
 
+    public static function updateDetailsSignature()
+    {
+        return ['amount', 'orderId', ['descriptor' => ['name', 'phone', 'url']]];
+    }
+
     /**
      *
      * @access public
@@ -364,6 +369,16 @@ class TransactionGateway
     {
         $result = $this->submitForSettlement($transactionId, $amount, $attribs);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
+    }
+
+    public function updateDetails($transactionId, $attribs = [])
+    {
+        $this->_validateId($transactionId);
+        Util::verifyKeys(self::updateDetailsSignature(), $attribs);
+
+        $path = $this->_config->merchantPath() . '/transactions/'. $transactionId . '/update_details';
+        $response = $this->_http->put($path, ['transaction' => $attribs]);
+        return $this->_verifyGatewayResponse($response);
     }
 
     public function submitForPartialSettlement($transactionId, $amount, $attribs = [])
