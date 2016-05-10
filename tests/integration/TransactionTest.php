@@ -1377,6 +1377,208 @@ class TransactionTest extends Setup
         $submittedTransaction = Braintree\Transaction::submitForSettlementNoValidate($transaction->id, '101.00');
     }
 
+  public function testUpdateDetails()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+                ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'orderId' => '123',
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
+        $this->assertEquals('90.00', $submitResult->transaction->amount);
+    }
+
+  public function testUpdateDetails_withInvalidParams()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+                ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'invalid' => 'some value'
+        ];
+
+        $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalid');
+        Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+    }
+
+  public function testUpdateDetails_withInvalidAmount()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+                ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '900.00',
+            'orderId' => '123',
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('amount');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SETTLEMENT_AMOUNT_IS_TOO_LARGE, $errors[0]->code);
+
+    }
+
+  public function testUpdateDetails_withInvalidDescriptor()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+                ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'orderId' => '123',
+            'descriptor' => [
+                'name' => 'invalid name',
+                'phone' => 'invalid phone',
+                'url' => 'invalid way too long url'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('name');
+        $this->assertEquals(Braintree\Error\Codes::DESCRIPTOR_NAME_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('phone');
+        $this->assertEquals(Braintree\Error\Codes::DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('url');
+        $this->assertEquals(Braintree\Error\Codes::DESCRIPTOR_URL_FORMAT_IS_INVALID, $errors[0]->code);
+    }
+
+  public function testUpdateDetails_withInvalidOrderId()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+                ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'orderId' => str_repeat('x', 256),
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('orderId');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_ORDER_ID_IS_TOO_LONG, $errors[0]->code);
+    }
+
+  public function testUpdateDetails_withInvalidProcessor()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
+                'expirationDate' => '05/12'
+            ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'orderId' => '123',
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DETAILS, $errors[0]->code);
+    }
+
+  public function testUpdateDetails_withBadStatus()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'orderId' => '123',
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_CANNOT_UPDATE_DETAILS_NOT_SUBMITTED_FOR_SETTLEMENT, $errors[0]->code);
+    }
+
   public function testVoid()
     {
         $transaction = Braintree\Transaction::saleNoValidate([
