@@ -1401,9 +1401,9 @@ class TransactionTest extends Setup
         ];
 
         $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
-        $this->assertEquals(true, $submitResult->success);
-        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
-        $this->assertEquals('90.00', $submitResult->transaction->amount);
+        $this->assertEquals(true, $result->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $result->transaction->status);
+        $this->assertEquals('90.00', $result->transaction->amount);
     }
 
   public function testUpdateDetails_withInvalidParams()
