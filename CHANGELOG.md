@@ -1,3 +1,9 @@
+## 3.12.0
+* Add Transaction `update_details`
+* Support for Too Many Requests response codes
+* Add ability to count errors in ErrorCollection object. Thanks, @bocharsky-bw
+* Improve Type Hinting
+
 ## 3.11.0
 * Remove final from classes. Thanks, @ibrahimlawal!
 * Add currency to Transaction search
