@@ -827,6 +827,36 @@ class PaymentMethodTest extends Setup
         $this->assertSame("06/2013", $updatedCreditCard->expirationDate);
     }
 
+    public function testUpdate_updatesTheCoinbaseAccount()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$venmoAccount
+        ]);
+        $this->assertTrue($result->success);
+        $this->assertTrue($result->paymentMethod->isDefault());
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$coinbase
+        ]);
+        $this->assertTrue($result->success);
+        $coinbaseAccount = $result->paymentMethod;
+
+        $updateResult = Braintree\PaymentMethod::update($coinbaseAccount->token, [
+            'options' => [
+                'makeDefault' => 'true'
+            ]
+        ]);
+
+        $this->assertTrue($updateResult->success);
+        $this->assertSame($updateResult->paymentMethod->token, $coinbaseAccount->token);
+        $updatedCoinbaseAccount = $updateResult->paymentMethod;
+        $this->assertTrue($updatedCoinbaseAccount->isDefault());
+    }
+
     public function testUpdate_createsANewBillingAddressByDefault()
     {
         $customer = Braintree\Customer::createNoValidate();

@@ -188,10 +188,12 @@ class Codes
     const MERCHANT_COUNTRY_CODE_NUMERIC_IS_NOT_ACCEPTED = '93608';
     const MERCHANT_COUNTRY_NAME_IS_INVALID              = '93611';
     const MERCHANT_COUNTRY_NAME_IS_NOT_ACCEPTED         = '93610';
+    const MERCHANT_CURRENCIES_ARE_INVALID               = '93614';
     const MERCHANT_EMAIL_FORMAT_IS_INVALID              = '93602';
     const MERCHANT_EMAIL_IS_REQUIRED                    = '83601';
     const MERCHANT_INCONSISTENT_COUNTRY                 = '93612';
     const MERCHANT_ACCOUNT_PAYMENT_METHODS_ARE_INVALID  = '93613';
+    const MERCHANT_PAYMENT_METHODS_ARE_NOT_ALLOWED      = '93615';
 
     const MERCHANT_ACCOUNT_ID_FORMAT_IS_INVALID                         = '82603';
     const MERCHANT_ACCOUNT_ID_IS_IN_USE                                 = '82604';
@@ -428,6 +430,7 @@ class Codes
     const TRANSACTION_CANNOT_SIMULATE_SETTLEMENT                                      = '91575';
     const TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT                            = '915103';
     const TRANSACTION_CANNOT_SUBMIT_FOR_SETTLEMENT                                    = '91507';
+    const TRANSACTION_CANNOT_UPDATE_DETAILS_NOT_SUBMITTED_FOR_SETTLEMENT              = '915129';
     const TRANSACTION_CHANNEL_IS_TOO_LONG                                             = '91550';
     const TRANSACTION_CREDIT_CARD_IS_REQUIRED                                         = '91508';
     const TRANSACTION_CUSTOMER_DEFAULT_PAYMENT_METHOD_CARD_TYPE_IS_NOT_ACCEPTED       = '81509';
@@ -471,6 +474,7 @@ class Codes
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_PARTIAL_SETTLEMENT                   = '915102';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_ORDER_ID                    = '915107';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DESCRIPTOR                  = '915108';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DETAILS                     = '915130';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_VOICE_AUTHORIZATIONS                 = '91545';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID                                = '91548';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                               = '91537';

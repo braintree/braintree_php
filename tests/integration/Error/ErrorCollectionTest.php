@@ -77,4 +77,20 @@ class ErrorCollectionTest extends Setup
         $this->assertEquals(false, $result->success);
         $this->assertEquals([], $result->errors->onHtmlField('customer[custom_fields][store_me]'));
     }
+
+    public function testCount_returnsTheNumberOfErrors()
+    {
+        $result = Braintree\Customer::create([
+            'email' => 'invalid',
+            'creditCard' => [
+                'number' => 'invalid',
+                'expirationDate' => 'invalid',
+                'billingAddress' => [
+                    'countryName' => 'invaild'
+                ]
+            ]
+        ]);
+        $this->assertEquals(false, $result->success);
+        $this->assertEquals(4, count($result->errors));
+    }
 }

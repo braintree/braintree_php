@@ -156,7 +156,7 @@ namespace Braintree;
  * @property-read Braintree\CreditCardDetails $creditCardDetails transaction credit card info
  * @property-read Braintree\CoinbaseAccountDetails $coinbaseDetails transaction Coinbase account info
  * @property-read Braintree\PayPalAccountDetails $paypalDetails transaction paypal account info
- * @property-read Braintree\Customer $customerDetails transaction customer info
+ * @property-read Braintree\Transaction\CustomerDetails $customerDetails transaction customer info
  * @property-read Braintree\VenmoAccount $venmoAccountDetails transaction Venmo Account info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
@@ -527,6 +527,11 @@ class Transaction extends Base
     public static function submitForSettlementNoValidate($transactionId, $amount = null, $attribs = [])
     {
         return Configuration::gateway()->transaction()->submitForSettlementNoValidate($transactionId, $amount, $attribs);
+    }
+
+    public static function updateDetails($transactionId, $attribs = [])
+    {
+        return Configuration::gateway()->transaction()->updateDetails($transactionId, $attribs);
     }
 
     public static function submitForPartialSettlement($transactionId, $amount, $attribs = [])

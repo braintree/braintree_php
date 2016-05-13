@@ -59,7 +59,7 @@ class Customer extends Base
     /**
      *
      * @param array $attribs
-     * @return Customer
+     * @return Result\Successful|Result\Error
      */
     public static function create($attribs = [])
     {
