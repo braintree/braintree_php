@@ -46,7 +46,6 @@ class OAuthTest extends Setup
         ]);
     }
 
-
     public function testCreateTokenFromCodeWithMixedCredentials()
     {
         $gateway = new Braintree\Gateway([
@@ -91,6 +90,31 @@ class OAuthTest extends Setup
         $this->assertNotNull($result->refreshToken);
         $this->assertEquals('bearer', $result->tokenType);
         $this->assertNotNull($result->expiresAt);
+    }
+
+    public function testRevokeAccessToken()
+    {
+        $gateway = new Braintree\Gateway([
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+        ]);
+        $code = Test\Braintree\OAuthTestHelper::createGrant($gateway, [
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'read_write'
+        ]);
+        $result = $gateway->oauth()->createTokenFromCode([
+            'code' => $code,
+            'scope' => 'read_write',
+        ]);
+
+        $revokeAccessTokenResult = $gateway->oauth()->revokeAccessToken($result->accessToken);
+
+        $this->assertTrue($revokeAccessTokenResult->success);
+        $this->assertTrue($revokeAccessTokenResult->result->success);
+
+        $gateway = new Braintree\Gateway(['accessToken' => $result->accessToken]);
+        $this->setExpectedException('Braintree\Exception\Authentication');
+        $gateway->customer()->create();
     }
 
     public function testCreateTokenFromCode_ValidationErrorTest()
