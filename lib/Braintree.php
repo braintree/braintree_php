@@ -6,7 +6,7 @@
  * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
-require_once('autoload.php');
+require_once(__DIR__ . DIRECTORY_SEPARATOR . 'autoload.php');
 
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     throw new Braintree_Exception('PHP version >= 5.4.0 required');
