@@ -24,8 +24,9 @@ use Iterator;
  */
 class ResourceCollection implements Iterator
 {
-    private $_index;
     private $_batchIndex;
+    private $_ids;
+    private $_index;
     private $_items;
     private $_pageSize;
     private $_pager;
@@ -141,6 +142,16 @@ class ResourceCollection implements Iterator
             [$object, $method],
             $methodArgs
         );
+    }
+
+    /**
+     * returns all IDs in the collection
+     *
+     * @return array
+     */
+    public function getIds()
+    {
+       return $this->_ids;
     }
 }
 class_alias('Braintree\ResourceCollection', 'Braintree_ResourceCollection');

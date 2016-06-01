@@ -85,4 +85,48 @@ class ResourceCollectionTest extends Setup
         $this->assertEquals(0, $count);
         $this->assertEquals(0, $index);
     }
+
+    public function testGetIdsReturnsArrayOfIds()
+    {
+
+        $response = [
+            'searchResults' => [
+                'pageSize' => 2,
+                'ids' => ["1", "2", "3"]
+            ]
+        ];
+
+        $object = new TestResource();
+        $pager = [
+            'object' => $object,
+            'method' => 'fetch',
+            'methodArgs' => []
+        ];
+
+        $collection = new Braintree\ResourceCollection($response, $pager);
+
+        $this->assertEquals($collection->getIds(), ["1", "2", "3"]);
+    }
+
+    public function testGetIdsReturnsAnEmptyArrayIfNoIds()
+    {
+
+        $response = [
+            'searchResults' => [
+                'pageSize' => 2,
+                'ids' => []
+            ]
+        ];
+
+        $object = new TestResource();
+        $pager = [
+            'object' => $object,
+            'method' => 'fetch',
+            'methodArgs' => []
+        ];
+
+        $collection = new Braintree\ResourceCollection($response, $pager);
+
+        $this->assertEquals($collection->getIds(), []);
+    }
 }
