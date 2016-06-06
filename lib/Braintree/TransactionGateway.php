@@ -151,6 +151,12 @@ class TransactionGateway
                     'extendedAddress', 'locality', 'postalCode', 'region',
                     'streetAddress'],
             ],
+            ['threeDSecurePassThru' =>
+                [
+                    'eciFlag',
+                    'cavv',
+                    'xid'],
+            ],
             ['options' =>
                 [
                     'holdInEscrow',
@@ -161,7 +167,7 @@ class TransactionGateway
                     'venmoSdkSession',
                     'storeShippingAddressInVault',
                     'payeeEmail',
-                    ['three_d_secure' =>
+                    ['threeDSecure' =>
                         ['required']
                     ],
                     ['paypal' =>

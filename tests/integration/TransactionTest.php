@@ -2039,7 +2039,7 @@ class TransactionTest extends Setup
                 'expirationDate' => '05/09'
             ],
             'options' => [
-                'three_d_secure' => [
+                'threeDSecure' => [
                     'required' => true
                 ]
             ]
@@ -2114,6 +2114,121 @@ class TransactionTest extends Setup
         $this->assertEquals(
             Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_TRANSACTION_DATA_DOESNT_MATCH_VERIFY,
             $errors[0]->code
+        );
+    }
+
+  public function testSale_withThreeDSecurePassThru()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '02',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid'
+            ],
+        ]);
+        $this->assertTrue($result->success);
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $result->transaction->status);
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruMerchantAcountDoesNotSupportCardType()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => 'adyen_ma',
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '02',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_CARD_TYPE,
+            $errors->onAttribute("merchantAccountId")[0]->code
+        );
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruIsMissingEciFlag()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_ECI_FLAG_IS_REQUIRED,
+            $errors->onAttribute("eciFlag")[0]->code
+        );
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruIsMissingCavvOrXid()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '06',
+                'cavv' => '',
+                'xid' => ''
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_CAVV_IS_REQUIRED,
+            $errors->onAttribute("cavv")[0]->code
+        );
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_XID_IS_REQUIRED,
+            $errors->onAttribute("xid")[0]->code
+        );
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruEciFlagIsInvalid()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => 'bad_eci_flag',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_ECI_FLAG_IS_INVALID,
+            $errors->onAttribute("eciFlag")[0]->code
         );
     }
 
