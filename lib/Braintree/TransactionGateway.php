@@ -222,6 +222,11 @@ class TransactionGateway
         return ['amount', 'orderId', ['descriptor' => ['name', 'phone', 'url']]];
     }
 
+    public static function refundSignature()
+    {
+        return ['amount', 'orderId'];
+    }
+
     /**
      *
      * @access public
@@ -425,11 +430,20 @@ class TransactionGateway
         return $this->_verifyGatewayResponse($response);
     }
 
-    public function refund($transactionId, $amount = null)
+    public function refund($transactionId, $amount_or_options = null)
     {
         self::_validateId($transactionId);
 
-        $params = ['transaction' => ['amount' => $amount]];
+        if(gettype($amount_or_options) == "array") {
+            $options = $amount_or_options;
+        } else {
+            $options = [
+                "amount" => $amount_or_options
+            ];
+        }
+        Util::verifyKeys(self::refundSignature(), $options);
+
+        $params = ['transaction' => $options];
         $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/refund';
         $response = $this->_http->post($path, $params);
         return $this->_verifyGatewayResponse($response);

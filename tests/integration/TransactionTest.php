@@ -2507,6 +2507,25 @@ class TransactionTest extends Setup
         );
     }
 
+  public function testRefundWithOptionsParam()
+    {
+        $transaction = $this->createTransactionToRefund();
+        $options = [
+            "orderId" => 'abcd',
+            "amount" => '1.00'
+        ];
+        $result = Braintree\Transaction::refund($transaction->id, $options);
+        $this->assertTrue($result->success);
+        $this->assertEquals(
+            'abcd',
+            $result->transaction->orderId
+        );
+        $this->assertEquals(
+            '1.00',
+            $result->transaction->amount
+        );
+    }
+
   public function testGatewayRejectionOnApplicationIncomplete()
     {
         $gateway = new Braintree\Gateway([
