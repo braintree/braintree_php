@@ -151,6 +151,12 @@ class TransactionGateway
                     'extendedAddress', 'locality', 'postalCode', 'region',
                     'streetAddress'],
             ],
+            ['threeDSecurePassThru' =>
+                [
+                    'eciFlag',
+                    'cavv',
+                    'xid'],
+            ],
             ['options' =>
                 [
                     'holdInEscrow',
@@ -161,7 +167,7 @@ class TransactionGateway
                     'venmoSdkSession',
                     'storeShippingAddressInVault',
                     'payeeEmail',
-                    ['three_d_secure' =>
+                    ['threeDSecure' =>
                         ['required']
                     ],
                     ['paypal' =>
@@ -214,6 +220,11 @@ class TransactionGateway
     public static function updateDetailsSignature()
     {
         return ['amount', 'orderId', ['descriptor' => ['name', 'phone', 'url']]];
+    }
+
+    public static function refundSignature()
+    {
+        return ['amount', 'orderId'];
     }
 
     /**
@@ -419,11 +430,20 @@ class TransactionGateway
         return $this->_verifyGatewayResponse($response);
     }
 
-    public function refund($transactionId, $amount = null)
+    public function refund($transactionId, $amount_or_options = null)
     {
         self::_validateId($transactionId);
 
-        $params = ['transaction' => ['amount' => $amount]];
+        if(gettype($amount_or_options) == "array") {
+            $options = $amount_or_options;
+        } else {
+            $options = [
+                "amount" => $amount_or_options
+            ];
+        }
+        Util::verifyKeys(self::refundSignature(), $options);
+
+        $params = ['transaction' => $options];
         $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/refund';
         $response = $this->_http->post($path, $params);
         return $this->_verifyGatewayResponse($response);
