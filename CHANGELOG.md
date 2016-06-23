@@ -1,3 +1,10 @@
+## 3.14.0
+* Add OrderId to refund
+* Add 3DS Pass thru support
+* Expose IDs in resource collections
+* Add leading slash to the namespace. Thanks, @bocharsky-bw
+* Stop modifying DateTime parameters during XML generation. Thanks, @jodarove
+
 ## 3.13.0
 * Add method of revoking OAuth access tokens.
 
