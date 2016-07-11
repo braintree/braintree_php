@@ -584,6 +584,38 @@ class TransactionTest extends Setup
         $this->assertEquals(true, $transaction->recurring);
     }
 
+  public function testTransactionSourceWithRecurring()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'transactionSource' => 'recurring',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(true, $transaction->recurring);
+    }
+
+  public function testTransactionSourceWithMoto()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'transactionSource' => 'moto',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(False, $transaction->recurring);
+    }
+
   public function testSale_withServiceFee()
     {
         $result = Braintree\Transaction::sale([
