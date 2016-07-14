@@ -1964,6 +1964,23 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
     }
 
+  public function testSale_withRiskData()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ],
+            'riskData' => [
+                'customer_browser' => 'IE5',
+                'customer_ip' => '192.168.0.1'
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+    }
+
   public function testSale_withDescriptor()
     {
         $result = Braintree\Transaction::sale([

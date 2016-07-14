@@ -347,6 +347,24 @@ class CustomerTest extends Setup
         $this->assertEquals(true, $result->success);
     }
 
+    public function testCreate_withRiskData()
+    {
+        $result = Braintree\Customer::create([
+            'firstName' => 'Mike',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cvv' => '123',
+                'cardholderName' => 'Mike Jones',
+            ],
+            'riskData' => [
+                'customer_browser' => 'IE5',
+                'customer_ip' => '192.168.0.1'
+            ]
+        ]);
+        $this->assertEquals(true, $result->success);
+    }
+
     public function testCreate_withCreditCard()
     {
         $result = Braintree\Customer::create([
