@@ -177,7 +177,7 @@ class CustomerGateway
         $signature = [
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
-            'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce',
+            'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce', 'defaultPaymentMethodToken',
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
             ];
