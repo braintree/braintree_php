@@ -127,8 +127,12 @@ class TransactionGateway
             'taxAmount',
             'taxExempt',
             'threeDSecureToken',
+            'transactionSource',
             'type',
             'venmoSdkPaymentMethodCode',
+            ['riskData' =>
+                ['customer_browser', 'customer_ip']
+            ],
             ['creditCard' =>
                 ['token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'],
             ],

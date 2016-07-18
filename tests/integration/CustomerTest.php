@@ -347,6 +347,24 @@ class CustomerTest extends Setup
         $this->assertEquals(true, $result->success);
     }
 
+    public function testCreate_withRiskData()
+    {
+        $result = Braintree\Customer::create([
+            'firstName' => 'Mike',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cvv' => '123',
+                'cardholderName' => 'Mike Jones',
+            ],
+            'riskData' => [
+                'customer_browser' => 'IE5',
+                'customer_ip' => '192.168.0.1'
+            ]
+        ]);
+        $this->assertEquals(true, $result->success);
+    }
+
     public function testCreate_withCreditCard()
     {
         $result = Braintree\Customer::create([
@@ -877,6 +895,98 @@ class CustomerTest extends Setup
 
     }
 
+    public function testUpdateDefaultPaymentMethod()
+    {
+        $result = Braintree\Customer::create([
+            'firstName' => 'Old First',
+            'lastName' => 'Old Last',
+        ]);
+
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+
+        $token1 = 'TOKEN-' . strval(rand());
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$transactableVisa,
+            'token' => $token1
+        ]);
+
+        $updateResult = Braintree\Customer::update($customer->id, [
+            'defaultPaymentMethodToken' => $token1
+        ]);
+
+        $this->assertEquals(true, $updateResult->success);
+        $this->assertEquals($updateResult->customer->defaultPaymentMethod()->token, $token1);
+
+        $token2 = 'TOKEN-' . strval(rand());
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$transactableMasterCard,
+            'token' => $token2
+        ]);
+
+        $updateResult = Braintree\Customer::update($customer->id, [
+            'defaultPaymentMethodToken' => $token2
+        ]);
+
+        $this->assertEquals(true, $updateResult->success);
+        $this->assertEquals($updateResult->customer->defaultPaymentMethod()->token, $token2);
+    }
+
+
+    public function testUpdateDefaultPaymentMethodFromOptions()
+    {
+        $result = Braintree\Customer::create([
+            'firstName' => 'Old First',
+            'lastName' => 'Old Last',
+        ]);
+
+        $this->assertEquals(true, $result->success);
+        $customer = $result->customer;
+
+        $token1 = 'TOKEN-' . strval(rand());
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$transactableVisa,
+            'token' => $token1
+        ]);
+
+        $updateResult = Braintree\Customer::update($customer->id, [
+            'creditCard' => [
+                'options' => [
+                    'updateExistingToken' => $token1,
+                    'makeDefault' => true
+                ]
+            ]
+        ]);
+
+        $this->assertEquals(true, $updateResult->success);
+        $this->assertEquals($updateResult->customer->defaultPaymentMethod()->token, $token1);
+
+        $token2 = 'TOKEN-' . strval(rand());
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$transactableMasterCard,
+            'token' => $token2
+        ]);
+
+        $updateResult = Braintree\Customer::update($customer->id, [
+            'creditCard' => [
+                'options' => [
+                    'updateExistingToken' => $token2,
+                    'makeDefault' => true
+                ]
+            ]
+        ]);
+
+        $this->assertEquals(true, $updateResult->success);
+        $this->assertEquals($updateResult->customer->defaultPaymentMethod()->token, $token2);
+    }
     public function testUpdate_doesNotWorkWithOnetimePayPalNonce()
     {
         $customerResult = Braintree\Customer::create([

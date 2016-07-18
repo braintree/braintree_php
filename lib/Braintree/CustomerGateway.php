@@ -151,6 +151,9 @@ class CustomerGateway
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
             'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce',
+            ['riskData' =>
+                ['customer_browser', 'customer_ip']
+            ],
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
             ];
@@ -174,7 +177,7 @@ class CustomerGateway
         $signature = [
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
-            'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce',
+            'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce', 'defaultPaymentMethodToken',
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
             ];

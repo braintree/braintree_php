@@ -1,3 +1,6 @@
+## 3.15.0
+* Add 'default_payment_method' option for Customer
+
 ## 3.14.0
 * Add OrderId to refund
 * Add 3DS Pass thru support
