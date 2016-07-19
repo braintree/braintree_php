@@ -24,6 +24,8 @@ class Configuration
     private $_proxyHost = null;
     private $_proxyPort = null;
     private $_proxyType = null;
+    private $_proxyUser = null;
+    private $_proxyPassword = null;
     private $_timeout = 60;
 
     /**
@@ -180,6 +182,35 @@ class Configuration
         return !empty($proxyHost) && !empty($proxyPort);
     }
 
+    public static function proxyUser($value = null)
+    {
+        if (empty($value)) {
+            return self::$global->getProxyUser();
+        }
+        self::$global->setProxyUser($value);
+    }
+
+    public static function proxyPassword($value = null)
+    {
+        if (empty($value)) {
+            return self::$global->getProxyPassword();
+        }
+        self::$global->setProxyPassword($value);
+    }
+
+    /**
+     * Specified whether or not a username and password have been provided for
+     * use with an authenticated proxy
+     *
+     * @return bool true if both proxyUser and proxyPassword are present
+     */
+    public static function isAuthenticatedProxy()
+    {
+        $proxyUser = self::$global->getProxyUser();
+        $proxyPwd = self::$global->getProxyPassword();
+        return !empty($proxyUser) && !empty($proxyPwd);
+    }
+
     public static function assertGlobalHasAccessTokenOrKeys()
     {
         self::$global->assertHasAccessTokenOrKeys();
@@ -310,6 +341,26 @@ class Configuration
     public function getProxyType()
     {
         return $this->_proxyType;
+    }
+
+    private function setProxyUser($value)
+    {
+        $this->_proxyUser = $value;
+    }
+
+    public function getProxyUser()
+    {
+        return $this->_proxyUser;
+    }
+
+    private function setProxyPassword($value)
+    {
+        $this->_proxyPassword = $value;
+    }
+
+    public function getProxyPassword()
+    {
+        return $this->_proxyPassword;
     }
 
     private function setTimeout($value)

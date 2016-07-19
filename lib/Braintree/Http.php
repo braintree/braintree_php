@@ -137,9 +137,14 @@ class Http
             $proxyHost = $this->_config->getProxyHost();
             $proxyPort = $this->_config->getProxyPort();
             $proxyType = $this->_config->getProxyType();
+            $proxyUser = $this->_config->getProxyUser();
+            $proxyPwd= $this->_config->getProxyPassword();
             curl_setopt($curl, CURLOPT_PROXY, $proxyHost . ':' . $proxyPort);
             if(!empty($proxyType)) {
                 curl_setopt($curl, CURLOPT_PROXYTYPE, $proxyType);
+            }
+            if($this->_config->isAuthenticatedProxy()) {
+                curl_setopt($curl, CURLOPT_PROXYUSERPWD, $proxyUser . ':' . $proxyPwd);
             }
         }
 

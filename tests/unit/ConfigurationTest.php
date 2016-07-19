@@ -221,6 +221,26 @@ class ConfigurationTest extends Setup
         $this->assertTrue($this->config->isUsingProxy());
     }
 
+    function testProxyUser()
+    {
+        $this->config->proxyUser('user');
+        $this->assertEquals('user', $this->config->proxyUser());
+    }
+
+    function testProxyPassword()
+    {
+        $this->config->proxyPassword('password');
+        $this->assertEquals('password', $this->config->proxyPassword());
+    }
+
+    function testIsAuthenticatedProxy()
+    {
+        $this->config->proxyUser('username');
+        $this->config->proxyPassword('password');
+
+        $this->assertTrue($this->config->isAuthenticatedProxy());
+    }
+
     function testTimeout()
     {
         $this->config->timeout(30);
