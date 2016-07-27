@@ -416,6 +416,7 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals('47.00', $transaction->amount);
+        $this->assertEquals(Braintree\PaymentInstrumentType::VENMO_ACCOUNT, $transaction->paymentInstrumentType);
         $venmoAccountDetails = $transaction->venmoAccountDetails;
 
         $this->assertNull($venmoAccountDetails->token);
