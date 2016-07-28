@@ -2843,6 +2843,7 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertEquals(Braintree\CreditCard::PAYROLL_YES, $transaction->creditCardDetails->payroll);
+        $this->assertEquals("MSA", $transaction->creditCardDetails->productId);
 
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
@@ -2853,6 +2854,7 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertEquals(Braintree\CreditCard::HEALTHCARE_YES, $transaction->creditCardDetails->healthcare);
+        $this->assertEquals("J3", $transaction->creditCardDetails->productId);
 
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',

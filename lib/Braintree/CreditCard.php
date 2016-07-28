@@ -76,6 +76,7 @@ class CreditCard extends Base
 
     const COUNTRY_OF_ISSUANCE_UNKNOWN = "Unknown";
     const ISSUING_BANK_UNKNOWN = "Unknown";
+    const PRODUCT_ID_UNKNOWN = "Unknown";
 
     /* instance methods */
     /**
