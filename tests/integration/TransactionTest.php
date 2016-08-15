@@ -2232,7 +2232,7 @@ class TransactionTest extends Setup
         );
     }
 
-  public function testSale_returnsErrorsWhenThreeDSecurePassThruIsMissingCavvOrXid()
+  public function testSale_withThreeDSecurePassThruIsMissingCavvOrXid()
     {
         $result = Braintree\Transaction::sale([
             'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
@@ -2247,16 +2247,8 @@ class TransactionTest extends Setup
                 'xid' => ''
             ],
         ]);
-        $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_CAVV_IS_REQUIRED,
-            $errors->onAttribute("cavv")[0]->code
-        );
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_XID_IS_REQUIRED,
-            $errors->onAttribute("xid")[0]->code
-        );
+        $this->assertTrue($result->success);
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $result->transaction->status);
     }
 
   public function testSale_returnsErrorsWhenThreeDSecurePassThruEciFlagIsInvalid()
