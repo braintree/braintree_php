@@ -1,3 +1,8 @@
+## 3.16.0
+* Add authenticated proxy functionality
+* Add constant for Venmo Account payment instrument type
+* Add validation error for verifications with submerchants
+
 ## 3.15.0
 * Add 'default_payment_method' option for Customer
 
