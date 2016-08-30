@@ -1225,6 +1225,7 @@ class CreditCardTest extends Setup
             'options' => ['verifyCard' => true]
         ]);
         $this->assertEquals(Braintree\CreditCard::PAYROLL_YES, $result->creditCard->payroll);
+        $this->assertEquals('MSA', $result->creditCard->productId);
     }
 
     public function testHealthCareCard()
@@ -1238,6 +1239,7 @@ class CreditCardTest extends Setup
             'options' => ['verifyCard' => true]
         ]);
         $this->assertEquals(Braintree\CreditCard::HEALTHCARE_YES, $result->creditCard->healthcare);
+        $this->assertEquals('J3', $result->creditCard->productId);
     }
 
     public function testDurbinRegulatedCard()
@@ -1295,6 +1297,7 @@ class CreditCardTest extends Setup
         $this->assertEquals(Braintree\CreditCard::DEBIT_NO, $result->creditCard->debit);
         $this->assertEquals(Braintree\CreditCard::HEALTHCARE_NO, $result->creditCard->healthcare);
         $this->assertEquals(Braintree\CreditCard::COMMERCIAL_NO, $result->creditCard->commercial);
+        $this->assertEquals('MSB', $result->creditCard->productId);
     }
 
     public function testUnknownCardTypeIndicators()
@@ -1315,5 +1318,6 @@ class CreditCardTest extends Setup
         $this->assertEquals(Braintree\CreditCard::COMMERCIAL_UNKNOWN, $result->creditCard->commercial);
         $this->assertEquals(Braintree\CreditCard::COUNTRY_OF_ISSUANCE_UNKNOWN, $result->creditCard->countryOfIssuance);
         $this->assertEquals(Braintree\CreditCard::ISSUING_BANK_UNKNOWN, $result->creditCard->issuingBank);
+        $this->assertEquals(Braintree\CreditCard::PRODUCT_ID_UNKNOWN, $result->creditCard->productId);
     }
 }

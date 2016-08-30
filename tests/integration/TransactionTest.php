@@ -416,6 +416,7 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals('47.00', $transaction->amount);
+        $this->assertEquals(Braintree\PaymentInstrumentType::VENMO_ACCOUNT, $transaction->paymentInstrumentType);
         $venmoAccountDetails = $transaction->venmoAccountDetails;
 
         $this->assertNull($venmoAccountDetails->token);
@@ -2850,6 +2851,7 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertEquals(Braintree\CreditCard::PAYROLL_YES, $transaction->creditCardDetails->payroll);
+        $this->assertEquals("MSA", $transaction->creditCardDetails->productId);
 
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
@@ -2860,6 +2862,7 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertEquals(Braintree\CreditCard::HEALTHCARE_YES, $transaction->creditCardDetails->healthcare);
+        $this->assertEquals("J3", $transaction->creditCardDetails->productId);
 
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
