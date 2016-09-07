@@ -4,6 +4,7 @@ namespace Test\Integration;
 require_once dirname(__DIR__) . '/Setup.php';
 
 use DateTime;
+use DateTimeZone;
 use Test;
 use Test\Setup;
 use Braintree;
@@ -316,6 +317,141 @@ class SubscriptionSearchTest extends Setup
 
         $this->assertTrue(Test\Helper::includes($collection, $triallessSubscription));
         $this->assertFalse(Test\Helper::includes($collection, $trialSubscription));
+    }
+
+    public function testSearch_createdAt_lessThanOrEqualTo()
+    {
+        $creditCard = SubscriptionHelper::createCreditCard();
+        $plan = SubscriptionHelper::trialPlan();
+
+        $subscription= Braintree\Subscription::create([
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+        ])->subscription;
+
+        $fiveDaysFromNow = new DateTime();
+        $fiveDaysFromNow->modify("+5 days");
+
+        $collection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::createdAt()->lessThanOrEqualTo($fiveDaysFromNow),
+        ]);
+
+        $this->assertTrue(Test\Helper::includes($collection, $subscription));
+
+        $fiveDaysAgo = new DateTime();
+        $fiveDaysAgo->modify("-5 days");
+
+        $emptyCollection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::createdAt()->lessThanOrEqualTo($fiveDaysAgo),
+        ]);
+
+        $this->assertFalse(Test\Helper::includes($emptyCollection, $subscription));
+    }
+
+    public function testSearch_createdAt_greaterThanOrEqualTo()
+    {
+        $creditCard = SubscriptionHelper::createCreditCard();
+        $plan = SubscriptionHelper::trialPlan();
+
+        $subscription= Braintree\Subscription::create([
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+        ])->subscription;
+
+        $fiveDaysAgo = new DateTime();
+        $fiveDaysAgo->modify("-5 days");
+
+        $collection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::createdAt()->greaterThanOrEqualTo($fiveDaysAgo),
+        ]);
+
+        $this->assertTrue(Test\Helper::includes($collection, $subscription));
+
+        $fiveDaysFromNow = new DateTime();
+        $fiveDaysFromNow->modify("+5 days");
+
+        $emptyCollection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::createdAt()->greaterThanOrEqualTo($fiveDaysFromNow),
+        ]);
+
+        $this->assertFalse(Test\Helper::includes($emptyCollection, $subscription));
+    }
+
+    public function testSearch_createdAt_between()
+    {
+        $creditCard = SubscriptionHelper::createCreditCard();
+        $plan = SubscriptionHelper::trialPlan();
+
+        $subscription= Braintree\Subscription::create([
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+        ])->subscription;
+
+        $fiveDaysAgo = new DateTime();
+        $fiveDaysFromNow = new DateTime();
+        $tenDaysFromNow = new DateTime();
+
+        $fiveDaysAgo->modify("-5 days");
+        $fiveDaysFromNow->modify("+5 days");
+        $tenDaysFromNow->modify("+10 days");
+
+        $collection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::createdAt()->between($fiveDaysAgo, $fiveDaysFromNow),
+        ]);
+
+        $this->assertTrue(Test\Helper::includes($collection, $subscription));
+
+        $emptyCollection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::createdAt()->between($fiveDaysFromNow, $tenDaysFromNow),
+        ]);
+
+        $this->assertFalse(Test\Helper::includes($emptyCollection, $subscription));
+    }
+
+    public function testSearch_createdAt_is()
+    {
+        $creditCard = SubscriptionHelper::createCreditCard();
+        $plan = SubscriptionHelper::trialPlan();
+
+        $subscription= Braintree\Subscription::create([
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+        ])->subscription;
+
+        $collection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::createdAt()->is($subscription->createdAt),
+        ]);
+
+        $this->assertTrue(Test\Helper::includes($collection, $subscription));
+
+        $oneDayAgo = $subscription->createdAt;
+        $oneDayAgo->modify("-1 days");
+
+        $emptyCollection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::createdAt()->is($oneDayAgo),
+        ]);
+
+        $this->assertFalse(Test\Helper::includes($emptyCollection, $subscription));
+    }
+
+    public function testSearch_createdAt_convertLocalToUTC()
+    {
+        $creditCard = SubscriptionHelper::createCreditCard();
+        $plan = SubscriptionHelper::trialPlan();
+
+        $subscription= Braintree\Subscription::create([
+            'paymentMethodToken' => $creditCard->token,
+            'planId' => $plan['id'],
+        ])->subscription;
+
+        $tenMinAgo = date_create("now -10 minutes", new DateTimeZone("US/Pacific"));
+        $tenMinFromNow = date_create("now +10 minutes", new DateTimeZone("US/Pacific"));
+
+        $collection = Braintree\Subscription::search([
+            Braintree\SubscriptionSearch::createdAt()->between($tenMinAgo, $tenMinFromNow),
+        ]);
+
+        $this->assertTrue(Test\Helper::includes($collection, $subscription));
     }
 
     public function testSearch_transactionId()
