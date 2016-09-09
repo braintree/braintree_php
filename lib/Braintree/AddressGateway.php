@@ -64,10 +64,16 @@ class AddressGateway
 
         $this->_validateCustomerId($customerId);
         unset($attribs['customerId']);
-        return $this->_doCreate(
-            '/customers/' . $customerId . '/addresses',
-            ['address' => $attribs]
-        );
+        try {
+            return $this->_doCreate(
+                '/customers/' . $customerId . '/addresses',
+                ['address' => $attribs]
+            );
+        } catch (Exception\NotFound $e) {
+            throw new Exception\NotFound(
+                'Customer ' . $customerId . ' not found.'
+            );
+        }
     }
 
     /**
@@ -274,7 +280,6 @@ class AddressGateway
         $response = $this->_http->post($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
-
     }
 
     /**
