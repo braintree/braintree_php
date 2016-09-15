@@ -417,6 +417,7 @@ class Codes
     const TRANSACTION_CANNOT_BE_VOIDED                                                = '91504';
     const TRANSACTION_CANNOT_CANCEL_RELEASE                                           = '91562';
     const TRANSACTION_CANNOT_CLONE_CREDIT                                             = '91543';
+    const TRANSACTION_CANNOT_CLONE_MARKETPLACE_TRANSACTION                            = '915137';
     const TRANSACTION_CANNOT_CLONE_TRANSACTION_WITH_PAYPAL_ACCOUNT                    = '91573';
     const TRANSACTION_CANNOT_CLONE_TRANSACTION_WITH_VAULT_CREDIT_CARD                 = '91540';
     const TRANSACTION_CANNOT_CLONE_UNSUCCESSFUL_TRANSACTION                           = '91542';
