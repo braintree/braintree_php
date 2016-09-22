@@ -9,6 +9,8 @@ use Braintree;
 
 class Helper
 {
+    public static $valid_nonce_characters = 'bcdfghjkmnpqrstvwxyz23456789';
+
     public static function testMerchantConfig()
     {
         Braintree\Configuration::reset();
@@ -132,5 +134,22 @@ class Helper
     public static function decodedClientToken($params=[]) {
         $encodedClientToken = Braintree\ClientToken::generate($params);
         return base64_decode($encodedClientToken);
+    }
+
+    public static function generateValidUsBankAccountNonce() {
+        return exec('./tests/client.sh');
+    }
+
+    public static function generateInvalidUsBankAccountNonce() {
+        $valid_characters = str_split(self::$valid_nonce_characters);
+        $nonce = 'tokenusbankacct';
+        for($i=0; $i<4; $i++) {
+            $nonce = $nonce . '_';
+            for($j=0; $j<6; $j++) {
+                $t = rand(0, sizeof($valid_characters)-1);
+                $nonce = $nonce . $valid_characters[$t];
+            }
+        }
+        return $nonce . "_xxx";
     }
 }
