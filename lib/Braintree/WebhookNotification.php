@@ -13,6 +13,8 @@ class WebhookNotification extends Base
     const SUB_MERCHANT_ACCOUNT_APPROVED = 'sub_merchant_account_approved';
     const SUB_MERCHANT_ACCOUNT_DECLINED = 'sub_merchant_account_declined';
     const TRANSACTION_DISBURSED = 'transaction_disbursed';
+    const TRANSACTION_SETTLED = 'transaction_settled';
+    const TRANSACTION_SETTLEMENT_DECLINED = 'transaction_settlement_declined';
     const DISBURSEMENT_EXCEPTION = 'disbursement_exception';
     const DISBURSEMENT = 'disbursement';
     const DISPUTE_OPENED = 'dispute_opened';
