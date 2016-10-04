@@ -70,6 +70,8 @@ class PaymentMethodGateway
                 return AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']);
             } else if (isset($response['europeBankAccount'])) {
                 return EuropeBankAccount::factory($response['europeBankAccount']);
+            } else if (isset($response['usBankAccount'])) {
+                return UsBankAccount::factory($response['usBankAccount']);
             } else if (isset($response['venmoAccount'])) {
                 return VenmoAccount::factory($response['venmoAccount']);
             } else if (is_array($response)) {
@@ -250,6 +252,11 @@ class PaymentMethodGateway
         } else if (isset($response['europeBankAccount'])) {
             return new Result\Successful(
                 EuropeBankAccount::factory($response['europeBankAccount']),
+                "paymentMethod"
+            );
+        } else if (isset($response['usBankAccount'])) {
+            return new Result\Successful(
+                UsBankAccount::factory($response['usBankAccount']),
                 "paymentMethod"
             );
         } else if (isset($response['venmoAccount'])) {
