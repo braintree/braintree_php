@@ -96,15 +96,17 @@ class PaymentMethodGateway
         return new Result\Successful();
     }
 
-    public function grant($sharedPaymentMethodToken, $allowVaulting)
+    public function grant($sharedPaymentMethodToken, $attribs)
     {
+        if (is_bool($attribs) === true) {
+            $attribs = ['allow_vaulting' => $attribs];
+        }
+        $options = [ 'shared_payment_method_token' => $sharedPaymentMethodToken ];
+
         return $this->_doCreate(
             '/payment_methods/grant',
             [
-                'payment_method' => [
-                    'shared_payment_method_token' => $sharedPaymentMethodToken,
-                    'allow_vaulting' => $allowVaulting
-                ]
+                'payment_method' => array_merge($attribs, $options)
             ]
         );
     }
