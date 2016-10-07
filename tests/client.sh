@@ -27,7 +27,7 @@ output=`curl -s -H "Content-type: application/json"\
   -H "Authorization: Bearer $access_token"\
   -d "$params"\
   --cacert $ca_file\
-  -XPost "https://atmosphere.bt.local:8080/tokens"`
+  -XPost "https://atmosphere-qa-us-west-2.dev.cosmos.braintreepayments.com/tokens"`
 
 token=`echo $output | jq -r '.data.id'`
 echo $token
