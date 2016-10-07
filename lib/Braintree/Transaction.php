@@ -154,8 +154,8 @@ namespace Braintree;
  * @property-read Braintree\AndroidPayCardDetails $androidPayCardDetails transaction Android Pay card info
  * @property-read Braintree\AmexExpressCheckoutCardDetails $amexExpressCheckoutCardDetails transaction Amex Express Checkout card info
  * @property-read Braintree\CreditCardDetails $creditCardDetails transaction credit card info
- * @property-read Braintree\CoinbaseAccountDetails $coinbaseDetails transaction Coinbase account info
- * @property-read Braintree\PayPalAccountDetails $paypalDetails transaction paypal account info
+ * @property-read Braintree\CoinbaseDetails $coinbaseDetails transaction Coinbase account info
+ * @property-read Braintree\PayPalDetails $paypalDetails transaction paypal account info
  * @property-read Braintree\Transaction\CustomerDetails $customerDetails transaction customer info
  * @property-read Braintree\VenmoAccount $venmoAccountDetails transaction Venmo Account info
  * @property-read array  $customFields custom fields passed with the request
