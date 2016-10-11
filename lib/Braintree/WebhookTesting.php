@@ -263,8 +263,7 @@ class WebhookTesting
         return "
         <subscription>
             <id>{$id}</id>
-            <billing-period-start-date type=\"date\">2016-03-21</billing-period-start-date>
-            <billing-period-end-date type=\"date\">2017-03-31</billing-period-end-date>
+            <next_billing-date type=\"date\">2020-02-10</next_billing-date>
             <transactions type=\"array\">
                 <transaction>
                     <status>submitted_for_settlement</status>
