@@ -96,7 +96,7 @@ class PaymentMethodGateway
         return new Result\Successful();
     }
 
-    public function grant($sharedPaymentMethodToken, $attribs)
+    public function grant($sharedPaymentMethodToken, $attribs=[])
     {
         if (is_bool($attribs) === true) {
             $attribs = ['allow_vaulting' => $attribs];

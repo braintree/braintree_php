@@ -1309,7 +1309,7 @@ class PaymentMethodTest extends Setup
             'accessToken' => $credentials->accessToken
         ]);
 
-        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, false);
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token);
         $this->assertTrue($grantResult->success);
 
         $result = Braintree\Transaction::sale([
