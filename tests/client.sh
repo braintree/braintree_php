@@ -2,6 +2,7 @@
 set -e
 
 access_token="integratexxxxxx_xxxxxx_xxxxxx_xxxxxx_xx1"
+url=$1
 
 params="{
   \"type\": \"us_bank_account\",
@@ -25,8 +26,8 @@ output=`curl -s -H "Content-type: application/json"\
   -H "Braintree-Version: 2015-11-01"\
   -H "Authorization: Bearer $access_token"\
   -d "$params"\
-  -XPost "https://atmosphere-qa-us-west-2.dev.cosmos.braintreepayments.com/tokens"`
+  -XPost "$url"`
 
-token=`echo $output | jq -r '.data.id'`
+token=$(echo $output | ruby -e 'require "json";input=JSON.parse(STDIN.read);puts(input["data"]["id"])')
 echo $token
 

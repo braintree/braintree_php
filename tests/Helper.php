@@ -137,7 +137,9 @@ class Helper
     }
 
     public static function generateValidUsBankAccountNonce() {
-        return exec('./tests/client.sh');
+        $client_token = json_decode(Helper::decodedClientToken(), true);
+        $url = $client_token['braintree_api']['url'];
+        return exec('./tests/client.sh ' . $url . '/tokens');
     }
 
     public static function generateInvalidUsBankAccountNonce() {
