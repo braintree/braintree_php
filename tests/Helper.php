@@ -138,8 +138,44 @@ class Helper
 
     public static function generateValidUsBankAccountNonce() {
         $client_token = json_decode(Helper::decodedClientToken(), true);
-        $url = $client_token['braintree_api']['url'];
-        return exec('./tests/client.sh ' . $url . '/tokens');
+        $url = $client_token['braintree_api']['url'] . '/tokens';
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_URL, $url);
+
+        $headers[] = 'Content-Type: application/json';
+        $headers[] = 'Braintree-Version: 2015-11-01';
+        $headers[] = 'Authorization: Bearer integratexxxxxx_xxxxxx_xxxxxx_xxxxxx_xx1';
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+        $requestBody = [
+            'type' => 'us_bank_account',
+            'billing_address' => [
+                'street_address' => '123 Ave',
+                'region' => 'CA',
+                'locality' => 'San Francisco',
+                'postal_code' => '94112'
+            ],
+            'account_type' => 'checking',
+            'routing_number' => '123456789',
+            'account_number' => '567891234',
+            'account_holder_name' => 'Dan Schulman',
+            'account_description' => 'PayPal Checking - 1234',
+            'ach_mandate' => [
+                'text' => ''
+            ]
+        ];
+
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($requestBody));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($curl);
+        $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $error_code = curl_errno($curl);
+        curl_close($curl);
+        $jsonResponse = json_decode($response, true);
+        return $jsonResponse['data']['id'];
     }
 
     public static function generateInvalidUsBankAccountNonce() {
