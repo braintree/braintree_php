@@ -68,10 +68,6 @@ The benefit of the `rake` tasks is that testing covers default `hhvm` and `php` 
 phpunit tests/unit/
 ```
 
-## Open Source Attribution
-
-A list of open source projects that help power Braintree can be found [here](https://www.braintreepayments.com/developers/open-source).
-
 ## License
 
 See the LICENSE file.
