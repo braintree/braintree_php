@@ -1,3 +1,6 @@
+## 3.17.0
+* Add 'UsBankAccount' payment method
+
 ## 3.16.0
 * Add authenticated proxy functionality
 * Add constant for Venmo Account payment instrument type
