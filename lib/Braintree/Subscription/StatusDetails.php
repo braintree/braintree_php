@@ -12,6 +12,7 @@ use Braintree\Instance;
  *
  * @property-read string $price
  * @property-read string $currencyIsoCode
+ * @property-read string $planId
  * @property-read string $balance
  * @property-read string $status
  * @property-read string $timestamp

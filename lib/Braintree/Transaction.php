@@ -290,6 +290,14 @@ class Transaction extends Base
             );
         }
 
+        if (isset($transactionAttribs['usBankAccount'])) {
+            $this->_set('usBankAccount',
+                new Transaction\UsBankAccountDetails(
+                    $transactionAttribs['usBankAccount']
+                )
+            );
+        }
+
         if (isset($transactionAttribs['paypal'])) {
             $this->_set('paypalDetails',
                 new Transaction\PayPalDetails(

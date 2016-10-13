@@ -26,6 +26,12 @@ class WebhookTesting
             case WebhookNotification::TRANSACTION_DISBURSED:
                 $subjectXml = self::_transactionDisbursedSampleXml($id);
                 break;
+            case WebhookNotification::TRANSACTION_SETTLED:
+                $subjectXml = self::_transactionSettledSampleXml($id);
+                break;
+            case WebhookNotification::TRANSACTION_SETTLEMENT_DECLINED:
+                $subjectXml = self::_transactionSettlementDeclinedSampleXml($id);
+                break;
             case WebhookNotification::DISBURSEMENT_EXCEPTION:
                 $subjectXml = self::_disbursementExceptionSampleXml($id);
                 break;
@@ -129,6 +135,50 @@ class WebhookTesting
         ";
     }
 
+    private static function _transactionSettledSampleXml($id)
+    {
+        return "
+        <transaction>
+          <id>${id}</id>
+          <status>settled</status>
+          <type>sale</type>
+          <currency-iso-code>USD</currency-iso-code>
+          <amount>100.00</amount>
+          <merchant-account-id>ogaotkivejpfayqfeaimuktty</merchant-account-id>
+          <payment-instrument-type>us_bank_account</payment-instrument-type>
+          <us-bank-account>
+            <routing-number>123456789</routing-number>
+            <last-4>1234</last-4>
+            <account-type>checking</account-type>
+            <account-description>PayPal Checking - 1234</account-description>
+            <account-holder-name>Dan Schulman</account-holder-name>
+          </us-bank-account>
+        </transaction>
+        ";
+    }
+
+    private static function _transactionSettlementDeclinedSampleXml($id)
+    {
+        return "
+        <transaction>
+          <id>${id}</id>
+          <status>settlement_declined</status>
+          <type>sale</type>
+          <currency-iso-code>USD</currency-iso-code>
+          <amount>100.00</amount>
+          <merchant-account-id>ogaotkivejpfayqfeaimuktty</merchant-account-id>
+          <payment-instrument-type>us_bank_account</payment-instrument-type>
+          <us-bank-account>
+            <routing-number>123456789</routing-number>
+            <last-4>1234</last-4>
+            <account-type>checking</account-type>
+            <account-description>PayPal Checking - 1234</account-description>
+            <account-holder-name>Dan Schulman</account-holder-name>
+          </us-bank-account>
+        </transaction>
+        ";
+    }
+
     private static function _disbursementExceptionSampleXml($id)
     {
         return "
@@ -215,6 +265,7 @@ class WebhookTesting
           <transaction>
             <id>${id}</id>
             <amount>250.00</amount>
+            <next_billing-date type=\"date\">2020-02-10</next_billing-date>
           </transaction>
           <date-opened type=\"date\">2014-03-21</date-opened>
         </dispute>

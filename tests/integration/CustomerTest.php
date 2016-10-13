@@ -773,6 +773,30 @@ class CustomerTest extends Setup
         $this->assertEquals('New Cardholder', $creditCard->cardholderName);
     }
 
+    public function testUpdate_failOnDuplicatePaymentMethod()
+    {
+        $create_result = Braintree\Customer::create([
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '11/14',
+            ]
+        ]);
+        $this->assertEquals(true, $create_result->success);
+        $result = Braintree\Customer::update($create_result->customer->id, [
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '11/14',
+                'options' => [
+                    'failOnDuplicatePaymentMethod' => true
+                ]
+            ]
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('customer')->forKey('creditCard')->onAttribute('number');
+        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_DUPLICATE_CARD_EXISTS, $errors[0]->code);
+        $this->assertEquals(1, preg_match('/Duplicate card exists in the vault\./', $result->message));
+    }
+
     public function testUpdate_forBillingAddressAndExistingCreditCardAndCustomerDetailsTogether()
     {
         $create_result = Braintree\Customer::create([

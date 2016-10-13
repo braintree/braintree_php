@@ -283,6 +283,54 @@ class WebhookNotificationTest extends Setup
         $this->assertNotNull($webhookNotification->transaction->disbursementDetails->disbursementDate);
     }
 
+    public function testBuildsASampleNotificationForATransactionSettledWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::TRANSACTION_SETTLED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::TRANSACTION_SETTLED, $webhookNotification->kind);
+        $transaction = $webhookNotification->transaction;
+        $this->assertEquals("my_id", $transaction->id);
+        $this->assertEquals("settled", $transaction->status);
+        $this->assertEquals(100, $transaction->amount);
+        $this->assertEquals('123456789', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('1234', $transaction->usBankAccount->last4);
+        $this->assertEquals('checking', $transaction->usBankAccount->accountType);
+        $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
+        $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+    }
+
+    public function testBuildsASampleNotificationForATransactionSettlementDeclinedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::TRANSACTION_SETTLEMENT_DECLINED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::TRANSACTION_SETTLEMENT_DECLINED, $webhookNotification->kind);
+        $transaction = $webhookNotification->transaction;
+        $this->assertEquals("my_id", $transaction->id);
+        $this->assertEquals("settlement_declined", $transaction->status);
+        $this->assertEquals(100, $transaction->amount);
+        $this->assertEquals('123456789', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('1234', $transaction->usBankAccount->last4);
+        $this->assertEquals('checking', $transaction->usBankAccount->accountType);
+        $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
+        $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+    }
+
     public function testBuildsASampleNotificationForADisputeOpenedWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(

@@ -154,6 +154,92 @@ class TransactionTest extends Setup
         $this->assertEquals('DEUTDEFF', $transaction->europeBankAccount->bic);
     }
 
+  public function testSaleWithUsBankAccountNonce()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => 'us_bank_merchant_account',
+            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
+            'options' => [
+                'submitForSettlement' => true,
+                'storeInVault' => true
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertEquals('123456789', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('1234', $transaction->usBankAccount->last4);
+        $this->assertEquals('checking', $transaction->usBankAccount->accountType);
+        $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
+        $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+    }
+
+  public function testSaleWithUsBankAccountNonceAndVaultedToken()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => 'us_bank_merchant_account',
+            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
+            'options' => [
+                'submitForSettlement' => true,
+                'storeInVault' => true
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertEquals('123456789', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('1234', $transaction->usBankAccount->last4);
+        $this->assertEquals('checking', $transaction->usBankAccount->accountType);
+        $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
+        $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => 'us_bank_merchant_account',
+            'paymentMethodToken' => $transaction->usBankAccount->token,
+            'options' => [
+                'submitForSettlement' => true,
+                'storeInVault' => true
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertEquals('123456789', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('1234', $transaction->usBankAccount->last4);
+        $this->assertEquals('checking', $transaction->usBankAccount->accountType);
+        $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
+        $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+    }
+
+  public function testSaleWithInvalidUsBankAccountNonce()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '100.00',
+          'merchantAccountId' => 'us_bank_merchant_account',
+          'paymentMethodNonce' => Test\Helper::generateInvalidUsBankAccountNonce(),
+          'options' => [
+              'submitForSettlement' => true,
+              'storeInVault' => true
+          ]
+      ]);
+
+      $this->assertFalse($result->success);
+      $baseErrors = $result->errors->forKey('transaction')->onAttribute('paymentMethodNonce');
+      $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PAYMENT_METHOD_NONCE_UNKNOWN, $baseErrors[0]->code);
+  }
+
+
   public function testSettleAltPayTransaction()
     {
         $gateway = new Braintree\Gateway([
