@@ -265,6 +265,7 @@ class WebhookTesting
           <transaction>
             <id>${id}</id>
             <amount>250.00</amount>
+            <next_billing-date type=\"date\">2020-02-10</next_billing-date>
           </transaction>
           <date-opened type=\"date\">2014-03-21</date-opened>
         </dispute>
