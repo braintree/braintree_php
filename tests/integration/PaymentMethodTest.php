@@ -1344,7 +1344,7 @@ class PaymentMethodTest extends Setup
             'accessToken' => $credentials->accessToken
         ]);
 
-        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, false);
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token);
         $this->assertTrue($grantResult->success);
 
         $result = Braintree\Transaction::sale([
@@ -1398,7 +1398,7 @@ class PaymentMethodTest extends Setup
             'accessToken' => $credentials->accessToken
         ]);
 
-        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, false);
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, ['allow_vaulting' => false]);
 
         $customer = $partnerMerchantGateway->customer()->create([
             'firstName' => 'Bob',
@@ -1449,7 +1449,7 @@ class PaymentMethodTest extends Setup
             'accessToken' => $credentials->accessToken
         ]);
 
-        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, true);
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, ['allow_vaulting' => true]);
 
         $customer = Braintree\Customer::create([
             'firstName' => 'Bob',
