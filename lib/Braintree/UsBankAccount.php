@@ -6,7 +6,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of UsBankAccount, Inc.
+ * @copyright  2016 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -17,7 +17,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of UsBankAccount, Inc.
+ * @copyright  2016 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $customerId
  * @property-read string $email
