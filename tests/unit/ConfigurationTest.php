@@ -257,7 +257,7 @@ class ConfigurationTest extends Setup
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage environment needs to be set
      */
-    public function testValidateEmptyEnvironment()
+    public function testValidateAbsentEnvironment()
     {
         //Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
@@ -268,9 +268,22 @@ class ConfigurationTest extends Setup
     }
      /**
      * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage environment needs to be set
+     */
+    public function testValidateEmptyStringEnvironment()
+    {
+        Braintree\Configuration::environment('');
+        Braintree\Configuration::merchantId('integration_merchant_id');
+        Braintree\Configuration::publicKey('integration_public_key');
+        Braintree\Configuration::privateKey('integration_private_key');
+
+        Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
+    }
+     /**
+     * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage merchantId needs to be set
      */
-    public function testMerchantId()
+    public function testAbsentMerchantId()
     {
         Braintree\Configuration::environment('development');
         //Braintree\Configuration::merchantId('integration_merchant_id');
@@ -281,9 +294,22 @@ class ConfigurationTest extends Setup
     }
      /**
      * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage merchantId needs to be set
+     */
+    public function testEmptyStringMerchantId()
+    {
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('');
+        Braintree\Configuration::publicKey('integration_public_key');
+        Braintree\Configuration::privateKey('integration_private_key');
+
+        Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
+    }
+     /**
+     * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage publicKey needs to be set
      */
-    public function testPublicKey()
+    public function testAbsentPublicKey()
     {
         Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
@@ -294,14 +320,40 @@ class ConfigurationTest extends Setup
     }
      /**
      * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage publicKey needs to be set
+     */
+    public function testEmptyStringPublicKey()
+    {
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('integration_merchant_id');
+        Braintree\Configuration::publicKey('');
+        Braintree\Configuration::privateKey('integration_private_key');
+
+        Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
+    }
+     /**
+     * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage privateKey needs to be set
      */
-    public function testPrivateKey()
+    public function testAbsentPrivateKey()
     {
         Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
         Braintree\Configuration::publicKey('integration_public_key');
         //Braintree\Configuration::privateKey('integration_private_key');
+
+        Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
+    }
+     /**
+     * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage privateKey needs to be set
+     */
+    public function testEmptyStringPrivateKey()
+    {
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('integration_merchant_id');
+        Braintree\Configuration::publicKey('integration_public_key');
+        Braintree\Configuration::privateKey('');
 
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
