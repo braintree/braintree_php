@@ -176,6 +176,7 @@ class TransactionTest extends Setup
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+        $this->assertEquals('UNKNOWN', $transaction->usBankAccount->bankName);
     }
 
   public function testSaleWithUsBankAccountNonceAndVaultedToken()

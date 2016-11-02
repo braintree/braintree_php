@@ -248,6 +248,7 @@ class PaymentMethodTest extends Setup
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
+        $this->assertEquals('UNKNOWN', $usBankAccount->bankName);
     }
 
     public function testCreate_fromAbstractPaymentMethodNonce()
@@ -744,6 +745,7 @@ class PaymentMethodTest extends Setup
         $this->assertEquals('checking', $foundUsBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $foundUsBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
+        $this->assertEquals('UNKNOWN', $foundUsBankAccount->bankName);
     }
 
     public function testFind_returnsApplePayCards()

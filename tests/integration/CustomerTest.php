@@ -220,6 +220,27 @@ class CustomerTest extends Setup
         $this->assertNotNull($customer->paymentMethods[0]);
     }
 
+    public function testCreateCustomerWithUsBankAccount()
+    {
+        $nonce = Test\Helper::generateValidUsBankAccountNonce();
+        $result = Braintree\Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($result->success);
+        $customer = $result->customer;
+        $this->assertNotNull($customer->usBankAccounts[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
+        $usBankAccount = $customer->usBankAccounts[0];
+        $this->assertTrue($usBankAccount instanceof Braintree\UsBankAccount);
+        $this->assertNotNull($usBankAccount->token);
+        $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
+        $this->assertEquals('123456789', $usBankAccount->routingNumber);
+        $this->assertEquals('1234', $usBankAccount->last4);
+        $this->assertEquals('checking', $usBankAccount->accountType);
+        $this->assertEquals('PayPal Checking - 1234', $usBankAccount->accountDescription);
+        $this->assertEquals('UNKNOWN', $usBankAccount->bankName);
+    }
+
     public function testCreate_withUnicode()
     {
         $result = Braintree\Customer::create([
@@ -652,6 +673,28 @@ class CustomerTest extends Setup
         $this->assertEquals('419.555.1234', $customer->phone);
         $this->assertEquals('419.555.1235', $customer->fax);
         $this->assertEquals('http://example.com', $customer->website);
+    }
+
+    public function test_findUsBankAccountGivenPaymentMethodToken()
+    {
+        $nonce = Test\Helper::generateValidUsBankAccountNonce();
+        $result = Braintree\Customer::create(array(
+            'paymentMethodNonce' => $nonce
+        ));
+        $this->assertTrue($result->success);
+
+        $customer = Braintree\Customer::find($result->customer->id);
+        $this->assertNotNull($customer->usBankAccounts[0]);
+        $this->assertNotNull($customer->paymentMethods[0]);
+        $usBankAccount = $customer->usBankAccounts[0];
+        $this->assertTrue($usBankAccount instanceof Braintree\UsBankAccount);
+        $this->assertNotNull($usBankAccount->token);
+        $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
+        $this->assertEquals('123456789', $usBankAccount->routingNumber);
+        $this->assertEquals('1234', $usBankAccount->last4);
+        $this->assertEquals('checking', $usBankAccount->accountType);
+        $this->assertEquals('PayPal Checking - 1234', $usBankAccount->accountDescription);
+        $this->assertEquals('UNKNOWN', $usBankAccount->bankName);
     }
 
     public function testFind_throwsExceptionIfNotFound()

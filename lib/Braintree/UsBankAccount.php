@@ -23,6 +23,7 @@ namespace Braintree;
  * @property-read string $email
  * @property-read string $token
  * @property-read string $imageUrl
+ * @property-read string $bankName
  */
 class UsBankAccount extends Base
 {

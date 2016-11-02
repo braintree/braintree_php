@@ -29,6 +29,7 @@ class UsBankAccountAccountTest extends Setup
         $this->assertEquals('checking', $foundUsBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $foundUsBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
+        $this->assertEquals('UNKNOWN', $foundUsBankAccount->bankName);
     }
 
     public function testFind()
@@ -49,6 +50,7 @@ class UsBankAccountAccountTest extends Setup
         $this->assertEquals('checking', $foundUsBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $foundUsBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
+        $this->assertEquals('UNKNOWN', $foundUsBankAccount->bankName);
     }
 
     public function testFind_throwsIfCannotBeFound()
@@ -83,5 +85,6 @@ class UsBankAccountAccountTest extends Setup
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+        $this->assertEquals('UNKNOWN', $transaction->usBankAccount->bankName);
     }
 }

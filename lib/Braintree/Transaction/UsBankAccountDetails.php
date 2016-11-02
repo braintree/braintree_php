@@ -18,6 +18,7 @@ use Braintree\Instance;
  * @property-read string $accountHolderName
  * @property-read string $token
  * @property-read string $imageUrl
+ * @property-read string $bankName
  */
 class UsBankAccountDetails extends Instance
 {
