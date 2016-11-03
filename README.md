@@ -47,6 +47,15 @@ if ($result->success) {
 }
 ```
 
+Both PSR-0 and PSR-4 namespacing are supported. If you are using composer with `--classmap-authoritative` or  
+`--optimize-autoloader` enabled, you'll have to reference classes using PSR-4 namespacing:
+```php
+Braintree\Configuration::environment('sandbox');
+Braintree\Configuration::merchantId('your_merchant_id');
+Braintree\Configuration::publicKey('your_public_key');
+Braintree\Configuration::privateKey('your_private_key');
+```
+
 ## HHVM Support
 
 The Braintree PHP library will run on HHVM >= 3.4.2.
