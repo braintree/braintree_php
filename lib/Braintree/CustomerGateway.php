@@ -152,7 +152,7 @@ class CustomerGateway
             'lastName', 'phone', 'website', 'deviceData',
             'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce',
             ['riskData' =>
-                ['customer_browser', 'customer_ip']
+                ['customerBrowser', 'customerIp', 'customer_browser', 'customer_ip']
             ],
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
