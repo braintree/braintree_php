@@ -60,6 +60,72 @@ class MerchantTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::MERCHANT_ACCOUNT_PAYMENT_METHODS_ARE_INVALID, $errors[0]->code);
     }
 
+    public function testCreateUSMerchantThatAcceptsMultipleCurrencies()
+    {
+        $gateway = new Braintree\Gateway([
+            'clientId' => 'client_id$development$signup_client_id',
+            'clientSecret' => 'client_secret$development$signup_client_secret',
+        ]);
+        $result = $gateway->merchant()->create([
+            'email' => 'name@email.com',
+            'countryCodeAlpha3' => 'USA',
+            'paymentMethods' => ['credit_card', 'paypal'],
+            'currencies' => ['GBP', 'USD']
+        ]);
+
+        $this->assertEquals(true, $result->success);
+        $merchant = $result->merchant;
+        $this->assertNotNull($merchant->id);
+        $credentials = $result->credentials;
+        $this->assertNotNull($credentials->accessToken);
+
+        $merchantAccounts = $merchant->merchantAccounts;
+        $this->assertEquals(2, count($merchantAccounts));
+
+        $usdMerchantAccount = $this->getMerchantAccountForCurrency($merchantAccounts, 'USD');
+        $this->assertNotNull($usdMerchantAccount);
+        $this->assertEquals(true, $usdMerchantAccount->default);
+        $this->assertEquals('USD', $usdMerchantAccount->currencyIsoCode);
+
+        $gbpMerchantAccount = $this->getMerchantAccountForCurrency($merchantAccounts, 'GBP');
+        $this->assertNotNull($gbpMerchantAccount);
+        $this->assertEquals(false, $gbpMerchantAccount->default);
+        $this->assertEquals('GBP', $gbpMerchantAccount->currencyIsoCode);
+    }
+
+    public function testCreateEUMerchantThatAcceptsMultipleCurrencies()
+    {
+        $gateway = new Braintree\Gateway([
+            'clientId' => 'client_id$development$signup_client_id',
+            'clientSecret' => 'client_secret$development$signup_client_secret',
+        ]);
+        $result = $gateway->merchant()->create([
+            'email' => 'name@email.com',
+            'countryCodeAlpha3' => 'GBR',
+            'paymentMethods' => ['credit_card', 'paypal'],
+            'currencies' => ['GBP', 'USD']
+        ]);
+
+        $this->assertEquals(true, $result->success);
+        $merchant = $result->merchant;
+        $this->assertNotNull($merchant->id);
+        $credentials = $result->credentials;
+        $this->assertNotNull($credentials->accessToken);
+
+        $merchantAccounts = $merchant->merchantAccounts;
+        $this->assertEquals(2, count($merchantAccounts));
+
+        $usdMerchantAccount = $this->getMerchantAccountForCurrency($merchantAccounts, 'USD');
+        $this->assertNotNull($usdMerchantAccount);
+        $this->assertEquals(false, $usdMerchantAccount->default);
+        $this->assertEquals('USD', $usdMerchantAccount->currencyIsoCode);
+
+        $gbpMerchantAccount = $this->getMerchantAccountForCurrency($merchantAccounts, 'GBP');
+        $this->assertNotNull($gbpMerchantAccount);
+        $this->assertEquals(true, $gbpMerchantAccount->default);
+        $this->assertEquals('GBP', $gbpMerchantAccount->currencyIsoCode);
+    }
+
     public function testCreatePaypalOnlyMerchantThatAcceptsMultipleCurrencies()
     {
         $gateway = new Braintree\Gateway([
@@ -165,55 +231,6 @@ class MerchantTest extends Setup
         $usdMerchantAccount = $merchantAccounts[0];
         $this->assertEquals(true, $usdMerchantAccount->default);
         $this->assertEquals('USD', $usdMerchantAccount->currencyIsoCode);
-    }
-
-    public function testCreateMultiCurrencyMerchantIgnoresCurrenciesIfNotInternalApplication()
-    {
-        $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret',
-        ]);
-        $result = $gateway->merchant()->create([
-            'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'USA',
-            'paymentMethods' => ['paypal'],
-            'currencies' => ['GBP', 'USD'],
-            'paypalAccount' => [
-                'clientId' => 'fake_client_id',
-                'clientSecret' => 'fake_client_secret',
-            ]
-        ]);
-
-        $this->assertEquals(true, $result->success);
-        $merchant = $result->merchant;
-        $this->assertNotNull($merchant->id);
-        $credentials = $result->credentials;
-        $this->assertNotNull($credentials->accessToken);
-
-        $merchantAccounts = $merchant->merchantAccounts;
-        $this->assertEquals(1, count($merchantAccounts));
-    }
-
-    public function testUnallowedPaymentMethodsForMultiCurrency()
-    {
-        $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$signup_client_id',
-            'clientSecret' => 'client_secret$development$signup_client_secret',
-        ]);
-        $result = $gateway->merchant()->create([
-            'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'USA',
-            'paymentMethods' => ['credit_card'],
-            'currencies' => ['GBP', 'USD'],
-            'paypalAccount' => [
-                'clientId' => 'fake_client_id',
-                'clientSecret' => 'fake_client_secret',
-            ]
-        ]);
-
-        $this->assertEquals(false, $result->success);
-        $errors = $result->errors->forKey('merchant')->onAttribute('paymentMethods');
-        $this->assertEquals(Braintree\Error\Codes::MERCHANT_PAYMENT_METHODS_ARE_NOT_ALLOWED, $errors[0]->code);
     }
 
     public function testInvalidCurrencyForMultiCurrency()
