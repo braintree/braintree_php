@@ -375,6 +375,30 @@ class PaymentMethodTest extends Setup
         $this->assertEquals($secondToken, $card->token);
     }
 
+    public function testCreateWithVerificationAmount()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            'credit_card' => [
+                'number' => '4000111111111115',
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
+            ]
+        ]);
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\PaymentMethod::create([
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'options' => [
+                'verifyCard' => 'true',
+                'verificationAmount' => '5.00',
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Result\CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+    }
+
     public function testCreate_respectsVerifyCardAndVerificationMerchantAccountIdWhenIncludedOutsideOfTheNonce()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
