@@ -139,6 +139,7 @@ class Helper
     public static function generateValidUsBankAccountNonce() {
         $client_token = json_decode(Helper::decodedClientToken(), true);
         $url = $client_token['braintree_api']['url'] . '/tokens';
+        $token = $client_token['braintree_api']['access_token'];
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
@@ -146,7 +147,7 @@ class Helper
 
         $headers[] = 'Content-Type: application/json';
         $headers[] = 'Braintree-Version: 2015-11-01';
-        $headers[] = 'Authorization: Bearer integratexxxxxx_xxxxxx_xxxxxx_xxxxxx_xx1';
+        $headers[] = 'Authorization: Bearer ' . $token;
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
         $requestBody = [

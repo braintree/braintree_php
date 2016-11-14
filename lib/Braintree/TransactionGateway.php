@@ -131,7 +131,7 @@ class TransactionGateway
             'type',
             'venmoSdkPaymentMethodCode',
             ['riskData' =>
-                ['customer_browser', 'customer_ip']
+                ['customerBrowser', 'customerIp', 'customer_browser', 'customer_ip']
             ],
             ['creditCard' =>
                 ['token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'],

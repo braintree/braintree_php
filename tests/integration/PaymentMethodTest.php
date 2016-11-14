@@ -248,6 +248,7 @@ class PaymentMethodTest extends Setup
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
+        $this->assertEquals('UNKNOWN', $usBankAccount->bankName);
     }
 
     public function testCreate_fromAbstractPaymentMethodNonce()
@@ -744,6 +745,7 @@ class PaymentMethodTest extends Setup
         $this->assertEquals('checking', $foundUsBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $foundUsBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
+        $this->assertEquals('UNKNOWN', $foundUsBankAccount->bankName);
     }
 
     public function testFind_returnsApplePayCards()
@@ -1344,7 +1346,7 @@ class PaymentMethodTest extends Setup
             'accessToken' => $credentials->accessToken
         ]);
 
-        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, false);
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token);
         $this->assertTrue($grantResult->success);
 
         $result = Braintree\Transaction::sale([
@@ -1398,7 +1400,7 @@ class PaymentMethodTest extends Setup
             'accessToken' => $credentials->accessToken
         ]);
 
-        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, false);
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, ['allow_vaulting' => false]);
 
         $customer = $partnerMerchantGateway->customer()->create([
             'firstName' => 'Bob',
@@ -1449,7 +1451,7 @@ class PaymentMethodTest extends Setup
             'accessToken' => $credentials->accessToken
         ]);
 
-        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, true);
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, ['allow_vaulting' => true]);
 
         $customer = Braintree\Customer::create([
             'firstName' => 'Bob',
