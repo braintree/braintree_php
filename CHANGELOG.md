@@ -1,3 +1,7 @@
+## 3.18.0
+* Fix `UsBankAccount` support for `Customer`s
+* Update `Grant` api to support options hash
+
 ## 3.17.0
 * Add 'UsBankAccount' payment method
 
