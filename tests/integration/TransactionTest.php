@@ -409,6 +409,21 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale([
             'amount' => '1.02',
+            'applePayCard' => [
+                'number' => "370295001292109",
+                'cardholderName' => "JANE SMITH",
+                'cryptogram' => "AAAAAAAA/COBt84dnIEcwAA3gAAGhgEDoLABAAhAgAABAAAALnNCLw==",
+                'expirationMonth' => "10",
+                'expirationYear' => "17"
+            ]
+        ]);
+        $this->assertTrue($result->success);
+    }
+
+  public function testCreateTransactionUsingRawApplePayParamsInSnakeCaseForBackwardsCompatibility()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '1.02',
             'apple_pay_card' => [
                 'number' => "370295001292109",
                 'cardholder_name' => "JANE SMITH",
