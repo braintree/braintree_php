@@ -159,7 +159,7 @@ class Helper
                 'postal_code' => '94112'
             ],
             'account_type' => 'checking',
-            'routing_number' => '123456789',
+            'routing_number' => '021000021',
             'account_number' => '567891234',
             'account_holder_name' => 'Dan Schulman',
             'account_description' => 'PayPal Checking - 1234',

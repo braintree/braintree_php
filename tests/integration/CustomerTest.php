@@ -234,11 +234,11 @@ class CustomerTest extends Setup
         $this->assertTrue($usBankAccount instanceof Braintree\UsBankAccount);
         $this->assertNotNull($usBankAccount->token);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
-        $this->assertEquals('123456789', $usBankAccount->routingNumber);
+        $this->assertEquals('021000021', $usBankAccount->routingNumber);
         $this->assertEquals('1234', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $usBankAccount->accountDescription);
-        $this->assertEquals('UNKNOWN', $usBankAccount->bankName);
+        $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
     }
 
     public function testCreate_withUnicode()
@@ -690,11 +690,11 @@ class CustomerTest extends Setup
         $this->assertTrue($usBankAccount instanceof Braintree\UsBankAccount);
         $this->assertNotNull($usBankAccount->token);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
-        $this->assertEquals('123456789', $usBankAccount->routingNumber);
+        $this->assertEquals('021000021', $usBankAccount->routingNumber);
         $this->assertEquals('1234', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $usBankAccount->accountDescription);
-        $this->assertEquals('UNKNOWN', $usBankAccount->bankName);
+        $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
     }
 
     public function testFind_throwsExceptionIfNotFound()
