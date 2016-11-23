@@ -30,6 +30,9 @@ class UsBankAccountAccountTest extends Setup
         $this->assertEquals('PayPal Checking - 1234', $foundUsBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
         $this->assertRegExp('/CHASE/', $foundUsBankAccount->bankName);
+        $this->assertEquals('cl mandate text', $foundUsBankAccount->achMandate->text);
+        $this->assertEquals('DateTime', get_class($foundUsBankAccount->achMandate->acceptedAt));
+        $this->assertEquals(true, $foundUsBankAccount->default);
     }
 
     public function testFind()
@@ -51,6 +54,9 @@ class UsBankAccountAccountTest extends Setup
         $this->assertEquals('PayPal Checking - 1234', $foundUsBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
         $this->assertRegExp('/CHASE/', $foundUsBankAccount->bankName);
+        $this->assertEquals('cl mandate text', $foundUsBankAccount->achMandate->text);
+        $this->assertEquals('DateTime', get_class($foundUsBankAccount->achMandate->acceptedAt));
+        $this->assertEquals(true, $foundUsBankAccount->default);
     }
 
     public function testFind_throwsIfCannotBeFound()
@@ -86,5 +92,7 @@ class UsBankAccountAccountTest extends Setup
         $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
         $this->assertRegExp('/CHASE/', $transaction->usBankAccount->bankName);
+        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
     }
 }
