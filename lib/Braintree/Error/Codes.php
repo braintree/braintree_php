@@ -201,6 +201,7 @@ class Codes
     const MERCHANT_CURRENCY_IS_INVALID                  = '93618';
     const MERCHANT_NO_MERCHANT_ACCOUNTS                 = '93619';
     const MERCHANT_MERCHANT_ACCOUNT_EXISTS_FOR_ID       = '93620';
+    const MERCHANT_MERCHANT_ACCOUNT_NOT_AUTH_ONBOARDED  = '93621';
 
     const MERCHANT_ACCOUNT_ID_FORMAT_IS_INVALID                         = '82603';
     const MERCHANT_ACCOUNT_ID_IS_IN_USE                                 = '82604';
