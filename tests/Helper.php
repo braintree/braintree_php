@@ -124,6 +124,14 @@ class Helper
         return $response['threeDSecureVerification']['threeDSecureToken'];
     }
 
+    public static function generate3DSNonce($params)
+    {
+        $http = new Braintree\Http(Braintree\Configuration::$global);
+        $path = Braintree\Configuration::$global->merchantPath() . '/three_d_secure/create_nonce/' . self::threeDSecureMerchantAccountId();
+        $response = $http->post($path, $params);
+        return $response['paymentMethodNonce']['nonce'];
+    }
+
     public static function nowInEastern()
     {
         $eastern = new DateTimeZone('America/New_York');
