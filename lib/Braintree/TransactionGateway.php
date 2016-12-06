@@ -341,10 +341,14 @@ class TransactionGateway
         $path = $this->_config->merchantPath() . '/transactions/advanced_search';
         $response = $this->_http->post($path, ['search' => $criteria]);
 
-        return Util::extractattributeasarray(
-            $response['creditCardTransactions'],
-            'transaction'
-        );
+        if (array_key_exists('creditCardTransactions', $response)) {
+            return Util::extractattributeasarray(
+                $response['creditCardTransactions'],
+                'transaction'
+            );
+        } else {
+            throw new Exception\DownForMaintenance();
+        }
     }
 
     /**
