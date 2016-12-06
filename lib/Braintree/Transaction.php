@@ -171,7 +171,7 @@ namespace Braintree;
  *
  */
 
-class Transaction extends Base
+class Transaction extends Base implements \JsonSerializable
 {
     // Transaction Status
     const AUTHORIZATION_EXPIRED    = 'authorization_expired';
@@ -415,6 +415,18 @@ class Transaction extends Base
         }
         return __CLASS__ . '[' .
                 Util::attributesToString($displayAttributes) .']';
+    }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 
     public function isEqual($otherTx)

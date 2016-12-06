@@ -16,7 +16,18 @@ use Braintree\Instance;
  * @property-read string $transactionSource
  * @property-read string $user
  */
-class StatusDetails extends Instance
+class StatusDetails extends Instance implements \JsonSerializable
 {
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
 }
 class_alias('Braintree\Transaction\StatusDetails', 'Braintree_Transaction_StatusDetails');

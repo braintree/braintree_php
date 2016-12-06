@@ -23,7 +23,7 @@ namespace Braintree;
  * @property-read string $username
  * @property-read string $venmoUserId
  */
-class VenmoAccount extends Base
+class VenmoAccount extends Base implements \JsonSerializable
 {
     /* instance methods */
     /**
@@ -71,5 +71,18 @@ class VenmoAccount extends Base
 
         $this->_set('subscriptions', $subscriptionArray);
     }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
+    
 }
 class_alias('Braintree\VenmoAccount', 'Braintree_VenmoAccount');

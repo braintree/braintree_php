@@ -32,7 +32,7 @@ use Braintree\Instance;
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
  */
-class AndroidPayCardDetails extends Instance
+class AndroidPayCardDetails extends Instance implements \JsonSerializable
 {
     protected $_attributes = [];
 
@@ -45,5 +45,18 @@ class AndroidPayCardDetails extends Instance
         $this->_attributes['cardType'] = $this->virtualCardType;
         $this->_attributes['last4'] = $this->virtualCardLast4;
     }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
+    
 }
 class_alias('Braintree\Transaction\AndroidPayCardDetails', 'Braintree_Transaction_AndroidPayCardDetails');

@@ -34,7 +34,7 @@ use Braintree\Error\ErrorCollection;
  * @property-read \Braintree\Error\ErrorCollection $errors
  * @property-read \Braintree\Result\CreditCardVerification $creditCardVerification credit card verification data
  */
-class Error extends Base
+class Error extends Base implements \JsonSerializable
 {
     /**
     * @var bool always false
@@ -120,5 +120,18 @@ class Error extends Base
         }
         return __CLASS__ .'[' . $output . ']';
     }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
+    
 }
 class_alias('Braintree\Result\Error', 'Braintree_Result_Error');

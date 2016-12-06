@@ -30,7 +30,7 @@ use Braintree\Instance;
  * @property-read string $expirationYear
  * @uses Instance inherits methods
  */
-class AmexExpressCheckoutCardDetails extends Instance
+class AmexExpressCheckoutCardDetails extends Instance implements \JsonSerializable
 {
     protected $_attributes = [];
 
@@ -41,5 +41,18 @@ class AmexExpressCheckoutCardDetails extends Instance
     {
         parent::__construct($attributes);
     }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
+
 }
 class_alias('Braintree\Transaction\AmexExpressCheckoutCardDetails', 'Braintree_Transaction_AmexExpressCheckoutCardDetails');

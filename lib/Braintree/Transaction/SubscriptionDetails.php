@@ -14,7 +14,18 @@ use Braintree\Instance;
  * @property-read string $billing_period_start_date
  * @property-read string $billing_period_end_date
  */
-class SubscriptionDetails extends Instance
+class SubscriptionDetails extends Instance implements \JsonSerializable
 {
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
 }
 class_alias('Braintree\Transaction\SubscriptionDetails', 'Braintree_Transaction_SubscriptionDetails');

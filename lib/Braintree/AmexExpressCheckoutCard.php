@@ -28,7 +28,7 @@ namespace Braintree;
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
  */
-class AmexExpressCheckoutCard extends Base
+class AmexExpressCheckoutCard extends Base implements \JsonSerializable
 {
     /* instance methods */
     /**
@@ -77,5 +77,18 @@ class AmexExpressCheckoutCard extends Base
 
         $this->_set('subscriptions', $subscriptionArray);
     }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
+
 }
 class_alias('Braintree\AmexExpressCheckoutCard', 'Braintree_AmexExpressCheckoutCard');

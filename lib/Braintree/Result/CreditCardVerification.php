@@ -22,7 +22,7 @@ use Braintree\Util;
  * @property-read string $status
  *
  */
-class CreditCardVerification
+class CreditCardVerification implements \JsonSerializable
 {
     // Status
     const FAILED                   = 'failed';
@@ -84,6 +84,18 @@ class CreditCardVerification
     {
         return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes) . ']';
+    }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 
     public static function allStatuses()

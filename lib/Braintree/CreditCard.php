@@ -29,7 +29,7 @@ namespace Braintree;
  * @property-read string $token
  * @property-read string $updatedAt
  */
-class CreditCard extends Base
+class CreditCard extends Base implements \JsonSerializable
 {
     // Card Type
     const AMEX = 'American Express';
@@ -144,6 +144,18 @@ class CreditCard extends Base
 
             $this->_set('verification', CreditCardVerification::factory($verifications[0]));
         }
+    }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 
     private function _compareCreatedAtOnVerifications($verificationAttrib1, $verificationAttrib2)
