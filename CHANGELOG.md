@@ -1,3 +1,7 @@
+## 3.19.0
+* Add multi-currency updates to merchants onboarded through Braintree Auth
+* Raise an exception if fetching pages of results times out during a transaction search
+
 ## 3.18.0
 * Fix `UsBankAccount` support for `Customer`s
 * Update `Grant` api to support options hash
