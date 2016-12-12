@@ -171,12 +171,12 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $transaction->status);
         $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
-        $this->assertEquals('123456789', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('021000021', $transaction->usBankAccount->routingNumber);
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
-        $this->assertEquals('UNKNOWN', $transaction->usBankAccount->bankName);
+        $this->assertRegExp('/CHASE/', $transaction->usBankAccount->bankName);
     }
 
   public function testSaleWithUsBankAccountNonceAndVaultedToken()
@@ -196,7 +196,7 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $transaction->status);
         $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
-        $this->assertEquals('123456789', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('021000021', $transaction->usBankAccount->routingNumber);
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
@@ -216,7 +216,7 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $transaction->status);
         $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
         $this->assertEquals('100.00', $transaction->amount);
-        $this->assertEquals('123456789', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('021000021', $transaction->usBankAccount->routingNumber);
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
@@ -406,6 +406,21 @@ class TransactionTest extends Setup
     }
 
   public function testCreateTransactionUsingRawApplePayParams()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '1.02',
+            'applePayCard' => [
+                'number' => "370295001292109",
+                'cardholderName' => "JANE SMITH",
+                'cryptogram' => "AAAAAAAA/COBt84dnIEcwAA3gAAGhgEDoLABAAhAgAABAAAALnNCLw==",
+                'expirationMonth' => "10",
+                'expirationYear' => "17"
+            ]
+        ]);
+        $this->assertTrue($result->success);
+    }
+
+  public function testCreateTransactionUsingRawApplePayParamsInSnakeCaseForBackwardsCompatibility()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '1.02',
@@ -1925,6 +1940,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->paypalDetails->payerId);
         $this->assertNotNull($transaction->paypalDetails->payerFirstName);
         $this->assertNotNull($transaction->paypalDetails->payerLastName);
+        $this->assertNotNull($transaction->paypalDetails->payerStatus);
         $this->assertNotNull($transaction->paypalDetails->sellerProtectionStatus);
         $this->assertNotNull($transaction->paypalDetails->captureId);
         $this->assertNotNull($transaction->paypalDetails->refundId);

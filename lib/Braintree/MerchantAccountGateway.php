@@ -55,6 +55,12 @@ class MerchantAccountGateway
         return $signature;
     }
 
+    public function createForCurrency($attribs)
+    {
+        $response = $this->_http->post($this->_config->merchantPath() . '/merchant_accounts/create_for_currency', ['merchant_account' => $attribs]);
+        return $this->_verifyGatewayResponse($response);
+    }
+
     public static function createSignature()
     {
         $addressSignature = ['streetAddress', 'postalCode', 'locality', 'region'];
@@ -137,6 +143,9 @@ class MerchantAccountGateway
 
     private function _verifyGatewayResponse($response)
     {
+        if (isset($response['response'])) {
+            $response = $response['response'];
+        }
         if (isset($response['merchantAccount'])) {
             // return a populated instance of merchantAccount
             return new Result\Successful(

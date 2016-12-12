@@ -428,4 +428,146 @@ class MerchantAccountTest extends Setup
         $error = $result->errors->forKey("merchantAccount")->forKey("funding")->onAttribute("mobilePhone");
         $this->assertEquals($error[0]->code, Braintree\Error\Codes::MERCHANT_ACCOUNT_FUNDING_MOBILE_PHONE_IS_REQUIRED);
     }
+
+    public function testCreateForCurrency()
+    {
+        $gateway = new Braintree\Gateway([
+            'clientId' => 'client_id$development$signup_client_id',
+            'clientSecret' => 'client_secret$development$signup_client_secret',
+        ]);
+        $result = $gateway->merchant()->create([
+            'email' => 'name@email.com',
+            'countryCodeAlpha3' => 'GBR',
+            'paymentMethods' => ['credit_card', 'paypal'],
+        ]);
+
+        $this->assertEquals(true, $result->success);
+
+        $gateway = new Braintree\Gateway([
+            'accessToken' => $result->credentials->accessToken,
+        ]);
+
+        $result = $gateway->merchantAccount()->createForCurrency([
+            'currency' => "USD",
+        ]);
+
+        $this->assertEquals(true, $result->success);
+
+        $merchantAccount = $result->merchantAccount;
+        $this->assertEquals("USD", $merchantAccount->currencyIsoCode);
+        $this->assertEquals("USD", $merchantAccount->id);
+    }
+
+    public function testCreateForCurrencyWithDuplicateCurrency()
+    {
+        $gateway = new Braintree\Gateway([
+            'clientId' => 'client_id$development$signup_client_id',
+            'clientSecret' => 'client_secret$development$signup_client_secret',
+        ]);
+        $result = $gateway->merchant()->create([
+            'email' => 'name@email.com',
+            'countryCodeAlpha3' => 'GBR',
+            'paymentMethods' => ['credit_card', 'paypal'],
+        ]);
+
+        $this->assertEquals(true, $result->success);
+
+        $gateway = new Braintree\Gateway([
+            'accessToken' => $result->credentials->accessToken,
+        ]);
+
+        $merchantAccount = $result->merchant->merchantAccounts[0];
+        $result = $gateway->merchantAccount()->createForCurrency([
+            'currency' => "GBP",
+        ]);
+
+        $this->assertEquals(false, $result->success);
+
+        $errors = $result->errors->forKey('merchant')->onAttribute('currency');
+        $this->assertEquals(Braintree\Error\Codes::MERCHANT_MERCHANT_ACCOUNT_EXISTS_FOR_CURRENCY, $errors[0]->code);
+    }
+
+    public function testCreateForCurrencyWithInvalidCurrency()
+    {
+        $gateway = new Braintree\Gateway([
+            'clientId' => 'client_id$development$signup_client_id',
+            'clientSecret' => 'client_secret$development$signup_client_secret',
+        ]);
+        $result = $gateway->merchant()->create([
+            'email' => 'name@email.com',
+            'countryCodeAlpha3' => 'GBR',
+            'paymentMethods' => ['credit_card', 'paypal'],
+        ]);
+
+        $this->assertEquals(true, $result->success);
+
+        $gateway = new Braintree\Gateway([
+            'accessToken' => $result->credentials->accessToken,
+        ]);
+
+        $result = $gateway->merchantAccount()->createForCurrency([
+            'currency' => "FAKE_CURRENCY",
+        ]);
+
+        $this->assertEquals(false, $result->success);
+
+        $errors = $result->errors->forKey('merchant')->onAttribute('currency');
+        $this->assertEquals(Braintree\Error\Codes::MERCHANT_CURRENCY_IS_INVALID, $errors[0]->code);
+    }
+
+    public function testCreateForCurrencyWithoutCurrency()
+    {
+        $gateway = new Braintree\Gateway([
+            'clientId' => 'client_id$development$signup_client_id',
+            'clientSecret' => 'client_secret$development$signup_client_secret',
+        ]);
+        $result = $gateway->merchant()->create([
+            'email' => 'name@email.com',
+            'countryCodeAlpha3' => 'GBR',
+            'paymentMethods' => ['credit_card', 'paypal'],
+        ]);
+
+        $this->assertEquals(true, $result->success);
+
+        $gateway = new Braintree\Gateway([
+            'accessToken' => $result->credentials->accessToken,
+        ]);
+
+        $result = $gateway->merchantAccount()->createForCurrency([]);
+
+        $this->assertEquals(false, $result->success);
+
+        $errors = $result->errors->forKey('merchant')->onAttribute('currency');
+        $this->assertEquals(Braintree\Error\Codes::MERCHANT_CURRENCY_IS_REQUIRED, $errors[0]->code);
+    }
+
+    public function testCreateForCurrencyWithDuplicateId()
+    {
+        $gateway = new Braintree\Gateway([
+            'clientId' => 'client_id$development$signup_client_id',
+            'clientSecret' => 'client_secret$development$signup_client_secret',
+        ]);
+        $result = $gateway->merchant()->create([
+            'email' => 'name@email.com',
+            'countryCodeAlpha3' => 'GBR',
+            'paymentMethods' => ['credit_card', 'paypal'],
+        ]);
+
+        $this->assertEquals(true, $result->success);
+
+        $gateway = new Braintree\Gateway([
+            'accessToken' => $result->credentials->accessToken,
+        ]);
+
+        $merchantAccount = $result->merchant->merchantAccounts[0];
+        $result = $gateway->merchantAccount()->createForCurrency([
+            'currency' => "USD",
+            'id' => $merchantAccount->id,
+        ]);
+
+        $this->assertEquals(false, $result->success);
+
+        $errors = $result->errors->forKey('merchant')->onAttribute('id');
+        $this->assertEquals(Braintree\Error\Codes::MERCHANT_MERCHANT_ACCOUNT_EXISTS_FOR_ID, $errors[0]->code);
+    }
 }
