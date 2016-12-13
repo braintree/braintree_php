@@ -16,10 +16,22 @@ namespace Braintree;
  * @property-read string $success
  * @property-read string $disbursementDate
  */
-class DisbursementDetails extends Instance
+class DisbursementDetails extends Instance implements \JsonSerializable
 {
     public function isValid() {
         return !is_null($this->disbursementDate);
+    }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 }
 class_alias('Braintree\DisbursementDetails', 'Braintree_DisbursementDetails');

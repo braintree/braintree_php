@@ -26,7 +26,7 @@ namespace Braintree;
  * @property-read string $sourceDescription
  * @property-read string $updatedAt
  */
-class ApplePayCard extends Base
+class ApplePayCard extends Base implements \JsonSerializable
 {
     // Card Type
     const AMEX = 'Apple Pay - American Express';
@@ -72,6 +72,18 @@ class ApplePayCard extends Base
         $instance = new self();
         $instance->_initialize(array_merge($defaultAttributes, $attributes));
         return $instance;
+    }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 
     /**

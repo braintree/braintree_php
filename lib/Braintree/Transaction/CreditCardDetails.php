@@ -21,7 +21,7 @@ use Braintree\Instance;
  * @property-read string $maskedNumber
  * @property-read string $token
  */
-class CreditCardDetails extends Instance
+class CreditCardDetails extends Instance implements \JsonSerializable
 {
     protected $_attributes = [];
 
@@ -33,7 +33,19 @@ class CreditCardDetails extends Instance
         parent::__construct($attributes);
         $this->_attributes['expirationDate'] = $this->expirationMonth . '/' . $this->expirationYear;
         $this->_attributes['maskedNumber'] = $this->bin . '******' . $this->last4;
-
     }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
+
 }
 class_alias('Braintree\Transaction\CreditCardDetails', 'Braintree_Transaction_CreditCardDetails');

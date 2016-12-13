@@ -25,7 +25,7 @@ use Braintree\Instance;
  * @property-read string $userEmail
  * @property-read string $imageUrl
  */
-class CoinbaseDetails extends Instance
+class CoinbaseDetails extends Instance implements \JsonSerializable
 {
     protected $_attributes = [];
 
@@ -36,5 +36,18 @@ class CoinbaseDetails extends Instance
     {
         parent::__construct($attributes);
     }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
+    
 }
 class_alias('Braintree\Transaction\CoinbaseDetails', 'Braintree_Transaction_CoinbaseDetails');

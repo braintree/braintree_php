@@ -27,7 +27,7 @@ namespace Braintree;
  * @property-read string $streetAddress
  * @property-read string $updatedAt
  */
-class Address extends Base
+class Address extends Base implements \JsonSerializable
 {
     /**
      * returns false if comparing object is not a Address,
@@ -53,6 +53,18 @@ class Address extends Base
     {
         return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes) . ']';
+    }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 
     /**

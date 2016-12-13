@@ -22,7 +22,7 @@ namespace Braintree;
  * @property-read string $masked-iban
  * @property-read string $token
  */
-class EuropeBankAccount extends Base
+class EuropeBankAccount extends Base implements \JsonSerializable
 {
 
     /* instance methods */
@@ -63,6 +63,18 @@ class EuropeBankAccount extends Base
     protected function _initialize($europeBankAccountAttribs)
     {
         $this->_attributes = $europeBankAccountAttribs;
+    }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 }
 class_alias('Braintree\EuropeBankAccount', 'Braintree_EuropeBankAccount');

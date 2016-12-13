@@ -25,7 +25,7 @@ namespace Braintree;
  * @property-read string $imageUrl
  * @property-read string $bankName
  */
-class UsBankAccount extends Base
+class UsBankAccount extends Base implements \JsonSerializable
 {
     /**
      *  factory method: returns an instance of UsBankAccount
@@ -67,6 +67,17 @@ class UsBankAccount extends Base
                 Util::attributesToString($this->_attributes) . ']';
     }
 
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
 
     // static methods redirecting to gateway
 

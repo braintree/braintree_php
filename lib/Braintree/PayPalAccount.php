@@ -24,7 +24,7 @@ namespace Braintree;
  * @property-read string $token
  * @property-read string $imageUrl
  */
-class PayPalAccount extends Base
+class PayPalAccount extends Base implements \JsonSerializable
 {
     /**
      *  factory method: returns an instance of PayPalAccount
@@ -85,6 +85,17 @@ class PayPalAccount extends Base
                 Util::attributesToString($this->_attributes) . ']';
     }
 
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
 
     // static methods redirecting to gateway
 

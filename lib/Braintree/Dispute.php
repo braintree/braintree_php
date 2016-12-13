@@ -16,7 +16,7 @@ namespace Braintree;
  * @property-read string $disbursementDate
  * @property-read object $transactionDetails
  */
-class Dispute extends Base
+class Dispute extends Base implements \JsonSerializable
 {
     protected $_attributes = [];
 
@@ -77,6 +77,18 @@ class Dispute extends Base
         }
         return __CLASS__ . '[' .
                 Util::attributesToString($displayAttributes) .']';
+    }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 }
 class_alias('Braintree\Dispute', 'Braintree_Dispute');

@@ -31,7 +31,7 @@ namespace Braintree;
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
  */
-class AndroidPayCard extends Base
+class AndroidPayCard extends Base implements \JsonSerializable
 {
     /* instance methods */
     /**
@@ -86,5 +86,18 @@ class AndroidPayCard extends Base
 
         $this->_set('subscriptions', $subscriptionArray);
     }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
+
 }
 class_alias('Braintree\AndroidPayCard', 'Braintree_AndroidPayCard');

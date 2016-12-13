@@ -26,7 +26,7 @@ use Braintree\Instance;
  * @property-read string $cardholderName
  * @property-read string $sourceDescription
  */
-class ApplePayCardDetails extends Instance
+class ApplePayCardDetails extends Instance implements \JsonSerializable
 {
     protected $_attributes = [];
 
@@ -37,5 +37,18 @@ class ApplePayCardDetails extends Instance
     {
         parent::__construct($attributes);
     }
+
+    /**
+     * create a json serializable representation of the object
+     * to be passed into json_encode().
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
+    
 }
 class_alias('Braintree\Transaction\ApplePayCardDetails', 'Braintree_Transaction_ApplePayCardDetails');

@@ -28,7 +28,7 @@ use Braintree\Util;
  * @subpackage Result
  * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
-class Successful extends Instance
+class Successful extends Instance implements \JsonSerializable
 {
     /**
      *
@@ -78,6 +78,18 @@ class Successful extends Instance
            array_push($objects, $this->$returnObjectName);
        }
        return __CLASS__ . '[' . implode(', ', $objects) . ']';
+   }
+
+   /**
+    * create a json serializable representation of the object
+    * to be passed into json_encode().
+    * @ignore
+    * @return array
+    */
+   public function jsonSerialize()
+   {
+       $vars = get_object_vars($this);
+       return $vars;
    }
 
    private function _mapPropertyNamesToObjsToReturn($propertyNames, $objsToReturn) {
