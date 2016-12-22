@@ -66,7 +66,7 @@ class Helper
     public static function submitTrRequest($url, $regularParams, $trData)
     {
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_SSLVERSION, 6);
+        curl_setopt($curl, CURLOPT_SSLVERSION, Braintree\Configuration::$global->curlSslVersion());
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -151,7 +151,7 @@ class Helper
         $token = $client_token['braintree_api']['access_token'];
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_SSLVERSION, 6);
+        curl_setopt($curl, CURLOPT_SSLVERSION, Braintree\Configuration::$global->curlSslVersion());
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($curl, CURLOPT_URL, $url);
 
