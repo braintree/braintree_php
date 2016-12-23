@@ -39,9 +39,9 @@ class PaymentMethod extends Base
         return Configuration::gateway()->paymentMethod()->update($token, $attribs);
     }
 
-    public static function delete($token)
+    public static function delete($token, $options=[])
     {
-        return Configuration::gateway()->paymentMethod()->delete($token);
+        return Configuration::gateway()->paymentMethod()->delete($token, $options);
     }
 }
 class_alias('Braintree\PaymentMethod', 'Braintree_PaymentMethod');
