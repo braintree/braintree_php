@@ -109,6 +109,10 @@ class Http
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
 
+        if ($this->_config->sslVersion()) {
+            curl_setopt($curl, CURLOPT_SSLVERSION, $this->_config->sslVersion());
+        }
+
         $headers = $this->_getHeaders($curl);
         $headers[] = 'User-Agent: Braintree PHP Library ' . Version::get();
         $headers[] = 'X-ApiVersion: ' . Configuration::API_VERSION;

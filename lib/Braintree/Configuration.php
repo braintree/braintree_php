@@ -27,6 +27,7 @@ class Configuration
     private $_proxyUser = null;
     private $_proxyPassword = null;
     private $_timeout = 60;
+    private $_sslVersion = null;
 
     /**
      * Braintree API version to use
@@ -125,6 +126,20 @@ class Configuration
             return self::$global->getTimeout();
         }
         self::$global->setTimeout($value);
+    }
+
+    /**
+     * Sets or gets the SSL version to use for making requests.
+     *
+     * @param integer $value If provided, sets the SSL version
+     * @return integer The SSL version used for connecting to Braintree
+     */
+    public static function sslVersion($value=null)
+    {
+        if (empty($value)) {
+            return self::$global->getSslVersion();
+        }
+        self::$global->setSslVersion($value);
     }
 
     /**
@@ -371,6 +386,16 @@ class Configuration
     public function getTimeout()
     {
         return $this->_timeout;
+    }
+
+    private function setSslVersion($value)
+    {
+        $this->_sslVersion = $value;
+    }
+
+    private function getSslVersion()
+    {
+        return $this->_sslVersion;
     }
 
     public function getAccessToken()
