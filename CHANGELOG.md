@@ -1,3 +1,6 @@
+## 3.20.0
+* Add option `skip_advanced_fraud_check` for transaction flows
+
 ## 3.19.0
 * Add multi-currency updates to merchants onboarded through Braintree Auth
 * Raise an exception if fetching pages of results times out during a transaction search

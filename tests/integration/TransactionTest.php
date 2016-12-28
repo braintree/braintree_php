@@ -177,6 +177,8 @@ class TransactionTest extends Setup
         $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
         $this->assertRegExp('/CHASE/', $transaction->usBankAccount->bankName);
+        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
     }
 
   public function testSaleWithUsBankAccountNonceAndVaultedToken()
@@ -201,6 +203,8 @@ class TransactionTest extends Setup
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
 
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
@@ -221,6 +225,8 @@ class TransactionTest extends Setup
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
     }
 
   public function testSaleWithInvalidUsBankAccountNonce()
@@ -240,6 +246,22 @@ class TransactionTest extends Setup
       $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PAYMENT_METHOD_NONCE_UNKNOWN, $baseErrors[0]->code);
   }
 
+  public function testSaleAndSkipAdvancedFraudChecking()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => Braintree\Test\TransactionAmounts::$authorize,
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2009',
+          ],
+          'options' => [
+              'skipAdvancedFraudChecking' => true
+          ]
+      ]);
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+      $this->assertNull($transaction->riskData->id);
+  }
 
   public function testSettleAltPayTransaction()
     {

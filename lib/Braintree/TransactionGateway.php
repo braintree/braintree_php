@@ -171,6 +171,7 @@ class TransactionGateway
                     'venmoSdkSession',
                     'storeShippingAddressInVault',
                     'payeeEmail',
+                    'skipAdvancedFraudChecking',
                     ['threeDSecure' =>
                         ['required']
                     ],

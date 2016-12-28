@@ -1326,7 +1326,7 @@ class PaymentMethodTest extends Setup
         ]);
         $this->assertTrue($paypalAccountResult->success);
 
-        Braintree\PaymentMethod::delete($paymentMethodToken);
+        Braintree\PaymentMethod::delete($paymentMethodToken, ['revokeAllGrants' => false]);
 
         $this->setExpectedException('Braintree\Exception\NotFound');
         Braintree\PaymentMethod::find($paymentMethodToken);
