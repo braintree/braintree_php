@@ -57,7 +57,7 @@ class HttpTest extends Setup
     {
         try {
             Braintree\Configuration::environment('sandbox');
-            Braintree\Configuration::sslVersion(1);
+            Braintree\Configuration::sslVersion(3);
             $this->setExpectedException('Braintree\Exception\SSLCertificate');
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->get('/');

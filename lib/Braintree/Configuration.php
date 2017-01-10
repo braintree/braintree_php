@@ -129,7 +129,9 @@ class Configuration
     }
 
     /**
-     * Sets or gets the SSL version to use for making requests.
+     * Sets or gets the SSL version to use for making requests. See
+     * http://php.net/manual/en/function.curl-setopt.php for possible
+     * CURLOPT_SSLVERSION values.
      *
      * @param integer $value If provided, sets the SSL version
      * @return integer The SSL version used for connecting to Braintree
