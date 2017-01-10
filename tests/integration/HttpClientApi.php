@@ -26,6 +26,7 @@ class HttpClientApi extends Braintree\Http
     public function _doUrlRequest($httpVerb, $url, $requestBody = null)
     {
         $curl = curl_init();
+        curl_setopt($curl, CURLOPT_SSLVERSION, $this->_config->curlSslVersion());
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
         curl_setopt($curl, CURLOPT_URL, $url);

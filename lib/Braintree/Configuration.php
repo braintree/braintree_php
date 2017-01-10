@@ -27,12 +27,14 @@ class Configuration
     private $_proxyUser = null;
     private $_proxyPassword = null;
     private $_timeout = 60;
+    private $_curlSslVersion = self::TLS_1_2;
 
     /**
      * Braintree API version to use
      * @access public
      */
      const API_VERSION =  4;
+     const TLS_1_2 = 6;
 
     public function __construct($attribs = [])
     {
@@ -111,6 +113,14 @@ class Configuration
             return self::$global->getPrivateKey();
         }
         self::$global->setPrivateKey($value);
+    }
+
+    public static function curlSslVersion($value=null)
+    {
+        if (empty($value)) {
+            return self::$global->getCurlSslVersion();
+        }
+        self::$global->setCurlSslVersion($value);
     }
 
     /**
@@ -376,6 +386,16 @@ class Configuration
     public function getAccessToken()
     {
         return $this->_accessToken;
+    }
+
+    public function getCurlSslVersion()
+    {
+        return $this->_curlSslVersion;
+    }
+
+    public function setCurlSslVersion($sslVersion)
+    {
+        $this->_curlSslVersion = $sslVersion;
     }
 
     public function isAccessToken()
