@@ -149,7 +149,7 @@ namespace Braintree;
  * @property-read string $id transaction id
  * @property-read string $amount transaction amount
  * @property-read Braintree\Transaction\AddressDetails $billingDetails transaction billing address
- * @property-read string $createdAt transaction created timestamp
+ * @property-read \DateTime $createdAt transaction created DateTime
  * @property-read Braintree\ApplePayCardDetails $applePayCardDetails transaction Apple Pay card info
  * @property-read Braintree\AndroidPayCardDetails $androidPayCardDetails transaction Android Pay card info
  * @property-read Braintree\AmexExpressCheckoutCardDetails $amexExpressCheckoutCardDetails transaction Amex Express Checkout card info
@@ -165,7 +165,7 @@ namespace Braintree;
  * @property-read string $status transaction status
  * @property-read array  $statusHistory array of StatusDetails objects
  * @property-read string $type transaction type
- * @property-read string $updatedAt transaction updated timestamp
+ * @property-read \DateTime $updatedAt transaction updated DateTime
  * @property-read Braintree\Disbursement $disbursementDetails populated when transaction is disbursed
  * @property-read Braintree\Dispute $disputes populated when transaction is disputed
  *
