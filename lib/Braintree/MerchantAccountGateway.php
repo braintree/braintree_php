@@ -61,6 +61,25 @@ class MerchantAccountGateway
         return $this->_verifyGatewayResponse($response);
     }
 
+    public function all()
+    {
+        $pager = [
+            'object' => $this,
+            'method' => 'fetchMerchantAccounts',
+        ];
+        return new PaginatedCollection($pager);
+    }
+
+    public function fetchMerchantAccounts($page)
+    {
+        $response = $this->_http->get($this->_config->merchantPath() . '/merchant_accounts?page=' . $page);
+        $body = $response['merchantAccounts'];
+        $merchantAccounts = Util::extractattributeasarray($body, 'merchantAccount');
+        $totalItems = $body['totalItems'][0];
+        $pageSize = $body['pageSize'][0];
+        return new PaginatedResult($totalItems, $pageSize, $merchantAccounts);
+    }
+
     public static function createSignature()
     {
         $addressSignature = ['streetAddress', 'postalCode', 'locality', 'region'];

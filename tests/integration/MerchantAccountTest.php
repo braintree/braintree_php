@@ -570,4 +570,62 @@ class MerchantAccountTest extends Setup
         $errors = $result->errors->forKey('merchant')->onAttribute('id');
         $this->assertEquals(Braintree\Error\Codes::MERCHANT_MERCHANT_ACCOUNT_EXISTS_FOR_ID, $errors[0]->code);
     }
+
+    public function testAllReturnsAllMerchantAccounts()
+    {
+        $gateway = new Braintree\Gateway([
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+        ]);
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($gateway, [
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'read_write'
+        ]);
+
+        $credentials = $gateway->oauth()->createTokenFromCode([
+            'code' => $code,
+        ]);
+
+        $gateway = new Braintree\Gateway([
+            'accessToken' => $credentials->accessToken
+        ]);
+
+        $result = $gateway->merchantAccount()->all();
+        $merchantAccounts = [];
+        foreach($result as $ma) {
+            array_push($merchantAccounts, $ma);
+        }
+        $this->assertEquals(true, count($merchantAccounts) > 20);
+    }
+
+    public function testAllReturnsMerchantAccountWithCorrectAttributes()
+    {
+        $gateway = new Braintree\Gateway([
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
+        ]);
+
+        $result = $gateway->merchant()->create([
+            'email' => 'name@email.com',
+            'countryCodeAlpha3' => 'USA',
+            'paymentMethods' => ['credit_card', 'paypal'],
+        ]);
+
+        $gateway = new Braintree\Gateway([
+            'accessToken' => $result->credentials->accessToken,
+        ]);
+
+        $result = $gateway->merchantAccount()->all();
+        $merchantAccounts = [];
+        foreach($result as $ma) {
+            array_push($merchantAccounts, $ma);
+        }
+
+        $this->assertEquals(1, count($merchantAccounts));
+        $merchantAccount = $merchantAccounts[0];
+        $this->assertEquals("USD", $merchantAccount->currencyIsoCode);
+        $this->assertEquals(Braintree\MerchantAccount::STATUS_ACTIVE, $merchantAccount->status);
+        $this->assertTrue($merchantAccount->default);
+    }
 }
