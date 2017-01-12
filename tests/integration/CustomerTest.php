@@ -237,7 +237,6 @@ class CustomerTest extends Setup
         $this->assertEquals('021000021', $usBankAccount->routingNumber);
         $this->assertEquals('1234', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
-        $this->assertEquals('PayPal Checking - 1234', $usBankAccount->accountDescription);
         $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
     }
 
@@ -693,7 +692,6 @@ class CustomerTest extends Setup
         $this->assertEquals('021000021', $usBankAccount->routingNumber);
         $this->assertEquals('1234', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
-        $this->assertEquals('PayPal Checking - 1234', $usBankAccount->accountDescription);
         $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
     }
 

@@ -16,7 +16,6 @@ use Braintree\AchMandate;
  * @property-read string $imageUrl
  * @property-read string $routingNumber
  * @property-read string $accountType
- * @property-read string $accountDescription
  * @property-read string $accountHolderName
  * @property-read string $last4
  * @property-read string $bankName
