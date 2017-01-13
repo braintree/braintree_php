@@ -303,7 +303,6 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals('123456789', $transaction->usBankAccount->routingNumber);
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
-        $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
     }
 
@@ -327,7 +326,6 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals('123456789', $transaction->usBankAccount->routingNumber);
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
-        $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
     }
 

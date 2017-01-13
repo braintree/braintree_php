@@ -1,3 +1,9 @@
+## 3.21.0
+* Allow optional configuration of SSL version
+* Replace `var_dump` with `print_r`. Thanks, @mnlg
+* Add functionality to list all merchant accounts for a merchant with `merchantAccount->all`
+* Stop sending account_description field from us bank accounts
+
 ## 3.20.0
 * Add option `skip_advanced_fraud_check` for transaction flows
 

@@ -253,6 +253,18 @@ class ConfigurationTest extends Setup
         $this->assertEquals(60, $this->config->timeout());
     }
 
+    function testSslVersion()
+    {
+        $this->config->sslVersion(6);
+
+        $this->assertEquals(6, $this->config->sslVersion());
+    }
+
+    function testSslVersionDefaultsToNull()
+    {
+        $this->assertEquals(null, $this->config->sslVersion());
+    }
+
      /**
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage environment needs to be set

@@ -246,7 +246,6 @@ class PaymentMethodTest extends Setup
         $this->assertEquals('021000021', $usBankAccount->routingNumber);
         $this->assertEquals('1234', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
-        $this->assertEquals('PayPal Checking - 1234', $usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
         $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
     }
@@ -767,7 +766,6 @@ class PaymentMethodTest extends Setup
         $this->assertEquals('021000021', $foundUsBankAccount->routingNumber);
         $this->assertEquals('1234', $foundUsBankAccount->last4);
         $this->assertEquals('checking', $foundUsBankAccount->accountType);
-        $this->assertEquals('PayPal Checking - 1234', $foundUsBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
         $this->assertRegExp('/CHASE/', $foundUsBankAccount->bankName);
     }

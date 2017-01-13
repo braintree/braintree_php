@@ -174,7 +174,6 @@ class TransactionTest extends Setup
         $this->assertEquals('021000021', $transaction->usBankAccount->routingNumber);
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
-        $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
         $this->assertRegExp('/CHASE/', $transaction->usBankAccount->bankName);
         $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
@@ -201,7 +200,6 @@ class TransactionTest extends Setup
         $this->assertEquals('021000021', $transaction->usBankAccount->routingNumber);
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
-        $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
         $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
@@ -223,7 +221,6 @@ class TransactionTest extends Setup
         $this->assertEquals('021000021', $transaction->usBankAccount->routingNumber);
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
-        $this->assertEquals('PayPal Checking - 1234', $transaction->usBankAccount->accountDescription);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
         $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));

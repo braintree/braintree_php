@@ -36,6 +36,40 @@ class HttpTest extends Setup
         Braintree\Configuration::environment('development');
     }
 
+    public function testSandboxSSLWithExplicitVersionSet()
+    {
+        try {
+            Braintree\Configuration::environment('sandbox');
+            Braintree\Configuration::sslVersion(6);
+            $this->setExpectedException('Braintree\Exception\Authentication');
+            $http = new Braintree\Http(Braintree\Configuration::$global);
+            $http->get('/');
+        } catch (Braintree\Exception $e) {
+            Braintree\Configuration::environment('development');
+            Braintree\Configuration::sslVersion(null);
+            throw $e;
+        }
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::sslVersion(null);
+    }
+
+    public function testSandboxSSLFailsWithIncompatibleSSLVersion()
+    {
+        try {
+            Braintree\Configuration::environment('sandbox');
+            Braintree\Configuration::sslVersion(3);
+            $this->setExpectedException('Braintree\Exception\SSLCertificate');
+            $http = new Braintree\Http(Braintree\Configuration::$global);
+            $http->get('/');
+        } catch (Braintree\Exception $e) {
+            Braintree\Configuration::environment('development');
+            Braintree\Configuration::sslVersion(null);
+            throw $e;
+        }
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::sslVersion(null);
+    }
+
     public function testSslError()
     {
         try {
