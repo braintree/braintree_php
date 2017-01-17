@@ -14,7 +14,7 @@ class Version
      */
     const MAJOR = 3;
     const MINOR = 21;
-    const TINY = 0;
+    const TINY = 1;
 
     /**
      * @ignore

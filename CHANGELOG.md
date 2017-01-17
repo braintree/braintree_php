@@ -1,3 +1,6 @@
+## 3.21.1
+* Add back in `options->three_d_secure` to transaction params that was accidentally removed in v3.14.0
+
 ## 3.21.0
 * Allow optional configuration of SSL version
 * Replace `var_dump` with `print_r`. Thanks, @mnlg
@@ -27,6 +30,8 @@
 * Add 'default_payment_method' option for Customer
 
 ## 3.14.0
+**Note: This version introduced an unintentional breaking change where the `options->three_d_secure` transaction parameter was changed to `options->threeDSecure`. Starting in v3.21.1, both case conventions are supported for backwards compatibility.**
+
 * Add OrderId to refund
 * Add 3DS Pass thru support
 * Expose IDs in resource collections

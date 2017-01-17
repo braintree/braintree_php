@@ -175,6 +175,10 @@ class TransactionGateway
                     ['threeDSecure' =>
                         ['required']
                     ],
+                    # Included for backwards compatiblity. Remove in the next major version
+                    ['three_d_secure' =>
+                        ['required']
+                    ],
                     ['paypal' =>
                         [
                             'payeeEmail',
