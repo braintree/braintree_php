@@ -1,3 +1,6 @@
+## 3.21.1
+* Add back in `options->three_d_secure` to transaction params that was accidentally removed in v3.14.0
+
 ## 3.21.0
 * Allow optional configuration of SSL version
 * Replace `var_dump` with `print_r`. Thanks, @mnlg
