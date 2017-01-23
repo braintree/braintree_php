@@ -1,4 +1,4 @@
-# Braintree PHP Server Library
+# Braintree PHP Client Library
 
 The Braintree PHP library provides integration access to the Braintree Gateway.
 
