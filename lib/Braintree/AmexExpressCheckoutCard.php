@@ -21,7 +21,6 @@ namespace Braintree;
  * @property-read string $bin
  * @property-read string $cardMemberExpiryDate
  * @property-read string $cardMemberNumber
- * @property-read string $cardType
  * @property-read string $sourceDescription
  * @property-read string $token
  * @property-read string $imageUrl
