@@ -28,6 +28,7 @@ class Configuration
     private $_proxyPassword = null;
     private $_timeout = 60;
     private $_sslVersion = null;
+    private $_acceptGzipEncoding = true;
 
     /**
      * Braintree API version to use
@@ -228,6 +229,20 @@ class Configuration
         return !empty($proxyUser) && !empty($proxyPwd);
     }
 
+    /**
+     * Specify if the HTTP client is able to decode gzipped responses.
+     *
+     * @param bool $value If true, will send an Accept-Encoding header with a gzip value. If false, will not send an Accept-Encoding header with a gzip value.
+     * @return bool true if an Accept-Encoding header with a gzip value will be sent, false if not
+     */
+    public static function acceptGzipEncoding($value = null)
+    {
+        if (is_null($value)) {
+            return self::$global->getAcceptGzipEncoding();
+        }
+        self::$global->setAcceptGzipEncoding($value);
+    }
+
     public static function assertGlobalHasAccessTokenOrKeys()
     {
         self::$global->assertHasAccessTokenOrKeys();
@@ -398,6 +413,16 @@ class Configuration
     private function getSslVersion()
     {
         return $this->_sslVersion;
+    }
+
+    private function getAcceptGzipEncoding()
+    {
+        return $this->_acceptGzipEncoding;
+    }
+
+    private function setAcceptGzipEncoding($value)
+    {
+        $this->_acceptGzipEncoding = $value;
     }
 
     public function getAccessToken()

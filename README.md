@@ -61,6 +61,14 @@ Braintree\Configuration::privateKey('your_private_key');
 
 The Braintree PHP SDK will run on HHVM >= 3.4.2.
 
+## Google App Engine
+
+If you use Google App Engine, you'll have to turn off accepting gzip responses.
+
+```php
+Braintree\Configuration::acceptGzipEncoding(false);
+```
+
 ## Legacy PHP Support
 
 Version [2.40.0](https://github.com/braintree/braintree_php/releases/tag/2.40.0) is compatible with PHP 5.2 and 5.3. You can find it on our releases page.

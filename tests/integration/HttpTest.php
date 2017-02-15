@@ -84,6 +84,54 @@ class HttpTest extends Setup
         Braintree\Configuration::environment('development');
     }
 
+    public function testAcceptGzipEncodingSetFalse()
+    {
+        $originalGzipEncoding = Braintree\Configuration::acceptGzipEncoding();
+        Braintree\Configuration::acceptGzipEncoding(false);
+        try {
+            $result = Braintree\Customer::create([
+                'firstName' => 'Mike',
+                'lastName' => 'Jones',
+                'company' => 'Jones Co.',
+                'email' => 'mike.jones@example.com',
+                'phone' => '419.555.1234',
+                'fax' => '419.555.1235',
+                'website' => 'http://example.com'
+                ]);
+            $this->assertEquals(true, $result->success);
+            $customer = $result->customer;
+            $this->assertEquals('Mike', $customer->firstName);
+        } catch(Braintree\Exception $e) {
+            Braintree\Configuration::acceptGzipEncoding($originalGzipEncoding);
+            throw $e;
+        }
+        Braintree\Configuration::acceptGzipEncoding($originalGzipEncoding);
+    }
+
+    public function testAcceptGzipEncodingSetToTrue()
+    {
+        $originalGzipEncoding = Braintree\Configuration::acceptGzipEncoding();
+        Braintree\Configuration::acceptGzipEncoding(true);
+        try {
+            $result = Braintree\Customer::create([
+                'firstName' => 'Mike',
+                'lastName' => 'Jones',
+                'company' => 'Jones Co.',
+                'email' => 'mike.jones@example.com',
+                'phone' => '419.555.1234',
+                'fax' => '419.555.1235',
+                'website' => 'http://example.com'
+                ]);
+            $this->assertEquals(true, $result->success);
+            $customer = $result->customer;
+            $this->assertEquals('Mike', $customer->firstName);
+        } catch(Braintree\Exception $e) {
+            Braintree\Configuration::acceptGzipEncoding($originalGzipEncoding);
+            throw $e;
+        }
+        Braintree\Configuration::acceptGzipEncoding($originalGzipEncoding);
+    }
+
     public function testAuthorizationWithConfig()
     {
         $config = new Braintree\Configuration([
