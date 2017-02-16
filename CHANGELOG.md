@@ -1,3 +1,7 @@
+## 3.21.2
+* Add option to disable Accept-Encoding: gzip header for Google App Engine
+* Fix a bug where `merchantAccount->all` would attempt to fetch too many pages of merchant accounts
+
 ## 3.21.1
 * Add back in `options->three_d_secure` to transaction params that was accidentally removed in v3.14.0
 
