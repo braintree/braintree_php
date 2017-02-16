@@ -1,6 +1,6 @@
-# Braintree PHP Server Library
+# Braintree PHP SDK
 
-The Braintree PHP library provides integration access to the Braintree Gateway.
+The Braintree PHP SDK provides integration access to the Braintree Gateway.
 
 ## Please Note
 > **The Payment Card Industry (PCI) Council has [mandated](http://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls) that early versions of TLS be retired from service.  All organizations that handle credit card information are required to comply with this standard. As part of this obligation, Braintree is updating its services to require TLS 1.2 for all HTTPS connections. Braintree will also require HTTP/1.1 for all connections. Please see our [technical documentation](https://github.com/paypal/tls-update) for more information.**
@@ -47,8 +47,9 @@ if ($result->success) {
 }
 ```
 
-Both PSR-0 and PSR-4 namespacing are supported. If you are using composer with `--classmap-authoritative` or  
+Both PSR-0 and PSR-4 namespacing are supported. If you are using composer with `--classmap-authoritative` or
 `--optimize-autoloader` enabled, you'll have to reference classes using PSR-4 namespacing:
+
 ```php
 Braintree\Configuration::environment('sandbox');
 Braintree\Configuration::merchantId('your_merchant_id');
@@ -58,7 +59,15 @@ Braintree\Configuration::privateKey('your_private_key');
 
 ## HHVM Support
 
-The Braintree PHP library will run on HHVM >= 3.4.2.
+The Braintree PHP SDK will run on HHVM >= 3.4.2.
+
+## Google App Engine
+
+If you use Google App Engine, you'll have to turn off accepting gzip responses.
+
+```php
+Braintree\Configuration::acceptGzipEncoding(false);
+```
 
 ## Legacy PHP Support
 

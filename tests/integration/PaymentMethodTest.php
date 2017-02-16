@@ -1060,6 +1060,32 @@ class PaymentMethodTest extends Setup
         $this->assertEquals(NULL, $updateResult->creditCardVerification->gatewayRejectionReason);
     }
 
+    public function testUpdate_canPassCustomVerificationAmount()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $creditCardResult = Braintree\CreditCard::create([
+            'cardholderName' => 'Card Holder',
+            'customerId' => $customer->id,
+            'cvv' => '123',
+            'number' => Braintree\Test\CreditCardNumbers::$visa,
+            'expirationDate' => "05/2020"
+        ]);
+        $this->assertTrue($creditCardResult->success);
+        $creditCard = $creditCardResult->creditCard;
+
+        $updateResult = Braintree\PaymentMethod::update($creditCard->token, [
+            'paymentMethodNonce' => Braintree\Test\Nonces::$processorDeclinedMasterCard,
+            'options' => [
+                'verifyCard' => 'true',
+                'verificationAmount' => '2.34'
+            ]
+        ]);
+
+        $this->assertFalse($updateResult->success);
+        $this->assertEquals(Braintree\Result\CreditCardVerification::PROCESSOR_DECLINED, $updateResult->creditCardVerification->status);
+        $this->assertEquals(NULL, $updateResult->creditCardVerification->gatewayRejectionReason);
+    }
+
     public function testUpdate_canUpdateTheBillingAddress()
     {
         $customer = Braintree\Customer::createNoValidate();

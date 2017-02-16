@@ -265,6 +265,18 @@ class ConfigurationTest extends Setup
         $this->assertEquals(null, $this->config->sslVersion());
     }
 
+    public function testAcceptEncodingDefaultsTrue()
+    {
+        $this->assertTrue($this->config->acceptGzipEncoding());
+    }
+
+    public function testAcceptGzipEncoding()
+    {
+        $this->assertTrue($this->config->acceptGzipEncoding());
+        $this->config->acceptGzipEncoding(false);
+        $this->assertFalse($this->config->acceptGzipEncoding());
+    }
+
      /**
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage environment needs to be set
