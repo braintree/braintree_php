@@ -85,7 +85,7 @@ class PaginatedCollection implements Iterator
      */
     public function valid()
     {
-        if ($this->_currentPage == 0 || $this->_index % $this->_pageSize == 0)
+        if ($this->_currentPage == 0 || $this->_index % $this->_pageSize == 0 && $this->_index < $this->_totalItems)
         {
             $this->_getNextPage();
         }
