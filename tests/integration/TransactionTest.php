@@ -962,8 +962,8 @@ class TransactionTest extends Setup
       $transaction = $result->transaction;
 
       $this->assertNotNull($transaction->id);
-      $this->assertNotNull($transaction->createdAt);
-      $this->assertNotNull($transaction->updatedAt);
+      $this->assertInstanceOf('DateTime', $transaction->updatedAt);
+      $this->assertInstanceOf('DateTime', $transaction->createdAt);
       $this->assertNull($transaction->refundId);
 
       $this->assertEquals(Test\Helper::defaultMerchantAccountId(), $transaction->merchantAccountId);
