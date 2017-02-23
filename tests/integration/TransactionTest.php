@@ -2403,10 +2403,6 @@ class TransactionTest extends Setup
             Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_CAVV_IS_REQUIRED,
             $errors->onAttribute("cavv")[0]->code
         );
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_XID_IS_REQUIRED,
-            $errors->onAttribute("xid")[0]->code
-        );
     }
 
   public function testSale_returnsErrorsWhenThreeDSecurePassThruEciFlagIsInvalid()

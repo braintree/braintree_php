@@ -510,7 +510,6 @@ class Codes
     const TRANSACTION_THREE_D_SECURE_TRANSACTION_DATA_DOESNT_MATCH_VERIFY             = '91570';
     const TRANSACTION_THREE_D_SECURE_ECI_FLAG_IS_REQUIRED                             = '915113';
     const TRANSACTION_THREE_D_SECURE_CAVV_IS_REQUIRED                                 = '915116';
-    const TRANSACTION_THREE_D_SECURE_XID_IS_REQUIRED                                  = '915115';
     const TRANSACTION_THREE_D_SECURE_ECI_FLAG_IS_INVALID                              = '915114';
     const TRANSACTION_THREE_D_SECURE_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_CARD_TYPE      = '915131';
     const TRANSACTION_TYPE_IS_INVALID                                                 = '91523';
