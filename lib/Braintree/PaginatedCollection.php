@@ -20,7 +20,6 @@ use Iterator;
  *
  * @package    Braintree
  * @subpackage Utility
- * @copyright  2016 Braintree, a division of PayPal, Inc.
  */
 class PaginatedCollection implements Iterator
 {

@@ -9,7 +9,6 @@ use Braintree\Instance;
  *
  * @package    Braintree
  * @subpackage Transaction
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $billing_period_start_date
  * @property-read string $billing_period_end_date

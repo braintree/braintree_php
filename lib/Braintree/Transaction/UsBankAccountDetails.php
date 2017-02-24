@@ -10,7 +10,6 @@ use Braintree\AchMandate;
  *
  * @package    Braintree
  * @subpackage Transaction
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $token
  * @property-read string $imageUrl
