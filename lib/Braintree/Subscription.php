@@ -11,7 +11,6 @@ namespace Braintree;
  * PHP Version 5
  *
  * @package   Braintree
- * @copyright 2015 Braintree, a division of PayPal, Inc.
  */
 class Subscription extends Base
 {

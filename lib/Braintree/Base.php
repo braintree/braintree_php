@@ -8,8 +8,6 @@ namespace Braintree;
  * Provides methods to child classes. This class cannot be instantiated.
  *
  *  PHP version 5
- *
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 abstract class Base
 {

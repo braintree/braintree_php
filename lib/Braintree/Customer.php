@@ -11,7 +11,6 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read array  $addresses
  * @property-read array  $paymentMethods

@@ -7,7 +7,6 @@ use Braintree\Instance;
  * Transaction details for a dispute
  *
  * @package    Braintree
- * @copyright  2010 Braintree Payment Solutions
  */
 
 /**
@@ -15,7 +14,6 @@ use Braintree\Instance;
  *
  *
  * @package    Braintree
- * @copyright  2010 Braintree Payment Solutions
  *
  * @property-read string $amount
  * @property-read string $id

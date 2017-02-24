@@ -7,7 +7,6 @@ namespace Braintree;
  * Creates and manages Braintree Addresses
  *
  * @package   Braintree
- * @copyright 2015 Braintree, a division of PayPal, Inc.
  */
 class OAuthGateway
 {

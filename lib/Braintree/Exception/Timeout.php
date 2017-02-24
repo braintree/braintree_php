@@ -8,7 +8,6 @@ use Braintree\Exception;
  *
  * @package    Braintree
  * @subpackage Exception
- * @copyright  2016 Braintree, a division of PayPal, Inc.
  */
 class Timeout extends Exception
 {
