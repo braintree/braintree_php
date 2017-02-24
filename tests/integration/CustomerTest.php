@@ -629,6 +629,47 @@ class CustomerTest extends Setup
         $this->assertTrue($result->success);
     }
 
+    public function testCreate_worksWithOrderPaymentPayPalNonce()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'intent' => 'order',
+                'payment_token' => 'paypal-payment-token',
+                'payer_id' => 'paypal-payer-id',
+            ]
+        ]);
+
+        $result = Braintree\Customer::create([
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertTrue($result->success);
+    }
+
+    public function testCreate_worksWithOrderPaymentPayPalNonceWithPayeeEmail()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'intent' => 'order',
+                'payment_token' => 'paypal-payment-token',
+                'payer_id' => 'paypal-payer-id',
+            ]
+        ]);
+
+        $result = Braintree\Customer::create([
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'paypal' => [
+                    'payee_email' => 'payee@example.com',
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+    }
+
     public function testCreate_doesNotWorkWithOnetimePayPalNonce()
     {
         $nonce = Braintree\Test\Nonces::$paypalOneTimePayment;
@@ -958,6 +999,77 @@ class CustomerTest extends Setup
         $this->assertTrue($result->success);
         $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
 
+    }
+
+    public function testUpdate_worksWithOrderPaymentPayPalNonce()
+    {
+        $customerResult = Braintree\Customer::create([
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'options' => [
+                    'makeDefault' => true
+                ]
+            ]
+        ]);
+        $paypalAccountToken = 'PAYPALToken-' . strval(rand());
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'intent' => 'order',
+                'payment_token' => 'paypal-payment-token',
+                'payer_id' => 'paypal-payer-id',
+                'token' => $paypalAccountToken,
+                'options' => [
+                    'makeDefault' => true
+                ]
+            ]
+        ]);
+
+        $result = Braintree\Customer::update($customerResult->customer->id, [
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertTrue($result->success);
+        $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
+    }
+
+    public function testUpdate_worksWithOrderPaymentPayPalNonceWithPayeeEmail()
+    {
+        $customerResult = Braintree\Customer::create([
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'options' => [
+                    'makeDefault' => true
+                ]
+            ]
+        ]);
+        $paypalAccountToken = 'PAYPALToken-' . strval(rand());
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'intent' => 'order',
+                'payment_token' => 'paypal-payment-token',
+                'payer_id' => 'paypal-payer-id',
+                'token' => $paypalAccountToken,
+                'options' => [
+                    'makeDefault' => true
+                ]
+            ]
+        ]);
+
+        $result = Braintree\Customer::update($customerResult->customer->id, [
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'paypal' => [
+                    'payee_email' => 'payee@example.com',
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
     }
 
     public function testUpdateDefaultPaymentMethod()

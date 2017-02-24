@@ -143,9 +143,9 @@ class CustomerGateway
      */
     public static function createSignature()
     {
-
         $creditCardSignature = CreditCardGateway::createSignature();
         unset($creditCardSignature[array_search('customerId', $creditCardSignature)]);
+
         $signature = [
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
@@ -155,7 +155,10 @@ class CustomerGateway
             ],
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
-            ];
+            ['options' => [
+                ['paypal' => ['payee_email']]
+            ]],
+        ];
         return $signature;
     }
 
@@ -179,7 +182,10 @@ class CustomerGateway
             'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce', 'defaultPaymentMethodToken',
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
-            ];
+            ['options' => [
+                ['paypal' => ['payee_email']],
+            ]],
+        ];
         return $signature;
     }
 
