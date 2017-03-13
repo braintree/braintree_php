@@ -40,6 +40,7 @@ class CreditCard extends Base
     const JCB = 'JCB';
     const LASER = 'Laser';
     const MAESTRO = 'Maestro';
+    const UK_MAESTRO = 'UK Maestro';
     const MASTER_CARD = 'MasterCard';
     const SOLO = 'Solo';
     const SWITCH_TYPE = 'Switch';
@@ -47,8 +48,8 @@ class CreditCard extends Base
     const UNKNOWN = 'Unknown';
 
     // Credit card origination location
-	const INTERNATIONAL = "international";
-	const US            = "us";
+    const INTERNATIONAL = "international";
+    const US = "us";
 
     const PREPAID_YES = 'Yes';
     const PREPAID_NO = 'No';
