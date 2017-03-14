@@ -199,7 +199,11 @@ class Helper
         return $nonce . "_xxx";
     }
 
-    public static function generateValidIdealPaymentNonce() {
+    public static function generateValidIdealPaymentNonce($amount = null) {
+        if (null === $amount) {
+            $amount = '100.00';
+        }
+
         $client_token = json_decode(Helper::decodedClientToken(), true);
         $url = $client_token['braintree_api']['url'] . '/ideal-payments';
         $token = $client_token['braintree_api']['access_token'];
@@ -216,7 +220,7 @@ class Helper
         $requestBody = [
             'issuer' => 'RABONL2U',
             'order_id' => 'ABC123',
-            'amount' => '100.00',
+            'amount' => $amount,
             'currency' => 'EUR',
             'redirect_url' => 'https://braintree-api.com',
         ];
