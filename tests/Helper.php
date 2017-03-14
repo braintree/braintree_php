@@ -231,4 +231,17 @@ class Helper
         $jsonResponse = json_decode($response, true);
         return $jsonResponse['data']['id'];
     }
+
+    public static function generateInvalidIdealPaymentNonce() {
+        $valid_characters = str_split(self::$valid_nonce_characters);
+        $nonce = 'idealpayment';
+        for($i=0; $i<4; $i++) {
+            $nonce = $nonce . '_';
+            for($j=0; $j<6; $j++) {
+                $t = rand(0, sizeof($valid_characters)-1);
+                $nonce = $nonce . $valid_characters[$t];
+            }
+        }
+        return $nonce . "_xxx";
+    }
 }

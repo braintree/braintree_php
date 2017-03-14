@@ -19,9 +19,12 @@ namespace Braintree;
  *
  * @property-read string $id
  * @property-read string $idealTransactionId
- * @property-read string $imageUrl
- * @property-read string $maskedIban
- * @property-read string $bic
+ * @property-read string $currency
+ * @property-read string $amount
+ * @property-read string $status
+ * @property-read string $orderId
+ * @property-read string $issuer
+ * @property-read string $ibanBankAccount
  */
 class IdealPayment extends Base
 {
@@ -52,6 +55,11 @@ class IdealPayment extends Base
     {
         // set the attributes
         $this->_attributes = $idealPaymentAttribs;
+
+        $ibanBankAccount = isset($idealPaymentAttribs['ibanBankAccount']) ?
+            IbanBankAccount::factory($idealPaymentAttribs['ibanBankAccount']) :
+            null;
+        $this->_set('ibanBankAccount', $ibanBankAccount);
     }
 
     /**
@@ -67,6 +75,11 @@ class IdealPayment extends Base
 
 
     // static methods redirecting to gateway
+
+    public static function find($idealPaymentId)
+    {
+        return Configuration::gateway()->idealPayment()->find($idealPaymentId);
+    }
 
     public static function sale($nonce, $transactionAttribs)
     {

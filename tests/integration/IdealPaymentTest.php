@@ -9,6 +9,33 @@ use Braintree;
 
 class IdealPaymentTest extends Setup
 {
+    public function testFindIdealPayment()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $idealPaymentId = Test\Helper::generateValidIdealPaymentNonce();
+
+        $foundIdealPayment= Braintree\IdealPayment::find($idealPaymentId);
+        $this->assertInstanceOf('Braintree\IdealPayment', $foundIdealPayment);
+        $this->assertRegExp('/^idealpayment_\w{6,}$/', $foundIdealPayment->id);
+        $this->assertRegExp('/^\d{16,}$/', $foundIdealPayment->idealTransactionId);
+        $this->assertNotNull($foundIdealPayment->currency);
+        $this->assertNotNull($foundIdealPayment->amount);
+        $this->assertEquals('COMPLETE', $foundIdealPayment->status);
+        $this->assertEquals('ABC123', $foundIdealPayment->orderId);
+        $this->assertNotNull($foundIdealPayment->issuer);
+        $this->assertRegExp('/^https:\/\//', $foundIdealPayment->approvalUrl);
+        $this->assertNotNull($foundIdealPayment->ibanBankAccount->maskedIban);
+        $this->assertNotNull($foundIdealPayment->ibanBankAccount->bic);
+        $this->assertNotNull($foundIdealPayment->ibanBankAccount->ibanCountry);
+        $this->assertNotNull($foundIdealPayment->ibanBankAccount->description);
+        $this->assertRegExp('/^\d{4}$/', $foundIdealPayment->ibanBankAccount->ibanAccountNumberLast4);
+    }
+
+    public function testFindIdealPayment_throwsIfCannotBeFound()
+    {
+        $this->setExpectedException('Braintree\Exception\NotFound');
+        Braintree\IdealPayment::find(Test\Helper::generateInvalidIdealPaymentNonce());
+    }
 
     public function testSale_createsASaleUsingNonce()
     {

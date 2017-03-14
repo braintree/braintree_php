@@ -33,6 +33,29 @@ class IdealPaymentGateway
         $this->_http = new Http($gateway->config);
     }
 
+
+    /**
+     * find an IdealPayment by id
+     *
+     * @access public
+     * @param string $idealPaymentId
+     * @return IdealPayment
+     * @throws Exception\NotFound
+     */
+    public function find($idealPaymentId)
+    {
+        try {
+            $path = $this->_config->merchantPath() . '/ideal_payments/' . $idealPaymentId;
+            $response = $this->_http->get($path);
+            return IdealPayment::factory($response['idealPayment']);
+        } catch (Exception\NotFound $e) {
+            throw new Exception\NotFound(
+                'iDEAL Payment with id ' . $idealPaymentId . ' not found'
+            );
+        }
+
+    }
+
     /**
      * create a new sale for the current IdealPayment
      *
