@@ -198,4 +198,37 @@ class Helper
         }
         return $nonce . "_xxx";
     }
+
+    public static function generateValidIdealPaymentNonce() {
+        $client_token = json_decode(Helper::decodedClientToken(), true);
+        $url = $client_token['braintree_api']['url'] . '/ideal-payments';
+        $token = $client_token['braintree_api']['access_token'];
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_URL, $url);
+
+        $headers[] = 'Content-Type: application/json';
+        $headers[] = 'Braintree-Version: 2015-11-01';
+        $headers[] = 'Authorization: Bearer ' . $token;
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+        $requestBody = [
+            'issuer' => 'RABONL2U',
+            'order_id' => 'ABC123',
+            'amount' => '100.00',
+            'currency' => 'EUR',
+            'redirect_url' => 'https://braintree-api.com',
+        ];
+
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($requestBody));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($curl);
+        $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $error_code = curl_errno($curl);
+        curl_close($curl);
+        $jsonResponse = json_decode($response, true);
+        return $jsonResponse['data']['id'];
+    }
 }

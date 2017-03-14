@@ -203,5 +203,14 @@ class Gateway
         return new UsBankAccountGateway($this);
     }
 
+    /**
+     *
+     * @return IdealPaymentGateway
+     */
+    public function idealPayment()
+    {
+        return new IdealPaymentGateway($this);
+    }
+
 }
 class_alias('Braintree\Gateway', 'Braintree_Gateway');

@@ -243,6 +243,30 @@ class TransactionTest extends Setup
       $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PAYMENT_METHOD_NONCE_UNKNOWN, $baseErrors[0]->code);
   }
 
+  public function testSaleWithIdealPaymentNonce()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => 'ideal_merchant_account',
+            'paymentMethodNonce' => Test\Helper::generateValidIdealPaymentNonce(),
+            'orderId' => 'ABC123',
+            'options' => [
+                'submitForSettlement' => true,
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SETTLED, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertRegExp('/^idealpayment_\w{6,}$/', $transaction->idealPayment->idealPaymentId);
+        $this->assertRegExp('/^\d{16,}$/', $transaction->idealPayment->idealTransactionId);
+        $this->assertRegExp('/^https:\/\//', $transaction->idealPayment->imageUrl);
+        $this->assertNotNull($transaction->idealPayment->maskedIban);
+        $this->assertNotNull($transaction->idealPayment->bic);
+    }
+
   public function testSaleAndSkipAdvancedFraudChecking()
   {
       $result = Braintree\Transaction::sale([
