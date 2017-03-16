@@ -30,9 +30,11 @@ class CreditCardVerification
     const VERIFIED                 = 'verified';
 
     private $_attributes;
+    private $_amount;
     private $_avsErrorResponseCode;
     private $_avsPostalCodeResponseCode;
     private $_avsStreetAddressResponseCode;
+    private $_currencyIsoCode;
     private $_cvvResponseCode;
     private $_gatewayRejectionReason;
     private $_status;
