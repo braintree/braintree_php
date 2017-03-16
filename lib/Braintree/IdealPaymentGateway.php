@@ -33,7 +33,6 @@ class IdealPaymentGateway
         $this->_http = new Http($gateway->config);
     }
 
-
     /**
      * find an IdealPayment by id
      *
@@ -53,7 +52,6 @@ class IdealPaymentGateway
                 'iDEAL Payment with id ' . $idealPaymentId . ' not found'
             );
         }
-
     }
 
     /**

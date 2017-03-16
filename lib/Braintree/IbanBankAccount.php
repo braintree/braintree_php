@@ -52,7 +52,6 @@ class IbanBankAccount extends Base
         $instance = new self();
         $instance->_initialize($attributes);
         return $instance;
-
     }
 }
 class_alias('Braintree\IbanBankAccount', 'Braintree_IbanBankAccount');
