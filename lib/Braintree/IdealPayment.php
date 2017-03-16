@@ -81,12 +81,12 @@ class IdealPayment extends Base
         return Configuration::gateway()->idealPayment()->find($idealPaymentId);
     }
 
-    public static function sale($nonce, $transactionAttribs)
+    public static function sale($idealPaymentId, $transactionAttribs)
     {
         $transactionAttribs['options'] = [
             'submitForSettlement' => true
         ];
-        return Configuration::gateway()->idealPayment()->sale($nonce, $transactionAttribs);
+        return Configuration::gateway()->idealPayment()->sale($idealPaymentId, $transactionAttribs);
     }
 }
 class_alias('Braintree\IdealPayment', 'Braintree_IdealPayment');

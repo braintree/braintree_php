@@ -199,7 +199,7 @@ class Helper
         return $nonce . "_xxx";
     }
 
-    public static function generateValidIdealPaymentNonce($amount = null) {
+    public static function generateValidIdealPaymentId($amount = null) {
         if (null === $amount) {
             $amount = '100.00';
         }
@@ -236,16 +236,16 @@ class Helper
         return $jsonResponse['data']['id'];
     }
 
-    public static function generateInvalidIdealPaymentNonce() {
+    public static function generateInvalidIdealPaymentId() {
         $valid_characters = str_split(self::$valid_nonce_characters);
-        $nonce = 'idealpayment';
+        $ideal_payment_id = 'idealpayment';
         for($i=0; $i<4; $i++) {
-            $nonce = $nonce . '_';
+            $ideal_payment_id = $ideal_payment_id . '_';
             for($j=0; $j<6; $j++) {
                 $t = rand(0, sizeof($valid_characters)-1);
-                $nonce = $nonce . $valid_characters[$t];
+                $ideal_payment_id = $ideal_payment_id . $valid_characters[$t];
             }
         }
-        return $nonce . "_xxx";
+        return $ideal_payment_id . "_xxx";
     }
 }

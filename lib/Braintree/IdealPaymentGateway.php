@@ -59,17 +59,17 @@ class IdealPaymentGateway
     /**
      * create a new sale for the current IdealPayment
      *
-     * @param string $nonce
+     * @param string $idealPaymentId
      * @param array $transactionAttribs
      * @return Result\Successful|Result\Error
      * @see Transaction::sale()
      */
-    public function sale($nonce, $transactionAttribs)
+    public function sale($idealPaymentId, $transactionAttribs)
     {
         return Transaction::sale(
             array_merge(
                 $transactionAttribs,
-                ['paymentMethodNonce' => $nonce]
+                ['paymentMethodNonce' => $idealPaymentId]
             )
         );
     }

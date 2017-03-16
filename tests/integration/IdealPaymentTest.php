@@ -12,7 +12,7 @@ class IdealPaymentTest extends Setup
     public function testFindIdealPayment()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
-        $idealPaymentId = Test\Helper::generateValidIdealPaymentNonce();
+        $idealPaymentId = Test\Helper::generateValidIdealPaymentId();
 
         $foundIdealPayment= Braintree\IdealPayment::find($idealPaymentId);
         $this->assertInstanceOf('Braintree\IdealPayment', $foundIdealPayment);
@@ -34,15 +34,15 @@ class IdealPaymentTest extends Setup
     public function testFindIdealPayment_throwsIfCannotBeFound()
     {
         $this->setExpectedException('Braintree\Exception\NotFound');
-        Braintree\IdealPayment::find(Test\Helper::generateInvalidIdealPaymentNonce());
+        Braintree\IdealPayment::find(Test\Helper::generateInvalidIdealPaymentId());
     }
 
-    public function testSale_createsASaleUsingNonce()
+    public function testSale_createsASaleUsingId()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
-        $nonce = Test\Helper::generateValidIdealPaymentNonce();
+        $idealPaymentId = Test\Helper::generateValidIdealPaymentId();
 
-        $result = Braintree\IdealPayment::sale($nonce, [
+        $result = Braintree\IdealPayment::sale($idealPaymentId, [
             'merchantAccountId' => 'ideal_merchant_account',
             'amount' => '100.00',
             'orderId' => 'ABC123'
@@ -63,9 +63,9 @@ class IdealPaymentTest extends Setup
     public function testSale_createsASaleWithNotCompletePayment()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
-        $nonce = Test\Helper::generateValidIdealPaymentNonce('3.00');
+        $idealPaymentId = Test\Helper::generateValidIdealPaymentId('3.00');
 
-        $result = Braintree\IdealPayment::sale($nonce, [
+        $result = Braintree\IdealPayment::sale($idealPaymentId, [
             'merchantAccountId' => 'ideal_merchant_account',
             'amount' => '3.00',
             'orderId' => 'ABC123'
@@ -76,11 +76,11 @@ class IdealPaymentTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_IDEAL_PAYMENT_NOT_COMPLETE, $baseErrors[0]->code);
     }
 
-    public function testSale_createsASaleUsingInvalidNonce()
+    public function testSale_createsASaleUsingInvalidId()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
 
-        $result = Braintree\IdealPayment::sale('invalid_nonce', [
+        $result = Braintree\IdealPayment::sale('invalid_id', [
             'merchantAccountId' => 'ideal_merchant_account',
             'amount' => '100.00',
             'orderId' => 'ABC123'

@@ -243,12 +243,12 @@ class TransactionTest extends Setup
       $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PAYMENT_METHOD_NONCE_UNKNOWN, $baseErrors[0]->code);
   }
 
-  public function testSaleWithIdealPaymentNonce()
+  public function testSaleWithIdealPaymentId()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'merchantAccountId' => 'ideal_merchant_account',
-            'paymentMethodNonce' => Test\Helper::generateValidIdealPaymentNonce(),
+            'paymentMethodNonce' => Test\Helper::generateValidIdealPaymentId(),
             'orderId' => 'ABC123',
             'options' => [
                 'submitForSettlement' => true,
