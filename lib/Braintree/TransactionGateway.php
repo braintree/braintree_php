@@ -171,6 +171,8 @@ class TransactionGateway
                     'storeShippingAddressInVault',
                     'payeeEmail',
                     'skipAdvancedFraudChecking',
+                    'skipAvs',
+                    'skipCvv',
                     ['threeDSecure' =>
                         ['required']
                     ],

@@ -284,6 +284,41 @@ class TransactionTest extends Setup
       $this->assertNull($transaction->riskData->id);
   }
 
+  public function testSaleAndSkipAvs()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => Braintree\Test\TransactionAmounts::$authorize,
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2019',
+          ],
+          'options' => [
+              'skipAvs' => true
+          ]
+      ]);
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+      $this->assertNull($transaction->avsErrorResponseCode);
+      $this->assertEquals($transaction->avsStreetAddressResponseCode, 'B');
+  }
+
+  public function testSaleAndSkipCvv()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => Braintree\Test\TransactionAmounts::$authorize,
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2019',
+          ],
+          'options' => [
+              'skipCvv' => true
+          ]
+      ]);
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+      $this->assertEquals($transaction->cvvResponseCode, 'B');
+  }
+
   public function testSettleAltPayTransaction()
     {
         $gateway = new Braintree\Gateway([
