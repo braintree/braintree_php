@@ -413,6 +413,7 @@ class Codes
 
     const TRANSACTION_AMOUNT_CANNOT_BE_NEGATIVE                                       = '81501';
     const TRANSACTION_AMOUNT_DOES_NOT_MATCH3_D_SECURE_AMOUNT                          = '91585';
+    const TRANSACTION_AMOUNT_DOES_NOT_MATCH_IDEAL_PAYMENT_AMOUNT                      = '915144';
     const TRANSACTION_AMOUNT_FORMAT_IS_INVALID                                        = '81503';
     const TRANSACTION_AMOUNT_IS_INVALID                                               = '81503';
     const TRANSACTION_AMOUNT_IS_REQUIRED                                              = '81502';
@@ -447,7 +448,9 @@ class Codes
     const TRANSACTION_CUSTOM_FIELD_IS_INVALID                                         = '91526';
     const TRANSACTION_CUSTOM_FIELD_IS_TOO_LONG                                        = '81527';
     const TRANSACTION_HAS_ALREADY_BEEN_REFUNDED                                       = '91512';
+    const TRANSACTION_IDEAL_PAYMENT_NOT_COMPLETE                                      = '815141';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_MATCH3_D_SECURE_MERCHANT_ACCOUNT      = '91584';
+    const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_MATCH_IDEAL_PAYMENT_MERCHANT_ACCOUNT  = '915143';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_MOTO                          = '91558';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_REFUNDS                       = '91547';
     const TRANSACTION_MERCHANT_ACCOUNT_ID_IS_INVALID                                  = '91513';
@@ -458,6 +461,8 @@ class Codes
     const TRANSACTION_OPTIONS_SUBMIT_FOR_SETTLEMENT_IS_REQUIRED_FOR_PAYPAL_UNILATERAL = '91582';
     const TRANSACTION_OPTIONS_USE_BILLING_FOR_SHIPPING_DISABLED                       = '91572';
     const TRANSACTION_OPTIONS_VAULT_IS_DISABLED                                       = '91525';
+    const TRANSACTION_ORDER_ID_DOES_NOT_MATCH_IDEAL_PAYMENT_ORDER_ID                  = '91503';
+    const TRANSACTION_ORDER_ID_IS_REQUIRED_WITH_IDEAL_PAYMENT                         = '91502';
     const TRANSACTION_ORDER_ID_IS_TOO_LONG                                            = '91501';
     const TRANSACTION_PAYMENT_INSTRUMENT_NOT_SUPPORTED_BY_MERCHANT_ACCOUNT            = '91577';
     const TRANSACTION_PAYMENT_INSTRUMENT_TYPE_IS_NOT_ACCEPTED                         = '915101';

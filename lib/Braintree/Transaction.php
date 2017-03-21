@@ -157,6 +157,7 @@ namespace Braintree;
  * @property-read Braintree\PayPalDetails $paypalDetails transaction paypal account info
  * @property-read Braintree\Transaction\CustomerDetails $customerDetails transaction customer info
  * @property-read Braintree\VenmoAccount $venmoAccountDetails transaction Venmo Account info
+ * @property-read Braintree\IdealPayment $idealPaymentDetails transaction Ideal Payment info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
  * @property-read string $additionalProcessorResponse raw response from processor
@@ -293,6 +294,14 @@ class Transaction extends Base
             $this->_set('usBankAccount',
                 new Transaction\UsBankAccountDetails(
                     $transactionAttribs['usBankAccount']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['idealPayment'])) {
+            $this->_set('idealPayment',
+                new Transaction\IdealPaymentDetails(
+                    $transactionAttribs['idealPayment']
                 )
             );
         }
