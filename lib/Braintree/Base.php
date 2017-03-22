@@ -74,4 +74,24 @@ abstract class Base
     {
         $this->_attributes[$key] = $value;
     }
+
+	/**
+	 * This static method is called for classes exported by var_export() since PHP 5.1.0.
+	 *
+	 * @param $properties array containing exported properties in the form array('property' => value, ...)
+	 *
+	 * @return created class
+	 */
+	static public function __set_state( $properties )
+	{
+		$c = get_called_class();
+
+		$class = new $c();
+
+		while ( ( list( $k, $v ) = each( $properties ) ) != false ) {
+			$class->$k = $v;
+		}
+
+		return $class;
+	}
 }
