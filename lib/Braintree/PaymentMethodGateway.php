@@ -71,6 +71,10 @@ class PaymentMethodGateway
                 return UsBankAccount::factory($response['usBankAccount']);
             } else if (isset($response['venmoAccount'])) {
                 return VenmoAccount::factory($response['venmoAccount']);
+            } else if (isset($response['visaCheckoutCard'])) {
+                return VisaCheckoutCard::factory($response['visaCheckoutCard']);
+            } else if (isset($response['masterpassCard'])) {
+                return MasterpassCard::factory($response['masterpassCard']);
             } else if (is_array($response)) {
                 return UnknownPaymentMethod::factory($response);
             }
@@ -285,6 +289,16 @@ class PaymentMethodGateway
         } else if (isset($response['venmoAccount'])) {
             return new Result\Successful(
                 VenmoAccount::factory($response['venmoAccount']),
+                "paymentMethod"
+            );
+        } else if (isset($response['visaCheckoutCard'])) {
+            return new Result\Successful(
+                VisaCheckoutCard::factory($response['visaCheckoutCard']),
+                "paymentMethod"
+            );
+        } else if (isset($response['masterpassCard'])) {
+            return new Result\Successful(
+                MasterpassCard::factory($response['masterpassCard']),
                 "paymentMethod"
             );
         } else if (isset($response['paymentMethodNonce'])) {
