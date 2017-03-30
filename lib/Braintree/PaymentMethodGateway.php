@@ -133,7 +133,8 @@ class PaymentMethodGateway
             'makeDefault',
             'verificationMerchantAccountId',
             'verifyCard',
-            'verificationAmount'
+            'verificationAmount',
+            ['paypal' => ['payee_email']],
         ];
         return [
             'billingAddressId',

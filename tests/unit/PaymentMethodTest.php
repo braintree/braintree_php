@@ -33,6 +33,9 @@ class PaymentMethodTest extends Setup
                 'verificationMerchantAccountId',
                 'verifyCard',
                 'verificationAmount',
+                ['paypal' => [
+                    'payee_email',
+                ]],
             ]],
             ['billingAddress' => Braintree\AddressGateway::createSignature()],
             'customerId'
