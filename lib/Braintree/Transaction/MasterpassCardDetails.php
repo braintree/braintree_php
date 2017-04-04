@@ -11,12 +11,14 @@ use Braintree\Instance;
  * @subpackage Transaction
  *
  * @property-read string $bin
- * @property-read string $cardType
+ * @property-read string $callId
  * @property-read string $cardholderName
  * @property-read string $commercial
  * @property-read string $countryOfIssuance
+ * @property-read string $customerId
  * @property-read string $customerLocation
  * @property-read string $debit
+ * @property-read string $durbinRegulated
  * @property-read string $expirationDate
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
@@ -26,8 +28,10 @@ use Braintree\Instance;
  * @property-read string $last4
  * @property-read string $maskedNumber
  * @property-read string $payroll
+ * @property-read string $prepaid
  * @property-read string $productId
  * @property-read string $token
+ * @property-read string $updatedAt
  */
 class MasterpassCardDetails extends Instance
 {

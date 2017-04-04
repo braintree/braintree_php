@@ -4,7 +4,7 @@ namespace Braintree\Transaction;
 use Braintree\Instance;
 
 /**
- * VisaCheckoutCard details from a transaction (which is essentially the credit card details)
+ * VisaCheckoutCard details from a transaction
  * creates an instance of VisaCheckoutCardDetails
  *
  * @package    Braintree
@@ -16,8 +16,10 @@ use Braintree\Instance;
  * @property-read string $cardholderName
  * @property-read string $commercial
  * @property-read string $countryOfIssuance
+ * @property-read string $customerId
  * @property-read string $customerLocation
  * @property-read string $debit
+ * @property-read string $durbinRegulated
  * @property-read string $expirationDate
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
@@ -27,8 +29,10 @@ use Braintree\Instance;
  * @property-read string $last4
  * @property-read string $maskedNumber
  * @property-read string $payroll
+ * @property-read string $prepaid
  * @property-read string $productId
  * @property-read string $token
+ * @property-read string $updatedAt
  */
 class VisaCheckoutCardDetails extends Instance
 {

@@ -28,12 +28,38 @@ class VisaCheckoutCardTest extends Setup
         $this->assertTrue(intval($visaCheckoutCard->expirationYear) > 0);
         $this->assertSame($customer->id, $visaCheckoutCard->customerId);
         $this->assertSame('abc123', $visaCheckoutCard->callId);
-        $this->assertObjectNotHasAttribute('venmoSdk', $visaCheckoutCard);
-        $this->assertNotNull($visaCheckoutCard->healthcare);
-        $this->assertNotNull($visaCheckoutCard->uniqueNumberIdentifier);
-        $this->assertNotNull($visaCheckoutCard->issuingBank);
         $this->assertSame($visaCheckoutCard->last4, '1117');
         $this->assertSame($visaCheckoutCard->maskedNumber, '601111******1117');
+
+        $this->assertNotNull($visaCheckoutCard->billingAddress);
+        $this->assertNotNull($visaCheckoutCard->bin);
+        $this->assertNotNull($visaCheckoutCard->callId);
+        $this->assertNotNull($visaCheckoutCard->cardType);
+        $this->assertNotNull($visaCheckoutCard->cardholderName);
+        $this->assertNotNull($visaCheckoutCard->commercial);
+        $this->assertNotNull($visaCheckoutCard->countryOfIssuance);
+        $this->assertNotNull($visaCheckoutCard->createdAt);
+        $this->assertNotNull($visaCheckoutCard->customerId);
+        $this->assertNotNull($visaCheckoutCard->customerLocation);
+        $this->assertNotNull($visaCheckoutCard->debit);
+        $this->assertNotNull($visaCheckoutCard->default);
+        $this->assertNotNull($visaCheckoutCard->durbinRegulated);
+        $this->assertNotNull($visaCheckoutCard->expirationDate);
+        $this->assertNotNull($visaCheckoutCard->expirationMonth);
+        $this->assertNotNull($visaCheckoutCard->expirationYear);
+        $this->assertNotNull($visaCheckoutCard->expired);
+        $this->assertNotNull($visaCheckoutCard->healthcare);
+        $this->assertNotNull($visaCheckoutCard->imageUrl);
+        $this->assertNotNull($visaCheckoutCard->issuingBank);
+        $this->assertNotNull($visaCheckoutCard->last4);
+        $this->assertNotNull($visaCheckoutCard->maskedNumber);
+        $this->assertNotNull($visaCheckoutCard->payroll);
+        $this->assertNotNull($visaCheckoutCard->prepaid);
+        $this->assertNotNull($visaCheckoutCard->productId);
+        $this->assertNotNull($visaCheckoutCard->subscriptions);
+        $this->assertNotNull($visaCheckoutCard->token);
+        $this->assertNotNull($visaCheckoutCard->uniqueNumberIdentifier);
+        $this->assertNotNull($visaCheckoutCard->updatedAt);
     }
 
     public function testCreateWithVisaCheckoutCardNonceWithVerification()
@@ -97,26 +123,29 @@ class VisaCheckoutCardTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals('47.00', $transaction->amount);
-        $visaCheckoutDetails = $transaction->visaCheckoutCardDetails;
-        $this->assertSame(Braintree\CreditCard::AMEX, $visaCheckoutDetails->cardType);
+        $visaCheckoutCardDetails = $transaction->visaCheckoutCardDetails;
+        $this->assertSame(Braintree\CreditCard::AMEX, $visaCheckoutCardDetails->cardType);
 
-        $this->assertNotNull($visaCheckoutDetails->bin);
-        $this->assertNotNull($visaCheckoutDetails->cardType);
-        $this->assertNotNull($visaCheckoutDetails->cardholderName);
-        $this->assertNotNull($visaCheckoutDetails->commercial);
-        $this->assertNotNull($visaCheckoutDetails->countryOfIssuance);
-        $this->assertNotNull($visaCheckoutDetails->customerLocation);
-        $this->assertNotNull($visaCheckoutDetails->debit);
-        $this->assertNotNull($visaCheckoutDetails->expirationDate);
-        $this->assertNotNull($visaCheckoutDetails->expirationMonth);
-        $this->assertNotNull($visaCheckoutDetails->expirationYear);
-        $this->assertNotNull($visaCheckoutDetails->healthcare);
-        $this->assertNotNull($visaCheckoutDetails->imageUrl);
-        $this->assertNotNull($visaCheckoutDetails->issuingBank);
-        $this->assertNotNull($visaCheckoutDetails->last4);
-        $this->assertNotNull($visaCheckoutDetails->maskedNumber);
-        $this->assertNotNull($visaCheckoutDetails->payroll);
-        $this->assertNotNull($visaCheckoutDetails->productId);
-        $this->assertNotNull($visaCheckoutDetails->token);
+        $this->assertNotNull($visaCheckoutCardDetails->bin);
+        $this->assertNotNull($visaCheckoutCardDetails->callId);
+        $this->assertNotNull($visaCheckoutCardDetails->cardType);
+        $this->assertNotNull($visaCheckoutCardDetails->cardholderName);
+        $this->assertNotNull($visaCheckoutCardDetails->commercial);
+        $this->assertNotNull($visaCheckoutCardDetails->countryOfIssuance);
+        $this->assertNotNull($visaCheckoutCardDetails->customerLocation);
+        $this->assertNotNull($visaCheckoutCardDetails->debit);
+        $this->assertNotNull($visaCheckoutCardDetails->durbinRegulated);
+        $this->assertNotNull($visaCheckoutCardDetails->expirationDate);
+        $this->assertNotNull($visaCheckoutCardDetails->expirationMonth);
+        $this->assertNotNull($visaCheckoutCardDetails->expirationYear);
+        $this->assertNotNull($visaCheckoutCardDetails->healthcare);
+        $this->assertNotNull($visaCheckoutCardDetails->imageUrl);
+        $this->assertNotNull($visaCheckoutCardDetails->issuingBank);
+        $this->assertNotNull($visaCheckoutCardDetails->last4);
+        $this->assertNotNull($visaCheckoutCardDetails->maskedNumber);
+        $this->assertNotNull($visaCheckoutCardDetails->payroll);
+        $this->assertNotNull($visaCheckoutCardDetails->prepaid);
+        $this->assertNotNull($visaCheckoutCardDetails->productId);
+        $this->assertNotNull($visaCheckoutCardDetails->token);
     }
 }
