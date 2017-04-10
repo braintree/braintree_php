@@ -65,4 +65,3 @@ class MerchantAccountTest extends Setup
         $this->assertEquals($merchantAccount->fundingDetails->descriptor, "Joes Bloggs MI");
     }
 }
-?>
