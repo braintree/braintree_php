@@ -1,4 +1,4 @@
-## 3.21.2
+## 3.22.0
 * Add option to disable Accept-Encoding: gzip header for Google App Engine
 * Fix a bug where `merchantAccount->all` would attempt to fetch too many pages of merchant accounts
 
