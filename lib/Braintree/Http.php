@@ -4,8 +4,6 @@ namespace Braintree;
 /**
  * Braintree HTTP Client
  * processes Http requests using curl
- *
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class Http
 {

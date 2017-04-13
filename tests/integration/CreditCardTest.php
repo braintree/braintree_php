@@ -239,6 +239,8 @@ class CreditCardTest extends Setup
         ]);
         $this->assertFalse($result->success);
         $this->assertEquals(Braintree\Result\CreditCardVerification::PROCESSOR_DECLINED, $result->creditCardVerification->status);
+        $this->assertEquals('1.02', $result->creditCardVerification->amount);
+        $this->assertEquals('USD', $result->creditCardVerification->currencyIsoCode);
         $this->assertEquals('2000', $result->creditCardVerification->processorResponseCode);
         $this->assertEquals('Do Not Honor', $result->creditCardVerification->processorResponseText);
         $this->assertEquals('I', $result->creditCardVerification->cvvResponseCode);

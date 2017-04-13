@@ -46,6 +46,20 @@ class HttpClientApi extends Braintree\Http
         return ['status' => $httpStatus, 'body' => $response];
     }
 
+    public function get_configuration($options) {
+        $encoded_fingerprint = urlencode($options["authorization_fingerprint"]);
+        $url = "/client_api/v1/configuration?";
+        $url .= "authorizationFingerprint=" . $encoded_fingerprint;
+        $url .= "&configVersion=3";
+
+        $response = $this->get($url);
+        if ($response["status"] == 200) {
+            return json_decode($response["body"]);
+        } else {
+            throw new Exception(print_r($response, true));
+        }
+    }
+
     public function get_cards($options) {
         $encoded_fingerprint = urlencode($options["authorization_fingerprint"]);
         $url = "/client_api/v1/payment_methods.json?";

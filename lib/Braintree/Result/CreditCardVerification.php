@@ -13,7 +13,6 @@ use Braintree\Util;
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $avsErrorResponseCode
  * @property-read string $avsPostalCodeResponseCode
@@ -31,9 +30,11 @@ class CreditCardVerification
     const VERIFIED                 = 'verified';
 
     private $_attributes;
+    private $_amount;
     private $_avsErrorResponseCode;
     private $_avsPostalCodeResponseCode;
     private $_avsStreetAddressResponseCode;
+    private $_currencyIsoCode;
     private $_cvvResponseCode;
     private $_gatewayRejectionReason;
     private $_status;

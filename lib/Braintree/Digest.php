@@ -4,8 +4,6 @@ namespace Braintree;
 /**
  * Digest encryption module
  * Digest creates an HMAC-SHA1 hash for encrypting messages
- *
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class Digest
 {

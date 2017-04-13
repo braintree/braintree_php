@@ -17,7 +17,6 @@ use ArrayIterator;
  *
  * @package   Braintree
  * @subpackage Utility
- * @copyright 2015 Braintree, a division of PayPal, Inc.
  */
 
 class Collection implements Countable, IteratorAggregate, ArrayAccess

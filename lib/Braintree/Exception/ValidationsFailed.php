@@ -8,7 +8,6 @@ use Braintree\Exception;
  *
  * @package    Braintree
  * @subpackage Exception
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class ValidationsFailed extends Exception
 {
