@@ -201,6 +201,44 @@ class WebhookNotificationTest extends Setup
         );
     }
 
+    public function testAllowsParsingUsingGateway()
+    {
+        Braintree\Configuration::reset();
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::CHECK,
+            "my_id"
+        );
+
+        $gateway = new Braintree\Gateway([
+            'privateKey' => 'integration_private_key',
+            'publicKey' => 'integration_public_key',
+            'merchantId' => 'integration_merchant_id',
+            'environment' => 'development'
+        ]);
+
+        $webhookNotification = $gateway->webhookNotification()->parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::CHECK, $webhookNotification->kind);
+    }
+
+    public function testAllowsParsingUsingStaticMethods()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::CHECK,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::CHECK, $webhookNotification->kind);
+    }
+
     public function testBuildsASampleNotificationForASubscriptionChargedSuccessfullyWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
@@ -486,6 +524,51 @@ class WebhookNotificationTest extends Setup
 
         $this->assertEquals(Braintree\WebhookNotification::PARTNER_MERCHANT_DECLINED, $webhookNotification->kind);
         $this->assertEquals("abc123", $webhookNotification->partnerMerchant->partnerMerchantId);
+    }
+
+    public function testBuildsASampleNotificationForConnectedMerchantStatusTransitionedWebhook()
+    {
+        Braintree\Configuration::reset();
+
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::CONNECTED_MERCHANT_STATUS_TRANSITIONED,
+            "my_id"
+        );
+
+        $gateway = new Braintree\Gateway([
+            'privateKey' => 'integration_private_key',
+            'publicKey' => 'integration_public_key',
+            'merchantId' => 'integration_merchant_id',
+            'environment' => 'development'
+        ]);
+
+        $webhookNotification = $gateway->webhookNotification()->parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::CONNECTED_MERCHANT_STATUS_TRANSITIONED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->connectedMerchantStatusTransitioned->merchantPublicId);
+        $this->assertEquals("new_status", $webhookNotification->connectedMerchantStatusTransitioned->status);
+        $this->assertEquals("oauth_application_client_id", $webhookNotification->connectedMerchantStatusTransitioned->oauthApplicationClientId);
+    }
+
+    public function testBuildsASampleNotificationForConnectedMerchantPayPalStatusChangedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->connectedMerchantPayPalStatusChanged->merchantPublicId);
+        $this->assertEquals("link", $webhookNotification->connectedMerchantPayPalStatusChanged->action);
+        $this->assertEquals("oauth_application_client_id", $webhookNotification->connectedMerchantPayPalStatusChanged->oauthApplicationClientId);
     }
 
     public function testBuildsASampleNotificationForACheckWebhook()
