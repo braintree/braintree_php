@@ -1,3 +1,9 @@
+## 3.23.0
+* Add Visa Checkout support
+* Add ConnectedMerchantStatusTransitioned and ConnectedMerchantPayPalStatusChanged Auth webhooks
+* Add new properties to `CreditCardVerification` and `Customer`
+* Add SDK support for skip AVS and skip CVV
+
 ## 3.22.0
 * Add option to disable Accept-Encoding: gzip header for Google App Engine
 * Fix a bug where `merchantAccount->all` would attempt to fetch too many pages of merchant accounts
