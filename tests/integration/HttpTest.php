@@ -58,7 +58,7 @@ class HttpTest extends Setup
         try {
             Braintree\Configuration::environment('sandbox');
             Braintree\Configuration::sslVersion(3);
-            $this->setExpectedException('Braintree\Exception\SSLCertificate');
+            $this->setExpectedException('Braintree\Exception\SSLCertificate', null, 35);
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->get('/');
         } catch (Braintree\Exception $e) {
@@ -74,7 +74,7 @@ class HttpTest extends Setup
     {
         try {
             Braintree\Configuration::environment('sandbox');
-            $this->setExpectedException('Braintree\Exception\SSLCertificate');
+            $this->setExpectedException('Braintree\Exception\Connection', null, 3);
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->_doUrlRequest('get', '/malformed_url');
         } catch (Braintree\Exception $e) {
@@ -83,6 +83,8 @@ class HttpTest extends Setup
         }
         Braintree\Configuration::environment('development');
     }
+
+
 
     public function testAcceptGzipEncodingSetFalse()
     {

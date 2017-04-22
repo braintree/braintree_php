@@ -158,6 +158,7 @@ class Http
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $error_code = curl_errno($curl);
+        $error = curl_error($curl);
 
         if ($error_code == 28 && $httpStatus == 0) {
             throw new Exception\Timeout();
@@ -166,9 +167,16 @@ class Http
         curl_close($curl);
         if ($this->_config->sslOn()) {
             if ($httpStatus == 0) {
-                throw new Exception\SSLCertificate();
+                if($error_code == 35) {
+                    throw new Exception\SSLCertificate($error, $error_code);
+                } else {
+                    throw new Exception\Connection($error, $error_code);
+                }
             }
+        } else if($error_code) {
+            throw new Exception\Connection($error, $error_code);
         }
+
         return ['status' => $httpStatus, 'body' => $response];
     }
 
