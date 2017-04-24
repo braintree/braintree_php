@@ -3,7 +3,7 @@ namespace Braintree\MerchantAccount;
 
 use Braintree\Base;
 
-final class BusinessDetails extends Base
+class BusinessDetails extends Base
 {
     protected function _initialize($businessAttribs)
     {

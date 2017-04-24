@@ -221,11 +221,67 @@ class ConfigurationTest extends Setup
         $this->assertTrue($this->config->isUsingProxy());
     }
 
+    function testProxyUser()
+    {
+        $this->config->proxyUser('user');
+        $this->assertEquals('user', $this->config->proxyUser());
+    }
+
+    function testProxyPassword()
+    {
+        $this->config->proxyPassword('password');
+        $this->assertEquals('password', $this->config->proxyPassword());
+    }
+
+    function testIsAuthenticatedProxy()
+    {
+        $this->config->proxyUser('username');
+        $this->config->proxyPassword('password');
+
+        $this->assertTrue($this->config->isAuthenticatedProxy());
+    }
+
+    function testTimeout()
+    {
+        $this->config->timeout(30);
+
+        $this->assertEquals(30, $this->config->timeout());
+    }
+
+    function testTimeoutDefaultsToSixty()
+    {
+        $this->assertEquals(60, $this->config->timeout());
+    }
+
+    function testSslVersion()
+    {
+        $this->config->sslVersion(6);
+
+        $this->assertEquals(6, $this->config->sslVersion());
+    }
+
+    function testSslVersionDefaultsToNull()
+    {
+        $this->assertEquals(null, $this->config->sslVersion());
+    }
+
+    public function testAcceptEncodingDefaultsTrue()
+    {
+        $this->assertTrue($this->config->acceptGzipEncoding());
+    }
+
+    public function testAcceptGzipEncoding()
+    {
+        $this->assertTrue($this->config->acceptGzipEncoding());
+        $this->config->acceptGzipEncoding(false);
+        $this->assertFalse($this->config->acceptGzipEncoding());
+    }
+
      /**
      * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage environment needs to be set
      */
-    public function testValidateEmptyEnvironment()
+    public function testValidateAbsentEnvironment()
     {
         //Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
@@ -236,9 +292,22 @@ class ConfigurationTest extends Setup
     }
      /**
      * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage environment needs to be set
+     */
+    public function testValidateEmptyStringEnvironment()
+    {
+        Braintree\Configuration::environment('');
+        Braintree\Configuration::merchantId('integration_merchant_id');
+        Braintree\Configuration::publicKey('integration_public_key');
+        Braintree\Configuration::privateKey('integration_private_key');
+
+        Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
+    }
+     /**
+     * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage merchantId needs to be set
      */
-    public function testMerchantId()
+    public function testAbsentMerchantId()
     {
         Braintree\Configuration::environment('development');
         //Braintree\Configuration::merchantId('integration_merchant_id');
@@ -249,9 +318,22 @@ class ConfigurationTest extends Setup
     }
      /**
      * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage merchantId needs to be set
+     */
+    public function testEmptyStringMerchantId()
+    {
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('');
+        Braintree\Configuration::publicKey('integration_public_key');
+        Braintree\Configuration::privateKey('integration_private_key');
+
+        Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
+    }
+     /**
+     * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage publicKey needs to be set
      */
-    public function testPublicKey()
+    public function testAbsentPublicKey()
     {
         Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
@@ -262,14 +344,40 @@ class ConfigurationTest extends Setup
     }
      /**
      * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage publicKey needs to be set
+     */
+    public function testEmptyStringPublicKey()
+    {
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('integration_merchant_id');
+        Braintree\Configuration::publicKey('');
+        Braintree\Configuration::privateKey('integration_private_key');
+
+        Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
+    }
+     /**
+     * @expectedException Braintree\Exception\Configuration
      * @expectedExceptionMessage privateKey needs to be set
      */
-    public function testPrivateKey()
+    public function testAbsentPrivateKey()
     {
         Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
         Braintree\Configuration::publicKey('integration_public_key');
         //Braintree\Configuration::privateKey('integration_private_key');
+
+        Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
+    }
+     /**
+     * @expectedException Braintree\Exception\Configuration
+     * @expectedExceptionMessage privateKey needs to be set
+     */
+    public function testEmptyStringPrivateKey()
+    {
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('integration_merchant_id');
+        Braintree\Configuration::publicKey('integration_public_key');
+        Braintree\Configuration::privateKey('');
 
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }

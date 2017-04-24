@@ -53,7 +53,7 @@ namespace :test do
     run_php_test_file(args[:file_path])
   end
 
-  desc "run a single test"
+  desc "run single test (e.g. rake test:single[GatewayTest::testConfigGetsAssertedValid])"
   task :single, :test_name do |t, args|
     run_php_test(args[:test_name])
   end

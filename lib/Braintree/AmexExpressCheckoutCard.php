@@ -11,7 +11,6 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $createdAt
  * @property-read string $default
@@ -21,7 +20,6 @@ namespace Braintree;
  * @property-read string $bin
  * @property-read string $cardMemberExpiryDate
  * @property-read string $cardMemberNumber
- * @property-read string $cardType
  * @property-read string $sourceDescription
  * @property-read string $token
  * @property-read string $imageUrl

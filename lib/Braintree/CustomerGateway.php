@@ -13,7 +13,6 @@ use InvalidArgumentException;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class CustomerGateway
 {
@@ -144,16 +143,22 @@ class CustomerGateway
      */
     public static function createSignature()
     {
-
         $creditCardSignature = CreditCardGateway::createSignature();
         unset($creditCardSignature[array_search('customerId', $creditCardSignature)]);
+
         $signature = [
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
             'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce',
+            ['riskData' =>
+                ['customerBrowser', 'customerIp', 'customer_browser', 'customer_ip']
+            ],
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
-            ];
+            ['options' => [
+                ['paypal' => ['payee_email']]
+            ]],
+        ];
         return $signature;
     }
 
@@ -174,10 +179,13 @@ class CustomerGateway
         $signature = [
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
-            'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce',
+            'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce', 'defaultPaymentMethodToken',
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
-            ];
+            ['options' => [
+                ['paypal' => ['payee_email']],
+            ]],
+        ];
         return $signature;
     }
 

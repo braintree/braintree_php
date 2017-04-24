@@ -4,6 +4,7 @@ namespace Test\Integration;
 require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
+use Test\Helper;
 use Braintree;
 
 class PaymentMethodNonceTest extends Setup
@@ -33,11 +34,19 @@ class PaymentMethodNonceTest extends Setup
 
     public function testFind_exposesThreeDSecureInfo()
     {
-        $nonce = Braintree\PaymentMethodNonce::find('threedsecurednonce');
-        $info = $nonce->threeDSecureInfo;
+        $creditCard = [
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationMonth' => '12',
+                'expirationYear' => '2020'
+            ]
+        ];
+        $nonce = Helper::generate3DSNonce($creditCard);
+        $foundNonce = Braintree\PaymentMethodNonce::find($nonce);
+        $info = $foundNonce->threeDSecureInfo;
 
-        $this->assertEquals('threedsecurednonce', $nonce->nonce);
-        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertEquals($nonce, $foundNonce->nonce);
+        $this->assertEquals('CreditCard', $foundNonce->type);
         $this->assertEquals('Y', $info->enrolled);
         $this->assertEquals('authenticate_successful', $info->status);
         $this->assertTrue($info->liabilityShifted);

@@ -14,7 +14,6 @@ namespace Braintree\Error;
  * @package    Braintree
  * @subpackage Errors
  * @category   Validation
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class Codes
 {
@@ -85,56 +84,58 @@ class Codes
     const CLIENT_TOKEN_VERIFY_CARD_REQUIRES_CUSTOMER_ID                      = '92802';
     const CLIENT_TOKEN_MERCHANT_ACCOUNT_DOES_NOT_EXIST                       = '92807';
 
-    const CREDIT_CARD_BILLING_ADDRESS_CONFLICT                                          = '91701';
-    const CREDIT_CARD_BILLING_ADDRESS_FORMAT_IS_INVALID                                 = '91744';
-    const CREDIT_CARD_BILLING_ADDRESS_ID_IS_INVALID                                     = '91702';
-    const CREDIT_CARD_CANNOT_UPDATE_CARD_USING_PAYMENT_METHOD_NONCE                     = '91735';
-    const CREDIT_CARD_CARDHOLDER_NAME_IS_TOO_LONG                                       = '81723';
-    const CREDIT_CARD_CREDIT_CARD_TYPE_IS_NOT_ACCEPTED                                  = '81703';
-    const CREDIT_CARD_CREDIT_CARD_TYPE_IS_NOT_ACCEPTED_BY_SUBSCRIPTION_MERCHANT_ACCOUNT = '81718';
-    const CREDIT_CARD_CUSTOMER_ID_IS_INVALID                                            = '91705';
-    const CREDIT_CARD_CUSTOMER_ID_IS_REQUIRED                                           = '91704';
-    const CREDIT_CARD_CVV_IS_INVALID                                                    = '81707';
-    const CREDIT_CARD_CVV_IS_REQUIRED                                                   = '81706';
-    const CREDIT_CARD_CVV_VERIFICATION_FAILED                                           = '81736';
-    const CREDIT_CARD_DUPLICATE_CARD_EXISTS                                             = '81724';
-    const CREDIT_CARD_EXPIRATION_DATE_CONFLICT                                          = '91708';
-    const CREDIT_CARD_EXPIRATION_DATE_IS_INVALID                                        = '81710';
-    const CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED                                       = '81709';
-    const CREDIT_CARD_EXPIRATION_DATE_YEAR_IS_INVALID                                   = '81711';
-    const CREDIT_CARD_EXPIRATION_MONTH_IS_INVALID                                       = '81712';
-    const CREDIT_CARD_EXPIRATION_YEAR_IS_INVALID                                        = '81713';
-    const CREDIT_CARD_INVALID_PARAMS_FOR_CREDIT_CARD_UPDATE                             = '91745';
-    const CREDIT_CARD_INVALID_VENMO_SDK_PAYMENT_METHOD_CODE                             = '91727';
-    const CREDIT_CARD_NUMBER_INVALID_LENGTH                                             = '81716';
-    const CREDIT_CARD_NUMBER_IS_INVALID                                                 = '81715';
-    const CREDIT_CARD_NUMBER_IS_PROHIBITED                                              = '81750';
-    const CREDIT_CARD_NUMBER_IS_REQUIRED                                                = '81714';
-    const CREDIT_CARD_NUMBER_LENGTH_IS_INVALID                                          = '81716';
-    const CREDIT_CARD_NUMBER_MUST_BE_TEST_NUMBER                                        = '81717';
-    const CREDIT_CARD_OPTIONS_UPDATE_EXISTING_TOKEN_IS_INVALID                          = '91723';
-    const CREDIT_CARD_OPTIONS_UPDATE_EXISTING_TOKEN_NOT_ALLOWED                         = '91729';
-    const CREDIT_CARD_OPTIONS_VERIFICATION_AMOUNT_CANNOT_BE_NEGATIVE                    = '91739';
-    const CREDIT_CARD_OPTIONS_VERIFICATION_AMOUNT_FORMAT_IS_INVALID                     = '91740';
-    const CREDIT_CARD_OPTIONS_VERIFICATION_AMOUNT_NOT_SUPPORTED_BY_PROCESSOR            = '91741';
-    const CREDIT_CARD_OPTIONS_VERIFICATION_MERCHANT_ACCOUNT_ID_IS_INVALID               = '91728';
-    const CREDIT_CARD_OPTIONS_VERIFICATION_MERCHANT_ACCOUNT_IS_FORBIDDEN                = '91743';
-    const CREDIT_CARD_OPTIONS_VERIFICATION_MERCHANT_ACCOUNT_IS_SUSPENDED                = '91742';
-    const CREDIT_CARD_PAYMENT_METHOD_CONFLICT                                           = '81725';
-    const CREDIT_CARD_PAYMENT_METHOD_IS_NOT_A_CREDIT_CARD                               = '91738';
-    const CREDIT_CARD_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED                    = '91734';
-    const CREDIT_CARD_PAYMENT_METHOD_NONCE_CONSUMED                                     = '91731';
-    const CREDIT_CARD_PAYMENT_METHOD_NONCE_LOCKED                                       = '91733';
-    const CREDIT_CARD_PAYMENT_METHOD_NONCE_UNKNOWN                                      = '91732';
-    const CREDIT_CARD_POSTAL_CODE_VERIFICATION_FAILED                                   = '81737';
-    const CREDIT_CARD_TOKEN_FORMAT_IS_INVALID                                           = '91718';
-    const CREDIT_CARD_TOKEN_INVALID                                                     = '91718';
-    const CREDIT_CARD_TOKEN_IS_IN_USE                                                   = '91719';
-    const CREDIT_CARD_TOKEN_IS_NOT_ALLOWED                                              = '91721';
-    const CREDIT_CARD_TOKEN_IS_REQUIRED                                                 = '91722';
-    const CREDIT_CARD_TOKEN_IS_TOO_LONG                                                 = '91720';
-    const CREDIT_CARD_VENMO_SDK_PAYMENT_METHOD_CODE_CARD_TYPE_IS_NOT_ACCEPTED           = '91726';
-    const CREDIT_CARD_VERIFICATION_NOT_SUPPORTED_ON_THIS_MERCHANT_ACCOUNT               = '91730';
+    const CREDIT_CARD_BILLING_ADDRESS_CONFLICT                                             = '91701';
+    const CREDIT_CARD_BILLING_ADDRESS_FORMAT_IS_INVALID                                    = '91744';
+    const CREDIT_CARD_BILLING_ADDRESS_ID_IS_INVALID                                        = '91702';
+    const CREDIT_CARD_CANNOT_UPDATE_CARD_USING_PAYMENT_METHOD_NONCE                        = '91735';
+    const CREDIT_CARD_CARDHOLDER_NAME_IS_TOO_LONG                                          = '81723';
+    const CREDIT_CARD_CREDIT_CARD_TYPE_IS_NOT_ACCEPTED                                     = '81703';
+    const CREDIT_CARD_CREDIT_CARD_TYPE_IS_NOT_ACCEPTED_BY_SUBSCRIPTION_MERCHANT_ACCOUNT    = '81718';
+    const CREDIT_CARD_CUSTOMER_ID_IS_INVALID                                               = '91705';
+    const CREDIT_CARD_CUSTOMER_ID_IS_REQUIRED                                              = '91704';
+    const CREDIT_CARD_CVV_IS_INVALID                                                       = '81707';
+    const CREDIT_CARD_CVV_IS_REQUIRED                                                      = '81706';
+    const CREDIT_CARD_CVV_VERIFICATION_FAILED                                              = '81736';
+    const CREDIT_CARD_DUPLICATE_CARD_EXISTS                                                = '81724';
+    const CREDIT_CARD_EXPIRATION_DATE_CONFLICT                                             = '91708';
+    const CREDIT_CARD_EXPIRATION_DATE_IS_INVALID                                           = '81710';
+    const CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED                                          = '81709';
+    const CREDIT_CARD_EXPIRATION_DATE_YEAR_IS_INVALID                                      = '81711';
+    const CREDIT_CARD_EXPIRATION_MONTH_IS_INVALID                                          = '81712';
+    const CREDIT_CARD_EXPIRATION_YEAR_IS_INVALID                                           = '81713';
+    const CREDIT_CARD_INVALID_PARAMS_FOR_CREDIT_CARD_UPDATE                                = '91745';
+    const CREDIT_CARD_INVALID_VENMO_SDK_PAYMENT_METHOD_CODE                                = '91727';
+    const CREDIT_CARD_NUMBER_INVALID_LENGTH                                                = '81716';
+    const CREDIT_CARD_NUMBER_IS_INVALID                                                    = '81715';
+    const CREDIT_CARD_NUMBER_IS_PROHIBITED                                                 = '81750';
+    const CREDIT_CARD_NUMBER_IS_REQUIRED                                                   = '81714';
+    const CREDIT_CARD_NUMBER_LENGTH_IS_INVALID                                             = '81716';
+    const CREDIT_CARD_NUMBER_MUST_BE_TEST_NUMBER                                           = '81717';
+    const CREDIT_CARD_OPTIONS_UPDATE_EXISTING_TOKEN_IS_INVALID                             = '91723';
+    const CREDIT_CARD_OPTIONS_UPDATE_EXISTING_TOKEN_NOT_ALLOWED                            = '91729';
+    const CREDIT_CARD_OPTIONS_VERIFICATION_AMOUNT_CANNOT_BE_NEGATIVE                       = '91739';
+    const CREDIT_CARD_OPTIONS_VERIFICATION_AMOUNT_FORMAT_IS_INVALID                        = '91740';
+    const CREDIT_CARD_OPTIONS_VERIFICATION_AMOUNT_IS_TOO_LARGE                             = '91752';
+    const CREDIT_CARD_OPTIONS_VERIFICATION_AMOUNT_NOT_SUPPORTED_BY_PROCESSOR               = '91741';
+    const CREDIT_CARD_OPTIONS_VERIFICATION_MERCHANT_ACCOUNT_ID_IS_INVALID                  = '91728';
+    const CREDIT_CARD_OPTIONS_VERIFICATION_MERCHANT_ACCOUNT_IS_FORBIDDEN                   = '91743';
+    const CREDIT_CARD_OPTIONS_VERIFICATION_MERCHANT_ACCOUNT_IS_SUSPENDED                   = '91742';
+    const CREDIT_CARD_OPTIONS_VERIFICATION_MERCHANT_ACCOUNT_CANNOT_BE_SUB_MERCHANT_ACCOUNT = '91755';
+    const CREDIT_CARD_PAYMENT_METHOD_CONFLICT                                              = '81725';
+    const CREDIT_CARD_PAYMENT_METHOD_IS_NOT_A_CREDIT_CARD                                  = '91738';
+    const CREDIT_CARD_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED                       = '91734';
+    const CREDIT_CARD_PAYMENT_METHOD_NONCE_CONSUMED                                        = '91731';
+    const CREDIT_CARD_PAYMENT_METHOD_NONCE_LOCKED                                          = '91733';
+    const CREDIT_CARD_PAYMENT_METHOD_NONCE_UNKNOWN                                         = '91732';
+    const CREDIT_CARD_POSTAL_CODE_VERIFICATION_FAILED                                      = '81737';
+    const CREDIT_CARD_TOKEN_FORMAT_IS_INVALID                                              = '91718';
+    const CREDIT_CARD_TOKEN_INVALID                                                        = '91718';
+    const CREDIT_CARD_TOKEN_IS_IN_USE                                                      = '91719';
+    const CREDIT_CARD_TOKEN_IS_NOT_ALLOWED                                                 = '91721';
+    const CREDIT_CARD_TOKEN_IS_REQUIRED                                                    = '91722';
+    const CREDIT_CARD_TOKEN_IS_TOO_LONG                                                    = '91720';
+    const CREDIT_CARD_VENMO_SDK_PAYMENT_METHOD_CODE_CARD_TYPE_IS_NOT_ACCEPTED              = '91726';
+    const CREDIT_CARD_VERIFICATION_NOT_SUPPORTED_ON_THIS_MERCHANT_ACCOUNT                  = '91730';
 
     const CUSTOMER_COMPANY_IS_TOO_LONG                                            = '81601';
     const CUSTOMER_CUSTOM_FIELD_IS_INVALID                                        = '91602';
@@ -188,10 +189,18 @@ class Codes
     const MERCHANT_COUNTRY_CODE_NUMERIC_IS_NOT_ACCEPTED = '93608';
     const MERCHANT_COUNTRY_NAME_IS_INVALID              = '93611';
     const MERCHANT_COUNTRY_NAME_IS_NOT_ACCEPTED         = '93610';
+    const MERCHANT_CURRENCIES_ARE_INVALID               = '93614';
     const MERCHANT_EMAIL_FORMAT_IS_INVALID              = '93602';
     const MERCHANT_EMAIL_IS_REQUIRED                    = '83601';
     const MERCHANT_INCONSISTENT_COUNTRY                 = '93612';
     const MERCHANT_ACCOUNT_PAYMENT_METHODS_ARE_INVALID  = '93613';
+    const MERCHANT_PAYMENT_METHODS_ARE_NOT_ALLOWED      = '93615';
+    const MERCHANT_MERCHANT_ACCOUNT_EXISTS_FOR_CURRENCY = '93616';
+    const MERCHANT_CURRENCY_IS_REQUIRED                 = '93617';
+    const MERCHANT_CURRENCY_IS_INVALID                  = '93618';
+    const MERCHANT_NO_MERCHANT_ACCOUNTS                 = '93619';
+    const MERCHANT_MERCHANT_ACCOUNT_EXISTS_FOR_ID       = '93620';
+    const MERCHANT_MERCHANT_ACCOUNT_NOT_AUTH_ONBOARDED  = '93621';
 
     const MERCHANT_ACCOUNT_ID_FORMAT_IS_INVALID                         = '82603';
     const MERCHANT_ACCOUNT_ID_IS_IN_USE                                 = '82604';
@@ -404,6 +413,7 @@ class Codes
 
     const TRANSACTION_AMOUNT_CANNOT_BE_NEGATIVE                                       = '81501';
     const TRANSACTION_AMOUNT_DOES_NOT_MATCH3_D_SECURE_AMOUNT                          = '91585';
+    const TRANSACTION_AMOUNT_DOES_NOT_MATCH_IDEAL_PAYMENT_AMOUNT                      = '915144';
     const TRANSACTION_AMOUNT_FORMAT_IS_INVALID                                        = '81503';
     const TRANSACTION_AMOUNT_IS_INVALID                                               = '81503';
     const TRANSACTION_AMOUNT_IS_REQUIRED                                              = '81502';
@@ -413,6 +423,7 @@ class Codes
     const TRANSACTION_CANNOT_BE_VOIDED                                                = '91504';
     const TRANSACTION_CANNOT_CANCEL_RELEASE                                           = '91562';
     const TRANSACTION_CANNOT_CLONE_CREDIT                                             = '91543';
+    const TRANSACTION_CANNOT_CLONE_MARKETPLACE_TRANSACTION                            = '915137';
     const TRANSACTION_CANNOT_CLONE_TRANSACTION_WITH_PAYPAL_ACCOUNT                    = '91573';
     const TRANSACTION_CANNOT_CLONE_TRANSACTION_WITH_VAULT_CREDIT_CARD                 = '91540';
     const TRANSACTION_CANNOT_CLONE_UNSUCCESSFUL_TRANSACTION                           = '91542';
@@ -428,6 +439,7 @@ class Codes
     const TRANSACTION_CANNOT_SIMULATE_SETTLEMENT                                      = '91575';
     const TRANSACTION_CANNOT_SUBMIT_FOR_PARTIAL_SETTLEMENT                            = '915103';
     const TRANSACTION_CANNOT_SUBMIT_FOR_SETTLEMENT                                    = '91507';
+    const TRANSACTION_CANNOT_UPDATE_DETAILS_NOT_SUBMITTED_FOR_SETTLEMENT              = '915129';
     const TRANSACTION_CHANNEL_IS_TOO_LONG                                             = '91550';
     const TRANSACTION_CREDIT_CARD_IS_REQUIRED                                         = '91508';
     const TRANSACTION_CUSTOMER_DEFAULT_PAYMENT_METHOD_CARD_TYPE_IS_NOT_ACCEPTED       = '81509';
@@ -436,7 +448,9 @@ class Codes
     const TRANSACTION_CUSTOM_FIELD_IS_INVALID                                         = '91526';
     const TRANSACTION_CUSTOM_FIELD_IS_TOO_LONG                                        = '81527';
     const TRANSACTION_HAS_ALREADY_BEEN_REFUNDED                                       = '91512';
+    const TRANSACTION_IDEAL_PAYMENT_NOT_COMPLETE                                      = '815141';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_MATCH3_D_SECURE_MERCHANT_ACCOUNT      = '91584';
+    const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_MATCH_IDEAL_PAYMENT_MERCHANT_ACCOUNT  = '915143';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_MOTO                          = '91558';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_REFUNDS                       = '91547';
     const TRANSACTION_MERCHANT_ACCOUNT_ID_IS_INVALID                                  = '91513';
@@ -447,6 +461,8 @@ class Codes
     const TRANSACTION_OPTIONS_SUBMIT_FOR_SETTLEMENT_IS_REQUIRED_FOR_PAYPAL_UNILATERAL = '91582';
     const TRANSACTION_OPTIONS_USE_BILLING_FOR_SHIPPING_DISABLED                       = '91572';
     const TRANSACTION_OPTIONS_VAULT_IS_DISABLED                                       = '91525';
+    const TRANSACTION_ORDER_ID_DOES_NOT_MATCH_IDEAL_PAYMENT_ORDER_ID                  = '91503';
+    const TRANSACTION_ORDER_ID_IS_REQUIRED_WITH_IDEAL_PAYMENT                         = '91502';
     const TRANSACTION_ORDER_ID_IS_TOO_LONG                                            = '91501';
     const TRANSACTION_PAYMENT_INSTRUMENT_NOT_SUPPORTED_BY_MERCHANT_ACCOUNT            = '91577';
     const TRANSACTION_PAYMENT_INSTRUMENT_TYPE_IS_NOT_ACCEPTED                         = '915101';
@@ -471,6 +487,7 @@ class Codes
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_PARTIAL_SETTLEMENT                   = '915102';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_ORDER_ID                    = '915107';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DESCRIPTOR                  = '915108';
+    const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DETAILS                     = '915130';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_VOICE_AUTHORIZATIONS                 = '91545';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID                                = '91548';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                               = '91537';
@@ -492,18 +509,25 @@ class Codes
     const TRANSACTION_TAX_AMOUNT_FORMAT_IS_INVALID                                    = '81535';
     const TRANSACTION_TAX_AMOUNT_IS_TOO_LARGE                                         = '81536';
 
-    const TRANSACTION_THREE_D_SECURE_AUTHENTICATION_FAILED                      = '81571';
-    const TRANSACTION_THREE_D_SECURE_TOKEN_IS_INVALID                           = '91568';
-    const TRANSACTION_THREE_D_SECURE_TRANSACTION_DATA_DOESNT_MATCH_VERIFY       = '91570';
-    const TRANSACTION_TYPE_IS_INVALID                                           = '91523';
-    const TRANSACTION_TYPE_IS_REQUIRED                                          = '91524';
-    const TRANSACTION_UNSUPPORTED_VOICE_AUTHORIZATION                           = '91539';
+    const TRANSACTION_THREE_D_SECURE_AUTHENTICATION_FAILED                            = '81571';
+    const TRANSACTION_THREE_D_SECURE_TOKEN_IS_INVALID                                 = '91568';
+    const TRANSACTION_THREE_D_SECURE_TRANSACTION_DATA_DOESNT_MATCH_VERIFY             = '91570';
+    const TRANSACTION_THREE_D_SECURE_ECI_FLAG_IS_REQUIRED                             = '915113';
+    const TRANSACTION_THREE_D_SECURE_CAVV_IS_REQUIRED                                 = '915116';
+    const TRANSACTION_THREE_D_SECURE_XID_IS_REQUIRED                                  = '915115';
+    const TRANSACTION_THREE_D_SECURE_ECI_FLAG_IS_INVALID                              = '915114';
+    const TRANSACTION_THREE_D_SECURE_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_CARD_TYPE      = '915131';
+    const TRANSACTION_TYPE_IS_INVALID                                                 = '91523';
+    const TRANSACTION_TYPE_IS_REQUIRED                                                = '91524';
+    const TRANSACTION_UNSUPPORTED_VOICE_AUTHORIZATION                                 = '91539';
 
-    const VERIFICATION_OPTIONS_AMOUNT_CANNOT_BE_NEGATIVE         = '94201';
-    const VERIFICATION_OPTIONS_AMOUNT_FORMAT_IS_INVALID          = '94202';
-    const VERIFICATION_OPTIONS_AMOUNT_NOT_SUPPORTED_BY_PROCESSOR = '94203';
-    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_ID_IS_INVALID    = '94204';
-    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_IS_SUSPENDED     = '94205';
-    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_IS_FORBIDDEN     = '94206';
+    const VERIFICATION_OPTIONS_AMOUNT_CANNOT_BE_NEGATIVE                       = '94201';
+    const VERIFICATION_OPTIONS_AMOUNT_FORMAT_IS_INVALID                        = '94202';
+    const VERIFICATION_OPTIONS_AMOUNT_IS_TOO_LARGE                             = '94207';
+    const VERIFICATION_OPTIONS_AMOUNT_NOT_SUPPORTED_BY_PROCESSOR               = '94203';
+    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_ID_IS_INVALID                  = '94204';
+    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_IS_SUSPENDED                   = '94205';
+    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_IS_FORBIDDEN                   = '94206';
+    const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_CANNOT_BE_SUB_MERCHANT_ACCOUNT = '94208';
 }
 class_alias('Braintree\Error\Codes', 'Braintree_Error_Codes');

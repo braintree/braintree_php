@@ -7,7 +7,6 @@ namespace Braintree;
  *
  *
  * @package    Braintree
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $settlementAmount
  * @property-read string $settlementCurrencyIsoCode

@@ -154,6 +154,171 @@ class TransactionTest extends Setup
         $this->assertEquals('DEUTDEFF', $transaction->europeBankAccount->bic);
     }
 
+  public function testSaleWithUsBankAccountNonce()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => 'us_bank_merchant_account',
+            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
+            'options' => [
+                'submitForSettlement' => true,
+                'storeInVault' => true
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertEquals('021000021', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('1234', $transaction->usBankAccount->last4);
+        $this->assertEquals('checking', $transaction->usBankAccount->accountType);
+        $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+        $this->assertRegExp('/CHASE/', $transaction->usBankAccount->bankName);
+        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
+    }
+
+  public function testSaleWithUsBankAccountNonceAndVaultedToken()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => 'us_bank_merchant_account',
+            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
+            'options' => [
+                'submitForSettlement' => true,
+                'storeInVault' => true
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertEquals('021000021', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('1234', $transaction->usBankAccount->last4);
+        $this->assertEquals('checking', $transaction->usBankAccount->accountType);
+        $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => 'us_bank_merchant_account',
+            'paymentMethodToken' => $transaction->usBankAccount->token,
+            'options' => [
+                'submitForSettlement' => true,
+                'storeInVault' => true
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertEquals('021000021', $transaction->usBankAccount->routingNumber);
+        $this->assertEquals('1234', $transaction->usBankAccount->last4);
+        $this->assertEquals('checking', $transaction->usBankAccount->accountType);
+        $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
+        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
+    }
+
+  public function testSaleWithInvalidUsBankAccountNonce()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '100.00',
+          'merchantAccountId' => 'us_bank_merchant_account',
+          'paymentMethodNonce' => Test\Helper::generateInvalidUsBankAccountNonce(),
+          'options' => [
+              'submitForSettlement' => true,
+              'storeInVault' => true
+          ]
+      ]);
+
+      $this->assertFalse($result->success);
+      $baseErrors = $result->errors->forKey('transaction')->onAttribute('paymentMethodNonce');
+      $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PAYMENT_METHOD_NONCE_UNKNOWN, $baseErrors[0]->code);
+  }
+
+  public function testSaleWithIdealPaymentId()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => 'ideal_merchant_account',
+            'paymentMethodNonce' => Test\Helper::generateValidIdealPaymentId(),
+            'orderId' => 'ABC123',
+            'options' => [
+                'submitForSettlement' => true,
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SETTLED, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('100.00', $transaction->amount);
+        $this->assertRegExp('/^idealpayment_\w{6,}$/', $transaction->idealPayment->idealPaymentId);
+        $this->assertRegExp('/^\d{16,}$/', $transaction->idealPayment->idealTransactionId);
+        $this->assertRegExp('/^https:\/\//', $transaction->idealPayment->imageUrl);
+        $this->assertNotNull($transaction->idealPayment->maskedIban);
+        $this->assertNotNull($transaction->idealPayment->bic);
+    }
+
+  public function testSaleAndSkipAdvancedFraudChecking()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => Braintree\Test\TransactionAmounts::$authorize,
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2009',
+          ],
+          'options' => [
+              'skipAdvancedFraudChecking' => true
+          ]
+      ]);
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+      $this->assertNull($transaction->riskData->id);
+  }
+
+  public function testSaleAndSkipAvs()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => Braintree\Test\TransactionAmounts::$authorize,
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2019',
+          ],
+          'options' => [
+              'skipAvs' => true
+          ]
+      ]);
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+      $this->assertNull($transaction->avsErrorResponseCode);
+      $this->assertEquals($transaction->avsStreetAddressResponseCode, 'B');
+  }
+
+  public function testSaleAndSkipCvv()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => Braintree\Test\TransactionAmounts::$authorize,
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2019',
+          ],
+          'options' => [
+              'skipCvv' => true
+          ]
+      ]);
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+      $this->assertEquals($transaction->cvvResponseCode, 'B');
+  }
+
   public function testSettleAltPayTransaction()
     {
         $gateway = new Braintree\Gateway([
@@ -322,6 +487,21 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale([
             'amount' => '1.02',
+            'applePayCard' => [
+                'number' => "370295001292109",
+                'cardholderName' => "JANE SMITH",
+                'cryptogram' => "AAAAAAAA/COBt84dnIEcwAA3gAAGhgEDoLABAAhAgAABAAAALnNCLw==",
+                'expirationMonth' => "10",
+                'expirationYear' => "17"
+            ]
+        ]);
+        $this->assertTrue($result->success);
+    }
+
+  public function testCreateTransactionUsingRawApplePayParamsInSnakeCaseForBackwardsCompatibility()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '1.02',
             'apple_pay_card' => [
                 'number' => "370295001292109",
                 'cardholder_name' => "JANE SMITH",
@@ -416,6 +596,7 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals('47.00', $transaction->amount);
+        $this->assertEquals(Braintree\PaymentInstrumentType::VENMO_ACCOUNT, $transaction->paymentInstrumentType);
         $venmoAccountDetails = $transaction->venmoAccountDetails;
 
         $this->assertNull($venmoAccountDetails->token);
@@ -582,6 +763,38 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals(true, $transaction->recurring);
+    }
+
+  public function testTransactionSourceWithRecurring()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'transactionSource' => 'recurring',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(true, $transaction->recurring);
+    }
+
+  public function testTransactionSourceWithMoto()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'transactionSource' => 'moto',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(False, $transaction->recurring);
     }
 
   public function testSale_withServiceFee()
@@ -808,8 +1021,8 @@ class TransactionTest extends Setup
       $transaction = $result->transaction;
 
       $this->assertNotNull($transaction->id);
-      $this->assertNotNull($transaction->createdAt);
-      $this->assertNotNull($transaction->updatedAt);
+      $this->assertInstanceOf('DateTime', $transaction->updatedAt);
+      $this->assertInstanceOf('DateTime', $transaction->createdAt);
       $this->assertNull($transaction->refundId);
 
       $this->assertEquals(Test\Helper::defaultMerchantAccountId(), $transaction->merchantAccountId);
@@ -1377,6 +1590,208 @@ class TransactionTest extends Setup
         $submittedTransaction = Braintree\Transaction::submitForSettlementNoValidate($transaction->id, '101.00');
     }
 
+  public function testUpdateDetails()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+                ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'orderId' => '123',
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertEquals(true, $result->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $result->transaction->status);
+        $this->assertEquals('90.00', $result->transaction->amount);
+    }
+
+  public function testUpdateDetails_withInvalidParams()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+                ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'invalid' => 'some value'
+        ];
+
+        $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalid');
+        Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+    }
+
+  public function testUpdateDetails_withInvalidAmount()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+                ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '900.00',
+            'orderId' => '123',
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('amount');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SETTLEMENT_AMOUNT_IS_TOO_LARGE, $errors[0]->code);
+
+    }
+
+  public function testUpdateDetails_withInvalidDescriptor()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+                ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'orderId' => '123',
+            'descriptor' => [
+                'name' => 'invalid name',
+                'phone' => 'invalid phone',
+                'url' => 'invalid way too long url'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('name');
+        $this->assertEquals(Braintree\Error\Codes::DESCRIPTOR_NAME_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('phone');
+        $this->assertEquals(Braintree\Error\Codes::DESCRIPTOR_PHONE_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('transaction')->forKey('descriptor')->onAttribute('url');
+        $this->assertEquals(Braintree\Error\Codes::DESCRIPTOR_URL_FORMAT_IS_INVALID, $errors[0]->code);
+    }
+
+  public function testUpdateDetails_withInvalidOrderId()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+                ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'orderId' => str_repeat('x', 256),
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('orderId');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_ORDER_ID_IS_TOO_LONG, $errors[0]->code);
+    }
+
+  public function testUpdateDetails_withInvalidProcessor()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
+                'expirationDate' => '05/12'
+            ],
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'orderId' => '123',
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DETAILS, $errors[0]->code);
+    }
+
+  public function testUpdateDetails_withBadStatus()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $updateOptions = [
+            'amount' => '90.00',
+            'orderId' => '123',
+            'descriptor' => [
+                'name' => '123*123456789012345678',
+                'phone' => '3334445555',
+                'url' => 'ebay.com'
+            ]
+        ];
+
+        $result = Braintree\Transaction::updateDetails($transaction->id, $updateOptions);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_CANNOT_UPDATE_DETAILS_NOT_SUBMITTED_FOR_SETTLEMENT, $errors[0]->code);
+    }
+
   public function testVoid()
     {
         $transaction = Braintree\Transaction::saleNoValidate([
@@ -1603,6 +2018,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->paypalDetails->payerId);
         $this->assertNotNull($transaction->paypalDetails->payerFirstName);
         $this->assertNotNull($transaction->paypalDetails->payerLastName);
+        $this->assertNotNull($transaction->paypalDetails->payerStatus);
         $this->assertNotNull($transaction->paypalDetails->sellerProtectionStatus);
         $this->assertNotNull($transaction->paypalDetails->captureId);
         $this->assertNotNull($transaction->paypalDetails->refundId);
@@ -1730,6 +2146,23 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
     }
 
+  public function testSale_withRiskData()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ],
+            'riskData' => [
+                'customer_browser' => 'IE5',
+                'customer_ip' => '192.168.0.1'
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+    }
+
   public function testSale_withDescriptor()
     {
         $result = Braintree\Transaction::sale([
@@ -1837,6 +2270,34 @@ class TransactionTest extends Setup
                 'expirationDate' => '05/09'
             ],
             'options' => [
+                'threeDSecure' => [
+                    'required' => true
+                ]
+            ]
+        ]);
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Transaction::THREE_D_SECURE, $result->transaction->gatewayRejectionReason);
+    }
+
+  public function testSale_withThreeDSecureOptionRequiredInSnakeCase()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            "creditCard" => [
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ]
+        ]);
+
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '05/09'
+            ],
+            'options' => [
                 'three_d_secure' => [
                     'required' => true
                 ]
@@ -1912,6 +2373,117 @@ class TransactionTest extends Setup
         $this->assertEquals(
             Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_TRANSACTION_DATA_DOESNT_MATCH_VERIFY,
             $errors[0]->code
+        );
+    }
+
+  public function testSale_withThreeDSecurePassThru()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '02',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid'
+            ],
+        ]);
+        $this->assertTrue($result->success);
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $result->transaction->status);
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruMerchantAcountDoesNotSupportCardType()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => 'adyen_ma',
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '02',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_CARD_TYPE,
+            $errors->onAttribute("merchantAccountId")[0]->code
+        );
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruIsMissingEciFlag()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_ECI_FLAG_IS_REQUIRED,
+            $errors->onAttribute("eciFlag")[0]->code
+        );
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruIsMissingCavvOrXid()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '06',
+                'cavv' => '',
+                'xid' => ''
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_CAVV_IS_REQUIRED,
+            $errors->onAttribute("cavv")[0]->code
+        );
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruEciFlagIsInvalid()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => 'bad_eci_flag',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_ECI_FLAG_IS_INVALID,
+            $errors->onAttribute("eciFlag")[0]->code
         );
     }
 
@@ -2190,6 +2762,25 @@ class TransactionTest extends Setup
         );
     }
 
+  public function testRefundWithOptionsParam()
+    {
+        $transaction = $this->createTransactionToRefund();
+        $options = [
+            "orderId" => 'abcd',
+            "amount" => '1.00'
+        ];
+        $result = Braintree\Transaction::refund($transaction->id, $options);
+        $this->assertTrue($result->success);
+        $this->assertEquals(
+            'abcd',
+            $result->transaction->orderId
+        );
+        $this->assertEquals(
+            '1.00',
+            $result->transaction->amount
+        );
+    }
+
   public function testGatewayRejectionOnApplicationIncomplete()
     {
         $gateway = new Braintree\Gateway([
@@ -2465,6 +3056,7 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertEquals(Braintree\CreditCard::PAYROLL_YES, $transaction->creditCardDetails->payroll);
+        $this->assertEquals("MSA", $transaction->creditCardDetails->productId);
 
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
@@ -2475,6 +3067,7 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertEquals(Braintree\CreditCard::HEALTHCARE_YES, $transaction->creditCardDetails->healthcare);
+        $this->assertEquals("J3", $transaction->creditCardDetails->productId);
 
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
@@ -3564,7 +4157,63 @@ class TransactionTest extends Setup
             $result->transaction->facilitatorDetails->oauthApplicationName,
             "PseudoShop"
         );
+
+        $this->assertNull($result->transaction->billing["postalCode"]);
     }
+
+    public function testBillingPostalCodeIsReturnedWhenRequestedOnTransactionsCreatedViaNonceGranting()
+    {
+        $partnerMerchantGateway = new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_public_id',
+            'publicKey' => 'oauth_app_partner_user_public_key',
+            'privateKey' => 'oauth_app_partner_user_private_key'
+        ]);
+
+        $customer = $partnerMerchantGateway->customer()->create([
+            'firstName' => 'Joe',
+            'lastName' => 'Brown'
+        ])->customer;
+        $creditCard = $partnerMerchantGateway->creditCard()->create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Adam Davis',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2009',
+            'billingAddress' => [
+                'firstName' => 'Adam',
+                'lastName' => 'Davis',
+                'postalCode' => '95131'
+            ]
+        ])->creditCard;
+
+        $oauthAppGateway = new Braintree\Gateway([
+            'clientId' =>  'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ]);
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($oauthAppGateway, [
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'grant_payment_method'
+        ]);
+
+        $credentials = $oauthAppGateway->oauth()->createTokenFromCode([
+            'code' => $code,
+        ]);
+
+        $grantingGateway = new Braintree\Gateway([
+            'accessToken' => $credentials->accessToken
+        ]);
+
+        $grantResult = $grantingGateway->paymentMethod()->grant($creditCard->token, ['allow_vaulting' => false, 'include_billing_postal_code' => true]);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'paymentMethodNonce' => $grantResult->paymentMethodNonce->nonce
+        ]);
+
+        $this->assertEquals($result->transaction->billing["postalCode"], "95131");
+    }
+
 
     public function testTransactionsCanBeCreatedWithSharedParams()
     {

@@ -28,11 +28,10 @@ use Braintree\Error\ErrorCollection;
  *
  * @package    Braintree
  * @subpackage Result
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read array $params original passed params
- * @property-read Braintree\Error\ErrorCollection $errors
- * @property-read Braintree\Result\CreditCardVerification $creditCardVerification credit card verification data
+ * @property-read \Braintree\Error\ErrorCollection $errors
+ * @property-read \Braintree\Result\CreditCardVerification $creditCardVerification credit card verification data
  */
 class Error extends Base
 {

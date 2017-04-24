@@ -1,7 +1,7 @@
 <?php
 namespace Braintree;
 
-final class MerchantAccountGateway
+class MerchantAccountGateway
 {
     private $_gateway;
     private $_config;
@@ -53,6 +53,31 @@ final class MerchantAccountGateway
         $signature = self::createSignature();
         unset($signature['tosAccepted']);
         return $signature;
+    }
+
+    public function createForCurrency($attribs)
+    {
+        $response = $this->_http->post($this->_config->merchantPath() . '/merchant_accounts/create_for_currency', ['merchant_account' => $attribs]);
+        return $this->_verifyGatewayResponse($response);
+    }
+
+    public function all()
+    {
+        $pager = [
+            'object' => $this,
+            'method' => 'fetchMerchantAccounts',
+        ];
+        return new PaginatedCollection($pager);
+    }
+
+    public function fetchMerchantAccounts($page)
+    {
+        $response = $this->_http->get($this->_config->merchantPath() . '/merchant_accounts?page=' . $page);
+        $body = $response['merchantAccounts'];
+        $merchantAccounts = Util::extractattributeasarray($body, 'merchantAccount');
+        $totalItems = $body['totalItems'][0];
+        $pageSize = $body['pageSize'][0];
+        return new PaginatedResult($totalItems, $pageSize, $merchantAccounts);
     }
 
     public static function createSignature()
@@ -137,6 +162,9 @@ final class MerchantAccountGateway
 
     private function _verifyGatewayResponse($response)
     {
+        if (isset($response['response'])) {
+            $response = $response['response'];
+        }
         if (isset($response['merchantAccount'])) {
             // return a populated instance of merchantAccount
             return new Result\Successful(

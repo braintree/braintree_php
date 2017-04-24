@@ -49,6 +49,8 @@ class SubscriptionTest extends Setup
 
         $this->assertEquals('12.34', $subscription->statusHistory[0]->price);
         $this->assertEquals('0.00', $subscription->statusHistory[0]->balance);
+        $this->assertEquals('USD', $subscription->statusHistory[0]->currencyIsoCode);
+        $this->assertEquals($plan['id'], $subscription->statusHistory[0]->planId);
         $this->assertEquals(Braintree\Subscription::ACTIVE, $subscription->statusHistory[0]->status);
         $this->assertEquals(Braintree\Subscription::API, $subscription->statusHistory[0]->subscriptionSource);
     }

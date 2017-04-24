@@ -139,7 +139,6 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  *
  * @property-read string $avsErrorResponseCode
@@ -149,15 +148,18 @@ namespace Braintree;
  * @property-read string $id transaction id
  * @property-read string $amount transaction amount
  * @property-read Braintree\Transaction\AddressDetails $billingDetails transaction billing address
- * @property-read string $createdAt transaction created timestamp
+ * @property-read \DateTime $createdAt transaction created DateTime
  * @property-read Braintree\ApplePayCardDetails $applePayCardDetails transaction Apple Pay card info
  * @property-read Braintree\AndroidPayCardDetails $androidPayCardDetails transaction Android Pay card info
  * @property-read Braintree\AmexExpressCheckoutCardDetails $amexExpressCheckoutCardDetails transaction Amex Express Checkout card info
  * @property-read Braintree\CreditCardDetails $creditCardDetails transaction credit card info
- * @property-read Braintree\CoinbaseAccountDetails $coinbaseDetails transaction Coinbase account info
- * @property-read Braintree\PayPalAccountDetails $paypalDetails transaction paypal account info
- * @property-read Braintree\Customer $customerDetails transaction customer info
+ * @property-read Braintree\CoinbaseDetails $coinbaseDetails transaction Coinbase account info
+ * @property-read Braintree\MasterpassCardDetails $masterpassCardDetails transaction Masterpass card info
+ * @property-read Braintree\PayPalDetails $paypalDetails transaction paypal account info
+ * @property-read Braintree\Transaction\CustomerDetails $customerDetails transaction customer info
  * @property-read Braintree\VenmoAccount $venmoAccountDetails transaction Venmo Account info
+ * @property-read Braintree\IdealPayment $idealPaymentDetails transaction Ideal Payment info
+ * @property-read Braintree\VisaCheckoutCardDetails $visaCheckoutCardDetails transaction Visa Checkout card info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
  * @property-read string $additionalProcessorResponse raw response from processor
@@ -165,13 +167,13 @@ namespace Braintree;
  * @property-read string $status transaction status
  * @property-read array  $statusHistory array of StatusDetails objects
  * @property-read string $type transaction type
- * @property-read string $updatedAt transaction updated timestamp
+ * @property-read \DateTime $updatedAt transaction updated DateTime
  * @property-read Braintree\Disbursement $disbursementDetails populated when transaction is disbursed
  * @property-read Braintree\Dispute $disputes populated when transaction is disputed
  *
  */
 
-final class Transaction extends Base
+class Transaction extends Base
 {
     // Transaction Status
     const AUTHORIZATION_EXPIRED    = 'authorization_expired';
@@ -250,6 +252,22 @@ final class Transaction extends Base
             );
         }
 
+        if (isset($transactionAttribs['masterpassCard'])) {
+            $this->_set('masterpassCardDetails',
+                new Transaction\MasterpassCardDetails(
+                    $transactionAttribs['masterpassCard']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['visaCheckoutCard'])) {
+            $this->_set('visaCheckoutCardDetails',
+                new Transaction\VisaCheckoutCardDetails(
+                    $transactionAttribs['visaCheckoutCard']
+                )
+            );
+        }
+
         if (isset($transactionAttribs['amexExpressCheckoutCard'])) {
             $this->_set('amexExpressCheckoutCardDetails',
                 new Transaction\AmexExpressCheckoutCardDetails(
@@ -286,6 +304,22 @@ final class Transaction extends Base
             $this->_set('europeBankAccount',
                 new Transaction\EuropeBankAccountDetails(
                     $transactionAttribs['europeBankAccount']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['usBankAccount'])) {
+            $this->_set('usBankAccount',
+                new Transaction\UsBankAccountDetails(
+                    $transactionAttribs['usBankAccount']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['idealPayment'])) {
+            $this->_set('idealPayment',
+                new Transaction\IdealPaymentDetails(
+                    $transactionAttribs['idealPayment']
                 )
             );
         }
@@ -527,6 +561,11 @@ final class Transaction extends Base
     public static function submitForSettlementNoValidate($transactionId, $amount = null, $attribs = [])
     {
         return Configuration::gateway()->transaction()->submitForSettlementNoValidate($transactionId, $amount, $attribs);
+    }
+
+    public static function updateDetails($transactionId, $attribs = [])
+    {
+        return Configuration::gateway()->transaction()->updateDetails($transactionId, $attribs);
     }
 
     public static function submitForPartialSettlement($transactionId, $amount, $attribs = [])

@@ -8,7 +8,6 @@ namespace Braintree;
  * Creates an instance of PartnerMerchants
  *
  * @package    Braintree
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $merchantPublicId
  * @property-read string $publicKey

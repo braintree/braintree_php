@@ -46,6 +46,20 @@ class HttpClientApi extends Braintree\Http
         return ['status' => $httpStatus, 'body' => $response];
     }
 
+    public function get_configuration($options) {
+        $encoded_fingerprint = urlencode($options["authorization_fingerprint"]);
+        $url = "/client_api/v1/configuration?";
+        $url .= "authorizationFingerprint=" . $encoded_fingerprint;
+        $url .= "&configVersion=3";
+
+        $response = $this->get($url);
+        if ($response["status"] == 200) {
+            return json_decode($response["body"]);
+        } else {
+            throw new Exception(print_r($response, true));
+        }
+    }
+
     public function get_cards($options) {
         $encoded_fingerprint = urlencode($options["authorization_fingerprint"]);
         $url = "/client_api/v1/payment_methods.json?";
@@ -73,7 +87,7 @@ class HttpClientApi extends Braintree\Http
             $body = json_decode($response["body"]);
             return $body->creditCards[0]->nonce;
         } else {
-            throw new Exception(var_dump($response));
+            throw new Exception(print_r($response, true));
         }
     }
 
@@ -98,7 +112,7 @@ class HttpClientApi extends Braintree\Http
             $body = json_decode($response["body"]);
             return $body->europeBankAccounts[0]->nonce;
         } else {
-            throw new Exception(var_dump($response));
+            throw new Exception(print_r($response, true));
         }
     }
 
@@ -110,7 +124,7 @@ class HttpClientApi extends Braintree\Http
             $body = json_decode($response["body"], true);
             return $body["paypalAccounts"][0]["nonce"];
         } else {
-            throw new Exception(var_dump($response));
+            throw new Exception(print_r($response, true));
         }
     }
 }

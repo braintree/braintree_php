@@ -14,7 +14,6 @@ use InvalidArgumentException;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class CreditCardGateway
 {
@@ -382,23 +381,25 @@ class CreditCardGateway
 
     public static function updateSignature()
     {
-         $signature = self::baseSignature(self::baseOptions());
+        $options = self::baseOptions();
+        $options[] = "failOnDuplicatePaymentMethod";
+        $signature = self::baseSignature($options);
 
-         $updateExistingBillingSignature = [
-             [
-                 'options' => [
-                     'updateExisting'
-                 ]
-             ]
-         ];
+        $updateExistingBillingSignature = [
+            [
+                'options' => [
+                    'updateExisting'
+                ]
+            ]
+        ];
 
-         foreach($signature AS $key => $value) {
-             if(is_array($value) and array_key_exists('billingAddress', $value)) {
-                 $signature[$key]['billingAddress'] = array_merge_recursive($value['billingAddress'], $updateExistingBillingSignature);
-             }
-         }
+        foreach($signature AS $key => $value) {
+            if(is_array($value) and array_key_exists('billingAddress', $value)) {
+                $signature[$key]['billingAddress'] = array_merge_recursive($value['billingAddress'], $updateExistingBillingSignature);
+            }
+        }
 
-         return $signature;
+        return $signature;
     }
 
     /**

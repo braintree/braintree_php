@@ -1,3 +1,70 @@
+## 3.23.0
+* Add Visa Checkout support
+* Add ConnectedMerchantStatusTransitioned and ConnectedMerchantPayPalStatusChanged Auth webhooks
+* Add new properties to `CreditCardVerification` and `Customer`
+* Add SDK support for skip AVS and skip CVV
+
+## 3.22.0
+* Add option to disable Accept-Encoding: gzip header for Google App Engine
+* Fix a bug where `merchantAccount->all` would attempt to fetch too many pages of merchant accounts
+
+## 3.21.1
+* Add back in `options->three_d_secure` to transaction params that was accidentally removed in v3.14.0
+
+## 3.21.0
+* Allow optional configuration of SSL version
+* Replace `var_dump` with `print_r`. Thanks, @mnlg
+* Add functionality to list all merchant accounts for a merchant with `merchantAccount->all`
+* Stop sending account_description field from us bank accounts
+
+## 3.20.0
+* Add option `skip_advanced_fraud_check` for transaction flows
+
+## 3.19.0
+* Add multi-currency updates to merchants onboarded through Braintree Auth
+* Raise an exception if fetching pages of results times out during a transaction search
+
+## 3.18.0
+* Fix `UsBankAccount` support for `Customer`s
+* Update `Grant` api to support options hash
+
+## 3.17.0
+* Add 'UsBankAccount' payment method
+
+## 3.16.0
+* Add authenticated proxy functionality
+* Add constant for Venmo Account payment instrument type
+* Add validation error for verifications with submerchants
+
+## 3.15.0
+* Add 'default_payment_method' option for Customer
+
+## 3.14.0
+**Note: This version introduced an unintentional breaking change where the `options->three_d_secure` transaction parameter was changed to `options->threeDSecure`. Starting in v3.21.1, both case conventions are supported for backwards compatibility.**
+
+* Add OrderId to refund
+* Add 3DS Pass thru support
+* Expose IDs in resource collections
+* Add leading slash to the namespace. Thanks, @bocharsky-bw
+* Stop modifying DateTime parameters during XML generation. Thanks, @jodarove
+
+## 3.13.0
+* Add method of revoking OAuth access tokens.
+
+## 3.12.0
+* Add Transaction `update_details`
+* Support for Too Many Requests response codes
+* Add ability to count errors in ErrorCollection object. Thanks, @bocharsky-bw
+* Improve Type Hinting
+
+## 3.11.0
+* Remove final from classes. Thanks, @ibrahimlawal!
+* Add currency to Transaction search
+
+## 3.10.0
+* Add timeout attribute
+* Add start-date and end-date to SUBSCRIPTION_CHARGED_SUCCESSFULLY test webhook response
+
 ## 3.9.0
 * Add AccountUpdaterDailyReport webhook parsing
 

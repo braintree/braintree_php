@@ -92,6 +92,14 @@ class AddressTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::ADDRESS_COUNTRY_CODE_ALPHA2_IS_NOT_ACCEPTED, $countryErrors[0]->code);
     }
 
+    public function testCreate_withNotFoundErrors()
+    {
+        $this->setExpectedException('Braintree\Exception\NotFound','Customer nonExistentCustomerId not found.');
+        $result = Braintree\Address::create([
+            'customerId' => 'nonExistentCustomerId',
+        ]);
+    }
+
     public function testCreateNoValidate()
     {
         $customer = Braintree\Customer::createNoValidate();

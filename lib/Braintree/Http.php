@@ -4,8 +4,6 @@ namespace Braintree;
 /**
  * Braintree HTTP Client
  * processes Http requests using curl
- *
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class Http
 {
@@ -104,10 +102,16 @@ class Http
     public function _doUrlRequest($httpVerb, $url, $requestBody = null)
     {
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+        curl_setopt($curl, CURLOPT_TIMEOUT, $this->_config->timeout());
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
+
+        if ($this->_config->acceptGzipEncoding()) {
+            curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
+        }
+        if ($this->_config->sslVersion()) {
+            curl_setopt($curl, CURLOPT_SSLVERSION, $this->_config->sslVersion());
+        }
 
         $headers = $this->_getHeaders($curl);
         $headers[] = 'User-Agent: Braintree PHP Library ' . Version::get();
@@ -137,15 +141,26 @@ class Http
             $proxyHost = $this->_config->getProxyHost();
             $proxyPort = $this->_config->getProxyPort();
             $proxyType = $this->_config->getProxyType();
+            $proxyUser = $this->_config->getProxyUser();
+            $proxyPwd= $this->_config->getProxyPassword();
             curl_setopt($curl, CURLOPT_PROXY, $proxyHost . ':' . $proxyPort);
             if(!empty($proxyType)) {
                 curl_setopt($curl, CURLOPT_PROXYTYPE, $proxyType);
+            }
+            if($this->_config->isAuthenticatedProxy()) {
+                curl_setopt($curl, CURLOPT_PROXYUSERPWD, $proxyUser . ':' . $proxyPwd);
             }
         }
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $error_code = curl_errno($curl);
+
+        if ($error_code == 28 && $httpStatus == 0) {
+            throw new Exception\Timeout();
+        }
+
         curl_close($curl);
         if ($this->_config->sslOn()) {
             if ($httpStatus == 0) {
