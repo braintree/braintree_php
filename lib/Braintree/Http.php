@@ -167,11 +167,7 @@ class Http
         curl_close($curl);
         if ($this->_config->sslOn()) {
             if ($httpStatus == 0) {
-                if ($error_code == 35) {
-                    throw new Exception\SSLCertificate($error, $error_code);
-                } else {
-                    throw new Exception\Connection($error, $error_code);
-                }
+                throw new Exception\SSLCertificate($error, $error_code);
             }
         } else if ($error_code) {
             throw new Exception\Connection($error, $error_code);
