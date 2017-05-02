@@ -84,8 +84,6 @@ class HttpTest extends Setup
         Braintree\Configuration::environment('development');
     }
 
-
-
     public function testAcceptGzipEncodingSetFalse()
     {
         $originalGzipEncoding = Braintree\Configuration::acceptGzipEncoding();
