@@ -257,7 +257,7 @@ class PaymentMethodTest extends Setup
         $this->assertSame($customer->id, $result->paymentMethod->customerId);
     }
 
-    public function testCreate_fromOrderPaymentPaypalAccountNonceWithPayeeEmail()
+    public function testCreate_fromOrderPaymentPaypalAccountNonceWithPayPalOptions()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
         $customer = Braintree\Customer::createNoValidate();
@@ -276,7 +276,11 @@ class PaymentMethodTest extends Setup
             'paymentMethodNonce' => $nonce,
             'options' => [
                 'paypal' => [
-                    'payee_email' => 'payee@example.com'
+                    'payee_email' => 'payee@example.com',
+                    'order_id' => 'merchant-order-id',
+                    'custom_field' => 'custom merchant field',
+                    'description' => 'merchant description',
+                    'amount' => '1.23',
                 ]
             ],
         ]);
