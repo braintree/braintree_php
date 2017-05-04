@@ -8,13 +8,6 @@ use Braintree;
 
 class HttpTest extends Setup
 {
-    /**TODO LIST OF THINGS TO DO STILL
-     * 1) Review changes, ensure we didn't break integration tests
-     * 2) See if we need to broaden our exception
-     * 3) See if we should check for other SSL related codes
-     * 4) See if we should change these tests a bit to be more unique and less a copy and paste job
-     */
-
     public function testMalformedNoSsl()
     {
         try {
