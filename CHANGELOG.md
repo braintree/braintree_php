@@ -1,3 +1,8 @@
+## 3.23.1
+* Fix token generator return type - thanks @jjok!
+* Improve error reporting for connection issues - thanks @montymxb!
+* Add support for additional PayPal options when vaulting a PayPal Order
+
 ## 3.23.0
 * Add Visa Checkout support
 * Add ConnectedMerchantStatusTransitioned and ConnectedMerchantPayPalStatusChanged Auth webhooks
