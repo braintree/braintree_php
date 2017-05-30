@@ -58,6 +58,29 @@ class PayPalAccountGateway
     }
 
     /**
+     * Convert a payment method nonce to a paypal account
+     *
+     * @access public
+     * @param string $nonce payment method nonce
+     * @return object Braintree_PayPalAccount
+     * @throws Braintree_Exception_NotFound
+     */
+    public function fromNonce($nonce)
+    {
+        $this->_validateId($nonce, "nonce");
+        try {
+            $path = $this->_config->merchantPath() . '/payment_methods/from_nonce/' . $nonce;
+            $response = $this->_http->get($path);
+            return Braintree_PayPalAccount::factory($response['payPalAccount']);
+        } catch (Braintree_Exception_NotFound $e) {
+            throw new Braintree_Exception_NotFound(
+                'paypal account with nonce ' . $nonce . ' locked, consumed or not found'
+            );
+        }
+
+    }
+
+    /**
      * updates the paypalAccount record
      *
      * if calling this method in context, $token
