@@ -218,9 +218,9 @@ class Util
      * @param string $string
      * @return string modified string
      */
-    public static function delimiterToUnderscore($string)
+    public static function delimiterToUnderscore($string, $delimiter = '-')
     {
-        return preg_replace('/-/', '_', $string);
+        return str_replace($delimiter, '_', $string);
     }
 
 
