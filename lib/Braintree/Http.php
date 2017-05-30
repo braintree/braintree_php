@@ -197,5 +197,29 @@ class Http
 
         return $memo;
     }
+
+    private function getCaFile()
+    {
+        $caFile = $this->_config->caFile();
+
+        if (substr($caFile, 0, 7) !== 'phar://')
+            return $caFile;
+
+        $extractedCaFile = sys_get_temp_dir() . '/api_braintreegateway_com.ca.crt';
+        if ( ! file_exists($caFile)) {
+            throw new \RuntimeException("Could not find $caFile");
+        }
+        if ( ! file_exists($extractedCaFile) ||
+            filesize($extractedCaFile) != filesize($caFile)
+        ) {
+            if ( ! copy($caFile, $extractedCaFile)) {
+                throw new \RuntimeException(
+                    "Could not copy {$caFile} to {$extractedCaFile}: "
+                    . var_export(error_get_last(), true)
+                );
+            }
+        }
+        return $extractedCaFile;
+    }
 }
 class_alias('Braintree\Http', 'Braintree_Http');
