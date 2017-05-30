@@ -78,6 +78,16 @@ class CreditCardVerification
     }
 
     /**
+     *
+     * @ignore
+     */
+    public function  __isset($name)
+    {
+        $varName = "_$name";
+        return isset($this->$varName) ? true : false;
+    }
+
+    /**
      * returns a string representation of the customer
      * @return string
      */
