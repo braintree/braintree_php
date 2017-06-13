@@ -449,6 +449,7 @@ class Codes
     const TRANSACTION_CUSTOM_FIELD_IS_TOO_LONG                                        = '81527';
     const TRANSACTION_HAS_ALREADY_BEEN_REFUNDED                                       = '91512';
     const TRANSACTION_IDEAL_PAYMENT_NOT_COMPLETE                                      = '815141';
+    const TRANSACTION_IDEAL_PAYMENTS_CANNOT_BE_VAULTED                                = '915150';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_MATCH3_D_SECURE_MERCHANT_ACCOUNT      = '91584';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_MATCH_IDEAL_PAYMENT_MERCHANT_ACCOUNT  = '915143';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_MOTO                          = '91558';
