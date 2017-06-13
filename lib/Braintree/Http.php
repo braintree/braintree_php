@@ -152,6 +152,9 @@ class Http
             }
         }
 
+        //in case of Peer reports incompatible or unsupported protocol version
+        curl_setopt($curl, CURLOPT_SSLVERSION, 6);
+
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
