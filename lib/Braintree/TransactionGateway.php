@@ -40,7 +40,7 @@ class TransactionGateway
      * @ignore
      * @access private
      * @param array $attribs
-     * @return object
+     * @return Result\Successful|Result\Error
      */
     private function create($attribs)
     {
@@ -283,7 +283,7 @@ class TransactionGateway
     /**
      * new sale
      * @param array $attribs
-     * @return array
+     * @return Result\Successful|Result\Error
      */
     public function sale($attribs)
     {
@@ -470,7 +470,7 @@ class TransactionGateway
      * @ignore
      * @param var $subPath
      * @param array $params
-     * @return mixed
+     * @return Result\Successful|Result\Error
      */
     public function _doCreate($subPath, $params)
     {
