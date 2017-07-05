@@ -1,3 +1,6 @@
+## Unreleased
+* Create Braintree class to be PSR compliant
+
 ## 3.23.1
 * Fix token generator return type - thanks @jjok!
 * Improve error reporting for connection issues - thanks @montymxb!
