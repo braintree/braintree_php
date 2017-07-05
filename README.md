@@ -61,9 +61,15 @@ Braintree\Configuration::privateKey('your_private_key');
 
 The Braintree PHP library will run on HHVM >= 3.4.2.
 
-## Google App Engine
+## Google App Engine Support
 
-If you use Google App Engine, you'll have to turn off accepting gzip responses.
+When using Google App Engine include the curl extention in your `php.ini` file (see [#190](https://github.com/braintree/braintree_php/issues/190) for more information):
+
+```ini
+extension = "curl.so"
+```
+
+and turn off accepting gzip responses:
 
 ```php
 Braintree\Configuration::acceptGzipEncoding(false);
