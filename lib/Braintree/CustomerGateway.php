@@ -156,7 +156,13 @@ class CustomerGateway
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
             ['options' => [
-                ['paypal' => ['payee_email']]
+                ['paypal' => [
+                    'payee_email',
+                    'order_id',
+                    'custom_field',
+                    'description',
+                    'amount',
+                ]]
             ]],
         ];
         return $signature;

@@ -11,7 +11,7 @@ class ClientToken
     /**
      *
      * @param array $params
-     * @return array
+     * @return string
      */
     public static function generate($params=[])
     {

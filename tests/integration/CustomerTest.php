@@ -663,6 +663,10 @@ class CustomerTest extends Setup
             'options' => [
                 'paypal' => [
                     'payee_email' => 'payee@example.com',
+                    'order_id' => 'merchant-order-id',
+                    'custom_field' => 'custom merchant field',
+                    'description' => 'merchant description',
+                    'amount' => '1.23',
                 ],
             ],
         ]);

@@ -154,10 +154,12 @@ namespace Braintree;
  * @property-read Braintree\AmexExpressCheckoutCardDetails $amexExpressCheckoutCardDetails transaction Amex Express Checkout card info
  * @property-read Braintree\CreditCardDetails $creditCardDetails transaction credit card info
  * @property-read Braintree\CoinbaseDetails $coinbaseDetails transaction Coinbase account info
+ * @property-read Braintree\MasterpassCardDetails $masterpassCardDetails transaction Masterpass card info
  * @property-read Braintree\PayPalDetails $paypalDetails transaction paypal account info
  * @property-read Braintree\Transaction\CustomerDetails $customerDetails transaction customer info
  * @property-read Braintree\VenmoAccount $venmoAccountDetails transaction Venmo Account info
  * @property-read Braintree\IdealPayment $idealPaymentDetails transaction Ideal Payment info
+ * @property-read Braintree\VisaCheckoutCardDetails $visaCheckoutCardDetails transaction Visa Checkout card info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
  * @property-read string $additionalProcessorResponse raw response from processor
@@ -246,6 +248,22 @@ class Transaction extends Base
             $this->_set('androidPayCardDetails',
                 new Transaction\AndroidPayCardDetails(
                     $transactionAttribs['androidPayCard']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['masterpassCard'])) {
+            $this->_set('masterpassCardDetails',
+                new Transaction\MasterpassCardDetails(
+                    $transactionAttribs['masterpassCard']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['visaCheckoutCard'])) {
+            $this->_set('visaCheckoutCardDetails',
+                new Transaction\VisaCheckoutCardDetails(
+                    $transactionAttribs['visaCheckoutCard']
                 )
             );
         }

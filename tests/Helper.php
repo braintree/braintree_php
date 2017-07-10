@@ -204,7 +204,15 @@ class Helper
             $amount = '100.00';
         }
 
-        $client_token = json_decode(Helper::decodedClientToken(), true);
+        $client_token = json_decode(Helper::decodedClientToken([
+            'merchantAccountId' => 'ideal_merchant_account'
+        ]), true);
+
+        $client = new Integration\HttpClientApi(Braintree\Configuration::$global);
+        $configuration = $client->get_configuration([
+            "authorization_fingerprint" => $client_token['authorizationFingerprint'],
+        ]);
+
         $url = $client_token['braintree_api']['url'] . '/ideal-payments';
         $token = $client_token['braintree_api']['access_token'];
 
@@ -223,6 +231,7 @@ class Helper
             'amount' => $amount,
             'currency' => 'EUR',
             'redirect_url' => 'https://braintree-api.com',
+            'route_id' => $configuration->ideal->routeId,
         ];
 
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($requestBody));

@@ -212,5 +212,13 @@ class Gateway
         return new IdealPaymentGateway($this);
     }
 
+    /**
+     *
+     * @return WebhookNotificationGateway
+     */
+    public function webhookNotification()
+    {
+        return new WebhookNotificationGateway($this);
+    }
 }
 class_alias('Braintree\Gateway', 'Braintree_Gateway');

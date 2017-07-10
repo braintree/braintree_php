@@ -47,6 +47,12 @@ class WebhookTesting
             case WebhookNotification::PARTNER_MERCHANT_DECLINED:
                 $subjectXml = self::_partnerMerchantDeclinedSampleXml($id);
                 break;
+            case WebhookNotification::CONNECTED_MERCHANT_STATUS_TRANSITIONED:
+                $subjectXml = self::_connectedMerchantStatusTransitionedSampleXml($id);
+                break;
+            case WebhookNotification::CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED:
+                $subjectXml = self::_connectedMerchantPayPalStatusChangedSampleXml($id);
+                break;
             case WebhookNotification::DISPUTE_OPENED:
                 $subjectXml = self::_disputeOpenedSampleXml($id);
                 break;
@@ -373,6 +379,28 @@ class WebhookTesting
             <report-date type=\"date\">2016-01-14</report-date>
             <report-url>link-to-csv-report</report-url>
         </account-updater-daily-report>
+        ";
+    }
+
+    private static function _connectedMerchantStatusTransitionedSampleXml($id)
+    {
+        return "
+        <connected-merchant-status-transitioned>
+          <merchant-public-id>{$id}</merchant-public-id>
+          <status>new_status</status>
+          <oauth-application-client-id>oauth_application_client_id</oauth-application-client-id>
+        </connected-merchant-status-transitioned>
+        ";
+    }
+
+    private static function _connectedMerchantPayPalStatusChangedSampleXml($id)
+    {
+        return "
+        <connected-merchant-paypal-status-changed>
+          <merchant-public-id>{$id}</merchant-public-id>
+          <action>link</action>
+          <oauth-application-client-id>oauth_application_client_id</oauth-application-client-id>
+        </connected-merchant-paypal-status-changed>
         ";
     }
 

@@ -9,7 +9,6 @@ namespace Braintree;
  *
  * @property-read string $reportUrl
  * @property-read date   $reportDate
- * @property-read date   $receivedDate
  */
 class AccountUpdaterDailyReport extends Base
 {

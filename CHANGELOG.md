@@ -1,7 +1,19 @@
 ## Unreleased
 * Add `IDEAL_PAYMENT` to `PaymentInstrumentType`
+* Create Braintree class to be PSR compliant
 
-## 3.21.2
+## 3.23.1
+* Fix token generator return type - thanks @jjok!
+* Improve error reporting for connection issues - thanks @montymxb!
+* Add support for additional PayPal options when vaulting a PayPal Order
+
+## 3.23.0
+* Add Visa Checkout support
+* Add ConnectedMerchantStatusTransitioned and ConnectedMerchantPayPalStatusChanged Auth webhooks
+* Add new properties to `CreditCardVerification` and `Customer`
+* Add SDK support for skip AVS and skip CVV
+
+## 3.22.0
 * Add option to disable Accept-Encoding: gzip header for Google App Engine
 * Fix a bug where `merchantAccount->all` would attempt to fetch too many pages of merchant accounts
 
