@@ -259,6 +259,7 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $this->assertEquals(Braintree\Transaction::SETTLED, $transaction->status);
         $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals(Braintree\PaymentInstrumentType::IDEAL_PAYMENT, $transaction->paymentInstrumentType);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertRegExp('/^idealpayment_\w{6,}$/', $transaction->idealPayment->idealPaymentId);
         $this->assertRegExp('/^\d{16,}$/', $transaction->idealPayment->idealTransactionId);
