@@ -624,12 +624,6 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("10.00", $idealPayment->amount);
         $this->assertEquals("https://example.com", $idealPayment->approvalUrl);
         $this->assertEquals("1234567890", $idealPayment->idealTransactionId);
-        $this->assertEquals("DESCRIPTION ABC", $idealPayment->ibanBankAccount->description);
-        $this->assertEquals("XXXXNLXX", $idealPayment->ibanBankAccount->bic);
-        $this->assertEquals("11", $idealPayment->ibanBankAccount->ibanCountry);
-        $this->assertEquals("0000", $idealPayment->ibanBankAccount->ibanAccountNumberLast4);
-        $this->assertEquals("NL************0000", $idealPayment->ibanBankAccount->maskedIban);
-        $this->assertEquals("Account Holder", $idealPayment->ibanBankAccount->accountHolderName);
     }
 
     public function testIdealPaymentFailedWebhook()
@@ -653,11 +647,5 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("10.00", $idealPayment->amount);
         $this->assertEquals("https://example.com", $idealPayment->approvalUrl);
         $this->assertEquals("1234567890", $idealPayment->idealTransactionId);
-        $this->assertEquals("DESCRIPTION ABC", $idealPayment->ibanBankAccount->description);
-        $this->assertEquals("XXXXNLXX", $idealPayment->ibanBankAccount->bic);
-        $this->assertEquals("11", $idealPayment->ibanBankAccount->ibanCountry);
-        $this->assertEquals("0000", $idealPayment->ibanBankAccount->ibanAccountNumberLast4);
-        $this->assertEquals("NL************0000", $idealPayment->ibanBankAccount->maskedIban);
-        $this->assertEquals("Account Holder", $idealPayment->ibanBankAccount->accountHolderName);
     }
 }
