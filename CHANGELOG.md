@@ -23,6 +23,7 @@
 * Fix TransactionGateway return types (thanks @jjok!).
 * Update return type for client token (thanks @jlaswell!).
 * Add `bin` to `ApplePayCard`
+* Add `deviceDataCaptured` field in `riskData`
 
 ## 3.23.1
 * Fix token generator return type - thanks @jjok!

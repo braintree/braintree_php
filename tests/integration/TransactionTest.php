@@ -736,6 +736,7 @@ class TransactionTest extends Setup
     {
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
+            'deviceSessionId' => 'abc123',
             'creditCard' => [
                 'cardholderName' => 'The Cardholder',
                 'number' => '5105105105105100',
@@ -746,6 +747,8 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $this->assertNotNull($transaction->riskData);
         $this->assertNotNull($transaction->riskData->decision);
+        $this->assertNull($transaction->riskData->id);
+        $this->assertNull($transaction->riskData->deviceDataCaptured);
     }
 
   public function testRecurring()
