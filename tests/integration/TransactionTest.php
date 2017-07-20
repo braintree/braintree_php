@@ -607,19 +607,15 @@ class TransactionTest extends Setup
         $this->assertSame("Venmo-Joe-1", $venmoAccountDetails->venmoUserId);
     }
 
-    public function testCreateTransactionUsingFakeCoinbaseNonce()
+    public function testCannotCreateTransactionUsingFakeCoinbaseNonce()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '17.00',
             'paymentMethodNonce' => Braintree\Test\Nonces::$coinbase
         ]);
 
-        $this->assertTrue($result->success);
-        $transaction = $result->transaction;
-        $this->assertNotNull($transaction->coinbaseDetails);
-        $this->assertNotNull($transaction->coinbaseDetails->userId);
-        $this->assertNotNull($transaction->coinbaseDetails->userName);
-        $this->assertNotNull($transaction->coinbaseDetails->userEmail);
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Error\Codes::PAYMENT_METHOD_NO_LONGER_SUPPORTED, $result->errors->forKey('transaction')->onAttribute('base')[0]->code);
     }
 
   public function testCreateTransactionReturnsPaymentInstrumentType()

@@ -205,19 +205,14 @@ class CustomerTest extends Setup
         $this->assertNotNull($venmoAccount->venmoUserId);
     }
 
-    public function testCreateCustomerWithCoinbase()
+    public function testCannotCreateCustomerWithCoinbase()
     {
         $nonce = Braintree\Test\Nonces::$coinbase;
         $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
         ]);
-        $this->assertTrue($result->success);
-        $customer = $result->customer;
-        $this->assertNotNull($customer->coinbaseAccounts[0]);
-        $this->assertNotNull($customer->coinbaseAccounts[0]->userId);
-        $this->assertNotNull($customer->coinbaseAccounts[0]->userName);
-        $this->assertNotNull($customer->coinbaseAccounts[0]->userEmail);
-        $this->assertNotNull($customer->paymentMethods[0]);
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Error\Codes::PAYMENT_METHOD_NO_LONGER_SUPPORTED, $result->errors->forKey('coinbaseAccount')->onAttribute('base')[0]->code);
     }
 
     public function testCreateCustomerWithUsBankAccount()
