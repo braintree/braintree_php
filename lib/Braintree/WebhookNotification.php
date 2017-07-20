@@ -27,6 +27,8 @@ class WebhookNotification extends Base
     const ACCOUNT_UPDATER_DAILY_REPORT = 'account_updater_daily_report';
     const CONNECTED_MERCHANT_STATUS_TRANSITIONED = 'connected_merchant_status_transitioned';
     const CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED = 'connected_merchant_paypal_status_changed';
+    const IDEAL_PAYMENT_COMPLETE = 'ideal_payment_complete';
+    const IDEAL_PAYMENT_FAILED = 'ideal_payment_failed';
 
     public static function parse($signature, $payload) {
         return Configuration::gateway()->webhookNotification()->parse($signature, $payload);
@@ -87,6 +89,10 @@ class WebhookNotification extends Base
 
         if (isset($wrapperNode['accountUpdaterDailyReport'])) {
             $this->_set('accountUpdaterDailyReport', AccountUpdaterDailyReport::factory($wrapperNode['accountUpdaterDailyReport']));
+        }
+
+        if (isset($wrapperNode['idealPayment'])) {
+            $this->_set('idealPayment', IdealPayment::factory($wrapperNode['idealPayment']));
         }
 
         if (isset($wrapperNode['errors'])) {
