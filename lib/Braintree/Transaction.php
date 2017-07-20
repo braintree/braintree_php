@@ -170,6 +170,7 @@ namespace Braintree;
  * @property-read \DateTime $updatedAt transaction updated DateTime
  * @property-read Braintree\Disbursement $disbursementDetails populated when transaction is disbursed
  * @property-read Braintree\Dispute $disputes populated when transaction is disputed
+ * @property-read Braintree\AuthorizationAdjustment $authorizationAdjustments populated when a transaction has authorization adjustments created when submitted for settlement
  *
  */
 
@@ -411,6 +412,15 @@ class Transaction extends Base
             }
         }
         $this->_set('discounts', $discountArray);
+
+        $authorizationAdjustments = [];
+        if (isset($transactionAttribs['authorizationAdjustments'])) {
+            foreach ($transactionAttribs['authorizationAdjustments'] AS $authorizationAdjustment) {
+                $authorizationAdjustments[] = AuthorizationAdjustment::factory($authorizationAdjustment);
+            }
+        }
+
+        $this->_set('authorizationAdjustments', $authorizationAdjustments);
 
         if(isset($transactionAttribs['riskData'])) {
             $this->_set('riskData', RiskData::factory($transactionAttribs['riskData']));

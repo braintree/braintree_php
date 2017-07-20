@@ -1961,6 +1961,16 @@ class TransactionTest extends Setup
         $this->assertEquals(new DateTime('2013-04-10'), $disbursementDetails->disbursementDate);
     }
 
+  public function testFindExposesAuthorizationAdjustments()
+    {
+        $transaction = Braintree\Transaction::find("authadjustmenttransaction");
+
+        $authorizationAdjustment = $transaction->authorizationAdjustments[0];
+        $this->assertEquals('-20.00', $authorizationAdjustment->amount);
+        $this->assertInstanceOf('DateTime', $authorizationAdjustment->timestamp);
+        $this->assertEquals(true, $authorizationAdjustment->success);
+    }
+
   public function testFindExposesDisputes()
     {
         $transaction = Braintree\Transaction::find("disputedtransaction");
