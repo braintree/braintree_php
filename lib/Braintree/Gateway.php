@@ -43,6 +43,15 @@ class Gateway
 
     /**
      *
+     * @return ApplePayGateway
+     */
+    public function applePay()
+    {
+        return new ApplePayGateway($this);
+    }
+
+    /**
+     *
      * @return ClientTokenGateway
      */
     public function clientToken()
