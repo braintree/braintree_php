@@ -32,6 +32,11 @@ class ApplePayTest extends setup
         $gateway = $this->_buildMerchantGateway();
         $result = $gateway->applePay()->registerDomain('domain');
         $this->assertEquals(true, $result->success);
+
+        $result = $gateway->applePay()->registeredDomains();
+        $this->assertEquals(true, $result->success);
+        $registeredDomains = $result->applePayOptions->domains;
+        $this->assertEmpty(array_diff(['domain'], $registeredDomains));
     }
 
     public function testValidationErrorWhenRegisteringNoDomain()
@@ -113,7 +118,6 @@ class ApplePayTest extends setup
         $gateway = $this->_buildMerchantGateway();
         $result = $gateway->applePay()->registeredDomains();
         $this->assertEquals(true, $result->success);
-        $registeredDomains = $result->applePayOptions->domains;
-        $this->assertEmpty($registeredDomains);
+        $this->assertEmpty($result->applePayOptions->domains);
     }
 }

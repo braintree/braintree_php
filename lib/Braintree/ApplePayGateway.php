@@ -52,7 +52,14 @@ class ApplePayGateway
             $options = ApplePayOptions::factory($response['response']);
             return new Result\Successful($options, 'applePayOptions');
         }
-        return $result;
+        else if (array_key_exists('apiErrorResponse', $response))
+        {
+            return new Result\Error($response['apiErrorResponse']);
+        }
+        else
+        {
+            throw new Exception\Unexpected('expected response or apiErrorResponse');
+        }
     }
 }
 class_alias('Braintree\ApplePayGateway', 'Braintree_ApplePayGateway');
