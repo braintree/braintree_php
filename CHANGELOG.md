@@ -3,6 +3,7 @@
 * Add iDEAL webhook support
 * Add `IDEAL_PAYMENT` to `PaymentInstrumentType`
 * Create Braintree class to be PSR compliant
+* Coinbase is no longer a supported payment method. `PAYMENT_METHOD_NO_LONGER_SUPPORTED` will be returned for Coinbase operations.
 
 ## 3.23.1
 * Fix token generator return type - thanks @jjok!
