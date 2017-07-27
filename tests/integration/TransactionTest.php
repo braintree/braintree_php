@@ -4111,7 +4111,7 @@ class TransactionTest extends Setup
         Braintree\Transaction::submitForPartialSettlement($transaction->id, '67.00', $params);
     }
 
-    public function testFacilitatorDetailsAreReturnedOnTransactionsCreatedViaNonceGranting()
+    public function testFacilitatedAndFacilitatorDetailsAreReturnedOnTransactionsCreatedViaNonceGranting()
     {
         $partnerMerchantGateway = new Braintree\Gateway([
             'environment' => 'development',
@@ -4155,6 +4155,19 @@ class TransactionTest extends Setup
             'amount' => '100.00',
             'paymentMethodNonce' => $grantResult->paymentMethodNonce->nonce
         ]);
+
+        $this->assertEquals(
+            $result->transaction->facilitatedDetails->merchantId,
+            'integration_merchant_id'
+        );
+        $this->assertEquals(
+            $result->transaction->facilitatedDetails->merchantName,
+            '14ladders'
+        );
+        $this->assertEquals(
+            $result->transaction->facilitatedDetails->paymentMethodNonce,
+            $grantResult->paymentMethodNonce->nonce
+        );
 
         $this->assertEquals(
             $result->transaction->facilitatorDetails->oauthApplicationClientId,
