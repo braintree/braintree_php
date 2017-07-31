@@ -13,17 +13,18 @@ abstract class Serializable
         if (!is_array($this->_attributes)) return array();
     
         $attributes = array();
+
         foreach ($this->_attributes as $k => $attribute)
         {
             if ($attribute instanceof Serializable)
-                 $attributes[$k] = $attribute->serialize(true);
+                 $attributes[$k] = $attribute->serialize(true, $max_depth-1);
             else $attributes[$k] = $attribute;
         }
         
         if ($as_array)
              return $attributes;
         else return json_encode($attributes);
-    } 
+    }
 }
 
 class_alias('Braintree\Serializable', 'Braintree_Serializable');
