@@ -8,15 +8,11 @@ use Braintree\Util;
 
 /**
  * PHP version 5
- *
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 /**
  * Generates XML output from arrays using PHP's
  * built-in XMLWriter
- *
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class Generator
 {
@@ -130,8 +126,10 @@ class Generator
      */
     private static function _dateTimeToXmlTimestamp($dateTime)
     {
-        $dateTime->setTimeZone(new DateTimeZone('UTC'));
-        return ($dateTime->format('Y-m-d\TH:i:s') . 'Z');
+        $dateTimeForUTC = clone $dateTime;
+
+        $dateTimeForUTC->setTimeZone(new DateTimeZone('UTC'));
+        return ($dateTimeForUTC->format('Y-m-d\TH:i:s') . 'Z');
     }
 
     private static function _castDateTime($string)

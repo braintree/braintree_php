@@ -6,7 +6,6 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class Gateway
 {
@@ -193,6 +192,33 @@ class Gateway
     public function transparentRedirect()
     {
         return new TransparentRedirectGateway($this);
+    }
+
+    /**
+     *
+     * @return UsBankAccountGateway
+     */
+    public function usBankAccount()
+    {
+        return new UsBankAccountGateway($this);
+    }
+
+    /**
+     *
+     * @return IdealPaymentGateway
+     */
+    public function idealPayment()
+    {
+        return new IdealPaymentGateway($this);
+    }
+
+    /**
+     *
+     * @return WebhookNotificationGateway
+     */
+    public function webhookNotification()
+    {
+        return new WebhookNotificationGateway($this);
     }
 }
 class_alias('Braintree\Gateway', 'Braintree_Gateway');

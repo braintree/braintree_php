@@ -25,7 +25,8 @@ class CustomerTest extends Setup
                     'verificationMerchantAccountId',
                     'verifyCard',
                     'verificationAmount',
-                    'venmoSdkSession'
+                    'venmoSdkSession',
+                    'failOnDuplicatePaymentMethod',
                 ], $value['options']);
             }
         }

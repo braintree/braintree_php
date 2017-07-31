@@ -12,7 +12,6 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $billingAddress
  * @property-read string $bin
@@ -76,6 +75,7 @@ class CreditCard extends Base
 
     const COUNTRY_OF_ISSUANCE_UNKNOWN = "Unknown";
     const ISSUING_BANK_UNKNOWN = "Unknown";
+    const PRODUCT_ID_UNKNOWN = "Unknown";
 
     /* instance methods */
     /**

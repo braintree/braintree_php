@@ -6,7 +6,6 @@ namespace Braintree\Test;
  *
  * @package    Braintree
  * @subpackage Test
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -17,7 +16,6 @@ namespace Braintree\Test;
  *
  * @package    Braintree
  * @subpackage Test
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 class Nonces
 {
@@ -66,5 +64,13 @@ class Nonces
    public static $sepa = "fake-sepa-bank-account-nonce";
    public static $gatewayRejectedFraud = "fake-gateway-rejected-fraud-nonce";
    public static $venmoAccount = "fake-venmo-account-nonce";
+   public static $visaCheckoutAmEx = "fake-visa-checkout-amex-nonce";
+   public static $visaCheckoutDiscover = "fake-visa-checkout-discover-nonce";
+   public static $visaCheckoutMasterCard = "fake-visa-checkout-mastercard-nonce";
+   public static $visaCheckoutVisa = "fake-visa-checkout-visa-nonce";
+   public static $masterpassAmEx = "fake-masterpass-amex-nonce";
+   public static $masterpassDiscover = "fake-masterpass-discover-nonce";
+   public static $masterpassMasterCard = "fake-masterpass-mastercard-nonce";
+   public static $masterpassVisa = "fake-masterpass-visa-nonce";
 }
 class_alias('Braintree\Test\Nonces', 'Braintree_Test_Nonces');

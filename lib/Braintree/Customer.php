@@ -11,7 +11,6 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read array  $addresses
  * @property-read array  $paymentMethods
@@ -23,6 +22,8 @@ namespace Braintree;
  * @property-read array  $androidPayCards
  * @property-read array  $amexExpressCheckoutCards
  * @property-read array  $venmoAccounts
+ * @property-read array  $visaCheckoutCards
+ * @property-read array  $masterpassCards
  * @property-read array  $coinbaseAccounts
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $email
@@ -59,7 +60,7 @@ class Customer extends Base
     /**
      *
      * @param array $attribs
-     * @return Customer
+     * @return Result\Successful|Result\Error
      */
     public static function create($attribs = [])
     {
@@ -296,6 +297,30 @@ class Customer extends Base
         }
         $this->_set('venmoAccounts', $venmoAccountArray);
 
+        $visaCheckoutCardArray = [];
+        if (isset($customerAttribs['visaCheckoutCards'])) {
+            foreach ($customerAttribs['visaCheckoutCards'] AS $visaCheckoutCard) {
+                $visaCheckoutCardArray[] = VisaCheckoutCard::factory($visaCheckoutCard);
+            }
+        }
+        $this->_set('visaCheckoutCards', $visaCheckoutCardArray);
+
+        $masterpassCardArray = [];
+        if (isset($customerAttribs['masterpassCards'])) {
+            foreach ($customerAttribs['masterpassCards'] AS $masterpassCard) {
+                $masterpassCardArray[] = MasterpassCard::factory($masterpassCard);
+            }
+        }
+        $this->_set('masterpassCards', $masterpassCardArray);
+
+        $usBankAccountArray = array();
+        if (isset($customerAttribs['usBankAccounts'])) {
+            foreach ($customerAttribs['usBankAccounts'] AS $usBankAccount) {
+                $usBankAccountArray[] = UsBankAccount::factory($usBankAccount);
+            }
+        }
+        $this->_set('usBankAccounts', $usBankAccountArray);
+
         $this->_set('paymentMethods', array_merge(
             $this->creditCards,
             $this->paypalAccounts,
@@ -303,7 +328,10 @@ class Customer extends Base
             $this->coinbaseAccounts,
             $this->androidPayCards,
             $this->amexExpressCheckoutCards,
-            $this->venmoAccounts
+            $this->venmoAccounts,
+            $this->visaCheckoutCards,
+            $this->masterpassCards,
+            $this->usBankAccounts
         ));
     }
 

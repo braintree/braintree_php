@@ -1,6 +1,9 @@
-# Braintree PHP Client Library
+# Braintree PHP library
 
 The Braintree PHP library provides integration access to the Braintree Gateway.
+
+## Please Note
+> **The Payment Card Industry (PCI) Council has [mandated](http://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls) that early versions of TLS be retired from service.  All organizations that handle credit card information are required to comply with this standard. As part of this obligation, Braintree is updating its services to require TLS 1.2 for all HTTPS connections. Braintree will also require HTTP/1.1 for all connections. Please see our [technical documentation](https://github.com/paypal/tls-update) for more information.**
 
 ## Dependencies
 
@@ -21,12 +24,12 @@ The following PHP extensions are required:
 
 require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
 
-Braintree\Configuration::environment('sandbox');
-Braintree\Configuration::merchantId('your_merchant_id');
-Braintree\Configuration::publicKey('your_public_key');
-Braintree\Configuration::privateKey('your_private_key');
+Braintree_Configuration::environment('sandbox');
+Braintree_Configuration::merchantId('your_merchant_id');
+Braintree_Configuration::publicKey('your_public_key');
+Braintree_Configuration::privateKey('your_private_key');
 
-$result = Braintree\Transaction::sale([
+$result = Braintree_Transaction::sale([
     'amount' => '1000.00',
     'paymentMethodNonce' => 'nonceFromTheClient',
     'options' => [ 'submitForSettlement' => true ]
@@ -44,9 +47,27 @@ if ($result->success) {
 }
 ```
 
+Both PSR-0 and PSR-4 namespacing are supported. If you are using composer with `--classmap-authoritative` or
+`--optimize-autoloader` enabled, you'll have to reference classes using PSR-4 namespacing:
+
+```php
+Braintree\Configuration::environment('sandbox');
+Braintree\Configuration::merchantId('your_merchant_id');
+Braintree\Configuration::publicKey('your_public_key');
+Braintree\Configuration::privateKey('your_private_key');
+```
+
 ## HHVM Support
 
 The Braintree PHP library will run on HHVM >= 3.4.2.
+
+## Google App Engine
+
+If you use Google App Engine, you'll have to turn off accepting gzip responses.
+
+```php
+Braintree\Configuration::acceptGzipEncoding(false);
+```
 
 ## Legacy PHP Support
 
@@ -64,10 +85,6 @@ The benefit of the `rake` tasks is that testing covers default `hhvm` and `php` 
 ```
 phpunit tests/unit/
 ```
-
-## Open Source Attribution
-
-A list of open source projects that help power Braintree can be found [here](https://www.braintreepayments.com/developers/open-source).
 
 ## License
 

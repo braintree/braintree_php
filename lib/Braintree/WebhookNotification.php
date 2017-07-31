@@ -13,6 +13,8 @@ class WebhookNotification extends Base
     const SUB_MERCHANT_ACCOUNT_APPROVED = 'sub_merchant_account_approved';
     const SUB_MERCHANT_ACCOUNT_DECLINED = 'sub_merchant_account_declined';
     const TRANSACTION_DISBURSED = 'transaction_disbursed';
+    const TRANSACTION_SETTLED = 'transaction_settled';
+    const TRANSACTION_SETTLEMENT_DECLINED = 'transaction_settlement_declined';
     const DISBURSEMENT_EXCEPTION = 'disbursement_exception';
     const DISBURSEMENT = 'disbursement';
     const DISPUTE_OPENED = 'dispute_opened';
@@ -23,30 +25,15 @@ class WebhookNotification extends Base
     const PARTNER_MERCHANT_DECLINED = 'partner_merchant_declined';
     const CHECK = 'check';
     const ACCOUNT_UPDATER_DAILY_REPORT = 'account_updater_daily_report';
+    const CONNECTED_MERCHANT_STATUS_TRANSITIONED = 'connected_merchant_status_transitioned';
+    const CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED = 'connected_merchant_paypal_status_changed';
 
-    public static function parse($signature, $payload)
-    {
-        if (preg_match("/[^A-Za-z0-9+=\/\n]/", $payload) === 1) {
-            throw new Exception\InvalidSignature("payload contains illegal characters");
-        }
-
-        Configuration::assertGlobalHasAccessTokenOrKeys();
-        self::_validateSignature($signature, $payload);
-
-        $xml = base64_decode($payload);
-        $attributes = Xml::buildArrayFromXml($xml);
-        return self::factory($attributes['notification']);
+    public static function parse($signature, $payload) {
+        return Configuration::gateway()->webhookNotification()->parse($signature, $payload);
     }
 
-    public static function verify($challenge)
-    {
-        if (!preg_match('/^[a-f0-9]{20,32}$/', $challenge)) {
-            throw new Exception\InvalidChallenge("challenge contains non-hex characters");
-        }
-        Configuration::assertGlobalHasAccessTokenOrKeys();
-        $publicKey = Configuration::publicKey();
-        $digest = Digest::hexDigestSha1(Configuration::privateKey(), $challenge);
-        return "{$publicKey}|{$digest}";
+    public static function verify($challenge) {
+        return Configuration::gateway()->webhookNotification()->verify($challenge);
     }
 
     public static function factory($attributes)
@@ -54,38 +41,6 @@ class WebhookNotification extends Base
         $instance = new self();
         $instance->_initialize($attributes);
         return $instance;
-    }
-
-    private static function _matchingSignature($signaturePairs)
-    {
-        foreach ($signaturePairs as $pair)
-        {
-            $components = preg_split("/\|/", $pair);
-            if ($components[0] == Configuration::publicKey()) {
-                return $components[1];
-            }
-        }
-
-        return null;
-    }
-
-    private static function _payloadMatches($signature, $payload)
-    {
-        $payloadSignature = Digest::hexDigestSha1(Configuration::privateKey(), $payload);
-        return Digest::secureCompare($signature, $payloadSignature);
-    }
-
-    private static function _validateSignature($signatureString, $payload)
-    {
-        $signaturePairs = preg_split("/&/", $signatureString);
-        $signature = self::_matchingSignature($signaturePairs);
-        if (!$signature) {
-            throw new Exception\InvalidSignature("no matching public key");
-        }
-
-        if (!(self::_payloadMatches($signature, $payload) || self::_payloadMatches($signature, $payload . "\n"))) {
-            throw new Exception\InvalidSignature("signature does not match payload - one has been modified");
-        }
     }
 
     protected function _initialize($attributes)
@@ -116,6 +71,14 @@ class WebhookNotification extends Base
 
         if (isset($wrapperNode['partnerMerchant'])) {
             $this->_set('partnerMerchant', PartnerMerchant::factory($wrapperNode['partnerMerchant']));
+        }
+
+        if (isset($wrapperNode['connectedMerchantStatusTransitioned'])) {
+            $this->_set('connectedMerchantStatusTransitioned', ConnectedMerchantStatusTransitioned::factory($wrapperNode['connectedMerchantStatusTransitioned']));
+        }
+
+        if (isset($wrapperNode['connectedMerchantPaypalStatusChanged'])) {
+            $this->_set('connectedMerchantPayPalStatusChanged', ConnectedMerchantPayPalStatusChanged::factory($wrapperNode['connectedMerchantPaypalStatusChanged']));
         }
 
         if (isset($wrapperNode['dispute'])) {

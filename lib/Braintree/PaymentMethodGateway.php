@@ -8,7 +8,6 @@ use InvalidArgumentException;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -19,8 +18,6 @@ use InvalidArgumentException;
  *
  * @package    Braintree
  * @category   Resources
- * @copyright  2015 Braintree, a division of PayPal, Inc.
- *
  */
 class PaymentMethodGateway
 {
@@ -70,8 +67,14 @@ class PaymentMethodGateway
                 return AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']);
             } else if (isset($response['europeBankAccount'])) {
                 return EuropeBankAccount::factory($response['europeBankAccount']);
+            } else if (isset($response['usBankAccount'])) {
+                return UsBankAccount::factory($response['usBankAccount']);
             } else if (isset($response['venmoAccount'])) {
                 return VenmoAccount::factory($response['venmoAccount']);
+            } else if (isset($response['visaCheckoutCard'])) {
+                return VisaCheckoutCard::factory($response['visaCheckoutCard']);
+            } else if (isset($response['masterpassCard'])) {
+                return MasterpassCard::factory($response['masterpassCard']);
             } else if (is_array($response)) {
                 return UnknownPaymentMethod::factory($response);
             }
@@ -88,23 +91,28 @@ class PaymentMethodGateway
         return $this->_doUpdate('/payment_methods/any/' . $token, ['payment_method' => $attribs]);
     }
 
-    public function delete($token)
+    public function delete($token, $options=[])
     {
+        Util::verifyKeys(self::deleteSignature(), $options);
         $this->_validateId($token);
-        $path = $this->_config->merchantPath() . '/payment_methods/any/' . $token;
-        $this->_http->delete($path);
-        return new Result\Successful();
+        $queryString = "";
+        if (!empty($options)) {
+            $queryString = "?" . http_build_query(Util::camelCaseToDelimiterArray($options, '_'));
+        }
+        return $this->_doDelete('/payment_methods/any/' . $token  . $queryString);
     }
 
-    public function grant($sharedPaymentMethodToken, $allowVaulting)
+    public function grant($sharedPaymentMethodToken, $attribs=[])
     {
+        if (is_bool($attribs) === true) {
+            $attribs = ['allow_vaulting' => $attribs];
+        }
+        $options = [ 'shared_payment_method_token' => $sharedPaymentMethodToken ];
+
         return $this->_doCreate(
             '/payment_methods/grant',
             [
-                'payment_method' => [
-                    'shared_payment_method_token' => $sharedPaymentMethodToken,
-                    'allow_vaulting' => $allowVaulting
-                ]
+                'payment_method' => array_merge($attribs, $options)
             ]
         );
     }
@@ -129,7 +137,8 @@ class PaymentMethodGateway
             'makeDefault',
             'verificationMerchantAccountId',
             'verifyCard',
-            'verificationAmount'
+            'verificationAmount',
+            ['paypal' => ['payee_email']],
         ];
         return [
             'billingAddressId',
@@ -170,6 +179,11 @@ class PaymentMethodGateway
         return $signature;
     }
 
+    private static function deleteSignature()
+    {
+        return ['revokeAllGrants'];
+    }
+
     /**
      * sends the create request to the gateway
      *
@@ -200,6 +214,21 @@ class PaymentMethodGateway
         $response = $this->_http->put($fullPath, $params);
 
         return $this->_verifyGatewayResponse($response);
+    }
+
+
+    /**
+     * sends the delete request to the gateway
+     *
+     * @ignore
+     * @param string $subPath
+     * @return mixed
+     */
+    public function _doDelete($subPath)
+    {
+        $fullPath = $this->_config->merchantPath() . $subPath;
+        $this->_http->delete($fullPath);
+        return new Result\Successful();
     }
 
     /**
@@ -252,9 +281,24 @@ class PaymentMethodGateway
                 EuropeBankAccount::factory($response['europeBankAccount']),
                 "paymentMethod"
             );
+        } else if (isset($response['usBankAccount'])) {
+            return new Result\Successful(
+                UsBankAccount::factory($response['usBankAccount']),
+                "paymentMethod"
+            );
         } else if (isset($response['venmoAccount'])) {
             return new Result\Successful(
                 VenmoAccount::factory($response['venmoAccount']),
+                "paymentMethod"
+            );
+        } else if (isset($response['visaCheckoutCard'])) {
+            return new Result\Successful(
+                VisaCheckoutCard::factory($response['visaCheckoutCard']),
+                "paymentMethod"
+            );
+        } else if (isset($response['masterpassCard'])) {
+            return new Result\Successful(
+                MasterpassCard::factory($response['masterpassCard']),
                 "paymentMethod"
             );
         } else if (isset($response['paymentMethodNonce'])) {

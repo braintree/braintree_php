@@ -107,4 +107,28 @@ XML;
         ]);
         $this->assertEquals($expected, $xml);
     }
+
+    public function testDoesNotModifyDateTime()
+    {
+        $date = new \DateTime();
+        $date->setTimestamp(strtotime('2016-05-17T21:22:26Z'));
+        $date->setTimezone(new \DateTimeZone('Europe/Paris'));
+
+        $originalDate = clone $date;
+
+        $expected = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+ <stuff type="datetime">2016-05-17T21:22:26Z</stuff>
+</root>
+
+XML;
+
+        $xml = Braintree\Xml::buildXmlFromArray([
+            'root' => ['stuff' => $date]
+        ]);
+
+        $this->assertEquals($originalDate, $date);
+        $this->assertEquals($expected, $xml);
+    }
 }

@@ -13,11 +13,10 @@ use Braintree\Util;
  * @package    Braintree
  * @subpackage Errors
  * @category   Errors
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  *
  * @property-read object $errors
  */
-class ErrorCollection
+class ErrorCollection implements \Countable
 {
     private $_errors;
 
@@ -27,6 +26,16 @@ class ErrorCollection
                 new ValidationErrorCollection($errorData);
     }
 
+    /**
+     * Return count of items in collection
+     * Implements countable
+     *
+     * @return integer
+     */
+    public function count()
+    {
+        return $this->deepSize();
+    }
 
     /**
      * Returns all of the validation errors at all levels of nesting in a single, flat array.

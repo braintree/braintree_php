@@ -8,10 +8,8 @@ use Braintree\Configuration;
  *
  * The constants in this class can be used to create transactions with
  * the desired status in the sandbox environment.
- *
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
-final class Transaction
+class Transaction
 {
     /**
      * settle a transaction by id in sandbox

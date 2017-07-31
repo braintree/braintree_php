@@ -7,7 +7,6 @@ namespace Braintree;
  *
  * @package    Braintree
  * @subpackage Utility
- * @copyright  2015 Braintree, a division of PayPal, Inc.
  */
 
 class Configuration
@@ -24,6 +23,11 @@ class Configuration
     private $_proxyHost = null;
     private $_proxyPort = null;
     private $_proxyType = null;
+    private $_proxyUser = null;
+    private $_proxyPassword = null;
+    private $_timeout = 60;
+    private $_sslVersion = null;
+    private $_acceptGzipEncoding = true;
 
     /**
      * Braintree API version to use
@@ -111,6 +115,36 @@ class Configuration
     }
 
     /**
+     * Sets or gets the read timeout to use for making requests.
+     *
+     * @param integer $value If provided, sets the read timeout
+     * @return integer The read timeout used for connecting to Braintree
+     */
+    public static function timeout($value=null)
+    {
+        if (empty($value)) {
+            return self::$global->getTimeout();
+        }
+        self::$global->setTimeout($value);
+    }
+
+    /**
+     * Sets or gets the SSL version to use for making requests. See
+     * http://php.net/manual/en/function.curl-setopt.php for possible
+     * CURLOPT_SSLVERSION values.
+     *
+     * @param integer $value If provided, sets the SSL version
+     * @return integer The SSL version used for connecting to Braintree
+     */
+    public static function sslVersion($value=null)
+    {
+        if (empty($value)) {
+            return self::$global->getSslVersion();
+        }
+        self::$global->setSslVersion($value);
+    }
+
+    /**
      * Sets or gets the proxy host to use for connecting to Braintree
      *
      * @param string $value If provided, sets the proxy host
@@ -163,6 +197,49 @@ class Configuration
         $proxyHost = self::$global->getProxyHost();
         $proxyPort = self::$global->getProxyPort();
         return !empty($proxyHost) && !empty($proxyPort);
+    }
+
+    public static function proxyUser($value = null)
+    {
+        if (empty($value)) {
+            return self::$global->getProxyUser();
+        }
+        self::$global->setProxyUser($value);
+    }
+
+    public static function proxyPassword($value = null)
+    {
+        if (empty($value)) {
+            return self::$global->getProxyPassword();
+        }
+        self::$global->setProxyPassword($value);
+    }
+
+    /**
+     * Specified whether or not a username and password have been provided for
+     * use with an authenticated proxy
+     *
+     * @return bool true if both proxyUser and proxyPassword are present
+     */
+    public static function isAuthenticatedProxy()
+    {
+        $proxyUser = self::$global->getProxyUser();
+        $proxyPwd = self::$global->getProxyPassword();
+        return !empty($proxyUser) && !empty($proxyPwd);
+    }
+
+    /**
+     * Specify if the HTTP client is able to decode gzipped responses.
+     *
+     * @param bool $value If true, will send an Accept-Encoding header with a gzip value. If false, will not send an Accept-Encoding header with a gzip value.
+     * @return bool true if an Accept-Encoding header with a gzip value will be sent, false if not
+     */
+    public static function acceptGzipEncoding($value = null)
+    {
+        if (is_null($value)) {
+            return self::$global->getAcceptGzipEncoding();
+        }
+        self::$global->setAcceptGzipEncoding($value);
     }
 
     public static function assertGlobalHasAccessTokenOrKeys()
@@ -295,6 +372,56 @@ class Configuration
     public function getProxyType()
     {
         return $this->_proxyType;
+    }
+
+    private function setProxyUser($value)
+    {
+        $this->_proxyUser = $value;
+    }
+
+    public function getProxyUser()
+    {
+        return $this->_proxyUser;
+    }
+
+    private function setProxyPassword($value)
+    {
+        $this->_proxyPassword = $value;
+    }
+
+    public function getProxyPassword()
+    {
+        return $this->_proxyPassword;
+    }
+
+    private function setTimeout($value)
+    {
+        $this->_timeout = $value;
+    }
+
+    public function getTimeout()
+    {
+        return $this->_timeout;
+    }
+
+    private function setSslVersion($value)
+    {
+        $this->_sslVersion = $value;
+    }
+
+    private function getSslVersion()
+    {
+        return $this->_sslVersion;
+    }
+
+    private function getAcceptGzipEncoding()
+    {
+        return $this->_acceptGzipEncoding;
+    }
+
+    private function setAcceptGzipEncoding($value)
+    {
+        $this->_acceptGzipEncoding = $value;
     }
 
     public function getAccessToken()
