@@ -1,13 +1,12 @@
 <?php
 namespace Braintree;
 
-class FacilitatorDetails extends Base
+class FacilitatedDetails extends Base
 {
     public static function factory($attributes)
     {
         $instance = new self();
         $instance->_initialize($attributes);
-
         return $instance;
     }
 
@@ -17,7 +16,7 @@ class FacilitatorDetails extends Base
     }
 
     /**
-     * returns a string representation of the facilitator details
+     * returns a string representation of the facilitated details
      * @return string
      */
     public function  __toString()
@@ -27,4 +26,4 @@ class FacilitatorDetails extends Base
     }
 
 }
-class_alias('Braintree\FacilitatorDetails', 'Braintree_FacilitatorDetails');
+class_alias('Braintree\FacilitatedDetails', 'Braintree_FacilitatedDetails');
