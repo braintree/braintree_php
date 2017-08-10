@@ -135,7 +135,7 @@ namespace Braintree;
  *
  * <b>== More information ==</b>
  *
- * For more detailed information on Transactions, see {@link http://www.braintreepayments.com/gateway/transaction-api http://www.braintreepaymentsolutions.com/gateway/transaction-api}
+ * For more detailed information on Transactions, see {@link https://developers.braintreepayments.com/reference/response/transaction/php https://developers.braintreepayments.com/reference/response/transaction/php}
  *
  * @package    Braintree
  * @category   Resources
