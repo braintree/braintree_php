@@ -1,4 +1,4 @@
-## Unreleased
+## 3.24.0
 * Add AuthorizationAdjustment class and `authorizationAdjustments` to Transaction
 * Add iDEAL webhook support
 * Add `IDEAL_PAYMENT` to `PaymentInstrumentType`
