@@ -15,10 +15,11 @@ class Http
         $this->_config = $config;
     }
 
-    public function delete($path)
+    public function delete($path, $params = null)
     {
-        $response = $this->_doRequest('DELETE', $path);
-        if ($response['status'] === 200) {
+        $response = $this->_doRequest('DELETE', $path, $this->_buildXml($params));
+        $responseCode = $response['status'];
+        if ($responseCode === 200 || $responseCode === 204) {
             return true;
         } else {
             Util::throwStatusCodeException($response['status']);

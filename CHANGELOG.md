@@ -1,3 +1,16 @@
+## 3.24.0
+* Add AuthorizationAdjustment class and `authorizationAdjustments` to Transaction
+* Add iDEAL webhook support
+* Add `IDEAL_PAYMENT` to `PaymentInstrumentType`
+* Create Braintree class to be PSR compliant
+* Coinbase is no longer a supported payment method. `PAYMENT_METHOD_NO_LONGER_SUPPORTED` will be returned for Coinbase operations.
+* Add `ApplePay` for web domain registration.
+* Add facilitated details to Transaction if present
+* Update link to transaction api documentation (thanks @qoheleth-tech!).
+* Fix TransactionGateway return types (thanks @jjok!).
+* Update return type for client token (thanks @jlaswell!).
+
+
 ## 3.23.1
 * Fix token generator return type - thanks @jjok!
 * Improve error reporting for connection issues - thanks @montymxb!

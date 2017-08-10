@@ -259,6 +259,7 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $this->assertEquals(Braintree\Transaction::SETTLED, $transaction->status);
         $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals(Braintree\PaymentInstrumentType::IDEAL_PAYMENT, $transaction->paymentInstrumentType);
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertRegExp('/^idealpayment_\w{6,}$/', $transaction->idealPayment->idealPaymentId);
         $this->assertRegExp('/^\d{16,}$/', $transaction->idealPayment->idealTransactionId);
@@ -606,19 +607,15 @@ class TransactionTest extends Setup
         $this->assertSame("Venmo-Joe-1", $venmoAccountDetails->venmoUserId);
     }
 
-    public function testCreateTransactionUsingFakeCoinbaseNonce()
+    public function testCannotCreateTransactionUsingFakeCoinbaseNonce()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '17.00',
             'paymentMethodNonce' => Braintree\Test\Nonces::$coinbase
         ]);
 
-        $this->assertTrue($result->success);
-        $transaction = $result->transaction;
-        $this->assertNotNull($transaction->coinbaseDetails);
-        $this->assertNotNull($transaction->coinbaseDetails->userId);
-        $this->assertNotNull($transaction->coinbaseDetails->userName);
-        $this->assertNotNull($transaction->coinbaseDetails->userEmail);
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Error\Codes::PAYMENT_METHOD_NO_LONGER_SUPPORTED, $result->errors->forKey('transaction')->onAttribute('base')[0]->code);
     }
 
   public function testCreateTransactionReturnsPaymentInstrumentType()
@@ -1958,6 +1955,16 @@ class TransactionTest extends Setup
         $this->assertEquals(false, $disbursementDetails->fundsHeld);
         $this->assertEquals(true, $disbursementDetails->success);
         $this->assertEquals(new DateTime('2013-04-10'), $disbursementDetails->disbursementDate);
+    }
+
+  public function testFindExposesAuthorizationAdjustments()
+    {
+        $transaction = Braintree\Transaction::find("authadjustmenttransaction");
+
+        $authorizationAdjustment = $transaction->authorizationAdjustments[0];
+        $this->assertEquals('-20.00', $authorizationAdjustment->amount);
+        $this->assertInstanceOf('DateTime', $authorizationAdjustment->timestamp);
+        $this->assertEquals(true, $authorizationAdjustment->success);
     }
 
   public function testFindExposesDisputes()
@@ -4104,7 +4111,7 @@ class TransactionTest extends Setup
         Braintree\Transaction::submitForPartialSettlement($transaction->id, '67.00', $params);
     }
 
-    public function testFacilitatorDetailsAreReturnedOnTransactionsCreatedViaNonceGranting()
+    public function testFacilitatedAndFacilitatorDetailsAreReturnedOnTransactionsCreatedViaNonceGranting()
     {
         $partnerMerchantGateway = new Braintree\Gateway([
             'environment' => 'development',
@@ -4148,6 +4155,19 @@ class TransactionTest extends Setup
             'amount' => '100.00',
             'paymentMethodNonce' => $grantResult->paymentMethodNonce->nonce
         ]);
+
+        $this->assertEquals(
+            $result->transaction->facilitatedDetails->merchantId,
+            'integration_merchant_id'
+        );
+        $this->assertEquals(
+            $result->transaction->facilitatedDetails->merchantName,
+            '14ladders'
+        );
+        $this->assertEquals(
+            $result->transaction->facilitatedDetails->paymentMethodNonce,
+            $grantResult->paymentMethodNonce->nonce
+        );
 
         $this->assertEquals(
             $result->transaction->facilitatorDetails->oauthApplicationClientId,

@@ -71,6 +71,12 @@ class WebhookTesting
             case WebhookNotification::ACCOUNT_UPDATER_DAILY_REPORT:
                 $subjectXml = self::_accountUpdaterDailyReportSampleXml($id);
                 break;
+            case WebhookNotification::IDEAL_PAYMENT_COMPLETE:
+                $subjectXml = self::_idealPaymentCompleteSampleXml($id);
+                break;
+            case WebhookNotification::IDEAL_PAYMENT_FAILED:
+                $subjectXml = self::_idealPaymentFailedSampleXml($id);
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -401,6 +407,40 @@ class WebhookTesting
           <action>link</action>
           <oauth-application-client-id>oauth_application_client_id</oauth-application-client-id>
         </connected-merchant-paypal-status-changed>
+        ";
+    }
+
+    private static function _idealPaymentCompleteSampleXml($id)
+    {
+        return "
+        <ideal-payment>
+          <id>{$id}</id>
+          <status>COMPLETE</status>
+          <issuer>ABCISSUER</issuer>
+          <order-id>ORDERABC</order-id>
+          <currency>EUR</currency>
+          <amount>10.00</amount>
+          <created-at>2016-11-29T23:27:34.547Z</created-at>
+          <approval-url>https://example.com</approval-url>
+          <ideal-transaction-id>1234567890</ideal-transaction-id>
+        </ideal-payment>
+        ";
+    }
+
+    private static function _idealPaymentFailedSampleXml($id)
+    {
+        return "
+        <ideal-payment>
+          <id>{$id}</id>
+          <status>FAILED</status>
+          <issuer>ABCISSUER</issuer>
+          <order-id>ORDERABC</order-id>
+          <currency>EUR</currency>
+          <amount>10.00</amount>
+          <created-at>2016-11-29T23:27:34.547Z</created-at>
+          <approval-url>https://example.com</approval-url>
+          <ideal-transaction-id>1234567890</ideal-transaction-id>
+        </ideal-payment>
         ";
     }
 
