@@ -136,7 +136,11 @@ class SubscriptionGateway
                 'trialDurationUnit',
                 'trialPeriod',
                 ['descriptor' => ['name', 'phone', 'url']],
-                ['options' => ['doNotInheritAddOnsOrDiscounts', 'startImmediately']],
+                ['options' => [
+                    'doNotInheritAddOnsOrDiscounts',
+                    'startImmediately',
+                    ['paypal' => ['description']]
+                ]],
             ],
             self::_addOnDiscountSignature()
         );
@@ -149,7 +153,12 @@ class SubscriptionGateway
                 'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
                 'paymentMethodNonce', 'id', 'neverExpires', 'price',
                 ['descriptor' => ['name', 'phone', 'url']],
-                ['options' => ['prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure']],
+                ['options' => [
+                    'prorateCharges',
+                    'replaceAllAddOnsAndDiscounts',
+                    'revertSubscriptionOnProrationFailure',
+                    ['paypal' => ['description']]
+                ]],
             ],
             self::_addOnDiscountSignature()
         );

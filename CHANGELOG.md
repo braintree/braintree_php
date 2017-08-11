@@ -9,6 +9,7 @@
 * Add `removeEvidence` method for the Dispute API
 * Add `search` method for the Dispute API
 * Add DocumentUpload
+* Add `options` -> `paypal` -> `description` for creating and updating subscriptions
 
 ## 3.24.0
 * Add AuthorizationAdjustment class and `authorizationAdjustments` to Transaction
