@@ -191,6 +191,18 @@ class DisputeGateway
     }
 
     /**
+     * Search for Disputes, given a DisputeSearch query
+     *
+     * @param DisputeSearch $query
+     */
+    public function search($query)
+    {
+        //TODO PaginatedCollector helper
+        $path = $this->_config->merchantPath() . '/disputes/advanced_search?page=';
+    }
+
+
+    /**
      * creates a full array signature of a valid create request
      * @return array gateway create request format
      */
