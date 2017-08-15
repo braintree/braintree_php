@@ -50,7 +50,29 @@ class Dispute extends Base
         $this->_attributes = $disputeAttribs;
 
         if (isset($disputeAttribs['transaction'])) {
-            $this->_set('transactionDetails',
+			$transactionDetails = new Dispute\TransactionDetails($disputeAttribs['transaction']);
+            $this->_set('transactionDetails', $transactionDetails);
+            $this->_set('transaction', $transactionDetails);
+        }
+
+        if (isset($disputeAttribs['evidence'])) {
+            $evidenceArray = [];
+            foreach ($disputeAttribs['evidence'] as $evidence) {
+                array_push($evidenceArray, new Dispute\EvidenceDetails($evidence));
+            }
+            $this->_set('evidence', $evidenceArray);
+        }
+
+        if (isset($disputeAttribs['status_history'])) {
+            $statusHistoryArray = [];
+            foreach ($disputeAttribs['status_history'] as $statusHistory) {
+                array_push($statusHistoryArray, new Dispute\StatusHistoryDetails($statusHistory));
+            }
+            $this->_set('status_history', $statusHistoryArray);
+        }
+
+        if (isset($disputeAttribs['transaction'])) {
+            $this->_set('transaction',
                 new Dispute\TransactionDetails($disputeAttribs['transaction'])
             );
         }

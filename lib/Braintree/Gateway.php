@@ -97,6 +97,15 @@ class Gateway
 
     /**
      *
+     * @return DisputeGateway
+     */
+    public function dispute()
+    {
+        return new DisputeGateway($this);
+    }
+
+    /**
+     *
      * @return MerchantGateway
      */
     public function merchant()
