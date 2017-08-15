@@ -13,6 +13,11 @@
 * Update link to transaction api documentation (thanks @qoheleth-tech!).
 * Fix TransactionGateway return types (thanks @jjok!).
 * Update return type for client token (thanks @jlaswell!).
+* Add `accept` method for the Dispute API
+* Add `addTextEvidence` method for the Dispute API
+* Add `finalize` method for the Dispute API
+* Add `find` method for the Dispute API
+* Add `removeEvidence` method for the Dispute API
 
 ## 3.23.1
 * Fix token generator return type - thanks @jjok!

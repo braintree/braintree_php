@@ -21,6 +21,8 @@ class Http
         $responseCode = $response['status'];
         if ($responseCode === 200 || $responseCode === 204) {
             return true;
+        } else if ($responseCode === 422) {
+            return Xml::buildArrayFromXml($response['body']);
         } else {
             Util::throwStatusCodeException($response['status']);
         }

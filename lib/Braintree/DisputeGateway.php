@@ -49,7 +49,20 @@ class DisputeGateway
      */
     public function accept($id)
     {
-        if (trim($id) == "") {
+        try {
+            if (trim($id) == "") {
+                throw new Exception\NotFound();
+            }
+
+            $path = $this->_config->merchantPath() . '/disputes/' . $id . '/accept';
+            $response = $this->_http->put($path);
+
+            if (isset($response['apiErrorResponse'])) {
+                return new Result\Error($response['apiErrorResponse']);
+            }
+
+            return new Result\Successful();
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound('dispute with id "' . $id . '" not found');
         }
     }
@@ -79,12 +92,30 @@ class DisputeGateway
      */
     public function addTextEvidence($id, $content)
     {
-        if (trim($id) == "") {
-            throw new Exception\NotFound('dispute with id "' . $id . '" not found');
-        }
-
         if (trim($content) == "") {
             throw new InvalidArgumentException('content cannot be blank');
+        }
+
+        try {
+            if (trim($id) == "") {
+                throw new Exception\NotFound();
+            }
+
+            $path = $this->_config->merchantPath() . '/disputes/' . $id . '/evidence';
+            $response = $this->_http->post($path, [
+                'comments' => $content
+            ]);
+
+            if (isset($response['apiErrorResponse'])) {
+                return new Result\Error($response['apiErrorResponse']);
+            }
+
+            if (isset($response['evidence'])) {
+                $evidence = new Dispute\EvidenceDetails($response['evidence']);
+                return new Result\Successful($evidence);
+            }
+        } catch (Exception\NotFound $e) {
+            throw new Exception\NotFound('dispute with id "' . $id . '" not found');
         }
     }
 
@@ -95,7 +126,20 @@ class DisputeGateway
      */
     public function finalize($id)
     {
-        if (trim($id) == "") {
+        try {
+            if (trim($id) == "") {
+                throw new Exception\NotFound();
+            }
+
+            $path = $this->_config->merchantPath() . '/disputes/' . $id . '/finalize';
+            $response = $this->_http->put($path);
+
+            if (isset($response['apiErrorResponse'])) {
+                return new Result\Error($response['apiErrorResponse']);
+            }
+
+            return new Result\Successful();
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound('dispute with id "' . $id . '" not found');
         }
     }
@@ -128,7 +172,20 @@ class DisputeGateway
      */
     public function removeEvidence($id, $evidenceId)
     {
-        if (trim($id) == "" || trim($evidenceId) == "") {
+        try {
+            if (trim($id) == "" || trim($evidenceId) == "") {
+                throw new Exception\NotFound();
+            }
+
+            $path = $this->_config->merchantPath() . '/disputes/' . $id . '/evidence/' . $evidenceId;
+            $response = $this->_http->delete($path);
+
+            if (isset($response['apiErrorResponse'])) {
+                return new Result\Error($response['apiErrorResponse']);
+            }
+
+            return new Result\Successful();
+        } catch (Exception\NotFound $e) {
             throw new Exception\NotFound('evidence with id "' . $evidenceId . '" for dispute with id "' . $id . '" not found');
         }
     }

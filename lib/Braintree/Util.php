@@ -133,6 +133,8 @@ class Util
             'Braintree_Discount' => 'discount',
             'Braintree\DiscountGateway' => 'discount',
             'Braintree_DiscountGateway' => 'discount',
+            'Braintree\Dispute\EvidenceDetails' => 'evidence',
+            'Braintree_Dispute_EvidenceDetails' => 'evidence',
             'Braintree\Plan' => 'plan',
             'Braintree_Plan' => 'plan',
             'Braintree\PlanGateway' => 'plan',

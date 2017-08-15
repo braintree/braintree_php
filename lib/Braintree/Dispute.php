@@ -20,6 +20,8 @@ class Dispute extends Base
     protected $_attributes = [];
 
     /* Dispute Status */
+    const ACCEPTED = 'accepted';
+    const DISPUTED = 'disputed';
     const OPEN  = 'open';
     const WON  = 'won';
     const LOST = 'lost';
