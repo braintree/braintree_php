@@ -106,6 +106,15 @@ class Gateway
 
     /**
      *
+     * @return DocumentUploadGateway
+     */
+    public function documentUpload()
+    {
+        return new DocumentUploadGateway($this);
+    }
+
+    /**
+     *
      * @return MerchantGateway
      */
     public function merchant()

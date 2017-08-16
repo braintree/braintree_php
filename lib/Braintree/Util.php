@@ -181,6 +181,7 @@ class Util
             'creditCard' => 'Braintree\CreditCard',
             'customer' => 'Braintree\Customer',
             'dispute' => 'Braintree\Dispute',
+            'documentUpload' => 'Braintree\DocumentUpload',
             'subscription' => 'Braintree\Subscription',
             'transaction' => 'Braintree\Transaction',
             'verification' => 'Braintree\CreditCardVerification',
