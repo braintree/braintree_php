@@ -197,10 +197,29 @@ class DisputeGateway
      */
     public function search($query)
     {
-        //TODO PaginatedCollector helper
-        $path = $this->_config->merchantPath() . '/disputes/advanced_search?page=';
+        $criteria = [];
+        foreach ($query as $term) {
+            $criteria[$term->name] = $term->toparam();
+        }
+        $pager = [
+            'object' => $this,
+            'method' => 'fetchDisputes',
+            'query' => $criteria
+        ];
+        return new PaginatedCollection($pager);
     }
 
+    public function fetchDisputes($query, $page)
+    {
+        $response = $this->_http->post($this->_config->merchantPath() . '/disputes/advanced_search?page=' . $page, [
+            'search' => $query
+        ]);
+        $body = $response['disputes'];
+        $disputes = Util::extractattributeasarray($body, 'dispute');
+        $totalItems = $body['totalItems'][0];
+        $pageSize = $body['pageSize'][0];
+        return new PaginatedResult($totalItems, $pageSize, $disputes);
+    }
 
     /**
      * creates a full array signature of a valid create request

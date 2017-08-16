@@ -97,10 +97,20 @@ class PaginatedCollection implements Iterator
         $this->_currentPage++;
         $object = $this->_pager['object'];
         $method = $this->_pager['method'];
-        $result = call_user_func(
-            [$object, $method],
-            $this->_currentPage
-        );
+
+        if (isset($this->_pager['query'])) {
+            $query = $this->_pager['query'];
+            $result = call_user_func(
+                [$object, $method],
+                $query,
+                $this->_currentPage
+            );
+        } else {
+            $result = call_user_func(
+                [$object, $method],
+                $this->_currentPage
+            );
+        }
 
         $this->_totalItems= $result->getTotalItems();
         $this->_pageSize = $result->getPageSize();

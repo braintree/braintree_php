@@ -133,6 +133,8 @@ class Util
             'Braintree_Discount' => 'discount',
             'Braintree\DiscountGateway' => 'discount',
             'Braintree_DiscountGateway' => 'discount',
+            'Braintree\Dispute' => 'dispute',
+            'Braintree_Dispute' => 'dispute',
             'Braintree\Dispute\EvidenceDetails' => 'evidence',
             'Braintree_Dispute_EvidenceDetails' => 'evidence',
             'Braintree\Plan' => 'plan',
@@ -178,6 +180,7 @@ class Util
         $responseKeysToClassNames = [
             'creditCard' => 'Braintree\CreditCard',
             'customer' => 'Braintree\Customer',
+            'dispute' => 'Braintree\Dispute',
             'subscription' => 'Braintree\Subscription',
             'transaction' => 'Braintree\Transaction',
             'verification' => 'Braintree\CreditCardVerification',
