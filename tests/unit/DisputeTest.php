@@ -14,56 +14,56 @@ class DisputeTest extends Setup
     public function __construct() {
         $this->attributes = [
             'amount' => '100.00',
-            'amount_disputed' => '100.00',
-            'amount_won' => '0.00',
-            'case_number' => 'CB123456',
-            'created_at' => DateTime::createFromFormat('Ymd-His', '20130410-105039'),
-            'currency_iso_code' => 'USD',
-            'date_opened' => DateTime::createFromFormat('Ymd-His', '20130401-000000'),
-            'date_won' => DateTime::createFromFormat('Ymd-His', '20130402-000000'),
-            'forwarded_comments' => 'Forwarded comments',
+            'amountDisputed' => '100.00',
+            'amountWon' => '0.00',
+            'caseNumber' => 'CB123456',
+            'createdAt' => DateTime::createFromFormat('Ymd-His', '20130410-105039'),
+            'currencyIsoCode' => 'USD',
+            'dateOpened' => DateTime::createFromFormat('Ymd-His', '20130401-000000'),
+            'dateWon' => DateTime::createFromFormat('Ymd-His', '20130402-000000'),
+            'forwardedComments' => 'Forwarded comments',
             'id' => '123456',
             'kind' => 'chargeback',
-            'merchant_account_id' => 'abc123',
-            'original_dispute_id' => 'original_dispute_id',
+            'merchantAccountId' => 'abc123',
+            'originalDisputeId' => 'original_dispute_id',
             'reason' => 'fraud',
-            'reason_code' => '83',
-            'reason_description' => 'Reason code 83 description',
-            'received_date' => DateTime::createFromFormat('Ymd', '20130410'),
-            'reference_number' => '123456',
-            'reply_by_date' => DateTime::createFromFormat('Ymd', '20130417'),
+            'reasonCode' => '83',
+            'reasonDescription' => 'Reason code 83 description',
+            'receivedDate' => DateTime::createFromFormat('Ymd', '20130410'),
+            'referenceNumber' => '123456',
+            'replyByDate' => DateTime::createFromFormat('Ymd', '20130417'),
             'status' => 'open',
-            'updated_at' => DateTime::createFromFormat('Ymd-His', '20130410-105039'),
+            'updatedAt' => DateTime::createFromFormat('Ymd-His', '20130410-105039'),
             'evidence' => [[
                 'comment' => NULL,
-                'created_at' => DateTime::createFromFormat('Ymd-His', '20130411-105039'),
+                'createdAt' => DateTime::createFromFormat('Ymd-His', '20130411-105039'),
                 'id' => 'evidence1',
-                'sent_to_processor_at' => NULL,
+                'sentToProcessorAt' => NULL,
                 'url' => 'url_of_file_evidence',
             ],[
                 'comment' => 'text evidence',
-                'created_at' => DateTime::createFromFormat('Ymd-His', '20130411-105039'),
+                'createdAt' => DateTime::createFromFormat('Ymd-His', '20130411-105039'),
                 'id' => 'evidence2',
-                'sent_to_processor_at' => '2009-04-11',
+                'sentToProcessorAt' => '2009-04-11',
                 'url' => NULL,
             ]],
-            'status_history' => [[
-                'effective_date' => '2013-04-10',
+            'statusHistory' => [[
+                'effectiveDate' => '2013-04-10',
                 'status' => 'open',
                 'timestamp' => DateTime::createFromFormat('Ymd-His', '20130410-105039'),
             ]],
             'transaction' => [
                 'id' => 'transaction_id',
                 'amount' => '100.00',
-                'created_at' => DateTime::createFromFormat('Ymd-His', '20130319-105039'),
-                'order_id' => NULL,
-                'purchase_order_number' => 'po',
-                'payment_instrument_subtype' => 'Visa',
+                'createdAt' => DateTime::createFromFormat('Ymd-His', '20130319-105039'),
+                'orderId' => NULL,
+                'purchaseOrderNumber' => 'po',
+                'paymentInstrumentSubtype' => 'Visa',
             ]
         ];
     }
 
-    public function test_legacy_constructor()
+    public function testLegacyConstructor()
     {
         $legacyParams = [
             'transaction' => [
@@ -71,17 +71,17 @@ class DisputeTest extends Setup
                 'amount' => '100.00',
             ],
             'id' => '123456',
-            'currency_iso_code' => 'USD',
+            'currencyIsoCode' => 'USD',
             'status' => 'open',
             'amount' => '100.00',
-            'received_date' => DateTime::createFromFormat('Ymd', '20130410'),
-            'reply_by_date' => DateTime::createFromFormat('Ymd', '20130410'),
+            'receivedDate' => DateTime::createFromFormat('Ymd', '20130410'),
+            'replyByDate' => DateTime::createFromFormat('Ymd', '20130410'),
             'reason' => 'fraud',
-            'transaction_ids' => [
+            'transactionIds' => [
                 'asdf', 'qwer'
             ],
-            'date_opened' => DateTime::createFromFormat('Ymd', '20130401'),
-            'date_won' =>DateTime::createFromFormat('Ymd', '20130402'),
+            'dateOpened' => DateTime::createFromFormat('Ymd', '20130401'),
+            'dateWon' =>DateTime::createFromFormat('Ymd', '20130402'),
             'kind' => 'chargeback'
         ];
 
@@ -89,73 +89,73 @@ class DisputeTest extends Setup
 
         $this->assertEquals('123456', $dispute->id);
         $this->assertEquals('100.00', $dispute->amount);
-        $this->assertEquals('USD', $dispute->currency_iso_code);
+        $this->assertEquals('USD', $dispute->currencyIsoCode);
         $this->assertEquals(Braintree\Dispute::FRAUD, $dispute->reason);
         $this->assertEquals(Braintree\Dispute::OPEN, $dispute->status);
         $this->assertEquals(Braintree\Dispute::Open, $dispute->status);
         $this->assertEquals('transaction_id', $dispute->transactionDetails->id);
         $this->assertEquals('100.00', $dispute->transactionDetails->amount);
-        $this->assertEquals(DateTime::createFromFormat('Ymd', '20130401'), $dispute->date_opened);
-        $this->assertEquals(DateTime::createFromFormat('Ymd', '20130402'), $dispute->date_won);
+        $this->assertEquals(DateTime::createFromFormat('Ymd', '20130401'), $dispute->dateOpened);
+        $this->assertEquals(DateTime::createFromFormat('Ymd', '20130402'), $dispute->dateWon);
         $this->assertEquals(Braintree\Dispute::CHARGEBACK, $dispute->kind);
     }
 
-    public function test_legacy_params_with_new_attributes()
+    public function testLegacyParamsWithNewAttributes()
     {
         $dispute = Braintree\Dispute::factory($this->attributes);
 
         $this->assertEquals('123456', $dispute->id);
         $this->assertEquals('100.00', $dispute->amount);
-        $this->assertEquals('USD', $dispute->currency_iso_code);
+        $this->assertEquals('USD', $dispute->currencyIsoCode);
         $this->assertEquals(Braintree\Dispute::FRAUD, $dispute->reason);
         $this->assertEquals(Braintree\Dispute::Open, $dispute->status);
         $this->assertEquals(Braintree\Dispute::OPEN, $dispute->status);
         $this->assertEquals('transaction_id', $dispute->transactionDetails->id);
         $this->assertEquals('100.00', $dispute->transactionDetails->amount);
-        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130401-000000'), $dispute->date_opened);
-        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130402-000000'), $dispute->date_won);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130401-000000'), $dispute->dateOpened);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130402-000000'), $dispute->dateWon);
         $this->assertEquals(Braintree\Dispute::CHARGEBACK, $dispute->kind);
     }
 
-    public function test_constructor_populates_new_fields()
+    public function testConstructorPopulatesNewFields()
     {
         $dispute = Braintree\Dispute::factory($this->attributes);
 
-        $this->assertEquals("100.00", $dispute->amount_disputed);
-        $this->assertEquals("0.00", $dispute->amount_won);
-        $this->assertEquals("CB123456", $dispute->case_number);
-        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->created_at);
-        $this->assertEquals("Forwarded comments", $dispute->forwarded_comments);
-        $this->assertEquals("abc123", $dispute->merchant_account_id);
-        $this->assertEquals("original_dispute_id", $dispute->original_dispute_id);
-        $this->assertEquals("83", $dispute->reason_code);
-        $this->assertEquals("Reason code 83 description", $dispute->reason_description);
-        $this->assertEquals("123456", $dispute->reference_number);
-        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->updated_at);
+        $this->assertEquals("100.00", $dispute->amountDisputed);
+        $this->assertEquals("0.00", $dispute->amountWon);
+        $this->assertEquals("CB123456", $dispute->caseNumber);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->createdAt);
+        $this->assertEquals("Forwarded comments", $dispute->forwardedComments);
+        $this->assertEquals("abc123", $dispute->merchantAccountId);
+        $this->assertEquals("original_dispute_id", $dispute->originalDisputeId);
+        $this->assertEquals("83", $dispute->reasonCode);
+        $this->assertEquals("Reason code 83 description", $dispute->reasonDescription);
+        $this->assertEquals("123456", $dispute->referenceNumber);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->updatedAt);
         $this->assertNull($dispute->evidence[0]->comment);
-        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130411-105039'), $dispute->evidence[0]->created_at);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130411-105039'), $dispute->evidence[0]->createdAt);
         $this->assertEquals('evidence1', $dispute->evidence[0]->id);
-        $this->assertNull($dispute->evidence[0]->sent_to_processor_at);
+        $this->assertNull($dispute->evidence[0]->sentToProcessorAt);
         $this->assertEquals('url_of_file_evidence', $dispute->evidence[0]->url);
         $this->assertEquals('text evidence', $dispute->evidence[1]->comment);
-        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130411-105039'), $dispute->evidence[1]->created_at);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130411-105039'), $dispute->evidence[1]->createdAt);
         $this->assertEquals('evidence2', $dispute->evidence[1]->id);
-        $this->assertEquals('2009-04-11', $dispute->evidence[1]->sent_to_processor_at);
+        $this->assertEquals('2009-04-11', $dispute->evidence[1]->sentToProcessorAt);
         $this->assertNull($dispute->evidence[1]->url);
-        $this->assertEquals('2013-04-10', $dispute->status_history[0]->effective_date);
-        $this->assertEquals('open', $dispute->status_history[0]->status);
-        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->status_history[0]->timestamp);
+        $this->assertEquals('2013-04-10', $dispute->statusHistory[0]->effectiveDate);
+        $this->assertEquals('open', $dispute->statusHistory[0]->status);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->statusHistory[0]->timestamp);
     }
 
-    public function test_constructor_handles_null_fields()
+    public function testConstructorHandlesNullFields()
     {
         $emptyAttributes = [
             'amount' => NULL,
-            'date_opened' => NULL,
-            'date_won' => NULL,
+            'dateOpened' => NULL,
+            'dateWon' => NULL,
             'evidence' => NULL,
-            'reply_by_date' => NULL,
-            'status_history' => NULL
+            'replyByDate' => NULL,
+            'statusHistory' => NULL
         ];
 
         $attrs = array_merge([], $this->attributes, $emptyAttributes);
@@ -163,145 +163,145 @@ class DisputeTest extends Setup
         $dispute = Braintree\Dispute::factory($attrs);
 
         $this->assertNull($dispute->amount);
-        $this->assertNull($dispute->date_opened);
-        $this->assertNull($dispute->date_won);
+        $this->assertNull($dispute->dateOpened);
+        $this->assertNull($dispute->dateWon);
         $this->assertNull($dispute->evidence);
-        $this->assertNull($dispute->reply_by_date);
-        $this->assertNull($dispute->status_history);
+        $this->assertNull($dispute->replyByDate);
+        $this->assertNull($dispute->statusHistory);
     }
 
-    public function test_constructor_populates_transaction()
+    public function testConstructorPopulatesTransaction()
     {
         $dispute = Braintree\Dispute::factory($this->attributes);
 
         $this->assertEquals('transaction_id', $dispute->transaction->id);
         $this->assertEquals('100.00', $dispute->transaction->amount);
-        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130319-105039'), $dispute->transaction->created_at);
-        $this->assertNull($dispute->transaction->order_id);
-        $this->assertEquals('po', $dispute->transaction->purchase_order_number);
-        $this->assertEquals('Visa', $dispute->transaction->payment_instrument_subtype);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130319-105039'), $dispute->transaction->createdAt);
+        $this->assertNull($dispute->transaction->orderId);
+        $this->assertEquals('po', $dispute->transaction->purchaseOrderNumber);
+        $this->assertEquals('Visa', $dispute->transaction->paymentInstrumentSubtype);
     }
 
-    public function test_accept_null_raises_not_found_exception()
+    public function testAcceptNullRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
         Braintree\Dispute::accept(null);
     }
 
-	public function test_accept_empty_id_raises_not_found_exception()
+	public function testAcceptEmptyIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
         Braintree\Dispute::accept(" ");
     }
 
-	public function test_add_text_evidence_empty_id_raises_not_found_exception()
+	public function testAddTextEvidenceEmptyIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
         Braintree\Dispute::addTextEvidence(" ", "evidence");
     }
 
-	public function test_add_text_evidence_null_id_raises_not_found_exception()
+	public function testAddTextEvidenceNullIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
         Braintree\Dispute::addTextEvidence(null, "evidence");
     }
 
-	public function test_add_text_evidence_empty_evidence_raises_value_exception()
+	public function testAddTextEvidenceEmptyEvidenceRaisesValueException()
     {
         $this->setExpectedException('InvalidArgumentException', 'content cannot be blank');
 
-        Braintree\Dispute::addTextEvidence("dispute_id", " ");
+        Braintree\Dispute::addTextEvidence("disputeId", " ");
     }
 
-	public function test_add_text_evidence_null_evidence_raises_value_exception()
+	public function testAddTextEvidenceNullEvidenceRaisesValueException()
     {
         $this->setExpectedException('InvalidArgumentException', 'content cannot be blank');
 
-        Braintree\Dispute::addTextEvidence("dispute_id", null);
+        Braintree\Dispute::addTextEvidence("disputeId", null);
     }
 
-	public function test_add_file_evidence_empty_id_raises_not_found_exception()
+	public function testAddFileEvidenceEmptyIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
         Braintree\Dispute::addFileEvidence(" ", 1);
     }
 
-	public function test_add_file_evidence_null_id_raises_not_found_exception()
+	public function testAddFileEvidenceNullIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
         Braintree\Dispute::addFileEvidence(null, 1);
     }
 
-	public function test_add_file_evidence_empty_evidence_raises_value_exception()
+	public function testAddFileEvidenceEmptyEvidenceRaisesValueException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'document with id " " not found');
 
-        Braintree\Dispute::addFileEvidence("dispute_id", " ");
+        Braintree\Dispute::addFileEvidence("disputeId", " ");
     }
 
-	public function test_add_file_evidence_null_evidence_raises_value_exception()
+	public function testAddFileEvidenceNullEvidenceRaisesValueException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'document with id "" not found');
 
-        Braintree\Dispute::addFileEvidence("dispute_id", null);
+        Braintree\Dispute::addFileEvidence("disputeId", null);
     }
 
-	public function test_finalize_null_raises_not_found_exception()
+	public function testFinalizeNullRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
         Braintree\Dispute::finalize(null);
     }
 
-	public function test_finalize_empty_id_raises_not_found_exception()
+	public function testFinalizeEmptyIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
         Braintree\Dispute::finalize(" ");
     }
 
-	public function test_finding_null_raises_not_found_exception()
+	public function testFindingNullRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
         Braintree\Dispute::find(null);
     }
 
-	public function test_finding_empty_id_raises_not_found_exception()
+	public function testFindingEmptyIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
         Braintree\Dispute::find(" ");
     }
 
-	public function test_remove_evidence_empty_dispute_id_raises_not_found_exception()
+	public function testRemoveEvidenceEmptyDisputeIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id "evidence" for dispute with id " " not found');
 
         Braintree\Dispute::removeEvidence(" ", "evidence");
     }
 
-	public function test_remove_evidence_null_dispute_id_raises_not_found_exception()
+	public function testRemoveEvidenceNullDisputeIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id "evidence" for dispute with id "" not found');
 
         Braintree\Dispute::removeEvidence(null, "evidence");
     }
 
-	public function test_remove_evidence_evidence_null_id_raises_not_found_exception()
+	public function testRemoveEvidenceEvidenceNullIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id "" for dispute with id "dispute_id" not found');
 
         Braintree\Dispute::removeEvidence("dispute_id", null);
     }
 
-	public function test_remove_evidence_empty_evidence_id_raises_value_exception()
+	public function testRemoveEvidenceEmptyEvidenceIdRaisesValueException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id " " for dispute with id "dispute_id" not found');
 
