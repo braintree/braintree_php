@@ -137,6 +137,8 @@ class Util
             'Braintree_Dispute' => 'dispute',
             'Braintree\Dispute\EvidenceDetails' => 'evidence',
             'Braintree_Dispute_EvidenceDetails' => 'evidence',
+            'Braintree\DocumentUpload' => 'documentUpload',
+            'Braintree_DocumentUpload' => 'doumentUpload',
             'Braintree\Plan' => 'plan',
             'Braintree_Plan' => 'plan',
             'Braintree\PlanGateway' => 'plan',

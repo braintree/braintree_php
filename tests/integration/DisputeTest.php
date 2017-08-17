@@ -66,7 +66,7 @@ class DisputeTest extends Setup
     public function testAddFileEvidence_addsEvidence()
     {
         // $disputeId = $this->createSampleDispute()->id;
-        // $documentId = createSampleDocument()->id;
+        // $documentId = $this->createSampleDocument()->id;
         //
         // $result = $this->gateway->dispute()->addFileEvidence($disputeId, $documentId);
         //

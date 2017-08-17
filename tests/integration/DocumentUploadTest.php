@@ -34,18 +34,57 @@ class DocumentUploadTest extends Setup
 
     public function testCreate_withUnsupportedFileType_returnsError()
     {
+        $gifFile = fopen(dirname(__DIR__) . '/fixtures/gif_extension_bt_logo.gif', 'rb');
+        $result = Braintree\DocumentUpload::create([
+            "kind" => Braintree\DocumentUpload::EVIDENCE_DOCUMENT,
+            "file" => $gifFile
+        ]);
+
+        $error = $result->errors->forKey('documentUpload')->errors[0];
+        $this->assertEquals(Braintree\Error\Codes::DOCUMENT_UPLOAD_FILE_TYPE_IS_INVALID, $error->code);
     }
 
     public function testCreate_withMalformedFile_returnsError()
     {
+        $badPdfFile = fopen(dirname(__DIR__) . '/fixtures/malformed_pdf.pdf', 'rb');
+        $result = Braintree\DocumentUpload::create([
+            "kind" => Braintree\DocumentUpload::EVIDENCE_DOCUMENT,
+            "file" => $badPdfFile
+        ]);
+
+        $error = $result->errors->forKey('documentUpload')->errors[0];
+        $this->assertEquals(Braintree\Error\Codes::DOCUMENT_UPLOAD_FILE_IS_MALFORMED_OR_ENCRYPTED, $error->code);
     }
 
     public function testCreate_withInvalidKind_returnsError()
     {
+        $result = Braintree\DocumentUpload::create([
+            "kind" => "invalid_kind",
+            "file" => $this->pngFile
+        ]);
+
+        $error = $result->errors->forKey('documentUpload')->errors[0];
+        $this->assertEquals(Braintree\Error\Codes::DOCUMENT_UPLOAD_KIND_IS_INVALID, $error->code);
     }
 
     public function testCreate_whenFileIsOver4Mb_returnsError()
     {
+        $bigFile = fopen(dirname(__DIR__) . '/fixtures/large_file.png', 'w+');
+        foreach(range(0, 1048577) as $i) {
+            fwrite($bigFile, 'aaaa');
+        }
+
+        fclose($bigFile);
+
+        $bigFile = fopen(dirname(__DIR__) . '/fixtures/large_file.png', 'rb');
+
+        $result = Braintree\DocumentUpload::create([
+            "kind" => Braintree\DocumentUpload::EVIDENCE_DOCUMENT,
+            "file" => $bigFile
+        ]);
+
+        $error = $result->errors->forKey('documentUpload')->errors[0];
+        $this->assertEquals(Braintree\Error\Codes::DOCUMENT_UPLOAD_FILE_IS_TOO_LARGE, $error->code);
     }
 
     public function testCreate_whenInvalidSignature_throwsInvalidArgumentException()

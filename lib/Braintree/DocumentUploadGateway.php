@@ -58,8 +58,12 @@ class DocumentUploadGateway
         $path = $this->_config->merchantPath() . '/document_uploads/';
         $response = $this->_http->postMultipart($path, $payload, $file);
 
+        if (isset($response['apiErrorResponse'])) {
+            return new Result\Error($response['apiErrorResponse']);
+        }
+
         if (isset($response['documentUpload'])) {
-            $documentUpload = new Braintree\DocumentUpload($response['documentUpload']);
+            $documentUpload = DocumentUpload::factory($response['documentUpload']);
             return new Result\Successful($documentUpload);
         }
     }

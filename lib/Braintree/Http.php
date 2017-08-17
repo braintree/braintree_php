@@ -1,7 +1,7 @@
 <?php
 namespace Braintree;
 
-use CurlFile; //@TODO CurlFile is supported in 5.5+
+use finfo;
 
 /**
  * Braintree HTTP Client
@@ -132,10 +132,6 @@ class Http
         $headers[] = 'User-Agent: Braintree PHP Library ' . Version::get();
         $headers[] = 'X-ApiVersion: ' . Configuration::API_VERSION;
 
-        if (empty($file)) {
-            $headers[] = 'Content-Type: application/xml';
-        }
-
         $authorization = $this->_getAuthorization();
         if (isset($authorization['user'])) {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
@@ -151,16 +147,9 @@ class Http
         }
 
         if (!empty($file)) {
-            $filePath = stream_get_meta_data($file)['uri'];
-            $postData = $requestBody + [
-                'file' => new CurlFile($filePath, 'image/png') //@TODO CurlFile is supported in 5.5+
-            ];
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_SAFE_UPLOAD, false);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $postData);
-        }
-
-        else if (!empty($requestBody)) {
+            $this->curlPostFile($curl, $requestBody, $file, $headers);
+        } else if (!empty($requestBody)) {
+            $headers[] = 'Content-Type: application/xml';
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
         }
 
@@ -200,6 +189,63 @@ class Http
         }
 
         return ['status' => $httpStatus, 'body' => $response];
+    }
+
+    function curlPostFile($ch, $requestBody, $file, &$headers) {
+        $filePath = stream_get_meta_data($file)['uri'];
+
+        // invalid characters for "name" and "filename"
+        static $disallow = array("\0", "\"", "\r", "\n");
+        $fileInfo = new finfo(FILEINFO_MIME_TYPE);
+
+        // build normal parameters
+        foreach ($requestBody as $k => $v) {
+            $k = str_replace($disallow, "_", $k);
+            $body[] = implode("\r\n", array(
+                "Content-Disposition: form-data; name=\"{$k}\"",
+                "",
+                filter_var($v),
+            ));
+        }
+
+        // build file parameters
+        switch (true) {
+        case false === $filePath = realpath(filter_var($filePath)):
+        case !is_file($filePath):
+        case !is_readable($filePath):
+            continue; // or return false, throw new InvalidArgumentException
+        }
+        $data = file_get_contents($filePath);
+        $mimeType = $fileInfo->buffer($data);
+        $filePath = call_user_func("end", explode(DIRECTORY_SEPARATOR, $filePath));
+        $filePath = str_replace($disallow, "_", $filePath);
+        $body[] = implode("\r\n", array(
+            "Content-Disposition: form-data; name=\"file\"; filename=\"{$filePath}\"",
+            "Content-Type: {$mimeType}",
+            "",
+            $data,
+        ));
+
+        // generate safe boundary
+        do {
+            $boundary = "---------------------" . md5(mt_rand() . microtime());
+        } while (preg_grep("/{$boundary}/", $body));
+
+        // add boundary for each parameters
+        array_walk($body, function (&$part) use ($boundary) {
+            $part = "--{$boundary}\r\n{$part}";
+        });
+
+        // add final boundary
+        $body[] = "--{$boundary}--";
+        $body[] = "";
+
+        $headers[] = "Content-Type: multipart/form-data; boundary={$boundary}";
+        // set options
+        return @curl_setopt_array($ch, array(
+            CURLOPT_POST       => true,
+            CURLOPT_POSTFIELDS => implode("\r\n", $body)
+        ));
     }
 
     private function getCaFile()

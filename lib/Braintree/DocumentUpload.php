@@ -14,7 +14,12 @@ use InvalidArgumentException;
 class DocumentUpload extends Base
 {
     /* DocumentUpload Kind */
-    const EVIDENCE_DOCUMENT = "evidenceDocument";
+    const EVIDENCE_DOCUMENT = "evidence_document";
+
+    protected function _initialize($documentUploadAttribs)
+    {
+        $this->_attributes = $documentUploadAttribs;
+    }
 
     /**
      * Creates a DocumentUpload object
@@ -27,5 +32,11 @@ class DocumentUpload extends Base
         return Configuration::gateway()->documentUpload()->create($params);
     }
 
+    public static function factory($attributes)
+    {
+        $instance = new self();
+        $instance->_initialize($attributes);
+        return $instance;
+    }
 }
 class_alias('Braintree\DocumentUpload', 'Braintree_DocumentUpload');

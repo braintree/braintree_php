@@ -19,6 +19,7 @@
 * Add `find` method for the Dispute API
 * Add `removeEvidence` method for the Dispute API
 * Add `search` method for the Dispute API
+* Add DocumentUpload
 
 ## 3.23.1
 * Fix token generator return type - thanks @jjok!
