@@ -186,179 +186,125 @@ class DisputeTest extends Setup
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->accept(null);
+        Braintree\Dispute::accept(null);
     }
 
 	public function test_accept_empty_id_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->accept(" ");
+        Braintree\Dispute::accept(" ");
     }
 
 	public function test_add_text_evidence_empty_id_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->addTextEvidence(" ", "evidence");
+        Braintree\Dispute::addTextEvidence(" ", "evidence");
     }
 
 	public function test_add_text_evidence_null_id_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->addTextEvidence(null, "evidence");
+        Braintree\Dispute::addTextEvidence(null, "evidence");
     }
 
 	public function test_add_text_evidence_empty_evidence_raises_value_exception()
     {
         $this->setExpectedException('InvalidArgumentException', 'content cannot be blank');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->addTextEvidence("dispute_id", " ");
+        Braintree\Dispute::addTextEvidence("dispute_id", " ");
     }
 
 	public function test_add_text_evidence_null_evidence_raises_value_exception()
     {
         $this->setExpectedException('InvalidArgumentException', 'content cannot be blank');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->addTextEvidence("dispute_id", null);
+        Braintree\Dispute::addTextEvidence("dispute_id", null);
     }
 
 	public function test_add_file_evidence_empty_id_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->addFileEvidence(" ", 1);
+        Braintree\Dispute::addFileEvidence(" ", 1);
     }
 
 	public function test_add_file_evidence_null_id_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->addFileEvidence(null, 1);
+        Braintree\Dispute::addFileEvidence(null, 1);
     }
 
 	public function test_add_file_evidence_empty_evidence_raises_value_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'document with id " " not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->addFileEvidence("dispute_id", " ");
+        Braintree\Dispute::addFileEvidence("dispute_id", " ");
     }
 
 	public function test_add_file_evidence_null_evidence_raises_value_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'document with id "" not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->addFileEvidence("dispute_id", null);
+        Braintree\Dispute::addFileEvidence("dispute_id", null);
     }
 
 	public function test_finalize_null_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->finalize(null);
+        Braintree\Dispute::finalize(null);
     }
 
 	public function test_finalize_empty_id_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->finalize(" ");
+        Braintree\Dispute::finalize(" ");
     }
 
 	public function test_finding_null_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->find(null);
+        Braintree\Dispute::find(null);
     }
 
 	public function test_finding_empty_id_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->find(" ");
+        Braintree\Dispute::find(" ");
     }
 
 	public function test_remove_evidence_empty_dispute_id_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id "evidence" for dispute with id " " not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->removeEvidence(" ", "evidence");
+        Braintree\Dispute::removeEvidence(" ", "evidence");
     }
 
 	public function test_remove_evidence_null_dispute_id_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id "evidence" for dispute with id "" not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->removeEvidence(null, "evidence");
+        Braintree\Dispute::removeEvidence(null, "evidence");
     }
 
 	public function test_remove_evidence_evidence_null_id_raises_not_found_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id "" for dispute with id "dispute_id" not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->removeEvidence("dispute_id", null);
+        Braintree\Dispute::removeEvidence("dispute_id", null);
     }
 
 	public function test_remove_evidence_empty_evidence_id_raises_value_exception()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id " " for dispute with id "dispute_id" not found');
 
-        $args = Braintree\Configuration::gateway();
-        $disputeGateway = new Braintree\DisputeGateway($args);
-
-        $disputeGateway->removeEvidence("dispute_id", " ");
+        Braintree\Dispute::removeEvidence("dispute_id", " ");
     }
 }

@@ -102,6 +102,74 @@ class Dispute extends Base
                 Util::attributesToString($displayAttributes) .']';
     }
 
+    /**
+     * Accepts a dispute, given a dispute ID
+     *
+     * @param string $id
+     */
+    public static function accept($id)
+    {
+        return Configuration::gateway()->dispute()->accept($id);
+    }
+
+    /**
+     * Adds file evidence to a dispute, given a dispute ID and a document ID
+     *
+     * @param string $disputeId
+     * @param string $documentId
+     */
+    public static function addFileEvidence($disputeId, $documentId)
+    {
+        return Configuration::gateway()->dispute()->addFileEvidence($disputeId, $documentId);
+    }
+
+    /**
+     * Adds text evidence to a dispute, given a dispute ID and content
+     *
+     * @param string $id
+     * @param string $content
+     */
+    public static function addTextEvidence($id, $content)
+    {
+        return Configuration::gateway()->dispute()->addTextEvidence($id, $content);
+    }
+
+    /**
+     * Finalize a dispute, given a dispute ID
+     *
+     * @param string $id
+     */
+    public static function finalize($id)
+    {
+        return Configuration::gateway()->dispute()->finalize($id);
+    }
+
+    /**
+     * Find a dispute, given a dispute ID
+     *
+     * @param string $id
+     */
+    public static function find($id)
+    {
+        return Configuration::gateway()->dispute()->find($id);
+    }
+
+    /**
+     * Remove evidence from a dispute, given a dispute ID and evidence ID
+     *
+     * @param string $disputeId
+     * @param string $evidenceId
+     */
+    public static function removeEvidence($disputeId, $evidenceId)
+    {
+        return Configuration::gateway()->dispute()->removeEvidence($disputeId, $evidenceId);
+    }
+
+    /**
+     * Search for Disputes, given a DisputeSearch query
+     *
+     * @param DisputeSearch $query
+     */
     public static function search($query)
     {
         return Configuration::gateway()->dispute()->search($query);

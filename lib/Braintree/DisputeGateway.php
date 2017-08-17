@@ -189,17 +189,17 @@ class DisputeGateway
     /**
      * Remove evidence from a dispute, given a dispute ID and evidence ID
      *
-     * @param string $id
-     * @param string evidenceId
+     * @param string $disputeId
+     * @param string $evidenceId
      */
-    public function removeEvidence($id, $evidenceId)
+    public function removeEvidence($disputeId, $evidenceId)
     {
         try {
-            if (trim($id) == "" || trim($evidenceId) == "") {
+            if (trim($disputeId) == "" || trim($evidenceId) == "") {
                 throw new Exception\NotFound();
             }
 
-            $path = $this->_config->merchantPath() . '/disputes/' . $id . '/evidence/' . $evidenceId;
+            $path = $this->_config->merchantPath() . '/disputes/' . $disputeId . '/evidence/' . $evidenceId;
             $response = $this->_http->delete($path);
 
             if (isset($response['apiErrorResponse'])) {
@@ -208,7 +208,7 @@ class DisputeGateway
 
             return new Result\Successful();
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound('evidence with id "' . $evidenceId . '" for dispute with id "' . $id . '" not found');
+            throw new Exception\NotFound('evidence with id "' . $evidenceId . '" for dispute with id "' . $disputeId . '" not found');
         }
     }
 
