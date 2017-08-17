@@ -15,6 +15,7 @@
 * Update return type for client token (thanks @jlaswell!).
 * Add `accept` method for the Dispute API
 * Add `addTextEvidence` method for the Dispute API
+* Add `addFileEvidence` method for the Dispute API
 * Add `finalize` method for the Dispute API
 * Add `find` method for the Dispute API
 * Add `removeEvidence` method for the Dispute API

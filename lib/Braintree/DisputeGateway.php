@@ -82,6 +82,28 @@ class DisputeGateway
         if (trim($documentId) == "") {
             throw new Exception\NotFound('document with id "' . $documentId . '" not found');
         }
+
+        try {
+            if (trim($disputeId) == "") {
+                throw new Exception\NotFound();
+            }
+
+            $path = $this->_config->merchantPath() . '/disputes/' . $disputeId . '/evidence';
+            $response = $this->_http->post($path, [
+                'document_upload_id' => $documentId
+            ]);
+
+            if (isset($response['apiErrorResponse'])) {
+                return new Result\Error($response['apiErrorResponse']);
+            }
+
+            if (isset($response['evidence'])) {
+                $evidence = new Dispute\EvidenceDetails($response['evidence']);
+                return new Result\Successful($evidence);
+            }
+        } catch (Exception\NotFound $e) {
+            throw new Exception\NotFound('dispute with id "' . $disputeId . '" not found');
+        }
     }
 
     /**

@@ -21,6 +21,14 @@ class DisputeTest extends Setup
 
     public function createSampleDocument()
     {
+        $pngFile = fopen(dirname(__DIR__) . '/fixtures/bt_logo.png', 'rb');
+
+        $result = Braintree\DocumentUpload::create([
+            "kind" => Braintree\DocumentUpload::EVIDENCE_DOCUMENT,
+            "file" => $pngFile
+        ]);
+
+        return $result->documentUpload;
     }
 
     public function createSampleDispute()
@@ -65,42 +73,54 @@ class DisputeTest extends Setup
 
     public function testAddFileEvidence_addsEvidence()
     {
-        // $disputeId = $this->createSampleDispute()->id;
-        // $documentId = $this->createSampleDocument()->id;
-        //
-        // $result = $this->gateway->dispute()->addFileEvidence($disputeId, $documentId);
-        //
-        // $this->assertTrue($result->success);
-        //
-        // $updatedDispute = $this->gateway->dispute()->find($disputeId);
-        //
-        // $this->assertEquals($result->evidence->id, $updatedDispute->evidence[0]->id);
+        $disputeId = $this->createSampleDispute()->id;
+        $documentId = $this->createSampleDocument()->id;
+
+        $result = $this->gateway->dispute()->addFileEvidence($disputeId, $documentId);
+
+        $this->assertTrue($result->success);
+
+        $updatedDispute = $this->gateway->dispute()->find($disputeId);
+
+        $this->assertEquals($result->evidence->id, $updatedDispute->evidence[0]->id);
     }
 
     public function testAddFileEvidence_raisesError_whenDisputeNotFound()
     {
-        // $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "unknown_dispute_id" not found');
-        // $this->gateway->dispute()->addFileEvidence("unknown_dispute_id", "unknown_file_id");
+        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "unknown_dispute_id" not found');
+        $this->gateway->dispute()->addFileEvidence("unknown_dispute_id", "unknown_file_id");
     }
 
     public function testAddFileEvidence_raisesError_whenDisputeNotOpen()
     {
-        // $disputeId = $this->createSampleDispute()->id;
-        // $documentId = $this->createSampleDocument()->id;
-        //
-        // $this->gateway->dispute()->accept($disputeId);
-        //
-        // $result = $this->gateway->dispute()->addFileEvidence($disputeId, $documentId);
-        // $error = $result->errors->forKey('dispute')->errors[0];
-        //
-        // $this->assertFalse($result->success);
-        // $this->assertEquals(Braintree\Error\Codes::DISPUTE_CAN_ONLY_ADD_EVIDENCE_TO_OPEN_DISPUTE, $error->code);
-        // $this->assertEquals("Evidence can only be attached to disputes that are in an Open state", $error->message);
-        // $this->assertEquals(
+        $disputeId = $this->createSampleDispute()->id;
+        $documentId = $this->createSampleDocument()->id;
+
+        $this->gateway->dispute()->accept($disputeId);
+
+        $result = $this->gateway->dispute()->addFileEvidence($disputeId, $documentId);
+        $error = $result->errors->forKey('dispute')->errors[0];
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Error\Codes::DISPUTE_CAN_ONLY_ADD_EVIDENCE_TO_OPEN_DISPUTE, $error->code);
+        $this->assertEquals("Evidence can only be attached to disputes that are in an Open state", $error->message);
     }
 
     public function testAddFileEvidence_returnsError_whenIncorrectDocumentKind()
     {
+        $disputeId = $this->createSampleDispute()->id;
+        $pngFile = fopen(dirname(__DIR__) . '/fixtures/bt_logo.png', 'rb');
+
+        $documentId = Braintree\DocumentUpload::create([
+            "kind" => "identity_document",
+            "file" => $pngFile
+        ])->documentUpload->id;
+
+        $result = $this->gateway->dispute()->addFileEvidence($disputeId, $documentId);
+        $error = $result->errors->forKey('dispute')->errors[0];
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Error\Codes::DISPUTE_CAN_ONLY_ADD_EVIDENCE_TO_DISPUTE, $error->code);
     }
 
     public function testAddTextEvidence_addsTextEvidence()
