@@ -8,8 +8,6 @@ use InvalidArgumentException;
  * PHP Version 5
  * Creates and manages Braintree Disputes
  *
- * @TODO PHPDoc
- *
  * @package   Braintree
  */
 class DocumentUploadGateway

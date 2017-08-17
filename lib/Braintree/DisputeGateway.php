@@ -8,8 +8,6 @@ use InvalidArgumentException;
  * PHP Version 5
  * Creates and manages Braintree Disputes
  *
- * @TODO PHPDoc
- *
  * @package   Braintree
  */
 class DisputeGateway
@@ -241,30 +239,6 @@ class DisputeGateway
         $totalItems = $body['totalItems'][0];
         $pageSize = $body['pageSize'][0];
         return new PaginatedResult($totalItems, $pageSize, $disputes);
-    }
-
-    /**
-     * creates a full array signature of a valid create request
-     * @return array gateway create request format
-     */
-    public static function createSignature()
-    {
-        return [
-            'company', 'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
-            'countryName', 'customerId', 'extendedDispute', 'firstName',
-            'lastName', 'locality', 'postalCode', 'region', 'streetDispute'
-        ];
-    }
-
-    /**
-     * creates a full array signature of a valid update request
-     * @return array gateway update request format
-     */
-    public static function updateSignature()
-    {
-        // TODO: remove customerId from update signature
-        return self::createSignature();
-
     }
 }
 class_alias('Braintree\DisputeGateway', 'Braintree_DisputeGateway');

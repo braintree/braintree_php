@@ -7,7 +7,10 @@ use InvalidArgumentException;
  * Upload documents to Braintree in exchange for a DocumentUpload object.
  *
  * An example of creating a document upload with all available fields:
- *     @TODO example
+ *      $result = Braintree\DocumentUpload::create([
+ *          "kind" => Braintree\DocumentUpload::EVIDENCE_DOCUMENT,
+ *          "file" => $pngFile
+ *      ]);
  *
  * For more information on DocumentUploads, see https://developers.braintreepayments.com/reference/request/document_upload/create
  */
