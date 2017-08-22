@@ -58,18 +58,16 @@ class Dispute extends Base
         }
 
         if (isset($disputeAttribs['evidence'])) {
-            $evidenceArray = [];
-            foreach ($disputeAttribs['evidence'] as $evidence) {
-                array_push($evidenceArray, new Dispute\EvidenceDetails($evidence));
-            }
+            $evidenceArray = array_map(function($evidence) {
+                return new Dispute\EvidenceDetails($evidence);
+            }, $disputeAttribs['evidence']);
             $this->_set('evidence', $evidenceArray);
         }
 
         if (isset($disputeAttribs['statusHistory'])) {
-            $statusHistoryArray = [];
-            foreach ($disputeAttribs['statusHistory'] as $statusHistory) {
-                array_push($statusHistoryArray, new Dispute\StatusHistoryDetails($statusHistory));
-            }
+            $statusHistoryArray = array_map(function($statusHistory) {
+                return new Dispute\StatusHistoryDetails($statusHistory);
+            }, $disputeAttribs['statusHistory']);
             $this->_set('statusHistory', $statusHistoryArray);
         }
 

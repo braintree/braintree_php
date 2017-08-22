@@ -147,7 +147,9 @@ class Http
         }
 
         if (!empty($file)) {
-            $this->curlPostFile($curl, $requestBody, $file, $headers);
+            $boundary = "---------------------" . md5(mt_rand() . microtime());
+            $headers[] = "Content-Type: multipart/form-data; boundary={$boundary}";
+            $this->prepareMultipart($curl, $requestBody, $file, $boundary);
         } else if (!empty($requestBody)) {
             $headers[] = 'Content-Type: application/xml';
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
@@ -191,45 +193,32 @@ class Http
         return ['status' => $httpStatus, 'body' => $response];
     }
 
-    function curlPostFile($ch, $requestBody, $file, &$headers) {
-        $filePath = stream_get_meta_data($file)['uri'];
-
-        // invalid characters for "name" and "filename"
-        static $disallow = array("\0", "\"", "\r", "\n");
+    function prepareMultipart($ch, $requestBody, $file, $boundary) {
+        $disallow = ["\0", "\"", "\r", "\n"];
         $fileInfo = new finfo(FILEINFO_MIME_TYPE);
+        $filePath = stream_get_meta_data($file)['uri'];
+        $data = file_get_contents($filePath);
+        $mimeType = $fileInfo->buffer($data);
 
         // build normal parameters
         foreach ($requestBody as $k => $v) {
             $k = str_replace($disallow, "_", $k);
-            $body[] = implode("\r\n", array(
+            $body[] = implode("\r\n", [
                 "Content-Disposition: form-data; name=\"{$k}\"",
                 "",
                 filter_var($v),
-            ));
+            ]);
         }
 
-        // build file parameters
-        switch (true) {
-        case false === $filePath = realpath(filter_var($filePath)):
-        case !is_file($filePath):
-        case !is_readable($filePath):
-            continue; // or return false, throw new InvalidArgumentException
-        }
-        $data = file_get_contents($filePath);
-        $mimeType = $fileInfo->buffer($data);
+        // build file parameter
         $filePath = call_user_func("end", explode(DIRECTORY_SEPARATOR, $filePath));
         $filePath = str_replace($disallow, "_", $filePath);
-        $body[] = implode("\r\n", array(
+        $body[] = implode("\r\n", [
             "Content-Disposition: form-data; name=\"file\"; filename=\"{$filePath}\"",
             "Content-Type: {$mimeType}",
             "",
             $data,
-        ));
-
-        // generate safe boundary
-        do {
-            $boundary = "---------------------" . md5(mt_rand() . microtime());
-        } while (preg_grep("/{$boundary}/", $body));
+        ]);
 
         // add boundary for each parameters
         array_walk($body, function (&$part) use ($boundary) {
@@ -240,12 +229,11 @@ class Http
         $body[] = "--{$boundary}--";
         $body[] = "";
 
-        $headers[] = "Content-Type: multipart/form-data; boundary={$boundary}";
         // set options
-        return @curl_setopt_array($ch, array(
+        return curl_setopt_array($ch, [
             CURLOPT_POST       => true,
             CURLOPT_POSTFIELDS => implode("\r\n", $body)
-        ));
+        ]);
     }
 
     private function getCaFile()

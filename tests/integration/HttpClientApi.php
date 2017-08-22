@@ -23,7 +23,7 @@ class HttpClientApi extends Braintree\Http
          return $this->_doRequest('POST', $path, $body);
     }
 
-    public function _doUrlRequest($httpVerb, $url, $requestBody = null)
+    public function _doUrlRequest($httpVerb, $url, $requestBody = null, $file = null)
     {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
