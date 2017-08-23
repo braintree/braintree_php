@@ -493,7 +493,8 @@ class TransactionTest extends Setup
                 'cardholderName' => "JANE SMITH",
                 'cryptogram' => "AAAAAAAA/COBt84dnIEcwAA3gAAGhgEDoLABAAhAgAABAAAALnNCLw==",
                 'expirationMonth' => "10",
-                'expirationYear' => "17"
+                'expirationYear' => "17",
+                'eciIndicator' => "07"
             ]
         ]);
         $this->assertTrue($result->success);
@@ -508,7 +509,8 @@ class TransactionTest extends Setup
                 'cardholder_name' => "JANE SMITH",
                 'cryptogram' => "AAAAAAAA/COBt84dnIEcwAA3gAAGhgEDoLABAAhAgAABAAAALnNCLw==",
                 'expiration_month' => "10",
-                'expiration_year' => "17"
+                'expiration_year' => "17",
+                'eci_indicator' => "07"
             ]
         ]);
         $this->assertTrue($result->success);

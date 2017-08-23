@@ -12,6 +12,7 @@
 * Update link to transaction api documentation (thanks @qoheleth-tech!).
 * Fix TransactionGateway return types (thanks @jjok!).
 * Update return type for client token (thanks @jlaswell!).
+* Support `eci_indicator` for Transaction sale with raw Apple Pay parameters
 
 ## 3.23.1
 * Fix token generator return type - thanks @jjok!
