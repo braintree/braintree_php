@@ -1,5 +1,6 @@
 ## Unreleased
 * Add `submitForSettlement` option to `Subscription::retryCharge`
+* Support `eci_indicator` for Transaction sale with raw Apple Pay parameters
 
 ## 3.24.0
 * Add AuthorizationAdjustment class and `authorizationAdjustments` to Transaction
@@ -12,7 +13,6 @@
 * Update link to transaction api documentation (thanks @qoheleth-tech!).
 * Fix TransactionGateway return types (thanks @jjok!).
 * Update return type for client token (thanks @jlaswell!).
-* Support `eci_indicator` for Transaction sale with raw Apple Pay parameters
 
 ## 3.23.1
 * Fix token generator return type - thanks @jjok!
