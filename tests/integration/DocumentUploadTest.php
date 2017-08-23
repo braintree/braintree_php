@@ -96,4 +96,14 @@ class DocumentUploadTest extends Setup
             "bad_key" => "value"
         ]);
     }
+
+    public function test_create_whenFileIsInvalid_throwsError()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'file must be a stream resource');
+
+        $result = Braintree\DocumentUpload::create([
+            "kind" => Braintree\DocumentUpload::EVIDENCE_DOCUMENT,
+            "file" => "not-a-file"
+        ]);
+    }
 }

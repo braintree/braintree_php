@@ -50,6 +50,11 @@ class DocumentUploadGateway
         Util::verifyKeys(self::createSignature(), $params);
 
         $file = $params['file'];
+
+        if (!is_resource($file)) {
+            throw new InvalidArgumentException('file must be a stream resource');
+        }
+
         $payload = [
             'document_upload[kind]' => $params['kind']
         ];
