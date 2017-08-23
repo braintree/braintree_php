@@ -106,23 +106,6 @@ class DisputeTest extends Setup
         $this->assertEquals("Evidence can only be attached to disputes that are in an Open state", $error->message);
     }
 
-    public function testAddFileEvidence_returnsError_whenIncorrectDocumentKind()
-    {
-        $disputeId = $this->createSampleDispute()->id;
-        $pngFile = fopen(dirname(__DIR__) . '/fixtures/bt_logo.png', 'rb');
-
-        $documentId = Braintree\DocumentUpload::create([
-            "kind" => "identity_document",
-            "file" => $pngFile
-        ])->documentUpload->id;
-
-        $result = $this->gateway->dispute()->addFileEvidence($disputeId, $documentId);
-        $error = $result->errors->forKey('dispute')->errors[0];
-
-        $this->assertFalse($result->success);
-        $this->assertEquals(Braintree\Error\Codes::DISPUTE_CAN_ONLY_ADD_EVIDENCE_TO_DISPUTE, $error->code);
-    }
-
     public function testAddTextEvidence_addsTextEvidence()
     {
         $disputeId = $this->createSampleDispute()->id;
