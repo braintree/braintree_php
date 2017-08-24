@@ -1,6 +1,14 @@
 ## Unreleased
 * Add `submitForSettlement` option to `Subscription::retryCharge`
 * Support `eci_indicator` for Transaction sale with raw Apple Pay parameters
+* Add `accept` method for the Dispute API
+* Add `addTextEvidence` method for the Dispute API
+* Add `addFileEvidence` method for the Dispute API
+* Add `finalize` method for the Dispute API
+* Add `find` method for the Dispute API
+* Add `removeEvidence` method for the Dispute API
+* Add `search` method for the Dispute API
+* Add DocumentUpload
 
 ## 3.24.0
 * Add AuthorizationAdjustment class and `authorizationAdjustments` to Transaction
