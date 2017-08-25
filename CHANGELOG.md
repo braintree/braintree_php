@@ -1,4 +1,4 @@
-## Unreleased
+## 3.25.0
 * Add `submitForSettlement` option to `Subscription::retryCharge`
 * Support `eci_indicator` for Transaction sale with raw Apple Pay parameters
 * Add `accept` method for the Dispute API
