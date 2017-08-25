@@ -93,12 +93,15 @@ class SubscriptionGateway
         return $this->_verifyGatewayResponse($response);
     }
 
-    public function retryCharge($subscriptionId, $amount = null)
+    public function retryCharge($subscriptionId, $amount = null, $submitForSettlement = false)
     {
         $transaction_params = ['type' => Transaction::SALE,
             'subscriptionId' => $subscriptionId];
         if (isset($amount)) {
             $transaction_params['amount'] = $amount;
+        }
+        if ($submitForSettlement) {
+            $transaction_params['options'] = ['submitForSettlement' => $submitForSettlement];
         }
 
         $path = $this->_config->merchantPath() . '/transactions';

@@ -145,4 +145,20 @@ class HttpTest extends Setup
         $result = $http->_doUrlRequest('GET', $config->baseUrl() . '/merchants/integration_merchant_id/customers');
         $this->assertEquals(401, $result['status']);
     }
+
+    public function testPostMultiPartUploadsFileSuccessfully()
+    {
+        $config = Braintree\Configuration::$global;
+        $http = new Braintree\Http($config);
+
+        $path = '/merchants/integration_merchant_id/document_uploads';
+        $params = [
+            'document_upload[kind]' => 'evidence_document'
+        ];
+        $file = fopen(dirname(__DIR__) . '/fixtures/bt_logo.png', 'rb');
+        $response = $http->postMultipart($path, $params, $file);
+
+        $this->assertEquals('image/png', $response['documentUpload']['contentType']);
+        $this->assertNotNull($response['documentUpload']['id']);
+    }
 }

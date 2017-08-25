@@ -97,6 +97,24 @@ class Gateway
 
     /**
      *
+     * @return DisputeGateway
+     */
+    public function dispute()
+    {
+        return new DisputeGateway($this);
+    }
+
+    /**
+     *
+     * @return DocumentUploadGateway
+     */
+    public function documentUpload()
+    {
+        return new DocumentUploadGateway($this);
+    }
+
+    /**
+     *
      * @return MerchantGateway
      */
     public function merchant()

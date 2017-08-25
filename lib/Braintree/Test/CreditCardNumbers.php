@@ -62,6 +62,10 @@ class CreditCardNumbers
         'InsufficientPoints' => "371544868764018",
         ];
 
+    public static $disputes = [
+        'Chargeback' => '4023898493988028',
+    ];
+
     public static function getAll()
     {
         return array_merge(
