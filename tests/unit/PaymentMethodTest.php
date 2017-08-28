@@ -42,7 +42,9 @@ class PaymentMethodTest extends Setup
                 ]],
             ]],
             ['billingAddress' => Braintree\AddressGateway::createSignature()],
-            'customerId'
+            'customerId',
+            'paypalRefreshToken',
+            'paypalVaultWithoutUpgrade'
         ];
         $this->assertEquals($expected, Braintree\PaymentMethodGateway::createSignature());
     }

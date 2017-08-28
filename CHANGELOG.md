@@ -1,3 +1,6 @@
+## Unreleased
+Add support for upgrading a PayPal future payment refresh token to a billing agreement
+
 ## 3.25.0
 * Add `submitForSettlement` option to `Subscription::retryCharge`
 * Support `eci_indicator` for Transaction sale with raw Apple Pay parameters
