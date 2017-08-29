@@ -76,6 +76,7 @@ class PaymentMethodTest extends Setup
         $this->assertTrue($result->success);
         $applePayCard = $result->paymentMethod;
         $this->assertNotNull($applePayCard->token);
+        $this->assertNotNull($applePayCard->bin);
         $this->assertSame(Braintree\ApplePayCard::VISA, $applePayCard->cardType);
         $this->assertContains("Visa ", $applePayCard->paymentInstrumentName);
         $this->assertContains("Visa ", $applePayCard->sourceDescription);

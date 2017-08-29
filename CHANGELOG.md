@@ -22,6 +22,7 @@
 * Update link to transaction api documentation (thanks @qoheleth-tech!).
 * Fix TransactionGateway return types (thanks @jjok!).
 * Update return type for client token (thanks @jlaswell!).
+* Add `bin` to `ApplePayCard`
 
 ## 3.23.1
 * Fix token generator return type - thanks @jjok!
