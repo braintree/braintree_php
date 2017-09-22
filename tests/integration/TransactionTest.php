@@ -3708,7 +3708,7 @@ class TransactionTest extends Setup
   public function testIncludeProcessorSettlementResponseForSettlementDeclinedTransaction()
     {
         $result = Braintree\Transaction::sale([
-            "paymentMethodNonce" => Braintree\Test\Nonces::$paypalFuturePayment,
+            "paymentMethodNonce" => Braintree\Test\Nonces::$visaCheckoutVisa,
             "amount" => "100",
             "options" => [
                 "submitForSettlement" => true
@@ -3729,7 +3729,7 @@ class TransactionTest extends Setup
   public function testIncludeProcessorSettlementResponseForSettlementPendingTransaction()
     {
         $result = Braintree\Transaction::sale([
-            "paymentMethodNonce" => Braintree\Test\Nonces::$paypalFuturePayment,
+            "paymentMethodNonce" => Braintree\Test\Nonces::$visaCheckoutVisa,
             "amount" => "100",
             "options" => [
                 "submitForSettlement" => true
