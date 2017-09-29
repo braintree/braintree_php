@@ -3469,7 +3469,7 @@ class TransactionTest extends Setup
 
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals(Braintree\Transaction::SETTLED, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SETTLING, $transaction->status);
     }
 
   public function testCreate_withPayPalHandlesBadUnvalidatedNonces()
@@ -3708,7 +3708,7 @@ class TransactionTest extends Setup
   public function testIncludeProcessorSettlementResponseForSettlementDeclinedTransaction()
     {
         $result = Braintree\Transaction::sale([
-            "paymentMethodNonce" => Braintree\Test\Nonces::$visaCheckoutVisa,
+            "paymentMethodNonce" => Braintree\Test\Nonces::$paypalFuturePayment,
             "amount" => "100",
             "options" => [
                 "submitForSettlement" => true
@@ -3729,7 +3729,7 @@ class TransactionTest extends Setup
   public function testIncludeProcessorSettlementResponseForSettlementPendingTransaction()
     {
         $result = Braintree\Transaction::sale([
-            "paymentMethodNonce" => Braintree\Test\Nonces::$visaCheckoutVisa,
+            "paymentMethodNonce" => Braintree\Test\Nonces::$paypalFuturePayment,
             "amount" => "100",
             "options" => [
                 "submitForSettlement" => true
