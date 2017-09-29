@@ -1,7 +1,6 @@
 ## Unreleased
 * Add support for upgrading a PayPal future payment refresh token to a billing agreement
 * Address deprecation warnings for create_function with PHP 7 (#193, thanks @chrisdeeming)
-* Fix spec to expect PayPal transaction to settle immediately after successful capture
 
 ## 3.25.0
 * Add `submitForSettlement` option to `Subscription::retryCharge`
