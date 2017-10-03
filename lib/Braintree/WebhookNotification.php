@@ -29,6 +29,7 @@ class WebhookNotification extends Base
     const CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED = 'connected_merchant_paypal_status_changed';
     const IDEAL_PAYMENT_COMPLETE = 'ideal_payment_complete';
     const IDEAL_PAYMENT_FAILED = 'ideal_payment_failed';
+    const GRANTED_PAYMENT_INSTRUMENT_UPDATE = 'granted_payment_instrument_update';
 
     public static function parse($signature, $payload) {
         return Configuration::gateway()->webhookNotification()->parse($signature, $payload);
@@ -93,6 +94,10 @@ class WebhookNotification extends Base
 
         if (isset($wrapperNode['idealPayment'])) {
             $this->_set('idealPayment', IdealPayment::factory($wrapperNode['idealPayment']));
+        }
+
+        if (isset($wrapperNode['grantedPaymentInstrumentUpdate'])) {
+            $this->_set('grantedPaymentInstrumentUpdate', GrantedPaymentInstrumentUpdate::factory($wrapperNode['grantedPaymentInstrumentUpdate']));
         }
 
         if (isset($wrapperNode['errors'])) {
