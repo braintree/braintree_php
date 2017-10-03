@@ -78,7 +78,7 @@ class WebhookTesting
                 $subjectXml = self::_idealPaymentFailedSampleXml($id);
                 break;
             case WebhookNotification::GRANTED_PAYMENT_INSTRUMENT_UPDATE:
-                $subjectXml = self::_grantedPaymentInstrumentUpdateaampleXml();
+                $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
                 break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
@@ -447,7 +447,7 @@ class WebhookTesting
         ";
     }
 
-    private static function _grantedPaymentInstrumentUpdateaampleXml()
+    private static function _grantedPaymentInstrumentUpdateSampleXml()
 	{
         return "
 		<granted-payment-instrument-update>
