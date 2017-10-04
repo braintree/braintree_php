@@ -19,6 +19,9 @@ use Braintree\Instance;
  * @property-read string $region
  * @property-read string $postalCode
  * @property-read string $countryName
+ * @property-read string $countryCodeNumeric
+ * @property-read string $countryCodeAlpha2
+ * @property-read string $countryCodeAlpha3
  */
 class AddressDetails extends Instance
 {
