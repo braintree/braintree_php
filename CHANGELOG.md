@@ -1,3 +1,9 @@
+## 3.25.1
+* Add `countryCodeNumeric` to AddressDetails PHPDoc
+* Add `countryCodeAlpha2`  to AddressDetails PHPDoc
+* Add `countryCodeAlpha3` to AddressDetails PHPDoc
+* Fix PHPDoc Variable Type linking in Transaction Class
+
 ## 3.25.0
 * Add `submitForSettlement` option to `Subscription::retryCharge`
 * Support `eci_indicator` for Transaction sale with raw Apple Pay parameters
