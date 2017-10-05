@@ -648,4 +648,26 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("https://example.com", $idealPayment->approvalUrl);
         $this->assertEquals("1234567890", $idealPayment->idealTransactionId);
     }
+
+    public function testGrantedPaymentInstrumentUpdateWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::GRANTED_PAYMENT_INSTRUMENT_UPDATE,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::GRANTED_PAYMENT_INSTRUMENT_UPDATE, $webhookNotification->kind);
+        $update = $webhookNotification->grantedPaymentInstrumentUpdate;
+
+        $this->assertEquals("vczo7jqrpwrsi2px", $update->grantOwnerMerchantId);
+        $this->assertEquals("cf0i8wgarszuy6hc", $update->grantRecipientMerchantId);
+        $this->assertEquals("ee257d98-de40-47e8-96b3-a6954ea7a9a4", $update->paymentMethodNonce->nonce);
+        $this->assertEquals("abc123z", $update->token);
+        $this->assertEquals(array("expiration-month", "expiration-year"), $update->updatedFields);
+    }
 }
