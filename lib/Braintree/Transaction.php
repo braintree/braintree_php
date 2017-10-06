@@ -601,9 +601,9 @@ class Transaction extends Base
         return Configuration::gateway()->transaction()->cancelRelease($transactionId);
     }
 
-    public static function refund($transactionId, $amount = null)
+    public static function refund($transactionId, $amount = null, $orderId = null)
     {
-        return Configuration::gateway()->transaction()->refund($transactionId, $amount);
+        return Configuration::gateway()->transaction()->refund($transactionId, ['amount' => $amount, 'orderId' => $orderId]);
     }
 }
 class_alias('Braintree\Transaction', 'Braintree_Transaction');
