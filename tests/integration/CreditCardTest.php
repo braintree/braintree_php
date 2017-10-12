@@ -216,15 +216,8 @@ class CreditCardTest extends Setup
 
     public function testCreate_withCardVerificationReturnsVerificationWithRiskData()
     {
-        $advancedFraudGateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'advanced_fraud_integration_merchant_id',
-            'publicKey' => 'advanced_fraud_integration_public_key',
-            'privateKey' => 'advanced_fraud_integration_private_key'
-        ]);
-
-        $customer = $advancedFraudGateway->customer()->createNoValidate();
-        $result = $advancedFraudGateway->creditCard()->create([
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\CreditCard::create([
             'customerId' => $customer->id,
             'number' => '4111111111111111',
             'expirationDate' => '05/2011',
@@ -233,9 +226,9 @@ class CreditCardTest extends Setup
         ]);
         $this->assertTrue($result->success);
         $this->assertNotNull($result->creditCard->verification->riskData);
-        $this->assertEquals('Approve', $result->creditCard->verification->riskData->decision);
-        $this->assertFalse($result->creditCard->verification->riskData->deviceDataCaptured);
-        $this->assertNotNull($result->creditCard->verification->riskData->id);
+        $this->assertNotNull($result->creditCard->verification->riskData->decision);
+        $this->assertNull($result->creditCard->verification->riskData->deviceDataCaptured);
+        $this->assertNull($result->creditCard->verification->riskData->id);
     }
 
     public function testCreate_withCardVerificationAndOverriddenAmount()

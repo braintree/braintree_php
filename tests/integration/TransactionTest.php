@@ -270,15 +270,7 @@ class TransactionTest extends Setup
 
   public function testSaleAndSkipAdvancedFraudChecking()
   {
-
-      $advancedFraudGateway = new Braintree\Gateway([
-          'environment' => 'development',
-          'merchantId' => 'advanced_fraud_integration_merchant_id',
-          'publicKey' => 'advanced_fraud_integration_public_key',
-          'privateKey' => 'advanced_fraud_integration_private_key'
-      ]);
-
-      $result = $advancedFraudGateway->transaction()->sale([
+      $result = Braintree\Transaction::sale([
           'amount' => Braintree\Test\TransactionAmounts::$authorize,
           'creditCard' => [
               'number' => Braintree\Test\CreditCardNumbers::$visa,
@@ -742,14 +734,7 @@ class TransactionTest extends Setup
 
   public function testSaleWithRiskData()
     {
-        $advancedFraudGateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'advanced_fraud_integration_merchant_id',
-            'publicKey' => 'advanced_fraud_integration_public_key',
-            'privateKey' => 'advanced_fraud_integration_private_key'
-        ]);
-
-        $result = $advancedFraudGateway->transaction()->sale([
+        $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'deviceSessionId' => 'abc123',
             'creditCard' => [
@@ -761,9 +746,9 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertNotNull($transaction->riskData);
-        $this->assertEquals('Approve', $transaction->riskData->decision);
-        $this->assertNotNull($transaction->riskData->id);
-        $this->assertFalse($transaction->riskData->deviceDataCaptured);
+        $this->assertNotNull($transaction->riskData->decision);
+        $this->assertNull($transaction->riskData->id);
+        $this->assertNull($transaction->riskData->deviceDataCaptured);
     }
 
   public function testRecurring()
@@ -2175,14 +2160,7 @@ class TransactionTest extends Setup
 
   public function testSale_withRiskData()
     {
-        $advancedFraudGateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'advanced_fraud_integration_merchant_id',
-            'publicKey' => 'advanced_fraud_integration_public_key',
-            'privateKey' => 'advanced_fraud_integration_private_key'
-        ]);
-
-        $result = $advancedFraudGateway->transaction()->sale([
+        $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => '5105105105105100',
@@ -2939,14 +2917,7 @@ class TransactionTest extends Setup
 
   public function testGatewayRejectionOnFraud()
     {
-        $advancedFraudGateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'advanced_fraud_integration_merchant_id',
-            'publicKey' => 'advanced_fraud_integration_public_key',
-            'privateKey' => 'advanced_fraud_integration_private_key'
-        ]);
-
-        $result = $advancedFraudGateway->transaction()->sale([
+        $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => '4000111111111511',
