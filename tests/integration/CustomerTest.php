@@ -642,7 +642,7 @@ class CustomerTest extends Setup
         $this->assertTrue($result->success);
     }
 
-    public function testCreate_worksWithOrderPaymentPayPalNonceWithPayeeEmail()
+    public function testCreate_worksWithOrderPaymentPayPalNonceWithPayeeEmailSnakeCase()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount([
@@ -660,6 +660,33 @@ class CustomerTest extends Setup
                     'payee_email' => 'payee@example.com',
                     'order_id' => 'merchant-order-id',
                     'custom_field' => 'custom merchant field',
+                    'description' => 'merchant description',
+                    'amount' => '1.23',
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+    }
+
+    public function testCreate_worksWithOrderPaymentPayPalNonceWithPayeeEmailCamelCase()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'intent' => 'order',
+                'payment_token' => 'paypal-payment-token',
+                'payer_id' => 'paypal-payer-id',
+            ]
+        ]);
+
+        $result = Braintree\Customer::create([
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'paypal' => [
+                    'payeeEmail' => 'payee@example.com',
+                    'orderId' => 'merchant-order-id',
+                    'customField' => 'custom merchant field',
                     'description' => 'merchant description',
                     'amount' => '1.23',
                 ],
@@ -1033,7 +1060,7 @@ class CustomerTest extends Setup
         $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
     }
 
-    public function testUpdate_worksWithOrderPaymentPayPalNonceWithPayeeEmail()
+    public function testUpdate_worksWithOrderPaymentPayPalNonceWithPayeeEmailSnakeCase()
     {
         $customerResult = Braintree\Customer::create([
             'creditCard' => [
@@ -1063,6 +1090,44 @@ class CustomerTest extends Setup
             'options' => [
                 'paypal' => [
                     'payee_email' => 'payee@example.com',
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
+    }
+
+    public function testUpdate_worksWithOrderPaymentPayPalNonceWithPayeeEmailCamelCase()
+    {
+        $customerResult = Braintree\Customer::create([
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'options' => [
+                    'makeDefault' => true
+                ]
+            ]
+        ]);
+        $paypalAccountToken = 'PAYPALToken-' . strval(rand());
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'intent' => 'order',
+                'payment_token' => 'paypal-payment-token',
+                'payer_id' => 'paypal-payer-id',
+                'token' => $paypalAccountToken,
+                'options' => [
+                    'makeDefault' => true
+                ]
+            ]
+        ]);
+
+        $result = Braintree\Customer::update($customerResult->customer->id, [
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'paypal' => [
+                    'payeeEmail' => 'payee@example.com',
                 ],
             ],
         ]);
