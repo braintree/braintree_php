@@ -76,11 +76,11 @@ abstract class Base implements JsonSerializable
     }
     
     /**
-	 * Implementation of JsonSerializable 
-	 * 
-	 * @ignore
-	 * @return array
-	 */
+     * Implementation of JsonSerializable 
+     * 
+     * @ignore
+     * @return array
+     */
     public function jsonSerialize()
     {
 	    return $this->_attributes;
