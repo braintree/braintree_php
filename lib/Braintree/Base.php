@@ -83,8 +83,6 @@ abstract class Base implements JsonSerializable
      */
     public function jsonSerialize()
     {
-	    return $this->_attributes;
+	return $this->_attributes;
     }
-    
-    
 }
