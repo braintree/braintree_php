@@ -4239,8 +4239,7 @@ class TransactionTest extends Setup
         $this->assertEquals($result->transaction->billing["postalCode"], "95131");
     }
 
-
-    public function testTransactionsCanBeCreatedWithSharedParams()
+    public function testTransactionsCanBeCreatedWithSharedPaymentMethodToken()
     {
         $partnerMerchantGateway = new Braintree\Gateway([
             'environment' => 'development',
@@ -4286,6 +4285,71 @@ class TransactionTest extends Setup
         $result = $oauthAccesTokenGateway->transaction()->sale([
             'amount' => '100.00',
             'sharedPaymentMethodToken' => $creditCard->token,
+            'sharedCustomerId' => $customer->id,
+            'sharedShippingAddressId' => $address->id,
+            'sharedBillingAddressId' => $address->id
+        ]);
+
+        $this->assertEquals(
+            $result->transaction->shippingDetails->firstName,
+            $address->firstName
+        );
+        $this->assertEquals(
+            $result->transaction->billingDetails->firstName,
+            $address->firstName
+        );
+    }
+
+    public function testTransactionsCanBeCreatedWithSharedPaymentMethodNonce()
+    {
+        $partnerMerchantGateway = new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_public_id',
+            'publicKey' => 'oauth_app_partner_user_public_key',
+            'privateKey' => 'oauth_app_partner_user_private_key'
+        ]);
+
+        $customer = $partnerMerchantGateway->customer()->create([
+            'firstName' => 'Joe',
+            'lastName' => 'Brown'
+        ])->customer;
+        $address = $partnerMerchantGateway->address()->create([
+            'customerId' => $customer->id,
+            'firstName' => 'Dan',
+            'lastName' => 'Smith',
+        ])->address;
+        $creditCard = $partnerMerchantGateway->creditCard()->create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Adam Davis',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2009'
+        ])->creditCard;
+
+        $oauthAppGateway = new Braintree\Gateway([
+            'clientId' =>  'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret'
+        ]);
+
+        $code = Test\Braintree\OAuthTestHelper::createGrant($oauthAppGateway, [
+            'merchant_public_id' => 'integration_merchant_id',
+            'scope' => 'read_write,shared_vault_transactions'
+        ]);
+
+        $credentials = $oauthAppGateway->oauth()->createTokenFromCode([
+            'code' => $code,
+        ]);
+
+        $oauthAccesTokenGateway = new Braintree\Gateway([
+            'accessToken' => $credentials->accessToken
+        ]);
+
+        $sharedNonce = $partnerMerchantGateway->paymentMethodNonce()->create(
+            $creditCard->token
+        )->paymentMethodNonce->nonce;
+
+        $result = $oauthAccesTokenGateway->transaction()->sale([
+            'amount' => '100.00',
+            'sharedPaymentMethodNonce' => $sharedNonce,
             'sharedCustomerId' => $customer->id,
             'sharedShippingAddressId' => $address->id,
             'sharedBillingAddressId' => $address->id
