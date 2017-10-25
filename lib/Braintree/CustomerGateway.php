@@ -158,8 +158,11 @@ class CustomerGateway
             ['options' => [
                 ['paypal' => [
                     'payee_email',
+                    'payeeEmail',
                     'order_id',
+                    'orderId',
                     'custom_field',
+                    'customField',
                     'description',
                     'amount',
                 ]]
@@ -189,7 +192,7 @@ class CustomerGateway
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
             ['options' => [
-                ['paypal' => ['payee_email']],
+                ['paypal' => ['payee_email', 'payeeEmail']],
             ]],
         ];
         return $signature;

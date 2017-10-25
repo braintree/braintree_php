@@ -2,6 +2,7 @@
 * Add support for upgrading a PayPal future payment refresh token to a billing agreement
 * Address deprecation warnings for create_function with PHP 7 (#193, thanks @chrisdeeming)
 * Add GrantedPaymentInstrumentUpdate webhook support
+* Allow paypal => options params to be passed in camel case
 * Add ability to create a transaction from a shared nonce
 
 ## 3.25.0
