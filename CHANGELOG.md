@@ -4,6 +4,7 @@
 * Add GrantedPaymentInstrumentUpdate webhook support
 * Allow paypal => options params to be passed in camel case
 * Add ability to create a transaction from a shared nonce
+* Implement JsonSerializable on Braintree Objects for easier logging (#200, thanks @hfmikep)
 
 ## 3.25.0
 * Add `submitForSettlement` option to `Subscription::retryCharge`
