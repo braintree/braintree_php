@@ -147,6 +147,13 @@ class PaymentMethodGateway
                 'customField',
                 'description',
                 'amount',
+                ['shipping' =>
+                    [
+                        'firstName', 'lastName', 'company', 'countryName',
+                        'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
+                        'extendedAddress', 'locality', 'postalCode', 'region',
+                        'streetAddress'],
+                ],
             ]],
         ];
         return [

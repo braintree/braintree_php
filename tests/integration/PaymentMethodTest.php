@@ -315,7 +315,21 @@ class PaymentMethodTest extends Setup
                     'customField' => 'custom merchant field',
                     'description' => 'merchant description',
                     'amount' => '1.23',
-                ]
+                    'shipping' => [
+                        'firstName' => 'Andrew',
+                        'lastName' => 'Mason',
+                        'company' => 'Braintree',
+                        'streetAddress' => '456 W Main St',
+                        'extendedAddress' => 'Apt 2F',
+                        'locality' => 'Bartlett',
+                        'region' => 'IL',
+                        'postalCode' => '60103',
+                        'countryName' => 'United States of America',
+                        'countryCodeAlpha2' => 'US',
+                        'countryCodeAlpha3' => 'USA',
+                        'countryCodeNumeric' => '840'
+                    ],
+                ],
             ],
         ]);
 
