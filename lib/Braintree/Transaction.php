@@ -1,5 +1,6 @@
 <?php
 namespace Braintree;
+use Braintree\Transaction\AndroidPayCardDetails;
 
 /**
  * Braintree Transaction processor
@@ -147,30 +148,30 @@ namespace Braintree;
  * @property-read string $cvvResponseCode
  * @property-read string $id transaction id
  * @property-read string $amount transaction amount
- * @property-read Braintree\Transaction\AddressDetails $billingDetails transaction billing address
+ * @property-read \Braintree_Transaction_AddressDetails $billingDetails transaction billing address
  * @property-read \DateTime $createdAt transaction created DateTime
- * @property-read Braintree\ApplePayCardDetails $applePayCardDetails transaction Apple Pay card info
- * @property-read Braintree\AndroidPayCardDetails $androidPayCardDetails transaction Android Pay card info
- * @property-read Braintree\AmexExpressCheckoutCardDetails $amexExpressCheckoutCardDetails transaction Amex Express Checkout card info
- * @property-read Braintree\CreditCardDetails $creditCardDetails transaction credit card info
- * @property-read Braintree\CoinbaseDetails $coinbaseDetails transaction Coinbase account info
- * @property-read Braintree\MasterpassCardDetails $masterpassCardDetails transaction Masterpass card info
- * @property-read Braintree\PayPalDetails $paypalDetails transaction paypal account info
- * @property-read Braintree\Transaction\CustomerDetails $customerDetails transaction customer info
- * @property-read Braintree\VenmoAccount $venmoAccountDetails transaction Venmo Account info
- * @property-read Braintree\IdealPayment $idealPaymentDetails transaction Ideal Payment info
- * @property-read Braintree\VisaCheckoutCardDetails $visaCheckoutCardDetails transaction Visa Checkout card info
+ * @property-read \Braintree_Transaction_ApplePayCardDetails $applePayCardDetails transaction Apple Pay card info
+ * @property-read \Braintree_Transaction_AndroidPayCardDetails $androidPayCardDetails transaction Android Pay card info
+ * @property-read \Braintree_Transaction_AmexExpressCheckoutCardDetails $amexExpressCheckoutCardDetails transaction Amex Express Checkout card info
+ * @property-read \Braintree_Transaction_CreditCardDetails $creditCardDetails transaction credit card info
+ * @property-read \Braintree_Transaction_CoinbaseDetails $coinbaseDetails transaction Coinbase account info
+ * @property-read \Braintree_Transaction_MasterpassCardDetails $masterpassCardDetails transaction Masterpass card info
+ * @property-read \Braintree_Transaction_PayPalDetails $paypalDetails transaction paypal account info
+ * @property-read \Braintree_Transaction_CustomerDetails $customerDetails transaction customer info
+ * @property-read \Braintree_Transaction_VenmoAccountDetails $venmoAccountDetails transaction Venmo Account info
+ * @property-read \Braintree_Transaction_IdealPaymentDetails $idealPaymentDetails transaction Ideal Payment info
+ * @property-read \Braintree_Transaction_VisaCheckoutCardDetails $visaCheckoutCardDetails transaction Visa Checkout card info
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $processorResponseCode gateway response code
  * @property-read string $additionalProcessorResponse raw response from processor
- * @property-read Braintree\Transaction\AddressDetails $shippingDetails transaction shipping address
+ * @property-read \Braintree_Transaction_AddressDetails $shippingDetails transaction shipping address
  * @property-read string $status transaction status
  * @property-read array  $statusHistory array of StatusDetails objects
  * @property-read string $type transaction type
  * @property-read \DateTime $updatedAt transaction updated DateTime
- * @property-read Braintree\Disbursement $disbursementDetails populated when transaction is disbursed
- * @property-read Braintree\Dispute $disputes populated when transaction is disputed
- * @property-read Braintree\AuthorizationAdjustment $authorizationAdjustments populated when a transaction has authorization adjustments created when submitted for settlement
+ * @property-read \Braintree_Disbursement $disbursementDetails populated when transaction is disbursed
+ * @property-read \Braintree_Dispute $disputes populated when transaction is disputed
+ * @property-read \Braintree_Authorization_Adjustment $authorizationAdjustments populated when a transaction has authorization adjustments created when submitted for settlement
  *
  */
 
