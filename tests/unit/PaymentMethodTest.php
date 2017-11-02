@@ -42,6 +42,13 @@ class PaymentMethodTest extends Setup
                     'customField',
                     'description',
                     'amount',
+                    ['shipping' =>
+                        [
+                            'firstName', 'lastName', 'company', 'countryName',
+                            'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
+                            'extendedAddress', 'locality', 'postalCode', 'region',
+                            'streetAddress'],
+                    ],
                 ]],
             ]],
             ['billingAddress' => Braintree\AddressGateway::createSignature()],
