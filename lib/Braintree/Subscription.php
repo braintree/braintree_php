@@ -63,6 +63,10 @@ class Subscription extends Base
             $this->_set('descriptor', new Descriptor($attributes['descriptor']));
         }
 
+        if (isset($attributes['description'])) {
+            $this->_set('description', $attributes['description']);
+        }
+
         $statusHistory = [];
         if (isset($attributes['statusHistory'])) {
             foreach ($attributes['statusHistory'] AS $history) {

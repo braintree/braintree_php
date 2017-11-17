@@ -177,6 +177,10 @@ class Codes
     const DOCUMENT_UPLOAD_FILE_TYPE_IS_INVALID           = '84903';
     const DOCUMENT_UPLOAD_FILE_IS_MALFORMED_OR_ENCRYPTED = '84904';
 
+    const FAILED_AUTH_ADJUSTMENT_ALLOW_RETRY                    = '95603';
+    const FAILED_AUTH_ADJUSTMENT_HARD_DECLINE                   = '95602';
+    const FINAL_AUTH_SUBMIT_FOR_SETTLEMENT_FOR_DIFFERENT_AMOUNT = '95601';
+
     const INDUSTRY_DATA_INDUSTRY_TYPE_IS_INVALID                         = '93401';
     const INDUSTRY_DATA_LODGING_EMPTY_DATA                               = '93402';
     const INDUSTRY_DATA_LODGING_FOLIO_NUMBER_IS_INVALID                  = '93403';

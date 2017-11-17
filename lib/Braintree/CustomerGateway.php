@@ -158,10 +158,20 @@ class CustomerGateway
             ['options' => [
                 ['paypal' => [
                     'payee_email',
+                    'payeeEmail',
                     'order_id',
+                    'orderId',
                     'custom_field',
+                    'customField',
                     'description',
                     'amount',
+                    ['shipping' =>
+                        [
+                            'firstName', 'lastName', 'company', 'countryName',
+                            'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
+                            'extendedAddress', 'locality', 'postalCode', 'region',
+                            'streetAddress'],
+                    ],
                 ]]
             ]],
         ];
@@ -189,7 +199,17 @@ class CustomerGateway
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
             ['options' => [
-                ['paypal' => ['payee_email']],
+                ['paypal' => [
+                    'payee_email',
+                    'payeeEmail',
+                    ['shipping' =>
+                        [
+                            'firstName', 'lastName', 'company', 'countryName',
+                            'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
+                            'extendedAddress', 'locality', 'postalCode', 'region',
+                            'streetAddress'],
+                    ],
+                ]],
             ]],
         ];
         return $signature;

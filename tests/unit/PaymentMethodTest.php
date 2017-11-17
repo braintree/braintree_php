@@ -35,14 +35,26 @@ class PaymentMethodTest extends Setup
                 'verificationAmount',
                 ['paypal' => [
                     'payee_email',
+                    'payeeEmail',
                     'order_id',
+                    'orderId',
                     'custom_field',
+                    'customField',
                     'description',
                     'amount',
+                    ['shipping' =>
+                        [
+                            'firstName', 'lastName', 'company', 'countryName',
+                            'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
+                            'extendedAddress', 'locality', 'postalCode', 'region',
+                            'streetAddress'],
+                    ],
                 ]],
             ]],
             ['billingAddress' => Braintree\AddressGateway::createSignature()],
-            'customerId'
+            'customerId',
+            'paypalRefreshToken',
+            'paypalVaultWithoutUpgrade'
         ];
         $this->assertEquals($expected, Braintree\PaymentMethodGateway::createSignature());
     }

@@ -1,3 +1,18 @@
+## 3.26.0
+* Add support for upgrading a PayPal future payment refresh token to a billing agreement
+* Address deprecation warnings for create_function with PHP 7 (#193, thanks @chrisdeeming)
+* Add `cardHolderName` to `CreditCardDetails` (#201, thanks @Samistine)
+* Add GrantedPaymentInstrumentUpdate webhook support
+* Allow paypal => options params to be passed in camel case
+* Add ability to create a transaction from a shared nonce
+* Implement JsonSerializable on Braintree Objects for easier logging (#200, thanks @hfmikep)
+* Fix spec to expect PayPal transaction to settle immediately after successful capture
+* Add `options` -> `paypal` -> `shipping` for creating & updating customers as well as creating payment methods
+* Add `options` -> `paypal` -> `description` for creating and updating subscriptions
+* Add `binData` to `PaymentMethodNonce`
+* Add `bin` to `ApplePayCard`
+* Add `deviceDataCaptured` field in `riskData`
+
 ## 3.25.0
 * Add `submitForSettlement` option to `Subscription::retryCharge`
 * Support `eci_indicator` for Transaction sale with raw Apple Pay parameters

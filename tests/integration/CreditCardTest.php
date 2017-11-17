@@ -221,11 +221,14 @@ class CreditCardTest extends Setup
             'customerId' => $customer->id,
             'number' => '4111111111111111',
             'expirationDate' => '05/2011',
-            'options' => ['verifyCard' => true]
+            'options' => ['verifyCard' => true],
+            'deviceSessionId' => 'abc123'
         ]);
         $this->assertTrue($result->success);
         $this->assertNotNull($result->creditCard->verification->riskData);
         $this->assertNotNull($result->creditCard->verification->riskData->decision);
+        $this->assertNull($result->creditCard->verification->riskData->deviceDataCaptured);
+        $this->assertNull($result->creditCard->verification->riskData->id);
     }
 
     public function testCreate_withCardVerificationAndOverriddenAmount()
