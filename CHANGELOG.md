@@ -1,3 +1,6 @@
+## Unreleased
+* Deprecate `OAuthGateway::computeSignature` (TODO FOR RELEASER: update version in `lib/Braintree/OAuthGateway.php`)
+
 ## 3.26.0
 * Add support for upgrading a PayPal future payment refresh token to a billing agreement
 * Address deprecation warnings for create_function with PHP 7 (#193, thanks @chrisdeeming)

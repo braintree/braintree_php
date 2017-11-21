@@ -273,9 +273,6 @@ class OAuthTest extends Setup
 
         $this->assertCount(1, $query['payment_methods']);
         $this->assertEquals('credit_card', $query['payment_methods'][0]);
-
-        $this->assertEquals(64, strlen($query['signature']));
-        $this->assertEquals('SHA256', $query['algorithm']);
     }
 
     public function testBuildConnectUrlWithoutOptionalParams()
