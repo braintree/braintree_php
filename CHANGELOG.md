@@ -1,6 +1,7 @@
 ## Unreleased
 * Deprecate `OAuthGateway::computeSignature` (TODO FOR RELEASER: update version in `lib/Braintree/OAuthGateway.php`)
 * Fix spec to expect PayPal transactions to move to settling rather than settled
+* Fix AchMandate accetedAt attribute parsing
 
 ## 3.26.0
 * Add support for upgrading a PayPal future payment refresh token to a billing agreement
