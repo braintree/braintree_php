@@ -7,9 +7,21 @@ use Test;
 use Test\Setup;
 use Braintree;
 
-class ApplePayTest extends setup
+class ApplePayTest extends Setup
 {
-    private function _buildMerchantGateway()
+    private static $gateway;
+
+    public static function setUpBeforeClass()
+    {
+        self::$gateway = self::_buildMerchantGateway();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        self::$gateway = null;
+    }
+
+    private static function _buildMerchantGateway()
     {
         $gateway = new Braintree\Gateway([
             'clientId' => 'client_id$development$integration_client_id',
@@ -27,97 +39,45 @@ class ApplePayTest extends setup
         ]);
     }
 
-    public function testRegisterDomain()
+    public function testRegisterDomainWithExpectedStubbedResult()
     {
-        $gateway = $this->_buildMerchantGateway();
-        $result = $gateway->applePay()->registerDomain('domain');
+        $result = self::$gateway->applePay()->registerDomain('domain');
         $this->assertEquals(true, $result->success);
-
-        $result = $gateway->applePay()->registeredDomains();
-        $this->assertEquals(true, $result->success);
-        $registeredDomains = $result->applePayOptions->domains;
-        $this->assertEmpty(array_diff(['domain'], $registeredDomains));
     }
 
     public function testValidationErrorWhenRegisteringNoDomain()
     {
-        $gateway = $this->_buildMerchantGateway();
-        $result = $gateway->applePay()->registerDomain('');
+        $result = self::$gateway->applePay()->registerDomain('');
         $this->assertEquals(false, $result->success);
         $this->assertEquals(1, preg_match('/Domain name is required\./', $result->message));
     }
 
-    public function testUnregisterDomain()
+    public function testUnregisterDomainWithExpectedStubbedResult()
     {
         $domain = 'example.com';
-        $gateway = $this->_buildMerchantGateway();
-        $result = $gateway->applePay()->registerDomain($domain);
+        $result = self::$gateway->applePay()->unregisterDomain($domain);
         $this->assertEquals(true, $result->success);
-
-        $result = $gateway->applePay()->unregisterDomain($domain);
-        $this->assertEquals(true, $result->success);
-
-        $result = $gateway->applePay()->registeredDomains();
-        $this->assertEmpty($result->applePayOptions->domains);
     }
 
-    public function testUnregisterNonRegisteredDomain()
-    {
-        $gateway = $this->_buildMerchantGateway();
-        $result = $gateway->applePay()->unregisterDomain('http://non-registered-domain.com');
-        $this->assertEquals(true, $result->success);
-
-        $result = $gateway->applePay()->registeredDomains();
-        $this->assertEmpty($result->applePayOptions->domains);
-    }
-
-    public function testUnregisterDomainWithSpecialCharacters()
+    public function testUnregisterDomainWithSpecialCharactersWithExpectedStubbedResult()
     {
         $domain = 'ex&mple.com';
-        $gateway = $this->_buildMerchantGateway();
-        $result = $gateway->applePay()->registerDomain($domain);
+        $result = self::$gateway->applePay()->unregisterDomain($domain);
         $this->assertEquals(true, $result->success);
-
-        $result = $gateway->applePay()->unregisterDomain($domain);
-        $this->assertEquals(true, $result->success);
-
-        $result = $gateway->applePay()->registeredDomains();
-        $this->assertEmpty($result->applePayOptions->domains);
     }
 
-    public function testUnregisterDomainWithScheme()
+    public function testUnregisterDomainWithSchemeWithExpectedStubbedResult()
     {
         $domain = 'http://example.com';
-        $gateway = $this->_buildMerchantGateway();
-        $result = $gateway->applePay()->registerDomain($domain);
+        $result = self::$gateway->applePay()->unregisterDomain($domain);
         $this->assertEquals(true, $result->success);
-
-        $result = $gateway->applePay()->unregisterDomain($domain);
-        $this->assertEquals(true, $result->success);
-
-        $result = $gateway->applePay()->registeredDomains();
-        $this->assertEmpty($result->applePayOptions->domains);
     }
 
-    public function testRegisteredDomains()
+    public function testRegisteredDomainsWithExpectedStubbedResult()
     {
-        $gateway = $this->_buildMerchantGateway();
-        $result = $gateway->applePay()->registerDomain('example.com');
-        $this->assertEquals(true, $result->success);
-        $result = $gateway->applePay()->registerDomain('example.org');
-        $this->assertEquals(true, $result->success);
-
-        $result = $gateway->applePay()->registeredDomains();
+        $result = self::$gateway->applePay()->registeredDomains();
         $this->assertEquals(true, $result->success);
         $registeredDomains = $result->applePayOptions->domains;
-        $this->assertEmpty(array_diff(['example.com', 'example.org'], $registeredDomains));
-    }
-
-    public function testNoRegisteredDomains()
-    {
-        $gateway = $this->_buildMerchantGateway();
-        $result = $gateway->applePay()->registeredDomains();
-        $this->assertEquals(true, $result->success);
-        $this->assertEmpty($result->applePayOptions->domains);
+        $this->assertEmpty(array_diff(['www.example.com'], $registeredDomains));
     }
 }
