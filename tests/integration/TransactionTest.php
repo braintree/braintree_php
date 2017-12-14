@@ -3469,7 +3469,7 @@ class TransactionTest extends Setup
 
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
-        $this->assertEquals(Braintree\Transaction::SETTLED, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SETTLING, $transaction->status);
     }
 
   public function testCreate_withPayPalHandlesBadUnvalidatedNonces()
