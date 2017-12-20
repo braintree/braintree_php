@@ -220,7 +220,8 @@ class TransactionGateway
                         ]
                     ]
                 ]
-            ]
+            ],
+            ['lineItems' => ['quantity', 'name', 'description', 'kind', 'unitAmount', 'unitTaxAmount', 'totalAmount', 'discountAmount', 'unitOfMeasure', 'productCode', 'commodityCode', 'url']],
         ];
     }
 

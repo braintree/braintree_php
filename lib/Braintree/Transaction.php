@@ -489,6 +489,11 @@ class Transaction extends Base
         return $this->disbursementDetails->isValid();
     }
 
+    /** @return line items */
+    public function lineItems() {
+        return Configuration::gateway()->transactionLineItem()->findAll($this->id);
+    }
+
     /**
      *  factory method: returns an instance of Transaction
      *  to the requesting method, with populated properties

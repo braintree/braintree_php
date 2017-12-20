@@ -1,3 +1,6 @@
+## Unreleased
+* Add support for transaction line items
+
 ## 3.26.1
 * Deprecate `OAuthGateway::computeSignature`
 * Fix spec to expect PayPal transactions to move to settling rather than settled
