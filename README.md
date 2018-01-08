@@ -83,6 +83,14 @@ Version [2.40.0](https://github.com/braintree/braintree_php/releases/tag/2.40.0)
 
  * [Official documentation](https://developers.braintreepayments.com/php/sdk/server/overview)
 
+## Developing (Docker)
+
+The `Makefile` and `Dockerfile` will build an image containing the dependencies and drop you to a terminal where you can run tests.
+
+```
+make
+```
+
 ## Testing
 
 The unit specs can be run by anyone on any system, but the integration specs are meant to be run against a local development server of our gateway code. These integration specs are not meant for public consumption and will likely fail if run on your system. To run unit tests use rake: `rake test:unit`.
