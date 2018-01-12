@@ -1,5 +1,6 @@
 ## Unreleased
 * Add support for transaction line items
+* Add support for tagged evidence in DisputeGateway#addTextEvidence (Beta release)
 
 ## 3.26.1
 * Deprecate `OAuthGateway::computeSignature`

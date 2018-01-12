@@ -119,6 +119,31 @@ class DisputeTest extends Setup
         $this->assertRegExp('/^\w{16,}$/', $evidence->id);
         $this->assertNull($evidence->sentToProcessorAt);
         $this->assertNull($evidence->url);
+        $this->assertNull($evidence->tag);
+        $this->assertNull($evidence->sequenceNumber);
+    }
+
+    public function testAddTaggedTextEvidence_addsTextEvidence()
+    {
+        $disputeId = $this->createSampleDispute()->id;
+
+        $result = $this->gateway->dispute()->addTextEvidence($disputeId, 
+            [
+                'content' => "UPS",
+                'tag' => "CARRIER_NAME",
+                'sequenceNumber' => "1"
+            ]
+        );
+        $evidence = $result->evidence;
+
+        $this->assertTrue($result->success);
+        $this->assertEquals("UPS", $evidence->comment);
+        $this->assertNotNull($evidence->createdAt);
+        $this->assertRegExp('/^\w{16,}$/', $evidence->id);
+        $this->assertNull($evidence->sentToProcessorAt);
+        $this->assertNull($evidence->url);
+        $this->assertEquals("CARRIER_NAME", $evidence->tag);
+        $this->assertEquals("1", $evidence->sequenceNumber);
     }
 
     public function testAddTextEvidence_raisesError_whenDisputeNotFound()

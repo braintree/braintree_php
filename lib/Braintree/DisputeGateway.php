@@ -110,20 +110,41 @@ class DisputeGateway
      * @param string $id
      * @param string $content
      */
-    public function addTextEvidence($id, $content)
+    public function addTextEvidence($id, $contentOrRequest)
     {
-        if (trim($content) == "") {
+        $request = is_array($contentOrRequest) ? $contentOrRequest : ['content' => $contentOrRequest];
+        if (trim($request['content']) == "") {
             throw new InvalidArgumentException('content cannot be blank');
         }
 
         try {
+            $evidence = [
+                'comments' => $request['content'],
+            ];
+
             if (trim($id) == "") {
                 throw new Exception\NotFound();
             }
 
+            if (array_key_exists('tag', $request)) {
+                if (trim($request['tag']) == "") {
+                    throw new InvalidArgumentException('tag cannot be blank');
+                }
+                $evidence['category'] = $request['tag'];
+            }
+
+            if (array_key_exists('sequenceNumber', $request)) {
+                if (trim($request['sequenceNumber']) == "") {
+                    throw new InvalidArgumentException('sequenceNumber cannot be blank');
+                } else if ((string)(int)($request['sequenceNumber']) != $request['sequenceNumber']) {
+                    throw new InvalidArgumentException('sequenceNumber must be an integer');
+                }
+                $evidence['sequenceNumber'] = (int)$request['sequenceNumber'];
+            }
+
             $path = $this->_config->merchantPath() . '/disputes/' . $id . '/evidence';
             $response = $this->_http->post($path, [
-                'comments' => $content
+                'evidence' =>  $evidence
             ]);
 
             if (isset($response['apiErrorResponse'])) {

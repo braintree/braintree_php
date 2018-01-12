@@ -224,6 +224,84 @@ class DisputeTest extends Setup
         Braintree\Dispute::addTextEvidence("disputeId", null);
     }
 
+	public function testAddTextEvidenceBlankRequestContentRaisesValueException()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'content cannot be blank');
+
+        Braintree\Dispute::addTextEvidence("disputeId",
+            [
+                'content' => ' ',
+                'tag' => 'CARRIER_NAME',
+                'sequenceNumber' => '0',
+            ]
+        );
+    }
+
+	public function testAddTextEvidenceNullRequestContentRaisesValueException()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'content cannot be blank');
+
+        Braintree\Dispute::addTextEvidence("disputeId",
+            [
+                'content' => null,
+                'tag' => 'CARRIER_NAME',
+                'sequenceNumber' => '0',
+            ]
+        );
+    }
+
+	public function testAddTextEvidenceBlankRequestTagRaisesValueException()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'tag cannot be blank');
+
+        Braintree\Dispute::addTextEvidence("disputeId",
+            [
+                'content' => 'UPS',
+                'tag' => '',
+                'sequenceNumber' => '0',
+            ]
+        );
+    }
+
+	public function testAddTextEvidenceBlankRequestSequenceNumberRaisesValueException()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'sequenceNumber cannot be blank');
+
+        Braintree\Dispute::addTextEvidence("disputeId",
+            [
+                'content' => 'UPS',
+                'tag' => 'CARRIER_NAME',
+                'sequenceNumber' => '',
+            ]
+        );
+    }
+
+	public function testAddTextEvidenceNonIntegerNumberRequestSequenceNumberRaisesValueException()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'sequenceNumber must be an int');
+
+        Braintree\Dispute::addTextEvidence("disputeId",
+            [
+                'content' => 'UPS',
+                'tag' => 'CARRIER_NAME',
+                'sequenceNumber' => '4.5',
+            ]
+        );
+    }
+
+	public function testAddTextEvidenceNonIntegerStringRequestSequenceNumberRaisesValueException()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'sequenceNumber must be an int');
+
+        Braintree\Dispute::addTextEvidence("disputeId",
+            [
+                'content' => 'UPS',
+                'tag' => 'CARRIER_NAME',
+                'sequenceNumber' => 'Blah',
+            ]
+        );
+    }
+
 	public function testAddFileEvidenceEmptyIdRaisesNotFoundException()
     {
         $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');

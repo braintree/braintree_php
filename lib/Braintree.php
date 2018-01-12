@@ -11,7 +11,6 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 }
 
 class Braintree {
-
     public static function requireDependencies() {
         $requiredExtensions = ['xmlwriter', 'openssl', 'dom', 'hash', 'curl'];
         foreach ($requiredExtensions AS $ext) {
