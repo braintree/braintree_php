@@ -494,6 +494,15 @@ class Codes
     const TRANSACTION_IDEAL_PAYMENTS_CANNOT_BE_VAULTED                                = '915150';
     const TRANSACTION_LINE_ITEMS_EXPECTED                                             = '915158';
     const TRANSACTION_TOO_MANY_LINE_ITEMS                                             = '915157';
+    const TRANSACTION_DISCOUNT_AMOUNT_FORMAT_IS_INVALID                               = '915159';
+    const TRANSACTION_DISCOUNT_AMOUNT_CANNOT_BE_NEGATIVE                              = '915160';
+    const TRANSACTION_DISCOUNT_AMOUNT_IS_TOO_LARGE                                    = '915161';
+    const TRANSACTION_SHIPPING_AMOUNT_FORMAT_IS_INVALID                               = '915162';
+    const TRANSACTION_SHIPPING_AMOUNT_CANNOT_BE_NEGATIVE                              = '915163';
+    const TRANSACTION_SHIPPING_AMOUNT_IS_TOO_LARGE                                    = '915164';
+    const TRANSACTION_SHIPS_FROM_POSTAL_CODE_IS_TOO_LONG                              = '915165';
+    const TRANSACTION_SHIPS_FROM_POSTAL_CODE_IS_INVALID                               = '915166';
+    const TRANSACTION_SHIPS_FROM_POSTAL_CODE_INVALID_CHARACTERS                       = '915167';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_MATCH3_D_SECURE_MERCHANT_ACCOUNT      = '91584';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_MATCH_IDEAL_PAYMENT_MERCHANT_ACCOUNT  = '915143';
     const TRANSACTION_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_MOTO                          = '91558';
