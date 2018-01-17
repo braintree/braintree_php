@@ -2,6 +2,7 @@
 * Add support for Level 3 summary parameters, shippingAmount, discountAmount, and shipsFromPostalCode
 * Add support for transaction line items
 * Add support for tagged evidence in DisputeGateway#addTextEvidence (Beta release)
+* Update https certificate bundle
 
 ## 3.26.1
 * Deprecate `OAuthGateway::computeSignature`
