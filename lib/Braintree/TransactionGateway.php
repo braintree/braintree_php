@@ -130,6 +130,9 @@ class TransactionGateway
             'transactionSource',
             'type',
             'venmoSdkPaymentMethodCode',
+            'shippingAmount',
+            'discountAmount',
+            'shipsFromPostalCode',
             ['riskData' =>
                 ['customerBrowser', 'customerIp', 'customer_browser', 'customer_ip']
             ],
@@ -220,7 +223,8 @@ class TransactionGateway
                         ]
                     ]
                 ]
-            ]
+            ],
+            ['lineItems' => ['quantity', 'name', 'description', 'kind', 'unitAmount', 'unitTaxAmount', 'totalAmount', 'discountAmount', 'unitOfMeasure', 'productCode', 'commodityCode', 'url']],
         ];
     }
 

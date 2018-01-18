@@ -113,7 +113,7 @@ class OAuthGateway
     }
 
     /**
-     * @deprecated since version TODO
+     * @deprecated since version 3.26.1
      */
     public function computeSignature($url)
     {

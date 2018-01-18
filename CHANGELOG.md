@@ -1,7 +1,13 @@
+## 3.27.0
+* Add support for Level 3 summary parameters: `shippingAmount`, `discountAmount`, and `shipsFromPostalCode`
+* Add support for transaction line items
+* Add support for tagged evidence in `DisputeGateway::addTextEvidence` (Beta release)
+* Update https certificate bundle
+
 ## 3.26.1
-* Deprecate `OAuthGateway::computeSignature` (TODO FOR RELEASER: update version in `lib/Braintree/OAuthGateway.php`)
+* Deprecate `OAuthGateway::computeSignature`
 * Fix spec to expect PayPal transactions to move to settling rather than settled
-* Fix AchMandate accetedAt attribute parsing
+* Fix AchMandate acceptedAt attribute parsing
 
 ## 3.26.0
 * Add support for upgrading a PayPal future payment refresh token to a billing agreement

@@ -214,6 +214,15 @@ class Gateway
 
     /**
      *
+     * @return TransactionLineItemGateway
+     */
+    public function transactionLineItem()
+    {
+        return new TransactionLineItemGateway($this);
+    }
+
+    /**
+     *
      * @return TransparentRedirectGateway
      */
     public function transparentRedirect()
