@@ -158,6 +158,20 @@ class WebhookNotificationTest extends Setup
         );
     }
 
+    public function testParsingNullSignatureRaisesError()
+    {
+        $this->setExpectedException('Braintree\Exception\InvalidSignature', 'signature cannot be null');
+
+        $webhookNotification = Braintree\WebhookNotification::parse(null, "payload");
+    }
+
+    public function testParsingNullPayloadRaisesError()
+    {
+        $this->setExpectedException('Braintree\Exception\InvalidSignature', 'payload cannot be null');
+
+        $webhookNotification = Braintree\WebhookNotification::parse("signature", null);
+    }
+
     public function testParsingInvalidCharactersRaisesError()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(

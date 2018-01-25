@@ -12,6 +12,14 @@ class WebhookNotificationGateway
 
     public function parse($signature, $payload)
     {
+        if (is_null($signature)) {
+            throw new Exception\InvalidSignature("signature cannot be null");
+        }
+
+        if (is_null($payload)) {
+            throw new Exception\InvalidSignature("payload cannot be null");
+        }
+
         if (preg_match("/[^A-Za-z0-9+=\/\n]/", $payload) === 1) {
             throw new Exception\InvalidSignature("payload contains illegal characters");
         }
