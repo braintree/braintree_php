@@ -57,6 +57,23 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE, $webhookNotification->kind);
         $this->assertNotNull($webhookNotification->timestamp);
         $this->assertEquals("my_id", $webhookNotification->subscription->id);
+        $this->assertNull($webhookNotification->sourceMerchantId);
+    }
+
+    public function testSampleNotificationContainsSourceMerchantIdIfSpecified()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
+            'my_id',
+            'my_source_merchant_id'
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals($webhookNotification->sourceMerchantId, 'my_source_merchant_id');
     }
 
     public function testParsingModifiedSignatureRaisesError()

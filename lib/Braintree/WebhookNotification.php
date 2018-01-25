@@ -50,6 +50,10 @@ class WebhookNotification extends Base
     {
         $this->_attributes = $attributes;
 
+        if (!isset($attributes['sourceMerchantId'])) {
+            $this->_set('sourceMerchantId', null);
+        }
+
         if (isset($attributes['subject']['apiErrorResponse'])) {
             $wrapperNode = $attributes['subject']['apiErrorResponse'];
         } else {
