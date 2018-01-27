@@ -224,7 +224,7 @@ class TransactionGateway
                     ]
                 ]
             ],
-            ['lineItems' => ['quantity', 'name', 'description', 'kind', 'unitAmount', 'unitTaxAmount', 'totalAmount', 'discountAmount', 'unitOfMeasure', 'productCode', 'commodityCode', 'url']],
+            ['lineItems' => ['quantity', 'name', 'description', 'kind', 'unitAmount', 'unitTaxAmount', 'totalAmount', 'discountAmount', 'taxAmount', 'unitOfMeasure', 'productCode', 'commodityCode', 'url']],
         ];
     }
 

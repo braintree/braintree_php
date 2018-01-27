@@ -547,6 +547,7 @@ class TransactionTest extends Setup
               'unitTaxAmount' => '1.23',
               'unitOfMeasure' => 'gallon',
               'discountAmount' => '1.02',
+              'taxAmount' => '4.50',
               'totalAmount' => '45.15',
               'productCode' => '23434',
               'commodityCode' => '9SAASSD8724',
@@ -568,6 +569,7 @@ class TransactionTest extends Setup
       $this->assertEquals('1.23', $lineItem->unitTaxAmount);
       $this->assertEquals('gallon', $lineItem->unitOfMeasure);
       $this->assertEquals('1.02', $lineItem->discountAmount);
+      $this->assertEquals('4.50', $lineItem->taxAmount);
       $this->assertEquals('45.15', $lineItem->totalAmount);
       $this->assertEquals('23434', $lineItem->productCode);
       $this->assertEquals('9SAASSD8724', $lineItem->commodityCode);
@@ -591,6 +593,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -629,6 +632,7 @@ class TransactionTest extends Setup
       $this->assertEquals('45.1232', $lineItem1->unitAmount);
       $this->assertEquals('gallon', $lineItem1->unitOfMeasure);
       $this->assertEquals('1.02', $lineItem1->discountAmount);
+      $this->assertEquals('4.50', $lineItem1->taxAmount);
       $this->assertEquals('45.15', $lineItem1->totalAmount);
       $this->assertEquals('23434', $lineItem1->productCode);
       $this->assertEquals('9SAASSD8724', $lineItem1->commodityCode);
@@ -651,6 +655,7 @@ class TransactionTest extends Setup
       $this->assertEquals('gallon', $lineItem2->unitOfMeasure);
       $this->assertEquals('45.15', $lineItem2->totalAmount);
       $this->assertEquals(null, $lineItem2->discountAmount);
+      $this->assertEquals(null, $lineItem2->taxAmount);
       $this->assertEquals(null, $lineItem2->productCode);
       $this->assertEquals(null, $lineItem2->commodityCode);
   }
@@ -671,6 +676,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
 				  'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -682,6 +688,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '0123456789123',
@@ -712,6 +719,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -724,6 +732,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -754,6 +763,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -765,6 +775,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '2147483648',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -795,6 +806,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -806,6 +818,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '0',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -817,6 +830,99 @@ class TransactionTest extends Setup
       $this->assertEquals(
           Braintree\Error\Codes::TRANSACTION_LINE_ITEM_DISCOUNT_AMOUNT_MUST_BE_GREATER_THAN_ZERO,
           $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index1')->onAttribute('discountAmount')[0]->code
+      );
+  }
+
+  public function testSale_withLineItemsValidationErrorTaxAmountFormatIsInvalid()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '35.05',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2009',
+          ],
+          'lineItems' => [
+              [
+                  'quantity' => '1.0232',
+                  'name' => 'Name #1',
+                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'unitAmount' => '45.1232',
+                  'unitOfMeasure' => 'gallon',
+                  'discountAmount' => '1.02',
+                  'taxAmount' => '4.511',
+                  'totalAmount' => '45.15',
+                  'productCode' => '23434',
+                  'commodityCode' => '9SAASSD8724',
+              ],
+          ],
+      ]);
+
+      $this->assertFalse($result->success);
+      $this->assertEquals(
+          Braintree\Error\Codes::TRANSACTION_LINE_ITEM_TAX_AMOUNT_FORMAT_IS_INVALID,
+          $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index0')->onAttribute('taxAmount')[0]->code
+      );
+  }
+
+  public function testSale_withLineItemsValidationErrorTaxAmountIsTooLarge()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '35.05',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2009',
+          ],
+          'lineItems' => [
+              [
+                  'quantity' => '1.0232',
+                  'name' => 'Name #1',
+                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'unitAmount' => '45.1232',
+                  'unitOfMeasure' => 'gallon',
+                  'discountAmount' => '1.02',
+                  'taxAmount' => '2147483648',
+                  'totalAmount' => '45.15',
+                  'productCode' => '23434',
+                  'commodityCode' => '9SAASSD8724',
+              ],
+          ],
+      ]);
+
+      $this->assertFalse($result->success);
+      $this->assertEquals(
+          Braintree\Error\Codes::TRANSACTION_LINE_ITEM_TAX_AMOUNT_IS_TOO_LARGE,
+          $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index0')->onAttribute('taxAmount')[0]->code
+      );
+  }
+
+  public function testSale_withLineItemsValidationErrorTaxAmountMustBeGreaterThanZero()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '35.05',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2009',
+          ],
+          'lineItems' => [
+              [
+                  'quantity' => '1.0232',
+                  'name' => 'Name #1',
+                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'unitAmount' => '45.1232',
+                  'unitOfMeasure' => 'gallon',
+                  'discountAmount' => '1.02',
+                  'taxAmount' => '0',
+                  'totalAmount' => '45.15',
+                  'productCode' => '23434',
+                  'commodityCode' => '9SAASSD8724',
+              ],
+          ],
+      ]);
+
+      $this->assertFalse($result->success);
+      $this->assertEquals(
+          Braintree\Error\Codes::TRANSACTION_LINE_ITEM_TAX_AMOUNT_MUST_BE_GREATER_THAN_ZERO,
+          $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index0')->onAttribute('taxAmount')[0]->code
       );
   }
 
@@ -836,6 +942,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -846,6 +953,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -876,6 +984,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -886,6 +995,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -916,6 +1026,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -927,6 +1038,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -957,6 +1069,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -968,6 +1081,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '123456789012345678901234567890123456',
                   'commodityCode' => '9SAASSD8724',
@@ -998,6 +1112,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1008,6 +1123,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1038,6 +1154,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1049,6 +1166,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1079,6 +1197,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1090,6 +1209,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
               ]
@@ -1119,6 +1239,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1130,6 +1251,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '2147483648',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1160,6 +1282,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1171,6 +1294,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '-2',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1201,6 +1325,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1211,6 +1336,7 @@ class TransactionTest extends Setup
                   'kind' => Braintree\Transaction\LineItem::CREDIT,
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1241,6 +1367,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1252,6 +1379,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '2147483648',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1282,6 +1410,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1293,6 +1422,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '-2',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1323,6 +1453,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1334,6 +1465,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => '1234567890123',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1364,6 +1496,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1376,6 +1509,7 @@ class TransactionTest extends Setup
                   'unitTaxAmount' => '2.012',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1407,6 +1541,7 @@ class TransactionTest extends Setup
                   'unitTaxAmount' => '1.23',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1419,6 +1554,7 @@ class TransactionTest extends Setup
                   'unitTaxAmount' => '2147483648',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1449,6 +1585,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -1461,6 +1598,7 @@ class TransactionTest extends Setup
                   'unitTaxAmount' => '-1.23',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',

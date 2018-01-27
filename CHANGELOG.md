@@ -1,3 +1,6 @@
+## Unreleased
+* Add support for tax_amount field on transaction line_items
+
 ## 3.27.0
 * Add support for Level 3 summary parameters: `shippingAmount`, `discountAmount`, and `shipsFromPostalCode`
 * Add support for transaction line items
