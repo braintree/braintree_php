@@ -3,9 +3,10 @@ namespace Braintree;
 
 class WebhookTesting
 {
-    public static function sampleNotification($kind, $id)
+    public static function sampleNotification($kind, $id, $sourceMerchantId = null)
     {
-        $payload = base64_encode(self::_sampleXml($kind, $id)) . "\n";
+        $xml = self::_sampleXml($kind, $id, $sourceMerchantId);
+        $payload = base64_encode($xml) . "\n";
         $signature = Configuration::publicKey() . "|" . Digest::hexDigestSha1(Configuration::privateKey(), $payload);
 
         return [
@@ -14,7 +15,7 @@ class WebhookTesting
         ];
     }
 
-    private static function _sampleXml($kind, $id)
+    private static function _sampleXml($kind, $id, $sourceMerchantId)
     {
         switch ($kind) {
             case WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED:
@@ -85,10 +86,17 @@ class WebhookTesting
                 break;
         }
         $timestamp = self::_timestamp();
+
+        $sourceMerchantIdXml = '';
+        if (!is_null($sourceMerchantId)) {
+            $sourceMerchantIdXml = "<source-merchant-id>{$sourceMerchantId}</source-merchant-id>";
+        }
+
         return "
         <notification>
             <timestamp type=\"datetime\">{$timestamp}</timestamp>
             <kind>{$kind}</kind>
+            {$sourceMerchantIdXml}
             <subject>{$subjectXml}</subject>
         </notification>
         ";
