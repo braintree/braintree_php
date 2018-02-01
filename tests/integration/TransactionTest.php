@@ -530,6 +530,42 @@ class TransactionTest extends Setup
       $this->assertEquals('45.15', $lineItem->totalAmount);
   }
 
+  public function testSale_withLineItemsSingleZeroAmounts()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '35.05',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2009',
+          ],
+          'lineItems' => [[
+              'quantity' => '1.0232',
+              'name' => 'Name #1',
+              'kind' => Braintree\Transaction\LineItem::DEBIT,
+              'unitAmount' => '45.1232',
+              'totalAmount' => '45.15',
+              'discountAmount' => '0',
+              'taxAmount' => '0',
+              'unitTaxAmount' => '0',
+          ]]
+      ]);
+
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+      $lineItems = $transaction->lineItems();
+      $this->assertEquals(1, sizeof($lineItems));
+
+      $lineItem = $lineItems[0];
+      $this->assertEquals('1.0232', $lineItem->quantity);
+      $this->assertEquals('Name #1', $lineItem->name);
+      $this->assertEquals(Braintree\Transaction\LineItem::DEBIT, $lineItem->kind);
+      $this->assertEquals('45.1232', $lineItem->unitAmount);
+      $this->assertEquals('45.15', $lineItem->totalAmount);
+      $this->assertEquals('0', $lineItem->discountAmount);
+      $this->assertEquals('0', $lineItem->taxAmount);
+      $this->assertEquals('0', $lineItem->unitTaxAmount);
+  }
+
   public function testSale_withLineItemsSingle()
   {
       $result = Braintree\Transaction::sale([
@@ -790,7 +826,7 @@ class TransactionTest extends Setup
       );
   }
 
-  public function testSale_withLineItemsValidationErrorDiscountAmountMustBeGreaterThanZero()
+  public function testSale_withLineItemsValidationErrorDiscountAmountCannotBeNegative()
   {
       $result = Braintree\Transaction::sale([
           'amount' => '35.05',
@@ -817,7 +853,7 @@ class TransactionTest extends Setup
                   'kind' => Braintree\Transaction\LineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
-                  'discountAmount' => '0',
+                  'discountAmount' => '-2',
                   'taxAmount' => '4.50',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
@@ -828,7 +864,7 @@ class TransactionTest extends Setup
 
       $this->assertFalse($result->success);
       $this->assertEquals(
-          Braintree\Error\Codes::TRANSACTION_LINE_ITEM_DISCOUNT_AMOUNT_MUST_BE_GREATER_THAN_ZERO,
+          Braintree\Error\Codes::TRANSACTION_LINE_ITEM_DISCOUNT_AMOUNT_CANNOT_BE_NEGATIVE,
           $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index1')->onAttribute('discountAmount')[0]->code
       );
   }
@@ -895,7 +931,7 @@ class TransactionTest extends Setup
       );
   }
 
-  public function testSale_withLineItemsValidationErrorTaxAmountMustBeGreaterThanZero()
+  public function testSale_withLineItemsValidationErrorTaxAmountCannotBeNegative()
   {
       $result = Braintree\Transaction::sale([
           'amount' => '35.05',
@@ -911,7 +947,7 @@ class TransactionTest extends Setup
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
-                  'taxAmount' => '0',
+                  'taxAmount' => '-2',
                   'totalAmount' => '45.15',
                   'productCode' => '23434',
                   'commodityCode' => '9SAASSD8724',
@@ -921,7 +957,7 @@ class TransactionTest extends Setup
 
       $this->assertFalse($result->success);
       $this->assertEquals(
-          Braintree\Error\Codes::TRANSACTION_LINE_ITEM_TAX_AMOUNT_MUST_BE_GREATER_THAN_ZERO,
+          Braintree\Error\Codes::TRANSACTION_LINE_ITEM_TAX_AMOUNT_CANNOT_BE_NEGATIVE,
           $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index0')->onAttribute('taxAmount')[0]->code
       );
   }
@@ -1569,7 +1605,7 @@ class TransactionTest extends Setup
       );
   }
 
-  public function testSale_withLineItemsValidationErrorUnitTaxAmountMustBeGreaterThanZero()
+  public function testSale_withLineItemsValidationErrorUnitTaxAmountCannotBeNegative()
   {
       $result = Braintree\Transaction::sale([
           'amount' => '35.05',
@@ -1608,7 +1644,7 @@ class TransactionTest extends Setup
 
       $this->assertFalse($result->success);
       $this->assertEquals(
-          Braintree\Error\Codes::TRANSACTION_LINE_ITEM_UNIT_TAX_AMOUNT_MUST_BE_GREATER_THAN_ZERO,
+          Braintree\Error\Codes::TRANSACTION_LINE_ITEM_UNIT_TAX_AMOUNT_CANNOT_BE_NEGATIVE,
           $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index1')->onAttribute('unitTaxAmount')[0]->code
       );
   }
