@@ -40,7 +40,7 @@ class TransactionLineItemGateway
             $lineItems = [];
             if (isset($response['lineItems'])) {
                 foreach ($response['lineItems'] AS $lineItem) {
-                    $lineItems[] = new Transaction\LineItem($lineItem);
+                    $lineItems[] = new TransactionLineItem($lineItem);
                 }
             }
             return $lineItems;

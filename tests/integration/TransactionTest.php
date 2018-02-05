@@ -511,7 +511,7 @@ class TransactionTest extends Setup
           'lineItems' => [[
               'quantity' => '1.0232',
               'name' => 'Name #1',
-              'kind' => Braintree\Transaction\LineItem::DEBIT,
+              'kind' => Braintree\TransactionLineItem::DEBIT,
               'unitAmount' => '45.1232',
               'totalAmount' => '45.15',
           ]]
@@ -525,7 +525,7 @@ class TransactionTest extends Setup
       $lineItem = $lineItems[0];
       $this->assertEquals('1.0232', $lineItem->quantity);
       $this->assertEquals('Name #1', $lineItem->name);
-      $this->assertEquals(Braintree\Transaction\LineItem::DEBIT, $lineItem->kind);
+      $this->assertEquals(Braintree\TransactionLineItem::DEBIT, $lineItem->kind);
       $this->assertEquals('45.1232', $lineItem->unitAmount);
       $this->assertEquals('45.15', $lineItem->totalAmount);
   }
@@ -541,7 +541,7 @@ class TransactionTest extends Setup
           'lineItems' => [[
               'quantity' => '1.0232',
               'name' => 'Name #1',
-              'kind' => Braintree\Transaction\LineItem::DEBIT,
+              'kind' => Braintree\TransactionLineItem::DEBIT,
               'unitAmount' => '45.1232',
               'totalAmount' => '45.15',
               'discountAmount' => '0',
@@ -558,7 +558,7 @@ class TransactionTest extends Setup
       $lineItem = $lineItems[0];
       $this->assertEquals('1.0232', $lineItem->quantity);
       $this->assertEquals('Name #1', $lineItem->name);
-      $this->assertEquals(Braintree\Transaction\LineItem::DEBIT, $lineItem->kind);
+      $this->assertEquals(Braintree\TransactionLineItem::DEBIT, $lineItem->kind);
       $this->assertEquals('45.1232', $lineItem->unitAmount);
       $this->assertEquals('45.15', $lineItem->totalAmount);
       $this->assertEquals('0', $lineItem->discountAmount);
@@ -578,7 +578,7 @@ class TransactionTest extends Setup
               'quantity' => '1.0232',
               'name' => 'Name #1',
               'description' => 'Description #1',
-              'kind' => Braintree\Transaction\LineItem::DEBIT,
+              'kind' => Braintree\TransactionLineItem::DEBIT,
               'unitAmount' => '45.1232',
               'unitTaxAmount' => '1.23',
               'unitOfMeasure' => 'gallon',
@@ -600,7 +600,7 @@ class TransactionTest extends Setup
       $this->assertEquals('1.0232', $lineItem->quantity);
       $this->assertEquals('Name #1', $lineItem->name);
       $this->assertEquals('Description #1', $lineItem->description);
-      $this->assertEquals(Braintree\Transaction\LineItem::DEBIT, $lineItem->kind);
+      $this->assertEquals(Braintree\TransactionLineItem::DEBIT, $lineItem->kind);
       $this->assertEquals('45.1232', $lineItem->unitAmount);
       $this->assertEquals('1.23', $lineItem->unitTaxAmount);
       $this->assertEquals('gallon', $lineItem->unitOfMeasure);
@@ -625,7 +625,7 @@ class TransactionTest extends Setup
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
                   'description' => 'Description #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -638,7 +638,7 @@ class TransactionTest extends Setup
                   'quantity' => '2.02',
                   'name' => 'Name #2',
                   'description' => 'Description #2',
-                  'kind' => Braintree\Transaction\LineItem::CREDIT,
+                  'kind' => Braintree\TransactionLineItem::CREDIT,
                   'unitAmount' => '5',
                   'unitOfMeasure' => 'gallon',
                   'totalAmount' => '45.15',
@@ -664,7 +664,7 @@ class TransactionTest extends Setup
       $this->assertEquals('1.0232', $lineItem1->quantity);
       $this->assertEquals('Name #1', $lineItem1->name);
       $this->assertEquals('Description #1', $lineItem1->description);
-      $this->assertEquals(Braintree\Transaction\LineItem::DEBIT, $lineItem1->kind);
+      $this->assertEquals(Braintree\TransactionLineItem::DEBIT, $lineItem1->kind);
       $this->assertEquals('45.1232', $lineItem1->unitAmount);
       $this->assertEquals('gallon', $lineItem1->unitOfMeasure);
       $this->assertEquals('1.02', $lineItem1->discountAmount);
@@ -686,7 +686,7 @@ class TransactionTest extends Setup
       $this->assertEquals('2.02', $lineItem2->quantity);
       $this->assertEquals('Name #2', $lineItem2->name);
       $this->assertEquals('Description #2', $lineItem2->description);
-      $this->assertEquals(Braintree\Transaction\LineItem::CREDIT, $lineItem2->kind);
+      $this->assertEquals(Braintree\TransactionLineItem::CREDIT, $lineItem2->kind);
       $this->assertEquals('5', $lineItem2->unitAmount);
       $this->assertEquals('gallon', $lineItem2->unitOfMeasure);
       $this->assertEquals('45.15', $lineItem2->totalAmount);
@@ -708,7 +708,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -720,7 +720,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -751,7 +751,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -764,7 +764,7 @@ class TransactionTest extends Setup
                   'quantity' => '1.0232',
                   'name' => 'Name #2',
                   'description' => "This is a line item description which is far too long. Like, way too long to be practical. We don't like how long this line item description is.",
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -795,7 +795,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -807,7 +807,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '2147483648',
@@ -838,7 +838,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -850,7 +850,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '-2',
@@ -881,7 +881,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -912,7 +912,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -943,7 +943,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -974,7 +974,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1016,7 +1016,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1027,7 +1027,7 @@ class TransactionTest extends Setup
               ],
               [
                   'quantity' => '1.0232',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1058,7 +1058,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1070,7 +1070,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => '123456789012345678901234567890123456',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1101,7 +1101,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1113,7 +1113,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::CREDIT,
+                  'kind' => Braintree\TransactionLineItem::CREDIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1144,7 +1144,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1155,7 +1155,7 @@ class TransactionTest extends Setup
               ],
               [
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::CREDIT,
+                  'kind' => Braintree\TransactionLineItem::CREDIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1186,7 +1186,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1198,7 +1198,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '2147483648',
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::CREDIT,
+                  'kind' => Braintree\TransactionLineItem::CREDIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1229,7 +1229,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1241,7 +1241,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::CREDIT,
+                  'kind' => Braintree\TransactionLineItem::CREDIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1271,7 +1271,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1283,7 +1283,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::CREDIT,
+                  'kind' => Braintree\TransactionLineItem::CREDIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1314,7 +1314,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1326,7 +1326,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::CREDIT,
+                  'kind' => Braintree\TransactionLineItem::CREDIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1357,7 +1357,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1369,7 +1369,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::CREDIT,
+                  'kind' => Braintree\TransactionLineItem::CREDIT,
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
                   'taxAmount' => '4.50',
@@ -1399,7 +1399,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #1',
-                  'kind' => Braintree\Transaction\LineItem::DEBIT,
+                  'kind' => Braintree\TransactionLineItem::DEBIT,
                   'unitAmount' => '45.1232',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
@@ -1411,7 +1411,7 @@ class TransactionTest extends Setup
               [
                   'quantity' => '1.0232',
                   'name' => 'Name #2',
-                  'kind' => Braintree\Transaction\LineItem::CREDIT,
+                  'kind' => Braintree\TransactionLineItem::CREDIT,
                   'unitAmount' => '2147483648',
                   'unitOfMeasure' => 'gallon',
                   'discountAmount' => '1.02',
