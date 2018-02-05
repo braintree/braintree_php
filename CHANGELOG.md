@@ -4,6 +4,7 @@
 * Deprecate TRANSACTION_LINE_ITEM_DISCOUNT_AMOUNT_MUST_BE_GREATER_THAN_ZERO error in favor of TRANSACTION_LINE_ITEM_DISCOUNT_AMOUNT_CANNOT_BE_NEGATIVE.
 * Deprecate TRANSACTION_LINE_ITEM_UNIT_TAX_AMOUNT_MUST_BE_GREATER_THAN_ZERO error in favor of TRANSACTION_LINE_ITEM_UNIT_TAX_AMOUNT_CANNOT_BE_NEGATIVE.
 * Deprecate Braintree\Transaction\LineItem in favor of Braintree\TransactionLineItem.
+* Add `findAll` static method to TransactionLineItem class
 
 ## 3.27.0
 * Add support for Level 3 summary parameters: `shippingAmount`, `discountAmount`, and `shipsFromPostalCode`

@@ -43,6 +43,11 @@ class TransactionLineItem extends Instance
     {
         parent::__construct($attributes);
     }
+
+    public static function findAll($transactionId)
+    {
+        return Configuration::gateway()->transactionLineItem()->findAll($transactionId);
+    }
 }
 class_alias('Braintree\TransactionLineItem', 'Braintree_TransactionLineItem');
 class_alias('Braintree\TransactionLineItem', 'Braintree\Transaction\LineItem');
