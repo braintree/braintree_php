@@ -1947,6 +1947,22 @@ class TransactionTest extends Setup
         $this->assertTrue(intval($amexExpressCheckoutCardDetails->expirationYear) > 0);
     }
 
+    public function testCreateTransactionUsingFakeVenmoAccountNonceAndProfileId()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '47.00',
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'paymentMethodNonce' => Braintree\Test\Nonces::$venmoAccount,
+            'options' => [
+                'venmo' => [
+                    'profile_id' => "integration_venmo_merchant_public_id"
+                ]
+            ]
+        ));
+
+        $this->assertTrue($result->success);
+    }
+
     public function testCreateTransactionUsingFakeVenmoAccountNonce()
     {
         $result = Braintree\Transaction::sale(array(
