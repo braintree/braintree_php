@@ -1891,9 +1891,9 @@ class TransactionTest extends Setup
         $this->assertNull($androidPayCardDetails->token);
         $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCardDetails->virtualCardType);
         $this->assertSame("1117", $androidPayCardDetails->virtualCardLast4);
-        $this->assertSame(Braintree\CreditCard::VISA, $androidPayCardDetails->sourceCardType);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCardDetails->sourceCardType);
         $this->assertSame("1111", $androidPayCardDetails->sourceCardLast4);
-        $this->assertSame("Visa 1111", $androidPayCardDetails->sourceDescription);
+        $this->assertSame("Discover 1111", $androidPayCardDetails->sourceDescription);
         $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
         $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);

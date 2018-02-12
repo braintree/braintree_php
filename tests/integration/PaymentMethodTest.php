@@ -102,9 +102,9 @@ class PaymentMethodTest extends Setup
         $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCard->cardType);
         $this->assertSame("1117", $androidPayCard->virtualCardLast4);
         $this->assertSame("1117", $androidPayCard->last4);
-        $this->assertSame(Braintree\CreditCard::VISA, $androidPayCard->sourceCardType);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCard->sourceCardType);
         $this->assertSame("1111", $androidPayCard->sourceCardLast4);
-        $this->assertSame("Visa 1111", $androidPayCard->sourceDescription);
+        $this->assertSame("Discover 1111", $androidPayCard->sourceDescription);
         $this->assertTrue($androidPayCard->default);
         $this->assertContains('android_pay', $androidPayCard->imageUrl);
         $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
@@ -940,7 +940,7 @@ class PaymentMethodTest extends Setup
         $this->assertInstanceOf('Braintree\AndroidPayCard', $foundAndroidPayCard);
         $this->assertSame(Braintree\CreditCard::DISCOVER, $foundAndroidPayCard->virtualCardType);
         $this->assertSame("1117", $foundAndroidPayCard->virtualCardLast4);
-        $this->assertSame(Braintree\CreditCard::VISA, $foundAndroidPayCard->sourceCardType);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $foundAndroidPayCard->sourceCardType);
         $this->assertSame("1111", $foundAndroidPayCard->sourceCardLast4);
         $this->assertSame($customer->id, $foundAndroidPayCard->customerId);
         $this->assertTrue($foundAndroidPayCard->default);
