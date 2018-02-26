@@ -91,31 +91,6 @@ class HttpClientApi extends Braintree\Http
         }
     }
 
-    public function nonceForNewEuropeanBankAccount($options) {
-        $clientTokenOptions = [
-            'sepaMandateType' => 'business',
-            'sepaMandateAcceptanceLocation' => 'Rostock, Germany'
-        ];
-
-        if (array_key_exists("customerId", $options)) {
-            $clientTokenOptions["customerId"] = $options["customerId"];
-            unset($options["customerId"]);
-        }
-
-        $gateway = new Braintree\Gateway($this->_config);
-
-        $clientToken = json_decode(base64_decode($gateway->clientToken()->generate($clientTokenOptions)));
-        $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
-
-        $response = $this->post('/client_api/v1/sepa_mandates/', json_encode($options));
-        if ($response["status"] == 201 || $response["status"] == 202) {
-            $body = json_decode($response["body"]);
-            return $body->europeBankAccounts[0]->nonce;
-        } else {
-            throw new Exception(print_r($response, true));
-        }
-    }
-
     public function nonceForPayPalAccount($options) {
         $clientToken = json_decode(Test\Helper::decodedClientToken());
         $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
