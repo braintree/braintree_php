@@ -24,12 +24,25 @@ The following PHP extensions are required:
 
 require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
 
-Braintree_Configuration::environment('sandbox');
-Braintree_Configuration::merchantId('your_merchant_id');
-Braintree_Configuration::publicKey('your_public_key');
-Braintree_Configuration::privateKey('your_private_key');
+// Instantiate a Braintree Gateway either like this:
+$gateway = new Braintree_Gateway([
+    'environment' => 'sandbox'
+    'merchantId' => 'your_merchant_id',
+    'publicKey' => 'your_public_key',
+    'privateKey' => 'your_private_key'
+]);
 
-$result = Braintree_Transaction::sale([
+// or like this:
+$config = new Braintree_Configuration([
+    'environment' => 'sandbox'
+    'merchantId' => 'your_merchant_id',
+    'publicKey' => 'your_public_key',
+    'privateKey' => 'your_private_key'
+]);
+$gateway = new Braintree\Gateway($config)
+
+// Then, create a transaction:
+$result = $gateway->transaction()->sale([
     'amount' => '1000.00',
     'paymentMethodNonce' => 'nonceFromTheClient',
     'options' => [ 'submitForSettlement' => true ]
@@ -51,10 +64,22 @@ Both PSR-0 and PSR-4 namespacing are supported. If you are using composer with `
 `--optimize-autoloader` enabled, you'll have to reference classes using PSR-4 namespacing:
 
 ```php
-Braintree\Configuration::environment('sandbox');
-Braintree\Configuration::merchantId('your_merchant_id');
-Braintree\Configuration::publicKey('your_public_key');
-Braintree\Configuration::privateKey('your_private_key');
+$gateway = new Braintree\Gateway([
+    'environment' => 'sandbox'
+    'merchantId' => 'your_merchant_id',
+    'publicKey' => 'your_public_key',
+    'privateKey' => 'your_private_key'
+]);
+
+// or
+
+$config = new Braintree\Configuration([
+    'environment' => 'sandbox'
+    'merchantId' => 'your_merchant_id',
+    'publicKey' => 'your_public_key',
+    'privateKey' => 'your_private_key'
+]);
+$gateway = new Braintree\Gateway($config)
 ```
 
 ## HHVM Support
@@ -72,7 +97,11 @@ extension = "curl.so"
 and turn off accepting gzip responses:
 
 ```php
-Braintree\Configuration::acceptGzipEncoding(false);
+$gateway = new Braintree\Gateway([
+    'environment' => 'sandbox'
+    // ...
+    'acceptGzipEncoding' => false,
+]);
 ```
 
 ## Legacy PHP Support

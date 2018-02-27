@@ -59,10 +59,14 @@ class ConfigurationTest extends Setup
             'merchantId' => 'sandbox_merchant_id',
             'publicKey' => 'sandbox_public_key',
             'privateKey' => 'sandbox_private_key',
+            'timeout' => 120,
+            'acceptGzipEncoding' => false,
         ]);
 
         $this->assertEquals('sandbox', $config->getEnvironment());
         $this->assertEquals('sandbox_merchant_id', $config->getMerchantId());
+        $this->assertEquals(120, $config->getTimeout());
+        $this->assertFalse($config->getAcceptGzipEncoding());
     }
 
     public function testSetValidEnvironment()

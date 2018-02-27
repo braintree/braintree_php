@@ -1,5 +1,6 @@
 ## Unreleased
 * Add support for `association_filter_id` in `Customer#find`
+* Add support for setting `timeout` and `acceptGzipEncoding` values on construction of `Configuration` instances
 
 ## 3.28.0
 * Add support for Level 3 summary parameters: `shippingAmount`, `discountAmount`, and `shipsFromPostalCode`
