@@ -1,4 +1,4 @@
-## Unreleased
+## 3.29.0
 * Add support for `association_filter_id` in `Customer#find`
 * Add support for setting `timeout` and `acceptGzipEncoding` values on construction of `Configuration` instances
 
