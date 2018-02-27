@@ -199,6 +199,11 @@ class TransactionGateway
                             'currencyAmount',
                             'currencyIsoCode'
                         ]
+                    ],
+                    ['venmo' =>
+                        [
+                            'profile_id'
+                        ]
                     ]
                 ],
             ],

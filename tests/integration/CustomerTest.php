@@ -755,6 +755,97 @@ class CustomerTest extends Setup
         $this->assertEquals('http://example.com', $customer->website);
     }
 
+    public function test_findCustomerWithAllFilterableAssociationsFilteredOut()
+    {
+        $result = Braintree\Customer::create([
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com',
+            'customFields' => [
+                'storeMe' => 'custom value'
+            ]
+        ]);
+        $creditCard = Braintree\CreditCard::create([
+            'customerId' => $result->customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddress' => [
+                'firstName' => 'Drew',
+                'lastName' => 'Smith',
+                'company' => 'Smith Co.',
+                'streetAddress' => '1 E Main St',
+                'locality' => 'Chicago',
+                'region' => 'IL',
+                'postalCode' => '60622',
+                'countryName' => 'United States of America'
+            ]
+        ]);
+        $id = strval(rand());
+        $subscriptions = Braintree\Subscription::create([
+            'id' => $id,
+            'paymentMethodToken' => $creditCard->creditCard->token,
+            'planId' => 'integration_trialless_plan',
+            'price' => '1.00'
+        ]);
+
+        $customer = Braintree\Customer::find($result->customer->id, "customernoassociations");
+        $this->assertEquals(0, count($customer->creditCards));
+        $this->assertEquals(0, count($customer->paymentMethods));
+        $this->assertEquals(0, count($customer->addresses));
+        $this->assertEquals(0, count($customer->customFields));
+    }
+
+    public function test_findCustomerWithNestedFilterableAssociationsFilteredOut()
+    {
+        $result = Braintree\Customer::create([
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com',
+            'customFields' => [
+                'storeMe' => 'custom value'
+            ]
+        ]);
+        $creditCard = Braintree\CreditCard::create([
+            'customerId' => $result->customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddress' => [
+                'firstName' => 'Drew',
+                'lastName' => 'Smith',
+                'company' => 'Smith Co.',
+                'streetAddress' => '1 E Main St',
+                'locality' => 'Chicago',
+                'region' => 'IL',
+                'postalCode' => '60622',
+                'countryName' => 'United States of America'
+            ]
+        ]);
+        $id = strval(rand());
+        $subscriptions = Braintree\Subscription::create([
+            'id' => $id,
+            'paymentMethodToken' => $creditCard->creditCard->token,
+            'planId' => 'integration_trialless_plan',
+            'price' => '1.00'
+        ]);
+
+        $customer = Braintree\Customer::find($result->customer->id, "customertoplevelassociations");
+
+        $this->assertEquals(1, count($customer->creditCards));
+        $this->assertEquals(0, count($customer->creditCards[0]->subscriptions));
+        $this->assertEquals(1, count($customer->paymentMethods));
+        $this->assertEquals(0, count($customer->paymentMethods[0]->subscriptions));
+        $this->assertEquals(1, count($customer->addresses));
+        $this->assertEquals(1, count($customer->customFields));
+    }
+
     public function test_findUsBankAccountGivenPaymentMethodToken()
     {
         $nonce = Test\Helper::generateValidUsBankAccountNonce();
