@@ -225,7 +225,7 @@ class CustomerGateway
      * @return Customer|boolean The customer object or false if the request fails.
      * @throws Exception\NotFound
      */
-    public function find($id, $associationFilterId)
+    public function find($id, $associationFilterId = null)
     {
         $this->_validateId($id);
         try {
