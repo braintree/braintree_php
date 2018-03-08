@@ -557,6 +557,22 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("abc123", $webhookNotification->partnerMerchant->partnerMerchantId);
     }
 
+    public function testBuildsASampleNotificationForOAuthAccessRevokedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::OAUTH_ACCESS_REVOKED,
+            'my_id'
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::OAUTH_ACCESS_REVOKED, $webhookNotification->kind);
+        $this->assertEquals('abc123', $webhookNotification->oauthAccessRevocation->merchantId);
+    }
+
     public function testBuildsASampleNotificationForConnectedMerchantStatusTransitionedWebhook()
     {
         Braintree\Configuration::reset();
