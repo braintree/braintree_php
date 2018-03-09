@@ -186,6 +186,17 @@ class PaymentMethodTest extends Setup
         $this->assertSame("Venmo-Joe-1", $venmoAccount->venmoUserId);
     }
 
+    public function testCreate_fromFakeEuropeBankAccountNonce()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $this->setExpectedException('Braintree\Exception\ServerError');
+
+        $result = Braintree\PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$europe
+        ));
+    }
+
     public function testCreate_fromUnvalidatedCreditCardNonce()
     {
         $customer = Braintree\Customer::createNoValidate();
