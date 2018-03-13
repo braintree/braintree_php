@@ -3,6 +3,7 @@
 * Add support for `profileId` in Transaction#create options for VenmoAccounts
 * Add support for dispute search by `customerId`, `disbursementDate`, and `effectiveDate`
 * Make `CustomerGateway::find` backward compatible
+* Remove `sepaMandateType` and `sepaMandateAcceptanceLocation` params from `ClientTokenGateway`
 
 ## 3.29.0
 * Add support for `association_filter_id` in `Customer#find`
