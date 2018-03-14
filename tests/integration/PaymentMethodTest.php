@@ -373,7 +373,10 @@ class PaymentMethodTest extends Setup
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce()
+            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
+            'options' => [
+                'verificationMerchantAccountId' => 'us_bank_merchant_account'
+            ]
         ]);
 
         $usBankAccount = $result->paymentMethod;
@@ -892,7 +895,10 @@ class PaymentMethodTest extends Setup
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce()
+            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
+            'options' => [
+                'verificationMerchantAccountId' => 'us_bank_merchant_account'
+            ]
         ]);
 
         $foundUsBankAccount = Braintree\PaymentMethod::find($result->paymentMethod->token);
