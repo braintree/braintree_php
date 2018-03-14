@@ -22,6 +22,11 @@ class DisputeSearch
         return new TextNode("id");
     }
 
+    public static function customerId()
+    {
+        return new TextNode("customer_id");
+    }
+
     public static function kind()
     {
         return new MultipleValueNode("kind");
@@ -45,6 +50,16 @@ class DisputeSearch
     public static function receivedDate()
     {
         return new RangeNode("received_date");
+    }
+
+    public static function disbursementDate()
+    {
+        return new RangeNode("disbursement_date");
+    }
+
+    public static function effectiveDate()
+    {
+        return new RangeNode("effective_date");
     }
 
     public static function referenceNumber()
