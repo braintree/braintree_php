@@ -881,7 +881,7 @@ class TransactionAdvancedSearchTest extends Setup
             }
         }
 
-        throw new Exception('Unable to find the disputed transaction.');
+        throw new \Exception('Unable to find the disputed transaction.');
     }
 
     private function rundisputeDateSearchTests($comparison)
@@ -959,15 +959,14 @@ class TransactionAdvancedSearchTest extends Setup
 
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::id()->is($knownId),
-            Braintree\TransactionSearch::disputeDate()->between($now, $future)
+            Braintree\TransactionSearch::disputeDate()->between($receivedDate, $future)
         ]);
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
 
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::id()->is($knownId),
-            Braintree\TransactionSearch::disputeDate()->between($past, $now)
-        ]);
+            Braintree\TransactionSearch::disputeDate()->between($past, $receivedDate)
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
 
@@ -988,8 +987,6 @@ class TransactionAdvancedSearchTest extends Setup
         $past->modify("-1 day");
         $future = clone $receivedDate;
         $future->modify("+1 day");
-        $future2 = clone $receivedDate;
-        $future2->modify("+2 days");
 
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::id()->is($knownId),
@@ -999,7 +996,7 @@ class TransactionAdvancedSearchTest extends Setup
 
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::id()->is($knownId),
-            Braintree\TransactionSearch::disputeDate()->is($now)
+            Braintree\TransactionSearch::disputeDate()->is($receivedDate)
         ]);
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
