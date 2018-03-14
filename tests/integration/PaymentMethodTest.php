@@ -267,6 +267,7 @@ class PaymentMethodTest extends Setup
         $this->assertSame('bt_buyer_us@paypal.com', $result->paymentMethod->email);
         $this->assertSame($paymentMethodToken, $result->paymentMethod->token);
         $this->assertSame($customer->id, $result->paymentMethod->customerId);
+        $this->assertNotNull($result->paymentMethod->payerId);
     }
 
     public function testCreate_fromOrderPaymentPaypalAccountNonceWithPayPalOptionsSnakeCase()
@@ -300,6 +301,7 @@ class PaymentMethodTest extends Setup
         $this->assertSame('bt_buyer_us@paypal.com', $result->paymentMethod->email);
         $this->assertSame($paymentMethodToken, $result->paymentMethod->token);
         $this->assertSame($customer->id, $result->paymentMethod->customerId);
+        $this->assertNotNull($result->paymentMethod->payerId);
     }
 
     public function testCreate_fromOrderPaymentPaypalAccountNonceWithPayPalOptionsCamelCase()
@@ -347,6 +349,7 @@ class PaymentMethodTest extends Setup
         $this->assertSame('bt_buyer_us@paypal.com', $result->paymentMethod->email);
         $this->assertSame($paymentMethodToken, $result->paymentMethod->token);
         $this->assertSame($customer->id, $result->paymentMethod->customerId);
+        $this->assertNotNull($result->paymentMethod->payerId);
     }
 
     public function testCreate_fromPayPalRefreshToken()
@@ -361,6 +364,7 @@ class PaymentMethodTest extends Setup
 
         $this->assertSame($customer->id, $result->paymentMethod->customerId);
         $this->assertSame("B_FAKE_ID", $result->paymentMethod->billingAgreementId);
+        $this->assertNotNull($result->paymentMethod->payerId);
     }
 
     public function testCreate_fromPayPalRefreshTokenWithoutUpgrade()
