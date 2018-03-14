@@ -219,7 +219,12 @@ class CustomerTest extends Setup
     {
         $nonce = Test\Helper::generateValidUsBankAccountNonce();
         $result = Braintree\Customer::create(array(
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
+            'creditCard' => [
+                'options' => [
+                    'verificationMerchantAccountId' => 'us_bank_merchant_account'
+                ]
+            ]
         ));
         $this->assertTrue($result->success);
         $customer = $result->customer;
@@ -850,7 +855,12 @@ class CustomerTest extends Setup
     {
         $nonce = Test\Helper::generateValidUsBankAccountNonce();
         $result = Braintree\Customer::create(array(
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
+            'creditCard' => [
+                'options' => [
+                    'verificationMerchantAccountId' => 'us_bank_merchant_account'
+                ]
+            ]
         ));
         $this->assertTrue($result->success);
 
