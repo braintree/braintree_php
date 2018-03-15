@@ -967,6 +967,7 @@ class TransactionAdvancedSearchTest extends Setup
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::id()->is($knownId),
             Braintree\TransactionSearch::disputeDate()->between($past, $receivedDate)
+        ]);
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
 
