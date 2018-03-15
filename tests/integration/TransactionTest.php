@@ -1763,6 +1763,22 @@ class TransactionTest extends Setup
             'paymentMethodNonce' => Braintree\Test\Nonces::$venmoAccount,
             'options' => [
                 'venmo' => [
+                    'profileId' => "integration_venmo_merchant_public_id"
+                ]
+            ]
+        ));
+
+        $this->assertTrue($result->success);
+    }
+
+    public function testCreateTransactionUsingFakeVenmoAccountNonceAndProfileIdUsingSnakeCaseKeyforProfileId()
+    {
+        $result = Braintree\Transaction::sale(array(
+            'amount' => '47.00',
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'paymentMethodNonce' => Braintree\Test\Nonces::$venmoAccount,
+            'options' => [
+                'venmo' => [
                     'profile_id' => "integration_venmo_merchant_public_id"
                 ]
             ]

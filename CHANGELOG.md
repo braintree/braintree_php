@@ -1,5 +1,6 @@
 ## Unreleased
 * Add `oauthAccessRevocation` to `WebhookNotification`s
+* Add support for `profileId` in Transaction#create options for VenmoAccounts
 
 ## 3.29.0
 * Add support for `association_filter_id` in `Customer#find`
