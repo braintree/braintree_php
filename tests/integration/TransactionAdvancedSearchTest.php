@@ -1513,7 +1513,7 @@ class TransactionAdvancedSearchTest extends Setup
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::creditCardNumber()->startsWith("411111")
         ]);
-        $this->assertTrue($collection->maximumCount() > 100);
+        $this->assertGreaterThan(100, $collection->maximumCount());
 
         $arr = [];
         foreach($collection as $transaction) {
