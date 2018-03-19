@@ -2061,7 +2061,7 @@ class TransactionTest extends Setup
         ]);
         $this->assertEquals(true, $result->success);
         $transaction = $result->transaction;
-        $this->assertEquals(true, $transaction->creditCardDetails->venmoSdk);
+        $this->assertEquals(false, $transaction->creditCardDetails->venmoSdk);
     }
 
   public function testSale_withVenmoSdkPaymentMethodCode()
