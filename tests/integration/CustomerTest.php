@@ -219,7 +219,12 @@ class CustomerTest extends Setup
     {
         $nonce = Test\Helper::generateValidUsBankAccountNonce();
         $result = Braintree\Customer::create(array(
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
+            'creditCard' => [
+                'options' => [
+                    'verificationMerchantAccountId' => 'us_bank_merchant_account'
+                ]
+            ]
         ));
         $this->assertTrue($result->success);
         $customer = $result->customer;
@@ -298,7 +303,7 @@ class CustomerTest extends Setup
         ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
-        $this->assertEquals(true, $customer->creditCards[0]->venmoSdk);
+        $this->assertEquals(false, $customer->creditCards[0]->venmoSdk);
     }
 
     public function testCreate_withVenmoSdkPaymentMethodCode()
@@ -850,7 +855,12 @@ class CustomerTest extends Setup
     {
         $nonce = Test\Helper::generateValidUsBankAccountNonce();
         $result = Braintree\Customer::create(array(
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
+            'creditCard' => [
+                'options' => [
+                    'verificationMerchantAccountId' => 'us_bank_merchant_account'
+                ]
+            ]
         ));
         $this->assertTrue($result->success);
 

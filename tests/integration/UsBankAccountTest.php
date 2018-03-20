@@ -19,7 +19,10 @@ class UsBankAccountAccountTest extends Setup
 
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verificationMerchantAccountId' => 'us_bank_merchant_account'
+            ]
         ]);
 
         $foundUsBankAccount = $result->paymentMethod;
@@ -42,7 +45,10 @@ class UsBankAccountAccountTest extends Setup
 
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verificationMerchantAccountId' => 'us_bank_merchant_account'
+            ]
         ]);
 
         $foundUsBankAccount= Braintree\UsBankAccount::find($result->paymentMethod->token);
@@ -71,7 +77,10 @@ class UsBankAccountAccountTest extends Setup
 
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verificationMerchantAccountId' => 'us_bank_merchant_account'
+            ]
         ]);
 
         $result = Braintree\UsBankAccount::sale($result->paymentMethod->token, [

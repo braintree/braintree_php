@@ -392,7 +392,7 @@ class CreditCardTest extends Setup
             ]
         ]);
         $this->assertTrue($result->success);
-        $this->assertTrue($result->creditCard->isVenmoSdk());
+        $this->assertFalse($result->creditCard->isVenmoSdk());
     }
 
     public function testCreate_with_invalidVenmoSdkSession()

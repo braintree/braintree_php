@@ -48,6 +48,9 @@ class WebhookTesting
             case WebhookNotification::PARTNER_MERCHANT_DECLINED:
                 $subjectXml = self::_partnerMerchantDeclinedSampleXml($id);
                 break;
+            case WebhookNotification::OAUTH_ACCESS_REVOKED:
+                $subjectXml = self::_oauthAccessRevocationSampleXml($id);
+                break;
             case WebhookNotification::CONNECTED_MERCHANT_STATUS_TRANSITIONED:
                 $subjectXml = self::_connectedMerchantStatusTransitionedSampleXml($id);
                 break;
@@ -386,6 +389,15 @@ class WebhookTesting
         <partner-merchant>
           <partner-merchant-id>abc123</partner-merchant-id>
         </partner-merchant>
+        ";
+    }
+
+    private static function _oauthAccessRevocationSampleXml($id)
+    {
+        return "
+        <oauth-application-revocation>
+          <merchant-id>abc123</merchant-id>
+        </oauth-application-revocation>
         ";
     }
 

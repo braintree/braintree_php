@@ -180,7 +180,7 @@ class TransactionGateway
                     ['threeDSecure' =>
                         ['required']
                     ],
-                    # Included for backwards compatiblity. Remove in the next major version
+                    # TODO: Snake case version included for backwards compatiblity. Remove in the next major version
                     ['three_d_secure' =>
                         ['required']
                     ],
@@ -202,7 +202,9 @@ class TransactionGateway
                     ],
                     ['venmo' =>
                         [
-                            'profile_id'
+                            # TODO: Snake case version included for backwards compatiblity. Remove in the next major version
+                            'profile_id',
+                            'profileId'
                         ]
                     ]
                 ],
@@ -210,7 +212,9 @@ class TransactionGateway
             ['customFields' => ['_anyKey_']],
             ['descriptor' => ['name', 'phone', 'url']],
             ['paypalAccount' => ['payeeEmail']],
-            ['apple_pay_card' => ['number', 'cardholder_name', 'cryptogram', 'expiration_month', 'expiration_year', 'eci_indicator']], #backwards compatibility
+            # TODO: Snake case version included for backwards compatiblity. Remove in the next major version
+            ['apple_pay_card' => ['number', 'cardholder_name', 'cryptogram', 'expiration_month', 'expiration_year', 'eci_indicator']], 
+
             ['applePayCard' => ['number', 'cardholderName', 'cryptogram', 'expirationMonth', 'expirationYear', 'eciIndicator']],
             ['industry' =>
                 ['industryType',
