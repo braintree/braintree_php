@@ -29,9 +29,9 @@ class DisputeTest extends Setup
             'reason' => 'fraud',
             'reasonCode' => '83',
             'reasonDescription' => 'Reason code 83 description',
-            'receivedDate' => DateTime::createFromFormat('Ymd', '20130410'),
+            'receivedDate' => DateTime::createFromFormat('Ymd-His', '20130410-000410'),
             'referenceNumber' => '123456',
-            'replyByDate' => DateTime::createFromFormat('Ymd', '20130417'),
+            'replyByDate' => DateTime::createFromFormat('Ymd-His', '20130417-0000417'),
             'status' => 'open',
             'updatedAt' => DateTime::createFromFormat('Ymd-His', '20130410-105039'),
             'evidence' => [[
@@ -74,14 +74,14 @@ class DisputeTest extends Setup
             'currencyIsoCode' => 'USD',
             'status' => 'open',
             'amount' => '100.00',
-            'receivedDate' => DateTime::createFromFormat('Ymd', '20130410'),
-            'replyByDate' => DateTime::createFromFormat('Ymd', '20130410'),
+            'receivedDate' => DateTime::createFromFormat('Ymd-His', '20130410-000410'),
+            'replyByDate' => DateTime::createFromFormat('Ymd-His', '20130421-000421'),
             'reason' => 'fraud',
             'transactionIds' => [
                 'asdf', 'qwer'
             ],
-            'dateOpened' => DateTime::createFromFormat('Ymd', '20130401'),
-            'dateWon' =>DateTime::createFromFormat('Ymd', '20130402'),
+            'dateOpened' => DateTime::createFromFormat('Ymd-His', '20130410-000410'),
+            'dateWon' =>DateTime::createFromFormat('Ymd-His', '20130422-000422'),
             'kind' => 'chargeback'
         ];
 
@@ -95,8 +95,8 @@ class DisputeTest extends Setup
         $this->assertEquals(Braintree\Dispute::Open, $dispute->status);
         $this->assertEquals('transaction_id', $dispute->transactionDetails->id);
         $this->assertEquals('100.00', $dispute->transactionDetails->amount);
-        $this->assertEquals(DateTime::createFromFormat('Ymd', '20130401'), $dispute->dateOpened);
-        $this->assertEquals(DateTime::createFromFormat('Ymd', '20130402'), $dispute->dateWon);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-000410'), $dispute->dateOpened);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130422-000422'), $dispute->dateWon);
         $this->assertEquals(Braintree\Dispute::CHARGEBACK, $dispute->kind);
     }
 
