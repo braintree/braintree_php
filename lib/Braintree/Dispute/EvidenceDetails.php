@@ -8,6 +8,7 @@ use Braintree\Instance;
  *
  * @package    Braintree
  *
+ * @property-read string $category
  * @property-read string $comment
  * @property-read date   $created_at
  * @property-read string $id
@@ -22,7 +23,6 @@ class EvidenceDetails extends Instance
     {
         if (array_key_exists('category', $attributes)) {
             $attributes['tag'] = $attributes['category'];
-            unset($attributes['category']);
         }
         parent::__construct($attributes);
     }

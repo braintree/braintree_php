@@ -115,22 +115,22 @@ class Dispute extends Base
      * Adds file evidence to a dispute, given a dispute ID and a document ID
      *
      * @param string $disputeId
-     * @param string $documentId
+     * @param string $documentIdOrRequest
      */
-    public static function addFileEvidence($disputeId, $documentId)
+    public static function addFileEvidence($disputeId, $documentIdOrRequest)
     {
-        return Configuration::gateway()->dispute()->addFileEvidence($disputeId, $documentId);
+        return Configuration::gateway()->dispute()->addFileEvidence($disputeId, $documentIdOrRequest);
     }
 
     /**
      * Adds text evidence to a dispute, given a dispute ID and content
      *
      * @param string $id
-     * @param string $content
+     * @param string $contentOrRequest
      */
-    public static function addTextEvidence($id, $content)
+    public static function addTextEvidence($id, $contentOrRequest)
     {
-        return Configuration::gateway()->dispute()->addTextEvidence($id, $content);
+        return Configuration::gateway()->dispute()->addTextEvidence($id, $contentOrRequest);
     }
 
     /**
