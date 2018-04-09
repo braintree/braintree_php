@@ -1,3 +1,6 @@
+## Unreleased
+* Fix issue where webhook testing did not work on instantiated gateway
+
 ## 3.30.0
 * Add `oauthAccessRevocation` to `WebhookNotification`s
 * Add support for `profileId` in Transaction#create options for VenmoAccounts
