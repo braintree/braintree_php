@@ -234,18 +234,17 @@ class WebhookNotificationTest extends Setup
 
     public function testAllowsParsingUsingGateway()
     {
-        Braintree\Configuration::reset();
-        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
-            Braintree\WebhookNotification::CHECK,
-            "my_id"
-        );
-
         $gateway = new Braintree\Gateway([
             'privateKey' => 'integration_private_key',
             'publicKey' => 'integration_public_key',
             'merchantId' => 'integration_merchant_id',
             'environment' => 'development'
         ]);
+
+        $sampleNotification = $gateway->webhookTesting()->sampleNotification(
+            Braintree\WebhookNotification::CHECK,
+            "my_id"
+        );
 
         $webhookNotification = $gateway->webhookNotification()->parse(
             $sampleNotification['bt_signature'],
@@ -575,19 +574,17 @@ class WebhookNotificationTest extends Setup
 
     public function testBuildsASampleNotificationForConnectedMerchantStatusTransitionedWebhook()
     {
-        Braintree\Configuration::reset();
-
-        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
-            Braintree\WebhookNotification::CONNECTED_MERCHANT_STATUS_TRANSITIONED,
-            "my_id"
-        );
-
         $gateway = new Braintree\Gateway([
             'privateKey' => 'integration_private_key',
             'publicKey' => 'integration_public_key',
             'merchantId' => 'integration_merchant_id',
             'environment' => 'development'
         ]);
+
+        $sampleNotification = $gateway->webhookTesting()->sampleNotification(
+            Braintree\WebhookNotification::CONNECTED_MERCHANT_STATUS_TRANSITIONED,
+            "my_id"
+        );
 
         $webhookNotification = $gateway->webhookNotification()->parse(
             $sampleNotification['bt_signature'],

@@ -292,11 +292,6 @@ class PaymentMethodGateway
                 AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']),
                 "paymentMethod"
             );
-        } else if (isset($response['europeBankAccount'])) {
-            return new Result\Successful(
-                EuropeBankAccount::factory($response['europeBankAccount']),
-                "paymentMethod"
-            );
         } else if (isset($response['usBankAccount'])) {
             return new Result\Successful(
                 UsBankAccount::factory($response['usBankAccount']),

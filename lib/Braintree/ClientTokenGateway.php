@@ -86,7 +86,7 @@ class ClientTokenGateway
         return [
             "version", "customerId", "proxyMerchantId",
             ["options" => ["makeDefault", "verifyCard", "failOnDuplicatePaymentMethod"]],
-            "merchantAccountId", "sepaMandateType", "sepaMandateAcceptanceLocation"];
+            "merchantAccountId"];
     }
 
     /**

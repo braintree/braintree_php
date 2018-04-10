@@ -301,14 +301,6 @@ class Transaction extends Base
             );
         }
 
-        if (isset($transactionAttribs['europeBankAccount'])) {
-            $this->_set('europeBankAccount',
-                new Transaction\EuropeBankAccountDetails(
-                    $transactionAttribs['europeBankAccount']
-                )
-            );
-        }
-
         if (isset($transactionAttribs['usBankAccount'])) {
             $this->_set('usBankAccount',
                 new Transaction\UsBankAccountDetails(
