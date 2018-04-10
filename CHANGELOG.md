@@ -1,4 +1,6 @@
 ## Unreleased
+
+## 3.31.0
 * Fix issue where webhook verification would fail due to missing global public key configuration value
 * Fix issue where webhook testing did not work on instantiated gateway
 * Add support for VCR compelling evidence dispute representment
