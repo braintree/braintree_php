@@ -241,6 +241,15 @@ class Gateway
 
     /**
      *
+     * @return UsBankAccountVerificationGateway
+     */
+    public function usBankAccountVerification()
+    {
+        return new UsBankAccountVerificationGateway($this);
+    }
+
+    /**
+     *
      * @return IdealPaymentGateway
      */
     public function idealPayment()

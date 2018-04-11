@@ -222,7 +222,7 @@ class CustomerTest extends Setup
             'paymentMethodNonce' => $nonce,
             'creditCard' => [
                 'options' => [
-                    'verificationMerchantAccountId' => 'us_bank_merchant_account'
+                    'verificationMerchantAccountId' => Test\Helper::usBankMerchantAccount()
                 ]
             ]
         ));
@@ -858,7 +858,7 @@ class CustomerTest extends Setup
             'paymentMethodNonce' => $nonce,
             'creditCard' => [
                 'options' => [
-                    'verificationMerchantAccountId' => 'us_bank_merchant_account'
+                    'verificationMerchantAccountId' => Test\Helper::usBankMerchantAccount()
                 ]
             ]
         ));
