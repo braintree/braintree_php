@@ -173,6 +173,7 @@ class TransactionGateway
                     'addBillingAddressToPaymentMethod',
                     'venmoSdkSession',
                     'storeShippingAddressInVault',
+                    'payeeId',
                     'payeeEmail',
                     'skipAdvancedFraudChecking',
                     'skipAvs',
@@ -186,6 +187,7 @@ class TransactionGateway
                     ],
                     ['paypal' =>
                         [
+                            'payeeId',
                             'payeeEmail',
                             'customField',
                             'description',
@@ -211,7 +213,7 @@ class TransactionGateway
             ],
             ['customFields' => ['_anyKey_']],
             ['descriptor' => ['name', 'phone', 'url']],
-            ['paypalAccount' => ['payeeEmail']],
+            ['paypalAccount' => ['payeeId', 'payeeEmail']],
             # TODO: Snake case version included for backwards compatiblity. Remove in the next major version
             ['apple_pay_card' => ['number', 'cardholder_name', 'cryptogram', 'expiration_month', 'expiration_year', 'eci_indicator']], 
 

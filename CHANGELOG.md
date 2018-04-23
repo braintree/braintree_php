@@ -1,3 +1,6 @@
+## Unreleased
+* Allow payee ID to be passed in options params for transaction create
+
 ## 3.33.0
 * Fix WebhookTestingGateway to use local configuration
 * Add Disbursement type field and methods
