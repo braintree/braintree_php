@@ -138,6 +138,7 @@ class PaymentMethodGateway
             'verificationMerchantAccountId',
             'verifyCard',
             'verificationAmount',
+            'usBankAccountVerificationMethod',
             ['paypal' => [
                 'payee_email',
                 'payeeEmail',

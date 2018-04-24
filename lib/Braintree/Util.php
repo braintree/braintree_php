@@ -167,6 +167,8 @@ class Util
             'Braintree_PayPalAccount' => 'paypalAccount',
             'Braintree\PayPalAccountGateway' => 'paypalAccount',
             'Braintree_PayPalAccountGateway' => 'paypalAccount',
+            'Braintree\UsBankAccountVerification' => 'usBankAccountVerification',
+            'Braintree_UsBankAccountVerification' => 'usBankAccountVerification',
         ];
 
         return $classNamesToResponseKeys[$name];

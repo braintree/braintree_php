@@ -382,26 +382,6 @@ class PaymentMethodTest extends Setup
         $this->assertNull($result->paymentMethod->billingAgreementId);
     }
 
-    public function testCreate_fromUsBankAccountNonce()
-    {
-        $customer = Braintree\Customer::createNoValidate();
-        $http = new HttpClientApi(Braintree\Configuration::$global);
-        $result = Braintree\PaymentMethod::create([
-            'customerId' => $customer->id,
-            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
-            'options' => [
-                'verificationMerchantAccountId' => 'us_bank_merchant_account'
-            ]
-        ]);
-
-        $usBankAccount = $result->paymentMethod;
-        $this->assertEquals('021000021', $usBankAccount->routingNumber);
-        $this->assertEquals('1234', $usBankAccount->last4);
-        $this->assertEquals('checking', $usBankAccount->accountType);
-        $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
-        $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
-    }
-
     public function testCreate_fromAbstractPaymentMethodNonce()
     {
         $customer = Braintree\Customer::createNoValidate();
@@ -902,27 +882,6 @@ class PaymentMethodTest extends Setup
 
         $this->assertSame('jane.doe@example.com', $foundPayPalAccount->email);
         $this->assertSame($paymentMethodToken, $foundPayPalAccount->token);
-    }
-
-    public function testFind_returnsUsBankAccount()
-    {
-        $customer = Braintree\Customer::createNoValidate();
-        $http = new HttpClientApi(Braintree\Configuration::$global);
-        $result = Braintree\PaymentMethod::create([
-            'customerId' => $customer->id,
-            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
-            'options' => [
-                'verificationMerchantAccountId' => 'us_bank_merchant_account'
-            ]
-        ]);
-
-        $foundUsBankAccount = Braintree\PaymentMethod::find($result->paymentMethod->token);
-        $this->assertInstanceOf('Braintree\UsBankAccount', $foundUsBankAccount);
-        $this->assertEquals('021000021', $foundUsBankAccount->routingNumber);
-        $this->assertEquals('1234', $foundUsBankAccount->last4);
-        $this->assertEquals('checking', $foundUsBankAccount->accountType);
-        $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
-        $this->assertRegExp('/CHASE/', $foundUsBankAccount->bankName);
     }
 
     public function testFind_returnsApplePayCards()

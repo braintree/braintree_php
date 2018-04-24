@@ -33,6 +33,7 @@ class PaymentMethodTest extends Setup
                 'verificationMerchantAccountId',
                 'verifyCard',
                 'verificationAmount',
+                'usBankAccountVerificationMethod',
                 ['paypal' => [
                     'payee_email',
                     'payeeEmail',
