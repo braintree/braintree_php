@@ -81,7 +81,7 @@ class Configuration
      */
     public static function reset()
     {
-        self::$global = new Configuration();
+        new Configuration();
     }
 
     public static function gateway()
