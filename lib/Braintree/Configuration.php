@@ -71,6 +71,8 @@ class Configuration
             $this->_clientSecret = $parsedCredentials->getClientSecret();
             $this->_accessToken = $parsedCredentials->getAccessToken();
         }
+
+        self::$global = $this;
     }
 
     /**
