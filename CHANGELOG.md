@@ -1,5 +1,8 @@
 ## Unreleased
 
+## 3.32.0
+* Add support for US Bank Account verifications API
+
 ## 3.31.0
 * Fix issue where webhook verification would fail due to missing global public key configuration value
 * Fix issue where webhook testing did not work on instantiated gateway
