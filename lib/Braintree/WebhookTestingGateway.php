@@ -10,11 +10,11 @@ class WebhookTestingGateway
         $this->config->assertHasAccessTokenOrKeys();
     }
 
-    public static function sampleNotification($kind, $id, $sourceMerchantId = null)
+    public function sampleNotification($kind, $id, $sourceMerchantId = null)
     {
         $xml = self::_sampleXml($kind, $id, $sourceMerchantId);
         $payload = base64_encode($xml) . "\n";
-        $signature = Configuration::publicKey() . "|" . Digest::hexDigestSha1(Configuration::privateKey(), $payload);
+        $signature = $this->config->getPublicKey() . "|" . Digest::hexDigestSha1($this->config->getPrivateKey(), $payload);
 
         return [
             'bt_signature' => $signature,
