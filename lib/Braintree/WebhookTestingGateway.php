@@ -14,7 +14,7 @@ class WebhookTestingGateway
     {
         $xml = $this->_sampleXml($kind, $id, $sourceMerchantId);
         $payload = base64_encode($xml) . "\n";
-        $signature = $this->config->publicKey() . "|" . Digest::hexDigestSha1(Configuration::privateKey(), $payload);
+        $signature = $this->config->getPublicKey() . "|" . Digest::hexDigestSha1($this->config->getPrivateKey(), $payload);
 
         return [
             'bt_signature' => $signature,

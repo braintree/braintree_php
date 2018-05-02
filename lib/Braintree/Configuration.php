@@ -71,8 +71,6 @@ class Configuration
             $this->_clientSecret = $parsedCredentials->getClientSecret();
             $this->_accessToken = $parsedCredentials->getAccessToken();
         }
-
-        self::$global = $this;
     }
 
     /**
@@ -81,7 +79,7 @@ class Configuration
      */
     public static function reset()
     {
-        new Configuration();
+        self::$global = new Configuration();
     }
 
     public static function gateway()
