@@ -1877,6 +1877,22 @@ class TransactionTest extends Setup
         $this->assertEquals(true, $transaction->recurring);
     }
 
+  public function testTransactionSourceWithRecurringFirst()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'transactionSource' => 'recurring_first',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(true, $transaction->recurring);
+    }
+
   public function testTransactionSourceWithRecurring()
     {
         $result = Braintree\Transaction::sale([
@@ -1893,6 +1909,22 @@ class TransactionTest extends Setup
         $this->assertEquals(true, $transaction->recurring);
     }
 
+  public function testTransactionSourceWithMerchant()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'transactionSource' => 'merchant',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(false, $transaction->recurring);
+    }
+
   public function testTransactionSourceWithMoto()
     {
         $result = Braintree\Transaction::sale([
@@ -1907,6 +1939,21 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals(False, $transaction->recurring);
+    }
+
+  public function testTransactionSourceInvalid()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'transactionSource' => 'invalid_value',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_TRANSACTION_SOURCE_IS_INVALID, $result->errors->forKey('transaction')->onAttribute('transactionSource');->code);
     }
 
   public function testSale_withServiceFee()
