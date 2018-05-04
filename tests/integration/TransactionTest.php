@@ -1953,7 +1953,7 @@ class TransactionTest extends Setup
             ]
         ]);
         $this->assertFalse($result->success);
-        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_TRANSACTION_SOURCE_IS_INVALID, $result->errors->forKey('transaction')->onAttribute('transactionSource')->code);
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_TRANSACTION_SOURCE_IS_INVALID, $result->errors->forKey('transaction')->onAttribute('transactionSource')[0]->code);
     }
 
   public function testSale_withServiceFee()
