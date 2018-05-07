@@ -1,4 +1,5 @@
 ## Unreleased
+* Fix WebhookTestingGateway to use local configuration
 
 ## 3.32.0
 * Add support for US Bank Account verifications API
