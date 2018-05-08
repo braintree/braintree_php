@@ -1,4 +1,6 @@
-## Unreleased
+## 3.33.0
+* Fix WebhookTestingGateway to use local configuration
+* Add Disbursement type field and methods
 
 ## 3.32.0
 * Add support for US Bank Account verifications API

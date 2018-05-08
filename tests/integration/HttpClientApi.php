@@ -56,7 +56,7 @@ class HttpClientApi extends Braintree\Http
         if ($response["status"] == 200) {
             return json_decode($response["body"]);
         } else {
-            throw new Exception(print_r($response, true));
+            throw new Braintree\Exception(print_r($response, true));
         }
     }
 
@@ -87,7 +87,7 @@ class HttpClientApi extends Braintree\Http
             $body = json_decode($response["body"]);
             return $body->creditCards[0]->nonce;
         } else {
-            throw new Exception(print_r($response, true));
+            throw new Braintree\Exception(print_r($response, true));
         }
     }
 
@@ -99,7 +99,7 @@ class HttpClientApi extends Braintree\Http
             $body = json_decode($response["body"], true);
             return $body["paypalAccounts"][0]["nonce"];
         } else {
-            throw new Exception(print_r($response, true));
+            throw new Braintree\Exception(print_r($response, true));
         }
     }
 }
