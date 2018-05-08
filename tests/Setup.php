@@ -15,11 +15,6 @@ use PHPUnit_Framework_TestCase;
 
 class Setup extends PHPUnit_Framework_TestCase
 {
-    public function __construct()
-    {
-        self::integrationMerchantConfig();
-    }
-
     public static function integrationMerchantConfig()
     {
         Configuration::reset();
@@ -28,5 +23,10 @@ class Setup extends PHPUnit_Framework_TestCase
         Configuration::merchantId('integration_merchant_id');
         Configuration::publicKey('integration_public_key');
         Configuration::privateKey('integration_private_key');
+    }
+
+    protected function setUp()
+    {
+        $this->integrationMerchantConfig();
     }
 }

@@ -12,7 +12,7 @@ class WebhookTestingGateway
 
     public function sampleNotification($kind, $id, $sourceMerchantId = null)
     {
-        $xml = self::_sampleXml($kind, $id, $sourceMerchantId);
+        $xml = $this->_sampleXml($kind, $id, $sourceMerchantId);
         $payload = base64_encode($xml) . "\n";
         $signature = $this->config->getPublicKey() . "|" . Digest::hexDigestSha1($this->config->getPrivateKey(), $payload);
 
@@ -22,80 +22,80 @@ class WebhookTestingGateway
         ];
     }
 
-    private static function _sampleXml($kind, $id, $sourceMerchantId)
+    private function _sampleXml($kind, $id, $sourceMerchantId)
     {
         switch ($kind) {
             case WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED:
-                $subjectXml = self::_merchantAccountApprovedSampleXml($id);
+                $subjectXml = $this->_merchantAccountApprovedSampleXml($id);
                 break;
             case WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED:
-                $subjectXml = self::_merchantAccountDeclinedSampleXml($id);
+                $subjectXml = $this->_merchantAccountDeclinedSampleXml($id);
                 break;
             case WebhookNotification::TRANSACTION_DISBURSED:
-                $subjectXml = self::_transactionDisbursedSampleXml($id);
+                $subjectXml = $this->_transactionDisbursedSampleXml($id);
                 break;
             case WebhookNotification::TRANSACTION_SETTLED:
-                $subjectXml = self::_transactionSettledSampleXml($id);
+                $subjectXml = $this->_transactionSettledSampleXml($id);
                 break;
             case WebhookNotification::TRANSACTION_SETTLEMENT_DECLINED:
-                $subjectXml = self::_transactionSettlementDeclinedSampleXml($id);
+                $subjectXml = $this->_transactionSettlementDeclinedSampleXml($id);
                 break;
             case WebhookNotification::DISBURSEMENT_EXCEPTION:
-                $subjectXml = self::_disbursementExceptionSampleXml($id);
+                $subjectXml = $this->_disbursementExceptionSampleXml($id);
                 break;
             case WebhookNotification::DISBURSEMENT:
-                $subjectXml = self::_disbursementSampleXml($id);
+                $subjectXml = $this->_disbursementSampleXml($id);
                 break;
             case WebhookNotification::PARTNER_MERCHANT_CONNECTED:
-                $subjectXml = self::_partnerMerchantConnectedSampleXml($id);
+                $subjectXml = $this->_partnerMerchantConnectedSampleXml($id);
                 break;
             case WebhookNotification::PARTNER_MERCHANT_DISCONNECTED:
-                $subjectXml = self::_partnerMerchantDisconnectedSampleXml($id);
+                $subjectXml = $this->_partnerMerchantDisconnectedSampleXml($id);
                 break;
             case WebhookNotification::PARTNER_MERCHANT_DECLINED:
-                $subjectXml = self::_partnerMerchantDeclinedSampleXml($id);
+                $subjectXml = $this->_partnerMerchantDeclinedSampleXml($id);
                 break;
             case WebhookNotification::OAUTH_ACCESS_REVOKED:
-                $subjectXml = self::_oauthAccessRevocationSampleXml($id);
+                $subjectXml = $this->_oauthAccessRevocationSampleXml($id);
                 break;
             case WebhookNotification::CONNECTED_MERCHANT_STATUS_TRANSITIONED:
-                $subjectXml = self::_connectedMerchantStatusTransitionedSampleXml($id);
+                $subjectXml = $this->_connectedMerchantStatusTransitionedSampleXml($id);
                 break;
             case WebhookNotification::CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED:
-                $subjectXml = self::_connectedMerchantPayPalStatusChangedSampleXml($id);
+                $subjectXml = $this->_connectedMerchantPayPalStatusChangedSampleXml($id);
                 break;
             case WebhookNotification::DISPUTE_OPENED:
-                $subjectXml = self::_disputeOpenedSampleXml($id);
+                $subjectXml = $this->_disputeOpenedSampleXml($id);
                 break;
             case WebhookNotification::DISPUTE_LOST:
-                $subjectXml = self::_disputeLostSampleXml($id);
+                $subjectXml = $this->_disputeLostSampleXml($id);
                 break;
             case WebhookNotification::DISPUTE_WON:
-                $subjectXml = self::_disputeWonSampleXml($id);
+                $subjectXml = $this->_disputeWonSampleXml($id);
                 break;
             case WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
-                $subjectXml = self::_subscriptionChargedSuccessfullySampleXml($id);
+                $subjectXml = $this->_subscriptionChargedSuccessfullySampleXml($id);
                 break;
             case WebhookNotification::CHECK:
-                $subjectXml = self::_checkSampleXml();
+                $subjectXml = $this->_checkSampleXml();
                 break;
             case WebhookNotification::ACCOUNT_UPDATER_DAILY_REPORT:
-                $subjectXml = self::_accountUpdaterDailyReportSampleXml($id);
+                $subjectXml = $this->_accountUpdaterDailyReportSampleXml($id);
                 break;
             case WebhookNotification::IDEAL_PAYMENT_COMPLETE:
-                $subjectXml = self::_idealPaymentCompleteSampleXml($id);
+                $subjectXml = $this->_idealPaymentCompleteSampleXml($id);
                 break;
             case WebhookNotification::IDEAL_PAYMENT_FAILED:
-                $subjectXml = self::_idealPaymentFailedSampleXml($id);
+                $subjectXml = $this->_idealPaymentFailedSampleXml($id);
                 break;
             case WebhookNotification::GRANTED_PAYMENT_INSTRUMENT_UPDATE:
-                $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
+                $subjectXml = $this->_grantedPaymentInstrumentUpdateSampleXml();
                 break;
             default:
-                $subjectXml = self::_subscriptionSampleXml($id);
+                $subjectXml = $this->_subscriptionSampleXml($id);
                 break;
         }
-        $timestamp = self::_timestamp();
+        $timestamp = $this->_timestamp();
 
         $sourceMerchantIdXml = '';
         if (!is_null($sourceMerchantId)) {
@@ -112,7 +112,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _merchantAccountApprovedSampleXml($id)
+    private function _merchantAccountApprovedSampleXml($id)
     {
         return "
         <merchant_account>
@@ -126,7 +126,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _merchantAccountDeclinedSampleXml($id)
+    private function _merchantAccountDeclinedSampleXml($id)
     {
         return "
         <api-error-response>
@@ -155,7 +155,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _transactionDisbursedSampleXml($id)
+    private function _transactionDisbursedSampleXml($id)
     {
         return "
         <transaction>
@@ -168,7 +168,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _transactionSettledSampleXml($id)
+    private function _transactionSettledSampleXml($id)
     {
         return "
         <transaction>
@@ -189,7 +189,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _transactionSettlementDeclinedSampleXml($id)
+    private function _transactionSettlementDeclinedSampleXml($id)
     {
         return "
         <transaction>
@@ -210,7 +210,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _disbursementExceptionSampleXml($id)
+    private function _disbursementExceptionSampleXml($id)
     {
         return "
         <disbursement>
@@ -235,7 +235,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _disbursementSampleXml($id)
+    private function _disbursementSampleXml($id)
     {
         return "
         <disbursement>
@@ -260,7 +260,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _disputeOpenedSampleXml($id)
+    private function _disputeOpenedSampleXml($id)
     {
         return "
         <dispute>
@@ -281,7 +281,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _disputeLostSampleXml($id)
+    private function _disputeLostSampleXml($id)
     {
         return "
         <dispute>
@@ -303,7 +303,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _disputeWonSampleXml($id)
+    private function _disputeWonSampleXml($id)
     {
         return "
         <dispute>
@@ -325,7 +325,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _subscriptionSampleXml($id)
+    private function _subscriptionSampleXml($id)
     {
         return "
         <subscription>
@@ -340,7 +340,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _subscriptionChargedSuccessfullySampleXml($id)
+    private function _subscriptionChargedSuccessfullySampleXml($id)
     {
         return "
         <subscription>
@@ -361,14 +361,14 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _checkSampleXml()
+    private function _checkSampleXml()
     {
         return "
             <check type=\"boolean\">true</check>
         ";
     }
 
-    private static function _partnerMerchantConnectedSampleXml($id)
+    private function _partnerMerchantConnectedSampleXml($id)
     {
         return "
         <partner-merchant>
@@ -381,7 +381,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _partnerMerchantDisconnectedSampleXml($id)
+    private function _partnerMerchantDisconnectedSampleXml($id)
     {
         return "
         <partner-merchant>
@@ -390,7 +390,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _partnerMerchantDeclinedSampleXml($id)
+    private function _partnerMerchantDeclinedSampleXml($id)
     {
         return "
         <partner-merchant>
@@ -399,7 +399,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _oauthAccessRevocationSampleXml($id)
+    private function _oauthAccessRevocationSampleXml($id)
     {
         return "
         <oauth-application-revocation>
@@ -408,7 +408,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _accountUpdaterDailyReportSampleXml($id)
+    private function _accountUpdaterDailyReportSampleXml($id)
     {
         return "
         <account-updater-daily-report>
@@ -418,7 +418,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _connectedMerchantStatusTransitionedSampleXml($id)
+    private function _connectedMerchantStatusTransitionedSampleXml($id)
     {
         return "
         <connected-merchant-status-transitioned>
@@ -429,7 +429,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _connectedMerchantPayPalStatusChangedSampleXml($id)
+    private function _connectedMerchantPayPalStatusChangedSampleXml($id)
     {
         return "
         <connected-merchant-paypal-status-changed>
@@ -440,7 +440,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _idealPaymentCompleteSampleXml($id)
+    private function _idealPaymentCompleteSampleXml($id)
     {
         return "
         <ideal-payment>
@@ -457,7 +457,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _idealPaymentFailedSampleXml($id)
+    private function _idealPaymentFailedSampleXml($id)
     {
         return "
         <ideal-payment>
@@ -474,7 +474,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _grantedPaymentInstrumentUpdateSampleXml()
+    private function _grantedPaymentInstrumentUpdateSampleXml()
 	{
         return "
 		<granted-payment-instrument-update>
@@ -494,7 +494,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _timestamp()
+    private function _timestamp()
     {
         $originalZone = date_default_timezone_get();
         date_default_timezone_set('UTC');
