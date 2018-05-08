@@ -2,6 +2,8 @@
 * Fix WebhookTestingGateway to use local configuration
 * Add Disbursement type field and methods
 
+* Ensure the sample webhook notification generator uses API credentials from the instantiated gateway.
+
 ## 3.32.0
 * Add support for US Bank Account verifications API
 
