@@ -21,6 +21,7 @@ class ConnectedMerchantPayPalStatusChanged extends Base
     {
         $instance = new self();
         $instance->_initialize($attributes);
+        $instance->_attributes['merchantId'] = $instance->_attributes['merchantPublicId'];
 
         return $instance;
     }

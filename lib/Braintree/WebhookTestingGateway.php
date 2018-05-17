@@ -403,7 +403,8 @@ class WebhookTestingGateway
     {
         return "
         <oauth-application-revocation>
-          <merchant-id>abc123</merchant-id>
+          <merchant-id>{$id}</merchant-id>
+          <oauth-application-client-id>oauth_application_client_id</oauth-application-client-id>
         </oauth-application-revocation>
         ";
     }
