@@ -569,7 +569,8 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::OAUTH_ACCESS_REVOKED, $webhookNotification->kind);
-        $this->assertEquals('abc123', $webhookNotification->oauthAccessRevocation->merchantId);
+        $this->assertEquals('my_id', $webhookNotification->oauthAccessRevocation->merchantId);
+        $this->assertEquals("oauth_application_client_id", $webhookNotification->oauthAccessRevocation->oauthApplicationClientId);
     }
 
     public function testBuildsASampleNotificationForConnectedMerchantStatusTransitionedWebhook()
@@ -593,6 +594,7 @@ class WebhookNotificationTest extends Setup
 
         $this->assertEquals(Braintree\WebhookNotification::CONNECTED_MERCHANT_STATUS_TRANSITIONED, $webhookNotification->kind);
         $this->assertEquals("my_id", $webhookNotification->connectedMerchantStatusTransitioned->merchantPublicId);
+        $this->assertEquals("my_id", $webhookNotification->connectedMerchantStatusTransitioned->merchantId);
         $this->assertEquals("new_status", $webhookNotification->connectedMerchantStatusTransitioned->status);
         $this->assertEquals("oauth_application_client_id", $webhookNotification->connectedMerchantStatusTransitioned->oauthApplicationClientId);
     }
@@ -611,6 +613,7 @@ class WebhookNotificationTest extends Setup
 
         $this->assertEquals(Braintree\WebhookNotification::CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED, $webhookNotification->kind);
         $this->assertEquals("my_id", $webhookNotification->connectedMerchantPayPalStatusChanged->merchantPublicId);
+        $this->assertEquals("my_id", $webhookNotification->connectedMerchantPayPalStatusChanged->merchantId);
         $this->assertEquals("link", $webhookNotification->connectedMerchantPayPalStatusChanged->action);
         $this->assertEquals("oauth_application_client_id", $webhookNotification->connectedMerchantPayPalStatusChanged->oauthApplicationClientId);
     }

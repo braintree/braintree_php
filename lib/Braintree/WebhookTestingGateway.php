@@ -265,6 +265,8 @@ class WebhookTestingGateway
         return "
         <dispute>
           <amount>250.00</amount>
+          <amount-disputed>250.0</amount-disputed>
+          <amount-won>245.00</amount-won>
           <currency-iso-code>USD</currency-iso-code>
           <received-date type=\"date\">2014-03-01</received-date>
           <reply-by-date type=\"date\">2014-03-21</reply-by-date>
@@ -286,6 +288,8 @@ class WebhookTestingGateway
         return "
         <dispute>
           <amount>250.00</amount>
+          <amount-disputed>250.0</amount-disputed>
+          <amount-won>245.00</amount-won>
           <currency-iso-code>USD</currency-iso-code>
           <received-date type=\"date\">2014-03-01</received-date>
           <reply-by-date type=\"date\">2014-03-21</reply-by-date>
@@ -308,6 +312,8 @@ class WebhookTestingGateway
         return "
         <dispute>
           <amount>250.00</amount>
+          <amount-disputed>250.0</amount-disputed>
+          <amount-won>245.00</amount-won>
           <currency-iso-code>USD</currency-iso-code>
           <received-date type=\"date\">2014-03-01</received-date>
           <reply-by-date type=\"date\">2014-03-21</reply-by-date>
@@ -403,7 +409,8 @@ class WebhookTestingGateway
     {
         return "
         <oauth-application-revocation>
-          <merchant-id>abc123</merchant-id>
+          <merchant-id>{$id}</merchant-id>
+          <oauth-application-client-id>oauth_application_client_id</oauth-application-client-id>
         </oauth-application-revocation>
         ";
     }
