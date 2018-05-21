@@ -1,6 +1,7 @@
 ## Unreleased
 * Allow payee ID to be passed in options params for transaction create
 * Add `merchant_id` to `ConnectedMerchantStatusTransitioned` and `ConnectedMerchantPayPalStatusChanged` Auth webhooks
+* Fix webhook testing sample xml for dispute webhooks to include `amount-won` and `amount-disputed` (closes #225)
 
 ## 3.33.0
 * Fix WebhookTestingGateway to use local configuration
