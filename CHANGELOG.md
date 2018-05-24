@@ -1,3 +1,6 @@
+## unreleased
+* Add subscription charged unsuccessfully sample webhook to webhook testing gateway
+
 ## 3.34.0
 * Allow payee ID to be passed in options params for transaction create
 * Add `merchant_id` to `ConnectedMerchantStatusTransitioned` and `ConnectedMerchantPayPalStatusChanged` Auth webhooks
