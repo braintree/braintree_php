@@ -3127,6 +3127,8 @@ class TransactionTest extends Setup
         $this->assertEquals('-20.00', $authorizationAdjustment->amount);
         $this->assertInstanceOf('DateTime', $authorizationAdjustment->timestamp);
         $this->assertEquals(true, $authorizationAdjustment->success);
+        $this->assertEquals('1000', $authorizationAdjustment->processorResponseCode);
+        $this->assertEquals('Approved', $authorizationAdjustment->processorResponseText);
     }
 
   public function testFindExposesDisputes()
