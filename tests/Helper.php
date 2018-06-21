@@ -21,6 +21,26 @@ class Helper
         Braintree\Configuration::privateKey('test_private_key');
     }
 
+    public static function integrationMerchantGateway()
+    {
+        return new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ]);
+    }
+
+    public static function advancedFraudIntegrationMerchantGateway()
+    {
+        return new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'advanced_fraud_integration_merchant_id',
+            'publicKey' => 'advanced_fraud_integration_public_key',
+            'privateKey' => 'advanced_fraud_integration_private_key'
+        ]);
+    }
+
     public static function defaultMerchantAccountId()
     {
         return 'sandbox_credit_card';

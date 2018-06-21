@@ -134,7 +134,8 @@ class TransactionTest extends Setup
 
   public function testSaleAndSkipAdvancedFraudChecking()
   {
-      $result = Braintree\Transaction::sale([
+        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $result = $gateway->transaction()->sale([
           'amount' => Braintree\Test\TransactionAmounts::$authorize,
           'creditCard' => [
               'number' => Braintree\Test\CreditCardNumbers::$visa,
@@ -146,7 +147,7 @@ class TransactionTest extends Setup
       ]);
       $this->assertTrue($result->success);
       $transaction = $result->transaction;
-      $this->assertNull($transaction->riskData->id);
+      $this->assertFalse(property_exists($transaction, "riskData"));
   }
 
   public function testSaleAndSkipAvs()
@@ -1844,7 +1845,8 @@ class TransactionTest extends Setup
 
   public function testSaleWithRiskData()
     {
-        $result = Braintree\Transaction::sale([
+        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $result = $gateway->transaction()->sale([
             'amount' => '100.00',
             'deviceSessionId' => 'abc123',
             'creditCard' => [
@@ -1857,8 +1859,8 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $this->assertNotNull($transaction->riskData);
         $this->assertNotNull($transaction->riskData->decision);
-        $this->assertNull($transaction->riskData->id);
-        $this->assertNull($transaction->riskData->deviceDataCaptured);
+        $this->assertNotNull($transaction->riskData->id);
+        $this->assertNotNull($transaction->riskData->deviceDataCaptured);
     }
 
   public function testRecurring()
@@ -2416,7 +2418,9 @@ class TransactionTest extends Setup
 
   public function testSale_withProcessorDecline()
     {
-        $result = Braintree\Transaction::sale([
+
+        $gateway = Test\Helper::integrationMerchantGateway();
+        $result = $gateway->transaction()->sale([
             'amount' => Braintree\Test\TransactionAmounts::$decline,
             'creditCard' => [
                 'number' => '5105105105105100',
