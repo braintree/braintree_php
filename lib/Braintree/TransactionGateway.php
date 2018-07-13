@@ -236,9 +236,6 @@ class TransactionGateway
                 ]
             ],
             ['lineItems' => ['quantity', 'name', 'description', 'kind', 'unitAmount', 'unitTaxAmount', 'totalAmount', 'discountAmount', 'taxAmount', 'unitOfMeasure', 'productCode', 'commodityCode', 'url']],
-            ['externalVault' =>
-                ['status' , 'previousNetworkTransactionId'],
-            ]
         ];
     }
 

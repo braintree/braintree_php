@@ -245,11 +245,6 @@ class Codes
     const TRANSACTION_LINE_ITEM_TAX_AMOUNT_IS_TOO_LARGE                     = '95828';
     const TRANSACTION_LINE_ITEM_TAX_AMOUNT_CANNOT_BE_NEGATIVE               = '95829';
 
-    const TRANSACTION_EXTERNAL_VAULT_STATUS_INVALID                                      = '915175';
-    const TRANSACTION_EXTERNAL_VAULT_STATUS_WITH_PREVIOUS_NETWORK_TRANSACTION_ID_INVALID = '915177';
-    const TRANSACTION_EXTERNAL_VAULT_CARD_TYPE_INVALID                                   = '915178';
-    const TRANSACTION_EXTERNAL_VAULT_PREVIOUS_NETWORK_TRANSACTION_ID_INVALID             = '915179';
-
     const MERCHANT_COUNTRY_CANNOT_BE_BLANK              = '83603';
     const MERCHANT_COUNTRY_CODE_ALPHA2_IS_INVALID       = '93607';
     const MERCHANT_COUNTRY_CODE_ALPHA2_IS_NOT_ACCEPTED  = '93606';
@@ -519,7 +514,6 @@ class Codes
     const TRANSACTION_CUSTOMER_ID_IS_INVALID                                          = '91510';
     const TRANSACTION_CUSTOM_FIELD_IS_INVALID                                         = '91526';
     const TRANSACTION_CUSTOM_FIELD_IS_TOO_LONG                                        = '81527';
-    const TRANSACTION_PAYMENT_INSTRUMENT_WITH_EXTERNAL_VAULT_INVALID                  = '915176';
     const TRANSACTION_HAS_ALREADY_BEEN_REFUNDED                                       = '91512';
     const TRANSACTION_IDEAL_PAYMENT_NOT_COMPLETE                                      = '815141';
     const TRANSACTION_IDEAL_PAYMENTS_CANNOT_BE_VAULTED                                = '915150';
