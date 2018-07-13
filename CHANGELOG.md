@@ -2,7 +2,6 @@
 * Add subscription charged unsuccessfully sample webhook to webhook testing gateway
 * Add `processor_response_code` and `processor_response_text` to authorization adjustments subfield in transaction response.
 * Fix issue where result objects could not be printed with `echo` (thanks @cmeon)
-* Whitelist use of `externalVault` in transaction sale.
 
 ## 3.34.0
 * Allow payee ID to be passed in options params for transaction create
