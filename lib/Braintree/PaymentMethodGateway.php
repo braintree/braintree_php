@@ -75,6 +75,8 @@ class PaymentMethodGateway
                 return VisaCheckoutCard::factory($response['visaCheckoutCard']);
             } else if (isset($response['masterpassCard'])) {
                 return MasterpassCard::factory($response['masterpassCard']);
+            } else if (isset($response['samsungPayCard'])) {
+                return SamsungPayCard::factory($response['samsungPayCard']);
             } else if (is_array($response)) {
                 return UnknownPaymentMethod::factory($response);
             }
@@ -311,6 +313,11 @@ class PaymentMethodGateway
         } else if (isset($response['masterpassCard'])) {
             return new Result\Successful(
                 MasterpassCard::factory($response['masterpassCard']),
+                "paymentMethod"
+            );
+        } else if (isset($response['samsungPayCard'])) {
+            return new Result\Successful(
+                MasterpassCard::factory($response['samsungPayCard']),
                 "paymentMethod"
             );
         } else if (isset($response['paymentMethodNonce'])) {

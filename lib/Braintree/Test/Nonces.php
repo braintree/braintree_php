@@ -72,5 +72,9 @@ class Nonces
    public static $masterpassDiscover = "fake-masterpass-discover-nonce";
    public static $masterpassMasterCard = "fake-masterpass-mastercard-nonce";
    public static $masterpassVisa = "fake-masterpass-visa-nonce";
+   public static $samsungPayAmEx = "tokensam_fake_american_express";
+   public static $samsungPayDiscover = "tokensam_fake_discover";
+   public static $samsungPayMasterCard = "tokensam_fake_mastercard";
+   public static $samsungPayVisa = "tokensam_fake_visa";
 }
 class_alias('Braintree\Test\Nonces', 'Braintree_Test_Nonces');
