@@ -156,6 +156,7 @@ namespace Braintree;
  * @property-read Braintree\CoinbaseDetails $coinbaseDetails transaction Coinbase account info
  * @property-read Braintree\MasterpassCardDetails $masterpassCardDetails transaction Masterpass card info
  * @property-read Braintree\PayPalDetails $paypalDetails transaction paypal account info
+ * @property-read Braintree\SamsungPayCardDetails $samsungPayCardDetails transaction Samsung Pay card info
  * @property-read Braintree\Transaction\CustomerDetails $customerDetails transaction customer info
  * @property-read Braintree\VenmoAccount $venmoAccountDetails transaction Venmo Account info
  * @property-read Braintree\IdealPayment $idealPaymentDetails transaction Ideal Payment info
@@ -265,6 +266,14 @@ class Transaction extends Base
             $this->_set('visaCheckoutCardDetails',
                 new Transaction\VisaCheckoutCardDetails(
                     $transactionAttribs['visaCheckoutCard']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['samsungPayCard'])) {
+            $this->_set('samsungPayCardDetails',
+                new Transaction\SamsungPayCardDetails(
+                    $transactionAttribs['samsungPayCard']
                 )
             );
         }

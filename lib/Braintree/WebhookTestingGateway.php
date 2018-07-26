@@ -76,6 +76,9 @@ class WebhookTestingGateway
             case WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
                 $subjectXml = self::_subscriptionChargedSuccessfullySampleXml($id);
                 break;
+            case WebhookNotification::SUBSCRIPTION_CHARGED_UNSUCCESSFULLY:
+                $subjectXml = self::_subscriptionChargedUnsuccessfullySampleXml($id);
+                break;
             case WebhookNotification::CHECK:
                 $subjectXml = self::_checkSampleXml();
                 break;
@@ -355,7 +358,30 @@ class WebhookTestingGateway
             <billing-period-end-date type=\"date\">2017-03-31</billing-period-end-date>
             <transactions type=\"array\">
                 <transaction>
+                    <id>{$id}</id>
                     <status>submitted_for_settlement</status>
+                    <amount>49.99</amount>
+                </transaction>
+            </transactions>
+            <add_ons type=\"array\">
+            </add_ons>
+            <discounts type=\"array\">
+            </discounts>
+        </subscription>
+        ";
+    }
+
+    private static function _subscriptionChargedUnsuccessfullySampleXml($id)
+    {
+        return "
+        <subscription>
+            <id>{$id}</id>
+            <billing-period-start-date type=\"date\">2016-03-21</billing-period-start-date>
+            <billing-period-end-date type=\"date\">2017-03-31</billing-period-end-date>
+            <transactions type=\"array\">
+                <transaction>
+                    <id>{$id}</id>
+                    <status>failed</status>
                     <amount>49.99</amount>
                 </transaction>
             </transactions>
