@@ -1,3 +1,6 @@
+## Unreleased
+* Fix dispute results in transactions not showing the correct status sometimes
+
 ## 3.35.0
 * Add subscription charged unsuccessfully sample webhook to webhook testing gateway
 * Add `processor_response_code` and `processor_response_text` to authorization adjustments subfield in transaction response.

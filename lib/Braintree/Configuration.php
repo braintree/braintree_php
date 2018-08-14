@@ -33,7 +33,7 @@ class Configuration
      * Braintree API version to use
      * @access public
      */
-     const API_VERSION =  4;
+     const API_VERSION =  5;
 
     public function __construct($attribs = [])
     {
