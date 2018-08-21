@@ -77,6 +77,7 @@ class TransactionSearch
             CreditCard::CHINA_UNION_PAY,
             CreditCard::DINERS_CLUB_INTERNATIONAL,
             CreditCard::DISCOVER,
+            CreditCard::ELO,
             CreditCard::JCB,
             CreditCard::LASER,
             CreditCard::MAESTRO,

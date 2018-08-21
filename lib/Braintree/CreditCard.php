@@ -36,6 +36,7 @@ class CreditCard extends Base
     const CHINA_UNION_PAY = 'China UnionPay';
     const DINERS_CLUB_INTERNATIONAL = 'Diners Club';
     const DISCOVER = 'Discover';
+    const ELO = 'Elo';
     const JCB = 'JCB';
     const LASER = 'Laser';
     const MAESTRO = 'Maestro';
@@ -302,6 +303,7 @@ class CreditCard extends Base
             CreditCard::CHINA_UNION_PAY,
             CreditCard::DINERS_CLUB_INTERNATIONAL,
             CreditCard::DISCOVER,
+            CreditCard::ELO,
             CreditCard::JCB,
             CreditCard::LASER,
             CreditCard::MAESTRO,
