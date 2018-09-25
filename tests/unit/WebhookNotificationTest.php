@@ -754,9 +754,9 @@ class WebhookNotificationTest extends Setup
         );
 
         $this->assertEquals(Braintree\WebhookNotification::LOCAL_PAYMENT_COMPLETED, $webhookNotification->kind);
-        $localPayment = $webhookNotification->localPayment;
+        $localPaymentCompleted = $webhookNotification->localPaymentCompleted;
 
-        $this->assertEquals("a-payment-id", $localPayment->paymentId);
-        $this->assertEquals("a-payer-id", $localPayment->payerId);
+        $this->assertEquals("a-payment-id", $localPaymentCompleted->paymentId);
+        $this->assertEquals("a-payer-id", $localPaymentCompleted->payerId);
     }
 }

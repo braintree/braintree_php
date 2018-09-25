@@ -111,7 +111,7 @@ class WebhookNotification extends Base
         }
 
         if (isset($wrapperNode['localPayment'])) {
-            $this->_set('localPayment', LocalPaymentCompleted::factory($wrapperNode['localPayment']));
+            $this->_set('localPaymentCompleted', LocalPaymentCompleted::factory($wrapperNode['localPayment']));
         }
 
         if (isset($wrapperNode['errors'])) {
