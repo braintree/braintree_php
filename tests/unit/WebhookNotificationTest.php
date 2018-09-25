@@ -740,4 +740,23 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("abc123z", $update->token);
         $this->assertEquals(array("expiration-month", "expiration-year"), $update->updatedFields);
     }
+
+    public function testLocalPaymentCompletedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::LOCAL_PAYMENT_COMPLETED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::LOCAL_PAYMENT_COMPLETED, $webhookNotification->kind);
+        $localPayment = $webhookNotification->localPayment;
+
+        $this->assertEquals("a-payment-id", $localPayment->paymentId);
+        $this->assertEquals("a-payer-id", $localPayment->payerId);
+    }
 }

@@ -94,6 +94,9 @@ class WebhookTestingGateway
             case WebhookNotification::GRANTED_PAYMENT_INSTRUMENT_UPDATE:
                 $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
                 break;
+            case WebhookNotification::LOCAL_PAYMENT_COMPLETED:
+                $subjectXml = self::_localPaymentCompletedSampleXml();
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -524,6 +527,16 @@ class WebhookTestingGateway
 			<item>expiration-year</item>
 		  </updated-fields>
 		</granted-payment-instrument-update>
+        ";
+    }
+
+    private static function _localPaymentCompletedSampleXml()
+	{
+        return "
+		<local-payment>
+            <payment-id>a-payment-id</payment-id>
+            <payer-id>a-payer-id</payer-id>
+		</local-payment>
         ";
     }
 

@@ -1,6 +1,7 @@
 ## Unreleased
 * Fix dispute results in transactions not showing the correct status sometimes
 * Add `externalVault` option to transaction sale
+* Add `LocalPaymentCompleted` webhook
 
 ## 3.35.0
 * Add subscription charged unsuccessfully sample webhook to webhook testing gateway
