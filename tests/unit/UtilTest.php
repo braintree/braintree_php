@@ -74,6 +74,189 @@ class UtilTest extends Setup
         Braintree\Util::throwStatusCodeException(999);
     }
 
+    /**
+     * @expectedException Braintree\Exception\Authentication
+     */
+    public function testThrowGraphQLAuthenticationException()
+    {
+        $response = [
+            "errors" => [
+                [
+                    "message" => "error_message",
+                    "extensions" => [
+                        "errorClass" => "AUTHENTICATION"
+                    ]
+                ]
+            ]
+        ];
+        Braintree\Util::throwGraphQLResponseException($response);
+    }
+
+    /**
+     * @expectedException Braintree\Exception\Authorization
+     */
+    public function testThrowGraphQLAuthorizationException()
+    {
+        $response = [
+            "errors" => [
+                [
+                    "message" => "error_message",
+                    "extensions" => [
+                        "errorClass" => "AUTHORIZATION"
+                    ]
+                ]
+            ]
+        ];
+        Braintree\Util::throwGraphQLResponseException($response);
+    }
+
+    /**
+     * @expectedException Braintree\Exception\NotFound
+     */
+    public function testThrowGraphQLNotFoundException()
+    {
+        $response = [
+            "errors" => [
+                [
+                    "message" => "error_message",
+                    "extensions" => [
+                        "errorClass" => "NOT_FOUND"
+                    ]
+                ]
+            ]
+        ];
+        Braintree\Util::throwGraphQLResponseException($response);
+    }
+
+    /**
+     * @expectedException Braintree\Exception\UpgradeRequired
+     */
+    public function testThrowGraphQLUnsupportedClientException()
+    {
+        $response = [
+            "errors" => [
+                [
+                    "message" => "error_message",
+                    "extensions" => [
+                        "errorClass" => "UNSUPPORTED_CLIENT"
+                    ]
+                ]
+            ]
+        ];
+        Braintree\Util::throwGraphQLResponseException($response);
+    }
+
+    /**
+     * @expectedException Braintree\Exception\TooManyRequests
+     */
+    public function testThrowGraphQLResourceLimitException()
+    {
+        $response = [
+            "errors" => [
+                [
+                    "message" => "error_message",
+                    "extensions" => [
+                        "errorClass" => "RESOURCE_LIMIT"
+                    ]
+                ]
+            ]
+        ];
+        Braintree\Util::throwGraphQLResponseException($response);
+    }
+
+    /**
+     * @expectedException Braintree\Exception\ServerError
+     */
+    public function testThrowGraphQLInternalException()
+    {
+        $response = [
+            "errors" => [
+                [
+                    "message" => "error_message",
+                    "extensions" => [
+                        "errorClass" => "INTERNAL"
+                    ]
+                ]
+            ]
+        ];
+        Braintree\Util::throwGraphQLResponseException($response);
+    }
+
+    /**
+     * @expectedException Braintree\Exception\DownForMaintenance
+     */
+    public function testThrowGraphQLServiceAvailabilityException()
+    {
+        $response = [
+            "errors" => [
+                [
+                    "message" => "error_message",
+                    "extensions" => [
+                        "errorClass" => "SERVICE_AVAILABILITY"
+                    ]
+                ]
+            ]
+        ];
+        Braintree\Util::throwGraphQLResponseException($response);
+    }
+
+    /**
+     * @expectedException Braintree\Exception\Unexpected
+     */
+    public function testThrowGraphQLUnexpectedException()
+    {
+        $response = [
+            "errors" => [
+                [
+                    "message" => "error_message",
+                    "extensions" => [
+                        "errorClass" => "UNDOCUMENTED_ERROR"
+                    ]
+                ]
+            ]
+        ];
+        Braintree\Util::throwGraphQLResponseException($response);
+    }
+
+    public function testDoesNotThrowGraphQLValidationException()
+    {
+        $response = [
+            "errors" => [
+                [
+                    "message" => "error_message",
+                    "extensions" => [
+                        "errorClass" => "VALIDATION"
+                    ]
+                ]
+            ]
+        ];
+        Braintree\Util::throwGraphQLResponseException($response);
+    }
+
+    /**
+     * @expectedException Braintree\Exception\Unexpected
+     */
+    public function testThrowGraphQLUnexpectedExceptionAndNotValidationExceptionWhenBothArePresent()
+    {
+        $response = [
+            "errors" => [
+                [
+                    "message" => "validation_error",
+                    "extensions" => [
+                        "errorClass" => "VALIDATION"
+                    ]
+                ],
+                [
+                    "message" => "error_message",
+                    "extensions" => [
+                        "errorClass" => "UNDOCUMENTED_ERROR"
+                    ]
+                ]
+            ]
+        ];
+        Braintree\Util::throwGraphQLResponseException($response);
+    }
+
     public function testExtractAttributeAsArrayReturnsEmptyArray()
     {
         $attributes = [];

@@ -8,9 +8,9 @@ use Test;
 
 class HttpClientApi extends Braintree\Http
 {
-    protected function _doRequest($httpVerb, $path, $requestBody = null, $file = null)
+    protected function _doRequest($httpVerb, $path, $requestBody = null, $file = null, $headers = null)
     {
-        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . "/merchants/" . $this->_config->getMerchantId() . $path, $requestBody, $file);
+        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . "/merchants/" . $this->_config->getMerchantId() . $path, $requestBody, $file, $headers);
     }
 
     public function get($path)
@@ -23,7 +23,7 @@ class HttpClientApi extends Braintree\Http
          return $this->_doRequest('POST', $path, $body);
     }
 
-    public function _doUrlRequest($httpVerb, $url, $requestBody = null, $file = null)
+    public function _doUrlRequest($httpVerb, $url, $requestBody = null, $file = null, $headers = null)
     {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
