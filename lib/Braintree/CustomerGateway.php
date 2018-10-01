@@ -80,7 +80,7 @@ class CustomerGateway
      *
      * @access public
      * @param array $attribs
-     * @return Braintree_Result_Successful|Braintree_Result_Error
+     * @return Result\Successful|Result\Error
      */
     public function create($attribs = [])
     {
