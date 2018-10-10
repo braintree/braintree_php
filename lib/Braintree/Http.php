@@ -53,7 +53,11 @@ class Http
 
     public function postMultipart($path, $params, $file)
     {
-        $response = $this->_doRequest('POST', $path, $params, $file);
+        $headers = [
+            'User-Agent: Braintree PHP Library ' . Version::get(),
+            'X-ApiVersion: ' . Configuration::API_VERSION
+        ];
+        $response = $this->_doRequest('POST', $path, $params, $file, $headers);
         $responseCode = $response['status'];
         if ($responseCode === 200 || $responseCode === 201 || $responseCode === 422 || $responseCode == 400) {
             return Xml::buildArrayFromXml($response['body']);
@@ -109,12 +113,12 @@ class Http
         $this->_useClientCredentials = true;
     }
 
-    private function _doRequest($httpVerb, $path, $requestBody = null, $file = null)
+    private function _doRequest($httpVerb, $path, $requestBody = null, $file = null, $headers = null)
     {
-        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . $path, $requestBody, $file);
+        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . $path, $requestBody, $file, $headers);
     }
 
-    public function _doUrlRequest($httpVerb, $url, $requestBody = null, $file = null)
+    public function _doUrlRequest($httpVerb, $url, $requestBody = null, $file = null, $customHeaders = null)
     {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, $this->_config->timeout());
@@ -128,9 +132,15 @@ class Http
             curl_setopt($curl, CURLOPT_SSLVERSION, $this->_config->sslVersion());
         }
 
-        $headers = $this->_getHeaders($curl);
-        $headers[] = 'User-Agent: Braintree PHP Library ' . Version::get();
-        $headers[] = 'X-ApiVersion: ' . Configuration::API_VERSION;
+        $headers = [];
+        if ($customHeaders) {
+            $headers = $customHeaders;
+        } else {
+            $headers = $this->_getHeaders($curl);
+            $headers[] = 'User-Agent: Braintree PHP Library ' . Version::get();
+            $headers[] = 'X-ApiVersion: ' . Configuration::API_VERSION;
+            $headers[] = 'Content-Type: application/xml';
+        }
 
         $authorization = $this->_getAuthorization();
         if (isset($authorization['user'])) {
@@ -151,7 +161,6 @@ class Http
             $headers[] = "Content-Type: multipart/form-data; boundary={$boundary}";
             $this->prepareMultipart($curl, $requestBody, $file, $boundary);
         } else if (!empty($requestBody)) {
-            $headers[] = 'Content-Type: application/xml';
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
         }
 

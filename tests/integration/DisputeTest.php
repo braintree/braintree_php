@@ -53,6 +53,10 @@ class DisputeTest extends Setup
         $updatedDispute = $this->gateway->dispute()->find($dispute->id);
 
         $this->assertEquals(Braintree\Dispute::ACCEPTED, $updatedDispute->status);
+
+        $transaction = $this->gateway->transaction()->find($dispute->transaction->id);
+
+        $this->assertEquals(Braintree\Dispute::ACCEPTED, $transaction->disputes[0]->status);
     }
 
     public function testAccept_errors_whenDisputeNotOpen()

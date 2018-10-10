@@ -489,6 +489,27 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals(0, $collection->maximumCount());
     }
 
+    public function test_elo_creditCardType()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '47.00',
+            'creditCard' => [
+                'number' => '5066991111111118',
+                'expirationMonth' => '10',
+                'expirationYear' => '2020',
+                'cvv' => '737',
+            ],
+            'merchantAccountId' => 'adyen_ma',
+        ]);
+
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::id()->is($transaction->id),
+            Braintree\TransactionSearch::creditCardCardType()->is($transaction->creditCardDetails->cardType)
+        ]);
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
     public function test_multipleValueNode_creditCardType_allowedValues()
     {
         $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for credit_card_card_type: noSuchCardType');

@@ -80,6 +80,55 @@ class Util
     }
 
     /**
+     * throws an exception based on the type of error returned from graphql
+     * @param array $response complete graphql response
+     * @throws Exception multiple types depending on the error
+     * @return void
+     */
+    public static function throwGraphQLResponseException($response)
+    {
+        if(!array_key_exists("errors", $response) || !($errors = $response["errors"])) {
+            return;
+        }
+
+        foreach ($errors as $error) {
+            $message = $error["message"];
+            if ($error["extensions"] == null) {
+                throw new Exception\Unexpected("Unexpected exception:" . $message);
+            }
+
+            switch($error["extensions"]["errorClass"]) {
+            case "VALIDATION":
+                continue;
+            case "AUTHENTICATION":
+                throw new Exception\Authentication();
+                break;
+            case "AUTHORIZATION":
+                throw new Exception\Authorization($message);
+                break;
+            case "NOT_FOUND":
+                throw new Exception\NotFound();
+                break;
+            case "UNSUPPORTED_CLIENT":
+                throw new Exception\UpgradeRequired();
+                break;
+            case "RESOURCE_LIMIT":
+                throw new Exception\TooManyRequests();
+                break;
+            case "INTERNAL":
+                throw new Exception\ServerError();
+                break;
+            case "SERVICE_AVAILABILITY":
+                throw new Exception\DownForMaintenance();
+                break;
+            default:
+                throw new Exception\Unexpected('Unexpected exception ' . $message);
+                break;
+            }
+        }
+    }
+
+    /**
      *
      * @param string $className
      * @param object $resultObj
