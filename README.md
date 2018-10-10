@@ -26,7 +26,7 @@ require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
 
 // Instantiate a Braintree Gateway either like this:
 $gateway = new Braintree_Gateway([
-    'environment' => 'sandbox'
+    'environment' => 'sandbox',
     'merchantId' => 'your_merchant_id',
     'publicKey' => 'your_public_key',
     'privateKey' => 'your_private_key'
@@ -34,7 +34,7 @@ $gateway = new Braintree_Gateway([
 
 // or like this:
 $config = new Braintree_Configuration([
-    'environment' => 'sandbox'
+    'environment' => 'sandbox',
     'merchantId' => 'your_merchant_id',
     'publicKey' => 'your_public_key',
     'privateKey' => 'your_private_key'
@@ -65,7 +65,7 @@ Both PSR-0 and PSR-4 namespacing are supported. If you are using composer with `
 
 ```php
 $gateway = new Braintree\Gateway([
-    'environment' => 'sandbox'
+    'environment' => 'sandbox',
     'merchantId' => 'your_merchant_id',
     'publicKey' => 'your_public_key',
     'privateKey' => 'your_private_key'
@@ -74,7 +74,7 @@ $gateway = new Braintree\Gateway([
 // or
 
 $config = new Braintree\Configuration([
-    'environment' => 'sandbox'
+    'environment' => 'sandbox',
     'merchantId' => 'your_merchant_id',
     'publicKey' => 'your_public_key',
     'privateKey' => 'your_private_key'
@@ -98,7 +98,7 @@ and turn off accepting gzip responses:
 
 ```php
 $gateway = new Braintree\Gateway([
-    'environment' => 'sandbox'
+    'environment' => 'sandbox',
     // ...
     'acceptGzipEncoding' => false,
 ]);
