@@ -8,9 +8,9 @@ use Test;
 
 class HttpClientApi extends Braintree\Http
 {
-    protected function _doRequest($httpVerb, $path, $requestBody = null)
+    protected function _doRequest($httpVerb, $path, $requestBody = null, $file = null, $headers = null)
     {
-        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . "/merchants/" . $this->_config->getMerchantId() . $path, $requestBody);
+        return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . "/merchants/" . $this->_config->getMerchantId() . $path, $requestBody, $file, $headers);
     }
 
     public function get($path)
@@ -23,7 +23,7 @@ class HttpClientApi extends Braintree\Http
          return $this->_doRequest('POST', $path, $body);
     }
 
-    public function _doUrlRequest($httpVerb, $url, $requestBody = null)
+    public function _doUrlRequest($httpVerb, $url, $requestBody = null, $file = null, $headers = null)
     {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
@@ -56,7 +56,7 @@ class HttpClientApi extends Braintree\Http
         if ($response["status"] == 200) {
             return json_decode($response["body"]);
         } else {
-            throw new Exception(print_r($response, true));
+            throw new Braintree\Exception(print_r($response, true));
         }
     }
 
@@ -87,32 +87,7 @@ class HttpClientApi extends Braintree\Http
             $body = json_decode($response["body"]);
             return $body->creditCards[0]->nonce;
         } else {
-            throw new Exception(print_r($response, true));
-        }
-    }
-
-    public function nonceForNewEuropeanBankAccount($options) {
-        $clientTokenOptions = [
-            'sepaMandateType' => 'business',
-            'sepaMandateAcceptanceLocation' => 'Rostock, Germany'
-        ];
-
-        if (array_key_exists("customerId", $options)) {
-            $clientTokenOptions["customerId"] = $options["customerId"];
-            unset($options["customerId"]);
-        }
-
-        $gateway = new Braintree\Gateway($this->_config);
-
-        $clientToken = json_decode(base64_decode($gateway->clientToken()->generate($clientTokenOptions)));
-        $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
-
-        $response = $this->post('/client_api/v1/sepa_mandates/', json_encode($options));
-        if ($response["status"] == 201 || $response["status"] == 202) {
-            $body = json_decode($response["body"]);
-            return $body->europeBankAccounts[0]->nonce;
-        } else {
-            throw new Exception(print_r($response, true));
+            throw new Braintree\Exception(print_r($response, true));
         }
     }
 
@@ -124,7 +99,7 @@ class HttpClientApi extends Braintree\Http
             $body = json_decode($response["body"], true);
             return $body["paypalAccounts"][0]["nonce"];
         } else {
-            throw new Exception(print_r($response, true));
+            throw new Braintree\Exception(print_r($response, true));
         }
     }
 }

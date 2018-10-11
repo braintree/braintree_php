@@ -108,11 +108,13 @@ class OAuthGateway
         $query = Util::camelCaseToDelimiterArray($params, '_');
         $query['client_id'] = $this->_config->getClientId();
         $queryString = preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($query));
-        $url = $this->_config->baseUrl() . '/oauth/connect?' . $queryString;
 
-        return $url . '&signature=' . $this->computeSignature($url) . '&algorithm=SHA256';
+        return $this->_config->baseUrl() . '/oauth/connect?' . $queryString;
     }
 
+    /**
+     * @deprecated since version 3.26.1
+     */
     public function computeSignature($url)
     {
         $key = hash('sha256', $this->_config->getClientSecret(), true);

@@ -205,26 +205,26 @@ class CustomerTest extends Setup
         $this->assertNotNull($venmoAccount->venmoUserId);
     }
 
-    public function testCreateCustomerWithCoinbase()
+    public function testCannotCreateCustomerWithCoinbase()
     {
         $nonce = Braintree\Test\Nonces::$coinbase;
         $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
         ]);
-        $this->assertTrue($result->success);
-        $customer = $result->customer;
-        $this->assertNotNull($customer->coinbaseAccounts[0]);
-        $this->assertNotNull($customer->coinbaseAccounts[0]->userId);
-        $this->assertNotNull($customer->coinbaseAccounts[0]->userName);
-        $this->assertNotNull($customer->coinbaseAccounts[0]->userEmail);
-        $this->assertNotNull($customer->paymentMethods[0]);
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Error\Codes::PAYMENT_METHOD_NO_LONGER_SUPPORTED, $result->errors->forKey('coinbaseAccount')->onAttribute('base')[0]->code);
     }
 
     public function testCreateCustomerWithUsBankAccount()
     {
         $nonce = Test\Helper::generateValidUsBankAccountNonce();
         $result = Braintree\Customer::create(array(
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
+            'creditCard' => [
+                'options' => [
+                    'verificationMerchantAccountId' => Test\Helper::usBankMerchantAccount()
+                ]
+            ]
         ));
         $this->assertTrue($result->success);
         $customer = $result->customer;
@@ -303,7 +303,7 @@ class CustomerTest extends Setup
         ]);
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
-        $this->assertEquals(true, $customer->creditCards[0]->venmoSdk);
+        $this->assertEquals(false, $customer->creditCards[0]->venmoSdk);
     }
 
     public function testCreate_withVenmoSdkPaymentMethodCode()
@@ -647,7 +647,7 @@ class CustomerTest extends Setup
         $this->assertTrue($result->success);
     }
 
-    public function testCreate_worksWithOrderPaymentPayPalNonceWithPayeeEmail()
+    public function testCreate_worksWithOrderPaymentPayPalNonceWithPayeeEmailSnakeCase()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = $http->nonceForPayPalAccount([
@@ -663,6 +663,51 @@ class CustomerTest extends Setup
             'options' => [
                 'paypal' => [
                     'payee_email' => 'payee@example.com',
+                    'order_id' => 'merchant-order-id',
+                    'custom_field' => 'custom merchant field',
+                    'description' => 'merchant description',
+                    'amount' => '1.23',
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+    }
+
+    public function testCreate_worksWithOrderPaymentPayPalNonceWithPayeeEmailCamelCase()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'intent' => 'order',
+                'payment_token' => 'paypal-payment-token',
+                'payer_id' => 'paypal-payer-id',
+            ]
+        ]);
+
+        $result = Braintree\Customer::create([
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'paypal' => [
+                    'payeeEmail' => 'payee@example.com',
+                    'orderId' => 'merchant-order-id',
+                    'customField' => 'custom merchant field',
+                    'description' => 'merchant description',
+                    'amount' => '1.23',
+                    'shipping' => [
+                        'firstName' => 'Andrew',
+                        'lastName' => 'Mason',
+                        'company' => 'Braintree',
+                        'streetAddress' => '456 W Main St',
+                        'extendedAddress' => 'Apt 2F',
+                        'locality' => 'Bartlett',
+                        'region' => 'IL',
+                        'postalCode' => '60103',
+                        'countryName' => 'United States of America',
+                        'countryCodeAlpha2' => 'US',
+                        'countryCodeAlpha3' => 'USA',
+                        'countryCodeNumeric' => '840'
+                    ],
                 ],
             ],
         ]);
@@ -715,11 +760,107 @@ class CustomerTest extends Setup
         $this->assertEquals('http://example.com', $customer->website);
     }
 
+    public function test_findCustomerWithAllFilterableAssociationsFilteredOut()
+    {
+        $result = Braintree\Customer::create([
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com',
+            'customFields' => [
+                'storeMe' => 'custom value'
+            ]
+        ]);
+        $creditCard = Braintree\CreditCard::create([
+            'customerId' => $result->customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddress' => [
+                'firstName' => 'Drew',
+                'lastName' => 'Smith',
+                'company' => 'Smith Co.',
+                'streetAddress' => '1 E Main St',
+                'locality' => 'Chicago',
+                'region' => 'IL',
+                'postalCode' => '60622',
+                'countryName' => 'United States of America'
+            ]
+        ]);
+        $id = strval(rand());
+        $subscriptions = Braintree\Subscription::create([
+            'id' => $id,
+            'paymentMethodToken' => $creditCard->creditCard->token,
+            'planId' => 'integration_trialless_plan',
+            'price' => '1.00'
+        ]);
+
+        $customer = Braintree\Customer::find($result->customer->id, "customernoassociations");
+        $this->assertEquals(0, count($customer->creditCards));
+        $this->assertEquals(0, count($customer->paymentMethods));
+        $this->assertEquals(0, count($customer->addresses));
+        $this->assertEquals(0, count($customer->customFields));
+    }
+
+    public function test_findCustomerWithNestedFilterableAssociationsFilteredOut()
+    {
+        $result = Braintree\Customer::create([
+            'firstName' => 'Mike',
+            'lastName' => 'Jones',
+            'company' => 'Jones Co.',
+            'email' => 'mike.jones@example.com',
+            'phone' => '419.555.1234',
+            'fax' => '419.555.1235',
+            'website' => 'http://example.com',
+            'customFields' => [
+                'storeMe' => 'custom value'
+            ]
+        ]);
+        $creditCard = Braintree\CreditCard::create([
+            'customerId' => $result->customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'billingAddress' => [
+                'firstName' => 'Drew',
+                'lastName' => 'Smith',
+                'company' => 'Smith Co.',
+                'streetAddress' => '1 E Main St',
+                'locality' => 'Chicago',
+                'region' => 'IL',
+                'postalCode' => '60622',
+                'countryName' => 'United States of America'
+            ]
+        ]);
+        $id = strval(rand());
+        $subscriptions = Braintree\Subscription::create([
+            'id' => $id,
+            'paymentMethodToken' => $creditCard->creditCard->token,
+            'planId' => 'integration_trialless_plan',
+            'price' => '1.00'
+        ]);
+
+        $customer = Braintree\Customer::find($result->customer->id, "customertoplevelassociations");
+
+        $this->assertEquals(1, count($customer->creditCards));
+        $this->assertEquals(0, count($customer->creditCards[0]->subscriptions));
+        $this->assertEquals(1, count($customer->paymentMethods));
+        $this->assertEquals(0, count($customer->paymentMethods[0]->subscriptions));
+        $this->assertEquals(1, count($customer->addresses));
+        $this->assertEquals(1, count($customer->customFields));
+    }
+
     public function test_findUsBankAccountGivenPaymentMethodToken()
     {
         $nonce = Test\Helper::generateValidUsBankAccountNonce();
         $result = Braintree\Customer::create(array(
-            'paymentMethodNonce' => $nonce
+            'paymentMethodNonce' => $nonce,
+            'creditCard' => [
+                'options' => [
+                    'verificationMerchantAccountId' => Test\Helper::usBankMerchantAccount()
+                ]
+            ]
         ));
         $this->assertTrue($result->success);
 
@@ -1034,7 +1175,7 @@ class CustomerTest extends Setup
         $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
     }
 
-    public function testUpdate_worksWithOrderPaymentPayPalNonceWithPayeeEmail()
+    public function testUpdate_worksWithOrderPaymentPayPalNonceWithPayeeEmailSnakeCase()
     {
         $customerResult = Braintree\Customer::create([
             'creditCard' => [
@@ -1064,6 +1205,58 @@ class CustomerTest extends Setup
             'options' => [
                 'paypal' => [
                     'payee_email' => 'payee@example.com',
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
+    }
+
+    public function testUpdate_worksWithOrderPaymentPayPalNonceWithPayeeEmailCamelCase()
+    {
+        $customerResult = Braintree\Customer::create([
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'options' => [
+                    'makeDefault' => true
+                ]
+            ]
+        ]);
+        $paypalAccountToken = 'PAYPALToken-' . strval(rand());
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'intent' => 'order',
+                'payment_token' => 'paypal-payment-token',
+                'payer_id' => 'paypal-payer-id',
+                'token' => $paypalAccountToken,
+                'options' => [
+                    'makeDefault' => true
+                ]
+            ]
+        ]);
+
+        $result = Braintree\Customer::update($customerResult->customer->id, [
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'paypal' => [
+                    'payeeEmail' => 'payee@example.com',
+                    'shipping' => [
+                        'firstName' => 'Andrew',
+                        'lastName' => 'Mason',
+                        'company' => 'Braintree',
+                        'streetAddress' => '456 W Main St',
+                        'extendedAddress' => 'Apt 2F',
+                        'locality' => 'Bartlett',
+                        'region' => 'IL',
+                        'postalCode' => '60103',
+                        'countryName' => 'United States of America',
+                        'countryCodeAlpha2' => 'US',
+                        'countryCodeAlpha3' => 'USA',
+                        'countryCodeNumeric' => '840'
+                    ],
                 ],
             ],
         ]);

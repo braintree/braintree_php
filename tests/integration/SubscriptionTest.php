@@ -672,6 +672,40 @@ class SubscriptionTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::DESCRIPTOR_URL_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
+    public function testCreate_withDescription()
+    {
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $customer = Braintree\Customer::createNoValidate();
+        $plan = SubscriptionHelper::triallessPlan();
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            ]
+        ]);
+
+        $paypalResult = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $result = Braintree\Subscription::create([
+            'paymentMethodToken' => $paymentMethodToken,
+            'planId' => $plan['id'],
+            'options' => [
+                'paypal' => [
+                    'description' => 'A great product'
+                ]
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $subscription = $result->subscription;
+        $this->assertEquals('A great product', $subscription->description);
+        $transaction = $subscription->transactions[0];
+        $this->assertEquals('A great product', $transaction->paypalDetails->description);
+    }
+
     public function testCreate_fromPayPalACcount()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
@@ -1142,6 +1176,44 @@ class SubscriptionTest extends Setup
         $this->assertEquals('8887776666', $updatedSubscription->descriptor->phone);
     }
 
+    public function testUpdate_withDescription()
+    {
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $customer = Braintree\Customer::createNoValidate();
+        $plan = SubscriptionHelper::triallessPlan();
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            ]
+        ]);
+
+        $paypalResult = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $subscription = Braintree\Subscription::create([
+            'paymentMethodToken' => $paymentMethodToken,
+            'planId' => $plan['id'],
+            'options' => [
+                'paypal' => [
+                    'description' => 'A great product'
+                ]
+            ]
+        ])->subscription;
+        $result = Braintree\Subscription::update($subscription->id, [
+            'options' => [
+                'paypal' => [
+                    'description' => 'An incredible product'
+                ]
+            ]
+        ]);
+        $updatedSubscription = $result->subscription;
+        $this->assertEquals('An incredible product', $updatedSubscription->description);
+    }
+
     public function testCancel_returnsSuccessIfCanceled()
     {
         $subscription = SubscriptionHelper::createSubscription();
@@ -1200,5 +1272,41 @@ class SubscriptionTest extends Setup
         $this->assertNotNull($transaction->processorAuthorizationCode);
         $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
         $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+    }
+
+    public function testRetryCharge_WithSubmitForSettlement()
+    {
+        $subscription = SubscriptionHelper::createSubscription();
+        $http = new Braintree\Http(Braintree\Configuration::$global);
+        $path = Braintree\Configuration::$global->merchantPath() . '/subscriptions/' . $subscription->id . '/make_past_due';
+        $http->put($path);
+
+        $result = Braintree\Subscription::retryCharge($subscription->id, null, true);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals($subscription->price, $transaction->amount);
+        $this->assertNotNull($transaction->processorAuthorizationCode);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
+    }
+
+    public function testRetryCharge_WithSubmitForSettlementAndAmount()
+    {
+        $subscription = SubscriptionHelper::createSubscription();
+        $http = new Braintree\Http(Braintree\Configuration::$global);
+        $path = Braintree\Configuration::$global->merchantPath() . '/subscriptions/' . $subscription->id . '/make_past_due';
+        $http->put($path);
+
+        $result = Braintree\Subscription::retryCharge($subscription->id, 1002, true);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(1002, $transaction->amount);
+        $this->assertNotNull($transaction->processorAuthorizationCode);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
     }
 }

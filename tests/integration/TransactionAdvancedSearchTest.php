@@ -489,6 +489,27 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals(0, $collection->maximumCount());
     }
 
+    public function test_elo_creditCardType()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '47.00',
+            'creditCard' => [
+                'number' => '5066991111111118',
+                'expirationMonth' => '10',
+                'expirationYear' => '2020',
+                'cvv' => '737',
+            ],
+            'merchantAccountId' => 'adyen_ma',
+        ]);
+
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::id()->is($transaction->id),
+            Braintree\TransactionSearch::creditCardCardType()->is($transaction->creditCardDetails->cardType)
+        ]);
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
     public function test_multipleValueNode_creditCardType_allowedValues()
     {
         $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for credit_card_card_type: noSuchCardType');
@@ -851,26 +872,60 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals(0, $collection->maximumCount());
     }
 
-    private function rundisputeDateSearchTests($disputeDateString, $comparison)
+    private static $disputedTransaction = null;
+
+    private function createTestDisputedTransaction()
     {
-        $knowndisputedId = "disputedtransaction";
-        $now = new DateTime($disputeDateString);
-        $past = clone $now;
-        $past->modify("-1 hour");
-        $future = clone $now;
-        $future->modify("+1 hour");
+        if(self::$disputedTransaction !== null) {
+            return self::$disputedTransaction;
+        }
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$disputes['Chargeback'],
+                'expirationDate' => '12/2019',
+            ]
+        ]);
+        self::$disputedTransaction = $result->transaction;
+
+        for($i = 0; $i < 60; $i++) {
+            sleep(1);
+
+            $collection = Braintree\Transaction::search([
+                Braintree\TransactionSearch::id()->is($result->transaction->id),
+                Braintree\TransactionSearch::disputeDate()->is($result->transaction->disputes[0]->receivedDate)
+            ]);
+
+            if($collection->maximumCount() > 0) {
+                return self::$disputedTransaction;
+            }
+        }
+
+        throw new \Exception('Unable to find the disputed transaction.');
+    }
+
+    private function rundisputeDateSearchTests($comparison)
+    {
+        $transactionId = $this->createTestDisputedTransaction()->id;
+        $disputeDate = $this->createTestDisputedTransaction()->disputes[0]->receivedDate;
+
+        $past = clone $disputeDate;
+        $past->modify("-1 day");
+        $future = clone $disputeDate;
+        $future->modify("+1 day");
 
         $collections = [
             'future' => Braintree\Transaction::search([
-                Braintree\TransactionSearch::id()->is($knowndisputedId),
+                Braintree\TransactionSearch::id()->is($transactionId),
                 $comparison($future)
             ]),
             'now' => Braintree\Transaction::search([
-                Braintree\TransactionSearch::id()->is($knowndisputedId),
-                $comparison($now)
+                Braintree\TransactionSearch::id()->is($transactionId),
+                $comparison($disputeDate)
             ]),
             'past' => Braintree\Transaction::search([
-                Braintree\TransactionSearch::id()->is($knowndisputedId),
+                Braintree\TransactionSearch::id()->is($transactionId),
                 $comparison($past)
             ])
         ];
@@ -882,7 +937,8 @@ class TransactionAdvancedSearchTest extends Setup
         $compareLessThan = function($time) {
             return Braintree\TransactionSearch::disputeDate()->lessThanOrEqualTo($time);
         };
-        $collection = $this->rundisputeDateSearchTests("2014-03-01", $compareLessThan);
+
+        $collection = $this->rundisputeDateSearchTests($compareLessThan);
 
         $this->assertEquals(0, $collection['past']->maximumCount());
         $this->assertEquals(1, $collection['now']->maximumCount());
@@ -894,23 +950,25 @@ class TransactionAdvancedSearchTest extends Setup
         $comparison = function($time) {
             return Braintree\TransactionSearch::disputeDate()->GreaterThanOrEqualTo($time);
         };
-        $collection = $this->rundisputeDateSearchTests("2014-03-01", $comparison);
+
+        $collection = $this->rundisputeDateSearchTests($comparison);
 
         $this->assertEquals(1, $collection['past']->maximumCount());
         $this->assertEquals(1, $collection['now']->maximumCount());
-        $this->assertEquals(1, $collection['future']->maximumCount());
+        $this->assertEquals(0, $collection['future']->maximumCount());
     }
 
     public function test_rangeNode_disputeDate_between()
     {
-        $knownId = "disputedtransaction";
+        $disputedTransaction = $this->createTestDisputedTransaction();
+        $knownId = $disputedTransaction->id;
+        $receivedDate = $disputedTransaction->disputes[0]->receivedDate;
 
-        $now = new DateTime("2014-03-01");
-        $past = clone $now;
+        $past = clone $receivedDate;
         $past->modify("-1 day");
-        $future = clone $now;
+        $future = clone $receivedDate;
         $future->modify("+1 day");
-        $future2 = clone $now;
+        $future2 = clone $receivedDate;
         $future2->modify("+2 days");
 
         $collection = Braintree\Transaction::search([
@@ -922,14 +980,14 @@ class TransactionAdvancedSearchTest extends Setup
 
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::id()->is($knownId),
-            Braintree\TransactionSearch::disputeDate()->between($now, $future)
+            Braintree\TransactionSearch::disputeDate()->between($receivedDate, $future)
         ]);
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
 
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::id()->is($knownId),
-            Braintree\TransactionSearch::disputeDate()->between($past, $now)
+            Braintree\TransactionSearch::disputeDate()->between($past, $receivedDate)
         ]);
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
@@ -943,15 +1001,14 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_rangeNode_disputeDate_is()
     {
-        $knownId = "disputedtransaction";
+        $disputedTransaction = $this->createTestDisputedTransaction();
+        $knownId = $disputedTransaction->id;
+        $receivedDate = $disputedTransaction->disputes[0]->receivedDate;
 
-        $now = new DateTime("2014-03-01");
-        $past = clone $now;
+        $past = clone $receivedDate;
         $past->modify("-1 day");
-        $future = clone $now;
+        $future = clone $receivedDate;
         $future->modify("+1 day");
-        $future2 = clone $now;
-        $future2->modify("+2 days");
 
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::id()->is($knownId),
@@ -961,7 +1018,7 @@ class TransactionAdvancedSearchTest extends Setup
 
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::id()->is($knownId),
-            Braintree\TransactionSearch::disputeDate()->is($now)
+            Braintree\TransactionSearch::disputeDate()->is($receivedDate)
         ]);
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($knownId, $collection->firstItem()->id);
@@ -1477,7 +1534,7 @@ class TransactionAdvancedSearchTest extends Setup
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::creditCardNumber()->startsWith("411111")
         ]);
-        $this->assertTrue($collection->maximumCount() > 100);
+        $this->assertGreaterThan(100, $collection->maximumCount());
 
         $arr = [];
         foreach($collection as $transaction) {
@@ -1520,55 +1577,5 @@ class TransactionAdvancedSearchTest extends Setup
 
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($result->transaction->id, $collection->firstItem()->id);
-    }
-
-    public function testHandlesEuropeBankAccounts()
-    {
-        $gateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'altpay_merchant',
-            'publicKey' => 'altpay_merchant_public_key',
-            'privateKey' => 'altpay_merchant_private_key'
-        ]);
-
-        $result = $gateway->customer()->create();
-        $this->assertTrue($result->success);
-        $customer = $result->customer;
-        $clientApi = new HttpClientApi($gateway->config);
-        $nonce = $clientApi->nonceForNewEuropeanBankAccount([
-            "customerId" => $customer->id,
-            "sepa_mandate" => [
-                "locale" => "de-DE",
-                "bic" => "DEUTDEFF",
-                "iban" => "DE89370400440532013000",
-                "accountHolderName" => "Bob Holder",
-                "billingAddress" => [
-                    "streetAddress" => "123 Currywurst Way",
-                    "extendedAddress" => "Lager Suite",
-                    "firstName" => "Wilhelm",
-                    "lastName" => "Dix",
-                    "locality" => "Frankfurt",
-                    "postalCode" => "60001",
-                    "countryCodeAlpha2" => "DE",
-                    "region" => "Hesse"
-                ]
-            ]
-        ]);
-        $transactionResult = $gateway->transaction()->sale([
-            "customerId" => $customer->id,
-            "paymentMethodNonce" => $nonce,
-            "merchantAccountId" => "fake_sepa_ma",
-            "amount" => 100
-        ]);
-
-        $this->assertTrue($transactionResult->success);
-
-        $collection = $gateway->transaction()->search([
-            Braintree\TransactionSearch::customerId()->is($customer->id),
-            Braintree\TransactionSearch::europeBankAccountIban()->is("DE89370400440532013000")
-        ]);
-
-        $this->assertEquals(1, $collection->maximumCount());
-        $this->assertEquals($transactionResult->transaction->id, $collection->firstItem()->id);
     }
 }

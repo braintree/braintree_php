@@ -10,7 +10,7 @@ use InvalidArgumentException;
  *
  * <b>== More information ==</b>
  *
- * For more detailed information on Transactions, see {@link http://www.braintreepayments.com/gateway/transaction-api http://www.braintreepaymentsolutions.com/gateway/transaction-api}
+ * For more detailed information on Transactions, see {@link https://developers.braintreepayments.com/reference/response/transaction/php https://developers.braintreepayments.com/reference/response/transaction/php}
  *
  * @package    Braintree
  * @category   Resources
@@ -40,7 +40,7 @@ class TransactionGateway
      * @ignore
      * @access private
      * @param array $attribs
-     * @return object
+     * @return Result\Successful|Result\Error
      */
     private function create($attribs)
     {
@@ -119,6 +119,7 @@ class TransactionGateway
             'recurring',
             'serviceFeeAmount',
             'sharedPaymentMethodToken',
+            'sharedPaymentMethodNonce',
             'sharedCustomerId',
             'sharedShippingAddressId',
             'sharedBillingAddressId',
@@ -129,6 +130,9 @@ class TransactionGateway
             'transactionSource',
             'type',
             'venmoSdkPaymentMethodCode',
+            'shippingAmount',
+            'discountAmount',
+            'shipsFromPostalCode',
             ['riskData' =>
                 ['customerBrowser', 'customerIp', 'customer_browser', 'customer_ip']
             ],
@@ -169,6 +173,7 @@ class TransactionGateway
                     'addBillingAddressToPaymentMethod',
                     'venmoSdkSession',
                     'storeShippingAddressInVault',
+                    'payeeId',
                     'payeeEmail',
                     'skipAdvancedFraudChecking',
                     'skipAvs',
@@ -176,12 +181,13 @@ class TransactionGateway
                     ['threeDSecure' =>
                         ['required']
                     ],
-                    # Included for backwards compatiblity. Remove in the next major version
+                    # TODO: Snake case version included for backwards compatiblity. Remove in the next major version
                     ['three_d_secure' =>
                         ['required']
                     ],
                     ['paypal' =>
                         [
+                            'payeeId',
                             'payeeEmail',
                             'customField',
                             'description',
@@ -195,14 +201,23 @@ class TransactionGateway
                             'currencyAmount',
                             'currencyIsoCode'
                         ]
+                    ],
+                    ['venmo' =>
+                        [
+                            # TODO: Snake case version included for backwards compatiblity. Remove in the next major version
+                            'profile_id',
+                            'profileId'
+                        ]
                     ]
                 ],
             ],
             ['customFields' => ['_anyKey_']],
             ['descriptor' => ['name', 'phone', 'url']],
-            ['paypalAccount' => ['payeeEmail']],
-            ['apple_pay_card' => ['number', 'cardholder_name', 'cryptogram', 'expiration_month', 'expiration_year']], #backwards compatibility
-            ['applePayCard' => ['number', 'cardholderName', 'cryptogram', 'expirationMonth', 'expirationYear']],
+            ['paypalAccount' => ['payeeId', 'payeeEmail']],
+            # TODO: Snake case version included for backwards compatiblity. Remove in the next major version
+            ['apple_pay_card' => ['number', 'cardholder_name', 'cryptogram', 'expiration_month', 'expiration_year', 'eci_indicator']], 
+
+            ['applePayCard' => ['number', 'cardholderName', 'cryptogram', 'expirationMonth', 'expirationYear', 'eciIndicator']],
             ['industry' =>
                 ['industryType',
                     ['data' =>
@@ -219,6 +234,10 @@ class TransactionGateway
                         ]
                     ]
                 ]
+            ],
+            ['lineItems' => ['quantity', 'name', 'description', 'kind', 'unitAmount', 'unitTaxAmount', 'totalAmount', 'discountAmount', 'taxAmount', 'unitOfMeasure', 'productCode', 'commodityCode', 'url']],
+            ['externalVault' =>
+                ['status' , 'previousNetworkTransactionId'],
             ]
         ];
     }
@@ -283,7 +302,7 @@ class TransactionGateway
     /**
      * new sale
      * @param array $attribs
-     * @return array
+     * @return Result\Successful|Result\Error
      */
     public function sale($attribs)
     {
@@ -308,7 +327,7 @@ class TransactionGateway
      *
      * If <b>query</b> is a string, the search will be a basic search.
      * If <b>query</b> is a hash, the search will be an advanced search.
-     * For more detailed information and examples, see {@link http://www.braintreepayments.com/gateway/transaction-api#searching http://www.braintreepaymentsolutions.com/gateway/transaction-api}
+     * For more detailed information and examples, see {@link https://developers.braintreepayments.com/reference/request/transaction/search/php https://developers.braintreepayments.com/reference/request/transaction/search/php}
      *
      * @param mixed $query search query
      * @param array $options options such as page number
@@ -470,7 +489,7 @@ class TransactionGateway
      * @ignore
      * @param var $subPath
      * @param array $params
-     * @return mixed
+     * @return Result\Successful|Result\Error
      */
     public function _doCreate($subPath, $params)
     {

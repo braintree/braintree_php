@@ -191,6 +191,7 @@ class OAuthTest extends Setup
             'scope' => 'read_write',
             'state' => 'baz_state',
             'landingPage' => 'login',
+            'loginOnly' => 'true',
             'user' => [
                 'country' => 'USA',
                 'email' => 'foo@example.com',
@@ -238,6 +239,7 @@ class OAuthTest extends Setup
         $this->assertEquals('read_write', $query['scope']);
         $this->assertEquals('baz_state', $query['state']);
         $this->assertEquals('login', $query['landing_page']);
+        $this->assertEquals('true', $query['login_only']);
 
         $this->assertEquals('USA', $query['user']['country']);
         $this->assertEquals('foo@example.com', $query['user']['email']);
@@ -271,9 +273,6 @@ class OAuthTest extends Setup
 
         $this->assertCount(1, $query['payment_methods']);
         $this->assertEquals('credit_card', $query['payment_methods'][0]);
-
-        $this->assertEquals(64, strlen($query['signature']));
-        $this->assertEquals('SHA256', $query['algorithm']);
     }
 
     public function testBuildConnectUrlWithoutOptionalParams()

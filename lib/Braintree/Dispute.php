@@ -20,6 +20,9 @@ class Dispute extends Base
     protected $_attributes = [];
 
     /* Dispute Status */
+    const ACCEPTED = 'accepted';
+    const DISPUTED = 'disputed';
+    const EXPIRED = 'expired';
     const OPEN  = 'open';
     const WON  = 'won';
     const LOST = 'lost';
@@ -50,7 +53,27 @@ class Dispute extends Base
         $this->_attributes = $disputeAttribs;
 
         if (isset($disputeAttribs['transaction'])) {
-            $this->_set('transactionDetails',
+            $transactionDetails = new Dispute\TransactionDetails($disputeAttribs['transaction']);
+            $this->_set('transactionDetails', $transactionDetails);
+            $this->_set('transaction', $transactionDetails);
+        }
+
+        if (isset($disputeAttribs['evidence'])) {
+            $evidenceArray = array_map(function($evidence) {
+                return new Dispute\EvidenceDetails($evidence);
+            }, $disputeAttribs['evidence']);
+            $this->_set('evidence', $evidenceArray);
+        }
+
+        if (isset($disputeAttribs['statusHistory'])) {
+            $statusHistoryArray = array_map(function($statusHistory) {
+                return new Dispute\StatusHistoryDetails($statusHistory);
+            }, $disputeAttribs['statusHistory']);
+            $this->_set('statusHistory', $statusHistoryArray);
+        }
+
+        if (isset($disputeAttribs['transaction'])) {
+            $this->_set('transaction',
                 new Dispute\TransactionDetails($disputeAttribs['transaction'])
             );
         }
@@ -76,6 +99,79 @@ class Dispute extends Base
         }
         return __CLASS__ . '[' .
                 Util::attributesToString($displayAttributes) .']';
+    }
+
+    /**
+     * Accepts a dispute, given a dispute ID
+     *
+     * @param string $id
+     */
+    public static function accept($id)
+    {
+        return Configuration::gateway()->dispute()->accept($id);
+    }
+
+    /**
+     * Adds file evidence to a dispute, given a dispute ID and a document ID
+     *
+     * @param string $disputeId
+     * @param string $documentIdOrRequest
+     */
+    public static function addFileEvidence($disputeId, $documentIdOrRequest)
+    {
+        return Configuration::gateway()->dispute()->addFileEvidence($disputeId, $documentIdOrRequest);
+    }
+
+    /**
+     * Adds text evidence to a dispute, given a dispute ID and content
+     *
+     * @param string $id
+     * @param string $contentOrRequest
+     */
+    public static function addTextEvidence($id, $contentOrRequest)
+    {
+        return Configuration::gateway()->dispute()->addTextEvidence($id, $contentOrRequest);
+    }
+
+    /**
+     * Finalize a dispute, given a dispute ID
+     *
+     * @param string $id
+     */
+    public static function finalize($id)
+    {
+        return Configuration::gateway()->dispute()->finalize($id);
+    }
+
+    /**
+     * Find a dispute, given a dispute ID
+     *
+     * @param string $id
+     */
+    public static function find($id)
+    {
+        return Configuration::gateway()->dispute()->find($id);
+    }
+
+    /**
+     * Remove evidence from a dispute, given a dispute ID and evidence ID
+     *
+     * @param string $disputeId
+     * @param string $evidenceId
+     */
+    public static function removeEvidence($disputeId, $evidenceId)
+    {
+        return Configuration::gateway()->dispute()->removeEvidence($disputeId, $evidenceId);
+    }
+
+    /**
+     * Search for Disputes, given a DisputeSearch query
+     *
+     * @param DisputeSearch $query
+     */
+    public static function search($query)
+    {
+        return Configuration::gateway()->dispute()->search($query);
     }
 }
 class_alias('Braintree\Dispute', 'Braintree_Dispute');

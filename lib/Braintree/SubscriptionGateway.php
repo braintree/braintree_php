@@ -8,7 +8,7 @@ use InvalidArgumentException;
  *
  * <b>== More information ==</b>
  *
- * For more detailed information on Subscriptions, see {@link http://www.braintreepayments.com/gateway/subscription-api http://www.braintreepaymentsolutions.com/gateway/subscription-api}
+ * For more detailed information on Subscriptions, see {@link https://developers.braintreepayments.com/reference/response/subscription/php https://developers.braintreepayments.com/reference/response/subscription/php}
  *
  * PHP Version 5
  *
@@ -93,12 +93,15 @@ class SubscriptionGateway
         return $this->_verifyGatewayResponse($response);
     }
 
-    public function retryCharge($subscriptionId, $amount = null)
+    public function retryCharge($subscriptionId, $amount = null, $submitForSettlement = false)
     {
         $transaction_params = ['type' => Transaction::SALE,
             'subscriptionId' => $subscriptionId];
         if (isset($amount)) {
             $transaction_params['amount'] = $amount;
+        }
+        if ($submitForSettlement) {
+            $transaction_params['options'] = ['submitForSettlement' => $submitForSettlement];
         }
 
         $path = $this->_config->merchantPath() . '/transactions';
@@ -133,7 +136,11 @@ class SubscriptionGateway
                 'trialDurationUnit',
                 'trialPeriod',
                 ['descriptor' => ['name', 'phone', 'url']],
-                ['options' => ['doNotInheritAddOnsOrDiscounts', 'startImmediately']],
+                ['options' => [
+                    'doNotInheritAddOnsOrDiscounts',
+                    'startImmediately',
+                    ['paypal' => ['description']]
+                ]],
             ],
             self::_addOnDiscountSignature()
         );
@@ -146,7 +153,12 @@ class SubscriptionGateway
                 'merchantAccountId', 'numberOfBillingCycles', 'paymentMethodToken', 'planId',
                 'paymentMethodNonce', 'id', 'neverExpires', 'price',
                 ['descriptor' => ['name', 'phone', 'url']],
-                ['options' => ['prorateCharges', 'replaceAllAddOnsAndDiscounts', 'revertSubscriptionOnProrationFailure']],
+                ['options' => [
+                    'prorateCharges',
+                    'replaceAllAddOnsAndDiscounts',
+                    'revertSubscriptionOnProrationFailure',
+                    ['paypal' => ['description']]
+                ]],
             ],
             self::_addOnDiscountSignature()
         );

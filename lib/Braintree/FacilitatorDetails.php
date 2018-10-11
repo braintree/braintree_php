@@ -17,7 +17,7 @@ class FacilitatorDetails extends Base
     }
 
     /**
-     * returns a string representation of the three d secure info
+     * returns a string representation of the facilitator details
      * @return string
      */
     public function  __toString()

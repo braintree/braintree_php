@@ -1,6 +1,8 @@
 <?php
 namespace Braintree;
 
+use JsonSerializable;
+
 /**
  * Braintree PHP Library.
  *
@@ -9,7 +11,7 @@ namespace Braintree;
  *
  *  PHP version 5
  */
-abstract class Base extends Serializable
+abstract class Base extends Serializable implements JsonSerializable
 {
     protected $_attributes = [];
 
@@ -71,5 +73,16 @@ abstract class Base extends Serializable
     public function _set($key, $value)
     {
         $this->_attributes[$key] = $value;
+    }
+    
+    /**
+     * Implementation of JsonSerializable
+     *
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+	return $this->_attributes;
     }
 }

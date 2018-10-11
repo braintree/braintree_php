@@ -53,6 +53,95 @@ class PaymentMethodNonceTest extends Setup
         $this->assertTrue($info->liabilityShiftPossible);
     }
 
+    public function testFind_exposesBinData()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableVisa);
+        $this->assertEquals(Braintree\Test\Nonces::$transactableVisa, $nonce->nonce);
+        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertNotNull($nonce->binData);
+        $binData = $nonce->binData;
+        $this->assertEquals(Braintree\CreditCard::COMMERCIAL_UNKNOWN, $binData->commercial);
+        $this->assertEquals(Braintree\CreditCard::DEBIT_UNKNOWN, $binData->debit);
+        $this->assertEquals(Braintree\CreditCard::DURBIN_REGULATED_UNKNOWN, $binData->durbinRegulated);
+        $this->assertEquals(Braintree\CreditCard::HEALTHCARE_UNKNOWN, $binData->healthcare);
+        $this->assertEquals(Braintree\CreditCard::PAYROLL_UNKNOWN, $binData->payroll);
+        $this->assertEquals(Braintree\CreditCard::PREPAID_NO, $binData->prepaid);
+        $this->assertEquals("Unknown", $binData->issuingBank);
+        $this->assertEquals("Unknown", $binData->productId);
+    }
+
+    public function testFind_returnsBinDataForCommercialNonce()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableCommercial);
+        $this->assertEquals(Braintree\Test\Nonces::$transactableCommercial, $nonce->nonce);
+        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertNotNull($nonce->binData);
+        $this->assertEquals(Braintree\CreditCard::COMMERCIAL_YES, $nonce->binData->commercial);
+    }
+
+    public function testFind_returnsBinDataForDebitNonce()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableDebit);
+        $this->assertEquals(Braintree\Test\Nonces::$transactableDebit, $nonce->nonce);
+        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertNotNull($nonce->binData);
+        $this->assertEquals(Braintree\CreditCard::DEBIT_YES, $nonce->binData->debit);
+    }
+
+    public function testFind_returnsBinDataForDurbinRegulatedNonce()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableDurbinRegulated);
+        $this->assertEquals(Braintree\Test\Nonces::$transactableDurbinRegulated, $nonce->nonce);
+        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertNotNull($nonce->binData);
+        $this->assertEquals(Braintree\CreditCard::DURBIN_REGULATED_YES, $nonce->binData->durbinRegulated);
+    }
+
+    public function testFind_returnsBinDataForHealthcareNonce()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableHealthcare);
+        $this->assertEquals(Braintree\Test\Nonces::$transactableHealthcare, $nonce->nonce);
+        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertNotNull($nonce->binData);
+        $this->assertEquals(Braintree\CreditCard::HEALTHCARE_YES, $nonce->binData->healthcare);
+    }
+
+    public function testFind_returnsBinDataForPayrollNonce()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactablePayroll);
+        $this->assertEquals(Braintree\Test\Nonces::$transactablePayroll, $nonce->nonce);
+        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertNotNull($nonce->binData);
+        $this->assertEquals(Braintree\CreditCard::PAYROLL_YES, $nonce->binData->payroll);
+    }
+
+    public function testFind_returnsBinDataForPrepaidNonce()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactablePrepaid);
+        $this->assertEquals(Braintree\Test\Nonces::$transactablePrepaid, $nonce->nonce);
+        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertNotNull($nonce->binData);
+        $this->assertEquals(Braintree\CreditCard::PREPAID_YES, $nonce->binData->prepaid);
+    }
+
+    public function testFind_returnsBinDataForCountryOfIssuanceNonce()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableCountryOfIssuanceUSA);
+        $this->assertEquals(Braintree\Test\Nonces::$transactableCountryOfIssuanceUSA, $nonce->nonce);
+        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertNotNull($nonce->binData);
+        $this->assertEquals("USA", $nonce->binData->countryOfIssuance);
+    }
+
+    public function testFind_returnsBinDataForIssuingBankNonce()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableIssuingBankNetworkOnly);
+        $this->assertEquals(Braintree\Test\Nonces::$transactableIssuingBankNetworkOnly, $nonce->nonce);
+        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertNotNull($nonce->binData);
+        $this->assertEquals("NETWORK ONLY", $nonce->binData->issuingBank);
+    }
+
     public function testFind_exposesNullThreeDSecureInfoIfNoneExists()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);

@@ -12,6 +12,7 @@ use Braintree\Instance;
  *
  * @property-read string $bin
  * @property-read string $cardType
+ * @property-read string $cardholderName
  * @property-read string $expirationDate
  * @property-read string $expirationMonth
  * @property-read string $expirationYear

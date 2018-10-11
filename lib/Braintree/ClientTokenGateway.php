@@ -53,7 +53,7 @@ class ClientTokenGateway
      * @ignore
      * @param var $url
      * @param array $params
-     * @return mixed
+     * @return string
      */
     public function _doGenerate($subPath, $params)
     {
@@ -86,7 +86,7 @@ class ClientTokenGateway
         return [
             "version", "customerId", "proxyMerchantId",
             ["options" => ["makeDefault", "verifyCard", "failOnDuplicatePaymentMethod"]],
-            "merchantAccountId", "sepaMandateType", "sepaMandateAcceptanceLocation"];
+            "merchantAccountId"];
     }
 
     /**

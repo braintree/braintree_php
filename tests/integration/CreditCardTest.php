@@ -216,16 +216,20 @@ class CreditCardTest extends Setup
 
     public function testCreate_withCardVerificationReturnsVerificationWithRiskData()
     {
-        $customer = Braintree\Customer::createNoValidate();
-        $result = Braintree\CreditCard::create([
+        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $customer = $gateway->customer()->createNoValidate();
+        $result = $gateway->creditCard()->create([
             'customerId' => $customer->id,
             'number' => '4111111111111111',
             'expirationDate' => '05/2011',
-            'options' => ['verifyCard' => true]
+            'options' => ['verifyCard' => true],
+            'deviceSessionId' => 'abc123'
         ]);
         $this->assertTrue($result->success);
         $this->assertNotNull($result->creditCard->verification->riskData);
         $this->assertNotNull($result->creditCard->verification->riskData->decision);
+        $this->assertNotNull($result->creditCard->verification->riskData->deviceDataCaptured);
+        $this->assertNotNull($result->creditCard->verification->riskData->id);
     }
 
     public function testCreate_withCardVerificationAndOverriddenAmount()
@@ -389,7 +393,7 @@ class CreditCardTest extends Setup
             ]
         ]);
         $this->assertTrue($result->success);
-        $this->assertTrue($result->creditCard->isVenmoSdk());
+        $this->assertFalse($result->creditCard->isVenmoSdk());
     }
 
     public function testCreate_with_invalidVenmoSdkSession()

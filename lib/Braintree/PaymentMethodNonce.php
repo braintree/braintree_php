@@ -47,6 +47,10 @@ class PaymentMethodNonce extends Base
         if(isset($nonceAttributes['threeDSecureInfo'])) {
             $this->_set('threeDSecureInfo', ThreeDSecureInfo::factory($nonceAttributes['threeDSecureInfo']));
         }
+
+        if(isset($nonceAttributes['binData'])) {
+            $this->_set('binData', BinData::factory($nonceAttributes['binData']));
+        }
     }
 }
 class_alias('Braintree\PaymentMethodNonce', 'Braintree_PaymentMethodNonce');

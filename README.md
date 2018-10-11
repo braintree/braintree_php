@@ -3,7 +3,7 @@
 The Braintree PHP library provides integration access to the Braintree Gateway.
 
 ## Please Note
-> **The Payment Card Industry (PCI) Council has [mandated](http://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls) that early versions of TLS be retired from service.  All organizations that handle credit card information are required to comply with this standard. As part of this obligation, Braintree is updating its services to require TLS 1.2 for all HTTPS connections. Braintree will also require HTTP/1.1 for all connections. Please see our [technical documentation](https://github.com/paypal/tls-update) for more information.**
+> **The Payment Card Industry (PCI) Council has [mandated](https://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls) that early versions of TLS be retired from service.  All organizations that handle credit card information are required to comply with this standard. As part of this obligation, Braintree is updating its services to require TLS 1.2 for all HTTPS connections. Braintree will also require HTTP/1.1 for all connections. Please see our [technical documentation](https://github.com/paypal/tls-update) for more information.**
 
 ## Dependencies
 
@@ -24,12 +24,25 @@ The following PHP extensions are required:
 
 require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
 
-Braintree_Configuration::environment('sandbox');
-Braintree_Configuration::merchantId('your_merchant_id');
-Braintree_Configuration::publicKey('your_public_key');
-Braintree_Configuration::privateKey('your_private_key');
+// Instantiate a Braintree Gateway either like this:
+$gateway = new Braintree_Gateway([
+    'environment' => 'sandbox',
+    'merchantId' => 'your_merchant_id',
+    'publicKey' => 'your_public_key',
+    'privateKey' => 'your_private_key'
+]);
 
-$result = Braintree_Transaction::sale([
+// or like this:
+$config = new Braintree_Configuration([
+    'environment' => 'sandbox',
+    'merchantId' => 'your_merchant_id',
+    'publicKey' => 'your_public_key',
+    'privateKey' => 'your_private_key'
+]);
+$gateway = new Braintree\Gateway($config)
+
+// Then, create a transaction:
+$result = $gateway->transaction()->sale([
     'amount' => '1000.00',
     'paymentMethodNonce' => 'nonceFromTheClient',
     'options' => [ 'submitForSettlement' => true ]
@@ -51,22 +64,44 @@ Both PSR-0 and PSR-4 namespacing are supported. If you are using composer with `
 `--optimize-autoloader` enabled, you'll have to reference classes using PSR-4 namespacing:
 
 ```php
-Braintree\Configuration::environment('sandbox');
-Braintree\Configuration::merchantId('your_merchant_id');
-Braintree\Configuration::publicKey('your_public_key');
-Braintree\Configuration::privateKey('your_private_key');
+$gateway = new Braintree\Gateway([
+    'environment' => 'sandbox',
+    'merchantId' => 'your_merchant_id',
+    'publicKey' => 'your_public_key',
+    'privateKey' => 'your_private_key'
+]);
+
+// or
+
+$config = new Braintree\Configuration([
+    'environment' => 'sandbox',
+    'merchantId' => 'your_merchant_id',
+    'publicKey' => 'your_public_key',
+    'privateKey' => 'your_private_key'
+]);
+$gateway = new Braintree\Gateway($config)
 ```
 
 ## HHVM Support
 
 The Braintree PHP library will run on HHVM >= 3.4.2.
 
-## Google App Engine
+## Google App Engine Support
 
-If you use Google App Engine, you'll have to turn off accepting gzip responses.
+When using Google App Engine include the curl extention in your `php.ini` file (see [#190](https://github.com/braintree/braintree_php/issues/190) for more information):
+
+```ini
+extension = "curl.so"
+```
+
+and turn off accepting gzip responses:
 
 ```php
-Braintree\Configuration::acceptGzipEncoding(false);
+$gateway = new Braintree\Gateway([
+    'environment' => 'sandbox',
+    // ...
+    'acceptGzipEncoding' => false,
+]);
 ```
 
 ## Legacy PHP Support
@@ -76,6 +111,14 @@ Version [2.40.0](https://github.com/braintree/braintree_php/releases/tag/2.40.0)
 ## Documentation
 
  * [Official documentation](https://developers.braintreepayments.com/php/sdk/server/overview)
+
+## Developing (Docker)
+
+The `Makefile` and `Dockerfile` will build an image containing the dependencies and drop you to a terminal where you can run tests.
+
+```
+make
+```
 
 ## Testing
 

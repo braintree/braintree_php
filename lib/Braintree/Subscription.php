@@ -6,7 +6,7 @@ namespace Braintree;
  *
  * <b>== More information ==</b>
  *
- * For more detailed information on Subscriptions, see {@link http://www.braintreepayments.com/gateway/subscription-api http://www.braintreepaymentsolutions.com/gateway/subscription-api}
+ * For more detailed information on Subscriptions, see {@link https://developers.braintreepayments.com/reference/response/subscription/php https://developers.braintreepayments.com/reference/response/subscription/php}
  *
  * PHP Version 5
  *
@@ -61,6 +61,10 @@ class Subscription extends Base
 
         if (isset($attributes['descriptor'])) {
             $this->_set('descriptor', new Descriptor($attributes['descriptor']));
+        }
+
+        if (isset($attributes['description'])) {
+            $this->_set('description', $attributes['description']);
         }
 
         $statusHistory = [];
@@ -127,9 +131,9 @@ class Subscription extends Base
         return Configuration::gateway()->subscription()->update($subscriptionId, $attributes);
     }
 
-    public static function retryCharge($subscriptionId, $amount = null)
+    public static function retryCharge($subscriptionId, $amount = null, $submitForSettlement = false)
     {
-        return Configuration::gateway()->subscription()->retryCharge($subscriptionId, $amount);
+        return Configuration::gateway()->subscription()->retryCharge($subscriptionId, $amount, $submitForSettlement);
     }
 
     public static function cancel($subscriptionId)

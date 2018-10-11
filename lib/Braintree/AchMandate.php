@@ -36,8 +36,6 @@ class AchMandate extends Base
     {
         // set the attributes
         $this->_attributes = $achAttribs;
-        $date = new \DateTime($this->acceptedAt);
-        $this->_set('acceptedAt', $date);
     }
 
     /**
