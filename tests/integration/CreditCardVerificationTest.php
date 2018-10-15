@@ -16,8 +16,8 @@ class CreditCardVerificationTest extends Setup
                 'number' => '4111111111111111',
                 'expirationDate' => '05/2011',
             ],
-      ]);
-      $this->assertTrue($result->success);
+        ]);
+        $this->assertTrue($result->success);
     }
 
     public function test_createWithUnsuccessfulResponse()
