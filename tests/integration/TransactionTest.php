@@ -1830,6 +1830,9 @@ class TransactionTest extends Setup
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
+        $this->assertEquals(1000, $result->transaction->processorResponseCode);
+        $this->assertEquals("Approved", $result->transaction->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::APPROVED, $result->transaction->processorResponseType);
     }
 
   public function testSaleWithAccessToken()
@@ -2436,7 +2439,7 @@ class TransactionTest extends Setup
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
     }
 
-  public function testSale_withProcessorDecline()
+  public function testSale_withSoftDecline()
     {
 
         $gateway = Test\Helper::integrationMerchantGateway();
@@ -2451,7 +2454,27 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::PROCESSOR_DECLINED, $result->transaction->status);
         $this->assertEquals(2000, $result->transaction->processorResponseCode);
         $this->assertEquals("Do Not Honor", $result->transaction->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::SOFT_DECLINED, $result->transaction->processorResponseType);
         $this->assertEquals("2000 : Do Not Honor", $result->transaction->additionalProcessorResponse);
+    }
+
+  public function testSale_withHardDecline()
+    {
+
+        $gateway = Test\Helper::integrationMerchantGateway();
+        $result = $gateway->transaction()->sale([
+            'amount' => Braintree\Test\TransactionAmounts::$hardDecline,
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Transaction::PROCESSOR_DECLINED, $result->transaction->status);
+        $this->assertEquals(2015, $result->transaction->processorResponseCode);
+        $this->assertEquals("Transaction Not Allowed", $result->transaction->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::HARD_DECLINED, $result->transaction->processorResponseType);
+        $this->assertEquals("2015 : Transaction Not Allowed", $result->transaction->additionalProcessorResponse);
     }
 
   public function testSale_withExistingCustomer()
@@ -3153,6 +3176,33 @@ class TransactionTest extends Setup
         $this->assertEquals(true, $authorizationAdjustment->success);
         $this->assertEquals('1000', $authorizationAdjustment->processorResponseCode);
         $this->assertEquals('Approved', $authorizationAdjustment->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::APPROVED, $authorizationAdjustment->processorResponseType);
+    }
+
+  public function testFindExposesAuthorizationAdjustmentsSoftDeclined()
+    {
+        $transaction = Braintree\Transaction::find("authadjustmenttransactionsoftdeclined");
+
+        $authorizationAdjustment = $transaction->authorizationAdjustments[0];
+        $this->assertEquals('-20.00', $authorizationAdjustment->amount);
+        $this->assertInstanceOf('DateTime', $authorizationAdjustment->timestamp);
+        $this->assertEquals(false, $authorizationAdjustment->success);
+        $this->assertEquals('3000', $authorizationAdjustment->processorResponseCode);
+        $this->assertEquals('Processor Network Unavailable - Try Again', $authorizationAdjustment->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::SOFT_DECLINED, $authorizationAdjustment->processorResponseType);
+    }
+
+  public function testFindExposesAuthorizationAdjustmentsHardDeclined()
+    {
+        $transaction = Braintree\Transaction::find("authadjustmenttransactionharddeclined");
+
+        $authorizationAdjustment = $transaction->authorizationAdjustments[0];
+        $this->assertEquals('-20.00', $authorizationAdjustment->amount);
+        $this->assertInstanceOf('DateTime', $authorizationAdjustment->timestamp);
+        $this->assertEquals(false, $authorizationAdjustment->success);
+        $this->assertEquals('2015', $authorizationAdjustment->processorResponseCode);
+        $this->assertEquals('Transaction Not Allowed', $authorizationAdjustment->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::HARD_DECLINED, $authorizationAdjustment->processorResponseType);
     }
 
   public function testFindExposesDisputes()

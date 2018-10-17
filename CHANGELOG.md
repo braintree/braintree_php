@@ -1,3 +1,6 @@
+## unrelease
+* Add `processorResponseType` to `Transaction`, `AuthorizationAdjustment`, and `CreditCardVerification`.
+
 ## 3.36.0
 * Fix dispute results in transactions not showing the correct status sometimes
 * Add `externalVault` option to transaction sale

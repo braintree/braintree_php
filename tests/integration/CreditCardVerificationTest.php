@@ -18,6 +18,12 @@ class CreditCardVerificationTest extends Setup
             ],
         ]);
         $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->processorResponseCode, '1000');
+        $this->assertEquals($verification->processorResponseText, 'Approved');
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
     }
 
     public function test_createWithUnsuccessfulResponse()
@@ -35,6 +41,7 @@ class CreditCardVerificationTest extends Setup
 
         $this->assertEquals($verification->processorResponseCode, '2000');
         $this->assertEquals($verification->processorResponseText, 'Do Not Honor');
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::SOFT_DECLINED);
     }
 
 	public function test_createWithInvalidRequest()
