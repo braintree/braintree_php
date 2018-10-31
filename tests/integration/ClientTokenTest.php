@@ -186,13 +186,4 @@ class ClientTokenTest extends Setup
             "customerId" => "not_a_customer"
         ]);
     }
-
-    public function test_ClientTokenRejectsSepaParams()
-    {
-        $this->setExpectedException('InvalidArgumentException', 'sepaMandateType');
-
-        Braintree\ClientToken::generate([
-           "sepaMandateType" => "Business"
-        ]);
-    }
 }
