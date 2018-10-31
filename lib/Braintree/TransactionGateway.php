@@ -230,7 +230,42 @@ class TransactionGateway
                             'lodgingCheckInDate',
                             'lodgingCheckOutDate',
                             'lodgingName',
-                            'roomRate'
+                            'roomRate',
+                            'passengerFirstName',
+                            'passengerLastName',
+                            'passengerMiddleInitial',
+                            'passengerTitle',
+                            'issuedDate',
+                            'travelAgencyName',
+                            'travelAgencyCode',
+                            'ticketNumber',
+                            'issuingCarrierCode',
+                            'customerCode',
+                            'fareAmount',
+                            'feeAmount',
+                            'taxAmount',
+                            'restrictedTicket',
+                            ['legs' =>
+                                [
+                                    'conjunctionTicket',
+                                    'exchangeTicket',
+                                    'couponNumber',
+                                    'serviceClass',
+                                    'carrierCode',
+                                    'fareBasisCode',
+                                    'flightNumber',
+                                    'departureDate',
+                                    'departureAirportCode',
+                                    'departureTime',
+                                    'arrivalAirportCode',
+                                    'arrivalTime',
+                                    'stopoverPermitted',
+                                    'fareAmount',
+                                    'feeAmount',
+                                    'taxAmount',
+                                    'endorsementOrRestrictions'
+                                ]
+                            ]
                         ]
                     ]
                 ]

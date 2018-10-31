@@ -226,6 +226,7 @@ class Transaction extends Base
     // Industry Types
     const LODGING_INDUSTRY           = 'lodging';
     const TRAVEL_AND_CRUISE_INDUSTRY = 'travel_cruise';
+    const TRAVEL_AND_FLIGHT_INDUSTRY = 'travel_flight';
 
     /**
      * sets instance properties from an array of values

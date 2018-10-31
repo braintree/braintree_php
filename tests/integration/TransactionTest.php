@@ -5186,6 +5186,106 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::INDUSTRY_DATA_TRAVEL_CRUISE_TRAVEL_PACKAGE_IS_INVALID, $errors[0]->code);
     }
 
+  public function testSale_withTravelFlightIndustryData()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'paymentMethodNonce' => Braintree\Test\Nonces::$paypalOneTimePayment,
+            'options' => ['submitForSettlement' => true],
+            'industry' => [
+                'industryType' => Braintree\Transaction::TRAVEL_AND_FLIGHT_INDUSTRY,
+                'data' => [
+                    'passengerFirstName' => 'John',
+                    'passengerLastName' => 'Doe',
+                    'passengerMiddleInitial' => 'M',
+                    'passengerTitle' => 'Mr.',
+                    'issuedDate' => '2018-01-01',
+                    'travelAgencyName' => 'Expedia',
+                    'travelAgencyCode' => '12345678',
+                    'ticketNumber' => 'ticket-number',
+                    'issuingCarrierCode' => 'AA',
+                    'customerCode' => 'customer-code',
+                    'fareAmount' => '70.00',
+                    'feeAmount' => '10.00',
+                    'taxAmount' => '20.00',
+                    'restrictedTicket' => false,
+                    'legs' => [
+                        [
+                            'conjunctionTicket' => 'CJ0001',
+                            'exchangeTicket' => 'ET0001',
+                            'couponNumber' => '1',
+                            'serviceClass' => 'Y',
+                            'carrierCode' => 'AA',
+                            'fareBasisCode' => 'W',
+                            'flightNumber' => 'AA100',
+                            'departureDate' => '2018-01-02',
+                            'departureAirportCode' => 'MDW',
+                            'departureTime' => '08:00',
+                            'arrivalAirportCode' => 'ATX',
+                            'arrivalTime' => '10:00',
+                            'stopoverPermitted' => false,
+                            'fareAmount' => '35.00',
+                            'feeAmount' => '5.00',
+                            'taxAmount' => '10.00',
+                            'endorsementOrRestrictions' => 'NOT REFUNDABLE'
+                        ],
+                        [
+                            'conjunctionTicket' => 'CJ0002',
+                            'exchangeTicket' => 'ET0002',
+                            'couponNumber' => '1',
+                            'serviceClass' => 'Y',
+                            'carrierCode' => 'AA',
+                            'fareBasisCode' => 'W',
+                            'flightNumber' => 'AA200',
+                            'departureDate' => '2018-01-03',
+                            'departureAirportCode' => 'ATX',
+                            'departureTime' => '12:00',
+                            'arrivalAirportCode' => 'MDW',
+                            'arrivalTime' => '14:00',
+                            'stopoverPermitted' => false,
+                            'fareAmount' => '35.00',
+                            'feeAmount' => '5.00',
+                            'taxAmount' => '10.00',
+                            'endorsementOrRestrictions' => 'NOT REFUNDABLE'
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+        $this->assertTrue($result->success);
+    }
+
+  public function testSale_withTravelFlightIndustryDataValidation()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'paymentMethodNonce' => Braintree\Test\Nonces::$paypalOneTimePayment,
+            'options' => ['submitForSettlement' => true],
+            'industry' => [
+                'industryType' => Braintree\Transaction::TRAVEL_AND_FLIGHT_INDUSTRY,
+                'data' => [
+                    'fareAmount' => '-1.23',
+                    'legs' => [
+                        [
+                            'fareAmount' => '-1.23'
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(
+            Braintree\Error\Codes::INDUSTRY_DATA_TRAVEL_FLIGHT_FARE_AMOUNT_CANNOT_BE_NEGATIVE,
+            $result->errors->forKey('transaction')->forKey('industry')->onAttribute('fareAmount')[0]->code
+        );
+        $this->assertEquals(
+            Braintree\Error\Codes::INDUSTRY_DATA_LEG_TRAVEL_FLIGHT_FARE_AMOUNT_CANNOT_BE_NEGATIVE,
+            $result->errors->forKey('transaction')->forKey('industry')->forKey('legs')->forKey('index0')->onAttribute('fareAmount')[0]->code
+        );
+    }
+
   public function testSale_withAmexRewardsSucceeds()
     {
         $result = Braintree\Transaction::sale([
