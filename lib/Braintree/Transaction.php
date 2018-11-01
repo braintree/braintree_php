@@ -172,6 +172,7 @@ namespace Braintree;
  * @property-read Braintree\Disbursement $disbursementDetails populated when transaction is disbursed
  * @property-read Braintree\Dispute $disputes populated when transaction is disputed
  * @property-read Braintree\AuthorizationAdjustment $authorizationAdjustments populated when a transaction has authorization adjustments created when submitted for settlement
+ * @property-read \DateTime $authorizationExpiresAt DateTime authorization will expire
  *
  */
 

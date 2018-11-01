@@ -1,5 +1,6 @@
 ## unrelease
 * Add `processorResponseType` to `Transaction`, `AuthorizationAdjustment`, and `CreditCardVerification`.
+* Add `authorizationExpiresAt` to `Transaction`
 
 ## 3.36.0
 * Fix dispute results in transactions not showing the correct status sometimes

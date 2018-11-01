@@ -2205,6 +2205,7 @@ class TransactionTest extends Setup
       $transaction = $result->transaction;
 
       $this->assertNotNull($transaction->id);
+      $this->assertInstanceOf('DateTime', $transaction->authorizationExpiresAt);
       $this->assertInstanceOf('DateTime', $transaction->updatedAt);
       $this->assertInstanceOf('DateTime', $transaction->createdAt);
       $this->assertNull($transaction->refundId);
