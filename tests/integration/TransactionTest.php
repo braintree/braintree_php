@@ -4409,6 +4409,26 @@ class TransactionTest extends Setup
         Braintree\PaymentMethod::find($paymentMethodToken);
     }
 
+  public function testCreate_withLocalPaymentWebhookContent()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $result = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'options' => [
+                'submitForSettlement' => True,
+            ],
+            'paypalAccount' => [
+                'paymentId' => 'PAY-1234',
+                'payerId' => 'PAYER-1234',
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('PAY-1234', $transaction->paypalDetails->paymentId);
+        $this->assertEquals('PAYER-1234', $transaction->paypalDetails->payerId);
+    }
+
   public function testCreate_withPayeeId()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());

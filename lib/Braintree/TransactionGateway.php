@@ -213,7 +213,7 @@ class TransactionGateway
             ],
             ['customFields' => ['_anyKey_']],
             ['descriptor' => ['name', 'phone', 'url']],
-            ['paypalAccount' => ['payeeId', 'payeeEmail']],
+            ['paypalAccount' => ['payeeId', 'payeeEmail', 'payerId', 'paymentId']],
             # TODO: Snake case version included for backwards compatiblity. Remove in the next major version
             ['apple_pay_card' => ['number', 'cardholder_name', 'cryptogram', 'expiration_month', 'expiration_year', 'eci_indicator']], 
 
