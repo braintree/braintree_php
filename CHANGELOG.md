@@ -1,4 +1,4 @@
-## unrelease
+## 3.37.0
 * Add `processorResponseType` to `Transaction`, `AuthorizationAdjustment`, and `CreditCardVerification`.
 * Add `authorizationExpiresAt` to `Transaction`
 * Add support for additional PayPal options when vaulting a PayPal Order during customer update
