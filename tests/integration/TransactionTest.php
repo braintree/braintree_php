@@ -1830,6 +1830,9 @@ class TransactionTest extends Setup
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
         $this->assertEquals('The Cardholder', $transaction->creditCardDetails->cardholderName);
+        $this->assertEquals(1000, $result->transaction->processorResponseCode);
+        $this->assertEquals("Approved", $result->transaction->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::APPROVED, $result->transaction->processorResponseType);
     }
 
   public function testSaleWithAccessToken()
@@ -2202,6 +2205,7 @@ class TransactionTest extends Setup
       $transaction = $result->transaction;
 
       $this->assertNotNull($transaction->id);
+      $this->assertInstanceOf('DateTime', $transaction->authorizationExpiresAt);
       $this->assertInstanceOf('DateTime', $transaction->updatedAt);
       $this->assertInstanceOf('DateTime', $transaction->createdAt);
       $this->assertNull($transaction->refundId);
@@ -2436,7 +2440,7 @@ class TransactionTest extends Setup
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
     }
 
-  public function testSale_withProcessorDecline()
+  public function testSale_withSoftDecline()
     {
 
         $gateway = Test\Helper::integrationMerchantGateway();
@@ -2451,7 +2455,27 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::PROCESSOR_DECLINED, $result->transaction->status);
         $this->assertEquals(2000, $result->transaction->processorResponseCode);
         $this->assertEquals("Do Not Honor", $result->transaction->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::SOFT_DECLINED, $result->transaction->processorResponseType);
         $this->assertEquals("2000 : Do Not Honor", $result->transaction->additionalProcessorResponse);
+    }
+
+  public function testSale_withHardDecline()
+    {
+
+        $gateway = Test\Helper::integrationMerchantGateway();
+        $result = $gateway->transaction()->sale([
+            'amount' => Braintree\Test\TransactionAmounts::$hardDecline,
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Transaction::PROCESSOR_DECLINED, $result->transaction->status);
+        $this->assertEquals(2015, $result->transaction->processorResponseCode);
+        $this->assertEquals("Transaction Not Allowed", $result->transaction->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::HARD_DECLINED, $result->transaction->processorResponseType);
+        $this->assertEquals("2015 : Transaction Not Allowed", $result->transaction->additionalProcessorResponse);
     }
 
   public function testSale_withExistingCustomer()
@@ -3153,6 +3177,33 @@ class TransactionTest extends Setup
         $this->assertEquals(true, $authorizationAdjustment->success);
         $this->assertEquals('1000', $authorizationAdjustment->processorResponseCode);
         $this->assertEquals('Approved', $authorizationAdjustment->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::APPROVED, $authorizationAdjustment->processorResponseType);
+    }
+
+  public function testFindExposesAuthorizationAdjustmentsSoftDeclined()
+    {
+        $transaction = Braintree\Transaction::find("authadjustmenttransactionsoftdeclined");
+
+        $authorizationAdjustment = $transaction->authorizationAdjustments[0];
+        $this->assertEquals('-20.00', $authorizationAdjustment->amount);
+        $this->assertInstanceOf('DateTime', $authorizationAdjustment->timestamp);
+        $this->assertEquals(false, $authorizationAdjustment->success);
+        $this->assertEquals('3000', $authorizationAdjustment->processorResponseCode);
+        $this->assertEquals('Processor Network Unavailable - Try Again', $authorizationAdjustment->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::SOFT_DECLINED, $authorizationAdjustment->processorResponseType);
+    }
+
+  public function testFindExposesAuthorizationAdjustmentsHardDeclined()
+    {
+        $transaction = Braintree\Transaction::find("authadjustmenttransactionharddeclined");
+
+        $authorizationAdjustment = $transaction->authorizationAdjustments[0];
+        $this->assertEquals('-20.00', $authorizationAdjustment->amount);
+        $this->assertInstanceOf('DateTime', $authorizationAdjustment->timestamp);
+        $this->assertEquals(false, $authorizationAdjustment->success);
+        $this->assertEquals('2015', $authorizationAdjustment->processorResponseCode);
+        $this->assertEquals('Transaction Not Allowed', $authorizationAdjustment->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::HARD_DECLINED, $authorizationAdjustment->processorResponseType);
     }
 
   public function testFindExposesDisputes()
@@ -4358,6 +4409,26 @@ class TransactionTest extends Setup
         Braintree\PaymentMethod::find($paymentMethodToken);
     }
 
+  public function testCreate_withLocalPaymentWebhookContent()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $result = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'options' => [
+                'submitForSettlement' => True,
+            ],
+            'paypalAccount' => [
+                'paymentId' => 'PAY-1234',
+                'payerId' => 'PAYER-1234',
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('PAY-1234', $transaction->paypalDetails->paymentId);
+        $this->assertEquals('PAYER-1234', $transaction->paypalDetails->payerId);
+    }
+
   public function testCreate_withPayeeId()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
@@ -5113,6 +5184,106 @@ class TransactionTest extends Setup
 
         $errors = $result->errors->forKey('transaction')->forKey('industry')->onAttribute('travelPackage');
         $this->assertEquals(Braintree\Error\Codes::INDUSTRY_DATA_TRAVEL_CRUISE_TRAVEL_PACKAGE_IS_INVALID, $errors[0]->code);
+    }
+
+  public function testSale_withTravelFlightIndustryData()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'paymentMethodNonce' => Braintree\Test\Nonces::$paypalOneTimePayment,
+            'options' => ['submitForSettlement' => true],
+            'industry' => [
+                'industryType' => Braintree\Transaction::TRAVEL_AND_FLIGHT_INDUSTRY,
+                'data' => [
+                    'passengerFirstName' => 'John',
+                    'passengerLastName' => 'Doe',
+                    'passengerMiddleInitial' => 'M',
+                    'passengerTitle' => 'Mr.',
+                    'issuedDate' => '2018-01-01',
+                    'travelAgencyName' => 'Expedia',
+                    'travelAgencyCode' => '12345678',
+                    'ticketNumber' => 'ticket-number',
+                    'issuingCarrierCode' => 'AA',
+                    'customerCode' => 'customer-code',
+                    'fareAmount' => '70.00',
+                    'feeAmount' => '10.00',
+                    'taxAmount' => '20.00',
+                    'restrictedTicket' => false,
+                    'legs' => [
+                        [
+                            'conjunctionTicket' => 'CJ0001',
+                            'exchangeTicket' => 'ET0001',
+                            'couponNumber' => '1',
+                            'serviceClass' => 'Y',
+                            'carrierCode' => 'AA',
+                            'fareBasisCode' => 'W',
+                            'flightNumber' => 'AA100',
+                            'departureDate' => '2018-01-02',
+                            'departureAirportCode' => 'MDW',
+                            'departureTime' => '08:00',
+                            'arrivalAirportCode' => 'ATX',
+                            'arrivalTime' => '10:00',
+                            'stopoverPermitted' => false,
+                            'fareAmount' => '35.00',
+                            'feeAmount' => '5.00',
+                            'taxAmount' => '10.00',
+                            'endorsementOrRestrictions' => 'NOT REFUNDABLE'
+                        ],
+                        [
+                            'conjunctionTicket' => 'CJ0002',
+                            'exchangeTicket' => 'ET0002',
+                            'couponNumber' => '1',
+                            'serviceClass' => 'Y',
+                            'carrierCode' => 'AA',
+                            'fareBasisCode' => 'W',
+                            'flightNumber' => 'AA200',
+                            'departureDate' => '2018-01-03',
+                            'departureAirportCode' => 'ATX',
+                            'departureTime' => '12:00',
+                            'arrivalAirportCode' => 'MDW',
+                            'arrivalTime' => '14:00',
+                            'stopoverPermitted' => false,
+                            'fareAmount' => '35.00',
+                            'feeAmount' => '5.00',
+                            'taxAmount' => '10.00',
+                            'endorsementOrRestrictions' => 'NOT REFUNDABLE'
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+        $this->assertTrue($result->success);
+    }
+
+  public function testSale_withTravelFlightIndustryDataValidation()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'paymentMethodNonce' => Braintree\Test\Nonces::$paypalOneTimePayment,
+            'options' => ['submitForSettlement' => true],
+            'industry' => [
+                'industryType' => Braintree\Transaction::TRAVEL_AND_FLIGHT_INDUSTRY,
+                'data' => [
+                    'fareAmount' => '-1.23',
+                    'legs' => [
+                        [
+                            'fareAmount' => '-1.23'
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(
+            Braintree\Error\Codes::INDUSTRY_DATA_TRAVEL_FLIGHT_FARE_AMOUNT_CANNOT_BE_NEGATIVE,
+            $result->errors->forKey('transaction')->forKey('industry')->onAttribute('fareAmount')[0]->code
+        );
+        $this->assertEquals(
+            Braintree\Error\Codes::INDUSTRY_DATA_LEG_TRAVEL_FLIGHT_FARE_AMOUNT_CANNOT_BE_NEGATIVE,
+            $result->errors->forKey('transaction')->forKey('industry')->forKey('legs')->forKey('index0')->onAttribute('fareAmount')[0]->code
+        );
     }
 
   public function testSale_withAmexRewardsSucceeds()
