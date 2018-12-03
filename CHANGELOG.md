@@ -1,3 +1,6 @@
+## Unreleased
+* Add `fraudServiceProvider` field in `riskData`
+
 ## 3.37.0
 * Add `processorResponseType` to `Transaction`, `AuthorizationAdjustment`, and `CreditCardVerification`.
 * Add `authorizationExpiresAt` to `Transaction`

@@ -230,6 +230,7 @@ class CreditCardTest extends Setup
         $this->assertNotNull($result->creditCard->verification->riskData->decision);
         $this->assertNotNull($result->creditCard->verification->riskData->deviceDataCaptured);
         $this->assertNotNull($result->creditCard->verification->riskData->id);
+        $this->assertNotNull($result->creditCard->verification->riskData->fraudServiceProvider);
     }
 
     public function testCreate_withCardVerificationAndOverriddenAmount()

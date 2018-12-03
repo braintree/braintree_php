@@ -1884,6 +1884,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->riskData->decision);
         $this->assertNotNull($transaction->riskData->id);
         $this->assertNotNull($transaction->riskData->deviceDataCaptured);
+        $this->assertNotNull($transaction->riskData->fraudServiceProvider);
     }
 
   public function testRecurring()
