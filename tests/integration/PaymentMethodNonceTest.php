@@ -53,6 +53,12 @@ class PaymentMethodNonceTest extends Setup
         $this->assertTrue($info->liabilityShiftPossible);
     }
 
+    public function testFind_returnsBin()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableVisa);
+        $this->assertEquals("401288", $nonce->details["bin"]);
+    }
+
     public function testFind_exposesBinData()
     {
         $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableVisa);
