@@ -1,4 +1,4 @@
-## Unreleased
+## 3.38.0
 * Add `fraudServiceProvider` field in `riskData`
 * Fix issue where merchant reporting calls would throw an exception in PHP 7 (#236)
 
