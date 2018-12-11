@@ -99,7 +99,7 @@ class Util
 
             switch($error["extensions"]["errorClass"]) {
             case "VALIDATION":
-                continue;
+                continue 2;
             case "AUTHENTICATION":
                 throw new Exception\Authentication();
                 break;
