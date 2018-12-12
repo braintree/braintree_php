@@ -10,7 +10,7 @@ class PaymentMethodTest extends Setup
 {
     public function testCreate_throwsIfInvalidKey()
     {
-        $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalidKey');
+        $this->expectException('InvalidArgumentException', 'invalid keys: invalidKey');
         Braintree\PaymentMethod::create(['invalidKey' => 'foo']);
     }
 
@@ -62,19 +62,19 @@ class PaymentMethodTest extends Setup
 
     public function testErrorsOnFindWithBlankArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\PaymentMethod::find('');
     }
 
     public function testErrorsOnFindWithWhitespaceArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\PaymentMethod::find('  ');
     }
 
     public function testErrorsOnFindWithWhitespaceCharacterArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\PaymentMethod::find('\t');
     }
 
@@ -105,7 +105,7 @@ class PaymentMethodTest extends Setup
     public function testDeleteWithInvalidOption()
     {
         $paymentMethodGateway = $this->mockPaymentMethodGatewayDoDelete();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $paymentMethodGateway->expects($this->never())->method('_doDelete');
         $paymentMethodGateway->delete("some_token", ['invalidKey' => false]);
     }

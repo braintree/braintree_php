@@ -10,73 +10,62 @@ use Braintree;
 
 class UtilTest extends Setup
 {
-    /**
-     * @expectedException Braintree\Exception\Authentication
-     */
     public function testThrow401Exception()
     {
+        $this->expectException('Braintree\Exception\Authentication');
+        
         Braintree\Util::throwStatusCodeException(401);
     }
 
-    /**
-     * @expectedException Braintree\Exception\Authorization
-     */
     public function testThrow403Exception()
     {
+        $this->expectException('Braintree\Exception\Authorization');
+        
         Braintree\Util::throwStatusCodeException(403);
     }
 
-    /**
-     * @expectedException Braintree\Exception\NotFound
-     */
     public function testThrow404Exception()
     {
+        $this->expectException('Braintree\Exception\NotFound');
+        
         Braintree\Util::throwStatusCodeException(404);
     }
 
-    /**
-     * @expectedException Braintree\Exception\UpgradeRequired
-     */
     public function testThrow426Exception()
     {
+        $this->expectException('Braintree\Exception\UpgradeRequired');
+        
         Braintree\Util::throwStatusCodeException(426);
     }
 
-    /**
-     * @expectedException Braintree\Exception\TooManyRequests
-     */
     public function testThrow429Exception()
     {
+        $this->expectException('Braintree\Exception\TooManyRequests');
+        
         Braintree\Util::throwStatusCodeException(429);
     }
 
-    /**
-     * @expectedException Braintree\Exception\ServerError
-     */
     public function testThrow500Exception()
     {
+        $this->expectException('Braintree\Exception\ServerError');
+        
         Braintree\Util::throwStatusCodeException(500);
     }
 
-    /**
-     * @expectedException Braintree\Exception\DownForMaintenance
-     */
     public function testThrow503Exception()
     {
+        $this->expectException('Braintree\Exception\DownForMaintenance');
+        
         Braintree\Util::throwStatusCodeException(503);
     }
 
-    /**
-     * @expectedException Braintree\Exception\Unexpected
-     */
     public function testThrowUnknownException()
     {
+        $this->expectException('Braintree\Exception\Unexpected');
+        
         Braintree\Util::throwStatusCodeException(999);
     }
 
-    /**
-     * @expectedException Braintree\Exception\Authentication
-     */
     public function testThrowGraphQLAuthenticationException()
     {
         $response = [
@@ -89,12 +78,12 @@ class UtilTest extends Setup
                 ]
             ]
         ];
+
+        $this->expectException('Braintree\Exception\Authentication');
+
         Braintree\Util::throwGraphQLResponseException($response);
     }
 
-    /**
-     * @expectedException Braintree\Exception\Authorization
-     */
     public function testThrowGraphQLAuthorizationException()
     {
         $response = [
@@ -107,12 +96,12 @@ class UtilTest extends Setup
                 ]
             ]
         ];
+
+        $this->expectException('Braintree\Exception\Authorization');
+
         Braintree\Util::throwGraphQLResponseException($response);
     }
 
-    /**
-     * @expectedException Braintree\Exception\NotFound
-     */
     public function testThrowGraphQLNotFoundException()
     {
         $response = [
@@ -125,12 +114,12 @@ class UtilTest extends Setup
                 ]
             ]
         ];
+
+        $this->expectException('Braintree\Exception\NotFound');
+
         Braintree\Util::throwGraphQLResponseException($response);
     }
 
-    /**
-     * @expectedException Braintree\Exception\UpgradeRequired
-     */
     public function testThrowGraphQLUnsupportedClientException()
     {
         $response = [
@@ -143,12 +132,12 @@ class UtilTest extends Setup
                 ]
             ]
         ];
+
+        $this->expectException('Braintree\Exception\UpgradeRequired');
+
         Braintree\Util::throwGraphQLResponseException($response);
     }
 
-    /**
-     * @expectedException Braintree\Exception\TooManyRequests
-     */
     public function testThrowGraphQLResourceLimitException()
     {
         $response = [
@@ -161,12 +150,12 @@ class UtilTest extends Setup
                 ]
             ]
         ];
+
+        $this->expectException('Braintree\Exception\TooManyRequests');
+
         Braintree\Util::throwGraphQLResponseException($response);
     }
 
-    /**
-     * @expectedException Braintree\Exception\ServerError
-     */
     public function testThrowGraphQLInternalException()
     {
         $response = [
@@ -179,12 +168,12 @@ class UtilTest extends Setup
                 ]
             ]
         ];
+
+        $this->expectException('Braintree\Exception\ServerError');
+
         Braintree\Util::throwGraphQLResponseException($response);
     }
 
-    /**
-     * @expectedException Braintree\Exception\DownForMaintenance
-     */
     public function testThrowGraphQLServiceAvailabilityException()
     {
         $response = [
@@ -197,12 +186,12 @@ class UtilTest extends Setup
                 ]
             ]
         ];
+
+        $this->expectException('Braintree\Exception\DownForMaintenance');
+
         Braintree\Util::throwGraphQLResponseException($response);
     }
 
-    /**
-     * @expectedException Braintree\Exception\Unexpected
-     */
     public function testThrowGraphQLUnexpectedException()
     {
         $response = [
@@ -215,6 +204,9 @@ class UtilTest extends Setup
                 ]
             ]
         ];
+
+        $this->expectException('Braintree\Exception\Unexpected');
+
         Braintree\Util::throwGraphQLResponseException($response);
     }
 
@@ -230,12 +222,10 @@ class UtilTest extends Setup
                 ]
             ]
         ];
-        Braintree\Util::throwGraphQLResponseException($response);
+        $this->assertNull(Braintree\Util::throwGraphQLResponseException($response));
+        
     }
 
-    /**
-     * @expectedException Braintree\Exception\Unexpected
-     */
     public function testThrowGraphQLUnexpectedExceptionAndNotValidationExceptionWhenBothArePresent()
     {
         $response = [
@@ -254,6 +244,9 @@ class UtilTest extends Setup
                 ]
             ]
         ];
+
+        $this->expectException('Braintree\Exception\Unexpected');
+
         Braintree\Util::throwGraphQLResponseException($response);
     }
 
@@ -319,7 +312,7 @@ class UtilTest extends Setup
                 ]
             ]
         ];
-        Braintree\Util::verifyKeys($signature, $data);
+        $this->assertNull(Braintree\Util::verifyKeys($signature, $data));
     }
 
 	public function testVerifyKeys_withArrayOfArrays()
@@ -355,7 +348,7 @@ class UtilTest extends Setup
             ]
 		];
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Util::verifyKeys($signature, $badData);
 	}
 
@@ -363,7 +356,7 @@ class UtilTest extends Setup
     {
         $signature = ['key'];
         $data = ['key' => ['value']];
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Util::verifyKeys($signature, $data);
     }
 
@@ -428,17 +421,17 @@ class UtilTest extends Setup
                 ];
 
         // test invalid
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         Braintree\Util::verifyKeys($signature, $userKeys);
     }
 
-    /**
-     * @expectedException Braintree\Exception\ValidationsFailed
-     */
     public function testReturnException()
     {
         $this->success = false;
+
+        $this->expectException('Braintree\Exception\ValidationsFailed');
+
         Braintree\Util::returnObjectOrThrowException('Braintree\Transaction', $this);
     }
 

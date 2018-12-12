@@ -10,9 +10,12 @@ class AddressTest extends Setup
 {
     public function testGet_givesErrorIfInvalidProperty()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\Address: foo');
+        $this->expectException('PHPUnit\Framework\Error\Error', 'Undefined property on Braintree\Address: foo');
+        
         $a = Braintree\Address::factory([]);
+
         $a->foo;
+        
     }
 
     public function testIsEqual()
@@ -55,25 +58,25 @@ class AddressTest extends Setup
 
     public function testFindErrorsOnBlankCustomerId()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Address::find('', '123');
     }
 
     public function testFindErrorsOnBlankAddressId()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Address::find('123', '');
     }
 
     public function testFindErrorsOnWhitespaceOnlyId()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Address::find('123', '  ');
     }
 
     public function testFindErrorsOnWhitespaceOnlyCustomerId()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Address::find('  ', '123');
     }
 }

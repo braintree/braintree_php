@@ -10,13 +10,13 @@ class CreditCardVerificationTest extends Setup
 {
 	public function test_createWithInvalidArguments()
 	{
-        $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalidProperty');
+        $this->expectException('InvalidArgumentException', 'invalid keys: invalidProperty');
 		Braintree\CreditCardVerification::create(['options' => ['amount' => '123.45'], 'invalidProperty' => 'foo']);
 	}
 
 	public function test_createWithPaymentMethodArguments()
 	{
-        $this->setExpectedException('InvalidArgumentException', 'invalid keys: creditCard[venmoSdkPaymentMethodCode]');
+        $this->expectException('InvalidArgumentException', 'invalid keys: creditCard[venmoSdkPaymentMethodCode]');
 		Braintree\CreditCardVerification::create(['options' => ['amount' => '123.45'], 'creditCard' => ['venmoSdkPaymentMethodCode' => 'foo']]);
 	}
 }

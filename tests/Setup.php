@@ -11,12 +11,14 @@ require_once __DIR__ . '/Braintree/OAuthTestHelper.php';
 date_default_timezone_set('UTC');
 
 use Braintree\Configuration;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class Setup extends PHPUnit_Framework_TestCase
+class Setup extends TestCase
 {
-    public function __construct()
+    public function setUp()
     {
+        parent::setUp();
+        
         self::integrationMerchantConfig();
     }
 
