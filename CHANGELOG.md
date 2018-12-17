@@ -1,5 +1,6 @@
 ## unreleased
 * Add `bin` field to `paymentMethodNonceDetails`
+* Add Error indicating pdf uploads too long for dispute evidence.
 
 ## 3.38.0
 * Add `fraudServiceProvider` field in `riskData`
