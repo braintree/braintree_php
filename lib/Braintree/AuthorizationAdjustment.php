@@ -7,8 +7,8 @@ namespace Braintree;
  * @package Braintree
  *
  * @property-read string $amount
- * @property-read DateTime $timestamp
  * @property-read boolean $success
+ * @property-read \DateTime $timestamp
  *
  */
 

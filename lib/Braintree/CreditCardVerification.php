@@ -1,6 +1,30 @@
 <?php
 namespace Braintree;
 
+/**
+ * {@inheritdoc}
+ * 
+ * @property-read string $amount
+ * @property-read mixed $billing
+ * @property-read string $company
+ * @property-read string $countryName
+ * @property-read string $extendedAddress
+ * @property-read string $firstName
+ * @property-read string $lastName
+ * @property-read string $locality
+ * @property-read string $postalCode
+ * @property-read string $region
+ * @property-read string $streetAddress
+ * @property-read \DateTime $createdAt
+ * @property-read \Braintree\CreditCard $creditCard
+ * @property-read string|null $gatewayRejectionReason
+ * @property-read string $id
+ * @property-read string $merchantAccountId
+ * @property-read string $processorResponseCode
+ * @property-read string $processorResponseText
+ * @property-read string $processorResponseType
+ * @property-read \Braintree\RiskData|null $riskData
+ */
 class CreditCardVerification extends Result\CreditCardVerification
 {
     public static function factory($attributes)

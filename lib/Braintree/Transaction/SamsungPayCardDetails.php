@@ -11,8 +11,8 @@ use Braintree\Instance;
  * @subpackage Transaction
  *
  * @property-read string $bin
- * @property-read string $cardholderName
  * @property-read string $cardType
+ * @property-read string $cardholderName
  * @property-read string $commercial
  * @property-read string $countryOfIssuance
  * @property-read string $customerId

@@ -1,6 +1,23 @@
 <?php
 namespace Braintree;
 
+/**
+ * @property-read \Braintree\Addon[] $addOns
+ * @property-read string $id
+ * @property-read int|null $billingDayOfMonth
+ * @property-read int $billingFrequency
+ * @property-read \DateTime $createdAt
+ * @property-read string $currencyIsoCode
+ * @property-read string|null $description
+ * @property-read \Braintree\Discount[] $discounts
+ * @property-read string $name
+ * @property-read int|null $numberOfBillingCycles
+ * @property-read string $price
+ * @property-read int|null $trialDuration
+ * @property-read string|null $trialDurationUnit
+ * @property-read boolean $trialPeriod
+ * @property-read \DateTime $updatedAt
+ */
 class Plan extends Base
 {
     public static function factory($attributes)
