@@ -12,28 +12,29 @@ namespace Braintree;
  * @package    Braintree
  * @category   Resources
  *
- * @property-read array  $addresses
- * @property-read array  $paymentMethods
+ * @property-read \Braintree\Address[] $addresses
+ * @property-read \Braintree\AndroidPayCard[] $androidPayCards
+ * @property-read \Braintree\AmexExpressCheckoutCard[] $amexExpressCheckoutCards
+ * @property-read \Braintree\ApplePayCard[] $applePayCards
+ * @property-read \Braintree\CoinbaseAccount[] $coinbaseAccounts
  * @property-read string $company
- * @property-read string $createdAt
- * @property-read array  $creditCards
- * @property-read array  $paypalAccounts
- * @property-read array  $applePayCards
- * @property-read array  $androidPayCards
- * @property-read array  $amexExpressCheckoutCards
- * @property-read array  $venmoAccounts
- * @property-read array  $visaCheckoutCards
- * @property-read array  $masterpassCards
- * @property-read array  $samsungPayCards
- * @property-read array  $coinbaseAccounts
+ * @property-read \DateTime $createdAt
+ * @property-read \Braintree\CreditCard[] $creditCards
  * @property-read array  $customFields custom fields passed with the request
  * @property-read string $email
  * @property-read string $fax
  * @property-read string $firstName
  * @property-read string $id
  * @property-read string $lastName
+ * @property-read \Braintree\MasterpassCard[] $masterpassCards
+ * @property-read \Braintree\PaymentMethod[] $paymentMethods
+ * @property-read \Braintree\PayPalAccount[] $paypalAccounts
  * @property-read string $phone
- * @property-read string $updatedAt
+ * @property-read \Braintree\SamsungPayCard[] $samsungPayCards
+ * @property-read \DateTime $updatedAt
+ * @property-read \Braintree\UsBankAccount[] $usBankAccounts
+ * @property-read \Braintree\VenmoAccount[] $venmoAccounts
+ * @property-read \Braintree\VisaCheckoutCard[] $visaCheckoutCards
  * @property-read string $website
  */
 class Customer extends Base

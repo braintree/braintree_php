@@ -13,6 +13,13 @@ use InvalidArgumentException;
  *      ]);
  *
  * For more information on DocumentUploads, see https://developers.braintreepayments.com/reference/request/document_upload/create
+ * 
+ * @property-read string $contentType
+ * @property-read \DateTime $expiresAt
+ * @property-read string $id
+ * @property-read string $kind
+ * @property-read string $name
+ * @property-read int $size
  */
 class DocumentUpload extends Base
 {

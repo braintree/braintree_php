@@ -12,13 +12,14 @@ namespace Braintree;
  * @package    Braintree
  * @category   Resources
  *
- * @property-read string $createdAt
- * @property-read string $default
- * @property-read string $updatedAt
+ * @property-read \DateTime $createdAt
  * @property-read string $customerId
- * @property-read string $sourceDescription
- * @property-read string $token
+ * @property-read boolean $default
  * @property-read string $imageUrl
+ * @property-read string $sourceDescription
+ * @property-read \Braintree\Subscription[] $subscriptions
+ * @property-read string $token
+ * @property-read \DateTime $updatedAt
  * @property-read string $username
  * @property-read string $venmoUserId
  */

@@ -12,6 +12,7 @@ use Braintree\Instance;
  *
  * @property-read string $bin
  * @property-read string $callId
+ * @property-read string $cardType
  * @property-read string $cardholderName
  * @property-read string $commercial
  * @property-read string $countryOfIssuance

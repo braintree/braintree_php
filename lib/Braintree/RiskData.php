@@ -1,6 +1,11 @@
 <?php
 namespace Braintree;
 
+/**
+ * @property-read string $decision
+ * @property-read boolean $deviceDataCaptured
+ * @property-read string $id
+ */
 class RiskData extends Base
 {
     public static function factory($attributes)
