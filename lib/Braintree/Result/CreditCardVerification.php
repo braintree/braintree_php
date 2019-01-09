@@ -14,7 +14,7 @@ use Braintree\Util;
  * @package    Braintree
  * @subpackage Result
  *
- * @property-read string $avsErrorResponseCode
+ * @property-read string|null $avsErrorResponseCode
  * @property-read string $avsPostalCodeResponseCode
  * @property-read string $avsStreetAddressResponseCode
  * @property-read string $cvvResponseCode

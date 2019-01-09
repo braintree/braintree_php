@@ -1,6 +1,9 @@
 <?php
 namespace Braintree;
 
+/**
+ * @property-read array $records
+ */
 class SettlementBatchSummary extends Base
 {
     /**

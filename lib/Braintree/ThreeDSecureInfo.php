@@ -1,6 +1,11 @@
 <?php
 namespace Braintree;
 
+/**
+ * @property-read string $enrolled
+ * @property-read boolean $liabilityShiftPossible
+ * @property-read string $status
+ */
 class ThreeDSecureInfo extends Base
 {
     public static function factory($attributes)
