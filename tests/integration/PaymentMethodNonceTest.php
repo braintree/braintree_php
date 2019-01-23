@@ -32,7 +32,6 @@ class PaymentMethodNonceTest extends Setup
         Braintree\PaymentMethodNonce::create('not_a_token');
     }
 
-
     public function testFind_exposesVenmoDetails()
     {
         $foundNonce = Braintree\PaymentMethodNonce::find('fake-venmo-account-nonce');
