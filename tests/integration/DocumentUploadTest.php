@@ -87,6 +87,19 @@ class DocumentUploadTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::DOCUMENT_UPLOAD_FILE_IS_TOO_LARGE, $error->code);
     }
 
+    public function testCreate_whenPDFFileIsOver50Pages_returnsError()
+    {
+        $tooLongFile = fopen(dirname(__DIR__) . '/fixtures/too_long.pdf', 'rb');
+
+        $result = Braintree\DocumentUpload::create([
+            "kind" => Braintree\DocumentUpload::EVIDENCE_DOCUMENT,
+            "file" => $tooLongFile
+        ]);
+
+        $error = $result->errors->forKey('documentUpload')->errors[0];
+        $this->assertEquals(Braintree\Error\Codes::DOCUMENT_UPLOAD_FILE_IS_TOO_LONG, $error->code);
+    }
+
     public function testCreate_whenInvalidSignature_throwsInvalidArgumentException()
     {
         $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad_key');

@@ -195,6 +195,7 @@ class Codes
     const DOCUMENT_UPLOAD_FILE_IS_TOO_LARGE              = '84902';
     const DOCUMENT_UPLOAD_FILE_TYPE_IS_INVALID           = '84903';
     const DOCUMENT_UPLOAD_FILE_IS_MALFORMED_OR_ENCRYPTED = '84904';
+    const DOCUMENT_UPLOAD_FILE_IS_TOO_LONG               = '84905';
 
     const FAILED_AUTH_ADJUSTMENT_ALLOW_RETRY                    = '95603';
     const FAILED_AUTH_ADJUSTMENT_HARD_DECLINE                   = '95602';

@@ -330,4 +330,15 @@ class Helper
         }
         return $ideal_payment_id . "_xxx";
     }
+
+    public static function sampleNotificationFromXml($xml) {
+        $config = Helper::integrationMerchantGateway()->config;
+        $payload = base64_encode($xml) . "\n";
+        $signature = $config->getPublicKey() . "|" . Braintree\Digest::hexDigestSha1($config->getPrivateKey(), $payload);
+
+        return [
+            'bt_signature' => $signature,
+            'bt_payload' => $payload
+        ];
+    }
 }

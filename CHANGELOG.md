@@ -1,3 +1,8 @@
+## 3.39.0
+* Add `bin` field to `paymentMethodNonceDetails`
+* Add Error indicating pdf uploads too long for dispute evidence.
+* Add `GrantedPaymentMethodRevoked` webhook response objects
+
 ## 3.38.0
 * Add `fraudServiceProvider` field in `riskData`
 * Fix issue where merchant reporting calls would throw an exception in PHP 7 (#236)

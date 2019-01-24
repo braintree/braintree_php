@@ -32,6 +32,16 @@ class PaymentMethodNonceTest extends Setup
         Braintree\PaymentMethodNonce::create('not_a_token');
     }
 
+    public function testFind_exposesVenmoDetails()
+    {
+        $foundNonce = Braintree\PaymentMethodNonce::find('fake-venmo-account-nonce');
+        $details = $foundNonce->details;
+
+        $this->assertEquals('99', $details['lastTwo']);
+        $this->assertEquals('venmojoe', $details['username']);
+        $this->assertEquals('Venmo-Joe-1', $details['venmoUserId']);
+    }
+
     public function testFind_exposesThreeDSecureInfo()
     {
         $creditCard = [
@@ -51,6 +61,12 @@ class PaymentMethodNonceTest extends Setup
         $this->assertEquals('authenticate_successful', $info->status);
         $this->assertTrue($info->liabilityShifted);
         $this->assertTrue($info->liabilityShiftPossible);
+    }
+
+    public function testFind_returnsBin()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableVisa);
+        $this->assertEquals("401288", $nonce->details["bin"]);
     }
 
     public function testFind_exposesBinData()
