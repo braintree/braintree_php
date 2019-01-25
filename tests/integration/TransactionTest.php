@@ -4946,29 +4946,6 @@ class TransactionTest extends Setup
         $this->assertEquals($refundTransaction->refundedTransactionId, $originalTransaction->id);
     }
 
-  public function testRefund_withPayPalFailsifAlreadyRefunded()
-    {
-        $nonce = Braintree\Test\Nonces::$paypalOneTimePayment;
-
-        $transactionResult = Braintree\Transaction::sale([
-            'amount' => Braintree\Test\TransactionAmounts::$authorize,
-            'paymentMethodNonce' => $nonce,
-            'options' => [
-                'submitForSettlement' => true
-            ]
-        ]);
-
-        $this->assertTrue($transactionResult->success);
-        Braintree\Test\Transaction::settle($transactionResult->transaction->id);
-
-        $firstRefund = Braintree\Transaction::refund($transactionResult->transaction->id);
-        $this->assertTrue($firstRefund->success);
-        $secondRefund = Braintree\Transaction::refund($transactionResult->transaction->id);
-        $this->assertFalse($secondRefund->success);
-        $errors = $secondRefund->errors->forKey('transaction')->errors;
-        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_HAS_ALREADY_BEEN_REFUNDED, $errors[0]->code);
-    }
-
   public function testRefund_withPayPalFailsIfNotSettled()
     {
         $nonce = Braintree\Test\Nonces::$paypalOneTimePayment;
