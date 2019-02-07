@@ -1,3 +1,6 @@
+## unreleased
+* Deprecate `GRANTED_PAYMENT_INSTRUMENT_UPDATE` and add `GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD` and `RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD`
+
 ## 3.39.0
 * Add `bin` field to `paymentMethodNonceDetails`
 * Add Error indicating pdf uploads too long for dispute evidence.
