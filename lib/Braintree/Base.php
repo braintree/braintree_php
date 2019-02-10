@@ -52,7 +52,7 @@ abstract class Base implements JsonSerializable
     }
 
     /**
-     * Checks for the existance of a property stored in the private $_attributes property
+     * Checks for the existence of a property stored in the private $_attributes property
      *
      * @ignore
      * @param string $name
