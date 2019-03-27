@@ -412,6 +412,79 @@ class CreditCardTest extends Setup
         $this->assertFalse($result->creditCard->isVenmoSdk());
     }
 
+    public function testCreate_withAccountTypeCredit()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\CreditCard::create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => Braintree\Test\CreditCardNumbers::$hiper,
+            'expirationDate' => '05/12',
+            'options' => [
+                'verifyCard' => true,
+                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationAccountType' => 'credit'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $this->assertEquals('credit', $result->creditCard->verification->creditCard['accountType']);
+    }
+
+    public function testCreate_withAccountTypeDebit()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\CreditCard::create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => Braintree\Test\CreditCardNumbers::$hiper,
+            'expirationDate' => '05/12',
+            'options' => [
+                'verifyCard' => true,
+                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationAccountType' => 'debit'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $this->assertEquals('debit', $result->creditCard->verification->creditCard['accountType']);
+    }
+
+    public function testCreate_ErrorsWithVerificationAccountTypeIsInvalid()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\CreditCard::create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => Braintree\Test\CreditCardNumbers::$hiper,
+            'expirationDate' => '05/12',
+            'options' => [
+                'verifyCard' => true,
+                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationAccountType' => 'wrong'
+            ]
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('creditCard')->forKey('options')->onAttribute('verificationAccountType');
+        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_OPTIONS_VERIFICATION_ACCOUNT_TYPE_IS_INVALID, $errors[0]->code);
+    }
+
+    public function testCreate_ErrorsWithVerificationAccountTypeNotSupported()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\CreditCard::create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12',
+            'options' => [
+                'verifyCard' => true,
+                'verificationAccountType' => 'credit'
+            ]
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('creditCard')->forKey('options')->onAttribute('verificationAccountType');
+        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_OPTIONS_VERIFICATION_ACCOUNT_TYPE_NOT_SUPPORTED, $errors[0]->code);
+    }
+
     public function testCreateNoValidate_throwsIfValidationsFail()
     {
 

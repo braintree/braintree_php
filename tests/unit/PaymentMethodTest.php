@@ -32,6 +32,7 @@ class PaymentMethodTest extends Setup
                 'makeDefault',
                 'verificationMerchantAccountId',
                 'verifyCard',
+                'verificationAccountType',
                 'verificationAmount',
                 'usBankAccountVerificationMethod',
                 ['paypal' => [

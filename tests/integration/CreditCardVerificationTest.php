@@ -59,5 +59,78 @@ class CreditCardVerificationTest extends Setup
 
 		$amountErrors = $result->errors->forKey('verification')->forKey('options')->onAttribute('amount');
 		$this->assertEquals(Braintree\Error\Codes::VERIFICATION_OPTIONS_AMOUNT_CANNOT_BE_NEGATIVE, $amountErrors[0]->code);
-	}
+    }
+
+    public function test_createWithAccountTypeCredit()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$hiper,
+                'expirationDate' => '05/2011',
+            ],
+            'options' => [
+                'merchantAccountId' => 'hiper_brl',
+                'accountType' => 'credit'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->creditCard['accountType'], 'credit');
+    }
+
+    public function test_createWithAccountTypeDebit()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$hiper,
+                'expirationDate' => '05/2011',
+            ],
+            'options' => [
+                'merchantAccountId' => 'hiper_brl',
+                'accountType' => 'debit'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->creditCard['accountType'], 'debit');
+    }
+
+    public function test_createErrorsWithAccountTypeIsInvalid()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$hiper,
+                'expirationDate' => '05/2011',
+            ],
+            'options' => [
+                'merchantAccountId' => 'hiper_brl',
+                'accountType' => 'wrong'
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('verification')->forKey('options')->onAttribute('accountType');
+        $this->assertEquals(Braintree\Error\Codes::VERIFICATION_OPTIONS_ACCOUNT_TYPE_IS_INVALID, $errors[0]->code);
+    }
+
+    public function test_createErrorsWithAccountTypeNotSupported()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2011',
+            ],
+            'options' => [
+                'accountType' => 'credit'
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('verification')->forKey('options')->onAttribute('accountType');
+        $this->assertEquals(Braintree\Error\Codes::VERIFICATION_OPTIONS_ACCOUNT_TYPE_NOT_SUPPORTED, $errors[0]->code);
+    }
 }

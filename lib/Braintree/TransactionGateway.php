@@ -178,6 +178,9 @@ class TransactionGateway
                     'skipAdvancedFraudChecking',
                     'skipAvs',
                     'skipCvv',
+                    ['creditCard' =>
+                        ['accountType']
+                    ],
                     ['threeDSecure' =>
                         ['required']
                     ],

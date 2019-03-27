@@ -54,7 +54,7 @@ class CreditCardVerification extends Result\CreditCardVerification
     public static function createSignature()
     {
         return [
-                ['options' => ['amount', 'merchantAccountId']],
+                ['options' => ['amount', 'merchantAccountId', 'accountType']],
                 ['creditCard' =>
                     [
                         'cardholderName', 'cvv', 'number',

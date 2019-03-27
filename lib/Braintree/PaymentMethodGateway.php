@@ -113,6 +113,7 @@ class PaymentMethodGateway
             'makeDefault',
             'verificationMerchantAccountId',
             'verifyCard',
+            'verificationAccountType',
             'verificationAmount',
             'usBankAccountVerificationMethod',
             ['paypal' => [

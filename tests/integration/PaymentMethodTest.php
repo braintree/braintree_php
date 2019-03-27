@@ -806,6 +806,173 @@ class PaymentMethodTest extends Setup
         $this->assertTrue('4242' == $result->paymentMethod->last4);
     }
 
+    public function testCreate_acceptAccountTypeCredit()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            'credit_card' => [
+                'number' => Braintree\Test\CreditCardNumbers::$hiper,
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
+            ],
+            'share' => true
+        ]);
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verifyCard' => true,
+                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationAccountType' => 'credit'
+            ]
+        ]);
+
+        $this->assertSame('credit', $result->paymentMethod->verification->creditCard['accountType']);
+    }
+
+    public function testCreate_acceptAccountTypeDebit()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            'credit_card' => [
+                'number' => Braintree\Test\CreditCardNumbers::$hiper,
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
+            ],
+            'share' => true
+        ]);
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verifyCard' => true,
+                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationAccountType' => 'debit'
+            ]
+        ]);
+
+        $this->assertSame('debit', $result->paymentMethod->verification->creditCard['accountType']);
+    }
+
+    public function testUpdate_acceptAccountTypeCredit()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $creditCardResult = Braintree\CreditCard::create([
+            'cardholderName' => 'Original Holder',
+            'customerId' => $customer->id,
+            'cvv' => '123',
+            'number' => Braintree\Test\CreditCardNumbers::$visa,
+            'expirationDate' => "05/2012"
+        ]);
+        $this->assertTrue($creditCardResult->success);
+        $creditCard = $creditCardResult->creditCard;
+
+        $updateResult = Braintree\PaymentMethod::update($creditCard->token, [
+            'cardholderName' => 'New Holder',
+            'cvv' => '456',
+            'number' => Braintree\Test\CreditCardNumbers::$hiper,
+            'expirationDate' => '06/2013',
+            'options' => [
+                'verifyCard' => true,
+                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationAccountType' => 'credit'
+            ]
+        ]);
+
+        $this->assertTrue($updateResult->success);
+        $this->assertSame($updateResult->paymentMethod->token, $creditCard->token);
+        $this->assertSame('credit', $updateResult->paymentMethod->verification->creditCard['accountType']);
+    }
+
+    public function testUpdate_acceptAccountTypeDebit()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $creditCardResult = Braintree\CreditCard::create([
+            'cardholderName' => 'Original Holder',
+            'customerId' => $customer->id,
+            'cvv' => '123',
+            'number' => Braintree\Test\CreditCardNumbers::$visa,
+            'expirationDate' => "05/2012"
+        ]);
+        $this->assertTrue($creditCardResult->success);
+        $creditCard = $creditCardResult->creditCard;
+
+        $updateResult = Braintree\PaymentMethod::update($creditCard->token, [
+            'cardholderName' => 'New Holder',
+            'cvv' => '456',
+            'number' => Braintree\Test\CreditCardNumbers::$hiper,
+            'expirationDate' => '06/2013',
+            'options' => [
+                'verifyCard' => true,
+                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationAccountType' => 'debit'
+            ]
+        ]);
+
+        $this->assertTrue($updateResult->success);
+        $this->assertSame($updateResult->paymentMethod->token, $creditCard->token);
+        $this->assertSame('debit', $updateResult->paymentMethod->verification->creditCard['accountType']);
+    }
+
+    public function testCreate_ErrorsWithVerificationAccountTypeIsInvalid()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            'credit_card' => [
+                'number' => Braintree\Test\CreditCardNumbers::$hiper,
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
+            ],
+            'share' => true
+        ]);
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verifyCard' => true,
+                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationAccountType' => 'wrong'
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('creditCard')->forKey('options')->onAttribute('verificationAccountType');
+        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_OPTIONS_VERIFICATION_ACCOUNT_TYPE_IS_INVALID, $errors[0]->code);
+    }
+
+    public function testCreate_ErrorsWithVerificationAccountTypeNotSupported()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            'credit_card' => [
+                'number' => '5105105105105100',
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
+            ],
+            'share' => true
+        ]);
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verifyCard' => true,
+                'verificationAccountType' => 'wrong'
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('creditCard')->forKey('options')->onAttribute('verificationAccountType');
+        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_OPTIONS_VERIFICATION_ACCOUNT_TYPE_NOT_SUPPORTED, $errors[0]->code);
+    }
+
     public function testFind_returnsCreditCards()
     {
         $paymentMethodToken = 'CREDIT_CARD_TOKEN-' . strval(rand());

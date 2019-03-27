@@ -150,7 +150,122 @@ class TransactionTest extends Setup
         $this->assertRegExp('/^https:\/\//', $transaction->idealPayment->imageUrl);
         $this->assertNotNull($transaction->idealPayment->maskedIban);
         $this->assertNotNull($transaction->idealPayment->bic);
-    }
+  }
+
+  public function testCreateWithAccountTypeCredit()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '47.00',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$hiper,
+              'expirationMonth' => '10',
+              'expirationYear' => '2020',
+              'cvv' => '737',
+          ],
+          'options' => [
+              'creditCard' => [
+                  'accountType' => 'credit'
+            ]
+          ],
+          'merchantAccountId' => 'hiper_brl',
+      ]);
+
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+      $this->assertEquals('credit', $transaction->creditCard['accountType']);
+  }
+
+  public function testCreateWithAccountTypeDebit()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '47.00',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$hiper,
+              'expirationMonth' => '10',
+              'expirationYear' => '2020',
+              'cvv' => '737',
+          ],
+          'options' => [
+              'submitForSettlement' => true,
+              'creditCard' => [
+                  'accountType' => 'debit'
+            ]
+          ],
+          'merchantAccountId' => 'hiper_brl',
+      ]);
+
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+      $this->assertEquals('debit', $transaction->creditCard['accountType']);
+  }
+
+  public function testCreateErrorsWithAccountTypeIsInvalid()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '47.00',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$hiper,
+              'expirationMonth' => '10',
+              'expirationYear' => '2020',
+              'cvv' => '737',
+          ],
+          'options' => [
+              'creditCard' => [
+                  'accountType' => 'wrong'
+            ]
+          ],
+          'merchantAccountId' => 'hiper_brl',
+      ]);
+
+      $this->assertFalse($result->success);
+      $errors = $result->errors->forKey('transaction')->forKey('options')->forKey('creditCard')->onAttribute('accountType');
+      $this->assertEquals(Braintree\Error\Codes::TRANSACTION_OPTIONS_CREDIT_CARD_ACCOUNT_TYPE_IS_INVALID, $errors[0]->code);
+  }
+
+  public function testCreateErrorsWithAccountTypeNotSupported()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '47.00',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationMonth' => '10',
+              'expirationYear' => '2020',
+              'cvv' => '737',
+          ],
+          'options' => [
+              'creditCard' => [
+                  'accountType' => 'credit'
+            ]
+          ],
+      ]);
+
+      $this->assertFalse($result->success);
+      $errors = $result->errors->forKey('transaction')->forKey('options')->forKey('creditCard')->onAttribute('accountType');
+      $this->assertEquals(Braintree\Error\Codes::TRANSACTION_OPTIONS_CREDIT_CARD_ACCOUNT_TYPE_NOT_SUPPORTED, $errors[0]->code);
+  }
+
+  public function testCreateErrorsWithAccountTypeDebitDoesNotSupportAuths()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '47.00',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$hiper,
+              'expirationMonth' => '10',
+              'expirationYear' => '2020',
+              'cvv' => '737',
+          ],
+          'options' => [
+              'creditCard' => [
+                  'accountType' => 'debit'
+            ]
+          ],
+          'merchantAccountId' => 'hiper_brl',
+      ]);
+
+      $this->assertFalse($result->success);
+      $errors = $result->errors->forKey('transaction')->forKey('options')->forKey('creditCard')->onAttribute('accountType');
+      $this->assertEquals(Braintree\Error\Codes::TRANSACTION_OPTIONS_CREDIT_CARD_ACCOUNT_TYPE_DEBIT_DOES_NOT_SUPPORT_AUTHS, $errors[0]->code);
+  }
 
   public function testSaleAndSkipAdvancedFraudChecking()
   {
