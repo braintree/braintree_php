@@ -11,7 +11,7 @@ class Version
      * class constants
      */
     const MAJOR = 3;
-    const MINOR = 39;
+    const MINOR = 40;
     const TINY = 0;
 
     /**

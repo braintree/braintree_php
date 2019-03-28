@@ -720,10 +720,10 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("1234567890", $idealPayment->idealTransactionId);
     }
 
-    public function testGrantedPaymentInstrumentUpdateWebhook()
+    public function testGrantorUpdatedGrantedPaymentMethodWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
-            Braintree\WebhookNotification::GRANTED_PAYMENT_INSTRUMENT_UPDATE,
+            Braintree\WebhookNotification::GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD,
             "my_id"
         );
 
@@ -732,8 +732,29 @@ class WebhookNotificationTest extends Setup
             $sampleNotification['bt_payload']
         );
 
-        $this->assertEquals(Braintree\WebhookNotification::GRANTED_PAYMENT_INSTRUMENT_UPDATE, $webhookNotification->kind);
+        $this->assertEquals(Braintree\WebhookNotification::GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD, $webhookNotification->kind);
         $update = $webhookNotification->grantedPaymentInstrumentUpdate;
+
+        $this->assertEquals("vczo7jqrpwrsi2px", $update->grantOwnerMerchantId);
+        $this->assertEquals("cf0i8wgarszuy6hc", $update->grantRecipientMerchantId);
+        $this->assertEquals("ee257d98-de40-47e8-96b3-a6954ea7a9a4", $update->paymentMethodNonce->nonce);
+        $this->assertEquals("abc123z", $update->token);
+        $this->assertEquals(array("expiration-month", "expiration-year"), $update->updatedFields);
+    }
+
+    public function testRecipientUpdatedGrantedPaymentMethodWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD, $webhookNotification->kind); $update = $webhookNotification->grantedPaymentInstrumentUpdate;
 
         $this->assertEquals("vczo7jqrpwrsi2px", $update->grantOwnerMerchantId);
         $this->assertEquals("cf0i8wgarszuy6hc", $update->grantRecipientMerchantId);

@@ -91,7 +91,14 @@ class WebhookTestingGateway
             case WebhookNotification::IDEAL_PAYMENT_FAILED:
                 $subjectXml = self::_idealPaymentFailedSampleXml($id);
                 break;
+            // NEXT_MAJOR_VERSION remove GRANTED_PAYMENT_INSTRUMENT_UPDATE
             case WebhookNotification::GRANTED_PAYMENT_INSTRUMENT_UPDATE:
+                $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
+                break;
+            case WebhookNotification::GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD:
+                $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
+                break;
+            case WebhookNotification::RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD:
                 $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
                 break;
             case WebhookNotification::LOCAL_PAYMENT_COMPLETED:

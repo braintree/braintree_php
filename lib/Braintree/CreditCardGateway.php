@@ -336,7 +336,7 @@ class CreditCardGateway
 
     private static function baseOptions()
     {
-        return ['makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'venmoSdkSession'];
+        return ['makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'verificationAccountType', 'venmoSdkSession'];
     }
 
     private static function baseSignature($options)
