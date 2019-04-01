@@ -3760,7 +3760,7 @@ class TransactionTest extends Setup
   public function testSale_returnsErrorsWhenThreeDSecurePassThruMerchantAcountDoesNotSupportCardType()
     {
         $result = Braintree\Transaction::sale([
-            'merchantAccountId' => 'adyen_ma',
+            'merchantAccountId' => 'heartland_ma',
             'amount' => '100.00',
             'creditCard' => [
                 'number' => '5105105105105100',
