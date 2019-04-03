@@ -1,7 +1,10 @@
+/.github export-ignore
 /tests export-ignore
+ACKNOWLEDGEMENTS.md export-ignore
 ci.sh export-ignore
+Dockerfile export-ignore
+Makefile export-ignore
+Rakefile export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
 phpunit.xml.dist export-ignore
-ACKNOWLEDGEMENTS.md export-ignore
-CHANGELOG.md export-ignore
