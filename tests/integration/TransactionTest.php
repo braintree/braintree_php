@@ -1695,7 +1695,16 @@ class TransactionTest extends Setup
         $this->assertContains("AmEx ", $applePayDetails->paymentInstrumentName);
         $this->assertTrue(intval($applePayDetails->expirationMonth) > 0);
         $this->assertTrue(intval($applePayDetails->expirationYear) > 0);
+        $this->assertContains('apple_pay', $applePayDetails->imageUrl);
         $this->assertNotNull($applePayDetails->cardholderName);
+        $this->assertNotNull($applePayDetails->bin);
+        $this->assertNotNull($applePayDetails->commercial);
+        $this->assertNotNull($applePayDetails->debit);
+        $this->assertNotNull($applePayDetails->durbinRegulated);
+        $this->assertNotNull($applePayDetails->healthcare);
+        $this->assertNotNull($applePayDetails->payroll);
+        $this->assertNotNull($applePayDetails->prepaid);
+        $this->assertNotNull($applePayDetails->productId);
     }
 
   public function testCreateTransactionUsingRawApplePayParams()
@@ -1752,6 +1761,14 @@ class TransactionTest extends Setup
         $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
         $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
+        $this->assertNotNull($androidPayCardDetails->bin);
+        $this->assertNotNull($androidPayCardDetails->commercial);
+        $this->assertNotNull($androidPayCardDetails->debit);
+        $this->assertNotNull($androidPayCardDetails->durbinRegulated);
+        $this->assertNotNull($androidPayCardDetails->healthcare);
+        $this->assertNotNull($androidPayCardDetails->payroll);
+        $this->assertNotNull($androidPayCardDetails->prepaid);
+        $this->assertNotNull($androidPayCardDetails->productId);
     }
 
   public function testCreateTransactionUsingFakeAndroidPayNetworkTokenNonce()
@@ -1776,6 +1793,14 @@ class TransactionTest extends Setup
         $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
         $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
+        $this->assertNotNull($androidPayCardDetails->bin);
+        $this->assertNotNull($androidPayCardDetails->commercial);
+        $this->assertNotNull($androidPayCardDetails->debit);
+        $this->assertNotNull($androidPayCardDetails->durbinRegulated);
+        $this->assertNotNull($androidPayCardDetails->healthcare);
+        $this->assertNotNull($androidPayCardDetails->payroll);
+        $this->assertNotNull($androidPayCardDetails->prepaid);
+        $this->assertNotNull($androidPayCardDetails->productId);
     }
 
     public function testCreateTransactionUsingFakeAmexExpressCheckoutNonce()
