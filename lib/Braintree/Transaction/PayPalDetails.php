@@ -28,6 +28,8 @@ use Braintree\Instance;
  * @property-read string $payerLastName
  * @property-read string $payerStatus
  * @property-read string $paymentId
+ * @property-read string $refundFromTransactionFeeAmount
+ * @property-read string $refundFromTransactionFeeCurrencyIsoCode
  * @property-read string $refundId
  * @property-read string $sellerProtectionStatus
  * @property-read string $taxId

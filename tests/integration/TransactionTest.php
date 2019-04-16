@@ -3411,6 +3411,8 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->paypalDetails->refundId);
         $this->assertNotNull($transaction->paypalDetails->transactionFeeAmount);
         $this->assertNotNull($transaction->paypalDetails->transactionFeeCurrencyIsoCode);
+        $this->assertNotNull($transaction->paypalDetails->refundFromTransactionFeeAmount);
+        $this->assertNotNull($transaction->paypalDetails->refundFromTransactionFeeCurrencyIsoCode);
     }
 
   public function testSale_storeInVault()
