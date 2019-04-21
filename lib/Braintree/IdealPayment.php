@@ -6,6 +6,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
+ * @deprecated If you're looking to accept iDEAL as a payment method contact accounts@braintreepayments.com for a solution.
  */
 
 /**
@@ -26,6 +27,7 @@ namespace Braintree;
  * @property-read string $issuer
  * @property-read string $ibanBankAccount
  */
+// NEXT_MAJOR_VERSION Remove this class as legacy Ideal has been removed/disabled in the Braintree Gateway
 class IdealPayment extends Base
 {
     /**

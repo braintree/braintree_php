@@ -127,31 +127,6 @@ class TransactionTest extends Setup
         $this->assertEquals('47.00', $transaction->amount);
     }
 
-  public function testSaleWithIdealPaymentId()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '100.00',
-            'merchantAccountId' => 'ideal_merchant_account',
-            'paymentMethodNonce' => Test\Helper::generateValidIdealPaymentId(),
-            'orderId' => 'ABC123',
-            'options' => [
-                'submitForSettlement' => true,
-            ]
-        ]);
-
-        $this->assertTrue($result->success);
-        $transaction = $result->transaction;
-        $this->assertEquals(Braintree\Transaction::SETTLED, $transaction->status);
-        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
-        $this->assertEquals(Braintree\PaymentInstrumentType::IDEAL_PAYMENT, $transaction->paymentInstrumentType);
-        $this->assertEquals('100.00', $transaction->amount);
-        $this->assertRegExp('/^idealpayment_\w{6,}$/', $transaction->idealPayment->idealPaymentId);
-        $this->assertRegExp('/^\d{16,}$/', $transaction->idealPayment->idealTransactionId);
-        $this->assertRegExp('/^https:\/\//', $transaction->idealPayment->imageUrl);
-        $this->assertNotNull($transaction->idealPayment->maskedIban);
-        $this->assertNotNull($transaction->idealPayment->bic);
-  }
-
   public function testCreateWithAccountTypeCredit()
   {
       $result = Braintree\Transaction::sale([

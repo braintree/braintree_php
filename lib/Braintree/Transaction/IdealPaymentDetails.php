@@ -9,6 +9,7 @@ use Braintree\Instance;
  *
  * @package    Braintree
  * @subpackage Transaction
+ * @deprecated If you're looking to accept iDEAL as a payment method contact accounts@braintreepayments.com for a solution.
  *
  * @property-read string $idealPaymentId
  * @property-read string $idealTransactionId
@@ -16,6 +17,7 @@ use Braintree\Instance;
  * @property-read string $maskedIban
  * @property-read string $bic
  */
+// NEXT_MAJOR_VERSION Remove this class as legacy Ideal has been removed/disabled in the Braintree Gateway
 class IdealPaymentDetails extends Instance
 {
     protected $_attributes = [];

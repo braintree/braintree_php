@@ -674,52 +674,6 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals(new DateTime("2016-01-14"), $webhookNotification->accountUpdaterDailyReport->reportDate);
     }
 
-    public function testIdealPaymentCompleteWebhook()
-    {
-        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
-            Braintree\WebhookNotification::IDEAL_PAYMENT_COMPLETE,
-            "my_id"
-        );
-
-        $webhookNotification = Braintree\WebhookNotification::parse(
-            $sampleNotification['bt_signature'],
-            $sampleNotification['bt_payload']
-        );
-
-        $this->assertEquals(Braintree\WebhookNotification::IDEAL_PAYMENT_COMPLETE, $webhookNotification->kind);
-        $idealPayment = $webhookNotification->idealPayment;
-
-        $this->assertEquals("my_id", $idealPayment->id);
-        $this->assertEquals("COMPLETE", $idealPayment->status);
-        $this->assertEquals("ORDERABC", $idealPayment->orderId);
-        $this->assertEquals("10.00", $idealPayment->amount);
-        $this->assertEquals("https://example.com", $idealPayment->approvalUrl);
-        $this->assertEquals("1234567890", $idealPayment->idealTransactionId);
-    }
-
-    public function testIdealPaymentFailedWebhook()
-    {
-        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
-            Braintree\WebhookNotification::IDEAL_PAYMENT_FAILED,
-            "my_id"
-        );
-
-        $webhookNotification = Braintree\WebhookNotification::parse(
-            $sampleNotification['bt_signature'],
-            $sampleNotification['bt_payload']
-        );
-
-        $this->assertEquals(Braintree\WebhookNotification::IDEAL_PAYMENT_FAILED, $webhookNotification->kind);
-        $idealPayment = $webhookNotification->idealPayment;
-
-        $this->assertEquals("my_id", $idealPayment->id);
-        $this->assertEquals("FAILED", $idealPayment->status);
-        $this->assertEquals("ORDERABC", $idealPayment->orderId);
-        $this->assertEquals("10.00", $idealPayment->amount);
-        $this->assertEquals("https://example.com", $idealPayment->approvalUrl);
-        $this->assertEquals("1234567890", $idealPayment->idealTransactionId);
-    }
-
     public function testGrantorUpdatedGrantedPaymentMethodWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(

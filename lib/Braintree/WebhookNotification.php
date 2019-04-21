@@ -28,6 +28,8 @@ class WebhookNotification extends Base
     const ACCOUNT_UPDATER_DAILY_REPORT = 'account_updater_daily_report';
     const CONNECTED_MERCHANT_STATUS_TRANSITIONED = 'connected_merchant_status_transitioned';
     const CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED = 'connected_merchant_paypal_status_changed';
+    // NEXT_MAJOR_VERSION Remove this class as legacy Ideal has been removed/disabled in the Braintree Gateway
+    // DEPRECATED If you're looking to accept iDEAL as a payment method contact accounts@braintreepayments.com for a solution.
     const IDEAL_PAYMENT_COMPLETE = 'ideal_payment_complete';
     const IDEAL_PAYMENT_FAILED = 'ideal_payment_failed';
     // NEXT_MAJOR_VERSION remove GRANTED_PAYMENT_INSTRUMENT_UPDATE. Kind is not sent by Braintree Gateway.
@@ -107,6 +109,8 @@ class WebhookNotification extends Base
             $this->_set('accountUpdaterDailyReport', AccountUpdaterDailyReport::factory($wrapperNode['accountUpdaterDailyReport']));
         }
 
+        // NEXT_MAJOR_VERSION Remove this class as legacy Ideal has been removed/disabled in the Braintree Gateway
+        // DEPRECATED If you're looking to accept iDEAL as a payment method contact accounts@braintreepayments.com for a solution.
         if (isset($wrapperNode['idealPayment'])) {
             $this->_set('idealPayment', IdealPayment::factory($wrapperNode['idealPayment']));
         }

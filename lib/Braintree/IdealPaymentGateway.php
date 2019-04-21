@@ -8,6 +8,7 @@ use InvalidArgumentException;
  *
  * @package    Braintree
  * @category   Resources
+ * @deprecated If you're looking to accept iDEAL as a payment method contact accounts@braintreepayments.com for a solution.
  */
 
 /**
@@ -19,6 +20,7 @@ use InvalidArgumentException;
  * @package    Braintree
  * @category   Resources
  */
+// NEXT_MAJOR_VERSION Remove this class as legacy Ideal has been removed/disabled in the Braintree Gateway
 class IdealPaymentGateway
 {
     private $_gateway;
