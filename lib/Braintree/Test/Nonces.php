@@ -63,6 +63,7 @@ class Nonces
    public static $paypalFuturePaymentRefreshToken = "fake-paypal-future-refresh-token-nonce";
    public static $sepa = "fake-sepa-bank-account-nonce";
    public static $gatewayRejectedFraud = "fake-gateway-rejected-fraud-nonce";
+   public static $gatewayRejectedTokenIssuance = "fake-token-issuance-error-venmo-account-nonce";
    public static $venmoAccount = "fake-venmo-account-nonce";
    public static $visaCheckoutAmEx = "fake-visa-checkout-amex-nonce";
    public static $visaCheckoutDiscover = "fake-visa-checkout-discover-nonce";

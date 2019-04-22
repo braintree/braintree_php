@@ -4138,6 +4138,31 @@ class TransactionTest extends Setup
         $this->assertTrue($discounts[0]->neverExpires);
     }
 
+  public function testGatewayRejectionOnTokenIssuanceError()
+    {
+        $result = $gateway->transaction()->sale([
+            'amount' => '4000.00',
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'paymentMethodNonce' => Braintree\Test\Nonces::$venmoAccount,
+        ]);
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::TOKEN_ISSUANCE, $transaction->gatewayRejectionReason);
+    }
+
+  public function createTransactionViaTr($regularParams, $trParams)
+    {
+        Test\Helper::suppressDeprecationWarnings();
+        $trData = Braintree\TransparentRedirect::transactionData(
+            array_merge($trParams, ["redirectUrl" => "http://www.example.com"])
+        );
+        return Test\Helper::submitTrRequest(
+            Braintree\Transaction::createTransactionUrl(),
+            $regularParams,
+            $trData
+        );
+    }
+
   public function createTransactionToRefund()
     {
         $transaction = Braintree\Transaction::saleNoValidate([
