@@ -846,6 +846,25 @@ class WebhookNotificationTest extends Setup
 		$this->assertTrue($metadata->revokedPaymentMethod instanceof Braintree\VenmoAccount);
 	}
 
+    public function testPaymentMethodRevokedByCustomerWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::PAYMENT_METHOD_REVOKED_BY_CUSTOMER,
+            "my_payment_method_token"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::PAYMENT_METHOD_REVOKED_BY_CUSTOMER, $webhookNotification->kind);
+        $metadata = $webhookNotification->revokedPaymentMethodMetadata;
+
+        $this->assertEquals("my_payment_method_token", $metadata->token);
+        $this->assertTrue($metadata->revokedPaymentMethod instanceof Braintree\PayPalAccount);
+        $this->assertNotNull($metadata->revokedPaymentMethod->revokedAt);
+    }
 
     public function testLocalPaymentCompletedWebhook()
     {

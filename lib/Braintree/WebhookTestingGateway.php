@@ -91,6 +91,9 @@ class WebhookTestingGateway
             case WebhookNotification::RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD:
                 $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
                 break;
+            case WebhookNotification::PAYMENT_METHOD_REVOKED_BY_CUSTOMER:
+                $subjectXml = self::_paymentMethodRevokedByCustomerSampleXml($id);
+                break;
             case WebhookNotification::LOCAL_PAYMENT_COMPLETED:
                 $subjectXml = self::_localPaymentCompletedSampleXml();
                 break;
@@ -490,6 +493,29 @@ class WebhookTestingGateway
 			<item>expiration-year</item>
 		  </updated-fields>
 		</granted-payment-instrument-update>
+        ";
+    }
+
+    private static function _paymentMethodRevokedByCustomerSampleXml($id)
+    {
+        return "
+        <paypal-account>
+            <billing-agreement-id>a-billing-agreement-id</billing-agreement-id>
+            <created-at type='datetime'>2019-01-01T12:00:00Z</created-at>
+            <customer-id>a-customer-id</customer-id>
+            <default type='boolean'>true</default>
+            <email>name@email.com</email>
+            <global-id>cGF5bWVudG1ldGhvZF9jaDZieXNz</global-id>
+            <image-url>https://assets.braintreegateway.com/payment_method_logo/paypal.png?environment=test</image-url>
+            <subscriptions type='array'/>
+            <token>{$id}</token>
+            <updated-at type='datetime'>2019-01-02T12:00:00Z</updated-at>
+            <is-channel-initiated nil='true'/>
+            <payer-id>a-payer-id</payer-id>
+            <payer-info nil='true'/>
+            <limited-use-order-id nil='true'/>
+            <revoked-at type='datetime'>2019-01-02T12:00:00Z</revoked-at>
+        </paypal-account>
         ";
     }
 
