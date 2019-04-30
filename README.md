@@ -2,12 +2,9 @@
 
 The Braintree PHP library provides integration access to the Braintree Gateway.
 
-## Please Note
-> **The Payment Card Industry (PCI) Council has [mandated](https://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls) that early versions of TLS be retired from service.  All organizations that handle credit card information are required to comply with this standard. As part of this obligation, Braintree is updating its services to require TLS 1.2 for all HTTPS connections. Braintree will also require HTTP/1.1 for all connections. Please see our [technical documentation](https://github.com/paypal/tls-update) for more information.**
-
 ## Dependencies
 
-PHP version >= 5.4.0 is required.
+PHP version >= 7.2 is required.
 
 The following PHP extensions are required:
 
@@ -82,9 +79,8 @@ $config = new Braintree\Configuration([
 $gateway = new Braintree\Gateway($config)
 ```
 
-## HHVM Support
-
-The Braintree PHP library will run on HHVM >= 3.4.2.
+## TLS 1.2 required
+> **The Payment Card Industry (PCI) Council has [mandated](https://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls) that early versions of TLS be retired from service.  All organizations that handle credit card information are required to comply with this standard. As part of this obligation, Braintree has updated its services to require TLS 1.2 for all HTTPS connections. Braintrees require HTTP/1.1 for all connections. Please see our [technical documentation](https://github.com/paypal/tls-update) for more information.**
 
 ## Google App Engine Support
 
@@ -106,7 +102,7 @@ $gateway = new Braintree\Gateway([
 
 ## Legacy PHP Support
 
-Version [2.40.0](https://github.com/braintree/braintree_php/releases/tag/2.40.0) is compatible with PHP 5.2 and 5.3. You can find it on our releases page.
+Version [3.39.0](https://github.com/braintree/braintree_php/releases/tag/3.39.0) is compatible with PHP 5.4. You can find it on our releases page.
 
 ## Documentation
 
@@ -123,11 +119,6 @@ make
 ## Testing
 
 The unit specs can be run by anyone on any system, but the integration specs are meant to be run against a local development server of our gateway code. These integration specs are not meant for public consumption and will likely fail if run on your system. To run unit tests use rake: `rake test:unit`.
-
-The benefit of the `rake` tasks is that testing covers default `hhvm` and `php` interpreters. However, if you want to run tests manually simply use the following command:
-```
-phpunit tests/unit/
-```
 
 ## License
 

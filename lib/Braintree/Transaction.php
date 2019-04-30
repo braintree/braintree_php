@@ -154,7 +154,6 @@ namespace Braintree;
  * @property-read string $avsStreetAddressResponseCode
  * @property-read \Braintree\Transaction\AddressDetails $billingDetails transaction billing address
  * @property-read string $channel
- * @property-read \Braintree\CoinbaseDetails $coinbaseDetails transaction Coinbase account info
  * @property-read \DateTime $createdAt transaction created DateTime
  * @property-read \Braintree\CreditCardDetails $creditCardDetails transaction credit card info
  * @property-read string $currencyIsoCode
@@ -171,7 +170,6 @@ namespace Braintree;
  * @property-read \Braintree\FacilitatorDetails $facilitatorDetails
  * @property-read string $gatewayRejectionReason
  * @property-read string $id transaction id
- * @property-read \Braintree\IdealPayment $idealPaymentDetails transaction Ideal Payment info
  * @property-read \Braintree\TransactionLineItem[] $lineItems
  * @property-read \Braintree\MasterpassCardDetails $masterpassCardDetails transaction Masterpass card info
  * @property-read string $merchantAccountId
@@ -339,26 +337,10 @@ class Transaction extends Base
             );
         }
 
-        if (isset($transactionAttribs['coinbaseAccount'])) {
-            $this->_set('coinbaseDetails',
-                new Transaction\CoinbaseDetails(
-                    $transactionAttribs['coinbaseAccount']
-                )
-            );
-        }
-
         if (isset($transactionAttribs['usBankAccount'])) {
             $this->_set('usBankAccount',
                 new Transaction\UsBankAccountDetails(
                     $transactionAttribs['usBankAccount']
-                )
-            );
-        }
-
-        if (isset($transactionAttribs['idealPayment'])) {
-            $this->_set('idealPayment',
-                new Transaction\IdealPaymentDetails(
-                    $transactionAttribs['idealPayment']
                 )
             );
         }
@@ -552,11 +534,6 @@ class Transaction extends Base
     public static function cloneTransaction($transactionId, $attribs)
     {
         return Configuration::gateway()->transaction()->cloneTransaction($transactionId, $attribs);
-    }
-
-    public static function createFromTransparentRedirect($queryString)
-    {
-        return Configuration::gateway()->transaction()->createFromTransparentRedirect($queryString);
     }
 
     public static function createTransactionUrl()

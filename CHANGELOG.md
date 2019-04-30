@@ -1,3 +1,18 @@
+## 4.0.0
+* Add support for PHP 7 (Thanks to @briandotdev)
+* Remove support for HHVM and PHP 5
+* Update to PHPUnit 7
+* Remove deprecated `GRANTED_PAYMENT_INSTRUMENT_UPDATE`
+* Remove deprecated Coinbase payment method
+* Remove deprecated iDEAL payment method
+* Remove deprecated `MerchantAccountGateway` creation with `applicantDetails`. Please use `individual`, `business`, and `funding`.
+* When a `Customer` is created, the `customFields` property is always an array rather than potentially `null`.
+* Remove Transparent Redirect
+* Remove `riskData`, `applePay`, `applePayCard`, `threeDSecure`, and `venmo.profileId` snakecase attributes
+* HTTPS requests throw an `SSLCertificate` exception when related to SSL, otherwise a `Connection` exception is thrown.
+* Rename `DownForMaintence` Exception to `ServiceUnavailable`. Throw `Timeout` exception for transaction search errors instead of `DownForMaintenance`.
+* Add `RequestTimeout` and `GatewayTimeout` exceptions.
+
 ## 3.40.0
 * Deprecate `GRANTED_PAYMENT_INSTRUMENT_UPDATE` and add `GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD` and `RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD`
 * Add `accountType` field to `TransactionGateway`, `CreditCardGateway`, `PaymentMethodGateway`, and `CreditCardVerification`.

@@ -239,7 +239,7 @@ class UsBankAccountTransactionTest extends Setup
         ]);
 
         $this->assertTrue($sale->success);
-        $this->assertEquals($sale->transaction->amount, '100');
+        $this->assertEquals($sale->transaction->amount, '100.00');
         $this->assertEquals($sale->transaction->usBankAccount->token, $usBankAccount->token);
     }
 
@@ -263,6 +263,6 @@ class UsBankAccountTransactionTest extends Setup
         ]);
 
         $this->assertTrue($sale->success);
-        $this->assertEquals($sale->transaction->amount, '100');
+        $this->assertEquals($sale->transaction->amount, '100.00');
     }
 }

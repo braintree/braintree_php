@@ -13,7 +13,7 @@ class DocumentUploadTest extends Setup
      */
     public function testCreateThrowsExceptionWithBadKeys()
     {
-        $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad_key');
+        $this->expectException('InvalidArgumentException', 'invalid keys: bad_key');
 
         Braintree\DocumentUpload::create(["bad_key" => "value"]);
     }

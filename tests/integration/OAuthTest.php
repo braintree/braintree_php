@@ -32,15 +32,13 @@ class OAuthTest extends Setup
         $this->assertNotNull($credentials->expiresAt);
     }
 
-    /**
-    * @expectedException Braintree\Exception\Configuration
-    * @expectedExceptionMessage clientSecret needs to be passed to Braintree\Gateway.
-    */
     public function testAssertsHasCredentials()
     {
         $gateway = new Braintree\Gateway([
             'clientId' => 'client_id$development$integration_client_id'
         ]);
+
+        $this->expectException('Braintree\Exception\Configuration', 'clientSecret needs to be passed to Braintree\Gateway');
         $gateway->oauth()->createTokenFromCode([
             'code' => 'integration_oauth_auth_code_' . rand(0,299)
         ]);
@@ -113,7 +111,7 @@ class OAuthTest extends Setup
         $this->assertTrue($revokeAccessTokenResult->result->success);
 
         $gateway = new Braintree\Gateway(['accessToken' => $result->accessToken]);
-        $this->setExpectedException('Braintree\Exception\Authentication');
+        $this->expectException('Braintree\Exception\Authentication');
         $gateway->customer()->create();
     }
 
@@ -306,18 +304,5 @@ class OAuthTest extends Setup
         parse_str($queryString, $query);
 
         $this->assertEquals(['credit_card', 'paypal'], $query['payment_methods']);
-    }
-
-    public function testComputeSignature()
-    {
-        $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret'
-        ]);
-        $urlToSign = 'http://localhost:3000/oauth/connect?business%5Bname%5D=We+Like+Spaces&client_id=client_id%24development%24integration_client_id';
-
-        $signature = $gateway->oauth()->computeSignature($urlToSign);
-
-        $this->assertEquals("a36bcf10dd982e2e47e0d6a2cb930aea47ade73f954b7d59c58dae6167894d41", $signature);
     }
 }

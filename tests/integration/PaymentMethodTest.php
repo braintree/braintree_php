@@ -1103,7 +1103,7 @@ class PaymentMethodTest extends Setup
 
     public function testFind_throwsIfCannotBeFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PaymentMethod::find('NON_EXISTENT_TOKEN');
     }
 
@@ -1445,7 +1445,7 @@ class PaymentMethodTest extends Setup
         $updatedPaypalAccount = Braintree\PaymentMethod::find($updatedToken);
         $this->assertEquals($originalPaypalAccount->email, $updatedPaypalAccount->email);
 
-        $this->setExpectedException('Braintree\Exception\NotFound', 'payment method with token ' . $originalToken . ' not found');
+        $this->expectException('Braintree\Exception\NotFound', 'payment method with token ' . $originalToken . ' not found');
         Braintree\PaymentMethod::find($originalToken);
     }
 
@@ -1546,7 +1546,7 @@ class PaymentMethodTest extends Setup
 
         Braintree\PaymentMethod::delete($paymentMethodToken);
 
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PaymentMethod::find($paymentMethodToken);
         self::integrationMerchantConfig();
     }
@@ -1571,7 +1571,7 @@ class PaymentMethodTest extends Setup
 
         Braintree\PaymentMethod::delete($paymentMethodToken, ['revokeAllGrants' => false]);
 
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PaymentMethod::find($paymentMethodToken);
     }
 
@@ -1802,7 +1802,7 @@ class PaymentMethodTest extends Setup
             'accessToken' => $credentials->accessToken
         ]);
 
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         $grantResult = $grantingGateway->paymentMethod()->grant("not_a_real_token", false);
     }
 
@@ -1875,7 +1875,7 @@ class PaymentMethodTest extends Setup
             'accessToken' => $credentials->accessToken
         ]);
 
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         $grantResult = $grantingGateway->paymentMethod()->revoke("not_a_real_token");
     }
 }

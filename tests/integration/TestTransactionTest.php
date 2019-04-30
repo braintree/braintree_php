@@ -12,6 +12,8 @@ class TestTransactionTest extends Setup
 {
     public function setUp()
     {
+        parent::setUp();
+
         Braintree\Configuration::environment('development');
     }
 
@@ -24,13 +26,13 @@ class TestTransactionTest extends Setup
     }
 
     /**
-     * @expectedException Exception\TestOperationPerformedInProduction
+     * @expectException Exception\TestOperationPerformedInProduction
      */
     public function testThrowingExceptionWhenProduction()
     {
         Braintree\Configuration::environment('production');
 
-        $this->setExpectedException('Braintree\Exception\TestOperationPerformedInProduction');
+        $this->expectException('Braintree\Exception\TestOperationPerformedInProduction');
 
         $transaction = Braintree\Test\Transaction::settle('foo');
     }

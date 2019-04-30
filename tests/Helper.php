@@ -79,37 +79,6 @@ class Helper
         return 'another_us_bank_merchant_account';
     }
 
-    public static function createViaTr($regularParams, $trParams)
-    {
-        $trData = Braintree\TransparentRedirect::transactionData(
-            array_merge($trParams, ["redirectUrl" => "http://www.example.com"])
-        );
-        return self::submitTrRequest(
-            Braintree\TransparentRedirect::url(),
-            $regularParams,
-            $trData
-        );
-    }
-
-    public static function submitTrRequest($url, $regularParams, $trData)
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, false);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($curl, CURLOPT_HEADER, true);
-        // curl_setopt($curl, CURLOPT_VERBOSE, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array_merge($regularParams, ['tr_data' => $trData])));
-        curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/x-www-form-urlencoded'
-        ]);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($curl);
-        curl_close($curl);
-        preg_match('/Location: .*\?(.*)/i', $response, $match);
-        return trim($match[1]);
-    }
-
     public static function suppressDeprecationWarnings()
     {
         set_error_handler("Test\Helper::_errorHandler", E_USER_NOTICE);

@@ -28,13 +28,6 @@ class WebhookNotification extends Base
     const ACCOUNT_UPDATER_DAILY_REPORT = 'account_updater_daily_report';
     const CONNECTED_MERCHANT_STATUS_TRANSITIONED = 'connected_merchant_status_transitioned';
     const CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED = 'connected_merchant_paypal_status_changed';
-    // NEXT_MAJOR_VERSION Remove this class as legacy Ideal has been removed/disabled in the Braintree Gateway
-    // DEPRECATED If you're looking to accept iDEAL as a payment method contact accounts@braintreepayments.com for a solution.
-    const IDEAL_PAYMENT_COMPLETE = 'ideal_payment_complete';
-    const IDEAL_PAYMENT_FAILED = 'ideal_payment_failed';
-    // NEXT_MAJOR_VERSION remove GRANTED_PAYMENT_INSTRUMENT_UPDATE. Kind is not sent by Braintree Gateway.
-    // Kind will either be GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD or RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD.
-    const GRANTED_PAYMENT_INSTRUMENT_UPDATE = 'granted_payment_instrument_update';
     const GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD = 'grantor_updated_granted_payment_method';
     const RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD = 'recipient_updated_granted_payment_method';
     const GRANTED_PAYMENT_METHOD_REVOKED = 'granted_payment_method_revoked';
@@ -107,12 +100,6 @@ class WebhookNotification extends Base
 
         if (isset($wrapperNode['accountUpdaterDailyReport'])) {
             $this->_set('accountUpdaterDailyReport', AccountUpdaterDailyReport::factory($wrapperNode['accountUpdaterDailyReport']));
-        }
-
-        // NEXT_MAJOR_VERSION Remove this class as legacy Ideal has been removed/disabled in the Braintree Gateway
-        // DEPRECATED If you're looking to accept iDEAL as a payment method contact accounts@braintreepayments.com for a solution.
-        if (isset($wrapperNode['idealPayment'])) {
-            $this->_set('idealPayment', IdealPayment::factory($wrapperNode['idealPayment']));
         }
 
         if (isset($wrapperNode['grantedPaymentInstrumentUpdate'])) {

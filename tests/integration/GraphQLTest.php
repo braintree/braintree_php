@@ -24,7 +24,7 @@ class GraphQLTest extends Setup
         $graphQL = new Braintree\GraphQL(Braintree\Configuration::$global);
         $definition = "query { ping }";
 
-        $this->setExpectedException('Braintree\Exception\Authentication');
+        $this->expectException('Braintree\Exception\Authentication');
         $response = $graphQL->request($definition, NULL);
     }
 
@@ -34,7 +34,7 @@ class GraphQLTest extends Setup
         $graphQL = new Braintree\GraphQL(Braintree\Configuration::$global);
         $definition = "query { ping }";
 
-        $this->setExpectedException('Braintree\Exception\Authentication');
+        $this->expectException('Braintree\Exception\Authentication');
         $response = $graphQL->request($definition, NULL);
     }
 

@@ -180,7 +180,7 @@ class ClientTokenTest extends Setup
 
     public function test_GenerateRaisesExceptionOnGateway422()
     {
-        $this->setExpectedException('InvalidArgumentException', 'customer_id');
+        $this->expectException('InvalidArgumentException', 'customer_id');
 
         Braintree\ClientToken::generate([
             "customerId" => "not_a_customer"

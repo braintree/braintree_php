@@ -38,16 +38,14 @@ class ConfigurationTest extends Setup
         $this->assertTrue(TRUE);
     }
 
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage Configuration::publicKey needs to be set
-     */
     public function testAssertGlobalHasAccessTokenOrKeysWithoutPublicKey()
     {
         Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
         Braintree\Configuration::publicKey('');
         Braintree\Configuration::privateKey('integration_private_key');
+
+        $this->expectException('Braintree\Exception\Configuration', 'Configuration::publicKey needs to be set');
 
         Braintree\Configuration::assertGlobalHasAccessTokenOrKeys();
     }
@@ -76,13 +74,12 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::reset();
     }
 
-    /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage "invalid" is not a valid environment.
-     */
     public function testSetInvalidEnvironment()
     {
+        $this->expectException('Braintree\Exception\Configuration', '"invalid" is not a valid environment.');
+
         Braintree\Configuration::environment('invalid');
+
         Braintree\Configuration::reset();
     }
 
@@ -96,7 +93,7 @@ class ConfigurationTest extends Setup
     public function testCaFile()
     {
         $this->config->setEnvironment('development');
-        $this->setExpectedException('Braintree\Exception\SSLCaFileNotFound');
+        $this->expectException('Braintree\Exception\SSLCaFileNotFound');
         $this->config->caFile('/does/not/exist/');
     }
 
@@ -159,25 +156,6 @@ class ConfigurationTest extends Setup
         $this->config->setEnvironment('production');
         $sn = $this->config->serverName();
         $this->assertEquals('api.braintreegateway.com', $sn);
-    }
-
-    public function testAuthUrl()
-    {
-        $this->config->setEnvironment('development');
-        $authUrl = $this->config->authUrl();
-        $this->assertEquals('http://auth.venmo.dev:9292', $authUrl);
-
-        $this->config->setEnvironment('qa');
-        $authUrl = $this->config->authUrl();
-        $this->assertEquals('https://auth.qa.venmo.com', $authUrl);
-
-        $this->config->setEnvironment('sandbox');
-        $authUrl = $this->config->authUrl();
-        $this->assertEquals('https://auth.sandbox.venmo.com', $authUrl);
-
-        $this->config->setEnvironment('production');
-        $authUrl = $this->config->authUrl();
-        $this->assertEquals('https://auth.venmo.com', $authUrl);
     }
 
     public function testBaseUrl()
@@ -281,10 +259,6 @@ class ConfigurationTest extends Setup
         $this->assertFalse($this->config->acceptGzipEncoding());
     }
 
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage environment needs to be set
-     */
     public function testValidateAbsentEnvironment()
     {
         //Braintree\Configuration::environment('development');
@@ -292,12 +266,11 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::publicKey('integration_public_key');
         Braintree\Configuration::privateKey('integration_private_key');
 
+        $this->expectException('Braintree\Exception\Configuration', 'environment needs to be set');
+
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage environment needs to be set
-     */
+
     public function testValidateEmptyStringEnvironment()
     {
         Braintree\Configuration::environment('');
@@ -305,12 +278,11 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::publicKey('integration_public_key');
         Braintree\Configuration::privateKey('integration_private_key');
 
+        $this->expectException('Braintree\Exception\Configuration', 'environment needs to be set');
+
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage merchantId needs to be set
-     */
+
     public function testAbsentMerchantId()
     {
         Braintree\Configuration::environment('development');
@@ -318,12 +290,11 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::publicKey('integration_public_key');
         Braintree\Configuration::privateKey('integration_private_key');
 
+        $this->expectException('Braintree\Exception\Configuration', 'merchantId needs to be set');
+
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage merchantId needs to be set
-     */
+
     public function testEmptyStringMerchantId()
     {
         Braintree\Configuration::environment('development');
@@ -331,12 +302,11 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::publicKey('integration_public_key');
         Braintree\Configuration::privateKey('integration_private_key');
 
+        $this->expectException('Braintree\Exception\Configuration', 'merchantId needs to be set');
+
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage publicKey needs to be set
-     */
+
     public function testAbsentPublicKey()
     {
         Braintree\Configuration::environment('development');
@@ -344,12 +314,11 @@ class ConfigurationTest extends Setup
         //Braintree\Configuration::publicKey('integration_public_key');
         Braintree\Configuration::privateKey('integration_private_key');
 
+        $this->expectException('Braintree\Exception\Configuration', 'publicKey needs to be set');
+
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage publicKey needs to be set
-     */
+
     public function testEmptyStringPublicKey()
     {
         Braintree\Configuration::environment('development');
@@ -357,12 +326,11 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::publicKey('');
         Braintree\Configuration::privateKey('integration_private_key');
 
+        $this->expectException('Braintree\Exception\Configuration', 'publicKey needs to be set');
+
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage privateKey needs to be set
-     */
+
     public function testAbsentPrivateKey()
     {
         Braintree\Configuration::environment('development');
@@ -370,18 +338,19 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::publicKey('integration_public_key');
         //Braintree\Configuration::privateKey('integration_private_key');
 
+        $this->expectException('Braintree\Exception\Configuration', 'privateKey needs to be set');
+
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage privateKey needs to be set
-     */
+
     public function testEmptyStringPrivateKey()
     {
         Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
         Braintree\Configuration::publicKey('integration_public_key');
         Braintree\Configuration::privateKey('');
+
+        $this->expectException('Braintree\Exception\Configuration', 'privateKey needs to be set');
 
         Braintree\Configuration::$global->assertHasAccessTokenOrKeys();
     }
@@ -393,18 +362,16 @@ class ConfigurationTest extends Setup
             'clientSecret' => 'client_secret$development$integration_client_secret'
         ]);
 
-        $config->assertHasClientCredentials();
+        $this->assertNull($config->assertHasClientCredentials());
     }
 
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage clientSecret needs to be passed
-     */
     public function testInvalidWithOAuthClientCredentials()
     {
         $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id'
         ]);
+
+        $this->expectException('Braintree\Exception\Configuration', 'clientSecret needs to be passed');
 
         $config->assertHasClientCredentials();
     }
@@ -419,24 +386,20 @@ class ConfigurationTest extends Setup
         $this->assertEquals('development', $config->getEnvironment());
     }
 
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage Mismatched credential environments: clientId environment is sandbox and clientSecret environment is development
-     */
     public function testDetectEnvironmentFromClientIdFail()
     {
+        $this->expectException('Braintree\Exception\Configuration', 'Mismatched credential environments: clientId environment is sandbox and clientSecret environment is development');
+
         $config = new Braintree\Configuration([
             'clientId' => 'client_id$sandbox$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
         ]);
     }
 
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage Value passed for clientId is not a clientId
-     */
     public function testClientIdTypeFail()
     {
+        $this->expectException('Braintree\Exception\Configuration', 'Value passed for clientId is not a clientId');
+        
         $config = new Braintree\Configuration([
             'clientId' => 'client_secret$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
@@ -449,37 +412,31 @@ class ConfigurationTest extends Setup
             'accessToken' => 'access_token$development$integration_merchant_id$integration_access_token',
         ]);
 
-        $config->assertHasAccessTokenOrKeys();
+        $this->assertNull($config->assertHasAccessTokenOrKeys());
     }
 
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage Value passed for accessToken is not an accessToken
-     */
     public function testInvalidAccessTokenType()
     {
+        $this->expectException('Braintree\Exception\Configuration', 'Value passed for accessToken is not an accessToken');
+        
         $config = new Braintree\Configuration([
             'accessToken' => 'client_id$development$integration_merchant_id$integration_access_token',
         ]);
     }
 
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage Incorrect accessToken syntax. Expected: type$environment$merchant_id$token
-     */
     public function testInvalidAccessTokenSyntax()
     {
+        $this->expectException('Braintree\Exception\Configuration', 'Incorrect accessToken syntax. Expected: type$environment$merchant_id$token');
+        
         $config = new Braintree\Configuration([
             'accessToken' => 'client_id$development$integration_client_id',
         ]);
     }
 
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage "invalid" is not a valid environment.
-     */
     public function testInvalidAccessTokenEnvironment()
     {
+        $this->expectException('Braintree\Exception\Configuration', '"invalid" is not a valid environment.');
+        
         $config = new Braintree\Configuration([
             'accessToken' => 'access_token$invalid$integration_merchant_id$integration_access_token',
         ]);
@@ -494,16 +451,14 @@ class ConfigurationTest extends Setup
             'accessToken' => 'access_token$development$integration_merchant_id$integration_access_token',
         ]);
 
-        $config->assertHasClientCredentials();
-        $config->assertHasAccessTokenOrKeys();
+        $this->assertNull($config->assertHasClientCredentials());
+        $this->assertNull($config->assertHasAccessTokenOrKeys());
     }
 
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage Mismatched credential environments: clientId environment is development and accessToken environment is sandbox
-     */
     public function testInvalidEnvironmentWithOAuthClientCredentialsAndAccessToken()
     {
+        $this->expectException('Braintree\Exception\Configuration', 'Mismatched credential environments: clientId environment is development and accessToken environment is sandbox');
+        
         $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',
@@ -511,12 +466,10 @@ class ConfigurationTest extends Setup
         ]);
     }
 
-     /**
-     * @expectedException Braintree\Exception\Configuration
-     * @expectedExceptionMessage Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId)
-     */
     public function testCannotMixKeysWithOAuthCredentials()
     {
+        $this->expectException('Braintree\Exception\Configuration', 'Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId)');
+        
         $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',

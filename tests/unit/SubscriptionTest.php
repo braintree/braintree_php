@@ -10,13 +10,13 @@ class SubscriptionTest extends Setup
 {
     public function testErrorsOnFindWithBlankArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Subscription::find('');
     }
 
     public function testErrorsOnFindWithWhitespaceArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Subscription::find('\t');
     }
 }

@@ -11,7 +11,9 @@ class DocumentUploadTest extends Setup
     private $gateway;
     private $pngFile;
 
-    public function __construct() {
+    public function setUp() {
+        parent::setUp();
+
         $this->gateway = new Braintree\Gateway([
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
@@ -102,7 +104,7 @@ class DocumentUploadTest extends Setup
 
     public function testCreate_whenInvalidSignature_throwsInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad_key');
+        $this->expectException('InvalidArgumentException', 'invalid keys: bad_key');
 
         Braintree\DocumentUpload::create([
             "kind" => Braintree\DocumentUpload::EVIDENCE_DOCUMENT,
@@ -112,7 +114,7 @@ class DocumentUploadTest extends Setup
 
     public function test_create_whenFileIsInvalid_throwsError()
     {
-        $this->setExpectedException('InvalidArgumentException', 'file must be a stream resource');
+        $this->expectException('InvalidArgumentException', 'file must be a stream resource');
 
         $result = Braintree\DocumentUpload::create([
             "kind" => Braintree\DocumentUpload::EVIDENCE_DOCUMENT,

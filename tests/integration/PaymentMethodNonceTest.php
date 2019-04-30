@@ -28,7 +28,7 @@ class PaymentMethodNonceTest extends Setup
 
     public function testCreate_fromNonExistentPaymentMethodToken()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PaymentMethodNonce::create('not_a_token');
     }
 
@@ -178,7 +178,7 @@ class PaymentMethodNonceTest extends Setup
 
     public function testFind_nonExistantNonce()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PaymentMethodNonce::find('not_a_nonce');
     }
 }
