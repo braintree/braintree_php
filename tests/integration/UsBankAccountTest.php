@@ -65,7 +65,7 @@ class UsBankAccountAccountTest extends Setup
 
     public function testFind_throwsIfCannotBeFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\UsBankAccount::find(Test\Helper::generateInvalidUsBankAccountNonce());
     }
 

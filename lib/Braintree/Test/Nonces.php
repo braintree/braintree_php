@@ -35,7 +35,6 @@ class Nonces
    public static $amexExpressCheckout = "fake-amex-express-checkout-nonce";
    public static $abstractTransactable = "fake-abstract-transactable-nonce";
    public static $europe = "fake-europe-bank-account-nonce";
-   public static $coinbase = "fake-coinbase-nonce";
    public static $transactableVisa = "fake-valid-visa-nonce";
    public static $transactableAmEx = "fake-valid-amex-nonce";
    public static $transactableMasterCard = "fake-valid-mastercard-nonce";

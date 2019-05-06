@@ -223,15 +223,6 @@ class Gateway
 
     /**
      *
-     * @return TransparentRedirectGateway
-     */
-    public function transparentRedirect()
-    {
-        return new TransparentRedirectGateway($this);
-    }
-
-    /**
-     *
      * @return UsBankAccountGateway
      */
     public function usBankAccount()
@@ -246,15 +237,6 @@ class Gateway
     public function usBankAccountVerification()
     {
         return new UsBankAccountVerificationGateway($this);
-    }
-
-    /**
-     *
-     * @return IdealPaymentGateway
-     */
-    public function idealPayment()
-    {
-        return new IdealPaymentGateway($this);
     }
 
     /**

@@ -10,7 +10,7 @@ class PayPalAccountTest extends Setup
 {
     public function testGet_givesErrorIfInvalidProperty()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\PayPalAccount: foo');
+        $this->expectException('PHPUnit\Framework\Error\Error', 'Undefined property on Braintree\PayPalAccount: foo');
         $paypalAccount = Braintree\PayPalAccount::factory([]);
         $paypalAccount->foo;
     }
@@ -26,19 +26,19 @@ class PayPalAccountTest extends Setup
 
     public function testErrorsOnFindWithBlankArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\PayPalAccount::find('');
     }
 
     public function testErrorsOnFindWithWhitespaceArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\PayPalAccount::find('  ');
     }
 
     public function testErrorsOnFindWithWhitespaceCharacterArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\PayPalAccount::find('\t');
     }
 }

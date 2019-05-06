@@ -1,14 +1,15 @@
-FROM debian:jessie
+FROM debian:stretch
 
 RUN apt-get update
-RUN apt-get -y install gnupg curl
+RUN apt-get -y install gnupg curl wget
 
-# For installing hhvm
-RUN apt-get install -y apt-transport-https software-properties-common
-RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
-RUN echo deb https://dl.hhvm.com/debian jessie main > /etc/apt/sources.list.d/hhvm.list
+# For installing php7
+RUN apt -y install lsb-release apt-transport-https ca-certificates
+RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php7.2.list
+
 RUN apt-get update
 
-RUN apt-get -y install rake php5 php5-cli php5-curl php-pear hhvm phpunit
+RUN apt-get -y install rake php7.2 php7.2-cli php7.2-curl php-pear phpunit php7.2-xml php7.2-mbstring
 
 WORKDIR /braintree-php

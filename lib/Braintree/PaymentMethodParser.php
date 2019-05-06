@@ -26,8 +26,6 @@ class PaymentMethodParser
             return CreditCard::factory($response['creditCard']);
         } else if (isset($response['paypalAccount'])) {
             return PayPalAccount::factory($response['paypalAccount']);
-        } else if (isset($response['coinbaseAccount'])) {
-            return CoinbaseAccount::factory($response['coinbaseAccount']);
         } else if (isset($response['applePayCard'])) {
             return ApplePayCard::factory($response['applePayCard']);
         } else if (isset($response['androidPayCard'])) {

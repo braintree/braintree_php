@@ -85,21 +85,14 @@ class WebhookTestingGateway
             case WebhookNotification::ACCOUNT_UPDATER_DAILY_REPORT:
                 $subjectXml = self::_accountUpdaterDailyReportSampleXml($id);
                 break;
-            case WebhookNotification::IDEAL_PAYMENT_COMPLETE:
-                $subjectXml = self::_idealPaymentCompleteSampleXml($id);
-                break;
-            case WebhookNotification::IDEAL_PAYMENT_FAILED:
-                $subjectXml = self::_idealPaymentFailedSampleXml($id);
-                break;
-            // NEXT_MAJOR_VERSION remove GRANTED_PAYMENT_INSTRUMENT_UPDATE
-            case WebhookNotification::GRANTED_PAYMENT_INSTRUMENT_UPDATE:
-                $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
-                break;
             case WebhookNotification::GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD:
                 $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
                 break;
             case WebhookNotification::RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD:
                 $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
+                break;
+            case WebhookNotification::PAYMENT_METHOD_REVOKED_BY_CUSTOMER:
+                $subjectXml = self::_paymentMethodRevokedByCustomerSampleXml($id);
                 break;
             case WebhookNotification::LOCAL_PAYMENT_COMPLETED:
                 $subjectXml = self::_localPaymentCompletedSampleXml();
@@ -483,40 +476,6 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _idealPaymentCompleteSampleXml($id)
-    {
-        return "
-        <ideal-payment>
-          <id>{$id}</id>
-          <status>COMPLETE</status>
-          <issuer>ABCISSUER</issuer>
-          <order-id>ORDERABC</order-id>
-          <currency>EUR</currency>
-          <amount>10.00</amount>
-          <created-at>2016-11-29T23:27:34.547Z</created-at>
-          <approval-url>https://example.com</approval-url>
-          <ideal-transaction-id>1234567890</ideal-transaction-id>
-        </ideal-payment>
-        ";
-    }
-
-    private static function _idealPaymentFailedSampleXml($id)
-    {
-        return "
-        <ideal-payment>
-          <id>{$id}</id>
-          <status>FAILED</status>
-          <issuer>ABCISSUER</issuer>
-          <order-id>ORDERABC</order-id>
-          <currency>EUR</currency>
-          <amount>10.00</amount>
-          <created-at>2016-11-29T23:27:34.547Z</created-at>
-          <approval-url>https://example.com</approval-url>
-          <ideal-transaction-id>1234567890</ideal-transaction-id>
-        </ideal-payment>
-        ";
-    }
-
     private static function _grantedPaymentInstrumentUpdateSampleXml()
 	{
         return "
@@ -534,6 +493,29 @@ class WebhookTestingGateway
 			<item>expiration-year</item>
 		  </updated-fields>
 		</granted-payment-instrument-update>
+        ";
+    }
+
+    private static function _paymentMethodRevokedByCustomerSampleXml($id)
+    {
+        return "
+        <paypal-account>
+            <billing-agreement-id>a-billing-agreement-id</billing-agreement-id>
+            <created-at type='datetime'>2019-01-01T12:00:00Z</created-at>
+            <customer-id>a-customer-id</customer-id>
+            <default type='boolean'>true</default>
+            <email>name@email.com</email>
+            <global-id>cGF5bWVudG1ldGhvZF9jaDZieXNz</global-id>
+            <image-url>https://assets.braintreegateway.com/payment_method_logo/paypal.png?environment=test</image-url>
+            <subscriptions type='array'/>
+            <token>{$id}</token>
+            <updated-at type='datetime'>2019-01-02T12:00:00Z</updated-at>
+            <is-channel-initiated nil='true'/>
+            <payer-id>a-payer-id</payer-id>
+            <payer-info nil='true'/>
+            <limited-use-order-id nil='true'/>
+            <revoked-at type='datetime'>2019-01-02T12:00:00Z</revoked-at>
+        </paypal-account>
         ";
     }
 

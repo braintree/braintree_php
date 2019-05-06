@@ -302,16 +302,6 @@ class CustomerTest extends Setup
         $this->assertNotNull($venmoAccount->venmoUserId);
     }
 
-    public function testCannotCreateCustomerWithCoinbase()
-    {
-        $nonce = Braintree\Test\Nonces::$coinbase;
-        $result = Braintree\Customer::create([
-            'paymentMethodNonce' => $nonce
-        ]);
-        $this->assertFalse($result->success);
-        $this->assertEquals(Braintree\Error\Codes::PAYMENT_METHOD_NO_LONGER_SUPPORTED, $result->errors->forKey('coinbaseAccount')->onAttribute('base')[0]->code);
-    }
-
     public function testCreateCustomerWithUsBankAccount()
     {
         $nonce = Test\Helper::generateValidUsBankAccountNonce();
@@ -711,7 +701,7 @@ class CustomerTest extends Setup
 
     public function testCreateNoValidate_throwsIfInvalid()
     {
-        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
+        $this->expectException('Braintree\Exception\ValidationsFailed');
         $customer = Braintree\Customer::createNoValidate(['email' => 'invalid']);
     }
 
@@ -831,7 +821,7 @@ class CustomerTest extends Setup
         $this->assertEquals(true, $result->success);
         Braintree\Customer::find($result->customer->id);
         Braintree\Customer::delete($result->customer->id);
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\Customer::find($result->customer->id);
     }
 
@@ -976,7 +966,7 @@ class CustomerTest extends Setup
 
     public function testFind_throwsExceptionIfNotFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\Customer::find("does-not-exist");
     }
 
@@ -1526,86 +1516,6 @@ class CustomerTest extends Setup
         $this->assertEquals('http://new.example.com', $updated->website);
     }
 
-    public function testCreateFromTransparentRedirect()
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $queryString = $this->createCustomerViaTr(
-            [
-                'customer' => [
-                    'first_name' => 'Joe',
-                    'last_name' => 'Martin',
-                    'credit_card' => [
-                        'number' => '5105105105105100',
-                        'expiration_date' => '05/12'
-                    ]
-                ]
-            ],
-            [
-            ]
-        );
-        $result = Braintree\Customer::createFromTransparentRedirect($queryString);
-        $this->assertTrue($result->success);
-        $this->assertEquals('Joe', $result->customer->firstName);
-        $this->assertEquals('Martin', $result->customer->lastName);
-        $creditCard = $result->customer->creditCards[0];
-        $this->assertEquals('510510', $creditCard->bin);
-        $this->assertEquals('5100', $creditCard->last4);
-        $this->assertEquals('05/2012', $creditCard->expirationDate);
-    }
-
-    public function testCreateFromTransparentRedirect_withParamsInTrData()
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $queryString = $this->createCustomerViaTr(
-            [
-            ],
-            [
-                'customer' => [
-                    'firstName' => 'Joe',
-                    'lastName' => 'Martin',
-                    'creditCard' => [
-                        'number' => '5105105105105100',
-                        'expirationDate' => '05/12'
-                    ]
-                ]
-            ]
-        );
-        $result = Braintree\Customer::createFromTransparentRedirect($queryString);
-        $this->assertTrue($result->success);
-        $this->assertEquals('Joe', $result->customer->firstName);
-        $this->assertEquals('Martin', $result->customer->lastName);
-        $creditCard = $result->customer->creditCards[0];
-        $this->assertEquals('510510', $creditCard->bin);
-        $this->assertEquals('5100', $creditCard->last4);
-        $this->assertEquals('05/2012', $creditCard->expirationDate);
-    }
-
-    public function testCreateFromTransparentRedirect_withValidationErrors()
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $queryString = $this->createCustomerViaTr(
-            [
-                'customer' => [
-                    'first_name' => str_repeat('x', 256),
-                    'credit_card' => [
-                        'number' => 'invalid',
-                        'expiration_date' => ''
-                    ]
-                ]
-            ],
-            [
-            ]
-        );
-        $result = Braintree\Customer::createFromTransparentRedirect($queryString);
-        $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('customer')->onAttribute('firstName');
-        $this->assertEquals(Braintree\Error\Codes::CUSTOMER_FIRST_NAME_IS_TOO_LONG, $errors[0]->code);
-        $errors = $result->errors->forKey('customer')->forKey('creditCard')->onAttribute('number');
-        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_NUMBER_INVALID_LENGTH, $errors[0]->code);
-        $errors = $result->errors->forKey('customer')->forKey('creditCard')->onAttribute('expirationDate');
-        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_EXPIRATION_DATE_IS_REQUIRED, $errors[0]->code);
-    }
-
     public function testCreateWithInvalidUTF8Bytes()
     {
         $result = Braintree\Customer::create([
@@ -1624,136 +1534,6 @@ class CustomerTest extends Setup
         $this->assertEquals(true, $result->success);
         $customer = $result->customer;
         $this->assertEquals("Jos\303\251", $customer->firstName);
-    }
-
-    public function testUpdateFromTransparentRedirect()
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $customer = Braintree\Customer::createNoValidate();
-        $queryString = $this->updateCustomerViaTr(
-            [
-                'customer' => [
-                    'first_name' => 'Joe',
-                    'last_name' => 'Martin',
-                    'email' => 'joe.martin@example.com'
-                ]
-            ],
-            [
-                'customerId' => $customer->id
-            ]
-        );
-        $result = Braintree\Customer::updateFromTransparentRedirect($queryString);
-        $this->assertTrue($result->success);
-        $this->assertEquals('Joe', $result->customer->firstName);
-        $this->assertEquals('Martin', $result->customer->lastName);
-        $this->assertEquals('joe.martin@example.com', $result->customer->email);
-    }
-
-    public function testUpdateFromTransparentRedirect_withParamsInTrData()
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $customer = Braintree\Customer::createNoValidate();
-        $queryString = $this->updateCustomerViaTr(
-            [
-            ],
-            [
-                'customerId' => $customer->id,
-                'customer' => [
-                    'firstName' => 'Joe',
-                    'lastName' => 'Martin',
-                    'email' => 'joe.martin@example.com'
-                ]
-            ]
-        );
-        $result = Braintree\Customer::updateFromTransparentRedirect($queryString);
-        $this->assertTrue($result->success);
-        $this->assertEquals('Joe', $result->customer->firstName);
-        $this->assertEquals('Martin', $result->customer->lastName);
-        $this->assertEquals('joe.martin@example.com', $result->customer->email);
-    }
-
-    public function testUpdateFromTransparentRedirect_withValidationErrors()
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $customer = Braintree\Customer::createNoValidate();
-        $queryString = $this->updateCustomerViaTr(
-            [
-                'customer' => [
-                    'first_name' => str_repeat('x', 256),
-                ]
-            ],
-            [
-                'customerId' => $customer->id
-            ]
-        );
-        $result = Braintree\Customer::updateFromTransparentRedirect($queryString);
-        $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('customer')->onAttribute('firstName');
-        $this->assertEquals(Braintree\Error\Codes::CUSTOMER_FIRST_NAME_IS_TOO_LONG, $errors[0]->code);
-    }
-
-    public function testUpdateFromTransparentRedirect_withUpdateExisting()
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $customer = Braintree\Customer::create([
-            'firstName' => 'Mike',
-            'lastName' => 'Jones',
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12',
-                'cardholderName' => 'Mike Jones',
-                'billingAddress' => [
-                    'firstName' => 'Drew',
-                    'lastName' => 'Smith'
-                ]
-            ]
-        ])->customer;
-
-        $queryString = $this->updateCustomerViaTr(
-            [],
-            [
-                'customerId' => $customer->id,
-                'customer' => [
-                    'firstName' => 'New First',
-                    'lastName' => 'New Last',
-                    'creditCard' => [
-                        'number' => '4111111111111111',
-                        'expirationDate' => '05/13',
-                        'cardholderName' => 'New Cardholder',
-                        'options' => [
-                            'updateExistingToken' => $customer->creditCards[0]->token
-                        ],
-                        'billingAddress' => [
-                            'firstName' => 'New First Billing',
-                            'lastName' => 'New Last Billing',
-                            'options' => [
-                                'updateExisting' => true
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        );
-        $result = Braintree\Customer::updateFromTransparentRedirect($queryString);
-        $this->assertTrue($result->success);
-
-        $this->assertEquals(true, $result->success);
-        $customer = $result->customer;
-        $this->assertEquals('New First', $customer->firstName);
-        $this->assertEquals('New Last', $customer->lastName);
-
-        $this->assertEquals(1, sizeof($result->customer->creditCards));
-        $creditCard = $customer->creditCards[0];
-        $this->assertEquals('411111', $creditCard->bin);
-        $this->assertEquals('1111', $creditCard->last4);
-        $this->assertEquals('New Cardholder', $creditCard->cardholderName);
-        $this->assertEquals('05/2013', $creditCard->expirationDate);
-
-        $this->assertEquals(1, sizeof($result->customer->addresses));
-        $address = $customer->addresses[0];
-        $this->assertEquals($address, $creditCard->billingAddress);
-        $this->assertEquals('New First Billing', $address->firstName);
-        $this->assertEquals('New Last Billing', $address->lastName);
     }
 
     public function testSale_createsASaleUsingGivenToken()
@@ -1800,7 +1580,7 @@ class CustomerTest extends Setup
             ]
         ]);
         $creditCard = $customer->creditCards[0];
-        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
+        $this->expectException('Braintree\Exception\ValidationsFailed');
         Braintree\Customer::saleNoValidate($customer->id, [
             'amount' => 'invalid'
         ]);
@@ -1852,35 +1632,9 @@ class CustomerTest extends Setup
             ]
         ]);
         $creditCard = $customer->creditCards[0];
-        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
+        $this->expectException('Braintree\Exception\ValidationsFailed');
         Braintree\Customer::creditNoValidate($customer->id, [
             'amount' => 'invalid'
         ]);
-    }
-
-    public function createCustomerViaTr($regularParams, $trParams)
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $trData = Braintree\TransparentRedirect::createCustomerData(
-            array_merge($trParams, ["redirectUrl" => "http://www.example.com"])
-        );
-        return Test\Helper::submitTrRequest(
-            Braintree\Customer::createCustomerUrl(),
-            $regularParams,
-            $trData
-        );
-    }
-
-    public function updateCustomerViaTr($regularParams, $trParams)
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $trData = Braintree\TransparentRedirect::updateCustomerData(
-            array_merge($trParams, ["redirectUrl" => "http://www.example.com"])
-        );
-        return Test\Helper::submitTrRequest(
-            Braintree\Customer::updateCustomerUrl(),
-            $regularParams,
-            $trData
-        );
     }
 }

@@ -24,6 +24,7 @@ namespace Braintree;
  * @property-read string $email
  * @property-read string $imageUrl
  * @property-read string $payerId
+ * @property-read \DateTime $revokedAt
  * @property-read \Braintree\Subscription[] $subscriptions
  * @property-read string $token
  * @property-read \DateTime $updatedAt

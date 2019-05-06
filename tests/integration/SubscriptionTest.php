@@ -12,7 +12,7 @@ class SubscriptionTest extends Setup
 {
     public function testCreate_doesNotAcceptBadAttributes()
     {
-        $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad');
+        $this->expectException('InvalidArgumentException', 'invalid keys: bad');
         $result = Braintree\Subscription::create([
             'bad' => 'value'
         ]);
@@ -794,7 +794,7 @@ class SubscriptionTest extends Setup
 
     public function testFind_throwsIfNotFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'subscription with id does-not-exist not found');
+        $this->expectException('Braintree\Exception\NotFound', 'subscription with id does-not-exist not found');
         Braintree\Subscription::find('does-not-exist');
 
     }
@@ -817,7 +817,7 @@ class SubscriptionTest extends Setup
 
     public function testUpdate_doesNotAcceptBadAttributes()
     {
-        $this->setExpectedException('InvalidArgumentException', 'invalid keys: bad');
+        $this->expectException('InvalidArgumentException', 'invalid keys: bad');
         $result = Braintree\Subscription::update('id', [
             'bad' => 'value'
         ]);
@@ -909,7 +909,7 @@ class SubscriptionTest extends Setup
 
     public function testUpdate_invalidSubscriptionId()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\Subscription::update('does-not-exist', []);
     }
 
@@ -1224,7 +1224,7 @@ class SubscriptionTest extends Setup
 
     public function testCancel_throwsErrorIfRecordNotFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\Subscription::cancel('non-existing-id');
     }
 

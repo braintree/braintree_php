@@ -41,9 +41,6 @@ class Dispute extends Base
     const WON  = 'won';
     const LOST = 'lost';
 
-    /* deprecated; for backwards compatibilty */
-    const Open  = 'open';
-
     /* Dispute Reason */
     const CANCELLED_RECURRING_TRANSACTION = "cancelled_recurring_transaction";
     const CREDIT_NOT_PROCESSED            = "credit_not_processed";

@@ -10,7 +10,9 @@ class DisputeTest extends Setup
 {
     private $gateway;
 
-    public function __construct() {
+    public function setUp() {
+        parent::setUp();
+
         $this->gateway = new Braintree\Gateway([
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
@@ -71,7 +73,7 @@ class DisputeTest extends Setup
 
     public function testAccept_raisesError_whenDisputeNotFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "invalid-id" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id "invalid-id" not found');
         $this->gateway->dispute()->accept("invalid-id");
     }
 
@@ -107,7 +109,7 @@ class DisputeTest extends Setup
 
     public function testAddFileEvidence_raisesError_whenDisputeNotFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "unknown_dispute_id" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id "unknown_dispute_id" not found');
         $this->gateway->dispute()->addFileEvidence("unknown_dispute_id", "unknown_file_id");
     }
 
@@ -169,7 +171,7 @@ class DisputeTest extends Setup
 
     public function testAddTextEvidence_raisesError_whenDisputeNotFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "unknown_dispute_id" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id "unknown_dispute_id" not found');
         $dispute = $this->gateway->dispute()->addTextEvidence("unknown_dispute_id", "text evidence");
     }
 
@@ -225,7 +227,7 @@ class DisputeTest extends Setup
 
     public function testFinalize_raisesError_whenDisputeNotFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "invalid-id" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id "invalid-id" not found');
         $result = $this->gateway->dispute()->finalize("invalid-id");
     }
 
@@ -233,8 +235,8 @@ class DisputeTest extends Setup
     {
         $dispute = $this->gateway->dispute()->find("open_dispute");
 
-        $this->assertEquals("31.0", $dispute->amountDisputed);
-        $this->assertEquals("0.0", $dispute->amountWon);
+        $this->assertEquals("31.00", $dispute->amountDisputed);
+        $this->assertEquals("0.00", $dispute->amountWon);
         $this->assertEquals("open_dispute", $dispute->id);
         $this->assertEquals(Braintree\Dispute::OPEN, $dispute->status);
         $this->assertEquals("open_disputed_transaction", $dispute->transaction->id);
@@ -242,7 +244,7 @@ class DisputeTest extends Setup
 
     public function testFind_raisesError_whenDisputeNotFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "invalid-id" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id "invalid-id" not found');
         $this->gateway->dispute()->find("invalid-id");
     }
 
@@ -258,7 +260,7 @@ class DisputeTest extends Setup
 
     public function testRemoveEvidence_raisesError_whenDisputeOrEvidenceNotFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', "evidence with id \"unknown_evidence_id\" for dispute with id \"unknown_dispute_id\" not found");
+        $this->expectException('Braintree\Exception\NotFound', "evidence with id \"unknown_evidence_id\" for dispute with id \"unknown_dispute_id\" not found");
         $this->gateway->dispute()->removeEvidence("unknown_dispute_id", "unknown_evidence_id");
     }
 

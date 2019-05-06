@@ -21,10 +21,6 @@ class GatewayTest extends Setup
         Braintree\Configuration::privateKey('integration_private_key');
     }
 
-    /**
-     * @expectedException Braintree\Exception\Configuration
-    * @expectedExceptionMessage needs to be set (or accessToken needs to be passed to Braintree\Gateway).
-     */
     public function testConfigGetsAssertedValid()
     {
         Braintree\Configuration::environment('development');
@@ -33,6 +29,8 @@ class GatewayTest extends Setup
         Braintree\Configuration::privateKey('integration_private_key');
 
         $gateway = new Braintree\Gateway(Braintree\Configuration::$global);
+
+        $this->expectException('Braintree\Exception\Configuration', 'needs to be set (or accessToken needs to be passed to Braintree\Gateway).');
         $gateway->addOn();
     }
 

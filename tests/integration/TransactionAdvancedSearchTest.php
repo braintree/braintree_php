@@ -376,7 +376,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_multipleValueNode_createdUsing_allowedValues()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for created_using: noSuchCreatedUsing');
+        $this->expectException('InvalidArgumentException', 'Invalid argument(s) for created_using: noSuchCreatedUsing');
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::createdUsing()->is('noSuchCreatedUsing')
         ]);
@@ -417,7 +417,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_multipleValueNode_creditCardCustomerLocation_allowedValues()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for credit_card_customer_location: noSuchLocation');
+        $this->expectException('InvalidArgumentException', 'Invalid argument(s) for credit_card_customer_location: noSuchLocation');
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::creditCardCustomerLocation()->is('noSuchLocation')
         ]);
@@ -512,7 +512,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_multipleValueNode_creditCardType_allowedValues()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for credit_card_card_type: noSuchCardType');
+        $this->expectException('InvalidArgumentException', 'Invalid argument(s) for credit_card_card_type: noSuchCardType');
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::creditCardCardType()->is('noSuchCardType')
         ]);
@@ -562,7 +562,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_multipleValueNode_status_allowedValues()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for status: noSuchStatus');
+        $this->expectException('InvalidArgumentException', 'Invalid argument(s) for status: noSuchStatus');
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::status()->is('noSuchStatus')
         ]);
@@ -652,7 +652,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_multipleValueNode_type_allowedValues()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid argument(s) for type: noSuchType');
+        $this->expectException('InvalidArgumentException', 'Invalid argument(s) for type: noSuchType');
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::type()->is('noSuchType')
         ]);
@@ -1546,7 +1546,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_handles_search_timeout()
     {
-        $this->setExpectedException('Braintree\Exception\DownForMaintenance');
+        $this->expectException('Braintree\Exception\Timeout');
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::amount()->is('-5')
         ]);

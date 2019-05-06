@@ -28,15 +28,13 @@ class MerchantTest extends Setup
         $this->assertNotNull($credentials->accessToken);
     }
 
-    /**
-    * @expectedException Braintree\Exception\Configuration
-    * @expectedExceptionMessage clientId needs to be passed to Braintree\Gateway
-    */
     public function testAssertsHasCredentials()
     {
         $gateway = new Braintree\Gateway([
             'clientSecret' => 'client_secret$development$integration_client_secret',
         ]);
+
+        $this->expectException('Braintree\Exception\Configuration', 'clientId needs to be passed to Braintree\Gateway');
         $gateway->merchant()->create([
             'email' => 'name@email.com',
             'countryCodeAlpha3' => 'USA',

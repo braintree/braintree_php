@@ -19,25 +19,25 @@ class TransactionTest extends Setup
             'subscription' => ['billingPeriodStartDate' => '1983-07-12'],
             'statusHistory' => []
         ]);
-        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\Transaction: foo');
+        $this->expectException('PHPUnit\Framework\Error\Error', 'Undefined property on Braintree\Transaction: foo');
         $t->foo;
     }
 
     public function testCloneTransaction_RaisesErrorOnInvalidProperty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Transaction::cloneTransaction('an id', ['amount' => '123.45', 'invalidProperty' => 'foo']);
     }
 
     public function testErrorsWhenFindWithBlankString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Transaction::find('');
     }
 
     public function testErrorsWhenFindWithWhitespaceString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\Transaction::find('\t');
     }
 

@@ -191,7 +191,7 @@ class CustomerAdvancedSearchTest extends Setup
 
     public function test_throwsIfNoOperatorNodeGiven()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Operator must be provided');
+        $this->expectException('InvalidArgumentException', 'Operator must be provided');
         Braintree\Customer::search([
             Braintree\CustomerSearch::creditCardExpirationDate()
         ]);
