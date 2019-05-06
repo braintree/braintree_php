@@ -1,7 +1,3 @@
-## Unreleased
-* Add `revokedAt` field to `PayPalAccount`
-* Add support for `PAYMENT_METHOD_REVOKED_BY_CUSTOMER` webhook
-
 ## 4.0.0
 * Add support for PHP 7 (Thanks to @briandotdev)
 * Remove support for HHVM and PHP 5
@@ -16,6 +12,8 @@
 * HTTPS requests throw an `SSLCertificate` exception when related to SSL, otherwise a `Connection` exception is thrown.
 * Rename `DownForMaintence` Exception to `ServiceUnavailable`. Throw `Timeout` exception for transaction search errors instead of `DownForMaintenance`.
 * Add `RequestTimeout` and `GatewayTimeout` exceptions.
+* Add `revokedAt` field to `PayPalAccount`
+* Add support for `PAYMENT_METHOD_REVOKED_BY_CUSTOMER` webhook
 
 ## 3.40.0
 * Deprecate `GRANTED_PAYMENT_INSTRUMENT_UPDATE` and add `GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD` and `RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD`
