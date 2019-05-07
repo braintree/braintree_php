@@ -1,3 +1,6 @@
+## Unreleased
+* Add `localPaymentDetail` to transactions
+
 ## 4.0.0
 * Add support for PHP 7 (Thanks to @briandotdev)
 * Remove support for HHVM and PHP 5
