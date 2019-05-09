@@ -4140,10 +4140,10 @@ class TransactionTest extends Setup
 
   public function testGatewayRejectionOnTokenIssuanceError()
     {
-        $result = $gateway->transaction()->sale([
+        $result = Braintree\Transaction::sale([
             'amount' => '4000.00',
             'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
-            'paymentMethodNonce' => Braintree\Test\Nonces::$venmoAccount,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$gatewayRejectedTokenIssuance
         ]);
         $this->assertFalse($result->success);
         $transaction = $result->transaction;
