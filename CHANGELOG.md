@@ -4,6 +4,7 @@
 * Add `payment_method_nonce` field to `LocalPaymentCompleted` webhook
 * Add `transaction` field to `LocalPaymentCompleted` webhook
 * Add `localPaymentDetail` to transactions
+* Add `TOKEN_ISSUANCE` gatewayRejectionReason enum to `Transaction`
 
 ## 4.0.0
 * Add support for PHP 7 (Thanks to @briandotdev)

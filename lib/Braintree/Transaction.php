@@ -255,6 +255,7 @@ class Transaction extends Base
     const DUPLICATE      = 'duplicate';
     const FRAUD          = 'fraud';
     const THREE_D_SECURE = 'three_d_secure';
+    const TOKEN_ISSUANCE = 'token_issuance';
     const APPLICATION_INCOMPLETE = 'application_incomplete';
 
     // Industry Types
