@@ -883,5 +883,7 @@ class WebhookNotificationTest extends Setup
 
         $this->assertEquals("a-payment-id", $localPaymentCompleted->paymentId);
         $this->assertEquals("a-payer-id", $localPaymentCompleted->payerId);
+        $this->assertEquals("ee257d98-de40-47e8-96b3-a6954ea7a9a4", $localPaymentCompleted->paymentMethodNonce);
+        $this->assertNotNull($localPaymentCompleted->transaction);
     }
 }

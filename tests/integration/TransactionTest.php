@@ -4138,6 +4138,31 @@ class TransactionTest extends Setup
         $this->assertTrue($discounts[0]->neverExpires);
     }
 
+  public function testGatewayRejectionOnTokenIssuanceError()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '4000.00',
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'paymentMethodNonce' => Braintree\Test\Nonces::$gatewayRejectedTokenIssuance
+        ]);
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::TOKEN_ISSUANCE, $transaction->gatewayRejectionReason);
+    }
+
+  public function createTransactionViaTr($regularParams, $trParams)
+    {
+        Test\Helper::suppressDeprecationWarnings();
+        $trData = Braintree\TransparentRedirect::transactionData(
+            array_merge($trParams, ["redirectUrl" => "http://www.example.com"])
+        );
+        return Test\Helper::submitTrRequest(
+            Braintree\Transaction::createTransactionUrl(),
+            $regularParams,
+            $trData
+        );
+    }
+
   public function createTransactionToRefund()
     {
         $transaction = Braintree\Transaction::saleNoValidate([
@@ -4924,6 +4949,23 @@ class TransactionTest extends Setup
 
         $this->assertTrue(in_array($expectedRefundIds[0],$updatedRefundIds));
         $this->assertTrue(in_array($expectedRefundIds[1],$updatedRefundIds));
+    }
+
+  public function testCreate_withLocalPayment()
+    {
+        $nonce = Braintree\Test\Nonces::$localPayment;
+        $result = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SETTLING, $transaction->status);
+        $this->assertEquals(Braintree\PaymentInstrumentType::LOCAL_PAYMENT, $transaction->paymentInstrumentType);
     }
 
   public function testIncludeProcessorSettlementResponseForSettlementDeclinedTransaction()

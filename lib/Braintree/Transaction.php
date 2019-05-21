@@ -177,6 +177,7 @@ namespace Braintree;
  * @property-read string $orderId
  * @property-read string $paymentInstrumentType
  * @property-read \Braintree\PayPalDetails $paypalDetails transaction paypal account info
+ * @property-read \Braintree\LocalPaymentDetails $localPaymentDetails transaction local payment info
  * @property-read string $planId
  * @property-read string $processorAuthorizationCode
  * @property-read string $processorResponseCode gateway response code
@@ -254,6 +255,7 @@ class Transaction extends Base
     const DUPLICATE      = 'duplicate';
     const FRAUD          = 'fraud';
     const THREE_D_SECURE = 'three_d_secure';
+    const TOKEN_ISSUANCE = 'token_issuance';
     const APPLICATION_INCOMPLETE = 'application_incomplete';
 
     // Industry Types
@@ -349,6 +351,14 @@ class Transaction extends Base
             $this->_set('paypalDetails',
                 new Transaction\PayPalDetails(
                     $transactionAttribs['paypal']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['localPayment'])) {
+            $this->_set('localPaymentDetails',
+                new Transaction\LocalPaymentDetails(
+                    $transactionAttribs['localPayment']
                 )
             );
         }

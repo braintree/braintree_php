@@ -1,3 +1,11 @@
+## 4.1.0
+* Add `revokedAt` field to `PayPalAccount`
+* Add support for `PAYMENT_METHOD_REVOKED_BY_CUSTOMER` webhook
+* Add `payment_method_nonce` field to `LocalPaymentCompleted` webhook
+* Add `transaction` field to `LocalPaymentCompleted` webhook
+* Add `localPaymentDetail` to transactions
+* Add `TOKEN_ISSUANCE` gatewayRejectionReason enum to `Transaction`
+
 ## 4.0.0
 * Add support for PHP 7 (Thanks to @briandotdev)
 * Remove support for HHVM and PHP 5

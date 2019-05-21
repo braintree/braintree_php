@@ -13,5 +13,6 @@ class PaymentInstrumentType
     const VENMO_ACCOUNT       = 'venmo_account';
     const US_BANK_ACCOUNT     = 'us_bank_account';
     const SAMSUNG_PAY_CARD    = 'samsung_pay_card';
+    const LOCAL_PAYMENT       = 'local_payment';
 }
 class_alias('Braintree\PaymentInstrumentType', 'Braintree_PaymentInstrumentType');

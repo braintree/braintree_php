@@ -525,6 +525,13 @@ class WebhookTestingGateway
 		<local-payment>
             <payment-id>a-payment-id</payment-id>
             <payer-id>a-payer-id</payer-id>
+            <payment-method-nonce>ee257d98-de40-47e8-96b3-a6954ea7a9a4</payment-method-nonce>
+            <transaction>
+                <id>1</id>
+                <status>authorizing</status>
+                <amount>10.00</amount>
+                <order-id>order1234</order-id>
+            </transaction>
 		</local-payment>
         ";
     }
