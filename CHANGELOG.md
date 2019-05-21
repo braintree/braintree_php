@@ -1,4 +1,4 @@
-## Unreleased
+## 4.1.0
 * Add `revokedAt` field to `PayPalAccount`
 * Add support for `PAYMENT_METHOD_REVOKED_BY_CUSTOMER` webhook
 * Add `payment_method_nonce` field to `LocalPaymentCompleted` webhook
