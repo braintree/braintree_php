@@ -1,3 +1,6 @@
+## Unreleased
+* Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
+
 ## 4.1.0
 * Add `revokedAt` field to `PayPalAccount`
 * Add support for `PAYMENT_METHOD_REVOKED_BY_CUSTOMER` webhook
