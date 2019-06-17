@@ -1,5 +1,6 @@
 ## Unreleased
 * Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
+* Add `threeDSecureVersion`, `authenticationResponse`, `directoryResponse`, `cavvAlgorithm` and `dsTransactionId` to 3DS pass thru fields
 
 ## 4.1.0
 * Add `revokedAt` field to `PayPalAccount`

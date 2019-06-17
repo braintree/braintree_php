@@ -131,7 +131,12 @@ class TransactionGateway
                 [
                     'eciFlag',
                     'cavv',
-                    'xid'],
+                    'xid',
+                    'threeDSecureVersion',
+                    'authenticationResponse',
+                    'directoryResponse',
+                    'cavvAlgorithm',
+                    'dsTransactionId'],
             ],
             ['options' =>
                 [
