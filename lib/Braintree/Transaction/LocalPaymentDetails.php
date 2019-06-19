@@ -17,11 +17,18 @@ use Braintree\Instance;
  * @package    Braintree
  * @subpackage Transaction
  *
+ * @property-read string $captureId
  * @property-read string $customField
  * @property-read string $description
+ * @property-read string $debugId
  * @property-read string $payerId
  * @property-read string $paymentId
  * @property-read string $fundingSource
+ * @property-read string $refundFromTransactionFeeAmount
+ * @property-read string $refundFromTransactionFeeCurrencyIsoCode
+ * @property-read string $refundId
+ * @property-read string $transactionFeeAmount
+ * @property-read string $transactionFeeCurrencyIsoCode
  */
 class LocalPaymentDetails extends Instance
 {

@@ -5073,6 +5073,37 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $this->assertEquals(Braintree\Transaction::SETTLING, $transaction->status);
         $this->assertEquals(Braintree\PaymentInstrumentType::LOCAL_PAYMENT, $transaction->paymentInstrumentType);
+        $this->assertNotNull($transaction->localPaymentDetails->captureId);
+        $this->assertNotNull($transaction->localPaymentDetails->debugId);
+        $this->assertNotNull($transaction->localPaymentDetails->transactionFeeAmount);
+        $this->assertNotNull($transaction->localPaymentDetails->transactionFeeCurrencyIsoCode);
+    }
+
+  public function testRefund_withLocalPayment()
+    {
+        $nonce = Braintree\Test\Nonces::$localPayment;
+        $result = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+
+        $result = Braintree\Transaction::refund($transaction->id);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(Braintree\Transaction::SETTLING, $transaction->status);
+        $this->assertEquals(Braintree\PaymentInstrumentType::LOCAL_PAYMENT, $transaction->paymentInstrumentType);
+        $this->assertNotNull($transaction->localPaymentDetails->refundId);
+        $this->assertNotNull($transaction->localPaymentDetails->debugId);
+        $this->assertNotNull($transaction->localPaymentDetails->refundFromTransactionFeeAmount);
+        $this->assertNotNull($transaction->localPaymentDetails->refundFromTransactionFeeCurrencyIsoCode);
     }
 
   public function testIncludeProcessorSettlementResponseForSettlementDeclinedTransaction()
