@@ -59,7 +59,7 @@ class Nonces
    public static $processorDeclinedDiscover = "fake-processor-declined-discover-nonce";
    public static $processorFailureJCB = "fake-processor-failure-jcb-nonce";
    public static $luhnInvalid = "fake-luhn-invalid-nonce";
-   public static $localPayment = "fake-local-payment-nonce";
+   public static $localPayment = "fake-local-payment-method-nonce";
    public static $paypalFuturePaymentRefreshToken = "fake-paypal-future-refresh-token-nonce";
    public static $sepa = "fake-sepa-bank-account-nonce";
    public static $gatewayRejectedFraud = "fake-gateway-rejected-fraud-nonce";
