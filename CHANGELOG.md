@@ -8,6 +8,7 @@
 * Add `refundFromTransactionFeeCurrencyIsoCode` to `LocalPaymentDetails`
 * Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
 * Add `threeDSecureVersion`, `authenticationResponse`, `directoryResponse`, `cavvAlgorithm` and `dsTransactionId` to 3DS pass thru fields
+* Add `payerInfo` to `PaymentMethodNonce` details
 
 ## 4.1.0
 * Add `revokedAt` field to `PayPalAccount`
