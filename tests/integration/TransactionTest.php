@@ -3306,11 +3306,6 @@ class TransactionTest extends Setup
         $this->assertEquals("authenticate_successful", $info->status);
         $this->assertTrue($info->liabilityShifted);
         $this->assertTrue($info->liabilityShiftPossible);
-        $this->assertEquals("1.0.2", $info->threeDSecureVersion);
-        $this->assertEquals("dstxnid", $info->dsTransactionId);
-        $this->assertEquals("somebase64value", $info->cavv);
-        $this->assertEquals("xidvalue", $info->xid);
-        $this->assertEquals("07", $info->eciFlag);
     }
 
   public function testFindExposesNullThreeDSecureInfo()

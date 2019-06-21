@@ -6,7 +6,6 @@
 * Add `transactionFeeCurrencyIsoCode` to `LocalPaymentDetails`
 * Add `refundFromTransactionFeeAmount` to `LocalPaymentDetails`
 * Add `refundFromTransactionFeeCurrencyIsoCode` to `LocalPaymentDetails`
-* Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
 * Add `threeDSecureVersion`, `authenticationResponse`, `directoryResponse`, `cavvAlgorithm` and `dsTransactionId` to 3DS pass thru fields
 * Add `payerInfo` to `PaymentMethodNonce` details
 
