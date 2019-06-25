@@ -199,6 +199,7 @@ class TransactionGateway
                             'lodgingCheckOutDate',
                             'lodgingName',
                             'roomRate',
+                            'roomTax',
                             'passengerFirstName',
                             'passengerLastName',
                             'passengerMiddleInitial',
@@ -213,6 +214,10 @@ class TransactionGateway
                             'feeAmount',
                             'taxAmount',
                             'restrictedTicket',
+                            'noShow',
+                            'advancedDeposit',
+                            'fireSafe',
+                            'propertyPhone',
                             ['legs' =>
                                 [
                                     'conjunctionTicket',
@@ -232,6 +237,12 @@ class TransactionGateway
                                     'feeAmount',
                                     'taxAmount',
                                     'endorsementOrRestrictions'
+                                ]
+                            ],
+                            ['additionalCharges' =>
+                                [
+                                    'kind',
+                                    'amount'
                                 ]
                             ]
                         ]

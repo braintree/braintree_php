@@ -8,6 +8,12 @@
 * Add `refundFromTransactionFeeCurrencyIsoCode` to `LocalPaymentDetails`
 * Add `threeDSecureVersion`, `authenticationResponse`, `directoryResponse`, `cavvAlgorithm` and `dsTransactionId` to 3DS pass thru fields
 * Add `payerInfo` to `PaymentMethodNonce` details
+* Add `roomTax` field to Transaction sale
+* Add `noShow` field to Transaction sale
+* Add `advancedDeposit` field to Transaction sale
+* Add `fireSafe` field to Transaction sale
+* Add `propertyPhone` field to Transaction sale
+* Add `additionalCharges` field to Transaction sale
 
 ## 4.1.0
 * Add `revokedAt` field to `PayPalAccount`

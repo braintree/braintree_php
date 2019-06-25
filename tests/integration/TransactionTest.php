@@ -5146,7 +5146,7 @@ class TransactionTest extends Setup
   public function testSale_withLodgingIndustryData()
     {
         $result = Braintree\Transaction::sale([
-            'amount' => '100.00',
+            'amount' => '1000.00',
             'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
@@ -5156,8 +5156,23 @@ class TransactionTest extends Setup
                 'data' => [
                     'folioNumber' => 'aaa',
                     'checkInDate' => '2014-07-07',
-                    'checkOutDate' => '2014-07-09',
-                    'roomRate' => '239.00'
+                    'checkOutDate' => '2014-07-11',
+                    'roomRate' => '170.00',
+                    'roomTax' => '30.00',
+                    'noShow' => false,
+                    'advancedDeposit' => false,
+                    'fireSafe' => true,
+                    'propertyPhone' => '1112223345',
+                    'additionalCharges' => [
+                        [
+                            'kind' => Braintree\Transaction::TELEPHONE,
+                            'amount' => '50.00'
+                        ],
+                        [
+                            'kind' => Braintree\Transaction::OTHER,
+                            'amount' => '150.00',
+                        ],
+                    ]
                 ]
             ]
         ]);
@@ -5178,7 +5193,13 @@ class TransactionTest extends Setup
                     'folioNumber' => 'aaa',
                     'checkInDate' => '2014-07-07',
                     'checkOutDate' => '2014-06-09',
-                    'roomRate' => '239.00'
+                    'roomRate' => 'abcdef',
+                    'additionalCharges' => [
+                        [
+                            'kind' => 'unknown',
+                            'amount' => '11.00'
+                        ]
+                    ]
                 ]
             ]
         ]);
@@ -5187,8 +5208,13 @@ class TransactionTest extends Setup
 
         $errors = $result->errors->forKey('transaction')->forKey('industry')->onAttribute('checkOutDate');
         $this->assertEquals(Braintree\Error\Codes::INDUSTRY_DATA_LODGING_CHECK_OUT_DATE_MUST_FOLLOW_CHECK_IN_DATE, $errors[0]->code);
-    }
 
+        $errors = $result->errors->forKey('transaction')->forKey('industry')->onAttribute('roomRate');
+        $this->assertEquals(Braintree\Error\Codes::INDUSTRY_DATA_LODGING_ROOM_RATE_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('transaction')->forKey('industry')->forKey('additionalCharges')->forKey('index0')->onAttribute('kind');
+        $this->assertEquals(Braintree\Error\Codes::INDUSTRY_DATA_ADDITIONAL_CHARGE_KIND_IS_INVALID, $errors[0]->code);
+    }
   public function testSale_withTravelCruiseIndustryData()
     {
         $result = Braintree\Transaction::sale([
