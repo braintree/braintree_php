@@ -14,6 +14,7 @@
 * Add `fireSafe` field to Transaction sale
 * Add `propertyPhone` field to Transaction sale
 * Add `additionalCharges` field to Transaction sale
+* Add `PostalCodeIsRequiredForCardBrandAndProcessor` to validation errors
 
 ## 4.1.0
 * Add `revokedAt` field to `PayPalAccount`
