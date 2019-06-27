@@ -263,6 +263,14 @@ class Transaction extends Base
     const TRAVEL_AND_CRUISE_INDUSTRY = 'travel_cruise';
     const TRAVEL_AND_FLIGHT_INDUSTRY = 'travel_flight';
 
+    // Additional Charge Types
+    const RESTAURANT = 'lodging';
+    const GIFT_SHOP  = 'gift_shop';
+    const MINI_BAR   = 'mini_bar';
+    const TELEPHONE  = 'telephone';
+    const LAUNDRY    = 'laundry';
+    const OTHER      = 'other';
+
     /**
      * sets instance properties from an array of values
      *

@@ -1,3 +1,21 @@
+## 4.2.0
+* Add `captureId` to `LocalPaymentDetails`
+* Add `debugId` to `LocalPaymentDetails`
+* Add `refundId` to `LocalPaymentDetails`
+* Add `transactionFeeAmount` to `LocalPaymentDetails`
+* Add `transactionFeeCurrencyIsoCode` to `LocalPaymentDetails`
+* Add `refundFromTransactionFeeAmount` to `LocalPaymentDetails`
+* Add `refundFromTransactionFeeCurrencyIsoCode` to `LocalPaymentDetails`
+* Add `threeDSecureVersion`, `authenticationResponse`, `directoryResponse`, `cavvAlgorithm` and `dsTransactionId` to 3DS pass thru fields
+* Add `payerInfo` to `PaymentMethodNonce` details
+* Add `roomTax` field to Transaction sale
+* Add `noShow` field to Transaction sale
+* Add `advancedDeposit` field to Transaction sale
+* Add `fireSafe` field to Transaction sale
+* Add `propertyPhone` field to Transaction sale
+* Add `additionalCharges` field to Transaction sale
+* Add `PostalCodeIsRequiredForCardBrandAndProcessor` to validation errors
+
 ## 4.1.0
 * Add `revokedAt` field to `PayPalAccount`
 * Add support for `PAYMENT_METHOD_REVOKED_BY_CUSTOMER` webhook

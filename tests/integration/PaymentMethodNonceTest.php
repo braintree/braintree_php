@@ -32,6 +32,16 @@ class PaymentMethodNonceTest extends Setup
         Braintree\PaymentMethodNonce::create('not_a_token');
     }
 
+    public function testFind_exposesPayPalDetails()
+    {
+        $foundNonce = Braintree\PaymentMethodNonce::find('fake-google-pay-paypal-nonce');
+        $details = $foundNonce->details;
+
+        $this->assertNotNull($details['payerInfo']['firstName']);
+        $this->assertNotNull($details['payerInfo']['email']);
+        $this->assertNotNull($details['payerInfo']['payerId']);
+    }
+
     public function testFind_exposesVenmoDetails()
     {
         $foundNonce = Braintree\PaymentMethodNonce::find('fake-venmo-account-nonce');

@@ -60,6 +60,11 @@ class Helper
     {
         return 'three_d_secure_merchant_account';
     }
+    
+    public static function adyenMerchantAccountId()
+    {
+        return 'adyen_ma';
+    }
 
     public static function fakeAmexDirectMerchantAccountId()
     {

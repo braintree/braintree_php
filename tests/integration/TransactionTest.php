@@ -3681,7 +3681,12 @@ class TransactionTest extends Setup
             'threeDSecurePassThru' => [
                 'eciFlag' => '02',
                 'cavv' => 'some_cavv',
-                'xid' => 'some_xid'
+                'xid' => 'some_xid',
+                'threeDSecureVersion' => '1.0.2',
+                'authenticationResponse' => 'Y',
+                'directoryResponse' => 'Y',
+                'cavvAlgorithm' => '2',
+                'dsTransactionId' => 'validDsTransactionId'
             ],
         ]);
         $this->assertTrue($result->success);
@@ -3779,6 +3784,103 @@ class TransactionTest extends Setup
             $errors->onAttribute("eciFlag")[0]->code
         );
     }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruThreeDSecureVersionIsInvalid()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '02',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid',
+                'threeDSecureVersion' => 'invalid'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_THREE_D_SECURE_VERSION_IS_INVALID,
+            $errors->onAttribute("threeDSecureVersion")[0]->code
+        );
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruAuthenticationResponseIsInvalid()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::adyenMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '02',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid',
+                'authenticationResponse' => 'invalid'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_AUTHENTICATION_RESPONSE_IS_INVALID,
+            $errors->onAttribute("authenticationResponse")[0]->code
+        );
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruDirectoryResponseIsInvalid()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::adyenMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '02',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid',
+                'directoryResponse' => 'invalid'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_DIRECTORY_RESPONSE_IS_INVALID,
+            $errors->onAttribute("directoryResponse")[0]->code
+        );
+    }
+
+  public function testSale_returnsErrorsWhenThreeDSecurePassThruCavvAlgorithmIsInvalid()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::adyenMerchantAccountId(),
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/09'
+            ],
+            'threeDSecurePassThru' => [
+                'eciFlag' => '02',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid',
+                'cavvAlgorithm' => 'invalid'
+            ],
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('threeDSecurePassThru');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_CAVV_ALGORITHM_IS_INVALID,
+            $errors->onAttribute("cavvAlgorithm")[0]->code
+        );
+    }
+
 
   public function testHoldInEscrow_afterSale()
     {
@@ -4966,6 +5068,37 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $this->assertEquals(Braintree\Transaction::SETTLING, $transaction->status);
         $this->assertEquals(Braintree\PaymentInstrumentType::LOCAL_PAYMENT, $transaction->paymentInstrumentType);
+        $this->assertNotNull($transaction->localPaymentDetails->captureId);
+        $this->assertNotNull($transaction->localPaymentDetails->debugId);
+        $this->assertNotNull($transaction->localPaymentDetails->transactionFeeAmount);
+        $this->assertNotNull($transaction->localPaymentDetails->transactionFeeCurrencyIsoCode);
+    }
+
+  public function testRefund_withLocalPayment()
+    {
+        $nonce = Braintree\Test\Nonces::$localPayment;
+        $result = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+
+        $result = Braintree\Transaction::refund($transaction->id);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(Braintree\Transaction::SETTLING, $transaction->status);
+        $this->assertEquals(Braintree\PaymentInstrumentType::LOCAL_PAYMENT, $transaction->paymentInstrumentType);
+        $this->assertNotNull($transaction->localPaymentDetails->refundId);
+        $this->assertNotNull($transaction->localPaymentDetails->debugId);
+        $this->assertNotNull($transaction->localPaymentDetails->refundFromTransactionFeeAmount);
+        $this->assertNotNull($transaction->localPaymentDetails->refundFromTransactionFeeCurrencyIsoCode);
     }
 
   public function testIncludeProcessorSettlementResponseForSettlementDeclinedTransaction()
@@ -5013,7 +5146,7 @@ class TransactionTest extends Setup
   public function testSale_withLodgingIndustryData()
     {
         $result = Braintree\Transaction::sale([
-            'amount' => '100.00',
+            'amount' => '1000.00',
             'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
@@ -5023,8 +5156,23 @@ class TransactionTest extends Setup
                 'data' => [
                     'folioNumber' => 'aaa',
                     'checkInDate' => '2014-07-07',
-                    'checkOutDate' => '2014-07-09',
-                    'roomRate' => '239.00'
+                    'checkOutDate' => '2014-07-11',
+                    'roomRate' => '170.00',
+                    'roomTax' => '30.00',
+                    'noShow' => false,
+                    'advancedDeposit' => false,
+                    'fireSafe' => true,
+                    'propertyPhone' => '1112223345',
+                    'additionalCharges' => [
+                        [
+                            'kind' => Braintree\Transaction::TELEPHONE,
+                            'amount' => '50.00'
+                        ],
+                        [
+                            'kind' => Braintree\Transaction::OTHER,
+                            'amount' => '150.00',
+                        ],
+                    ]
                 ]
             ]
         ]);
@@ -5045,7 +5193,13 @@ class TransactionTest extends Setup
                     'folioNumber' => 'aaa',
                     'checkInDate' => '2014-07-07',
                     'checkOutDate' => '2014-06-09',
-                    'roomRate' => '239.00'
+                    'roomRate' => 'abcdef',
+                    'additionalCharges' => [
+                        [
+                            'kind' => 'unknown',
+                            'amount' => '11.00'
+                        ]
+                    ]
                 ]
             ]
         ]);
@@ -5054,8 +5208,13 @@ class TransactionTest extends Setup
 
         $errors = $result->errors->forKey('transaction')->forKey('industry')->onAttribute('checkOutDate');
         $this->assertEquals(Braintree\Error\Codes::INDUSTRY_DATA_LODGING_CHECK_OUT_DATE_MUST_FOLLOW_CHECK_IN_DATE, $errors[0]->code);
-    }
 
+        $errors = $result->errors->forKey('transaction')->forKey('industry')->onAttribute('roomRate');
+        $this->assertEquals(Braintree\Error\Codes::INDUSTRY_DATA_LODGING_ROOM_RATE_FORMAT_IS_INVALID, $errors[0]->code);
+
+        $errors = $result->errors->forKey('transaction')->forKey('industry')->forKey('additionalCharges')->forKey('index0')->onAttribute('kind');
+        $this->assertEquals(Braintree\Error\Codes::INDUSTRY_DATA_ADDITIONAL_CHARGE_KIND_IS_INVALID, $errors[0]->code);
+    }
   public function testSale_withTravelCruiseIndustryData()
     {
         $result = Braintree\Transaction::sale([
