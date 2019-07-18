@@ -177,6 +177,7 @@ namespace Braintree;
  * @property-read string $orderId
  * @property-read string $paymentInstrumentType
  * @property-read \Braintree\PayPalDetails $paypalDetails transaction paypal account info
+ * @property-read \Braintree\PayPalHereDetails $paypalHereDetails 
  * @property-read \Braintree\LocalPaymentDetails $localPaymentDetails transaction local payment info
  * @property-read string $planId
  * @property-read string $processorAuthorizationCode
@@ -359,6 +360,14 @@ class Transaction extends Base
             $this->_set('paypalDetails',
                 new Transaction\PayPalDetails(
                     $transactionAttribs['paypal']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['paypalHere'])) {
+            $this->_set('paypalHereDetails',
+                new Transaction\PayPalHereDetails(
+                    $transactionAttribs['paypalHere']
                 )
             );
         }

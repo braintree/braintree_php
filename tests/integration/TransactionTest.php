@@ -6116,4 +6116,36 @@ class TransactionTest extends Setup
             $result->errors->forKey('transaction')->forKey('externalVault')->onAttribute('previousNetworkTransactionId')[0]->code
         );
     }
+
+    public function testPayPalHereDetailsAuthCapture()
+    {
+        $transaction = Braintree\Transaction::find('paypal_here_auth_capture_id');
+        $this->assertEquals($transaction->paymentInstrumentType, Braintree\PaymentInstrumentType::PAYPAL_HERE);
+        $this->assertNotNull($transaction->paypalHereDetails);
+
+        $paypalHereDetails = $transaction->paypalHereDetails;
+        $this->assertNotNull($paypalHereDetails->authorizationId);
+        $this->assertNotNull($paypalHereDetails->captureId);
+        $this->assertNotNull($paypalHereDetails->invoiceId);
+        $this->assertNotNull($paypalHereDetails->last4);
+        $this->assertNotNull($paypalHereDetails->paymentType);
+        $this->assertNotNull($paypalHereDetails->transactionFeeAmount);
+        $this->assertNotNull($paypalHereDetails->transactionFeeCurrencyIsoCode);
+        $this->assertNotNull($paypalHereDetails->transactionInitiationDate);
+        $this->assertNotNull($paypalHereDetails->transactionUpdatedDate);
+    }
+
+    public function testPayPalHereDetailsSale()
+    {
+        $transaction = Braintree\Transaction::find("paypal_here_sale_id");
+        $this->assertNotNull($transaction->paypalHereDetails);
+        $this->assertNotNull($transaction->paypalHereDetails->paymentId);
+    }
+
+    public function testPayPalHereDetailsRefund()
+    {
+        $transaction = Braintree\Transaction::find("paypal_here_refund_id");
+        $this->assertNotNull($transaction->paypalHereDetails);
+        $this->assertNotNull($transaction->paypalHereDetails->refundId);
+    }
 }
