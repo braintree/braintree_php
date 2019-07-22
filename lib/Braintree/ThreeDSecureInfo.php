@@ -4,7 +4,13 @@ namespace Braintree;
 /**
  * @property-read string $enrolled
  * @property-read boolean $liabilityShiftPossible
+ * @property-read string $liabilityShifted
  * @property-read string $status
+ * @property-read boolean $xid
+ * @property-read string $cavv
+ * @property-read string $eciFlag
+ * @property-read string $dsTransactionId
+ * @property-read string $threeDSecureVersion
  */
 class ThreeDSecureInfo extends Base
 {

@@ -1,6 +1,8 @@
 ## Unreleased
 * Add `PayPalHereDetails` to transactions
 * Add `network_response_code` and `network_response_text` to `Transaction` and `CreditCardVerification`
+* Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
+* Add `threeDSecureInfo` to `CreditCardVerification`
 
 ## 4.2.0
 * Add `captureId` to `LocalPaymentDetails`
@@ -10,7 +12,6 @@
 * Add `transactionFeeCurrencyIsoCode` to `LocalPaymentDetails`
 * Add `refundFromTransactionFeeAmount` to `LocalPaymentDetails`
 * Add `refundFromTransactionFeeCurrencyIsoCode` to `LocalPaymentDetails`
-* Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
 * Add `threeDSecureVersion`, `authenticationResponse`, `directoryResponse`, `cavvAlgorithm` and `dsTransactionId` to 3DS pass thru fields
 * Add `payerInfo` to `PaymentMethodNonce` details
 * Add `roomTax` field to Transaction sale

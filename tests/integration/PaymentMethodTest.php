@@ -34,6 +34,32 @@ class PaymentMethodTest extends Setup
         $this->assertSame($customer->id, $result->paymentMethod->customerId);
     }
 
+    public function testCreate_fromThreeDSecureNonce()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = Braintree\Test\Nonces::$threeDSecureVisaFullAuthenticationNonce;
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verifyCard' => 'true',
+            ]
+        ]);
+
+        $threeDSecureInfo = $result->paymentMethod->verification->threeDSecureInfo;
+        $this->assertTrue($threeDSecureInfo->liabilityShiftPossible);
+        $this->assertTrue($threeDSecureInfo->liabilityShifted);
+        $this->assertEquals("Y", $threeDSecureInfo->enrolled);
+        $this->assertEquals("authenticate_successful", $threeDSecureInfo->status);
+        $this->assertEquals("xid_value", $threeDSecureInfo->xid);
+        $this->assertEquals("cavv_value", $threeDSecureInfo->cavv);
+        $this->assertEquals("05", $threeDSecureInfo->eciFlag);
+        $this->assertEquals(null, $threeDSecureInfo->dsTransactionId);
+        $this->assertEquals("1.0.2", $threeDSecureInfo->threeDSecureVersion);
+    }
+
     public function testGatewayCreate_fromVaultedCreditCardNonce()
     {
         $customer = Braintree\Customer::createNoValidate();

@@ -48,6 +48,7 @@ class Nonces
    public static $transactableHealthcare = "fake-valid-healthcare-nonce";
    public static $transactableDebit = "fake-valid-debit-nonce";
    public static $transactablePayroll = "fake-valid-payroll-nonce";
+   public static $threeDSecureVisaFullAuthenticationNonce = "fake-three-d-secure-visa-full-authentication-nonce";
    public static $transactableNoIndicators = "fake-valid-no-indicators-nonce";
    public static $transactableUnknownIndicators = "fake-valid-unknown-indicators-nonce";
    public static $transactableCountryOfIssuanceUSA = "fake-valid-country-of-issuance-usa-nonce";
