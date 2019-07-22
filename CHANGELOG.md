@@ -1,5 +1,6 @@
 ## Unreleased
 * Add `PayPalHereDetails` to transactions
+* Add `network_response_code` and `network_response_text` to `Transaction` and `CreditCardVerification`
 
 ## 4.2.0
 * Add `captureId` to `LocalPaymentDetails`
