@@ -1,3 +1,6 @@
+## Unreleased
+* Add `PayPalHereDetails` to transactions
+
 ## 4.2.0
 * Add `captureId` to `LocalPaymentDetails`
 * Add `debugId` to `LocalPaymentDetails`
