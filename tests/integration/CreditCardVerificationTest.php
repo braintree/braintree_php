@@ -133,4 +133,24 @@ class CreditCardVerificationTest extends Setup
         $errors = $result->errors->forKey('verification')->forKey('options')->onAttribute('accountType');
         $this->assertEquals(Braintree\Error\Codes::VERIFICATION_OPTIONS_ACCOUNT_TYPE_NOT_SUPPORTED, $errors[0]->code);
     }
+
+    public function test_successfulCreateIncludesNetworkResponse()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '05/2011',
+            ],
+        ]);
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->processorResponseCode, '1000');
+        $this->assertEquals($verification->processorResponseText, 'Approved');
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
+        $this->assertEquals($verification->networkResponseCode, 'XX');
+        $this->assertEquals($verification->networkResponseText, 'sample network response text');
+    }
+
 }

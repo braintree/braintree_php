@@ -6148,4 +6148,30 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->paypalHereDetails);
         $this->assertNotNull($transaction->paypalHereDetails->refundId);
     }
+
+    public function testCreateTransactionReturnsNetworkResponse()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            "creditCard" => [
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ],
+            "share" => true
+        ]);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('47.00', $transaction->amount);
+        $this->assertEquals('XX', $transaction->networkResponseCode);
+        $this->assertEquals('sample network response text', $transaction->networkResponseText);
+    }
 }
