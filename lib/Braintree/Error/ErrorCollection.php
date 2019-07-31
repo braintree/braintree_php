@@ -2,6 +2,8 @@
 namespace Braintree\Error;
 
 use Braintree\Util;
+use Countable;
+use JsonSerializable;
 
 /**
  *
@@ -16,7 +18,7 @@ use Braintree\Util;
  *
  * @property-read object $errors
  */
-class ErrorCollection implements \Countable
+class ErrorCollection implements Countable, JsonSerializable
 {
     private $_errors;
 
@@ -118,6 +120,17 @@ class ErrorCollection implements \Countable
     public function  __toString()
     {
         return sprintf('%s', $this->_errors);
+    }
+
+    /**
+     * Implementation of JsonSerializable
+     *
+     * @ignore
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return $this->_errors->deepAll();
     }
 }
 class_alias('Braintree\Error\ErrorCollection', 'Braintree_Error_ErrorCollection');
