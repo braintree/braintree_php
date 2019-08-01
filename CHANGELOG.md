@@ -3,6 +3,7 @@
 * Add `network_response_code` and `network_response_text` to `Transaction` and `CreditCardVerification`
 * Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
 * Add `threeDSecureInfo` to `CreditCardVerification`
+* Add `GraphQLClient` to `BraintreeGateway` class
 
 ## 4.2.0
 * Add `captureId` to `LocalPaymentDetails`
