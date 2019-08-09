@@ -1,4 +1,4 @@
-## Unreleased
+# 4.3.0
 * Add `PayPalHereDetails` to transactions
 * Add `network_response_code` and `network_response_text` to `Transaction` and `CreditCardVerification`
 * Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
