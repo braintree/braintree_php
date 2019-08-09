@@ -225,6 +225,35 @@ class CustomerTest extends Setup
         $this->assertSame("1111", $result->customer->creditCards[0]->last4);
     }
 
+    public function testCreateCustomerWithCardUsingThreeDSecureNonce()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = Braintree\Test\Nonces::$threeDSecureVisaFullAuthenticationNonce;
+
+        $result = Braintree\Customer::create([
+            'creditCard' => [
+                'paymentMethodNonce' => $nonce,
+                'options' => [
+                    'verifyCard' => true
+                ]
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+
+        $threeDSecureInfo = $result->customer->creditCards[0]->verification->threeDSecureInfo;
+
+        $this->assertTrue($threeDSecureInfo->liabilityShiftPossible);
+        $this->assertTrue($threeDSecureInfo->liabilityShifted);
+        $this->assertEquals("Y", $threeDSecureInfo->enrolled);
+        $this->assertEquals("authenticate_successful", $threeDSecureInfo->status);
+        $this->assertEquals("xid_value", $threeDSecureInfo->xid);
+        $this->assertEquals("cavv_value", $threeDSecureInfo->cavv);
+        $this->assertEquals("05", $threeDSecureInfo->eciFlag);
+        $this->assertEquals(null, $threeDSecureInfo->dsTransactionId);
+        $this->assertEquals("1.0.2", $threeDSecureInfo->threeDSecureVersion);
+    }
+
     public function testCreateCustomerWithApplePayCard()
     {
         $nonce = Braintree\Test\Nonces::$applePayVisa;

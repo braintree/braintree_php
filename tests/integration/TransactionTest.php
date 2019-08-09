@@ -3306,6 +3306,11 @@ class TransactionTest extends Setup
         $this->assertEquals("authenticate_successful", $info->status);
         $this->assertTrue($info->liabilityShifted);
         $this->assertTrue($info->liabilityShiftPossible);
+        $this->assertEquals("1.0.2", $info->threeDSecureVersion);
+        $this->assertEquals("dstxnid", $info->dsTransactionId);
+        $this->assertEquals("somebase64value", $info->cavv);
+        $this->assertEquals("xidvalue", $info->xid);
+        $this->assertEquals("07", $info->eciFlag);
     }
 
   public function testFindExposesNullThreeDSecureInfo()
@@ -6115,5 +6120,63 @@ class TransactionTest extends Setup
             Braintree\Error\Codes::TRANSACTION_EXTERNAL_VAULT_CARD_TYPE_IS_INVALID,
             $result->errors->forKey('transaction')->forKey('externalVault')->onAttribute('previousNetworkTransactionId')[0]->code
         );
+    }
+
+    public function testPayPalHereDetailsAuthCapture()
+    {
+        $transaction = Braintree\Transaction::find('paypal_here_auth_capture_id');
+        $this->assertEquals($transaction->paymentInstrumentType, Braintree\PaymentInstrumentType::PAYPAL_HERE);
+        $this->assertNotNull($transaction->paypalHereDetails);
+
+        $paypalHereDetails = $transaction->paypalHereDetails;
+        $this->assertNotNull($paypalHereDetails->authorizationId);
+        $this->assertNotNull($paypalHereDetails->captureId);
+        $this->assertNotNull($paypalHereDetails->invoiceId);
+        $this->assertNotNull($paypalHereDetails->last4);
+        $this->assertNotNull($paypalHereDetails->paymentType);
+        $this->assertNotNull($paypalHereDetails->transactionFeeAmount);
+        $this->assertNotNull($paypalHereDetails->transactionFeeCurrencyIsoCode);
+        $this->assertNotNull($paypalHereDetails->transactionInitiationDate);
+        $this->assertNotNull($paypalHereDetails->transactionUpdatedDate);
+    }
+
+    public function testPayPalHereDetailsSale()
+    {
+        $transaction = Braintree\Transaction::find("paypal_here_sale_id");
+        $this->assertNotNull($transaction->paypalHereDetails);
+        $this->assertNotNull($transaction->paypalHereDetails->paymentId);
+    }
+
+    public function testPayPalHereDetailsRefund()
+    {
+        $transaction = Braintree\Transaction::find("paypal_here_refund_id");
+        $this->assertNotNull($transaction->paypalHereDetails);
+        $this->assertNotNull($transaction->paypalHereDetails->refundId);
+    }
+
+    public function testCreateTransactionReturnsNetworkResponse()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            "creditCard" => [
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ],
+            "share" => true
+        ]);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('47.00', $transaction->amount);
+        $this->assertEquals('XX', $transaction->networkResponseCode);
+        $this->assertEquals('sample network response text', $transaction->networkResponseText);
     }
 }
