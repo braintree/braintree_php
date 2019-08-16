@@ -4,6 +4,7 @@
 * Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
 * Add `threeDSecureInfo` to `CreditCardVerification`
 * Add `GraphQLClient` to `BraintreeGateway` class
+* Add `AMOUNT_NOT_SUPPORTED_BY_PROCESSOR` to validation errors
 
 ## 4.2.0
 * Add `captureId` to `LocalPaymentDetails`

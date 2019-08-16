@@ -174,6 +174,30 @@ class TransactionTest extends Setup
       $this->assertEquals('debit', $transaction->creditCard['accountType']);
   }
 
+  public function testCreateErrorsWithAmountNotSupportedByProcessor()
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '0.20',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$hiper,
+              'expirationMonth' => '10',
+              'expirationYear' => '2020',
+              'cvv' => '737',
+          ],
+          'options' => [
+              'submitForSettlement' => true,
+              'creditCard' => [
+                  'accountType' => 'debit'
+            ]
+          ],
+          'merchantAccountId' => 'hiper_brl',
+      ]);
+
+      $this->assertFalse($result->success);
+      $errors = $result->errors->forKey('transaction')->onAttribute('amount');
+      $this->assertEquals(Braintree\Error\Codes::TRANSACTION_AMOUNT_NOT_SUPPORTED_BY_PROCESSOR, $errors[0]->code);
+  }
+
   public function testCreateErrorsWithAccountTypeIsInvalid()
   {
       $result = Braintree\Transaction::sale([
