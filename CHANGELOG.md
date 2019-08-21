@@ -1,3 +1,6 @@
+# unreleased
+* Forward `forwardedComments` to `processorComments`
+
 # 4.3.0
 * Add `PayPalHereDetails` to transactions
 * Add `network_response_code` and `network_response_text` to `Transaction` and `CreditCardVerification`

@@ -23,7 +23,7 @@ class DisputeTest extends Setup
             'currencyIsoCode' => 'USD',
             'dateOpened' => DateTime::createFromFormat('Ymd-His', '20130401-000000'),
             'dateWon' => DateTime::createFromFormat('Ymd-His', '20130402-000000'),
-            'forwardedComments' => 'Forwarded comments',
+            'processorComments' => 'Forwarded comments',
             'id' => '123456',
             'kind' => 'chargeback',
             'merchantAccountId' => 'abc123',
@@ -127,6 +127,7 @@ class DisputeTest extends Setup
         $this->assertEquals("0.00", $dispute->amountWon);
         $this->assertEquals("CB123456", $dispute->caseNumber);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->createdAt);
+        $this->assertEquals("Forwarded comments", $dispute->processorComments);
         $this->assertEquals("Forwarded comments", $dispute->forwardedComments);
         $this->assertEquals("abc123", $dispute->merchantAccountId);
         $this->assertEquals("original_dispute_id", $dispute->originalDisputeId);
