@@ -63,10 +63,6 @@ class Dispute extends Base
     {
         $this->_attributes = $disputeAttribs;
 
-        if (isset($disputeAttribs['processorComments'])) {
-            $this->_set('forwardedComments', $disputeAttribs['processorComments']);
-        }
-
         if (isset($disputeAttribs['transaction'])) {
             $transactionDetails = new Dispute\TransactionDetails($disputeAttribs['transaction']);
             $this->_set('transactionDetails', $transactionDetails);

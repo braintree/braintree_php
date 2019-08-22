@@ -128,7 +128,6 @@ class DisputeTest extends Setup
         $this->assertEquals("CB123456", $dispute->caseNumber);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->createdAt);
         $this->assertEquals("Forwarded comments", $dispute->processorComments);
-        $this->assertEquals("Forwarded comments", $dispute->forwardedComments);
         $this->assertEquals("abc123", $dispute->merchantAccountId);
         $this->assertEquals("original_dispute_id", $dispute->originalDisputeId);
         $this->assertEquals("83", $dispute->reasonCode);
