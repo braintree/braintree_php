@@ -5932,12 +5932,28 @@ class TransactionTest extends Setup
         $this->assertTrue(strlen($transaction->networkTransactionId) > 0);
     }
 
-    public function testNonVisaTransactionDoesNotReceiveNetworkTransactionId()
+    public function testMasterCardTransactionReceivesNetworkTransactionId()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => Braintree\Test\CreditCardNumbers::$masterCard,
+                'expirationDate' => '05/2009',
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+
+        $transaction = $result->transaction;
+        $this->assertTrue(strlen($transaction->networkTransactionId) > 0);
+    }
+
+    public function testAmexTransactionDoesNotReceiveNetworkTransactionId()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
                 'expirationDate' => '05/2009',
             ],
         ]);
@@ -5979,15 +5995,33 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertTrue($result->success);
-        $this->assertNull($result->transaction->networkTransactionId);
+        $this->assertTrue(strlen($result->transaction->networkTransactionId) > 0);
     }
 
-    public function testTransactionExternalVaultNonVisaWorksWithNullPreviousTransactionId()
+    public function testTransactionExternalaultMasterCardWorksWithNullPreviousTransactionId()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => Braintree\Test\CreditCardNumbers::$masterCard,
+                'expirationDate' => '05/2009',
+            ],
+            'externalVault' => [
+                'status' => "will_vault",
+                'previousNetworkTransactionId' => null,
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $this->assertTrue(strlen($result->transaction->networkTransactionId) > 0);
+    }
+
+    public function testTransactionExternalVaultWorksWithNullPreviousTransactionId()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
                 'expirationDate' => '05/2009',
             ],
             'externalVault' => [
@@ -6100,35 +6134,12 @@ class TransactionTest extends Setup
         );
     }
 
-    public function testTransactionExternalVaultValidationErrorInvalidPreviousNetworkTransactionId()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '100.00',
-            'creditCard' => [
-                'number' => Braintree\Test\CreditCardNumbers::$visa,
-                'expirationDate' => '05/2009',
-            ],
-            'externalVault' => [
-                'status' => "vaulted",
-                'previousNetworkTransactionId' => "bad_value",
-            ],
-        ]);
-
-        $this->assertFalse($result->success);
-
-        $transaction = $result->transaction;
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_EXTERNAL_VAULT_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID,
-            $result->errors->forKey('transaction')->forKey('externalVault')->onAttribute('previousNetworkTransactionId')[0]->code
-        );
-    }
-
     public function testTransactionExternalVaultValidationErrorInvalidCardType()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => Braintree\Test\CreditCardNumbers::$masterCard,
+                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
                 'expirationDate' => '05/2009',
             ],
             'externalVault' => [
