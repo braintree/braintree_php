@@ -1,10 +1,13 @@
-# 4.3.0
+## 4.4.0
+* Add `AMOUNT_NOT_SUPPORTED_BY_PROCESSOR` to validation errors
+* Forward `forwardedComments` to `processorComments`
+
+## 4.3.0
 * Add `PayPalHereDetails` to transactions
 * Add `network_response_code` and `network_response_text` to `Transaction` and `CreditCardVerification`
 * Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
 * Add `threeDSecureInfo` to `CreditCardVerification`
 * Add `GraphQLClient` to `BraintreeGateway` class
-* Add `AMOUNT_NOT_SUPPORTED_BY_PROCESSOR` to validation errors
 
 ## 4.2.0
 * Add `captureId` to `LocalPaymentDetails`
