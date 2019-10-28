@@ -93,4 +93,20 @@ class ErrorCollectionTest extends Setup
         $this->assertEquals(false, $result->success);
         $this->assertEquals(4, count($result->errors));
     }
+
+    public function testJsonSerialize()
+    {
+        $result = Braintree\Customer::create([
+            'email' => 'invalid',
+            'creditCard' => [
+                'number' => 'invalid',
+                'expirationDate' => 'invalid',
+                'billingAddress' => [
+                    'countryName' => 'invaild'
+                ]
+            ]
+        ]);
+        $this->assertEquals(false, $result->success);
+        $this->assertJsonStringEqualsJsonString(json_encode($result->errors->deepAll()), json_encode($result->errors));
+    }
 }
