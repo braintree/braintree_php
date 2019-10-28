@@ -1,4 +1,4 @@
-## Unreleased
+## 4.5.0
 * Add `PROCESSOR_DOES_NOT_SUPPORT_MOTO_FOR_CARD_TYPE` to validation errors
 * Make errors JSON serializable (#256 thanks @sebdesign)
 
