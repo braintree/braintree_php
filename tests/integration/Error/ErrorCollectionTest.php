@@ -16,7 +16,7 @@ class ErrorCollectionTest extends Setup
                 'number' => 'invalid',
                 'expirationDate' => 'invalid',
                 'billingAddress' => [
-                    'countryName' => 'invaild'
+                    'countryName' => 'invalid'
                 ]
             ]
         ]);
@@ -32,7 +32,7 @@ class ErrorCollectionTest extends Setup
                 'number' => 'invalid',
                 'expirationDate' => 'invalid',
                 'billingAddress' => [
-                    'countryName' => 'invaild'
+                    'countryName' => 'invalid'
                 ]
             ]
         ]);
@@ -86,7 +86,7 @@ class ErrorCollectionTest extends Setup
                 'number' => 'invalid',
                 'expirationDate' => 'invalid',
                 'billingAddress' => [
-                    'countryName' => 'invaild'
+                    'countryName' => 'invalid'
                 ]
             ]
         ]);
@@ -102,7 +102,7 @@ class ErrorCollectionTest extends Setup
                 'number' => 'invalid',
                 'expirationDate' => 'invalid',
                 'billingAddress' => [
-                    'countryName' => 'invaild'
+                    'countryName' => 'invalid'
                 ]
             ]
         ]);

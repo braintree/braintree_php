@@ -1,3 +1,7 @@
+## 4.5.0
+* Add `PROCESSOR_DOES_NOT_SUPPORT_MOTO_FOR_CARD_TYPE` to validation errors
+* Make errors JSON serializable (#256 thanks @sebdesign)
+
 ## 4.4.0
 * Add `AMOUNT_NOT_SUPPORTED_BY_PROCESSOR` to validation errors
 * Forward `forwardedComments` to `processorComments`
