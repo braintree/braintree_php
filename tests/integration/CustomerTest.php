@@ -280,6 +280,7 @@ class CustomerTest extends Setup
         $this->assertTrue($androidPayCard instanceof Braintree\AndroidPayCard);
         $this->assertNotNull($androidPayCard->token);
         $this->assertNotNull($androidPayCard->expirationYear);
+        $this->assertFalse($androidPayCard->isNetworkTokenized);
     }
 
     public function testCreateCustomerWithAndroidPayNetworkToken()
@@ -296,6 +297,7 @@ class CustomerTest extends Setup
         $this->assertTrue($androidPayCard instanceof Braintree\AndroidPayCard);
         $this->assertNotNull($androidPayCard->token);
         $this->assertNotNull($androidPayCard->expirationYear);
+        $this->assertTrue($androidPayCard->isNetworkTokenized);
     }
 
     public function testCreateCustomerWithAmexExpressCheckoutCard()

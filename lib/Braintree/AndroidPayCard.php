@@ -21,6 +21,7 @@ namespace Braintree;
  * @property-read string $expirationYear
  * @property-read string $googleTransactionId
  * @property-read string $imageUrl
+ * @property-read boolean $isNetworkTokenized
  * @property-read string $last4
  * @property-read string $sourceCardLast4
  * @property-read string $sourceCardType

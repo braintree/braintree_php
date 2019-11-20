@@ -136,6 +136,7 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $androidPayCard->customerId);
+        $this->assertFalse($androidPayCard->isNetworkTokenized);
     }
 
     public function testCreate_fromFakeAndroidPayNetworkTokenNonce()
@@ -161,6 +162,7 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $androidPayCard->customerId);
+        $this->assertTrue($androidPayCard->isNetworkTokenized);
     }
 
     public function testCreate_fromFakeAmexExpressCheckoutCardNonce()
@@ -1109,6 +1111,7 @@ class PaymentMethodTest extends Setup
         $this->assertContains('android_pay', $foundAndroidPayCard->imageUrl);
         $this->assertTrue(intval($foundAndroidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($foundAndroidPayCard->expirationYear) > 0);
+        $this->assertFalse($foundAndroidPayCard->isNetworkTokenized);
     }
 
     public function testFind_returnsAbstractPaymentMethods()

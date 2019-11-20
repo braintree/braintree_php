@@ -1752,6 +1752,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($androidPayCardDetails->payroll);
         $this->assertNotNull($androidPayCardDetails->prepaid);
         $this->assertNotNull($androidPayCardDetails->productId);
+        $this->assertFalse($androidPayCardDetails->isNetworkTokenized);
     }
 
   public function testCreateTransactionUsingFakeAndroidPayNetworkTokenNonce()
@@ -1784,6 +1785,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($androidPayCardDetails->payroll);
         $this->assertNotNull($androidPayCardDetails->prepaid);
         $this->assertNotNull($androidPayCardDetails->productId);
+        $this->assertTrue($androidPayCardDetails->isNetworkTokenized);
     }
 
     public function testCreateTransactionUsingFakeAmexExpressCheckoutNonce()
