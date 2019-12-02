@@ -34,12 +34,17 @@ class PaymentMethodNonceTest extends Setup
 
     public function testFind_exposesPayPalDetails()
     {
-        $foundNonce = Braintree\PaymentMethodNonce::find('fake-google-pay-paypal-nonce');
+        $foundNonce = Braintree\PaymentMethodNonce::find('fake-paypal-one-time-nonce');
         $details = $foundNonce->details;
 
         $this->assertNotNull($details['payerInfo']['firstName']);
         $this->assertNotNull($details['payerInfo']['email']);
         $this->assertNotNull($details['payerInfo']['payerId']);
+
+        $this->assertNotNull($details['cobrandedCardLabel']);
+        $this->assertNotNull($details['shippingAddress']);
+        $this->assertNotNull($details['billingAddress']);
+        $this->assertNotNull($details['shippingOptionId']);
     }
 
     public function testFind_exposesVenmoDetails()
