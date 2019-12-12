@@ -1,4 +1,4 @@
-## 4.6.0
+## unreleased
 * Add support for PHP 7.4
 
 ## 4.5.0
