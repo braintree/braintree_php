@@ -49,7 +49,7 @@ class Customer extends Base
 
     /**
      *
-     * @param string $query
+     * @param array $query
      * @param int[] $ids
      * @return Customer|Customer[]
      */
@@ -148,7 +148,7 @@ class Customer extends Base
     /**
      *
      * @throws InvalidArgumentException
-     * @param string $query
+     * @param array $query
      * @return ResourceCollection
      */
     public static function search($query)
