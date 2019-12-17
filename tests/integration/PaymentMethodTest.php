@@ -1165,6 +1165,36 @@ class PaymentMethodTest extends Setup
         $this->assertSame("06/2013", $updatedCreditCard->expirationDate);
     }
 
+    public function testUpdate_updatesTheCreditCardWith3DSPassThru()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $creditCardResult = Braintree\CreditCard::create([
+            'cardholderName' => 'Original Holder',
+            'customerId' => $customer->id,
+            'cvv' => '123',
+            'number' => Braintree\Test\CreditCardNumbers::$visa,
+            'expirationDate' => "05/2012"
+        ]);
+        $this->assertTrue($creditCardResult->success);
+        $creditCard = $creditCardResult->creditCard;
+
+        $updateResult = Braintree\PaymentMethod::update($creditCard->token, [
+            'threeDSecurePassThru' => [
+                'eciFlag' => '02',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid',
+                'threeDSecureVersion' => '1.0.2',
+                'authenticationResponse' => 'Y',
+                'directoryResponse' => 'Y',
+                'cavvAlgorithm' => '2',
+                'dsTransactionId' => 'validDsTransactionId'
+            ],
+        ]);
+
+        // nothing we can really assert on here other than it was a success
+        $this->assertTrue($updateResult->success);
+    }
+
     public function testUpdate_createsANewBillingAddressByDefault()
     {
         $customer = Braintree\Customer::createNoValidate();

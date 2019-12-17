@@ -164,11 +164,22 @@ class PaymentMethodGateway
                 'updateExisting'
             ]
         ]);
+        $threeDSPassThruSignature = [
+            'authenticationResponse',
+            'cavv',
+            'cavvAlgorithm',
+            'directoryResponse',
+            'dsTransactionId',
+            'eciFlag',
+            'threeDSecureVersion',
+            'xid'
+        ];
         $signature = array_merge(self::baseSignature(), [
             'deviceSessionId',
             'venmoSdkPaymentMethodCode',
             'fraudMerchantId',
-            ['billingAddress' => $billingAddressSignature]
+            ['billingAddress' => $billingAddressSignature],
+            ['threeDSecurePassThru' => $threeDSPassThruSignature]
         ]);
         return $signature;
     }
