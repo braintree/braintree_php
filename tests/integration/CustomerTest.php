@@ -876,6 +876,7 @@ class CustomerTest extends Setup
         $this->assertEquals('419.555.1234', $customer->phone);
         $this->assertEquals('419.555.1235', $customer->fax);
         $this->assertEquals('http://example.com', $customer->website);
+        $this->assertNotNull($customer->graphQLId);
     }
 
     public function test_findCustomerWithAllFilterableAssociationsFilteredOut()

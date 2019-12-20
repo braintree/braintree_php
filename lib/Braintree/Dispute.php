@@ -12,6 +12,7 @@ namespace Braintree;
  * @property-read string $currencyIsoCode
  * @property-read string $disbursementDate
  * @property-read \Braintree\Dispute\EvidenceDetails $evidence
+ * @property-read string $graphQLId
  * @property-read string $id
  * @property-read string $kind
  * @property-read string $merchantAccountId

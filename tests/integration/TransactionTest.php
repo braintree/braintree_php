@@ -3249,6 +3249,7 @@ class TransactionTest extends Setup
         $this->assertEquals('100.00', $transaction->amount);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
         $this->assertEquals('5100', $transaction->creditCardDetails->last4);
+        $this->assertNotNull($transaction->graphQLId);
     }
 
   public function testFindExposesDisbursementDetails()

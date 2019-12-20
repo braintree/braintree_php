@@ -42,6 +42,9 @@ abstract class Base implements JsonSerializable
      */
     public function __get($name)
     {
+        if (isset($this->_attributes['globalId'])) {
+            $this->_attributes['graphQLId'] = $this->_attributes['globalId'];
+        }
         if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
         }

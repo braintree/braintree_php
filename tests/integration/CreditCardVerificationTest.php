@@ -24,6 +24,7 @@ class CreditCardVerificationTest extends Setup
         $this->assertEquals($verification->processorResponseCode, '1000');
         $this->assertEquals($verification->processorResponseText, 'Approved');
         $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
+        $this->assertNotNull($verification->graphQLId);
     }
 
     public function test_createWithUnsuccessfulResponse()
