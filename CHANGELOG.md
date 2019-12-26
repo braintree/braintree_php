@@ -1,4 +1,5 @@
 ## unreleased
+* Add `RefundAuthHardDeclined` and `RefundAuthSoftDeclined` to Transaction errors
 * Add `isNetworkTokenized` to `AndroidPayCard` and `AndroidPayCardDetails`
 * Add GraphQL ID to `CreditCardVerification`, `Customer`, `Dispute`, and `Transaction`
 * Add support for PHP 7.4 (#262 thanks @slt)
