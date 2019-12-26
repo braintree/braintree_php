@@ -1,3 +1,6 @@
+## unreleased - Major
+* Bump API version to support declined refund objects.
+
 ## unreleased
 * Add `RefundAuthHardDeclined` and `RefundAuthSoftDeclined` to Transaction errors
 * Add `isNetworkTokenized` to `AndroidPayCard` and `AndroidPayCardDetails`
