@@ -120,8 +120,11 @@ class ValidationErrorCollection extends Collection
     private function _inspect($errors, $scope = null)
     {
         $eOutput = '[' . __CLASS__ . '/errors:[';
+        $outputErrs = [];
         foreach($errors AS $error => $errorObj) {
-            $outputErrs[] = "({$errorObj->error['code']} {$errorObj->error['message']})";
+            if (is_array($errorObj->error)) {
+                $outputErrs[] = "({$errorObj->error['code']} {$errorObj->error['message']})";
+            }
         }
         $eOutput .= join(', ', $outputErrs) . ']]';
 

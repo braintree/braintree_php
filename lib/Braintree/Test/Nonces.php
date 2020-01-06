@@ -35,7 +35,6 @@ class Nonces
    public static $amexExpressCheckout = "fake-amex-express-checkout-nonce";
    public static $abstractTransactable = "fake-abstract-transactable-nonce";
    public static $europe = "fake-europe-bank-account-nonce";
-   public static $coinbase = "fake-coinbase-nonce";
    public static $transactableVisa = "fake-valid-visa-nonce";
    public static $transactableAmEx = "fake-valid-amex-nonce";
    public static $transactableMasterCard = "fake-valid-mastercard-nonce";
@@ -49,6 +48,7 @@ class Nonces
    public static $transactableHealthcare = "fake-valid-healthcare-nonce";
    public static $transactableDebit = "fake-valid-debit-nonce";
    public static $transactablePayroll = "fake-valid-payroll-nonce";
+   public static $threeDSecureVisaFullAuthenticationNonce = "fake-three-d-secure-visa-full-authentication-nonce";
    public static $transactableNoIndicators = "fake-valid-no-indicators-nonce";
    public static $transactableUnknownIndicators = "fake-valid-unknown-indicators-nonce";
    public static $transactableCountryOfIssuanceUSA = "fake-valid-country-of-issuance-usa-nonce";
@@ -60,9 +60,11 @@ class Nonces
    public static $processorDeclinedDiscover = "fake-processor-declined-discover-nonce";
    public static $processorFailureJCB = "fake-processor-failure-jcb-nonce";
    public static $luhnInvalid = "fake-luhn-invalid-nonce";
+   public static $localPayment = "fake-local-payment-method-nonce";
    public static $paypalFuturePaymentRefreshToken = "fake-paypal-future-refresh-token-nonce";
    public static $sepa = "fake-sepa-bank-account-nonce";
    public static $gatewayRejectedFraud = "fake-gateway-rejected-fraud-nonce";
+   public static $gatewayRejectedTokenIssuance = "fake-token-issuance-error-venmo-account-nonce";
    public static $venmoAccount = "fake-venmo-account-nonce";
    public static $visaCheckoutAmEx = "fake-visa-checkout-amex-nonce";
    public static $visaCheckoutDiscover = "fake-visa-checkout-discover-nonce";

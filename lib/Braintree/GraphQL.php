@@ -4,7 +4,7 @@ namespace Braintree;
 use finfo;
 
 /**
- * Braintree GraphQL Client
+ * Braintree GraphQL service
  * process GraphQL requests using curl
  */
 class GraphQL extends Http
@@ -25,7 +25,7 @@ class GraphQL extends Http
         ];
     }
 
-    public function request($definition, $variables)
+    public function request($definition, $variables = Null)
     {
         $graphQLRequest = ["query" => $definition];
         if ($variables) {

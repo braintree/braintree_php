@@ -8,32 +8,36 @@ use Braintree;
 
 class HttpTest extends Setup
 {
+    public function setupUp(){
+        parent::setupUp();
+
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::sslVersion(null);
+        Braintree\Configuration::acceptGzipEncoding(false);
+    }
+
     public function testProductionSSL()
     {
         try {
             Braintree\Configuration::environment('production');
-            $this->setExpectedException('Braintree\Exception\Authentication');
+            $this->expectException('Braintree\Exception\Authentication');
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->get('/');
         } catch (Braintree\Exception $e) {
-            Braintree\Configuration::environment('development');
             throw $e;
         }
-        Braintree\Configuration::environment('development');
     }
 
     public function testSandboxSSL()
     {
         try {
             Braintree\Configuration::environment('sandbox');
-            $this->setExpectedException('Braintree\Exception\Authentication');
+            $this->expectException('Braintree\Exception\Authentication');
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->get('/');
         } catch (Braintree\Exception $e) {
-            Braintree\Configuration::environment('development');
             throw $e;
         }
-        Braintree\Configuration::environment('development');
     }
 
     public function testSandboxSSLWithExplicitVersionSet()
@@ -41,52 +45,37 @@ class HttpTest extends Setup
         try {
             Braintree\Configuration::environment('sandbox');
             Braintree\Configuration::sslVersion(6);
-            $this->setExpectedException('Braintree\Exception\Authentication');
+            $this->expectException('Braintree\Exception\Authentication');
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->get('/');
         } catch (Braintree\Exception $e) {
-            Braintree\Configuration::environment('development');
-            Braintree\Configuration::sslVersion(null);
             throw $e;
         }
-        Braintree\Configuration::environment('development');
-        Braintree\Configuration::sslVersion(null);
     }
 
     public function testSandboxSSLFailsWithIncompatibleSSLVersion()
     {
-        try {
-            Braintree\Configuration::environment('sandbox');
-            Braintree\Configuration::sslVersion(3);
-            $this->setExpectedException('Braintree\Exception\SSLCertificate', null, 35);
-            $http = new Braintree\Http(Braintree\Configuration::$global);
-            $http->get('/');
-        } catch (Braintree\Exception $e) {
-            Braintree\Configuration::environment('development');
-            Braintree\Configuration::sslVersion(null);
-            throw $e;
-        }
-        Braintree\Configuration::environment('development');
-        Braintree\Configuration::sslVersion(null);
+        $this->expectException('Braintree\Exception\Connection', null, 35);
+
+        Braintree\Configuration::environment('sandbox');
+        Braintree\Configuration::sslVersion(3);
+        $http = new Braintree\Http(Braintree\Configuration::$global);
+        $http->get('/');
     }
 
     public function testSslError()
     {
         try {
             Braintree\Configuration::environment('sandbox');
-            $this->setExpectedException('Braintree\Exception\SSLCertificate', null, 3);
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->_doUrlRequest('get', '/malformed_url');
-        } catch (Braintree\Exception $e) {
-            Braintree\Configuration::environment('development');
-            throw $e;
+        } catch (Braintree\Exception\Connection $e) {
+            $this->assertEquals("<url> malformed", $e->getMessage());
         }
-        Braintree\Configuration::environment('development');
     }
 
     public function testAcceptGzipEncodingSetFalse()
     {
-        $originalGzipEncoding = Braintree\Configuration::acceptGzipEncoding();
         Braintree\Configuration::acceptGzipEncoding(false);
         try {
             $result = Braintree\Customer::create([
@@ -102,15 +91,12 @@ class HttpTest extends Setup
             $customer = $result->customer;
             $this->assertEquals('Mike', $customer->firstName);
         } catch(Braintree\Exception $e) {
-            Braintree\Configuration::acceptGzipEncoding($originalGzipEncoding);
             throw $e;
         }
-        Braintree\Configuration::acceptGzipEncoding($originalGzipEncoding);
     }
 
     public function testAcceptGzipEncodingSetToTrue()
     {
-        $originalGzipEncoding = Braintree\Configuration::acceptGzipEncoding();
         Braintree\Configuration::acceptGzipEncoding(true);
         try {
             $result = Braintree\Customer::create([
@@ -126,10 +112,8 @@ class HttpTest extends Setup
             $customer = $result->customer;
             $this->assertEquals('Mike', $customer->firstName);
         } catch(Braintree\Exception $e) {
-            Braintree\Configuration::acceptGzipEncoding($originalGzipEncoding);
             throw $e;
         }
-        Braintree\Configuration::acceptGzipEncoding($originalGzipEncoding);
     }
 
     public function testAuthorizationWithConfig()

@@ -102,40 +102,6 @@ class CustomerGateway
         $result = $this->create($attribs);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
-    /**
-     * create a customer from a TransparentRedirect operation
-     *
-     * @deprecated since version 2.3.0
-     * @access public
-     * @param array $attribs
-     * @return Customer
-     */
-    public function createFromTransparentRedirect($queryString)
-    {
-        trigger_error("DEPRECATED: Please use TransparentRedirectRequest::confirm", E_USER_NOTICE);
-        $params = TransparentRedirect::parseAndValidateQueryString(
-                $queryString
-                );
-        return $this->_doCreate(
-                '/customers/all/confirm_transparent_redirect_request',
-                ['id' => $params['id']]
-        );
-    }
-
-    /**
-     *
-     * @deprecated since version 2.3.0
-     * @access public
-     * @param none
-     * @return string
-     */
-    public function createCustomerUrl()
-    {
-        trigger_error("DEPRECATED: Please use TransparentRedirectRequest::url", E_USER_NOTICE);
-        return $this->_config->baseUrl() . $this->_config->merchantPath() .
-                '/customers/all/create_via_transparent_redirect_request';
-    }
-
 
     /**
      * creates a full array signature of a valid create request
@@ -202,6 +168,12 @@ class CustomerGateway
                 ['paypal' => [
                     'payee_email',
                     'payeeEmail',
+                    'order_id',
+                    'orderId',
+                    'custom_field',
+                    'customField',
+                    'description',
+                    'amount',
                     ['shipping' =>
                         [
                             'firstName', 'lastName', 'company', 'countryName',
@@ -400,39 +372,6 @@ class CustomerGateway
         $result = $this->update($customerId, $attributes);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
-    /**
-     *
-     * @deprecated since version 2.3.0
-     * @access public
-     * @return string
-     */
-    public function updateCustomerUrl()
-    {
-        trigger_error("DEPRECATED: Please use TransparentRedirectRequest::url", E_USER_NOTICE);
-        return $this->_config->baseUrl() . $this->_config->merchantPath() .
-                '/customers/all/update_via_transparent_redirect_request';
-    }
-
-    /**
-     * update a customer from a TransparentRedirect operation
-     *
-     * @deprecated since version 2.3.0
-     * @access public
-     * @param string $queryString
-     * @return object
-     */
-    public function updateFromTransparentRedirect($queryString)
-    {
-        trigger_error("DEPRECATED: Please use TransparentRedirectRequest::confirm", E_USER_NOTICE);
-        $params = TransparentRedirect::parseAndValidateQueryString(
-                $queryString
-        );
-        return $this->_doUpdate(
-                'post',
-                '/customers/all/confirm_transparent_redirect_request',
-                ['id' => $params['id']]
-        );
-    }
 
     /* instance methods */
 
@@ -468,15 +407,6 @@ class CustomerGateway
         }
         $this->_set('creditCards', $creditCardArray);
 
-        // map each coinbaseAccount into its own object
-        $coinbaseAccountArray = [];
-        if (isset($customerAttribs['coinbaseAccounts'])) {
-            foreach ($customerAttribs['coinbaseAccounts'] AS $coinbaseAccount) {
-                $coinbaseAccountArray[] = CoinbaseAccount::factory($coinbaseAccount);
-            }
-        }
-        $this->_set('coinbaseAccounts', $coinbaseAccountArray);
-
         // map each paypalAccount into its own object
         $paypalAccountArray = [];
         if (isset($customerAttribs['paypalAccounts'])) {
@@ -504,7 +434,7 @@ class CustomerGateway
         }
         $this->_set('androidPayCards', $androidPayCardArray);
 
-        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->coinbaseAccounts, $this->androidPayCards));
+        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->androidPayCards));
     }
 
     /**

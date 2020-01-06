@@ -180,19 +180,10 @@ class ClientTokenTest extends Setup
 
     public function test_GenerateRaisesExceptionOnGateway422()
     {
-        $this->setExpectedException('InvalidArgumentException', 'customer_id');
+        $this->expectException('InvalidArgumentException', 'customer_id');
 
         Braintree\ClientToken::generate([
             "customerId" => "not_a_customer"
-        ]);
-    }
-
-    public function test_ClientTokenRejectsSepaParams()
-    {
-        $this->setExpectedException('InvalidArgumentException', 'sepaMandateType');
-
-        Braintree\ClientToken::generate([
-           "sepaMandateType" => "Business"
         ]);
     }
 }

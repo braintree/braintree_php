@@ -8,11 +8,16 @@ use Braintree;
 
 class HttpTest extends Setup
 {
+    public function setupUp(){
+        parent::setupUp();
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::sslVersion(null);
+    }
+
     public function testMalformedNoSsl()
     {
         try {
-            Braintree\Configuration::environment('development');
-            $this->setExpectedException('Braintree\Exception\Connection', null, 3);
+            $this->expectException('Braintree\Exception\Connection', null, 3);
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->_doUrlRequest('get', '/a_malformed_url');
         } catch (Braintree\Exception $e) {
@@ -24,37 +29,20 @@ class HttpTest extends Setup
     {
         try {
             Braintree\Configuration::environment('sandbox');
-            $this->setExpectedException('Braintree\Exception\SSLCertificate', null, 3);
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->_doUrlRequest('get', '/a_malformed_url_using_ssl');
-        } catch (Braintree\Exception $e) {
-            Braintree\Configuration::environment('development');
-            throw $e;
+        } catch (Braintree\Exception\Connection $e) {
+            $this->assertEquals("<url> malformed", $e->getMessage());
         }
-        Braintree\Configuration::environment('development');
     }
 
-    public function testSSLVersionError()
+    public function testOlderSSLVersionsError()
     {
-        try {
-            Braintree\Configuration::environment('sandbox');
-            Braintree\Configuration::sslVersion(3);
-            $this->setExpectedException('Braintree\Exception\SSLCertificate', null, 35);
-            $http = new Braintree\Http(Braintree\Configuration::$global);
-            $http->get('/');
-        } catch (Braintree\Exception $e) {
-            Braintree\Configuration::environment('development');
-            Braintree\Configuration::sslVersion(null);
-            throw $e;
-        }
-        Braintree\Configuration::environment('development');
-        Braintree\Configuration::sslVersion(null);
-    }
+        $this->expectException('Braintree\Exception\Connection');
 
-    public function testGoodRequest()
-    {
-        Braintree\Configuration::environment('development');
+        Braintree\Configuration::environment('sandbox');
+        Braintree\Configuration::sslVersion(3);
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $http->_doUrlRequest('get', 'http://example.com');
+        $http->get('/');
     }
 }

@@ -60,6 +60,11 @@ class Helper
     {
         return 'three_d_secure_merchant_account';
     }
+    
+    public static function adyenMerchantAccountId()
+    {
+        return 'adyen_ma';
+    }
 
     public static function fakeAmexDirectMerchantAccountId()
     {
@@ -77,37 +82,6 @@ class Helper
 
     public static function anotherUsBankMerchantAccount() {
         return 'another_us_bank_merchant_account';
-    }
-
-    public static function createViaTr($regularParams, $trParams)
-    {
-        $trData = Braintree\TransparentRedirect::transactionData(
-            array_merge($trParams, ["redirectUrl" => "http://www.example.com"])
-        );
-        return self::submitTrRequest(
-            Braintree\TransparentRedirect::url(),
-            $regularParams,
-            $trData
-        );
-    }
-
-    public static function submitTrRequest($url, $regularParams, $trData)
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, false);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($curl, CURLOPT_HEADER, true);
-        // curl_setopt($curl, CURLOPT_VERBOSE, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array_merge($regularParams, ['tr_data' => $trData])));
-        curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/x-www-form-urlencoded'
-        ]);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($curl);
-        curl_close($curl);
-        preg_match('/Location: .*\?(.*)/i', $response, $match);
-        return trim($match[1]);
     }
 
     public static function suppressDeprecationWarnings()
@@ -272,62 +246,14 @@ class Helper
         return $nonce . "_xxx";
     }
 
-    public static function generateValidIdealPaymentId($amount = null) {
-        if (null === $amount) {
-            $amount = '100.00';
-        }
+    public static function sampleNotificationFromXml($xml) {
+        $config = Helper::integrationMerchantGateway()->config;
+        $payload = base64_encode($xml) . "\n";
+        $signature = $config->getPublicKey() . "|" . Braintree\Digest::hexDigestSha1($config->getPrivateKey(), $payload);
 
-        $client_token = json_decode(Helper::decodedClientToken([
-            'merchantAccountId' => 'ideal_merchant_account'
-        ]), true);
-
-        $client = new Integration\HttpClientApi(Braintree\Configuration::$global);
-        $configuration = $client->get_configuration([
-            "authorization_fingerprint" => $client_token['authorizationFingerprint'],
-        ]);
-
-        $url = $client_token['braintree_api']['url'] . '/ideal-payments';
-        $token = $client_token['braintree_api']['access_token'];
-
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($curl, CURLOPT_URL, $url);
-
-        $headers[] = 'Content-Type: application/json';
-        $headers[] = 'Braintree-Version: 2015-11-01';
-        $headers[] = 'Authorization: Bearer ' . $token;
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-
-        $requestBody = [
-            'issuer' => 'RABONL2U',
-            'order_id' => 'ABC123',
-            'amount' => $amount,
-            'currency' => 'EUR',
-            'redirect_url' => 'https://braintree-api.com',
-            'route_id' => $configuration->ideal->routeId,
+        return [
+            'bt_signature' => $signature,
+            'bt_payload' => $payload
         ];
-
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($requestBody));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-        $response = curl_exec($curl);
-        $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $error_code = curl_errno($curl);
-        curl_close($curl);
-        $jsonResponse = json_decode($response, true);
-        return $jsonResponse['data']['id'];
-    }
-
-    public static function generateInvalidIdealPaymentId() {
-        $valid_characters = str_split(self::$valid_nonce_characters);
-        $ideal_payment_id = 'idealpayment';
-        for($i=0; $i<4; $i++) {
-            $ideal_payment_id = $ideal_payment_id . '_';
-            for($j=0; $j<6; $j++) {
-                $t = rand(0, sizeof($valid_characters)-1);
-                $ideal_payment_id = $ideal_payment_id . $valid_characters[$t];
-            }
-        }
-        return $ideal_payment_id . "_xxx";
     }
 }

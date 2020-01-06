@@ -1,3 +1,87 @@
+## unreleased
+* Add support for PHP 7.4
+
+## 4.5.0
+* Add `PROCESSOR_DOES_NOT_SUPPORT_MOTO_FOR_CARD_TYPE` to validation errors
+* Make errors JSON serializable (#256 thanks @sebdesign)
+
+## 4.4.0
+* Add `AMOUNT_NOT_SUPPORTED_BY_PROCESSOR` to validation errors
+* Forward `forwardedComments` to `processorComments`
+
+## 4.3.0
+* Add `PayPalHereDetails` to transactions
+* Add `network_response_code` and `network_response_text` to `Transaction` and `CreditCardVerification`
+* Add `xid`, `cavv`, `eciFlag`, `dsTransactionId`, and `threeDSecureVersion` to `ThreeDSecureInfo`
+* Add `threeDSecureInfo` to `CreditCardVerification`
+* Add `GraphQLClient` to `BraintreeGateway` class
+
+## 4.2.0
+* Add `captureId` to `LocalPaymentDetails`
+* Add `debugId` to `LocalPaymentDetails`
+* Add `refundId` to `LocalPaymentDetails`
+* Add `transactionFeeAmount` to `LocalPaymentDetails`
+* Add `transactionFeeCurrencyIsoCode` to `LocalPaymentDetails`
+* Add `refundFromTransactionFeeAmount` to `LocalPaymentDetails`
+* Add `refundFromTransactionFeeCurrencyIsoCode` to `LocalPaymentDetails`
+* Add `threeDSecureVersion`, `authenticationResponse`, `directoryResponse`, `cavvAlgorithm` and `dsTransactionId` to 3DS pass thru fields
+* Add `payerInfo` to `PaymentMethodNonce` details
+* Add `roomTax` field to Transaction sale
+* Add `noShow` field to Transaction sale
+* Add `advancedDeposit` field to Transaction sale
+* Add `fireSafe` field to Transaction sale
+* Add `propertyPhone` field to Transaction sale
+* Add `additionalCharges` field to Transaction sale
+* Add `PostalCodeIsRequiredForCardBrandAndProcessor` to validation errors
+
+## 4.1.0
+* Add `revokedAt` field to `PayPalAccount`
+* Add support for `PAYMENT_METHOD_REVOKED_BY_CUSTOMER` webhook
+* Add `payment_method_nonce` field to `LocalPaymentCompleted` webhook
+* Add `transaction` field to `LocalPaymentCompleted` webhook
+* Add `localPaymentDetail` to transactions
+* Add `TOKEN_ISSUANCE` gatewayRejectionReason enum to `Transaction`
+
+## 4.0.0
+* Add support for PHP 7 (Thanks to @briandotdev)
+* Remove support for HHVM and PHP 5
+* Update to PHPUnit 7
+* Remove deprecated `GRANTED_PAYMENT_INSTRUMENT_UPDATE`
+* Remove deprecated Coinbase payment method
+* Remove deprecated iDEAL payment method
+* Remove deprecated `MerchantAccountGateway` creation with `applicantDetails`. Please use `individual`, `business`, and `funding`.
+* When a `Customer` is created, the `customFields` property is always an array rather than potentially `null`.
+* Remove Transparent Redirect
+* Remove `riskData`, `applePay`, `applePayCard`, `threeDSecure`, and `venmo.profileId` snakecase attributes
+* HTTPS requests throw an `SSLCertificate` exception when related to SSL, otherwise a `Connection` exception is thrown.
+* Rename `DownForMaintence` Exception to `ServiceUnavailable`. Throw `Timeout` exception for transaction search errors instead of `DownForMaintenance`.
+* Add `RequestTimeout` and `GatewayTimeout` exceptions.
+* Add `revokedAt` field to `PayPalAccount`
+* Add support for `PAYMENT_METHOD_REVOKED_BY_CUSTOMER` webhook
+
+## 3.40.0
+* Deprecate `GRANTED_PAYMENT_INSTRUMENT_UPDATE` and add `GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD` and `RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD`
+* Add `accountType` field to `TransactionGateway`, `CreditCardGateway`, `PaymentMethodGateway`, and `CreditCardVerification`.
+* Add Hiper and Hipercard test numbers.
+* Add `refundFromTransactionFeeAmount` field to `PayPalDetails`
+* Add `refundFromTransactionFeeCurrencyIsoCode` field to `PayPalDetails`
+
+## 3.39.0
+* Add `bin` field to `paymentMethodNonceDetails`
+* Add Error indicating pdf uploads too long for dispute evidence.
+* Add `GrantedPaymentMethodRevoked` webhook response objects
+
+## 3.38.0
+* Add `fraudServiceProvider` field in `riskData`
+* Fix issue where merchant reporting calls would throw an exception in PHP 7 (#236)
+
+## 3.37.0
+* Add `processorResponseType` to `Transaction`, `AuthorizationAdjustment`, and `CreditCardVerification`.
+* Add `authorizationExpiresAt` to `Transaction`
+* Add support for additional PayPal options when vaulting a PayPal Order during customer update
+* Allow PayPal payment ID and payer ID to be passed during transaction create
+* Add `travel_flight` support to industry-specific data
+
 ## 3.36.0
 * Fix dispute results in transactions not showing the correct status sometimes
 * Add `externalVault` option to transaction sale

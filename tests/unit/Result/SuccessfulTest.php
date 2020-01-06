@@ -8,13 +8,13 @@ use Braintree;
 
 class SuccessfulTest extends Setup
 {
-     /**
-     * @expectedException        PHPUnit_Framework_Error_Notice
-     * @expectedExceptionMessage Undefined property on Braintree\Result\Successful: notAProperty
-     */
     public function testCallingNonExsitingFieldReturnsNull()
     {
+        $this->expectException('PHPUnit\Framework\Error\Notice');
+        $this->expectExceptionMessage('Undefined property on Braintree\Result\Successful: notAProperty');
+
         $result = new Braintree\Result\Successful(1, 'transaction');
+
         $this->assertNotNull($result->transaction);
         $this->assertNull($result->notAProperty);
     }

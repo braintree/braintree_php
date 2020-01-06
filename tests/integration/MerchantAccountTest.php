@@ -9,29 +9,6 @@ use Braintree;
 
 class MerchantAccountTest extends Setup
 {
-    private static $deprecatedValidParams = [
-      'applicantDetails' => [
-        'companyName' => "Robot City",
-        'firstName' => "Joe",
-        'lastName' => "Bloggs",
-        'email' => "joe@bloggs.com",
-        'phone' => "555-555-5555",
-        'address' => [
-          'streetAddress' => "123 Credibility St.",
-          'postalCode' => "60606",
-          'locality' => "Chicago",
-          'region' => "IL",
-        ],
-        'dateOfBirth' => "10/9/1980",
-        'ssn' => "123-00-1234",
-        'taxId' => "123456789",
-        'routingNumber' => "122100024",
-        'accountNumber' => "43759348798"
-      ],
-      'tosAccepted' => true,
-      'masterMerchantAccountId' => "sandbox_master_merchant_account"
-    ];
-
     private static $validParams = [
       'individual' => [
         'firstName' => "Joe",
@@ -86,20 +63,10 @@ class MerchantAccountTest extends Setup
         $this->assertEquals("sandbox_master_merchant_account", $merchantAccount->masterMerchantAccount->id);
     }
 
-    public function testCreateWithDeprecatedParameters()
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $result = Braintree\MerchantAccount::create(self::$deprecatedValidParams);
-        $this->assertEquals(true, $result->success);
-        $merchantAccount = $result->merchantAccount;
-        $this->assertEquals(Braintree\MerchantAccount::STATUS_PENDING, $merchantAccount->status);
-        $this->assertEquals("sandbox_master_merchant_account", $merchantAccount->masterMerchantAccount->id);
-    }
-
     public function testCreateWithId()
     {
         $rand = rand(1, 1000);
-        $subMerchantAccountId = "sub_merchant_account_id" + $rand;
+        $subMerchantAccountId = "sub_merchant_account_id".$rand;
         $validParamsWithId = array_merge([], self::$validParams);
         $validParamsWithId['id'] = $subMerchantAccountId;
         $result = Braintree\MerchantAccount::create($validParamsWithId);
@@ -107,7 +74,7 @@ class MerchantAccountTest extends Setup
         $merchantAccount = $result->merchantAccount;
         $this->assertEquals(Braintree\MerchantAccount::STATUS_PENDING, $merchantAccount->status);
         $this->assertEquals("sandbox_master_merchant_account", $merchantAccount->masterMerchantAccount->id);
-        $this->assertEquals("sub_merchant_account_id" + $rand, $merchantAccount->id);
+        $this->assertEquals("sub_merchant_account_id".$rand, $merchantAccount->id);
     }
 
     public function testFailedCreate()
@@ -162,7 +129,7 @@ class MerchantAccountTest extends Setup
 
     public function testFind_throwsIfNotFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'merchant account with id does-not-exist not found');
+        $this->expectException('Braintree\Exception\NotFound', 'merchant account with id does-not-exist not found');
         Braintree\MerchantAccount::find('does-not-exist');
     }
 

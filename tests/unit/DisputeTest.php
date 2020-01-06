@@ -11,7 +11,9 @@ class DisputeTest extends Setup
 {
     private $attributes;
 
-    public function __construct() {
+    public function setUp() {
+        parent::setUp();
+
         $this->attributes = [
             'amount' => '100.00',
             'amountDisputed' => '100.00',
@@ -21,7 +23,7 @@ class DisputeTest extends Setup
             'currencyIsoCode' => 'USD',
             'dateOpened' => DateTime::createFromFormat('Ymd-His', '20130401-000000'),
             'dateWon' => DateTime::createFromFormat('Ymd-His', '20130402-000000'),
-            'forwardedComments' => 'Forwarded comments',
+            'processorComments' => 'Forwarded comments',
             'id' => '123456',
             'kind' => 'chargeback',
             'merchantAccountId' => 'abc123',
@@ -94,7 +96,6 @@ class DisputeTest extends Setup
         $this->assertEquals('USD', $dispute->currencyIsoCode);
         $this->assertEquals(Braintree\Dispute::FRAUD, $dispute->reason);
         $this->assertEquals(Braintree\Dispute::OPEN, $dispute->status);
-        $this->assertEquals(Braintree\Dispute::Open, $dispute->status);
         $this->assertEquals('transaction_id', $dispute->transactionDetails->id);
         $this->assertEquals('100.00', $dispute->transactionDetails->amount);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-000410'), $dispute->dateOpened);
@@ -110,7 +111,6 @@ class DisputeTest extends Setup
         $this->assertEquals('100.00', $dispute->amount);
         $this->assertEquals('USD', $dispute->currencyIsoCode);
         $this->assertEquals(Braintree\Dispute::FRAUD, $dispute->reason);
-        $this->assertEquals(Braintree\Dispute::Open, $dispute->status);
         $this->assertEquals(Braintree\Dispute::OPEN, $dispute->status);
         $this->assertEquals('transaction_id', $dispute->transactionDetails->id);
         $this->assertEquals('100.00', $dispute->transactionDetails->amount);
@@ -127,7 +127,7 @@ class DisputeTest extends Setup
         $this->assertEquals("0.00", $dispute->amountWon);
         $this->assertEquals("CB123456", $dispute->caseNumber);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->createdAt);
-        $this->assertEquals("Forwarded comments", $dispute->forwardedComments);
+        $this->assertEquals("Forwarded comments", $dispute->processorComments);
         $this->assertEquals("abc123", $dispute->merchantAccountId);
         $this->assertEquals("original_dispute_id", $dispute->originalDisputeId);
         $this->assertEquals("83", $dispute->reasonCode);
@@ -188,49 +188,49 @@ class DisputeTest extends Setup
 
     public function testAcceptNullRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
         Braintree\Dispute::accept(null);
     }
 
 	public function testAcceptEmptyIdRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
         Braintree\Dispute::accept(" ");
     }
 
 	public function testAddTextEvidenceEmptyIdRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
         Braintree\Dispute::addTextEvidence(" ", "evidence");
     }
 
 	public function testAddTextEvidenceNullIdRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
         Braintree\Dispute::addTextEvidence(null, "evidence");
     }
 
 	public function testAddTextEvidenceEmptyEvidenceRaisesValueException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'content cannot be blank');
+        $this->expectException('InvalidArgumentException', 'content cannot be blank');
 
         Braintree\Dispute::addTextEvidence("disputeId", " ");
     }
 
 	public function testAddTextEvidenceNullEvidenceRaisesValueException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'content cannot be blank');
+        $this->expectException('InvalidArgumentException', 'content cannot be blank');
 
         Braintree\Dispute::addTextEvidence("disputeId", null);
     }
 
 	public function testAddTextEvidenceBlankRequestContentRaisesValueException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'content cannot be blank');
+        $this->expectException('InvalidArgumentException', 'content cannot be blank');
 
         Braintree\Dispute::addTextEvidence("disputeId",
             [
@@ -243,7 +243,7 @@ class DisputeTest extends Setup
 
 	public function testAddTextEvidenceNullRequestContentRaisesValueException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'content cannot be blank');
+        $this->expectException('InvalidArgumentException', 'content cannot be blank');
 
         Braintree\Dispute::addTextEvidence("disputeId",
             [
@@ -256,7 +256,7 @@ class DisputeTest extends Setup
 
 	public function testAddTextEvidenceBlankRequestCategoryRaisesValueException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'category cannot be blank');
+        $this->expectException('InvalidArgumentException', 'category cannot be blank');
 
         Braintree\Dispute::addTextEvidence("disputeId",
             [
@@ -269,7 +269,7 @@ class DisputeTest extends Setup
 
 	public function testAddTextEvidenceBlankRequestSequenceNumberRaisesValueException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'sequenceNumber cannot be blank');
+        $this->expectException('InvalidArgumentException', 'sequenceNumber cannot be blank');
 
         Braintree\Dispute::addTextEvidence("disputeId",
             [
@@ -282,7 +282,7 @@ class DisputeTest extends Setup
 
 	public function testAddTextEvidenceNonIntegerNumberRequestSequenceNumberRaisesValueException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'sequenceNumber must be an int');
+        $this->expectException('InvalidArgumentException', 'sequenceNumber must be an int');
 
         Braintree\Dispute::addTextEvidence("disputeId",
             [
@@ -295,7 +295,7 @@ class DisputeTest extends Setup
 
 	public function testAddTextEvidenceNonIntegerStringRequestSequenceNumberRaisesValueException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'sequenceNumber must be an int');
+        $this->expectException('InvalidArgumentException', 'sequenceNumber must be an int');
 
         Braintree\Dispute::addTextEvidence("disputeId",
             [
@@ -308,35 +308,35 @@ class DisputeTest extends Setup
 
     public function testAddFileEvidenceEmptyIdRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
         Braintree\Dispute::addFileEvidence(" ", 1);
     }
 
     public function testAddFileEvidenceNullIdRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
         Braintree\Dispute::addFileEvidence(null, 1);
     }
 
     public function testAddFileEvidenceEmptyEvidenceRaisesValueException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'document with id " " not found');
+        $this->expectException('Braintree\Exception\NotFound', 'document with id " " not found');
 
         Braintree\Dispute::addFileEvidence("disputeId", " ");
     }
 
     public function testAddFileEvidenceNullEvidenceRaisesValueException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'document with id "" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'document with id "" not found');
 
         Braintree\Dispute::addFileEvidence("disputeId", null);
     }
 
     public function testAddFileEvidenceBlankRequestContentRaisesValueException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'document with id " " not found');
+        $this->expectException('Braintree\Exception\NotFound', 'document with id " " not found');
 
         Braintree\Dispute::addFileEvidence("disputeId",
             [
@@ -348,7 +348,7 @@ class DisputeTest extends Setup
 
     public function testAddFileEvidenceNullRequestContentRaisesValueException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'document with id "" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'document with id "" not found');
 
         Braintree\Dispute::addFileEvidence("disputeId",
             [
@@ -360,7 +360,7 @@ class DisputeTest extends Setup
 
     public function testAddFileEvidenceBlankRequestCategoryRaisesValueException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'category cannot be blank');
+        $this->expectException('InvalidArgumentException', 'category cannot be blank');
 
         Braintree\Dispute::addFileEvidence("disputeId",
             [
@@ -372,56 +372,56 @@ class DisputeTest extends Setup
 
 	public function testFinalizeNullRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
         Braintree\Dispute::finalize(null);
     }
 
 	public function testFinalizeEmptyIdRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
         Braintree\Dispute::finalize(" ");
     }
 
 	public function testFindingNullRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id "" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id "" not found');
 
         Braintree\Dispute::find(null);
     }
 
 	public function testFindingEmptyIdRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'dispute with id " " not found');
+        $this->expectException('Braintree\Exception\NotFound', 'dispute with id " " not found');
 
         Braintree\Dispute::find(" ");
     }
 
 	public function testRemoveEvidenceEmptyDisputeIdRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id "evidence" for dispute with id " " not found');
+        $this->expectException('Braintree\Exception\NotFound', 'evidence with id "evidence" for dispute with id " " not found');
 
         Braintree\Dispute::removeEvidence(" ", "evidence");
     }
 
 	public function testRemoveEvidenceNullDisputeIdRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id "evidence" for dispute with id "" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'evidence with id "evidence" for dispute with id "" not found');
 
         Braintree\Dispute::removeEvidence(null, "evidence");
     }
 
 	public function testRemoveEvidenceEvidenceNullIdRaisesNotFoundException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id "" for dispute with id "dispute_id" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'evidence with id "" for dispute with id "dispute_id" not found');
 
         Braintree\Dispute::removeEvidence("dispute_id", null);
     }
 
 	public function testRemoveEvidenceEmptyEvidenceIdRaisesValueException()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound', 'evidence with id " " for dispute with id "dispute_id" not found');
+        $this->expectException('Braintree\Exception\NotFound', 'evidence with id " " for dispute with id "dispute_id" not found');
 
         Braintree\Dispute::removeEvidence("dispute_id", " ");
     }

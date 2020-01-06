@@ -30,6 +30,7 @@ class PayPalAccountTest extends Setup
         $this->assertSame('jane.doe@example.com', $foundPayPalAccount->email);
         $this->assertSame($paymentMethodToken, $foundPayPalAccount->token);
         $this->assertNotNull($foundPayPalAccount->imageUrl);
+        $this->assertNull($foundPayPalAccount->revokedAt);
     }
 
     public function testGatewayFind()
@@ -75,7 +76,7 @@ class PayPalAccountTest extends Setup
         ]);
         $this->assertTrue($result->success);
 
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PayPalAccount::find($creditCardToken);
     }
 
@@ -108,19 +109,19 @@ class PayPalAccountTest extends Setup
 
     public function testFind_throwsIfCannotBeFound()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PayPalAccount::find('invalid-token');
     }
 
     public function testFind_throwsUsefulErrorMessagesWhenEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException', 'expected paypal account id to be set');
+        $this->expectException('InvalidArgumentException', 'expected paypal account id to be set');
         Braintree\PayPalAccount::find('');
     }
 
     public function testFind_throwsUsefulErrorMessagesWhenInvalid()
     {
-        $this->setExpectedException('InvalidArgumentException', '@ is an invalid paypal account token');
+        $this->expectException('InvalidArgumentException', '@ is an invalid paypal account token');
         Braintree\PayPalAccount::find('@');
     }
 
@@ -189,7 +190,7 @@ class PayPalAccountTest extends Setup
         $this->assertTrue($updateResult->success);
         $this->assertEquals($newToken, $updateResult->paypalAccount->token);
 
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PayPalAccount::find($originalToken);
 
     }
@@ -286,7 +287,7 @@ class PayPalAccountTest extends Setup
 
         Braintree\PayPalAccount::delete($paymentMethodToken);
 
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PayPalAccount::find($paymentMethodToken);
     }
 

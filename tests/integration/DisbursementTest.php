@@ -33,7 +33,7 @@ class DisbursementTest extends Setup
         $transactions = $disbursement->transactions();
 
         $this->assertNotNull($transactions);
-        $this->assertEquals(sizeOf($transactions), 1);
+        $this->assertEquals($transactions->maximumCount(), 1);
         $this->assertEquals($transactions->firstItem()->id, 'sub_merchant_transaction');
     }
 }

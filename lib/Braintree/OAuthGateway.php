@@ -111,14 +111,5 @@ class OAuthGateway
 
         return $this->_config->baseUrl() . '/oauth/connect?' . $queryString;
     }
-
-    /**
-     * @deprecated since version 3.26.1
-     */
-    public function computeSignature($url)
-    {
-        $key = hash('sha256', $this->_config->getClientSecret(), true);
-        return hash_hmac('sha256', $url, $key);
-    }
 }
 class_alias('Braintree\OAuthGateway', 'Braintree_OAuthGateway');

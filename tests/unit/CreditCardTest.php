@@ -11,14 +11,14 @@ class CreditCardTest extends Setup
 {
     public function testGet_givesErrorIfInvalidProperty()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error', 'Undefined property on Braintree\CreditCard: foo');
+        $this->expectException('PHPUnit\Framework\Error\Error', 'Undefined property on Braintree\CreditCard: foo');
         $cc = Braintree\CreditCard::factory([]);
         $cc->foo;
     }
 
     public function testCreate_throwsIfInvalidKey()
     {
-        $this->setExpectedException('InvalidArgumentException', 'invalid keys: invalidKey');
+        $this->expectException('InvalidArgumentException', 'invalid keys: invalidKey');
         Braintree\CreditCard::create(['invalidKey' => 'foo']);
     }
 
@@ -43,7 +43,7 @@ class CreditCardTest extends Setup
             'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
             'deviceData', 'fraudMerchantId', 'paymentMethodNonce',
-            ['options' => ['makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'venmoSdkSession', 'failOnDuplicatePaymentMethod']],
+            ['options' => ['makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'verificationAccountType', 'venmoSdkSession', 'failOnDuplicatePaymentMethod']],
             [
                 'billingAddress' => [
                     'firstName',
@@ -77,6 +77,7 @@ class CreditCardTest extends Setup
                     'verificationMerchantAccountId',
                     'verifyCard',
                     'verificationAmount',
+                    'verificationAccountType',
                     'venmoSdkSession',
                     'failOnDuplicatePaymentMethod',
                 ]
@@ -108,19 +109,19 @@ class CreditCardTest extends Setup
 
     public function testErrorsOnFindWithBlankArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\CreditCard::find('');
     }
 
     public function testErrorsOnFindWithWhitespaceArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\CreditCard::find('  ');
     }
 
     public function testErrorsOnFindWithWhitespaceCharacterArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Braintree\CreditCard::find('\t');
     }
 

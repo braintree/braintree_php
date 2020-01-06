@@ -1,6 +1,11 @@
 <?php
 namespace Braintree;
 
+/**
+ * @property-read string $oauthApplicationClientId
+ * @property-read string $oauthApplicationName
+ * @property-read string $sourcePaymentMethodToken
+ */
 class FacilitatorDetails extends Base
 {
     public static function factory($attributes)

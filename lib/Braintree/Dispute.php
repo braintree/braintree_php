@@ -8,12 +8,26 @@ namespace Braintree;
  * @package    Braintree
  *
  * @property-read string $amount
+ * @property-read \DateTime $createdAt
  * @property-read string $currencyIsoCode
- * @property-read date   $receivedDate
- * @property-read string $reason
- * @property-read string $status
  * @property-read string $disbursementDate
- * @property-read object $transactionDetails
+ * @property-read \Braintree\Dispute\EvidenceDetails $evidence
+ * @property-read string $id
+ * @property-read string $kind
+ * @property-read string $merchantAccountId
+ * @property-read string $originalDisputeId
+ * @property-read string $processorComments
+ * @property-read string $reason
+ * @property-read string $reasonCode
+ * @property-read string $reasonDescription
+ * @property-read \DateTime $receivedDate
+ * @property-read string $referenceNumber
+ * @property-read \DateTime $replyByDate
+ * @property-read string $status
+ * @property-read \Braintree\Dispute\StatusHistoryDetails[] $statusHistory
+ * @property-read \Braintree\Dispute\TransactionDetails $transaction
+ * @property-read \Braintree\Dispute\TransactionDetails $transactionDetails
+ * @property-read \DateTime $updatedAt
  */
 class Dispute extends Base
 {
@@ -26,9 +40,6 @@ class Dispute extends Base
     const OPEN  = 'open';
     const WON  = 'won';
     const LOST = 'lost';
-
-    /* deprecated; for backwards compatibilty */
-    const Open  = 'open';
 
     /* Dispute Reason */
     const CANCELLED_RECURRING_TRANSACTION = "cancelled_recurring_transaction";

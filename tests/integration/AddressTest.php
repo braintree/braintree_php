@@ -94,7 +94,7 @@ class AddressTest extends Setup
 
     public function testCreate_withNotFoundErrors()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound','Customer nonExistentCustomerId not found.');
+        $this->expectException('Braintree\Exception\NotFound','Customer nonExistentCustomerId not found.');
         $result = Braintree\Address::create([
             'customerId' => 'nonExistentCustomerId',
         ]);
@@ -129,7 +129,7 @@ class AddressTest extends Setup
     public function testCreateNoValidate_withValidationErrors()
     {
         $customer = Braintree\Customer::createNoValidate();
-        $this->setExpectedException('Braintree\Exception\ValidationsFailed');
+        $this->expectException('Braintree\Exception\ValidationsFailed');
         Braintree\Address::createNoValidate([
             'customerId' => $customer->id,
             'countryName' => 'Invalid States of America'
@@ -145,7 +145,7 @@ class AddressTest extends Setup
         ]);
         Braintree\Address::find($customer->id, $address->id);
         Braintree\Address::delete($customer->id, $address->id);
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\Address::find($customer->id, $address->id);
     }
 
@@ -180,7 +180,7 @@ class AddressTest extends Setup
     public function testFind_whenNotFound()
     {
         $customer = Braintree\Customer::createNoValidate();
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\Address::find($customer->id, 'does-not-exist');
     }
 

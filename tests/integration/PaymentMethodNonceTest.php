@@ -28,8 +28,28 @@ class PaymentMethodNonceTest extends Setup
 
     public function testCreate_fromNonExistentPaymentMethodToken()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PaymentMethodNonce::create('not_a_token');
+    }
+
+    public function testFind_exposesPayPalDetails()
+    {
+        $foundNonce = Braintree\PaymentMethodNonce::find('fake-google-pay-paypal-nonce');
+        $details = $foundNonce->details;
+
+        $this->assertNotNull($details['payerInfo']['firstName']);
+        $this->assertNotNull($details['payerInfo']['email']);
+        $this->assertNotNull($details['payerInfo']['payerId']);
+    }
+
+    public function testFind_exposesVenmoDetails()
+    {
+        $foundNonce = Braintree\PaymentMethodNonce::find('fake-venmo-account-nonce');
+        $details = $foundNonce->details;
+
+        $this->assertEquals('99', $details['lastTwo']);
+        $this->assertEquals('venmojoe', $details['username']);
+        $this->assertEquals('Venmo-Joe-1', $details['venmoUserId']);
     }
 
     public function testFind_exposesThreeDSecureInfo()
@@ -51,6 +71,12 @@ class PaymentMethodNonceTest extends Setup
         $this->assertEquals('authenticate_successful', $info->status);
         $this->assertTrue($info->liabilityShifted);
         $this->assertTrue($info->liabilityShiftPossible);
+    }
+
+    public function testFind_returnsBin()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableVisa);
+        $this->assertEquals("401288", $nonce->details["bin"]);
     }
 
     public function testFind_exposesBinData()
@@ -162,7 +188,7 @@ class PaymentMethodNonceTest extends Setup
 
     public function testFind_nonExistantNonce()
     {
-        $this->setExpectedException('Braintree\Exception\NotFound');
+        $this->expectException('Braintree\Exception\NotFound');
         Braintree\PaymentMethodNonce::find('not_a_nonce');
     }
 }
