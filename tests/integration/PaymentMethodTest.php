@@ -136,6 +136,7 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $androidPayCard->customerId);
+        $this->assertFalse($androidPayCard->isNetworkTokenized);
     }
 
     public function testCreate_fromFakeAndroidPayNetworkTokenNonce()
@@ -161,6 +162,7 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $androidPayCard->customerId);
+        $this->assertTrue($androidPayCard->isNetworkTokenized);
     }
 
     public function testCreate_fromFakeAmexExpressCheckoutCardNonce()
@@ -1109,6 +1111,7 @@ class PaymentMethodTest extends Setup
         $this->assertContains('android_pay', $foundAndroidPayCard->imageUrl);
         $this->assertTrue(intval($foundAndroidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($foundAndroidPayCard->expirationYear) > 0);
+        $this->assertFalse($foundAndroidPayCard->isNetworkTokenized);
     }
 
     public function testFind_returnsAbstractPaymentMethods()
@@ -1160,6 +1163,36 @@ class PaymentMethodTest extends Setup
         $this->assertSame(substr(Braintree\Test\CreditCardNumbers::$masterCard, 0, 6), $updatedCreditCard->bin);
         $this->assertSame(substr(Braintree\Test\CreditCardNumbers::$masterCard, -4), $updatedCreditCard->last4);
         $this->assertSame("06/2013", $updatedCreditCard->expirationDate);
+    }
+
+    public function testUpdate_updatesTheCreditCardWith3DSPassThru()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $creditCardResult = Braintree\CreditCard::create([
+            'cardholderName' => 'Original Holder',
+            'customerId' => $customer->id,
+            'cvv' => '123',
+            'number' => Braintree\Test\CreditCardNumbers::$visa,
+            'expirationDate' => "05/2012"
+        ]);
+        $this->assertTrue($creditCardResult->success);
+        $creditCard = $creditCardResult->creditCard;
+
+        $updateResult = Braintree\PaymentMethod::update($creditCard->token, [
+            'threeDSecurePassThru' => [
+                'eciFlag' => '02',
+                'cavv' => 'some_cavv',
+                'xid' => 'some_xid',
+                'threeDSecureVersion' => '1.0.2',
+                'authenticationResponse' => 'Y',
+                'directoryResponse' => 'Y',
+                'cavvAlgorithm' => '2',
+                'dsTransactionId' => 'validDsTransactionId'
+            ],
+        ]);
+
+        // nothing we can really assert on here other than it was a success
+        $this->assertTrue($updateResult->success);
     }
 
     public function testUpdate_createsANewBillingAddressByDefault()

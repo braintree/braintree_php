@@ -1,5 +1,8 @@
-## unreleased
-* Add support for PHP 7.4
+## 4.6.0
+* Add `isNetworkTokenized` to `AndroidPayCard` and `AndroidPayCardDetails`
+* Add GraphQL ID to `CreditCardVerification`, `Customer`, `Dispute`, and `Transaction`
+* Add support for PHP 7.4 (#262 thanks @slt)
+* Add `threeDSecurePassThru` params to PaymentMethod update
 
 ## 4.5.0
 * Add `PROCESSOR_DOES_NOT_SUPPORT_MOTO_FOR_CARD_TYPE` to validation errors

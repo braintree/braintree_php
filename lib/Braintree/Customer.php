@@ -23,6 +23,7 @@ namespace Braintree;
  * @property-read string $email
  * @property-read string $fax
  * @property-read string $firstName
+ * @property-read string $graphQLId
  * @property-read string $id
  * @property-read string $lastName
  * @property-read \Braintree\MasterpassCard[] $masterpassCards

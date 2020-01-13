@@ -280,6 +280,7 @@ class CustomerTest extends Setup
         $this->assertTrue($androidPayCard instanceof Braintree\AndroidPayCard);
         $this->assertNotNull($androidPayCard->token);
         $this->assertNotNull($androidPayCard->expirationYear);
+        $this->assertFalse($androidPayCard->isNetworkTokenized);
     }
 
     public function testCreateCustomerWithAndroidPayNetworkToken()
@@ -296,6 +297,7 @@ class CustomerTest extends Setup
         $this->assertTrue($androidPayCard instanceof Braintree\AndroidPayCard);
         $this->assertNotNull($androidPayCard->token);
         $this->assertNotNull($androidPayCard->expirationYear);
+        $this->assertTrue($androidPayCard->isNetworkTokenized);
     }
 
     public function testCreateCustomerWithAmexExpressCheckoutCard()
@@ -874,6 +876,7 @@ class CustomerTest extends Setup
         $this->assertEquals('419.555.1234', $customer->phone);
         $this->assertEquals('419.555.1235', $customer->fax);
         $this->assertEquals('http://example.com', $customer->website);
+        $this->assertNotNull($customer->graphQLId);
     }
 
     public function test_findCustomerWithAllFilterableAssociationsFilteredOut()

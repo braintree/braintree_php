@@ -64,7 +64,7 @@ class DisputeSearchTest extends Setup
 
         $disputes = $this->collectionToArray($collection);
 
-        $this->assertEquals(2, count($disputes));
+        $this->assertGreaterThanOrEqual(2, count($disputes));
     }
 
     public function testAdvancedSearch_byReceivedDateRange_returnsDispute()
