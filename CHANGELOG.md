@@ -1,4 +1,4 @@
-## unreleased
+## 4.6.0
 * Add `isNetworkTokenized` to `AndroidPayCard` and `AndroidPayCardDetails`
 * Add GraphQL ID to `CreditCardVerification`, `Customer`, `Dispute`, and `Transaction`
 * Add support for PHP 7.4 (#262 thanks @slt)
