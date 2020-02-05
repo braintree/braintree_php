@@ -1,3 +1,6 @@
+## unreleased
+* Add `RefundAuthHardDeclined` and `RefundAuthSoftDeclined` to validation errors
+
 ## 4.6.0
 * Add `isNetworkTokenized` to `AndroidPayCard` and `AndroidPayCardDetails`
 * Add GraphQL ID to `CreditCardVerification`, `Customer`, `Dispute`, and `Transaction`

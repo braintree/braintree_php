@@ -4054,6 +4054,30 @@ class TransactionTest extends Setup
         );
     }
 
+  public function testHandlesSoftDeclinedRefundAuth()
+    {
+        $transaction = $this->createTransactionToRefundAuth();
+        $result = Braintree\Transaction::refund($transaction->id, '2046.00');
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_REFUND_AUTH_SOFT_DECLINED,
+            $errors[0]->code
+        );
+    }
+
+  public function testHandlesHardDeclinedRefundAuth()
+    {
+        $transaction = $this->createTransactionToRefundAuth();
+        $result = Braintree\Transaction::refund($transaction->id, '2009.00');
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_REFUND_AUTH_HARD_DECLINED,
+            $errors[0]->code
+        );
+    }
+
   public function testRefundWithOptionsParam()
     {
         $transaction = $this->createTransactionToRefund();
@@ -4305,6 +4329,17 @@ class TransactionTest extends Setup
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12'
             ],
+            'options' => ['submitForSettlement' => true]
+        ]);
+        Braintree\Test\Transaction::settle($transaction->id);
+        return $transaction;
+    }
+
+  public function createTransactionToRefundAuth()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '9000.00',
+            'paymentMethodNonce' => Braintree\Test\Nonces::$transactable,
             'options' => ['submitForSettlement' => true]
         ]);
         Braintree\Test\Transaction::settle($transaction->id);

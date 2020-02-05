@@ -635,6 +635,8 @@ class Codes
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID                                = '91548';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                               = '91537';
     const TRANSACTION_REFUND_AMOUNT_IS_TOO_LARGE                                      = '91521';
+    const TRANSACTION_REFUND_AUTH_HARD_DECLINED                                       = '915200';
+    const TRANSACTION_REFUND_AUTH_SOFT_DECLINED                                       = '915201';
     const TRANSACTION_SERVICE_FEE_AMOUNT_CANNOT_BE_NEGATIVE                           = '91554';
     const TRANSACTION_SERVICE_FEE_AMOUNT_FORMAT_IS_INVALID                            = '91555';
     const TRANSACTION_SERVICE_FEE_AMOUNT_IS_TOO_LARGE                                 = '91556';
