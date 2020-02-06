@@ -127,19 +127,14 @@ class UsBankAccountTransactionTest extends Setup
 
     public function testCompliantMerchantUnverifiedToken()
     {
-        $gateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'integration2_merchant_id',
-            'publicKey' => 'integration2_public_key',
-            'privateKey' => 'integration2_private_key'
-        ]);
+        Test\Helper::integration2MerchantConfig();
 
-        $customer = $gateway->customer()->create([
+        $customer = Braintree\Customer::create([
             'firstName' => 'Joe',
             'lastName' => 'Brown'
         ])->customer;
 
-        $result = $gateway->paymentMethod()->create([
+        $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
             'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
             'options' => [
@@ -157,7 +152,7 @@ class UsBankAccountTransactionTest extends Setup
 
         $this->assertEquals(0, count($usBankAccount->verifications));
 
-        $sale = $gateway->transaction()->sale([
+        $sale = Braintree\Transaction::sale([
             'amount' => '100.00',
             'merchantAccountId' => Test\Helper::anotherUsBankMerchantAccount(),
             'paymentMethodToken' => $usBankAccount->token,
@@ -170,18 +165,13 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertFalse($sale->success);
         $baseErrors = $sale->errors->forKey('transaction')->onAttribute('paymentMethodToken');
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_US_BANK_ACCOUNT_NOT_VERIFIED, $baseErrors[0]->code);
+        self::integrationMerchantConfig();
     }
 
     public function testCompliantMerchantUnverifiedNonce()
     {
-        $gateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'integration2_merchant_id',
-            'publicKey' => 'integration2_public_key',
-            'privateKey' => 'integration2_private_key'
-        ]);
-
-        $sale = $gateway->transaction()->sale([
+        Test\Helper::integration2MerchantConfig();
+        $sale = Braintree\Transaction::sale([
             'amount' => '100.00',
             'merchantAccountId' => Test\Helper::anotherUsBankMerchantAccount(),
             'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
@@ -194,23 +184,18 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertFalse($sale->success);
         $baseErrors = $sale->errors->forKey('transaction')->onAttribute('paymentMethodNonce');
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_US_BANK_ACCOUNT_NONCE_MUST_BE_PLAID_VERIFIED, $baseErrors[0]->code);
+        self::integrationMerchantConfig();
     }
 
     public function testCompliantMerchantPlaidToken()
     {
-        $gateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'integration2_merchant_id',
-            'publicKey' => 'integration2_public_key',
-            'privateKey' => 'integration2_private_key'
-        ]);
-
-        $customer = $gateway->customer()->create([
+        Test\Helper::integration2MerchantConfig();
+        $customer = Braintree\Customer::create([
             'firstName' => 'Joe',
             'lastName' => 'Brown'
         ])->customer;
 
-        $result = $gateway->paymentMethod()->create([
+        $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
             'paymentMethodNonce' => Test\Helper::generatePlaidUsBankAccountNonce(),
             'options' => [
@@ -228,7 +213,7 @@ class UsBankAccountTransactionTest extends Setup
 
         $this->assertEquals(1, count($usBankAccount->verifications));
 
-        $sale = $gateway->transaction()->sale([
+        $sale = Braintree\Transaction::sale([
             'amount' => '100.00',
             'merchantAccountId' => Test\Helper::anotherUsBankMerchantAccount(),
             'paymentMethodToken' => $usBankAccount->token,
@@ -241,18 +226,14 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertTrue($sale->success);
         $this->assertEquals($sale->transaction->amount, '100.00');
         $this->assertEquals($sale->transaction->usBankAccount->token, $usBankAccount->token);
+        self::integrationMerchantConfig();
     }
 
     public function testCompliantMerchantPlaidNonce()
     {
-        $gateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'integration2_merchant_id',
-            'publicKey' => 'integration2_public_key',
-            'privateKey' => 'integration2_private_key'
-        ]);
+        Test\Helper::integration2MerchantConfig();
 
-        $sale = $gateway->transaction()->sale([
+        $sale = Braintree\Transaction::sale([
             'amount' => '100.00',
             'merchantAccountId' => Test\Helper::anotherUsBankMerchantAccount(),
             'paymentMethodNonce' => Test\Helper::generatePlaidUsBankAccountNonce(),
@@ -264,5 +245,6 @@ class UsBankAccountTransactionTest extends Setup
 
         $this->assertTrue($sale->success);
         $this->assertEquals($sale->transaction->amount, '100.00');
+        self::integrationMerchantConfig();
     }
 }
