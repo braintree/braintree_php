@@ -6,6 +6,7 @@
 * Add GraphQL ID to `CreditCardVerification`, `Customer`, `Dispute`, and `Transaction`
 * Add support for PHP 7.4 (#262 thanks @slt)
 * Add `threeDSecurePassThru` params to PaymentMethod update
+* Add level 2 processing options `purchaseOrderNumber`, `taxAmount`, and `taxExempt` to Transaction submit for settlement
 
 ## 4.5.0
 * Add `PROCESSOR_DOES_NOT_SUPPORT_MOTO_FOR_CARD_TYPE` to validation errors

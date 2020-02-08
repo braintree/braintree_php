@@ -258,7 +258,7 @@ class TransactionGateway
 
     public static function submitForSettlementSignature()
     {
-        return ['orderId', ['descriptor' => ['name', 'phone', 'url']]];
+        return ['orderId', ['descriptor' => ['name', 'phone', 'url']], 'purchaseOrderNumber', 'taxAmount', 'taxExempt'];
     }
 
     public static function updateDetailsSignature()

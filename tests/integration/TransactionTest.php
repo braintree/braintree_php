@@ -2809,6 +2809,27 @@ class TransactionTest extends Setup
         $this->assertEquals('67.00', $submitResult->transaction->amount);
     }
 
+  public function testSubmitForSettlement_withLevel2Data()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $submitForSettlementParams = [
+            'purchaseOrderNumber' => 'ABC123',
+            'taxAmount' => '1.34',
+            'taxExempt' => true
+        ];
+        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, null, $submitForSettlementParams);
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
+    }
+
   public function testSubmitForSettlement_withDescriptor()
     {
         $transaction = Braintree\Transaction::saleNoValidate([
