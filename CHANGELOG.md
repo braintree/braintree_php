@@ -1,4 +1,4 @@
-## unreleased
+## 4.7.0
 * Add `RefundAuthHardDeclined` and `RefundAuthSoftDeclined` to validation errors
 * Add level 2 processing options `purchaseOrderNumber`, `taxAmount`, and `taxExempt` to Transaction submit for settlement
 * Add level 3 processing options `discountAmount`, `shippingAmount`, `shipsFromPostalCode`, and `lineItems` to Transaction submit for settlement
