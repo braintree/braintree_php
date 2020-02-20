@@ -113,19 +113,14 @@ class PaymentMethodWithUsBankAccountTest extends Setup
 
     public function testCompliantCreate_fromUsBankAccountNonce()
     {
-        $gateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'integration2_merchant_id',
-            'publicKey' => 'integration2_public_key',
-            'privateKey' => 'integration2_private_key'
-        ]);
+        Test\Helper::integration2MerchantConfig();
 
-        $customer = $gateway->customer()->create([
+        $customer = Braintree\Customer::create([
             'firstName' => 'Joe',
             'lastName' => 'Brown'
         ])->customer;
 
-        $result = $gateway->paymentMethod()->create([
+        $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
             'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
             'options' => [
@@ -142,6 +137,7 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         $this->assertEquals(false, $usBankAccount->verified);
 
         $this->assertEquals(0, count($usBankAccount->verifications));
+        self::integrationMerchantConfig();
     }
 
 }

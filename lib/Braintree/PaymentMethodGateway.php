@@ -152,7 +152,12 @@ class PaymentMethodGateway
 
     public static function createSignature()
     {
-        $signature = array_merge(self::baseSignature(), ['customerId', 'paypalRefreshToken', 'paypalVaultWithoutUpgrade']);
+        $signature = array_merge(self::baseSignature(), [
+            'customerId',
+            'paypalRefreshToken',
+            // NEXT_MAJOR_VERSION remove paypalVaultWithoutUpgrade from signature
+            'paypalVaultWithoutUpgrade'
+        ]);
         return $signature;
     }
 

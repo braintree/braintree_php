@@ -73,19 +73,13 @@ class UsBankAccountVerificationTest extends Setup
 
     public function test_attemptConfirmMicroTransferAmounts()
     {
-        $gateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'integration2_merchant_id',
-            'publicKey' => 'integration2_public_key',
-            'privateKey' => 'integration2_private_key'
-        ]);
-
-        $customer = $gateway->customer()->create([
+        Test\Helper::integration2MerchantConfig();
+        $customer = Braintree\Customer::create([
             'firstName' => 'Joe',
             'lastName' => 'Brown'
         ])->customer;
 
-        $result = $gateway->paymentMethod()->create([
+        $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
             'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
             'options' => [
@@ -98,7 +92,7 @@ class UsBankAccountVerificationTest extends Setup
         $this->assertEquals(1, count($usBankAccount->verifications));
         $createdVerification = $usBankAccount->verifications[0];
 
-        $result = $gateway->usBankAccountVerification()->confirmMicroTransferAmounts($createdVerification->id, [1, 1]);
+        $result = Braintree\UsBankAccountVerification::confirmMicroTransferAmounts($createdVerification->id, [1, 1]);
 
         $this->assertFalse($result->success);
 
@@ -107,23 +101,18 @@ class UsBankAccountVerificationTest extends Setup
             Braintree\Error\Codes::US_BANK_ACCOUNT_VERIFICATION_AMOUNTS_DO_NOT_MATCH,
             $amountErrors[0]->code
         );
+        self::integrationMerchantConfig();
     }
 
     public function test_confirmMicroTransferAmountsSettled()
     {
-        $gateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'integration2_merchant_id',
-            'publicKey' => 'integration2_public_key',
-            'privateKey' => 'integration2_private_key'
-        ]);
-
-        $customer = $gateway->customer()->create([
+        Test\Helper::integration2MerchantConfig();
+        $customer = Braintree\Customer::create([
             'firstName' => 'Joe',
             'lastName' => 'Brown'
         ])->customer;
 
-        $result = $gateway->paymentMethod()->create([
+        $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
             'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce('1000000000'),
             'options' => [
@@ -136,31 +125,26 @@ class UsBankAccountVerificationTest extends Setup
         $this->assertEquals(1, count($usBankAccount->verifications));
         $createdVerification = $usBankAccount->verifications[0];
 
-        $result = $gateway->usBankAccountVerification()->confirmMicroTransferAmounts($createdVerification->id, [17, 29]);
+        $result = Braintree\UsBankAccountVerification::confirmMicroTransferAmounts($createdVerification->id, [17, 29]);
 
         $this->assertTrue($result->success);
 
         $usBankAccountVerification = $result->usBankAccountVerification;
         $this->assertEquals($usBankAccountVerification->status, Braintree\Result\UsBankAccountVerification::VERIFIED);
-        $usBankAccount = $gateway->usBankAccount()->find($usBankAccountVerification->usBankAccount->token);
+        $usBankAccount = Braintree\UsBankAccount::find($usBankAccountVerification->usBankAccount->token);
         $this->assertTrue($usBankAccount->verified);
+        self::integrationMerchantConfig();
     }
 
     public function test_confirmMicroTransferAmountsUnsettled()
     {
-        $gateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'integration2_merchant_id',
-            'publicKey' => 'integration2_public_key',
-            'privateKey' => 'integration2_private_key'
-        ]);
-
-        $customer = $gateway->customer()->create([
+        Test\Helper::integration2MerchantConfig();
+        $customer = Braintree\Customer::create([
             'firstName' => 'Joe',
             'lastName' => 'Brown'
         ])->customer;
 
-        $result = $gateway->paymentMethod()->create([
+        $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
             'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce('1000000001'),
             'options' => [
@@ -173,31 +157,26 @@ class UsBankAccountVerificationTest extends Setup
         $this->assertEquals(1, count($usBankAccount->verifications));
         $createdVerification = $usBankAccount->verifications[0];
 
-        $result = $gateway->usBankAccountVerification()->confirmMicroTransferAmounts($createdVerification->id, [17, 29]);
+        $result = Braintree\UsBankAccountVerification::confirmMicroTransferAmounts($createdVerification->id, [17, 29]);
 
         $this->assertTrue($result->success);
 
         $usBankAccountVerification = $result->usBankAccountVerification;
         $this->assertEquals($usBankAccountVerification->status, Braintree\Result\UsBankAccountVerification::PENDING);
-        $usBankAccount = $gateway->usBankAccount()->find($usBankAccountVerification->usBankAccount->token);
+        $usBankAccount = Braintree\UsBankAccount::find($usBankAccountVerification->usBankAccount->token);
         $this->assertFalse($usBankAccount->verified);
+        self::integrationMerchantConfig();
     }
 
     public function test_exceedRetryThreshold()
     {
-        $gateway = new Braintree\Gateway([
-            'environment' => 'development',
-            'merchantId' => 'integration2_merchant_id',
-            'publicKey' => 'integration2_public_key',
-            'privateKey' => 'integration2_private_key'
-        ]);
-
-        $customer = $gateway->customer()->create([
+        Test\Helper::integration2MerchantConfig();
+        $customer = Braintree\Customer::create([
             'firstName' => 'Joe',
             'lastName' => 'Brown'
         ])->customer;
 
-        $result = $gateway->paymentMethod()->create([
+        $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
             'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
             'options' => [
@@ -211,7 +190,7 @@ class UsBankAccountVerificationTest extends Setup
         $createdVerification = $usBankAccount->verifications[0];
 
         for ($i = 0; $i < 4; $i++) {
-            $result = $gateway->usBankAccountVerification()->confirmMicroTransferAmounts($createdVerification->id, [1, 1]);
+            $result = Braintree\UsBankAccountVerification::confirmMicroTransferAmounts($createdVerification->id, [1, 1]);
             $this->assertFalse($result->success);
 
             $amountErrors = $result->errors->forKey('usBankAccountVerification')->onAttribute('base');
@@ -221,7 +200,7 @@ class UsBankAccountVerificationTest extends Setup
             );
         }
 
-        $result = $gateway->usBankAccountVerification()->confirmMicroTransferAmounts($createdVerification->id, [1, 1]);
+        $result = Braintree\UsBankAccountVerification::confirmMicroTransferAmounts($createdVerification->id, [1, 1]);
         $this->assertFalse($result->success);
 
         $amountErrors = $result->errors->forKey('usBankAccountVerification')->onAttribute('base');
@@ -229,5 +208,6 @@ class UsBankAccountVerificationTest extends Setup
             Braintree\Error\Codes::US_BANK_ACCOUNT_VERIFICATION_TOO_MANY_CONFIRMATION_ATTEMPTS,
             $amountErrors[0]->code
         );
+        self::integrationMerchantConfig();
     }
 }

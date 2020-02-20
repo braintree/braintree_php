@@ -258,7 +258,15 @@ class TransactionGateway
 
     public static function submitForSettlementSignature()
     {
-        return ['orderId', ['descriptor' => ['name', 'phone', 'url']]];
+        return ['orderId', ['descriptor' => ['name', 'phone', 'url']],
+            'purchaseOrderNumber',
+            'taxAmount',
+            'taxExempt',
+            'shippingAmount',
+            'discountAmount',
+            'shipsFromPostalCode',
+            ['lineItems' => ['quantity', 'name', 'description', 'kind', 'unitAmount', 'unitTaxAmount', 'totalAmount', 'discountAmount', 'taxAmount', 'unitOfMeasure', 'productCode', 'commodityCode', 'url']],
+        ];
     }
 
     public static function updateDetailsSignature()
