@@ -1,3 +1,7 @@
+## unreleased
+* Add ThreeDSecure test payment method nonces
+* Add test `AuthenticationId`s
+
 ## 4.7.0
 * Add `RefundAuthHardDeclined` and `RefundAuthSoftDeclined` to validation errors
 * Add level 2 processing options `purchaseOrderNumber`, `taxAmount`, and `taxExempt` to Transaction submit for settlement
