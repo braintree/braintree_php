@@ -82,13 +82,6 @@ class Http
         return empty($params) ? null : Xml::buildXmlFromArray($params);
     }
 
-    private function _getHeaders()
-    {
-        return [
-            'Accept: application/xml',
-        ];
-    }
-
     private function _getAuthorization()
     {
         if ($this->_useClientCredentials) {
@@ -118,7 +111,18 @@ class Http
         return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . $path, $requestBody, $file, $headers);
     }
 
-    public function _doUrlRequest($httpVerb, $url, $requestBody = null, $file = null, $customHeaders = null)
+    /**
+     * This function gives integration test ability to mock request-response.
+     *
+     * @param $httpVerb
+     * @param $url
+     * @param array $headers
+     * @param null $requestBody
+     * @param null $file
+     * @return array
+     * @throws Exception\SSLCaFileNotFound
+     */
+    public function doCurlRequest($httpVerb, $url, array $headers, $requestBody = null, $file = null)
     {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, $this->_config->timeout());
@@ -132,22 +136,10 @@ class Http
             curl_setopt($curl, CURLOPT_SSLVERSION, $this->_config->sslVersion());
         }
 
-        $headers = [];
-        if ($customHeaders) {
-            $headers = $customHeaders;
-        } else {
-            $headers = $this->_getHeaders($curl);
-            $headers[] = 'User-Agent: Braintree PHP Library ' . Version::get();
-            $headers[] = 'X-ApiVersion: ' . Configuration::API_VERSION;
-            $headers[] = 'Content-Type: application/xml';
-        }
-
         $authorization = $this->_getAuthorization();
         if (isset($authorization['user'])) {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_USERPWD, $authorization['user'] . ':' . $authorization['password']);
-        } else if (isset($authorization['token'])) {
-            $headers[] = 'Authorization: Bearer ' . $authorization['token'];
         }
 
         if ($this->_config->sslOn()) {
@@ -181,25 +173,84 @@ class Http
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, 1);
+
         $response = curl_exec($curl);
+
+        $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $responseHeader = array_filter(explode("\r\n", substr($response, 0, $headerSize)));
+        $response = substr($response, $headerSize);
+
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $error_code = curl_errno($curl);
         $error = curl_error($curl);
 
-        if ($error_code == 28 && $httpStatus == 0) {
+        curl_close($curl);
+
+        return [
+            'status' => $httpStatus,
+            'header' => $responseHeader,
+            'body' => $response,
+            'error_code' => $error_code,
+            'error_message' => $error,
+        ];
+    }
+
+
+    /**
+     * Inherit this function if you want to log request-response data
+     *
+     * @param array $request
+     * @param array $response
+     */
+    protected function onRequestDone(array $request, array $response)
+    {
+        // ..
+    }
+
+    public function _doUrlRequest($httpVerb, $url, $requestBody = null, $file = null, $customHeaders = null)
+    {
+        if ($customHeaders) {
+            $headers = $customHeaders;
+        } else {
+            $headers = [
+                'Accept: application/xml',
+                'User-Agent: Braintree PHP Library ' . Version::get(),
+                'X-ApiVersion: ' . Configuration::API_VERSION,
+                'Content-Type: application/xml',
+            ];
+        }
+
+        $authorization = $this->_getAuthorization();
+        if (isset($authorization['token'])) {
+            $headers[] = 'Authorization: Bearer ' . $authorization['token'];
+        }
+
+        $response = $this->doCurlRequest($httpVerb, $url, $headers, $requestBody, $file);
+
+        $this->onRequestDone([
+                'method' => $httpVerb,
+                'url' => $url,
+                'header' => $headers,
+                'body' => $requestBody,
+                'file' => $file,
+            ],
+            $response
+        );
+
+        if ($response['error_code'] == 28 && $response['status'] == 0) {
             throw new Exception\Timeout();
         }
 
-        curl_close($curl);
         if ($this->_config->sslOn()) {
-            if ($httpStatus == 0) {
-                throw new Exception\SSLCertificate($error, $error_code);
+            if ($response['status'] == 0) {
+                throw new Exception\SSLCertificate($response['error_message'], $response['error_code']);
             }
-        } else if ($error_code) {
-            throw new Exception\Connection($error, $error_code);
+        } else if ($response['error_code']) {
+            throw new Exception\Connection($response['error_message'], $response['error_code']);
         }
 
-        return ['status' => $httpStatus, 'body' => $response];
+        return $response;
     }
 
     function prepareMultipart($ch, $requestBody, $file, $boundary) {

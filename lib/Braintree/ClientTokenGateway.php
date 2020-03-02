@@ -27,12 +27,12 @@ class ClientTokenGateway
      *
      * @param Gateway $gateway
      */
-    public function __construct($gateway)
+    public function __construct($gateway, Http $client = null)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasAccessTokenOrKeys();
-        $this->_http = new Http($gateway->config);
+        $this->_http = $client ?: new Http($gateway->config);
     }
 
     public function generate($params=[])
