@@ -31,11 +31,19 @@ class PaymentMethodNonceGateway
     }
 
 
-    public function create($token)
+    public function create($token, $params = [])
     {
         $subPath = '/payment_methods/' . $token . '/nonces';
         $fullPath = $this->_config->merchantPath() . $subPath;
-        $response = $this->_http->post($fullPath);
+        $schema = [[
+            'paymentMethodNonce' => [
+                'merchantAccountId',
+                'authenticationInsight',
+                'amount'
+            ]
+        ]];
+        Util::verifyKeys($schema, $params);
+        $response = $this->_http->post($fullPath, $params);
 
         return new Result\Successful(
             PaymentMethodNonce::factory($response['paymentMethodNonce']),

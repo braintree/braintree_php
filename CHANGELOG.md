@@ -1,3 +1,9 @@
+## 4.8.0
+* Add `Authentication Insight` to payment method nonce create
+* Add `threeDSecureAuthenticationId` support to transaction sale
+* Add ThreeDSecure test payment method nonces
+* Add test `AuthenticationId`s
+
 ## 4.7.0
 * Add `RefundAuthHardDeclined` and `RefundAuthSoftDeclined` to validation errors
 * Add level 2 processing options `purchaseOrderNumber`, `taxAmount`, and `taxExempt` to Transaction submit for settlement

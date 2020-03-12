@@ -96,6 +96,7 @@ class TransactionGateway
             'taxAmount',
             'taxExempt',
             'threeDSecureToken',
+            'threeDSecureAuthenticationId',
             'transactionSource',
             'type',
             'venmoSdkPaymentMethodCode',
