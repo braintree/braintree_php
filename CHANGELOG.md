@@ -1,6 +1,6 @@
-## unreleased
+## 4.8.0
 * Add `Authentication Insight` to payment method nonce create
-* Add `threeDSecureAuthenticationId` support on transaction sale
+* Add `threeDSecureAuthenticationId` support to transaction sale
 * Add ThreeDSecure test payment method nonces
 * Add test `AuthenticationId`s
 
