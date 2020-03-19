@@ -73,6 +73,15 @@ class WebhookTestingGateway
             case WebhookNotification::DISPUTE_WON:
                 $subjectXml = self::_disputeWonSampleXml($id);
                 break;
+            case WebhookNotification::DISPUTE_ACCEPTED:
+                $subjectXml = self::_disputeAcceptedSampleXml($id);
+                break;
+            case WebhookNotification::DISPUTE_DISPUTED:
+                $subjectXml = self::_disputeDisputedSampleXml($id);
+                break;
+            case WebhookNotification::DISPUTE_EXPIRED:
+                $subjectXml = self::_disputeExpiredSampleXml($id);
+                break;
             case WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
                 $subjectXml = self::_subscriptionChargedSuccessfullySampleXml($id);
                 break;
@@ -333,6 +342,75 @@ class WebhookTestingGateway
           </transaction>
           <date-opened type=\"date\">2014-03-21</date-opened>
           <date-won type=\"date\">2014-03-22</date-won>
+        </dispute>
+        ";
+    }
+
+    private static function _disputeAcceptedSampleXml($id)
+    {
+        return "
+        <dispute>
+          <amount>250.00</amount>
+          <amount-disputed>250.0</amount-disputed>
+          <amount-won>245.00</amount-won>
+          <currency-iso-code>USD</currency-iso-code>
+          <received-date type=\"date\">2014-03-01</received-date>
+          <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <kind>chargeback</kind>
+          <status>accepted</status>
+          <reason>fraud</reason>
+          <id>${id}</id>
+          <transaction>
+            <id>${id}</id>
+            <amount>250.00</amount>
+          </transaction>
+          <date-opened type=\"date\">2014-03-21</date-opened>
+        </dispute>
+        ";
+    }
+
+    private static function _disputeDisputedSampleXml($id)
+    {
+        return "
+        <dispute>
+          <amount>250.00</amount>
+          <amount-disputed>250.0</amount-disputed>
+          <amount-won>245.00</amount-won>
+          <currency-iso-code>USD</currency-iso-code>
+          <received-date type=\"date\">2014-03-01</received-date>
+          <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <kind>chargeback</kind>
+          <status>disputed</status>
+          <reason>fraud</reason>
+          <id>${id}</id>
+          <transaction>
+            <id>${id}</id>
+            <amount>250.00</amount>
+          </transaction>
+          <date-opened type=\"date\">2014-03-21</date-opened>
+        </dispute>
+        ";
+    }
+
+    private static function _disputeExpiredSampleXml($id)
+    {
+        return "
+        <dispute>
+          <amount>250.00</amount>
+          <amount-disputed>250.0</amount-disputed>
+          <amount-won>245.00</amount-won>
+          <currency-iso-code>USD</currency-iso-code>
+          <received-date type=\"date\">2014-03-01</received-date>
+          <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <kind>chargeback</kind>
+          <status>expired</status>
+          <reason>fraud</reason>
+          <id>${id}</id>
+          <transaction>
+            <id>${id}</id>
+            <amount>250.00</amount>
+          </transaction>
+          <date-opened type=\"date\">2014-03-21</date-opened>
         </dispute>
         ";
     }
