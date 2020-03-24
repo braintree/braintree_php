@@ -2,9 +2,10 @@
 
 The Braintree PHP library provides integration access to the Braintree Gateway.
 
-## Dependencies
+## TLS 1.2 required
+> **The Payment Card Industry (PCI) Council has [mandated](https://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls) that early versions of TLS be retired from service.  All organizations that handle credit card information are required to comply with this standard. As part of this obligation, Braintree has updated its services to require TLS 1.2 for all HTTPS connections. Braintrees require HTTP/1.1 for all connections. Please see our [technical documentation](https://github.com/paypal/tls-update) for more information.**
 
-PHP version >= 7.2 is required.
+## Dependencies
 
 The following PHP extensions are required:
 
@@ -14,6 +15,24 @@ The following PHP extensions are required:
 * openssl
 * xmlwriter
 
+PHP version >= 7.2 is required. The Braintree PHP SDK is tested against PHP versions 7.3 and 7.4.
+
+_The PHP core development community has released [End-of-Life branches](https://www.php.net/eol.php) for PHP versions 5.4 - 7.1, and are no longer receiving security updates. As a result, Braintree does not support these versions of PHP._
+
+## Versions
+
+Braintree employs a deprecation policy for our SDKs. For more information on the statuses of an SDK check our [developer docs](http://developers.braintreepayments.com/reference/general/server-sdk-deprecation-policy).
+
+| Major version number | Status | Released | Deprecated | Unsupported |
+| -------------------- | ------ | -------- | ---------- | ----------- |
+| 5.x.x | Active | March 2020 | TBA | TBA |
+| 4.x.x | Inactive | May 2019 | March 2022 | March 2023 |
+| 3.x.x | Inactive | May 2015 | March 2022 | March 2023 |
+
+## Documentation
+
+ * [Official documentation](https://developers.braintreepayments.com/start/hello-server/php)
+
 ## Quick Start Example
 
 ```php
@@ -22,7 +41,7 @@ The following PHP extensions are required:
 require_once 'PATH_TO_BRAINTREE/lib/Braintree.php';
 
 // Instantiate a Braintree Gateway either like this:
-$gateway = new Braintree_Gateway([
+$gateway = new Braintree\Gateway([
     'environment' => 'sandbox',
     'merchantId' => 'your_merchant_id',
     'publicKey' => 'your_public_key',
@@ -30,7 +49,7 @@ $gateway = new Braintree_Gateway([
 ]);
 
 // or like this:
-$config = new Braintree_Configuration([
+$config = new Braintree\Configuration([
     'environment' => 'sandbox',
     'merchantId' => 'your_merchant_id',
     'publicKey' => 'your_public_key',
@@ -57,8 +76,9 @@ if ($result->success) {
 }
 ```
 
-Both PSR-0 and PSR-4 namespacing are supported. If you are using composer with `--classmap-authoritative` or
-`--optimize-autoloader` enabled, you'll have to reference classes using PSR-4 namespacing:
+## Namespacing
+
+As of major version 5.x.x, only PSR-4 namespacing is supported. This means you'll have to reference classes using PSR-4 namespacing:
 
 ```php
 $gateway = new Braintree\Gateway([
@@ -79,9 +99,6 @@ $config = new Braintree\Configuration([
 $gateway = new Braintree\Gateway($config)
 ```
 
-## TLS 1.2 required
-> **The Payment Card Industry (PCI) Council has [mandated](https://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls) that early versions of TLS be retired from service.  All organizations that handle credit card information are required to comply with this standard. As part of this obligation, Braintree has updated its services to require TLS 1.2 for all HTTPS connections. Braintrees require HTTP/1.1 for all connections. Please see our [technical documentation](https://github.com/paypal/tls-update) for more information.**
-
 ## Google App Engine Support
 
 When using Google App Engine include the curl extention in your `php.ini` file (see [#190](https://github.com/braintree/braintree_php/issues/190) for more information):
@@ -99,14 +116,6 @@ $gateway = new Braintree\Gateway([
     'acceptGzipEncoding' => false,
 ]);
 ```
-
-## Legacy PHP Support
-
-Version [3.39.0](https://github.com/braintree/braintree_php/releases/tag/3.39.0) is compatible with PHP 5.4. You can find it on our releases page.
-
-## Documentation
-
- * [Official documentation](https://developers.braintreepayments.com/php/sdk/server/overview)
 
 ## Developing (Docker)
 

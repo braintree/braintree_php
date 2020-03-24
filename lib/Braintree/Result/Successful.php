@@ -89,4 +89,3 @@ class Successful extends Instance
        return array_combine($propertyNames, $objsToReturn);
    }
 }
-class_alias('Braintree\Result\Successful', 'Braintree_Result_Successful');

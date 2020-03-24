@@ -624,4 +624,3 @@ class WebhookTestingGateway
         return $timestamp;
     }
 }
-class_alias('Braintree\WebhookTestingGateway', 'Braintree_WebhookTestingGateway');

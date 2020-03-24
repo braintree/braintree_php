@@ -88,4 +88,3 @@ class AndroidPayCard extends Base
         $this->_set('subscriptions', $subscriptionArray);
     }
 }
-class_alias('Braintree\AndroidPayCard', 'Braintree_AndroidPayCard');

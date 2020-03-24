@@ -12,4 +12,3 @@ use Braintree\Exception;
 class TestOperationPerformedInProduction extends Exception
 {
 }
-class_alias('Braintree\Exception\TestOperationPerformedInProduction', 'Braintree_Exception_TestOperationPerformedInProduction');

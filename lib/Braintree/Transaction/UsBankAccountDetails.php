@@ -37,4 +37,3 @@ class UsBankAccountDetails extends Instance
         $this->achMandate = $achMandate;
     }
 }
-class_alias('Braintree\Transaction\UsBankAccountDetails', 'Braintree_Transaction_UsBankAccountDetails');

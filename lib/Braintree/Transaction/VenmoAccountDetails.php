@@ -35,4 +35,3 @@ class VenmoAccountDetails extends Instance
         parent::__construct($attributes);
     }
 }
-class_alias('Braintree\Transaction\VenmoAccountDetails', 'Braintree_Transaction_VenmoAccountDetails');

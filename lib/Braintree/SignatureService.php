@@ -21,4 +21,3 @@ class SignatureService
     }
 
 }
-class_alias('Braintree\SignatureService', 'Braintree_SignatureService');

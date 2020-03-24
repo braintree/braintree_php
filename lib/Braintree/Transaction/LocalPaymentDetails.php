@@ -42,4 +42,3 @@ class LocalPaymentDetails extends Instance
         parent::__construct($attributes);
     }
 }
-class_alias('Braintree\Transaction\LocalPaymentDetails', 'Braintree_Transaction_LocalPaymentDetails');

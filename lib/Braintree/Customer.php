@@ -377,4 +377,3 @@ class Customer extends Base
         return $instance;
     }
 }
-class_alias('Braintree\Customer', 'Braintree_Customer');

@@ -125,5 +125,3 @@ class UsBankAccountVerificationGateway
         }
     }
 }
-
-class_alias('Braintree\UsBankAccountVerificationGateway', 'Braintree_UsBankAccountVerificationGateway');

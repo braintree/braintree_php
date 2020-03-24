@@ -40,5 +40,3 @@ class GraphQL extends Http
         return $result;
     }
 }
-
-class_alias('Braintree\GraphQL', 'Braintree_GraphQL');

@@ -29,4 +29,3 @@ class PaginatedResult
         return $this->_currentPage;
     }
 }
-class_alias('Braintree\PaginatedResult', 'Braintree_PaginatedResult');

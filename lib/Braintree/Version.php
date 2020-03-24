@@ -31,4 +31,3 @@ class Version
         return self::MAJOR . '.' . self::MINOR . '.' . self::TINY;
     }
 }
-class_alias('Braintree\Version', 'Braintree_Version');

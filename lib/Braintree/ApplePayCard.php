@@ -100,4 +100,3 @@ class ApplePayCard extends Base
         $this->_set('expirationDate', $this->expirationMonth . '/' . $this->expirationYear);
     }
 }
-class_alias('Braintree\ApplePayCard', 'Braintree_ApplePayCard');

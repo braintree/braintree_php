@@ -31,4 +31,3 @@ class PlanGateway
         );
     }
 }
-class_alias('Braintree\PlanGateway', 'Braintree_PlanGateway');

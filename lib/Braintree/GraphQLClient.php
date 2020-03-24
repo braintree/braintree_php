@@ -17,5 +17,3 @@ class GraphQLClient
         return $this->_service->request($definition, $variables);
     }
 }
-
-class_alias('Braintree\GraphQLClient', 'Braintree_GraphQLClient');

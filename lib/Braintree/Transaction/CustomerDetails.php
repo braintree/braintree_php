@@ -22,4 +22,3 @@ use Braintree\Instance;
 class CustomerDetails extends Instance
 {
 }
-class_alias('Braintree\Transaction\CustomerDetails', 'Braintree_Transaction_CustomerDetails');

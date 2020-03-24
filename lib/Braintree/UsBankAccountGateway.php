@@ -103,4 +103,3 @@ class UsBankAccountGateway
         }
     }
 }
-class_alias('Braintree\UsBankAccountGateway', 'Braintree_UsBankAccountGateway');

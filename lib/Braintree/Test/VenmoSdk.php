@@ -27,4 +27,3 @@ class VenmoSdk
         return "stub-invalid-session";
     }
 }
-class_alias('Braintree\Test\VenmoSdk', 'Braintree_Test_VenmoSdk');

@@ -18,4 +18,3 @@ use Braintree\Instance;
 class StatusDetails extends Instance
 {
 }
-class_alias('Braintree\Transaction\StatusDetails', 'Braintree_Transaction_StatusDetails');

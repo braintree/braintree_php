@@ -16,4 +16,3 @@ class TransactionAmounts
    public static $decline     = '2000.00';
    public static $hardDecline = '2015.00';
 }
-class_alias('Braintree\Test\TransactionAmounts', 'Braintree_Test_TransactionAmounts');

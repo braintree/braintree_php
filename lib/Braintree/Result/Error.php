@@ -120,4 +120,3 @@ class Error extends Base
         return __CLASS__ .'[' . $output . ']';
     }
 }
-class_alias('Braintree\Result\Error', 'Braintree_Result_Error');

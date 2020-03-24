@@ -16,5 +16,3 @@ use Braintree\Instance;
 class StatusHistoryDetails extends Instance
 {
 }
-
-class_alias('Braintree\Dispute\StatusHistoryDetails', 'Braintree_Dispute_StatusHistoryDetails');
