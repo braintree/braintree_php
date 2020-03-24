@@ -4107,24 +4107,34 @@ class TransactionTest extends Setup
     {
         $transaction = $this->createTransactionToRefundAuth();
         $result = Braintree\Transaction::refund($transaction->id, '2046.00');
+        $refund = $result->transaction;
         $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('transaction')->onAttribute('base');
         $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_REFUND_AUTH_SOFT_DECLINED,
-            $errors[0]->code
+            Braintree\Transaction::CREDIT,
+            $refund->type
         );
+        $this->assertEquals(Braintree\Transaction::PROCESSOR_DECLINED, $refund->status);
+        $this->assertEquals(2046, $refund->processorResponseCode);
+        $this->assertEquals("Declined", $refund->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::SOFT_DECLINED, $refund->processorResponseType);
+        $this->assertEquals("2046 : Declined", $refund->additionalProcessorResponse);
     }
 
   public function testHandlesHardDeclinedRefundAuth()
     {
         $transaction = $this->createTransactionToRefundAuth();
         $result = Braintree\Transaction::refund($transaction->id, '2009.00');
+        $refund = $result->transaction;
         $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('transaction')->onAttribute('base');
         $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_REFUND_AUTH_HARD_DECLINED,
-            $errors[0]->code
+            Braintree\Transaction::CREDIT,
+            $refund->type
         );
+        $this->assertEquals(Braintree\Transaction::PROCESSOR_DECLINED, $refund->status);
+        $this->assertEquals(2009, $refund->processorResponseCode);
+        $this->assertEquals("No Such Issuer", $refund->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::HARD_DECLINED, $refund->processorResponseType);
+        $this->assertEquals("2009 : No Such Issuer", $refund->additionalProcessorResponse);
     }
 
   public function testRefundWithOptionsParam()
