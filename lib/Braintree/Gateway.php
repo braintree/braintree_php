@@ -264,4 +264,3 @@ class Gateway
         return new WebhookTestingGateway($this);
     }
 }
-class_alias('Braintree\Gateway', 'Braintree_Gateway');

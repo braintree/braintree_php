@@ -49,4 +49,3 @@ class VisaCheckoutCardDetails extends Instance
 
     }
 }
-class_alias('Braintree\Transaction\VisaCheckoutCardDetails', 'Braintree_Transaction_VisaCheckoutCardDetails');

@@ -152,7 +152,10 @@ class PaymentMethodGateway
 
     public static function createSignature()
     {
-        $signature = array_merge(self::baseSignature(), ['customerId', 'paypalRefreshToken', 'paypalVaultWithoutUpgrade']);
+        $signature = array_merge(self::baseSignature(), [
+            'customerId',
+            'paypalRefreshToken',
+        ]);
         return $signature;
     }
 
@@ -329,4 +332,3 @@ class PaymentMethodGateway
         }
     }
 }
-class_alias('Braintree\PaymentMethodGateway', 'Braintree_PaymentMethodGateway');

@@ -46,4 +46,3 @@ class ApplePayCardDetails extends Instance
         parent::__construct($attributes);
     }
 }
-class_alias('Braintree\Transaction\ApplePayCardDetails', 'Braintree_Transaction_ApplePayCardDetails');

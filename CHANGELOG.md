@@ -1,8 +1,26 @@
-## unreleased - Major
-* Bump API version to support declined refund objects.
+## Unreleased
+* Add `DISPUTE_ACCEPTED`, `DISPUTE_DISPUTED`, and `DISPUTE_EXPIRED` webhook constants
+* Breaking Changes:
+  * Upgrade API version to retrieve declined refund transactions
+  * Throw `RequestTimeout` instead of `Timeout` for transaction search
+  * Drop PSR-0 Support and remove class aliases
+  * Remove EuropeBankAccount and IbanBankAccount modules
+  * Remove deprecated SEPA error codes
+  * Remove `paypalVaultWithoutUpgrade`
+  * Invalid transaction IDs are validated by the gateway and not the SDK
 
-## unreleased
-* Add `RefundAuthHardDeclined` and `RefundAuthSoftDeclined` to Transaction errors
+## 4.8.0
+* Add `Authentication Insight` to payment method nonce create
+* Add `threeDSecureAuthenticationId` support to transaction sale
+* Add ThreeDSecure test payment method nonces
+* Add test `AuthenticationId`s
+
+## 4.7.0
+* Add `RefundAuthHardDeclined` and `RefundAuthSoftDeclined` to validation errors
+* Add level 2 processing options `purchaseOrderNumber`, `taxAmount`, and `taxExempt` to Transaction submit for settlement
+* Add level 3 processing options `discountAmount`, `shippingAmount`, `shipsFromPostalCode`, and `lineItems` to Transaction submit for settlement
+
+## 4.6.0
 * Add `isNetworkTokenized` to `AndroidPayCard` and `AndroidPayCardDetails`
 * Add GraphQL ID to `CreditCardVerification`, `Customer`, `Dispute`, and `Transaction`
 * Add support for PHP 7.4 (#262 thanks @slt)

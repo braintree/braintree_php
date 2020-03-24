@@ -62,4 +62,3 @@ class ApplePayGateway
         }
     }
 }
-class_alias('Braintree\ApplePayGateway', 'Braintree_ApplePayGateway');

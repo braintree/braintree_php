@@ -1546,7 +1546,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_handles_search_timeout()
     {
-        $this->expectException('Braintree\Exception\Timeout');
+        $this->expectException('Braintree\Exception\RequestTimeout');
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::amount()->is('-5')
         ]);

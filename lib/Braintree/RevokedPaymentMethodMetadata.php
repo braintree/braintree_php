@@ -50,4 +50,3 @@ class RevokedPaymentMethodMetadata extends Base
                 Util::attributesToString($this->_attributes) . ']';
     }
 }
-class_alias('Braintree\RevokedPaymentMethodMetadata', 'Braintree_RevokedPaymentMethodMetadata');

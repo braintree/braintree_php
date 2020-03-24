@@ -654,4 +654,3 @@ class Transaction extends Base
         return Configuration::gateway()->transaction()->refund($transactionId, $amount);
     }
 }
-class_alias('Braintree\Transaction', 'Braintree_Transaction');

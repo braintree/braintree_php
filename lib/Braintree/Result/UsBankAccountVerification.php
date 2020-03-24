@@ -4,6 +4,7 @@ namespace Braintree\Result;
 use Braintree\RiskData;
 use Braintree\Util;
 use Braintree\UsBankAccount;
+use Braintree\Base;
 
 /**
  * Braintree US Bank Account Verification Result
@@ -22,7 +23,7 @@ use Braintree\UsBankAccount;
  * @property-read Braintree\UsBankAccount $usBankAccount
  *
  */
-class UsBankAccountVerification
+class UsBankAccountVerification extends Base
 {
     // Status
     const FAILED             = 'failed';
@@ -36,7 +37,6 @@ class UsBankAccountVerification
     const INDEPENDENT_CHECK = 'independent_check';
     const MICRO_TRANSFERS   = 'micro_transfers';
 
-    private $_attributes;
     private $_gatewayRejectionReason;
     private $_status;
 
@@ -109,4 +109,3 @@ class UsBankAccountVerification
         ];
     }
 }
-class_alias('Braintree\Result\UsBankAccountVerification', 'Braintree_Result_UsBankAccountVerification');

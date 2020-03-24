@@ -20,4 +20,3 @@ class EndsWithNode
         return $this->searchTerms;
     }
 }
-class_alias('Braintree\EndsWithNode', 'Braintree_EndsWithNode');

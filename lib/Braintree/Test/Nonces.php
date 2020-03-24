@@ -49,6 +49,20 @@ class Nonces
    public static $transactableDebit = "fake-valid-debit-nonce";
    public static $transactablePayroll = "fake-valid-payroll-nonce";
    public static $threeDSecureVisaFullAuthenticationNonce = "fake-three-d-secure-visa-full-authentication-nonce";
+   public static $threeDSecureVisaLookupTimeout = "fake-three-d-secure-visa-lookup-timeout-nonce";
+   public static $threeDSecureVisaFailedSignature = "fake-three-d-secure-visa-failed-signature-nonce";
+   public static $threeDSecureVisaFailedAuthentication = "fake-three-d-secure-visa-failed-authentication-nonce";
+   public static $threeDSecureVisaAttemptsNonParticipating = "fake-three-d-secure-visa-attempts-non-participating-nonce";
+   public static $threeDSecureVisaNoteEnrolled = "fake-three-d-secure-visa-not-enrolled-nonce";
+   public static $threeDSecureVisaUnavailable = "fake-three-d-secure-visa-unavailable-nonce";
+   public static $threeDSecureVisaMPILookupError = "fake-three-d-secure-visa-mpi-lookup-error-nonce";
+   public static $threeDSecureVisaMPIAuthenticateError = "fake-three-d-secure-visa-mpi-authenticate-error-nonce";
+   public static $threeDSecureVisaAuthenticationUnavailable = "fake-three-d-secure-visa-authentication-unavailable-nonce";
+   public static $threeDSecureVisaBypassedAuthentication = "fake-three-d-secure-visa-bypassed-authentication-nonce";
+   public static $threeDSecureTwoVisaSuccessfulFrictionlessAuthentication = "fake-three-d-secure-two-visa-successful-frictionless-authentication-nonce";
+   public static $threeDSecureTwoVisaSuccessfulStepUpAuthentication = "fake-three-d-secure-two-visa-successful-step-up-authentication-nonce";
+   public static $threeDSecureTwoVisaErrorOnLookup = "fake-three-d-secure-two-visa-error-on-lookup-nonce";
+   public static $threeDSecureTwoVisaTimeoutOnLookup = "fake-three-d-secure-two-visa-timeout-on-lookup-nonce";
    public static $transactableNoIndicators = "fake-valid-no-indicators-nonce";
    public static $transactableUnknownIndicators = "fake-valid-unknown-indicators-nonce";
    public static $transactableCountryOfIssuanceUSA = "fake-valid-country-of-issuance-usa-nonce";
@@ -79,4 +93,3 @@ class Nonces
    public static $samsungPayMasterCard = "tokensam_fake_mastercard";
    public static $samsungPayVisa = "tokensam_fake_visa";
 }
-class_alias('Braintree\Test\Nonces', 'Braintree_Test_Nonces');

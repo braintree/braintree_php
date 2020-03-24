@@ -31,6 +31,16 @@ class Helper
         ]);
     }
 
+    public static function integration2MerchantConfig()
+    {
+        Braintree\Configuration::reset();
+
+        Braintree\Configuration::environment('development');
+        Braintree\Configuration::merchantId('integration2_merchant_id');
+        Braintree\Configuration::publicKey('integration2_public_key');
+        Braintree\Configuration::privateKey('integration2_private_key');
+    }
+
     public static function advancedFraudIntegrationMerchantGateway()
     {
         return new Braintree\Gateway([

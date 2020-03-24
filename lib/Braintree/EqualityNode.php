@@ -9,4 +9,3 @@ class EqualityNode extends IsNode
         return $this;
     }
 }
-class_alias('Braintree\EqualityNode', 'Braintree_EqualityNode');

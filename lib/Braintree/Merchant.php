@@ -33,4 +33,3 @@ class Merchant extends Base
                 Util::attributesToString($this->_attributes) .']';
     }
 }
-class_alias('Braintree\Merchant', 'Braintree_Merchant');

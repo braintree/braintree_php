@@ -473,6 +473,60 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals(new DateTime('2014-03-22'), $webhookNotification->dispute->dateWon);
     }
 
+    public function testBuildsASampleNotificationForADisputeAcceptedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::DISPUTE_ACCEPTED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::DISPUTE_ACCEPTED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->dispute->id);
+        $this->assertEquals(Braintree\Dispute::ACCEPTED, $webhookNotification->dispute->status);
+        $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
+    }
+
+    public function testBuildsASampleNotificationForADisputeDisputedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::DISPUTE_DISPUTED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::DISPUTE_DISPUTED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->dispute->id);
+        $this->assertEquals(Braintree\Dispute::DISPUTED, $webhookNotification->dispute->status);
+        $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
+    }
+
+    public function testBuildsASampleNotificationForADisputeExpiredWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::DISPUTE_EXPIRED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::DISPUTE_EXPIRED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->dispute->id);
+        $this->assertEquals(Braintree\Dispute::EXPIRED, $webhookNotification->dispute->status);
+        $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
+    }
+
     public function testBuildsASampleNotificationForADisbursementExceptionWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(

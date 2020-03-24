@@ -456,24 +456,6 @@ class Codes
     const PAYPAL_ACCOUNT_PAYPAL_COMMUNICATION_ERROR                              = '92910';
     const PAYPAL_ACCOUNT_TOKEN_IS_IN_USE                                         = '92906';
 
-    const SEPA_BANK_ACCOUNT_ACCOUNT_HOLDER_NAME_IS_REQUIRED = '93003';
-    const SEPA_BANK_ACCOUNT_BIC_IS_REQUIRED                 = '93002';
-    const SEPA_BANK_ACCOUNT_IBAN_IS_REQUIRED                = '93001';
-
-    const SEPA_MANDATE_ACCOUNT_HOLDER_NAME_IS_REQUIRED = '83301';
-    const SEPA_MANDATE_BIC_INVALID_CHARACTER           = '83306';
-    const SEPA_MANDATE_BIC_IS_REQUIRED                 = '83302';
-    const SEPA_MANDATE_BIC_LENGTH_IS_INVALID           = '83307';
-    const SEPA_MANDATE_BIC_UNSUPPORTED_COUNTRY         = '83308';
-    const SEPA_MANDATE_BILLING_ADDRESS_CONFLICT        = '93311';
-    const SEPA_MANDATE_BILLING_ADDRESS_ID_IS_INVALID   = '93312';
-    const SEPA_MANDATE_IBAN_INVALID_CHARACTER          = '83305';
-    const SEPA_MANDATE_IBAN_INVALID_FORMAT             = '83310';
-    const SEPA_MANDATE_IBAN_IS_REQUIRED                = '83303';
-    const SEPA_MANDATE_IBAN_UNSUPPORTED_COUNTRY        = '83309';
-    const SEPA_MANDATE_TYPE_IS_REQUIRED                = '93304';
-    const SEPA_MANDATE_TYPE_IS_INVALID                 = '93313';
-
     const SETTLEMENT_BATCH_SUMMARY_SETTLEMENT_DATE_IS_INVALID  = '82302';
     const SETTLEMENT_BATCH_SUMMARY_SETTLEMENT_DATE_IS_REQUIRED = '82301';
     const SETTLEMENT_BATCH_SUMMARY_CUSTOM_FIELD_IS_INVALID     = '82303';
@@ -692,4 +674,3 @@ class Codes
     const VERIFICATION_OPTIONS_ACCOUNT_TYPE_IS_INVALID                         = '942184';
     const VERIFICATION_OPTIONS_ACCOUNT_TYPE_NOT_SUPPORTED                      = '942185';
 }
-class_alias('Braintree\Error\Codes', 'Braintree_Error_Codes');

@@ -31,4 +31,3 @@ class OAuthResult extends Base
                 Util::attributesToString($this->_attributes) .']';
     }
 }
-class_alias('Braintree\OAuthResult', 'Braintree_OAuthResult');

@@ -21,4 +21,3 @@ use Braintree\Instance;
 class StatusDetails extends Instance
 {
 }
-class_alias('Braintree\Subscription\StatusDetails', 'Braintree_Subscription_StatusDetails');

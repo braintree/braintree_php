@@ -102,7 +102,6 @@ class ValidationErrorCollection extends Collection
     {
         $output = [];
 
-        // TODO: implement scope
         if (!empty($this->_errors)) {
             $output[] = $this->_inspect($this->_errors);
         }
@@ -131,4 +130,3 @@ class ValidationErrorCollection extends Collection
         return $eOutput;
     }
 }
-class_alias('Braintree\Error\ValidationErrorCollection', 'Braintree_Error_ValidationErrorCollection');

@@ -11,6 +11,4 @@ use Braintree\Exception;
  */
 class RequestTimeout extends Exception
 {
-
 }
-class_alias('Braintree\Exception\RequestTimeout', 'Braintree_Exception_RequestTimeout');

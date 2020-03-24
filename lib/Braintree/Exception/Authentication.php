@@ -14,4 +14,3 @@ class Authentication extends Exception
 {
 
 }
-class_alias('Braintree\Exception\Authentication', 'Braintree_Exception_Authentication');

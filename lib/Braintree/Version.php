@@ -11,7 +11,7 @@ class Version
      * class constants
      */
     const MAJOR = 4;
-    const MINOR = 5;
+    const MINOR = 8;
     const TINY = 0;
 
     /**
@@ -31,4 +31,3 @@ class Version
         return self::MAJOR . '.' . self::MINOR . '.' . self::TINY;
     }
 }
-class_alias('Braintree\Version', 'Braintree_Version');

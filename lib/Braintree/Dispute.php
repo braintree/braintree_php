@@ -186,4 +186,3 @@ class Dispute extends Base
         return Configuration::gateway()->dispute()->search($query);
     }
 }
-class_alias('Braintree\Dispute', 'Braintree_Dispute');

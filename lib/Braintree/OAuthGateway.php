@@ -3,7 +3,6 @@ namespace Braintree;
 
 /**
  * Braintree OAuthGateway module
- * PHP Version 5
  * Creates and manages Braintree Addresses
  *
  * @package   Braintree
@@ -112,4 +111,3 @@ class OAuthGateway
         return $this->_config->baseUrl() . '/oauth/connect?' . $queryString;
     }
 }
-class_alias('Braintree\OAuthGateway', 'Braintree_OAuthGateway');

@@ -20,6 +20,9 @@ class WebhookNotification extends Base
     const DISPUTE_OPENED = 'dispute_opened';
     const DISPUTE_LOST = 'dispute_lost';
     const DISPUTE_WON = 'dispute_won';
+    const DISPUTE_ACCEPTED = 'dispute_accepted';
+    const DISPUTE_DISPUTED = 'dispute_disputed';
+    const DISPUTE_EXPIRED = 'dispute_expired';
     const PARTNER_MERCHANT_CONNECTED = 'partner_merchant_connected';
     const PARTNER_MERCHANT_DISCONNECTED = 'partner_merchant_disconnected';
     const PARTNER_MERCHANT_DECLINED = 'partner_merchant_declined';
@@ -121,4 +124,3 @@ class WebhookNotification extends Base
         }
     }
 }
-class_alias('Braintree\WebhookNotification', 'Braintree_WebhookNotification');

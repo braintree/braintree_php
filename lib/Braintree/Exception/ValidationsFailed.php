@@ -11,6 +11,4 @@ use Braintree\Exception;
  */
 class ValidationsFailed extends Exception
 {
-
 }
-class_alias('Braintree\Exception\ValidationsFailed', 'Braintree_Exception_ValidationsFailed');

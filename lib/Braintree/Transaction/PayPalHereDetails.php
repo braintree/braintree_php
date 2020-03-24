@@ -41,4 +41,3 @@ class PayPalHereDetails extends Instance
          parent::__construct($attributes);
      }
 }
-class_alias('Braintree\Transaction\PayPalHereDetails', 'Braintree_Transaction_PayPalHereDetails');

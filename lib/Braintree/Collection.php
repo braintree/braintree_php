@@ -10,8 +10,6 @@ use ArrayIterator;
 /**
  * Braintree Generic collection
  *
- * PHP Version 5
- *
  * Based on Generic Collection class from:
  * {@link http://codeutopia.net/code/library/CU/Collection.php}
  *
@@ -158,4 +156,3 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
 }
-class_alias('Braintree\Collection', 'Braintree_Collection');

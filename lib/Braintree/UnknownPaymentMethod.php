@@ -66,4 +66,3 @@ class UnknownPaymentMethod extends Base
     }
 
 }
-class_alias('Braintree\UnknownPaymentMethod', 'Braintree_UnknownPaymentMethod');

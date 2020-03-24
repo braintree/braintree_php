@@ -384,21 +384,6 @@ class PaymentMethodTest extends Setup
         $this->assertNotNull($result->paymentMethod->payerId);
     }
 
-    public function testCreate_fromPayPalRefreshTokenWithoutUpgrade()
-    {
-        $customer = Braintree\Customer::createNoValidate();
-        $http = new HttpClientApi(Braintree\Configuration::$global);
-
-        $result = Braintree\PaymentMethod::create([
-            'customerId' => $customer->id,
-            'paypalRefreshToken' => 'PAYPAL_REFRESH_TOKEN',
-            'paypalVaultWithoutUpgrade' => true,
-        ]);
-
-        $this->assertSame($customer->id, $result->paymentMethod->customerId);
-        $this->assertNull($result->paymentMethod->billingAgreementId);
-    }
-
     public function testCreate_fromAbstractPaymentMethodNonce()
     {
         $customer = Braintree\Customer::createNoValidate();
