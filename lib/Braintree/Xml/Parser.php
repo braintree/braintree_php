@@ -137,4 +137,3 @@ class Parser
         return $dateTime;
     }
 }
-class_alias('Braintree\Xml\Parser', 'Braintree_Xml_Parser');

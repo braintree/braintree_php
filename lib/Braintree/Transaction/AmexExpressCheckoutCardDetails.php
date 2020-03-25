@@ -40,4 +40,3 @@ class AmexExpressCheckoutCardDetails extends Instance
         parent::__construct($attributes);
     }
 }
-class_alias('Braintree\Transaction\AmexExpressCheckoutCardDetails', 'Braintree_Transaction_AmexExpressCheckoutCardDetails');

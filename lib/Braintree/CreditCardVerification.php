@@ -66,4 +66,3 @@ class CreditCardVerification extends Result\CreditCardVerification
                 ]];
     }
 }
-class_alias('Braintree\CreditCardVerification', 'Braintree_CreditCardVerification');

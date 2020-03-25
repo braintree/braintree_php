@@ -87,4 +87,3 @@ class DisputeSearch
         return new MultipleValueNode("transaction_source");
     }
 }
-class_alias('Braintree\DisputeSearch', 'Braintree_DisputeSearch');

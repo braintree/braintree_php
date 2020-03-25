@@ -6,7 +6,6 @@ use InvalidArgumentException;
 
 /**
  * Braintree Utility methods
- * PHP version 5
  */
 
 class Util
@@ -465,4 +464,3 @@ class Util
         return $invalidKeys;
     }
 }
-class_alias('Braintree\Util', 'Braintree_Util');

@@ -20,4 +20,3 @@ class KeyValueNode
         return $this->searchTerm;
     }
 }
-class_alias('Braintree\KeyValueNode', 'Braintree_KeyValueNode');

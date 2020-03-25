@@ -69,4 +69,3 @@ class PaymentMethodNonceGateway
 
     }
 }
-class_alias('Braintree\PaymentMethodNonceGateway', 'Braintree_PaymentMethodNonceGateway');

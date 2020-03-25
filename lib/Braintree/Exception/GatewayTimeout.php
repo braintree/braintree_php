@@ -13,4 +13,3 @@ class GatewayTimeout extends Exception
 {
 
 }
-class_alias('Braintree\Exception\GatewayTimeout', 'Braintree_Exception_GatewayTimeout');

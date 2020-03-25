@@ -29,6 +29,4 @@ class FacilitatedDetails extends Base
         return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes) .']';
     }
-
 }
-class_alias('Braintree\FacilitatedDetails', 'Braintree_FacilitatedDetails');

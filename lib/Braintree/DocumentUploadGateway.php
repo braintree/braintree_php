@@ -5,7 +5,6 @@ use InvalidArgumentException;
 
 /**
  * Braintree DisputeGateway module
- * PHP Version 5
  * Creates and manages Braintree Disputes
  *
  * @package   Braintree
@@ -78,4 +77,3 @@ class DocumentUploadGateway
         ];
     }
 }
-class_alias('Braintree\DocumentUploadGateway', 'Braintree_DocumentUploadGateway');

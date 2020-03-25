@@ -32,8 +32,6 @@ class PaymentMethodParser
             return AndroidPayCard::factory($response['androidPayCard']);
         } else if (isset($response['amexExpressCheckoutCard'])) {
             return AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']);
-        } else if (isset($response['europeBankAccount'])) {
-            return EuropeBankAccount::factory($response['europeBankAccount']);
         } else if (isset($response['usBankAccount'])) {
             return UsBankAccount::factory($response['usBankAccount']);
         } else if (isset($response['venmoAccount'])) {
@@ -53,4 +51,3 @@ class PaymentMethodParser
         }
     }
 }
-class_alias('Braintree\PaymentMethodParser', 'Braintree_PaymentMethodParser');

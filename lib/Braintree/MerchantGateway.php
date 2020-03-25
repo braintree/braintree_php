@@ -39,4 +39,3 @@ class MerchantGateway
         }
     }
 }
-class_alias('Braintree\MerchantGateway', 'Braintree_MerchantGateway');

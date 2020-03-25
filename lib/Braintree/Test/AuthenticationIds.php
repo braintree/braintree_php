@@ -35,4 +35,3 @@ class AuthenticationIds
    public static $threeDSecureTwoVisaErrorOnLookup = "fake-three-d-secure-two-visa-error-on-lookup-nonce";
    public static $threeDSecureTwoVisaTimeoutOnLookup = "fake-three-d-secure-two-visa-timeout-on-lookup-nonce";
 }
-class_alias('Braintree\Test\AuthenticationIds', 'Braintree_Test_AuthenticationIds');

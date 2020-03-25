@@ -69,4 +69,3 @@ class SubscriptionSearch
         return new RangeNode('created_at');
     }
 }
-class_alias('Braintree\SubscriptionSearch', 'Braintree_SubscriptionSearch');

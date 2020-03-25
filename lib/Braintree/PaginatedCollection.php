@@ -117,4 +117,3 @@ class PaginatedCollection implements Iterator
         $this->_items = $result->getCurrentPage();
     }
 }
-class_alias('Braintree\PaginatedCollection', 'Braintree_PaginatedCollection');

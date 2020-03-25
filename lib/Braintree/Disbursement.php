@@ -63,4 +63,3 @@ class Disbursement extends Base
         return $this->disbursementType == Disbursement::TYPE_CREDIT;
     }
 }
-class_alias('Braintree\Disbursement', 'Braintree_Disbursement');

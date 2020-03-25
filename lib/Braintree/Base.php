@@ -9,7 +9,6 @@ use JsonSerializable;
  * Braintree base class and initialization
  * Provides methods to child classes. This class cannot be instantiated.
  *
- *  PHP version 5
  */
 abstract class Base implements JsonSerializable
 {

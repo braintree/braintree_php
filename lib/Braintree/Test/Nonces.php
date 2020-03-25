@@ -93,4 +93,3 @@ class Nonces
    public static $samsungPayMasterCard = "tokensam_fake_mastercard";
    public static $samsungPayVisa = "tokensam_fake_visa";
 }
-class_alias('Braintree\Test\Nonces', 'Braintree_Test_Nonces');

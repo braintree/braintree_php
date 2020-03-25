@@ -14,4 +14,3 @@ class Connection extends Exception
 {
 
 }
-class_alias('Braintree\Exception\Connection', 'Braintree_Exception_Connection');

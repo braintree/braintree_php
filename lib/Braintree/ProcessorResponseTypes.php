@@ -12,4 +12,3 @@ class ProcessorResponseTypes
    const SOFT_DECLINED = 'soft_declined';
    const HARD_DECLINED = 'hard_declined';
 }
-class_alias('Braintree\ProcessorResponseTypes', 'Braintree_ProcessorResponseTypes');

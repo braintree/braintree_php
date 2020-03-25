@@ -72,4 +72,3 @@ class VenmoAccount extends Base
         $this->_set('subscriptions', $subscriptionArray);
     }
 }
-class_alias('Braintree\VenmoAccount', 'Braintree_VenmoAccount');

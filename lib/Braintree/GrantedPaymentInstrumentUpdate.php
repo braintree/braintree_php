@@ -70,4 +70,3 @@ class GrantedPaymentInstrumentUpdate extends Base
                 Util::attributesToString($this->_attributes) . ']';
     }
 }
-class_alias('Braintree\GrantedPaymentInstrumentUpdate', 'Braintree_GrantedPaymentInstrumentUpdate');

@@ -63,4 +63,3 @@ class PaymentMethodNonce extends Base
         }
     }
 }
-class_alias('Braintree\PaymentMethodNonce', 'Braintree_PaymentMethodNonce');

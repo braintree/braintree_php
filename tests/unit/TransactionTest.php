@@ -35,12 +35,6 @@ class TransactionTest extends Setup
         Braintree\Transaction::find('');
     }
 
-    public function testErrorsWhenFindWithWhitespaceString()
-    {
-        $this->expectException('InvalidArgumentException');
-        Braintree\Transaction::find('\t');
-    }
-
     public function testInitializationWithoutArguments()
     {
         $transaction = Braintree\Transaction::factory([]);

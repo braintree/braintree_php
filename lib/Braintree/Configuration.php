@@ -33,7 +33,7 @@ class Configuration
      * Braintree API version to use
      * @access public
      */
-    const API_VERSION =  5;
+    const API_VERSION =  6;
     const GRAPHQL_API_VERSION = '2018-09-10';
 
     public function __construct($attribs = [])
@@ -640,4 +640,3 @@ class Configuration
     }
 }
 Configuration::reset();
-class_alias('Braintree\Configuration', 'Braintree_Configuration');

@@ -1,3 +1,14 @@
+## 5.0.0
+* Add `DISPUTE_ACCEPTED`, `DISPUTE_DISPUTED`, and `DISPUTE_EXPIRED` webhook constants
+* Breaking Changes:
+  * Upgrade API version to retrieve declined refund transactions
+  * Throw `RequestTimeout` instead of `Timeout` for transaction search
+  * Drop PSR-0 Support and remove class aliases
+  * Remove EuropeBankAccount and IbanBankAccount modules
+  * Remove deprecated SEPA error codes
+  * Remove `paypalVaultWithoutUpgrade`
+  * Invalid transaction IDs are validated by the gateway and not the SDK
+
 ## 4.8.0
 * Add `Authentication Insight` to payment method nonce create
 * Add `threeDSecureAuthenticationId` support to transaction sale
