@@ -242,7 +242,7 @@ class DisputeGateway
     /**
      * Search for Disputes, given a DisputeSearch query
      *
-     * @param DisputeSearch $query
+     * @param array $query
      */
     public function search($query)
     {
