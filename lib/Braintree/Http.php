@@ -177,23 +177,26 @@ class Http
 
         $response = curl_exec($curl);
 
-        $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-        $responseHeader = array_filter(explode("\r\n", substr($response, 0, $headerSize)));
-        $response = substr($response, $headerSize);
-
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $error_code = curl_errno($curl);
         $error = curl_error($curl);
 
-        curl_close($curl);
+        $this->afterRequestDone($curl, $response);
 
-        return [
-            'status' => $httpStatus,
-            'header' => $responseHeader,
-            'body' => $response,
-            'error_code' => $error_code,
-            'error_message' => $error,
-        ];
+        if ($error_code == 28 && $httpStatus == 0) {
+            throw new Exception\Timeout();
+        }
+
+        curl_close($curl);
+        if ($this->_config->sslOn() && $error_code == 35) {
+            throw new Exception\SSLCertificate($error, $error_code);
+        }
+
+        if ($error_code) {
+            throw new Exception\Connection($error, $error_code);
+        }
+
+        return ['status' => $httpStatus, 'body' => $response];
     }
 
 
@@ -226,21 +229,7 @@ class Http
             $headers[] = 'Authorization: Bearer ' . $authorization['token'];
         }
 
-        $response = $this->doCurlRequest($httpVerb, $url, $headers, $requestBody, $file);
-
-        if ($response['error_code'] == 28 && $response['status'] == 0) {
-            throw new Exception\Timeout();
-        }
-
-        if ($this->_config->sslOn()) {
-            if ($response['status'] == 0) {
-                throw new Exception\SSLCertificate($response['error_message'], $response['error_code']);
-            }
-        } else if ($response['error_code']) {
-            throw new Exception\Connection($response['error_message'], $response['error_code']);
-        }
-
-        return $response;
+        return $this->doCurlRequest($httpVerb, $url, $headers, $requestBody, $file);
     }
 
     function prepareMultipart($ch, $requestBody, $file, $boundary) {
