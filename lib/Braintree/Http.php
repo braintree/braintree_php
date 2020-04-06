@@ -200,10 +200,10 @@ class Http
     /**
      * Inherit this function if you want to log request-response data
      *
-     * @param array $request
-     * @param array $response
+     * @param $curlHandler
+     * @param $response
      */
-    protected function onRequestDone(array $request, array $response)
+    protected function afterRequestDone($curlHandler, $response)
     {
         // ..
     }
@@ -227,16 +227,6 @@ class Http
         }
 
         $response = $this->doCurlRequest($httpVerb, $url, $headers, $requestBody, $file);
-
-        $this->onRequestDone([
-                'method' => $httpVerb,
-                'url' => $url,
-                'header' => $headers,
-                'body' => $requestBody,
-                'file' => $file,
-            ],
-            $response
-        );
 
         if ($response['error_code'] == 28 && $response['status'] == 0) {
             throw new Exception\Timeout();
