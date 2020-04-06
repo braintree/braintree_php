@@ -8,6 +8,7 @@
   * Remove deprecated SEPA error codes
   * Remove `paypalVaultWithoutUpgrade`
   * Invalid transaction IDs are validated by the gateway and not the SDK
+  * Require PHP 7.2 or higher
 
 ## 4.8.0
 * Add `Authentication Insight` to payment method nonce create
