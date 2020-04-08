@@ -1,3 +1,6 @@
+## unreleased
+* Add `recurringCustomerConsent` and `recurringMaxAmount` to `authenticationInsightOptions` for `PaymentMethodNonce.create`
+
 ## 5.0.0
 * Add `DISPUTE_ACCEPTED`, `DISPUTE_DISPUTED`, and `DISPUTE_EXPIRED` webhook constants
 * Breaking Changes:
