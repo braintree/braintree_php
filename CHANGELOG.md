@@ -72,6 +72,7 @@
 
 ## 4.0.0
 * Add support for PHP 7 (Thanks to @briandotdev)
+* Require PHP 7.2 or higher
 * Remove support for HHVM and PHP 5
 * Update to PHPUnit 7
 * Remove deprecated `GRANTED_PAYMENT_INSTRUMENT_UPDATE`
