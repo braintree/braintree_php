@@ -674,4 +674,23 @@ class Codes
     const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_CANNOT_BE_SUB_MERCHANT_ACCOUNT = '94208';
     const VERIFICATION_OPTIONS_ACCOUNT_TYPE_IS_INVALID                         = '942184';
     const VERIFICATION_OPTIONS_ACCOUNT_TYPE_NOT_SUPPORTED                      = '942185';
+ 
+    const VERIFICATION_THREE_D_SECURE_ECI_FLAG_IS_REQUIRED                                                    = "942113";
+    const VERIFICATION_THREE_D_SECURE_ECI_FLAG_IS_INVALID                                                     = "942114";
+    const VERIFICATION_THREE_D_SECURE_CAVV_IS_REQUIRED                                                        = "942116";
+    const VERIFICATION_THREE_D_SECURE_THREE_D_SECURE_VERSION_IS_REQUIRED                                      = '942117';
+    const VERIFICATION_THREE_D_SECURE_THREE_D_SECURE_VERSION_IS_INVALID                                       = "942119";
+    const VERIFICATION_THREE_D_SECURE_AUTHENTICATION_RESPONSE_IS_INVALID                                      = "942120";
+    const VERIFICATION_THREE_D_SECURE_DIRECTORY_RESPONSE_IS_INVALID                                           = "942121";
+    const VERIFICATION_THREE_D_SECURE_CAVV_ALGORITHM_IS_INVALID                                               = "942122";
+    const THREE_D_SECURE_AUTHENTICATION_ID_IS_INVALID                                                         = "942196";
+    const THREE_D_SECURE_AUTHENTICATION_ID_DOESNT_MATCH_NONCE_THREE_D_SECURE_AUTHENTICATION                   = "942198";
+    const THREE_D_SECURE_TRANSACTION_PAYMENT_METHOD_DOESNT_MATCH_THREE_D_SECURE_AUTHENTICATION_PAYMENT_METHOD = "942197";
+    const THREE_D_SECURE_AUTHENTICATION_ID_WITH_THREE_D_SECURE_PASS_THRU_IS_INVALID                           = "942199";
+    const THREE_D_SECURE_AUTHENTICATION_FAILED                                                                = "94271";
+    const THREE_D_SECURE_TOKEN_IS_INVALID                                                                     = "94268";
+    const THREE_D_SECURE_VERIFICATION_DATA_DOESNT_MATCH_VERIFY                                                = "94270";
+    const MERCHANT_ACCOUNT_DOES_NOT_SUPPORT3_D_SECURE                                                         = "942169";
+    const MERCHANT_ACOUNT_DOES_NOT_MATCH3_D_SECURE_MERCHANT_ACCOUNT                                           = "94284";
+    const AMOUNT_DOES_NOT_MATCH3_D_SECURE_AMOUNT                                                              = "94285";
 }
