@@ -89,6 +89,23 @@ class DocumentUploadTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::DOCUMENT_UPLOAD_FILE_IS_TOO_LARGE, $error->code);
     }
 
+    public function testCreate_whenFileIsEmpty_returnsError()
+    {
+        $emptyFile = fopen(dirname(__DIR__) . '/fixtures/empty_file.png', 'w');
+
+        fclose($emptyFile);
+
+        $emptyFile = fopen(dirname(__DIR__) . '/fixtures/empty_file.png', 'rb');
+
+        $result = Braintree\DocumentUpload::create([
+            "kind" => Braintree\DocumentUpload::EVIDENCE_DOCUMENT,
+            "file" => $emptyFile
+        ]);
+
+        $error = $result->errors->forKey('documentUpload')->errors[0];
+        $this->assertEquals(Braintree\Error\Codes::DOCUMENT_UPLOAD_FILE_IS_EMPTY, $error->code);
+    }
+
     public function testCreate_whenPDFFileIsOver50Pages_returnsError()
     {
         $tooLongFile = fopen(dirname(__DIR__) . '/fixtures/too_long.pdf', 'rb');
