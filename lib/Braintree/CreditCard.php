@@ -18,6 +18,7 @@ namespace Braintree;
  * @property-read string $cardType
  * @property-read string $cardholderName
  * @property-read string $commercial
+ * @property-read string $countryOfIssuance
  * @property-read \DateTime $createdAt
  * @property-read string $customerId
  * @property-read string $customerLocation
