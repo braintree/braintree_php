@@ -39,8 +39,12 @@ class PaymentMethodNonceGateway
             'paymentMethodNonce' => [
                 'merchantAccountId',
                 'authenticationInsight',
-                'amount'
-            ]
+            ['authenticationInsightOptions' => [
+                    'amount',
+                    'recurringCustomerConsent',
+                    'recurringMaxAmount'
+                ]
+            ]]
         ]];
         Util::verifyKeys($schema, $params);
         $response = $this->_http->post($fullPath, $params);

@@ -60,7 +60,19 @@ class CreditCardTest extends Setup
                     'streetAddress',
                 ],
             ],
-            'customerId'
+            'customerId',
+            [
+                'threeDSecurePassThru' => [
+                    'eciFlag',
+                    'cavv',
+                    'xid',
+                    'threeDSecureVersion',
+                    'authenticationResponse',
+                    'directoryResponse',
+                    'cavvAlgorithm',
+                    'dsTransactionId',
+                ]
+            ]
         ];
         $this->assertEquals($expected, Braintree\CreditCardGateway::createSignature());
     }
@@ -102,6 +114,18 @@ class CreditCardTest extends Setup
                         ]
                     ]
                 ],
+            ],
+            [
+            'threeDSecurePassThru' => [
+                'eciFlag',
+                'cavv',
+                'xid',
+                'threeDSecureVersion',
+                'authenticationResponse',
+                'directoryResponse',
+                'cavvAlgorithm',
+                'dsTransactionId',
+            ]
             ],
         ];
         $this->assertEquals($expected, Braintree\CreditCardGateway::updateSignature());

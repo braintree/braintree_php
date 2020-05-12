@@ -60,7 +60,9 @@ class PaymentMethodNonceTest extends Setup
             "paymentMethodNonce" => [
                 "merchantAccountId" => self::INDIAN_MERCHANT_TOKEN,
                 "authenticationInsight" => true,
-                "amount" => self::AMOUNT_THRESHOLD_FOR_RBI
+                "authenticationInsightOptions" => [
+                   "amount" => self::AMOUNT_THRESHOLD_FOR_RBI
+                ]
             ]
         ];
 
@@ -111,13 +113,28 @@ class PaymentMethodNonceTest extends Setup
         $this->assertEquals('sca_required', $authInsight['scaIndicator']);
     }
 
-    protected function _requestAuthenticationInsights($merchantToken, $paymentToken, $amount=null)
+    public function testCreate_nonceWithAuthInsightScaIndicatorScaOptional()
+    {
+        $authInsight = $this->_requestAuthenticationInsights(
+            self::INDIAN_MERCHANT_TOKEN, 
+            self::INDIAN_PAYMENT_TOKEN,
+            1000,
+            true,
+            1500)->paymentMethodNonce->authenticationInsight;
+        $this->assertEquals('sca_optional', $authInsight['scaIndicator']);
+    }
+
+    protected function _requestAuthenticationInsights($merchantToken, $paymentToken, $amount=null, $recurringCustomerConsent=null, $recurringMaxAmount=null)
     {
         $params = [
             "paymentMethodNonce" => [
                 "merchantAccountId" => $merchantToken,
                 "authenticationInsight" => true,
-                "amount" => $amount
+                "authenticationInsightOptions" => [
+                    "amount" => $amount,
+                    "recurringCustomerConsent" => $recurringCustomerConsent,
+                    "recurringMaxAmount" => $recurringMaxAmount,
+                ]
             ]
         ];
 

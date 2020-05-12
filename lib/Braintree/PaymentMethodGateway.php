@@ -155,6 +155,7 @@ class PaymentMethodGateway
         $signature = array_merge(self::baseSignature(), [
             'customerId',
             'paypalRefreshToken',
+            CreditCardGateway::threeDSecurePassThruSignature()
         ]);
         return $signature;
     }

@@ -225,6 +225,62 @@ class CustomerTest extends Setup
         $this->assertSame("1111", $result->customer->creditCards[0]->last4);
     }
 
+    public function testCreateCustomerWithCardUsingMissingThreeDSecurePassThruParams()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = Braintree\Test\Nonces::$transactable;
+
+        $result = Braintree\Customer::create([
+            'creditCard' => [
+                'paymentMethodNonce' => $nonce,
+                'threeDSecurePassThru' => [
+                    'eciFlag' => '02',
+                    'cavv' => 'some_cavv',
+                    'xid' => 'some_xid',
+                    'authenticationResponse' => 'Y',
+                    'directoryResponse' => 'Y',
+                    'cavvAlgorithm' => '2',
+                    'dsTransactionId' => 'some_ds_transaction_id',
+                ],
+                'options' => [
+                    'verifyCard' => true
+                ]
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('verification')->onAttribute('threeDSecureVersion');
+        $this->assertEquals(Braintree\Error\Codes::VERIFICATION_THREE_D_SECURE_THREE_D_SECURE_VERSION_IS_REQUIRED, $errors[0]->code);
+        $this->assertEquals(1, preg_match('/ThreeDSecureVersion is required\./', $result->message));
+    }
+
+    public function testCreateCustomerWithCardUsingThreeDSecurePassThruParams()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = Braintree\Test\Nonces::$transactable;
+
+        $result = Braintree\Customer::create([
+            'creditCard' => [
+                'paymentMethodNonce' => $nonce,
+                'threeDSecurePassThru' => [
+                    'eciFlag' => '02',
+                    'cavv' => 'some_cavv',
+                    'xid' => 'some_xid',
+                    'threeDSecureVersion' => '1.0.2',
+                    'authenticationResponse' => 'Y',
+                    'directoryResponse' => 'Y',
+                    'cavvAlgorithm' => '2',
+                    'dsTransactionId' => 'some_ds_transaction_id',
+                ],
+                'options' => [
+                    'verifyCard' => true
+                ]
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+    }
+
     public function testCreateCustomerWithCardUsingThreeDSecureNonce()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
@@ -1113,6 +1169,94 @@ class CustomerTest extends Setup
         $this->assertEquals('411111', $creditCard->bin);
         $this->assertEquals('11/2014', $creditCard->expirationDate);
         $this->assertEquals('New Cardholder', $creditCard->cardholderName);
+    }
+
+    public function testUpdateCustomerWithCardUsingMissingThreeDSecurePassThruParams()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = Braintree\Test\Nonces::$transactable;
+
+        $create_result = Braintree\Customer::create([
+            'firstName' => 'Old First',
+            'lastName' => 'Old Last',
+            'website' => 'http://old.example.com',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cardholderName' => 'Old Cardholder'
+            ]
+        ]);
+        $this->assertEquals(true, $create_result->success);
+
+        $customer = $create_result->customer;
+        $creditCard = $customer->creditCards[0];
+        $result = Braintree\Customer::update($customer->id, [
+            'firstName' => 'New First',
+            'lastName' => 'New Last',
+            'creditCard' => [
+                'paymentMethodNonce' => $nonce,
+                'threeDSecurePassThru' => [
+                    'eciFlag' => '02',
+                    'cavv' => 'some_cavv',
+                    'xid' => 'some_xid',
+                    'authenticationResponse' => 'Y',
+                    'directoryResponse' => 'Y',
+                    'cavvAlgorithm' => '2',
+                    'dsTransactionId' => 'some_ds_transaction_id',
+                ],
+                'options' => [
+                    'verifyCard' => true
+                ]
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('verification')->onAttribute('threeDSecureVersion');
+        $this->assertEquals(Braintree\Error\Codes::VERIFICATION_THREE_D_SECURE_THREE_D_SECURE_VERSION_IS_REQUIRED, $errors[0]->code);
+        $this->assertEquals(1, preg_match('/ThreeDSecureVersion is required\./', $result->message));
+    }
+
+    public function testUpdateUsingThreeDSecurePassThruParams()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = Braintree\Test\Nonces::$transactable;
+
+        $create_result = Braintree\Customer::create([
+            'firstName' => 'Old First',
+            'lastName' => 'Old Last',
+            'website' => 'http://old.example.com',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+                'cardholderName' => 'Old Cardholder'
+            ]
+        ]);
+        $this->assertEquals(true, $create_result->success);
+
+        $customer = $create_result->customer;
+        $creditCard = $customer->creditCards[0];
+        $result = Braintree\Customer::update($customer->id, [
+            'firstName' => 'New First',
+            'lastName' => 'New Last',
+            'creditCard' => [
+                'paymentMethodNonce' => $nonce,
+                'threeDSecurePassThru' => [
+                    'eciFlag' => '02',
+                    'cavv' => 'some_cavv',
+                    'threeDSecureVersion' => '1.0.2',
+                    'xid' => 'some_xid',
+                    'authenticationResponse' => 'Y',
+                    'directoryResponse' => 'Y',
+                    'cavvAlgorithm' => '2',
+                    'dsTransactionId' => 'some_ds_transaction_id',
+                ],
+                'options' => [
+                    'verifyCard' => true
+                ]
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
     }
 
     public function testUpdate_failOnDuplicatePaymentMethod()
