@@ -191,6 +191,7 @@ namespace Braintree;
  * @property-read mixed $reccuring
  * @property-read mixed $refundIds
  * @property-read string $refundedTransactionId
+ * @property-read string $retrievalReferenceNumber
  * @property-read \Braintree\RiskData $riskData
  * @property-read \Braintree\Transaction\SamsungPayCardDetails $samsungPayCardDetails transaction Samsung Pay card info
  * @property-read string $serviceFeeAmount

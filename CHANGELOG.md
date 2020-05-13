@@ -1,3 +1,6 @@
+## unreleased
+* Add `retrieval_reference_number` to `Transaction`
+
 ## 5.1.0
 * Add `threeDSecurePassThru` parameters to `Customer.create`, `PaymentMethod.create`, `CreditCard.create`, `Customer.update`, `PaymentMethod.update` and `CreditCard.update` 
 * Add `recurringCustomerConsent` and `recurringMaxAmount` to `authenticationInsightOptions` for `PaymentMethodNonce.create`

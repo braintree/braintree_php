@@ -6311,4 +6311,26 @@ class TransactionTest extends Setup
         $this->assertEquals('XX', $transaction->networkResponseCode);
         $this->assertEquals('sample network response text', $transaction->networkResponseText);
     }
+
+    public function testCreateTransactionReturnsRetrievalReferenceNumber()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            "creditCard" => [
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ],
+            "share" => true
+        ]);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertNotNull($transaction->retrievalReferenceNumber);
+    }
 }
