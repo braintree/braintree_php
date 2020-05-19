@@ -10,7 +10,7 @@ use Braintree;
 
 class WebhookNotificationTest extends Setup
 {
-    public function setup()
+    public function setUp()
     {
         self::integrationMerchantConfig();
     }

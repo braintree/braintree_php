@@ -8,8 +8,8 @@ use Braintree;
 
 class HttpTest extends Setup
 {
-    public function setupUp(){
-        parent::setupUp();
+    public function setUp(){
+        parent::setUp();
 
         Braintree\Configuration::environment('development');
         Braintree\Configuration::sslVersion(null);

@@ -164,7 +164,7 @@ class Http
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
         }
 
-        if ($this->_config->isUsingProxy()) {
+        if ($this->_config->isUsingInstanceProxy()) {
             $proxyHost = $this->_config->getProxyHost();
             $proxyPort = $this->_config->getProxyPort();
             $proxyType = $this->_config->getProxyType();
@@ -174,7 +174,7 @@ class Http
             if (!empty($proxyType)) {
                 curl_setopt($curl, CURLOPT_PROXYTYPE, $proxyType);
             }
-            if ($this->_config->isAuthenticatedProxy()) {
+            if ($this->_config->isAuthenticatedInstanceProxy()) {
                 curl_setopt($curl, CURLOPT_PROXYUSERPWD, $proxyUser . ':' . $proxyPwd);
             }
         }

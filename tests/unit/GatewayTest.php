@@ -8,7 +8,7 @@ use Braintree;
 
 class GatewayTest extends Setup
 {
-    public function setup()
+    public function setUp()
     {
         Braintree\Configuration::reset();
     }

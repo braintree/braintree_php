@@ -8,7 +8,7 @@ use Braintree;
 
 class ConfigurationTest extends Setup
 {
-    public function setup()
+    public function setUp()
     {
         Braintree\Configuration::reset();
         $this->config = new Braintree\Configuration();
@@ -20,6 +20,45 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::merchantId('integration_merchant_id');
         Braintree\Configuration::publicKey('integration_public_key');
         Braintree\Configuration::privateKey('integration_private_key');
+    }
+
+    public function testConstructWithArrayOfCredentials()
+    {
+        $config = new Braintree\Configuration([
+            'environment' => 'sandbox',
+            'merchantId' => 'sandbox_merchant_id',
+            'publicKey' => 'sandbox_public_key',
+            'privateKey' => 'sandbox_private_key',
+            'timeout' => 120,
+            'acceptGzipEncoding' => false,
+        ]);
+
+        $this->assertEquals('sandbox', $config->getEnvironment());
+        $this->assertEquals('sandbox_merchant_id', $config->getMerchantId());
+        $this->assertEquals(120, $config->getTimeout());
+        $this->assertFalse($config->getAcceptGzipEncoding());
+    }
+
+    function testConstructWithProxyServerAndSslVersionAttributes()
+    {
+        $config = new Braintree\Configuration([
+            'environment' => 'sandbox',
+            'merchantId' => 'sandbox_merchant_id',
+            'publicKey' => 'sandbox_public_key',
+            'privateKey' => 'sandbox_private_key',
+            'proxyHost' => 'example.com',
+            'proxyPort' => '5678',
+            'proxyType' => 'foo',
+            'proxyUser' => 'username',
+            'proxyPassword' => 'password',
+            'sslVersion' => '2',
+        ]);
+        $this->assertEquals('example.com', $config->getProxyHost());
+        $this->assertEquals('5678', $config->getProxyPort());
+        $this->assertEquals('foo', $config->getProxyType());
+        $this->assertEquals('username', $config->getProxyUser());
+        $this->assertEquals('password', $config->getProxyPassword());
+        $this->assertEquals('2', $config->getSslVersion());
     }
 
     public function testAssertGlobalHasAccessTokenOrKeys()
@@ -50,23 +89,6 @@ class ConfigurationTest extends Setup
         Braintree\Configuration::assertGlobalHasAccessTokenOrKeys();
     }
 
-    public function testConstructWithArrayOfCredentials()
-    {
-        $config = new Braintree\Configuration([
-            'environment' => 'sandbox',
-            'merchantId' => 'sandbox_merchant_id',
-            'publicKey' => 'sandbox_public_key',
-            'privateKey' => 'sandbox_private_key',
-            'timeout' => 120,
-            'acceptGzipEncoding' => false,
-        ]);
-
-        $this->assertEquals('sandbox', $config->getEnvironment());
-        $this->assertEquals('sandbox_merchant_id', $config->getMerchantId());
-        $this->assertEquals(120, $config->getTimeout());
-        $this->assertFalse($config->getAcceptGzipEncoding());
-    }
-
     public function testSetValidEnvironment()
     {
         Braintree\Configuration::environment('sandbox');
@@ -77,9 +99,7 @@ class ConfigurationTest extends Setup
     public function testSetInvalidEnvironment()
     {
         $this->expectException('Braintree\Exception\Configuration', '"invalid" is not a valid environment.');
-
         Braintree\Configuration::environment('invalid');
-
         Braintree\Configuration::reset();
     }
 
@@ -195,12 +215,14 @@ class ConfigurationTest extends Setup
         $this->assertEquals('MY_PROXY', $this->config->proxyType());
     }
 
-    function testProxyIsConfigured()
+    function testInstanceProxyIsConfigured()
     {
-        $this->config->proxyHost('example.com');
-        $this->config->proxyPort('1234');
+        $config = new Braintree\Configuration([
+            'proxyHost' => 'example.com',
+            'proxyPort' => '5678',
+        ]);
 
-        $this->assertTrue($this->config->isUsingProxy());
+        $this->assertTrue($config->isUsingInstanceProxy());
     }
 
     function testProxyUser()
@@ -215,24 +237,27 @@ class ConfigurationTest extends Setup
         $this->assertEquals('password', $this->config->proxyPassword());
     }
 
-    function testIsAuthenticatedProxy()
+    function testInstanceIsAuthenticatedProxy()
     {
-        $this->config->proxyUser('username');
-        $this->config->proxyPassword('password');
 
-        $this->assertTrue($this->config->isAuthenticatedProxy());
+        $config = new Braintree\Configuration([
+            'proxyUser' => 'user',
+            'proxyPassword' => 'password',
+        ]);
+
+        $this->assertTrue($config->isAuthenticatedInstanceProxy());
     }
 
     function testTimeout()
     {
-        $this->config->timeout(30);
+        Braintree\Configuration::timeout(30);
 
-        $this->assertEquals(30, $this->config->timeout());
+        $this->assertEquals(30, Braintree\Configuration::timeout());
     }
 
     function testTimeoutDefaultsToSixty()
     {
-        $this->assertEquals(60, $this->config->timeout());
+        $this->assertEquals(60, Braintree\Configuration::timeout());
     }
 
     function testSslVersion()
@@ -441,7 +466,6 @@ class ConfigurationTest extends Setup
             'accessToken' => 'access_token$invalid$integration_merchant_id$integration_access_token',
         ]);
     }
-
 
     public function testValidWithOAuthClientCredentialsAndAccessToken()
     {
