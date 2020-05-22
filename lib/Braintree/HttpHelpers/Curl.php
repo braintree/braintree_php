@@ -31,7 +31,7 @@ class Curl {
             $headers[] = 'Content-Type: application/xml';
         }
 
-        $authorization = Curl::_getAuthorization($config, $useClientCredentials);
+        $authorization = self::_getAuthorization($config, $useClientCredentials);
         if (isset($authorization['user'])) {
             $httpRequest->setOption(CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             $httpRequest->setOption(CURLOPT_USERPWD, $authorization['user'] . ':' . $authorization['password']);
@@ -42,7 +42,7 @@ class Curl {
         if ($config->sslOn()) {
             $httpRequest->setOption(CURLOPT_SSL_VERIFYPEER, true);
             $httpRequest->setOption(CURLOPT_SSL_VERIFYHOST, 2);
-            $httpRequest->setOption(CURLOPT_CAINFO, Curl::_getcafile($config));
+            $httpRequest->setOption(CURLOPT_CAINFO, self::_getcafile($config));
         }
 
         if (!empty($file)) {

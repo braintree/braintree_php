@@ -7,6 +7,7 @@ require_once __DIR__ . '/MockHttpRequest.php';
 use Test\Setup;
 use Test\HttpHelpers\MockHttpRequest;
 use Braintree;
+use Braintree\HttpHelpers\Curl;
 
 class CurlTest extends Setup
 {
@@ -25,25 +26,25 @@ class CurlTest extends Setup
             'timeout' => 10
         ]);
 
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
         $this->assertSame(10, $this->_mockHttpRequest->options[CURLOPT_TIMEOUT]);
     }
 
     public function testMakeRequestSetsHttpVerb()
     {
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
         $this->assertSame('GET', $this->_mockHttpRequest->options[CURLOPT_CUSTOMREQUEST]);
     }
 
     public function testMakeRequestSetsUrl()
     {
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
         $this->assertSame('some-path', $this->_mockHttpRequest->options[CURLOPT_URL]);
     }
 
     public function testMakeRequestSetsGzipEncoding()
     {
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
         $this->assertSame('gzip', $this->_mockHttpRequest->options[CURLOPT_ENCODING]);
     }
 
@@ -53,7 +54,7 @@ class CurlTest extends Setup
             'acceptGzipEncoding' => false
         ]);
 
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
         $this->assertArrayNotHasKey(CURLOPT_ENCODING, $this->_mockHttpRequest->options);
     }
 
@@ -63,25 +64,25 @@ class CurlTest extends Setup
             'sslVersion' => 1.5
         ]);
 
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
         $this->assertSame(1.5, $this->_mockHttpRequest->options[CURLOPT_SSLVERSION]);
     }
 
     public function testMakeRequestDoesNotSetSslVersionWhenNotConfigured()
     {
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
         $this->assertArrayNotHasKey(CURLOPT_SSLVERSION, $this->_mockHttpRequest->options);
     }
 
     public function testMakeRequestSetsCustomHeaders()
     {
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest, null, null, ['custom: header']);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest, null, null, ['custom: header']);
         $this->assertContains('custom: header', $this->_mockHttpRequest->options[CURLOPT_HTTPHEADER]);
     }
 
     public function testMakeRequestSetsDefaultHeadersWhenCustomHeadersAreNotPresent()
     {
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
 
         $this->assertContains('Accept: application/xml', $this->_mockHttpRequest->options[CURLOPT_HTTPHEADER]);
         $this->assertContains('User-Agent: Braintree PHP Library ' . Braintree\Version::get(), $this->_mockHttpRequest->options[CURLOPT_HTTPHEADER]);
@@ -96,7 +97,7 @@ class CurlTest extends Setup
             'clientSecret' => 'client_secret$development$secret'
         ]);
 
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest, null, null, null, true);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest, null, null, null, true);
 
         $this->assertSame(CURLAUTH_BASIC, $this->_mockHttpRequest->options[CURLOPT_HTTPAUTH]);
         $this->assertSame('client_id$development$id:client_secret$development$secret', $this->_mockHttpRequest->options[CURLOPT_USERPWD]);
@@ -108,7 +109,7 @@ class CurlTest extends Setup
             'accessToken' => 'access_token$development$id$token',
         ]);
 
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
         $this->assertContains('Authorization: Bearer access_token$development$id$token', $this->_mockHttpRequest->options[CURLOPT_HTTPHEADER]);
     }
 
@@ -119,7 +120,7 @@ class CurlTest extends Setup
             'privateKey' => 'private_key'
         ]);
 
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
 
         $this->assertSame(CURLAUTH_BASIC, $this->_mockHttpRequest->options[CURLOPT_HTTPAUTH]);
         $this->assertSame('public_key:private_key', $this->_mockHttpRequest->options[CURLOPT_USERPWD]);
@@ -131,7 +132,7 @@ class CurlTest extends Setup
             'environment' => 'production',
         ]);
 
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
 
         $this->assertSame(true, $this->_mockHttpRequest->options[CURLOPT_SSL_VERIFYPEER]);
         $this->assertSame(2, $this->_mockHttpRequest->options[CURLOPT_SSL_VERIFYHOST]);
@@ -144,7 +145,7 @@ class CurlTest extends Setup
             'environment' => 'development',
         ]);
 
-        Braintree\HttpHelpers\Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
+        Curl::makeRequest('GET', 'some-path', $this->_config, $this->_mockHttpRequest);
 
         $this->assertArrayNotHasKey(CURLOPT_SSL_VERIFYPEER, $this->_mockHttpRequest->options);
         $this->assertArrayNotHasKey(CURLOPT_SSL_VERIFYHOST, $this->_mockHttpRequest->options);
@@ -159,7 +160,7 @@ class CurlTest extends Setup
 
         $file = fopen(dirname(dirname(__DIR__)) . '/fixtures/bt_logo.png', 'rb');
 
-        Braintree\HttpHelpers\Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest, $requestBody, $file, null, null);
+        Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest, $requestBody, $file, null, null);
 
         $this->assertSame(true, $this->_mockHttpRequest->options[CURLOPT_POST]);
         $this->assertNotEmpty($this->_mockHttpRequest->options[CURLOPT_POSTFIELDS]);
@@ -172,7 +173,7 @@ class CurlTest extends Setup
             'some-key' => 'some-value'
         ];
 
-        Braintree\HttpHelpers\Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest, $requestBody, null, null, null);
+        Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest, $requestBody, null, null, null);
 
         $this->assertArrayNotHasKey(CURLOPT_POST, $this->_mockHttpRequest->options);
         $this->assertArrayNotHasKey(CURLOPT_POSTFIELDS, $this->_mockHttpRequest->options);
