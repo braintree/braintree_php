@@ -1,6 +1,7 @@
 <?php
 namespace Braintree\HttpHelpers;
 
+use Braintree\Exception;
 use Braintree\Version;
 use Braintree\Configuration;
 use finfo;
@@ -49,9 +50,46 @@ class Curl {
             $boundary = "---------------------" . md5(mt_rand() . microtime());
             $headers[] = "Content-Type: multipart/form-data; boundary={$boundary}";
             self::_prepareMultipart($httpRequest, $requestBody, $file, $boundary);
+        } else if (!empty($requestBody)) {
+            $httpRequest->setOption(CURLOPT_POSTFIELDS, $requestBody);
+        }
+
+        if ($config->isUsingInstanceProxy()) {
+            $proxyHost = $config->getProxyHost();
+            $proxyPort = $config->getProxyPort();
+            $proxyType = $config->getProxyType();
+            $proxyUser = $config->getProxyUser();
+            $proxyPwd= $config->getProxyPassword();
+            $httpRequest->setOption(CURLOPT_PROXY, $proxyHost . ':' . $proxyPort);
+            if (!empty($proxyType)) {
+                $httpRequest->setOption(CURLOPT_PROXYTYPE, $proxyType);
+            }
+            if ($config->isAuthenticatedInstanceProxy()) {
+                $httpRequest->setOption(CURLOPT_PROXYUSERPWD, $proxyUser . ':' . $proxyPwd);
+            }
         }
 
         $httpRequest->setOption(CURLOPT_HTTPHEADER, $headers);
+        $httpRequest->setOption(CURLOPT_RETURNTRANSFER, true);
+        $response = $httpRequest->execute();
+        $httpStatus = $httpRequest->getInfo(CURLINFO_HTTP_CODE);
+        $errorCode = $httpRequest->getErrorCode();
+        $error = $httpRequest->getError();
+
+        if ($errorCode == 28 && $httpStatus == 0) {
+            throw new Exception\Timeout();
+        }
+
+        $httpRequest->close();
+        if ($config->sslOn() && $errorCode == 35) {
+            throw new Exception\SSLCertificate($error, $errorCode);
+        }
+
+        if ($errorCode) {
+            throw new Exception\Connection($error, $errorCode);
+        }
+
+        return ['status' => $httpStatus, 'body' => $response];
     }
 
     private static function _getAuthorization($config, $useClientCredentials)

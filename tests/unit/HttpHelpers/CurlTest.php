@@ -167,7 +167,7 @@ class CurlTest extends Setup
         $this->assertNotEmpty(preg_grep('~Content-Type: multipart/form-data; boundary=(.*)~', $this->_mockHttpRequest->options[CURLOPT_HTTPHEADER]));
     }
 
-    public function testMakeRequestDoesNotSetHeaderAndBodyForMultipartFormDataIfFileIsNotPresent()
+    public function testMakeRequestSetsRequestBodyOnlyIfRequestBodyIsPresentAndFileIsNotPresent()
     {
         $requestBody = [
             'some-key' => 'some-value'
@@ -176,17 +176,100 @@ class CurlTest extends Setup
         Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest, $requestBody, null, null, null);
 
         $this->assertArrayNotHasKey(CURLOPT_POST, $this->_mockHttpRequest->options);
-        $this->assertArrayNotHasKey(CURLOPT_POSTFIELDS, $this->_mockHttpRequest->options);
-        $this->assertEmpty(preg_grep('~Content-Type: multipart/form-data; boundary=(.*)~', $this->_mockHttpRequest->options[CURLOPT_HTTPHEADER]));
+        $this->assertSame($requestBody, $this->_mockHttpRequest->options[CURLOPT_POSTFIELDS]);
     }
 
-    // TODO
-    // request body
-    // proxy server
-    // return transfer option
-    //
-    // timeout exception
-    // ssl cert exception
-    // connection exception
-    // successful response
+    public function testMakeRequestSetsProxyHostAndProxyPort()
+    {
+        $this->_config = new Braintree\Configuration([
+            'proxyHost' => 'host',
+            'proxyPort' => 1234
+        ]);
+
+        Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest);
+
+        $this->assertSame('host:1234', $this->_mockHttpRequest->options[CURLOPT_PROXY]);
+    }
+
+    public function testMakeRequestSetsProxyType()
+    {
+        $this->_config = new Braintree\Configuration([
+            'proxyHost' => 'host',
+            'proxyPort' => 1234,
+            'proxyType' => 'foo'
+        ]);
+
+        Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest);
+
+        $this->assertSame('foo', $this->_mockHttpRequest->options[CURLOPT_PROXYTYPE]);
+    }
+
+    public function testMakeRequestSetsProxyUserAndProxyPassword()
+    {
+        $this->_config = new Braintree\Configuration([
+            'proxyHost' => 'host',
+            'proxyPort' => 1234,
+            'proxyUser' => 'user',
+            'proxyPassword' => 'password'
+        ]);
+
+        Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest);
+
+        $this->assertSame('user:password', $this->_mockHttpRequest->options[CURLOPT_PROXYUSERPWD]);
+    }
+
+    public function testMakeRequestSetsCurlReturnTransfer()
+    {
+        Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest);
+
+        $this->assertSame(true, $this->_mockHttpRequest->options[CURLOPT_RETURNTRANSFER]);
+    }
+
+    public function testMakeRequestThrowsTimeoutExceptionWhenTimeoutOccurs()
+    {
+        $this->_mockHttpRequest->errorCode = 28;
+        $this->_mockHttpRequest->httpStatus = 0;
+        $this->expectException(Braintree\Exception\Timeout::class);
+
+        Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest);
+    }
+
+    public function testMakeRequestThrowsSSLExceptionWhenSSLErrors()
+    {
+        $this->_mockHttpRequest->errorCode = 35;
+        $this->expectException(Braintree\Exception\SSLCertificate::class);
+
+        Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest);
+    }
+
+    public function testMakeRequestThrowsConnectionExceptionWhenAnyOtherErrorOccurs()
+    {
+        $this->_mockHttpRequest->errorCode = 17;
+        $this->expectException(Braintree\Exception\Connection::class);
+
+        Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest);
+    }
+
+    public function testMakeRequestReturnsStatusAndBodyWhenNoErrorsOccur()
+    {
+        $this->_mockHttpRequest->response = 'Successful response';
+        $this->_mockHttpRequest->httpStatus = 200;
+
+        $result = Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest);
+
+        $this->assertSame('Successful response', $result['body']);
+        $this->assertSame(200, $result['status']);
+    }
+
+    public function testMakeRequestClosesCurl()
+    {
+        $this->_mockHttpRequest->response = 'Successful response';
+        $this->_mockHttpRequest->httpStatus = 200;
+
+        $this->assertFalse($this->_mockHttpRequest->closed);
+
+        $result = Curl::makeRequest('POST', 'some-path', $this->_config, $this->_mockHttpRequest);
+
+        $this->assertTrue($this->_mockHttpRequest->closed);
+    }
 }
