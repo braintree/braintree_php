@@ -7,7 +7,7 @@
 require_once(__DIR__ . DIRECTORY_SEPARATOR . 'autoload.php');
 
 if (version_compare(PHP_VERSION, '7.2.0', '<')) {
-    throw new Braintree_Exception('PHP version >= 7.2.0 required');
+    throw new Braintree\Exception('PHP version >= 7.2.0 required');
 }
 
 class Braintree {
@@ -15,7 +15,7 @@ class Braintree {
         $requiredExtensions = ['xmlwriter', 'openssl', 'dom', 'hash', 'curl'];
         foreach ($requiredExtensions AS $ext) {
             if (!extension_loaded($ext)) {
-                throw new Braintree_Exception('The Braintree library requires the ' . $ext . ' extension.');
+                throw new Braintree\Exception('The Braintree library requires the ' . $ext . ' extension.');
             }
         }
     }
