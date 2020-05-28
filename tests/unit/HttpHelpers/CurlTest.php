@@ -14,7 +14,7 @@ class CurlTest extends Setup
     private $_config;
     private $_mockHttpRequest;
 
-    public function setup()
+    public function setUp()
     {
         $this->_config = new Braintree\Configuration();
         $this->_mockHttpRequest = new MockHttpRequest('some-url');

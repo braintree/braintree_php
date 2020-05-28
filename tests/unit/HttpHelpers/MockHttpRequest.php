@@ -3,7 +3,8 @@ namespace Test\HttpHelpers;
 
 use Braintree;
 
-class MockHttpRequest implements Braintree\HttpHelpers\HttpRequest {
+class MockHttpRequest implements Braintree\HttpHelpers\HttpRequest
+{
 
     public $options;
     public $response;

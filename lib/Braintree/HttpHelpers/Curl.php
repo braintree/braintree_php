@@ -6,7 +6,8 @@ use Braintree\Version;
 use Braintree\Configuration;
 use finfo;
 
-class Curl {
+class Curl
+{
 
     public static function makeRequest($httpVerb, $url, $config, $httpRequest, $requestBody = null, $file = null, $customHeaders = null, $useClientCredentials = false)
     {

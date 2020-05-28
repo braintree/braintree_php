@@ -662,6 +662,7 @@ class Configuration
              $ssl = true;
              break;
         }
+
        return $ssl;
     }
 
