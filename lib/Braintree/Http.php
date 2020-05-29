@@ -85,13 +85,6 @@ class Http
         return empty($params) ? null : Xml::buildXmlFromArray($params);
     }
 
-    private function _getHeaders()
-    {
-        return [
-            'Accept: application/xml',
-        ];
-    }
-
     public function useClientCredentials()
     {
         $this->_useClientCredentials = true;

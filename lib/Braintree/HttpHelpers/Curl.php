@@ -8,7 +8,6 @@ use finfo;
 
 class Curl
 {
-
     public static function makeRequest($httpVerb, $url, $config, $httpRequest, $requestBody = null, $file = null, $customHeaders = null, $useClientCredentials = false)
     {
         $httpRequest->setOption(CURLOPT_TIMEOUT, $config->getTimeout());
@@ -44,7 +43,7 @@ class Curl
         if ($config->sslOn()) {
             $httpRequest->setOption(CURLOPT_SSL_VERIFYPEER, true);
             $httpRequest->setOption(CURLOPT_SSL_VERIFYHOST, 2);
-            $httpRequest->setOption(CURLOPT_CAINFO, self::_getcafile($config));
+            $httpRequest->setOption(CURLOPT_CAINFO, self::_getCaFile($config));
         }
 
         if (!empty($file)) {

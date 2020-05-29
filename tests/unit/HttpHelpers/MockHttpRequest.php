@@ -5,7 +5,6 @@ use Braintree;
 
 class MockHttpRequest implements Braintree\HttpHelpers\HttpRequest
 {
-
     public $options;
     public $response;
     public $httpStatus;
