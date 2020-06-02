@@ -4,7 +4,6 @@ namespace Braintree;
 use Braintree\HttpHelpers\Curl;
 use Braintree\HttpHelpers\CurlRequest;
 
-use finfo;
 
 /**
  * Braintree HTTP Client
