@@ -17,7 +17,7 @@ class CurlTest extends Setup
     public function setUp()
     {
         $this->_config = new Braintree\Configuration();
-        $this->_mockHttpRequest = new MockHttpRequest('some-url');
+        $this->_mockHttpRequest = new MockHttpRequest();
     }
 
     public function testMakeRequestSetsTimeout()

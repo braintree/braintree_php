@@ -20,8 +20,6 @@ class GraphQL extends Http
             'Accept: application/json',
             'Braintree-Version: ' . Configuration::GRAPHQL_API_VERSION,
             'Content-Type: application/json',
-            'User-Agent: Braintree PHP Library ' . Version::get(),
-            'X-ApiVersion: ' . Configuration::API_VERSION
         ];
     }
 

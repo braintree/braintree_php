@@ -12,7 +12,7 @@ class MockHttpRequest implements Braintree\HttpHelpers\HttpRequest
     public $error;
     public $closed;
 
-    public function __construct($url)
+    public function __construct()
     {
         $this->closed = false;
     }
