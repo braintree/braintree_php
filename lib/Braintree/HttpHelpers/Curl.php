@@ -23,13 +23,13 @@ class Curl
         }
 
         $headers = [];
-            $headers[] = 'User-Agent: Braintree PHP Library ' . Version::get();
-            $headers[] = 'X-ApiVersion: ' . Configuration::API_VERSION;
         if ($customHeaders) {
             $headers = $customHeaders;
         } else {
             $headers[] = 'Accept: application/xml';
             $headers[] = 'Content-Type: application/xml';
+            $headers[] = 'User-Agent: Braintree PHP Library ' . Version::get();
+            $headers[] = 'X-ApiVersion: ' . Configuration::API_VERSION;
         }
 
         $authorization = self::_getAuthorization($config, $useClientCredentials);
