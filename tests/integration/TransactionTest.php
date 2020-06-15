@@ -4280,7 +4280,8 @@ class TransactionTest extends Setup
 
   public function testGatewayRejectionOnFraud()
     {
-        $result = Braintree\Transaction::sale([
+        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $result = $gateway->transaction()->sale([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => '4000111111111511',
