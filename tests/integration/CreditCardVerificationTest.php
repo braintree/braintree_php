@@ -154,4 +154,46 @@ class CreditCardVerificationTest extends Setup
         $this->assertEquals($verification->networkResponseText, 'sample network response text');
     }
 
+    public function testVisaVerificationReceivesNetworkTransactionId()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2011',
+            ],
+        ]);
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+        $this->assertTrue(strlen($verification->networkTransactionId) > 0);
+    }
+
+    public function testMasterCardVerificationReceivesNetworkTransactionId()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$masterCard,
+                'expirationDate' => '05/2011',
+            ],
+        ]);
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+        $this->assertTrue(strlen($verification->networkTransactionId) > 0);
+    }
+
+    public function testAmexVerificationDoesNotReceiveNetworkTransactionId()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
+                'expirationDate' => '05/2011',
+            ],
+        ]);
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+        $this->assertNull($verification->networkTransactionId);
+    }
+
 }

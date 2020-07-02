@@ -21,6 +21,7 @@ namespace Braintree;
  * @property-read string $graphQLId
  * @property-read string $id
  * @property-read string $merchantAccountId
+ * @property-read string $networkTransactionId
  * @property-read string $processorResponseCode
  * @property-read string $processorResponseText
  * @property-read string $processorResponseType

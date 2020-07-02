@@ -1,3 +1,6 @@
+## unreleased
+* Add `networkTransactionId` to `CreditCardVerification`
+
 ## 5.2.0
 * Add `retrieval_reference_number` to `Transaction`
 * Fix class alias issue where Exceptions could not be thrown for missing libraries or older PHP versions.
