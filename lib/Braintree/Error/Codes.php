@@ -533,6 +533,7 @@ class Codes
     const TRANSACTION_AMOUNT_MUST_BE_GREATER_THAN_ZERO                                = '81531';
     const TRANSACTION_AMOUNT_NOT_SUPPORTED_BY_PROCESSOR                               = '815193';
     const TRANSACTION_BILLING_ADDRESS_CONFLICT                                        = '91530';
+    const TRANSACTION_BILLING_PHONE_NUMBER_IS_INVALID                                 = '915206';
     const TRANSACTION_CANNOT_BE_VOIDED                                                = '91504';
     const TRANSACTION_CANNOT_CANCEL_RELEASE                                           = '91562';
     const TRANSACTION_CANNOT_CLONE_CREDIT                                             = '91543';
@@ -570,6 +571,8 @@ class Codes
     const TRANSACTION_SHIPPING_AMOUNT_FORMAT_IS_INVALID                               = '915162';
     const TRANSACTION_SHIPPING_AMOUNT_CANNOT_BE_NEGATIVE                              = '915163';
     const TRANSACTION_SHIPPING_AMOUNT_IS_TOO_LARGE                                    = '915164';
+    const TRANSACTION_SHIPPING_METHOD_IS_INVALID                                      = '915203';
+    const TRANSACTION_SHIPPING_PHONE_NUMBER_IS_INVALID                                = '915204';
     const TRANSACTION_SHIPS_FROM_POSTAL_CODE_IS_TOO_LONG                              = '915165';
     const TRANSACTION_SHIPS_FROM_POSTAL_CODE_IS_INVALID                               = '915166';
     const TRANSACTION_SHIPS_FROM_POSTAL_CODE_INVALID_CHARACTERS                       = '915167';
@@ -615,6 +618,7 @@ class Codes
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DESCRIPTOR                  = '915108';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_UPDATING_DETAILS                     = '915130';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_VOICE_AUTHORIZATIONS                 = '91545';
+    const TRANSACTION_PRODUCT_SKU_IS_INVALID                                          = '915202';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID                                = '91548';
     const TRANSACTION_PURCHASE_ORDER_NUMBER_IS_TOO_LONG                               = '91537';
     const TRANSACTION_REFUND_AMOUNT_IS_TOO_LARGE                                      = '91521';
@@ -693,4 +697,12 @@ class Codes
     const MERCHANT_ACCOUNT_DOES_NOT_SUPPORT3_D_SECURE                                                         = "942169";
     const MERCHANT_ACOUNT_DOES_NOT_MATCH3_D_SECURE_MERCHANT_ACCOUNT                                           = "94284";
     const AMOUNT_DOES_NOT_MATCH3_D_SECURE_AMOUNT                                                              = "94285";
+
+    const RISK_DATA_CUSTOMER_BROWSER_IS_TOO_LONG                                                              = "94701";
+    const RISK_DATA_CUSTOMER_DEVICE_ID_IS_TOO_LONG                                                            = "94702";
+    const RISK_DATA_CUSTOMER_LOCATION_ZIP_INVALID_CHARACTERS                                                  = "94703";
+    const RISK_DATA_CUSTOMER_LOCATION_ZIP_IS_INVALID                                                          = "94704";
+    const RISK_DATA_CUSTOMER_LOCATION_ZIP_IS_TOO_LONG                                                         = "94705";
+    const RISK_DATA_CUSTOMER_TENURE_IS_TOO_LONG                                                               = "94706";
+    const RISK_DATA_CUSTOMER_TENURE_IS_INVALID                                                                = "94707";
 }

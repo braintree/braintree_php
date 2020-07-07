@@ -84,6 +84,7 @@ class TransactionGateway
             'orderId',
             'paymentMethodNonce',
             'paymentMethodToken',
+            'productSku',
             'purchaseOrderNumber',
             'recurring',
             'serviceFeeAmount',
@@ -104,7 +105,10 @@ class TransactionGateway
             'discountAmount',
             'shipsFromPostalCode',
             ['riskData' =>
-                ['customerBrowser', 'customerIp', 'customer_browser', 'customer_ip']
+                [
+                    //NEXT_MAJOR_VERSION remove snake case parameters, PHP should only accept camel case
+                    'customerBrowser', 'customerIp', 'customer_browser', 'customer_ip',
+                    'customerDeviceId', 'customerLocationZip', 'customerTenure'],
             ],
             ['creditCard' =>
                 ['token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'],
@@ -118,15 +122,15 @@ class TransactionGateway
                 [
                     'firstName', 'lastName', 'company', 'countryName',
                     'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
-                    'extendedAddress', 'locality', 'postalCode', 'region',
+                    'extendedAddress', 'locality', 'phoneNumber', 'postalCode', 'region',
                     'streetAddress'],
             ],
             ['shipping' =>
                 [
                     'firstName', 'lastName', 'company', 'countryName',
                     'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
-                    'extendedAddress', 'locality', 'postalCode', 'region',
-                    'streetAddress'],
+                    'extendedAddress', 'locality', 'phoneNumber', 'postalCode', 'region',
+                    'shippingMethod', 'streetAddress'],
             ],
             ['threeDSecurePassThru' =>
                 [

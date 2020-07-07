@@ -187,6 +187,7 @@ namespace Braintree;
  * @property-read string $processorResponseType
  * @property-read string $processorSettlementResponseCode
  * @property-read string $processorSettlementResponseText
+ * @property-read string $productSku
  * @property-read string $purchaseOrderNumber
  * @property-read mixed $reccuring
  * @property-read mixed $refundIds

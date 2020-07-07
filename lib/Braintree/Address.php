@@ -20,6 +20,7 @@ namespace Braintree;
  * @property-read string $id
  * @property-read string $lastName
  * @property-read string $locality
+ * @property-read string $phoneNumber
  * @property-read string $postalCode
  * @property-read string $region
  * @property-read string $streetAddress
