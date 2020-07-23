@@ -2987,7 +2987,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
             ]
         ]);
@@ -3001,7 +3001,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
                 ],
             'options' => [
@@ -3030,7 +3030,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
                 ],
             'options' => [
@@ -3052,7 +3052,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
                 ],
             'options' => [
@@ -3082,7 +3082,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
                 ],
             'options' => [
@@ -3117,7 +3117,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
                 ],
             'options' => [
@@ -3177,7 +3177,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
             ]
         ]);
