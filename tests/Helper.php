@@ -158,7 +158,7 @@ class Helper
 
     public static function generateValidUsBankAccountNonce($accountNumber = '567891234') {
         $client_token = json_decode(Helper::decodedClientToken(), true);
-        $url = $client_token['braintree_api']['url'] . '/tokens';
+        $url = $client_token['braintree_api']['url'] . '/graphql';
         $token = $client_token['braintree_api']['access_token'];
 
         $curl = curl_init();
@@ -170,23 +170,39 @@ class Helper
         $headers[] = 'Authorization: Bearer ' . $token;
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-        $requestBody = [
-            'type' => 'us_bank_account',
-            'billing_address' => [
-                'street_address' => '123 Ave',
-                'region' => 'CA',
-                'locality' => 'San Francisco',
-                'postal_code' => '94112'
-            ],
-            'account_type' => 'checking',
-            'ownership_type' => 'personal',
-            'routing_number' => '021000021',
-            'account_number' => $accountNumber,
-            'first_name' => 'Dan',
-            'last_name' => 'Schulman',
-            'ach_mandate' => [
-                'text' => 'cl mandate text'
+        $query =
+            'mutation tokenizeUsBankAccount($input: TokenizeUsBankAccountInput!) {' .
+            '   tokenizeUsBankAccount(input: $input) {' .
+            '       paymentMethod {' .
+            '           id' .
+            '       }' .
+            '   }' .
+            '}';
+
+        $variables = [
+            'input' => [
+                'usBankAccount' => [
+                    'accountNumber' => $accountNumber,
+                    'routingNumber' => '021000021',
+                    'accountType' => 'CHECKING',
+                    'billingAddress' => [
+                        'streetAddress' => '123 Ave',
+                        'state' => 'CA',
+                        'city' => 'San Francisco',
+                        'zipCode' => '94112'
+                    ],
+                    'individualOwner' => [
+                        'firstName' => 'Dan',
+                        'lastName' => 'Schulman'
+                    ],
+                    'achMandate' => 'cl mandate text'
+                ]
             ]
+        ];
+
+        $requestBody = [
+            'query' => $query,
+            'variables' => $variables
         ];
 
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($requestBody));
@@ -197,12 +213,12 @@ class Helper
         $error_code = curl_errno($curl);
         curl_close($curl);
         $jsonResponse = json_decode($response, true);
-        return $jsonResponse['data']['id'];
+        return $jsonResponse['data']['tokenizeUsBankAccount']['paymentMethod']['id'];
     }
 
     public static function generatePlaidUsBankAccountNonce() {
         $client_token = json_decode(Helper::decodedClientToken(), true);
-        $url = $client_token['braintree_api']['url'] . '/tokens';
+        $url = $client_token['braintree_api']['url'] . '/graphql';
         $token = $client_token['braintree_api']['access_token'];
 
         $curl = curl_init();
@@ -214,22 +230,39 @@ class Helper
         $headers[] = 'Authorization: Bearer ' . $token;
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-        $requestBody = [
-            'type' => 'plaid_public_token',
-            'public_token' => 'good',
-            'account_id' => 'plaid_account_id',
-            'billing_address' => [
-                'street_address' => '123 Ave',
-                'region' => 'CA',
-                'locality' => 'San Francisco',
-                'postal_code' => '94112'
-            ],
-            'ownership_type' => 'personal',
-            'first_name' => 'Dan',
-            'last_name' => 'Schulman',
-            'ach_mandate' => [
-                'text' => 'cl mandate text'
+        $query =
+            'mutation tokenizeUsBankLogin($input: TokenizeUsBankLoginInput!) {' .
+            '   tokenizeUsBankLogin(input: $input) {' .
+            '       paymentMethod {' .
+            '           id' .
+            '       }' .
+            '   }' .
+            '}';
+
+        $variables = [
+            'input' => [
+                'usBankLogin' => [
+                    'publicToken' => 'good',
+                    'accountId' => 'plaid_account_id',
+                    'accountType' => 'CHECKING',
+                    'billingAddress' => [
+                        'streetAddress' => '123 Ave',
+                        'state' => 'CA',
+                        'city' => 'San Francisco',
+                        'zipCode' => '94112'
+                    ],
+                    'individualOwner' => [
+                        'firstName' => 'Dan',
+                        'lastName' => 'Schulman'
+                    ],
+                    'achMandate' => 'cl mandate text'
+                ]
             ]
+        ];
+
+        $requestBody = [
+            'query' => $query,
+            'variables' => $variables
         ];
 
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($requestBody));
@@ -240,7 +273,7 @@ class Helper
         $error_code = curl_errno($curl);
         curl_close($curl);
         $jsonResponse = json_decode($response, true);
-        return $jsonResponse['data']['id'];
+        return $jsonResponse['data']['tokenizeUsBankLogin']['paymentMethod']['id'];
     }
 
     public static function generateInvalidUsBankAccountNonce() {
