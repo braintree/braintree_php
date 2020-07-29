@@ -1,5 +1,7 @@
 ## unreleased
 * Add `networkTransactionId` to `CreditCardVerification`
+* Add `processedWithNetworkToken` to `Transaction`
+* Add `isNetworkTokenized` to `CreditCard`
 
 ## 5.2.0
 * Add `retrieval_reference_number` to `Transaction`

@@ -181,6 +181,7 @@ namespace Braintree;
  * @property-read \Braintree\Transaction\PayPalHereDetails $paypalHereDetails 
  * @property-read \Braintree\Transaction\LocalPaymentDetails $localPaymentDetails transaction local payment info
  * @property-read string $planId
+ * @property-read string $processedWithNetworkToken
  * @property-read string $processorAuthorizationCode
  * @property-read string $processorResponseCode gateway response code
  * @property-read string $processorResponseText

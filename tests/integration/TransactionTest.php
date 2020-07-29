@@ -6411,4 +6411,37 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $this->assertNotNull($transaction->retrievalReferenceNumber);
     }
+
+    public function testNetworkTokenizedTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'paymentMethodToken' => 'network_tokenized_credit_card'
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertTrue($transaction->processedWithNetworkToken);
+    }
+
+    public function testNonNetworkTokenizedTransaction()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            "creditCard" => [
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ]
+        ]);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertFalse($transaction->processedWithNetworkToken);
+    }
 }
