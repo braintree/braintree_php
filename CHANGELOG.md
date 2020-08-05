@@ -1,4 +1,5 @@
 ## unreleased
+* Add `RISK_THRESHOLD` to * GatewayRejectionReason constants
 * Add `networkTransactionId` to `CreditCardVerification`
 * Add `processedWithNetworkToken` to `Transaction`
 * Add `isNetworkTokenized` to `CreditCard`

@@ -259,6 +259,7 @@ class Transaction extends Base
     const CVV            = 'cvv';
     const DUPLICATE      = 'duplicate';
     const FRAUD          = 'fraud';
+    const RISK_THRESHOLD = 'risk_threshold';
     const THREE_D_SECURE = 'three_d_secure';
     const TOKEN_ISSUANCE = 'token_issuance';
     const APPLICATION_INCOMPLETE = 'application_incomplete';

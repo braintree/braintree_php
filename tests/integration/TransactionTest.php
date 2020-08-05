@@ -4371,6 +4371,22 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::FRAUD, $result->transaction->gatewayRejectionReason);
     }
 
+  public function testGatewayRejectionOnRiskThreshold()
+    {
+        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $result = $gateway->transaction()->sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '4111130000000003',
+                'expirationDate' => '05/17',
+                'cvv' => '333'
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Transaction::RISK_THRESHOLD, $result->transaction->gatewayRejectionReason);
+    }
+
   public function testSnapshotPlanIdAddOnsAndDiscountsFromSubscription()
     {
         $creditCard = SubscriptionHelper::createCreditCard();
