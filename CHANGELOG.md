@@ -1,13 +1,8 @@
 ## 5.3.0
-* Add `RISK_THRESHOLD` to * GatewayRejectionReason constants
+* Add `RISK_THRESHOLD` to `GatewayRejectionReason` constants
 * Add `networkTransactionId` to `CreditCardVerification`
 * Add `processedWithNetworkToken` to `Transaction`
 * Add `isNetworkTokenized` to `CreditCard`
-
-## 5.2.0
-* Add `retrieval_reference_number` to `Transaction`
-* Fix class alias issue where Exceptions could not be thrown for missing libraries or older PHP versions.
-* Fix issue where `proxyHost`, `proxyPort`, `proxyType`, `proxyUser`, `proxyPassword`, and `sslVersion` were not being set on Gateway or Configuration objects.
 * Add `productSku` to `Transaction`
 * Add `phoneNumber` and `shippingMethod` to `Address`
 * Add `customerDeviceId`, `customerLocationZip`, and `customerTenure` to `RiskData`
@@ -24,6 +19,10 @@
   * `RISK_DATA_CUSTOMER_TENURE_IS_TOO_LONG`
   * `RISK_DATA_CUSTOMER_TENURE_IS_INVALID`
 
+## 5.2.0
+* Add `retrieval_reference_number` to `Transaction`
+* Fix class alias issue where Exceptions could not be thrown for missing libraries or older PHP versions.
+* Fix issue where `proxyHost`, `proxyPort`, `proxyType`, `proxyUser`, `proxyPassword`, and `sslVersion` were not being set on Gateway or Configuration objects.
 
 ## 5.1.0
 * Add `threeDSecurePassThru` parameters to `Customer.create`, `PaymentMethod.create`, `CreditCard.create`, `Customer.update`, `PaymentMethod.update` and `CreditCard.update` 
