@@ -2,6 +2,9 @@
 namespace Braintree;
 
 /**
+ * @property-read string $customerDeviceId
+ * @property-read string $customerLocationZip
+ * @property-read string $customerTenure
  * @property-read string $decision
  * @property-read boolean $deviceDataCaptured
  * @property-read string $id

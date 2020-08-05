@@ -32,6 +32,7 @@ namespace Braintree;
  * @property-read boolean $healthcare
  * @property-read string $imageUrl
  * @property-read string $issuingBank
+ * @property-read string $isNetworkTokenized
  * @property-read string $last4
  * @property-read string $maskedNumber
  * @property-read string $payroll

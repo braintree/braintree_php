@@ -2249,6 +2249,54 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PURCHASE_ORDER_NUMBER_IS_INVALID, $purchaseOrderNumberErrors[0]->code);
     }
 
+  public function testSale_withInvalidProductSku()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'expirationDate' => '05/2011',
+                'number' => '5105105105105100'
+            ],
+            'productSku' => 'product$ku!'
+        ]);
+
+        $this->assertFalse($result->success);
+
+        $productSkuErrors = $result->errors->forKey('transaction')->onAttribute('productSku');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_PRODUCT_SKU_IS_INVALID, $productSkuErrors[0]->code);
+    }
+
+  public function testSale_withInvalidAddress()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'expirationDate' => '05/2011',
+                'number' => '5105105105105100'
+            ],
+            'billing' => [
+                'phoneNumber' => '123-234-3456=098765'
+            ],
+            'shipping' => [
+                'phoneNumber' => '123-234-3457=098765',
+                'shippingMethod' => 'urgent'
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+
+        $billingPhoneNumberErrors = $result->errors->forKey('transaction')->forKey('billing')->onAttribute('phoneNumber');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_BILLING_PHONE_NUMBER_IS_INVALID, $billingPhoneNumberErrors[0]->code);
+
+        $shippingMethodErrors = $result->errors->forKey('transaction')->forKey('shipping')->onAttribute('shippingMethod');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SHIPPING_METHOD_IS_INVALID, $shippingMethodErrors[0]->code);
+
+        $shippingPhoneNumberErrors = $result->errors->forKey('transaction')->forKey('shipping')->onAttribute('phoneNumber');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SHIPPING_PHONE_NUMBER_IS_INVALID, $shippingPhoneNumberErrors[0]->code);
+    }
+
   public function testSale_withAllAttributes()
     {
         $result = Braintree\Transaction::sale([
@@ -2278,6 +2326,7 @@ class TransactionTest extends Setup
                 'extendedAddress' => 'Suite 403',
                 'locality' => 'Chicago',
                 'region' => 'IL',
+                'phoneNumber' => '122-555-1237',
                 'postalCode' => '60622',
                 'countryName' => 'United States of America',
                 'countryCodeAlpha2' => 'US',
@@ -2292,11 +2341,13 @@ class TransactionTest extends Setup
                 'extendedAddress' => 'Apt 2F',
                 'locality' => 'Bartlett',
                 'region' => 'IL',
+                'phoneNumber' => '122-555-1236',
                 'postalCode' => '60103',
                 'countryName' => 'United States of America',
                 'countryCodeAlpha2' => 'US',
                 'countryCodeAlpha3' => 'USA',
-                'countryCodeNumeric' => '840'
+                'countryCodeNumeric' => '840',
+                'shippingMethod' => Braintree\ShippingMethod::ELECTRONIC
             ]
       ]);
         Test\Helper::assertPrintable($result);
@@ -2936,7 +2987,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
             ]
         ]);
@@ -2950,7 +3001,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
                 ],
             'options' => [
@@ -2979,7 +3030,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
                 ],
             'options' => [
@@ -3001,7 +3052,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
                 ],
             'options' => [
@@ -3031,7 +3082,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
                 ],
             'options' => [
@@ -3066,7 +3117,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
                 ],
             'options' => [
@@ -3126,7 +3177,7 @@ class TransactionTest extends Setup
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
-                'number' => '5105105105105100',
+                'number' => '4111111111111111',
                 'expirationDate' => '05/12'
             ]
         ]);
@@ -3557,12 +3608,38 @@ class TransactionTest extends Setup
                 'expirationDate' => '05/12',
             ],
             'riskData' => [
-                'customer_browser' => 'IE5',
-                'customer_ip' => '192.168.0.1'
+                'customerBrowser' => 'IE5',
+                'customerDeviceId' => 'customer_device_id_012',
+                'customerIp' => '192.168.0.1',
+                'customerLocationZip' => '91244',
+                'customerTenure' => 20
             ]
         ]);
 
         $this->assertTrue($result->success);
+    }
+
+  public function testSale_withInvalidRiskData()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12',
+            ],
+            'riskData' => [
+                'customerBrowser' => 'IE5',
+                'customerDeviceId' => 'customer_device_id_012',
+                'customerIp' => '192.168.0.1',
+                'customerLocationZip' => '912$4',
+                'customerTenure' => '20'
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+
+        $customerLocationZipErrors = $result->errors->forKey('transaction')->forKey('riskData')->onAttribute('customerLocationZip');
+        $this->assertEquals(Braintree\Error\Codes::RISK_DATA_CUSTOMER_LOCATION_ZIP_INVALID_CHARACTERS, $customerLocationZipErrors[0]->code);
     }
 
   public function testSale_withDescriptor()
@@ -4280,7 +4357,8 @@ class TransactionTest extends Setup
 
   public function testGatewayRejectionOnFraud()
     {
-        $result = Braintree\Transaction::sale([
+        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $result = $gateway->transaction()->sale([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => '4000111111111511',
@@ -4291,6 +4369,22 @@ class TransactionTest extends Setup
 
         $this->assertFalse($result->success);
         $this->assertEquals(Braintree\Transaction::FRAUD, $result->transaction->gatewayRejectionReason);
+    }
+
+  public function testGatewayRejectionOnRiskThreshold()
+    {
+        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $result = $gateway->transaction()->sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '4111130000000003',
+                'expirationDate' => '05/17',
+                'cvv' => '333'
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Transaction::RISK_THRESHOLD, $result->transaction->gatewayRejectionReason);
     }
 
   public function testSnapshotPlanIdAddOnsAndDiscountsFromSubscription()
@@ -6332,5 +6426,38 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertNotNull($transaction->retrievalReferenceNumber);
+    }
+
+    public function testNetworkTokenizedTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'paymentMethodToken' => 'network_tokenized_credit_card'
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertTrue($transaction->processedWithNetworkToken);
+    }
+
+    public function testNonNetworkTokenizedTransaction()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            "creditCard" => [
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ]
+        ]);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertFalse($transaction->processedWithNetworkToken);
     }
 }

@@ -1377,4 +1377,24 @@ class CreditCardTest extends Setup
         $this->assertEquals(Braintree\CreditCard::ISSUING_BANK_UNKNOWN, $result->creditCard->issuingBank);
         $this->assertEquals(Braintree\CreditCard::PRODUCT_ID_UNKNOWN, $result->creditCard->productId);
     }
+
+    public function testFindNetworkTokenizedCreditCard()
+    {
+        $card = Braintree\CreditCard::find('network_tokenized_credit_card');
+        $this->assertTrue($card->isNetworkTokenized);
+    }
+
+    public function testFindNonNetworkTokenizedCreditCard()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $card = Braintree\CreditCard::create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ])->creditCard;
+
+        $saved_card = Braintree\CreditCard::find($card->token);
+        $this->assertFalse($saved_card->isNetworkTokenized);
+    }
 }

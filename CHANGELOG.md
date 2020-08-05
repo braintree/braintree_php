@@ -1,3 +1,24 @@
+## 5.3.0
+* Add `RISK_THRESHOLD` to `GatewayRejectionReason` constants
+* Add `networkTransactionId` to `CreditCardVerification`
+* Add `processedWithNetworkToken` to `Transaction`
+* Add `isNetworkTokenized` to `CreditCard`
+* Add `productSku` to `Transaction`
+* Add `phoneNumber` and `shippingMethod` to `Address`
+* Add `customerDeviceId`, `customerLocationZip`, and `customerTenure` to `RiskData`
+* Add error codes
+  * `TRANSACTION_PRODUCT_SKU_IS_INVALID`
+  * `TRANSACTION_SHIPPING_METHOD_IS_INVALID`
+  * `TRANSACTION_SHIPPING_PHONE_NUMBER_IS_INVALID`
+  * `TRANSACTION_BILLING_PHONE_NUMBER_IS_INVALID`
+  * `RISK_DATA_CUSTOMER_BROWSER_IS_TOO_LONG`
+  * `RISK_DATA_CUSTOMER_DEVICE_ID_IS_TOO_LONG`
+  * `RISK_DATA_CUSTOMER_LOCATION_ZIP_INVALID_CHARACTERS`
+  * `RISK_DATA_CUSTOMER_LOCATION_ZIP_IS_INVALID`
+  * `RISK_DATA_CUSTOMER_LOCATION_ZIP_IS_TOO_LONG`
+  * `RISK_DATA_CUSTOMER_TENURE_IS_TOO_LONG`
+  * `RISK_DATA_CUSTOMER_TENURE_IS_INVALID`
+
 ## 5.2.0
 * Add `retrieval_reference_number` to `Transaction`
 * Fix class alias issue where Exceptions could not be thrown for missing libraries or older PHP versions.

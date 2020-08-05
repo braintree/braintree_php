@@ -181,12 +181,14 @@ namespace Braintree;
  * @property-read \Braintree\Transaction\PayPalHereDetails $paypalHereDetails 
  * @property-read \Braintree\Transaction\LocalPaymentDetails $localPaymentDetails transaction local payment info
  * @property-read string $planId
+ * @property-read string $processedWithNetworkToken
  * @property-read string $processorAuthorizationCode
  * @property-read string $processorResponseCode gateway response code
  * @property-read string $processorResponseText
  * @property-read string $processorResponseType
  * @property-read string $processorSettlementResponseCode
  * @property-read string $processorSettlementResponseText
+ * @property-read string $productSku
  * @property-read string $purchaseOrderNumber
  * @property-read mixed $reccuring
  * @property-read mixed $refundIds
@@ -257,6 +259,7 @@ class Transaction extends Base
     const CVV            = 'cvv';
     const DUPLICATE      = 'duplicate';
     const FRAUD          = 'fraud';
+    const RISK_THRESHOLD = 'risk_threshold';
     const THREE_D_SECURE = 'three_d_secure';
     const TOKEN_ISSUANCE = 'token_issuance';
     const APPLICATION_INCOMPLETE = 'application_incomplete';
