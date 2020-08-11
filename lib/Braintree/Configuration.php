@@ -289,7 +289,7 @@ class Configuration
                 throw new Exception\Configuration('Braintree\\Configuration::publicKey needs to be set.');
             } else if (empty($this->_privateKey)) {
                 throw new Exception\Configuration('Braintree\\Configuration::privateKey needs to be set.');
-            } else{
+            } else if(empty($this->_merchantId) || empty($this->_environment) || empty($this->_publicKey) || empty($this->_privateKey)){
                 throw new Exception\Configuration('Braintree\\Configuration::MerchantId, environment, publicKey and privateKey needs to be set.');
             }
         }
