@@ -7,6 +7,7 @@ use Braintree\Instance;
  *
  * @package    Braintree
  * @subpackage Transaction
+ * @deprecated
  */
 
 /**
@@ -15,6 +16,7 @@ use Braintree\Instance;
  *
  * @package    Braintree
  * @subpackage Transaction
+ * @deprecated
  *
  * @property-read string $cardType
  * @property-read string $bin

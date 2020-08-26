@@ -26,6 +26,7 @@ namespace Braintree;
  * @property-read string $sourceDescription
  * @property-read \Braintree\Subscription[] $subscriptions
  * @property-read \DateTime $updatedAt
+ * @deprecated
  */
 class AmexExpressCheckoutCard extends Base
 {
@@ -34,6 +35,7 @@ class AmexExpressCheckoutCard extends Base
      * returns false if default is null or false
      *
      * @return boolean
+     * @deprecated
      */
     public function isDefault()
     {
@@ -46,6 +48,7 @@ class AmexExpressCheckoutCard extends Base
      *
      * @ignore
      * @return AmexExpressCheckoutCard
+     * @deprecated
      */
     public static function factory($attributes)
     {
@@ -61,6 +64,7 @@ class AmexExpressCheckoutCard extends Base
      * @access protected
      * @param array $amexExpressCheckoutCardAttribs array of Amex Express Checkout card properties
      * @return void
+     * @deprecated
      */
     protected function _initialize($amexExpressCheckoutCardAttribs)
     {
