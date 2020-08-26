@@ -31,6 +31,7 @@ class PaymentMethodParser
         } else if (isset($response['androidPayCard'])) {
             return AndroidPayCard::factory($response['androidPayCard']);
         } else if (isset($response['amexExpressCheckoutCard'])) {
+        // NEXT_MAJOR_VERSION remove deprecated amexExpressCheckoutCard
             return AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']);
         } else if (isset($response['usBankAccount'])) {
             return UsBankAccount::factory($response['usBankAccount']);
@@ -38,6 +39,7 @@ class PaymentMethodParser
             return VenmoAccount::factory($response['venmoAccount']);
         } else if (isset($response['visaCheckoutCard'])) {
             return VisaCheckoutCard::factory($response['visaCheckoutCard']);
+        // NEXT_MAJOR_VERSION remove deprecated masterpassCard
         } else if (isset($response['masterpassCard'])) {
             return MasterpassCard::factory($response['masterpassCard']);
         } else if (isset($response['samsungPayCard'])) {
