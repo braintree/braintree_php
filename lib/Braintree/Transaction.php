@@ -297,6 +297,7 @@ class Transaction extends Base
             );
         }
 
+        // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
         if (isset($transactionAttribs['androidPayCard'])) {
             $this->_set('androidPayCardDetails',
                 new Transaction\AndroidPayCardDetails(

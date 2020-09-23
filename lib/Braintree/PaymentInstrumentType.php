@@ -3,7 +3,7 @@ namespace Braintree;
 
 class PaymentInstrumentType
 {
-    const ANDROID_PAY_CARD    = 'android_pay_card';
+    const ANDROID_PAY_CARD    = 'android_pay_card'; // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
     const APPLE_PAY_CARD      = 'apple_pay_card';
     const CREDIT_CARD         = 'credit_card';
     const LOCAL_PAYMENT       = 'local_payment';

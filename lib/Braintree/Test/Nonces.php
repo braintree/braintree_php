@@ -27,6 +27,7 @@ class Nonces
    public static $applePayVisa = "fake-apple-pay-visa-nonce";
    public static $applePayMasterCard = "fake-apple-pay-visa-nonce";
    public static $applePayAmEx = "fake-apple-pay-amex-nonce";
+   // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
    public static $androidPay = "fake-android-pay-nonce";
    public static $androidPayDiscover = "fake-android-pay-discover-nonce";
    public static $androidPayVisa = "fake-android-pay-visa-nonce";

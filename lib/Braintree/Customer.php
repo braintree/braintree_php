@@ -227,6 +227,7 @@ class Customer extends Base
         }
         $this->_set('applePayCards', $applePayCardArray);
 
+        // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
         $androidPayCardArray = [];
         if (isset($customerAttribs['androidPayCards'])) {
             foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {

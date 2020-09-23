@@ -1,6 +1,8 @@
 <?php
 namespace Braintree;
 
+// NEXT_MAJOR_VERSION rename to GooglePayCard
+
 /**
  * Braintree AndroidPayCard module
  * Creates and manages Braintree Android Pay cards
