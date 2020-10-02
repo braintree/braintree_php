@@ -1,4 +1,4 @@
-## unreleased
+## 5.3.1
 - Deprecate `masterpassCard` and `amexExpressCheckoutCard` payment methods
 - Deprecate `amexExpressCheckoutCardDetails`
 
