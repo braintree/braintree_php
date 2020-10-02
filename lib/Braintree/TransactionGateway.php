@@ -257,7 +257,9 @@ class TransactionGateway
             ['lineItems' => ['quantity', 'name', 'description', 'kind', 'unitAmount', 'unitTaxAmount', 'totalAmount', 'discountAmount', 'taxAmount', 'unitOfMeasure', 'productCode', 'commodityCode', 'url']],
             ['externalVault' =>
                 ['status' , 'previousNetworkTransactionId'],
-            ]
+            ],
+            // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
+            ['androidPayCard' => ['number', 'cryptogram', 'expirationMonth', 'expirationYear', 'eciIndicator', 'sourceCardType', 'sourceCardLastFour', 'googleTransactionId']]
         ];
     }
 

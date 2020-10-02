@@ -60,6 +60,7 @@ class DisputeTest extends Setup
                 'id' => 'transaction_id',
                 'amount' => '100.00',
                 'createdAt' => DateTime::createFromFormat('Ymd-His', '20130319-105039'),
+                'installmentCount' => NULL,
                 'orderId' => NULL,
                 'purchaseOrderNumber' => 'po',
                 'paymentInstrumentSubtype' => 'Visa',
@@ -181,6 +182,7 @@ class DisputeTest extends Setup
         $this->assertEquals('transaction_id', $dispute->transaction->id);
         $this->assertEquals('100.00', $dispute->transaction->amount);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130319-105039'), $dispute->transaction->createdAt);
+        $this->assertNull($dispute->transaction->installmentCount);
         $this->assertNull($dispute->transaction->orderId);
         $this->assertEquals('po', $dispute->transaction->purchaseOrderNumber);
         $this->assertEquals('Visa', $dispute->transaction->paymentInstrumentSubtype);

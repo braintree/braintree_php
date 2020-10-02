@@ -22,6 +22,8 @@ use Braintree\Instance;
  * @property-read string $customField
  * @property-read string $description
  * @property-read string $imageUrl
+ * @property-read string $implicitlyVaultedPaymentMethodGlobalId
+ * @property-read string $implicitlyVaultedPaymentMethodToken
  * @property-read string $payerEmail
  * @property-read string $payerFirstName
  * @property-read string $payerId

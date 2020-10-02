@@ -241,6 +241,7 @@ class DisputeTest extends Setup
         $this->assertEquals(Braintree\Dispute::OPEN, $dispute->status);
         $this->assertEquals("open_disputed_transaction", $dispute->transaction->id);
         $this->assertNotNull($dispute->graphQLId);
+        $this->assertNull($dispute->transaction->installmentCount);
     }
 
     public function testFind_raisesError_whenDisputeNotFound()

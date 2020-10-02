@@ -12,7 +12,7 @@ class Version
      */
     const MAJOR = 5;
     const MINOR = 3;
-    const TINY = 0;
+    const TINY = 1;
 
     /**
      * @ignore

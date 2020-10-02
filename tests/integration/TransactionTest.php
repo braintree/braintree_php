@@ -1722,6 +1722,50 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
     }
 
+  public function testCreateTransactionUsingRawGooglePayParams()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '1.02',
+            'androidPayCard' => [
+                'number' => "4012888888881881",
+                'cryptogram' => "AAAAAAAA/COBt84dnIEcwAA3gAAGhgEDoLABAAhAgAABAAAALnNCLw==",
+                'expirationMonth' => "10",
+                'expirationYear' => "17",
+                'eciIndicator' => "07",
+                'sourceCardLastFour' => "1881",
+                'sourceCardType' => "Visa",
+                'googleTransactionId' => "transaction-id"
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('1.02', $transaction->amount);
+        $this->assertEquals('android_pay_card', $transaction->paymentInstrumentType);
+
+        $androidPayCardDetails = $transaction->androidPayCardDetails;
+        $this->assertSame(Braintree\CreditCard::VISA, $androidPayCardDetails->cardType);
+        $this->assertSame("1881", $androidPayCardDetails->last4);
+        $this->assertNull($androidPayCardDetails->token);
+        $this->assertSame(Braintree\CreditCard::VISA, $androidPayCardDetails->virtualCardType);
+        $this->assertSame("1881", $androidPayCardDetails->virtualCardLast4);
+        $this->assertSame(Braintree\CreditCard::VISA, $androidPayCardDetails->sourceCardType);
+        $this->assertSame("1881", $androidPayCardDetails->sourceCardLast4);
+        $this->assertSame("Visa 1881", $androidPayCardDetails->sourceDescription);
+        $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
+        $this->assertSame("10", $androidPayCardDetails->expirationMonth);
+        $this->assertSame("17", $androidPayCardDetails->expirationYear);
+        $this->assertNotNull($androidPayCardDetails->bin);
+        $this->assertNotNull($androidPayCardDetails->commercial);
+        $this->assertNotNull($androidPayCardDetails->debit);
+        $this->assertNotNull($androidPayCardDetails->durbinRegulated);
+        $this->assertNotNull($androidPayCardDetails->healthcare);
+        $this->assertNotNull($androidPayCardDetails->payroll);
+        $this->assertNotNull($androidPayCardDetails->prepaid);
+        $this->assertNotNull($androidPayCardDetails->productId);
+        $this->assertTrue($androidPayCardDetails->isNetworkTokenized);
+    }
+
   public function testCreateTransactionUsingFakeAndroidPayProxyCardNonce()
     {
         $result = Braintree\Transaction::sale([

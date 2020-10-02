@@ -425,6 +425,7 @@ class CustomerGateway
         $this->_set('applePayCards', $applePayCardArray);
 
         // map each androidPayCard into its own object
+        // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
         $androidPayCardArray = [];
         if (isset($customerAttribs['androidPayCards'])) {
             foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
