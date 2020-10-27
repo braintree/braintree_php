@@ -176,6 +176,7 @@ namespace Braintree;
  * @property-read string $merchantAccountId
  * @property-read string $networkTransactionId
  * @property-read string $orderId
+ * @property-read string $acquirerReferenceNumber
  * @property-read string $paymentInstrumentType
  * @property-read \Braintree\Transaction\PayPalDetails $paypalDetails transaction paypal account info
  * @property-read \Braintree\Transaction\PayPalHereDetails $paypalHereDetails 

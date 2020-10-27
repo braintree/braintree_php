@@ -3504,6 +3504,13 @@ class TransactionTest extends Setup
         $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
     }
 
+  public function testFindExposesAcquirerReferenceNumber()
+    {
+        $transaction = Braintree\Transaction::find("transactionwithacquirerreferencenumber");
+
+        $this->assertEquals('123456789 091019', $transaction->acquirerReferenceNumber);
+    }
+
   public function testFindExposesPayPalDetails()
     {
         $transaction = Braintree\Transaction::find("settledtransaction");
