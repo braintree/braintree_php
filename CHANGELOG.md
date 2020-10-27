@@ -1,6 +1,9 @@
+## unreleased
+* Add `billingAgreementId` to `PayPalDetails`
+
 ## 5.3.1
-- Deprecate `masterpassCard` and `amexExpressCheckoutCard` payment methods
-- Deprecate `amexExpressCheckoutCardDetails`
+* Deprecate `masterpassCard` and `amexExpressCheckoutCard` payment methods
+* Deprecate `amexExpressCheckoutCardDetails`
 
 ## 5.3.0
 * Add `RISK_THRESHOLD` to `GatewayRejectionReason` constants

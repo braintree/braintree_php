@@ -18,6 +18,7 @@ use Braintree\Instance;
  * @subpackage Transaction
  *
  * @property-read string $authorizationId
+ * @property-read string $billingAgreementId
  * @property-read string $captureId
  * @property-read string $customField
  * @property-read string $description
