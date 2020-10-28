@@ -5045,6 +5045,24 @@ class TransactionTest extends Setup
         $this->assertEquals($paymentMethodToken, $foundPayPalAccount->token);
     }
 
+  public function testCreate_withBillingAgreementPayPalAndVault()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$paypalBillingAgreement,
+            'options' => [
+                'storeInVault' => true
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
+        $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
+        $this->assertNotNull($transaction->paypalDetails->billingAgreementId);
+    }
+
   public function testCreate_withOnetimePayPal()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
