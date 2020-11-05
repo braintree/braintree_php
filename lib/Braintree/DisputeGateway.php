@@ -131,6 +131,7 @@ class DisputeGateway
             }
 
             if (array_key_exists('tag', $request)) {
+                trigger_error('$tag is deprecated, use $category instead', E_USER_DEPRECATED);
                 $evidence['category'] = $request['tag'];
             }
 
