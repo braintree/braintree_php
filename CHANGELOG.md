@@ -1,4 +1,4 @@
-## unreleased
+## 5.4.0
 * Add `AcquirerReferenceNumber` to `Transaction`
 * Add `billingAgreementId` to `PayPalDetails`
 * Deprecate `recurring` in Transaction sale
