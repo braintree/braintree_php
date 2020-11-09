@@ -1,6 +1,8 @@
 ## unreleased
 * Add `AcquirerReferenceNumber` to `Transaction`
 * Add `billingAgreementId` to `PayPalDetails`
+* Deprecate `recurring` in Transaction sale
+* Deprecate `tag` in Dispute add text evidence
 
 ## 5.3.1
 * Deprecate `masterpassCard` and `amexExpressCheckoutCard` payment methods

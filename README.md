@@ -33,6 +33,8 @@ Braintree employs a deprecation policy for our SDKs. For more information on the
 
  * [Official documentation](https://developers.braintreepayments.com/start/hello-server/php)
 
+Updating from an Inactive, Deprecated, or Unsupported version of this SDK? Check our [Migration Guide](https://developers.braintreepayments.com/reference/general/server-sdk-migration-guide/php) for tips.
+
 ## Quick Start Example
 
 ```php
