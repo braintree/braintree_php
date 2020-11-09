@@ -78,7 +78,7 @@ class DisputeSearchTest extends Setup
 
         $disputes = $this->collectionToArray($collection);
 
-        $this->assertEquals(1, count($disputes));
+        $this->assertGreaterThanOrEqual(1, count($disputes));
         $this->assertEquals($disputes[0]->receivedDate, DateTime::createFromFormat('Ymd His', '20140304 000000'));
     }
 
@@ -93,7 +93,7 @@ class DisputeSearchTest extends Setup
 
         $disputes = $this->collectionToArray($collection);
 
-        $this->assertEquals(1, count($disputes));
+        $this->assertGreaterThanOrEqual(1, count($disputes));
         $this->assertEquals($disputes[0]->statusHistory[0]->effectiveDate, DateTime::createFromFormat('Ymd His', '20140304 000000'));
     }
 
@@ -108,7 +108,7 @@ class DisputeSearchTest extends Setup
 
         $disputes = $this->collectionToArray($collection);
 
-        $this->assertEquals(1, count($disputes));
+        $this->assertGreaterThanOrEqual(1, count($disputes));
         $this->assertEquals($disputes[0]->statusHistory[0]->disbursementDate, DateTime::createFromFormat('Ymd His', '20140305 000000'));
     }
 

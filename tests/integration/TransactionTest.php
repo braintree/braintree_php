@@ -2031,6 +2031,7 @@ class TransactionTest extends Setup
 
   public function testRecurring()
     {
+        error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'recurring' => true,
@@ -2043,6 +2044,7 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals(true, $transaction->recurring);
+        error_reporting(E_ALL); // reset error reporting
     }
 
   public function testTransactionSourceWithRecurringFirst()
@@ -3502,6 +3504,13 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Dispute::OPEN, $dispute->status);
         $this->assertEquals("retrievaltransaction", $dispute->transactionDetails->id);
         $this->assertEquals("1000.00", $dispute->transactionDetails->amount);
+    }
+
+  public function testFindExposesAcquirerReferenceNumber()
+    {
+        $transaction = Braintree\Transaction::find("transactionwithacquirerreferencenumber");
+
+        $this->assertEquals('123456789 091019', $transaction->acquirerReferenceNumber);
     }
 
   public function testFindExposesPayPalDetails()
@@ -5036,6 +5045,24 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->paypalDetails->debugId);
         $foundPayPalAccount = Braintree\PaymentMethod::find($paymentMethodToken);
         $this->assertEquals($paymentMethodToken, $foundPayPalAccount->token);
+    }
+
+  public function testCreate_withBillingAgreementPayPalAndVault()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$paypalBillingAgreement,
+            'options' => [
+                'storeInVault' => true
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('payer@example.com', $transaction->paypalDetails->payerEmail);
+        $this->assertNotNull($transaction->paypalDetails->imageUrl);
+        $this->assertNotNull($transaction->paypalDetails->debugId);
+        $this->assertNotNull($transaction->paypalDetails->billingAgreementId);
     }
 
   public function testCreate_withOnetimePayPal()

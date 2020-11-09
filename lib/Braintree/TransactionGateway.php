@@ -330,11 +330,14 @@ class TransactionGateway
     }
     /**
      * new sale
-     * @param array $attribs
+     * @param array $attribs (Note: $recurring param is deprecated. Use $transactionSource instead)
      * @return Result\Successful|Result\Error
      */
     public function sale($attribs)
     {
+        if (array_key_exists('recurring', $attribs)) {
+            trigger_error('$recurring is deprecated, use $transactionSource instead', E_USER_DEPRECATED);
+        }
         return $this->create(array_merge(['type' => Transaction::SALE], $attribs));
     }
 
