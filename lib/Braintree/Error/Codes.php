@@ -698,6 +698,7 @@ class Codes
     const MERCHANT_ACOUNT_DOES_NOT_MATCH3_D_SECURE_MERCHANT_ACCOUNT                                           = "94284";
     const AMOUNT_DOES_NOT_MATCH3_D_SECURE_AMOUNT                                                              = "94285";
 
+    # NEXT_MAJOR_VERSION Remove CustomerBrowserIsTooLong code as it is no longer applied
     const RISK_DATA_CUSTOMER_BROWSER_IS_TOO_LONG                                                              = "94701";
     const RISK_DATA_CUSTOMER_DEVICE_ID_IS_TOO_LONG                                                            = "94702";
     const RISK_DATA_CUSTOMER_LOCATION_ZIP_INVALID_CHARACTERS                                                  = "94703";
