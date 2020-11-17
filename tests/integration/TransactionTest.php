@@ -2010,10 +2010,12 @@ class TransactionTest extends Setup
 
   public function testSaleWithRiskData()
     {
+        error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
         $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
         $result = $gateway->transaction()->sale([
             'amount' => '100.00',
             'deviceSessionId' => 'abc123',
+            'deviceData' => 'device_data',
             'creditCard' => [
                 'cardholderName' => 'The Cardholder',
                 'number' => '5105105105105100',
@@ -2027,6 +2029,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->riskData->id);
         $this->assertNotNull($transaction->riskData->deviceDataCaptured);
         $this->assertNotNull($transaction->riskData->fraudServiceProvider);
+        error_reporting(E_ALL); // reset error reporting
     }
 
   public function testRecurring()
@@ -3639,7 +3642,9 @@ class TransactionTest extends Setup
 
   public function testSale_withFraudParams()
     {
+        error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
         $result = Braintree\Transaction::sale([
+            'deviceData' => 'device_data',
             'deviceSessionId' => '123abc',
             'fraudMerchantId' => '456',
             'amount' => '100.00',
@@ -3650,6 +3655,7 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertTrue($result->success);
+        error_reporting(E_ALL); // reset error reporting
     }
 
   public function testSale_withRiskData()

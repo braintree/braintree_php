@@ -39,12 +39,13 @@ class TransactionGateway
     /**
      * @ignore
      * @access private
-     * @param array $attribs
+     * @param array $attribs (Note: $deviceSessionId and $fraudMerchantId params are deprecated. Use $deviceData instead)
      * @return Result\Successful|Result\Error
      */
     private function create($attribs)
     {
         Util::verifyKeys(self::createSignature(), $attribs);
+        $this->_checkForDeprecatedAttributes($attribs);
         return $this->_doCreate('/transactions', ['transaction' => $attribs]);
     }
 
@@ -78,8 +79,6 @@ class TransactionGateway
             'channel',
             'customerId',
             'deviceData',
-            'deviceSessionId',
-            'fraudMerchantId',
             'merchantAccountId',
             'orderId',
             'paymentMethodNonce',
@@ -104,6 +103,7 @@ class TransactionGateway
             'shippingAmount',
             'discountAmount',
             'shipsFromPostalCode',
+            'deviceSessionId', 'fraudMerchantId', // NEXT_MAJOR_VERSION remove deviceSessionId and fraudMerchantId
             ['riskData' =>
                 [
                     //NEXT_MAJOR_VERSION remove snake case parameters, PHP should only accept camel case
@@ -571,6 +571,16 @@ class TransactionGateway
             throw new Exception\Unexpected(
             "Expected transaction or apiErrorResponse"
             );
+        }
+    }
+
+    private function _checkForDeprecatedAttributes($attributes)
+    {
+        if (isset($attributes['deviceSessionId'])) {
+            trigger_error('$deviceSessionId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
+        }
+        if (isset($attributes['fraudMerchantId'])) {
+            trigger_error('$fraudMerchantId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
         }
     }
 }

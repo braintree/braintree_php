@@ -1,3 +1,6 @@
+## unreleased
+* Deprecate `deviceSessionId` and `fraudMerchantId` in `CreditCardGateway`, `CustomerGateway`, `PaymentMethodGateway`, and `TransactionGateway` classes
+
 ## 5.4.0
 * Add `AcquirerReferenceNumber` to `Transaction`
 * Add `billingAgreementId` to `PayPalDetails`

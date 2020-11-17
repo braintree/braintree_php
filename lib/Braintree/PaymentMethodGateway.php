@@ -64,6 +64,7 @@ class PaymentMethodGateway
     public function update($token, $attribs)
     {
         Util::verifyKeys(self::updateSignature(), $attribs);
+        $this->_checkForDeprecatedAttributes($attribs);
         return $this->_doUpdate('/payment_methods/any/' . $token, ['payment_method' => $attribs]);
     }
 
@@ -179,9 +180,8 @@ class PaymentMethodGateway
             'xid'
         ];
         $signature = array_merge(self::baseSignature(), [
-            'deviceSessionId',
             'venmoSdkPaymentMethodCode',
-            'fraudMerchantId',
+            'deviceSessionId', 'fraudMerchantId', // NEXT_MAJOR_VERSION remove deviceSessionId and fraudMerchantId
             ['billingAddress' => $billingAddressSignature],
             ['threeDSecurePassThru' => $threeDSPassThruSignature]
         ]);
@@ -330,6 +330,16 @@ class PaymentMethodGateway
             throw new InvalidArgumentException(
                     $identifier . ' is an invalid payment method ' . $identifierType . '.'
                     );
+        }
+    }
+
+    private function _checkForDeprecatedAttributes($attributes)
+    {
+        if (isset($attributes['deviceSessionId'])) {
+            trigger_error('$deviceSessionId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
+        }
+        if (isset($attributes['fraudMerchantId'])) {
+            trigger_error('$fraudMerchantId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
         }
     }
 }
