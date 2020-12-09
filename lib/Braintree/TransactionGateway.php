@@ -259,7 +259,8 @@ class TransactionGateway
                 ['status' , 'previousNetworkTransactionId'],
             ],
             // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
-            ['androidPayCard' => ['number', 'cryptogram', 'expirationMonth', 'expirationYear', 'eciIndicator', 'sourceCardType', 'sourceCardLastFour', 'googleTransactionId']]
+            ['androidPayCard' => ['number', 'cryptogram', 'expirationMonth', 'expirationYear', 'eciIndicator', 'sourceCardType', 'sourceCardLastFour', 'googleTransactionId']],
+            ['installments' => ['count']]
         ];
     }
 

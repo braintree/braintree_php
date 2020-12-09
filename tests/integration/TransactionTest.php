@@ -6537,4 +6537,55 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $this->assertFalse($transaction->processedWithNetworkToken);
     }
+
+    public function testInstallmentsTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationMonth' => '11',
+                'expirationYear' => '2099'
+            ],
+            'installments' => [
+                'count' => 4
+            ],
+            'merchantAccountId' => 'card_processor_brl',
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(4, $transaction->installmentCount);
+    }
+
+    public function testInstallmentAdjustmentsTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationMonth' => '11',
+                'expirationYear' => '2099'
+            ],
+            'installments' => [
+                'count' => 4
+            ],
+            'merchantAccountId' => 'card_processor_brl',
+            'options' => ['submitForSettlement' => true]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $installments = $transaction->installments;
+        
+        foreach ($installments as $index=>$installment) {
+            $this->assertEquals($transaction->id."_INST_".($index+1), $installment["id"]);
+            $this->assertEquals("25.00", $installment["amount"]);
+        }
+        $refunded_transaction = Braintree\Transaction::refund($transaction->id, '20.00')->transaction;
+        foreach ($refunded_transaction->refundedInstallments as $refundedInstallment) {
+            $this->assertEquals("REFUND", $refundedInstallment["adjustments"][0]["kind"]);
+            $this->assertEquals("-5.00",$refundedInstallment["adjustments"][0]["amount"]);
+        }
+    }
 }
