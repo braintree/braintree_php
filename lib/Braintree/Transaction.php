@@ -141,7 +141,7 @@ namespace Braintree;
  * @category   Resources
  *
  *
- * @property-read \Braintree\AddOn[] $addons
+ * @property-read \Braintree\AddOn[] $addOns
  * @property-read string $additionalProcessorResponse raw response from processor
  * @property-read string $amount transaction amount
  * @property-read \Braintree\Transaction\AmexExpressCheckoutCardDetails $amexExpressCheckoutCardDetails DEPRECATED transaction Amex Express Checkout card info.
