@@ -306,6 +306,7 @@ class Codes
 
     const TRANSACTION_EXTERNAL_VAULT_STATUS_IS_INVALID                                      = '915175';
     const TRANSACTION_EXTERNAL_VAULT_STATUS_WITH_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID = '915177';
+    // NEXT_MAJOR_VERSION remove this validation error as it is no longer returned by the gateway
     const TRANSACTION_EXTERNAL_VAULT_CARD_TYPE_IS_INVALID                                   = '915178';
     const TRANSACTION_EXTERNAL_VAULT_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID             = '915179';
 

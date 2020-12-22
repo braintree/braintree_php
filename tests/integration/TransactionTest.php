@@ -6402,29 +6402,6 @@ class TransactionTest extends Setup
         );
     }
 
-    public function testTransactionExternalVaultValidationErrorInvalidCardType()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '100.00',
-            'creditCard' => [
-                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
-                'expirationDate' => '05/2009',
-            ],
-            'externalVault' => [
-                'status' => "vaulted",
-                'previousNetworkTransactionId' => "123456789012345",
-            ],
-        ]);
-
-        $this->assertFalse($result->success);
-
-        $transaction = $result->transaction;
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_EXTERNAL_VAULT_CARD_TYPE_IS_INVALID,
-            $result->errors->forKey('transaction')->forKey('externalVault')->onAttribute('previousNetworkTransactionId')[0]->code
-        );
-    }
-
     public function testPayPalHereDetailsAuthCapture()
     {
         $transaction = Braintree\Transaction::find('paypal_here_auth_capture_id');
