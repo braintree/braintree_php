@@ -77,6 +77,42 @@ class TransactionTest extends Setup
         $this->assertEquals('47.00', $transaction->amount);
     }
 
+  public function testCreateScaExemptTransactionSuccess()
+    {
+        $result = Braintree\Transaction::sale([
+          'amount' => '47.00',
+          'creditCard' => [
+            'number' => "4023490000000008",
+            'expirationMonth' => '10',
+            'expirationYear' => '2020',
+            'cvv' => '737',
+          ],
+          'scaExemption' => 'low_value'
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals($transaction->scaExemptionRequested, 'low_value');
+    }
+
+  public function testCreateScaExemptTransactionFailure()
+    {
+        $result = Braintree\Transaction::sale([
+          'amount' => '47.00',
+          'creditCard' => [
+            'number' => "4023490000000008",
+            'expirationMonth' => '10',
+            'expirationYear' => '2020',
+            'cvv' => '737',
+          ],
+          'scaExemption' => 'invalid'
+        ]);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('scaExemption');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SCA_EXEMPTION_INVALID, $errors[0]->code);
+    }
+
   public function testCreateEloCardTransaction()
     {
         $result = Braintree\Transaction::sale([

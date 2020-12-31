@@ -100,6 +100,7 @@ class TransactionGateway
             'transactionSource',
             'type',
             'venmoSdkPaymentMethodCode',
+            'scaExemption',
             'shippingAmount',
             'discountAmount',
             'shipsFromPostalCode',

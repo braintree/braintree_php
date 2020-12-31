@@ -1,4 +1,5 @@
 ## unreleased
+* Add `scaExemption` to Transaction sale
 * Deprecate `deviceSessionId` and `fraudMerchantId` in `CreditCardGateway`, `CustomerGateway`, `PaymentMethodGateway`, and `TransactionGateway` classes
 * Add `installments` to Transaction sale
 * Add `count` to `installments`
