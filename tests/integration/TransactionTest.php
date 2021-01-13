@@ -6252,7 +6252,7 @@ class TransactionTest extends Setup
         $this->assertTrue(strlen($transaction->networkTransactionId) > 0);
     }
 
-    public function testAmexTransactionDoesNotReceiveNetworkTransactionId()
+    public function testAmexTransactionReceivesNetworkTransactionId()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
@@ -6265,7 +6265,7 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
 
         $transaction = $result->transaction;
-        $this->assertNull($transaction->networkTransactionId);
+        $this->assertTrue(strlen($transaction->networkTransactionId) > 0);
     }
 
     public function testTransactionExternalVaultVisaWorksWithStatus()
@@ -6335,7 +6335,7 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertTrue($result->success);
-        $this->assertNull($result->transaction->networkTransactionId);
+        $this->assertTrue(strlen($result->transaction->networkTransactionId) > 0);
     }
 
     public function testTransactionVisaExternalVaultWorksWithPreviousNetworkTransactionId()
