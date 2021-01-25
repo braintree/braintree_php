@@ -77,6 +77,42 @@ class TransactionTest extends Setup
         $this->assertEquals('47.00', $transaction->amount);
     }
 
+  public function testCreateScaExemptTransactionSuccess()
+    {
+        $result = Braintree\Transaction::sale([
+          'amount' => '47.00',
+          'creditCard' => [
+            'number' => "4023490000000008",
+            'expirationMonth' => '10',
+            'expirationYear' => '2020',
+            'cvv' => '737',
+          ],
+          'scaExemption' => 'low_value'
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals($transaction->scaExemptionRequested, 'low_value');
+    }
+
+  public function testCreateScaExemptTransactionFailure()
+    {
+        $result = Braintree\Transaction::sale([
+          'amount' => '47.00',
+          'creditCard' => [
+            'number' => "4023490000000008",
+            'expirationMonth' => '10',
+            'expirationYear' => '2020',
+            'cvv' => '737',
+          ],
+          'scaExemption' => 'invalid'
+        ]);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('scaExemption');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SCA_EXEMPTION_INVALID, $errors[0]->code);
+    }
+
   public function testCreateEloCardTransaction()
     {
         $result = Braintree\Transaction::sale([
@@ -2010,10 +2046,12 @@ class TransactionTest extends Setup
 
   public function testSaleWithRiskData()
     {
+        error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
         $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
         $result = $gateway->transaction()->sale([
             'amount' => '100.00',
             'deviceSessionId' => 'abc123',
+            'deviceData' => 'device_data',
             'creditCard' => [
                 'cardholderName' => 'The Cardholder',
                 'number' => '5105105105105100',
@@ -2027,6 +2065,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->riskData->id);
         $this->assertNotNull($transaction->riskData->deviceDataCaptured);
         $this->assertNotNull($transaction->riskData->fraudServiceProvider);
+        error_reporting(E_ALL); // reset error reporting
     }
 
   public function testRecurring()
@@ -3639,7 +3678,9 @@ class TransactionTest extends Setup
 
   public function testSale_withFraudParams()
     {
+        error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
         $result = Braintree\Transaction::sale([
+            'deviceData' => 'device_data',
             'deviceSessionId' => '123abc',
             'fraudMerchantId' => '456',
             'amount' => '100.00',
@@ -3650,6 +3691,7 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertTrue($result->success);
+        error_reporting(E_ALL); // reset error reporting
     }
 
   public function testSale_withRiskData()
@@ -6210,7 +6252,7 @@ class TransactionTest extends Setup
         $this->assertTrue(strlen($transaction->networkTransactionId) > 0);
     }
 
-    public function testAmexTransactionDoesNotReceiveNetworkTransactionId()
+    public function testAmexTransactionReceivesNetworkTransactionId()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
@@ -6223,7 +6265,7 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
 
         $transaction = $result->transaction;
-        $this->assertNull($transaction->networkTransactionId);
+        $this->assertTrue(strlen($transaction->networkTransactionId) > 0);
     }
 
     public function testTransactionExternalVaultVisaWorksWithStatus()
@@ -6293,7 +6335,7 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertTrue($result->success);
-        $this->assertNull($result->transaction->networkTransactionId);
+        $this->assertTrue(strlen($result->transaction->networkTransactionId) > 0);
     }
 
     public function testTransactionVisaExternalVaultWorksWithPreviousNetworkTransactionId()
@@ -6393,29 +6435,6 @@ class TransactionTest extends Setup
         $this->assertEquals(
             Braintree\Error\Codes::TRANSACTION_EXTERNAL_VAULT_STATUS_WITH_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID,
             $result->errors->forKey('transaction')->forKey('externalVault')->onAttribute('status')[0]->code
-        );
-    }
-
-    public function testTransactionExternalVaultValidationErrorInvalidCardType()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '100.00',
-            'creditCard' => [
-                'number' => Braintree\Test\CreditCardNumbers::$amExes[0],
-                'expirationDate' => '05/2009',
-            ],
-            'externalVault' => [
-                'status' => "vaulted",
-                'previousNetworkTransactionId' => "123456789012345",
-            ],
-        ]);
-
-        $this->assertFalse($result->success);
-
-        $transaction = $result->transaction;
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_EXTERNAL_VAULT_CARD_TYPE_IS_INVALID,
-            $result->errors->forKey('transaction')->forKey('externalVault')->onAttribute('previousNetworkTransactionId')[0]->code
         );
     }
 
@@ -6530,5 +6549,56 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertFalse($transaction->processedWithNetworkToken);
+    }
+
+    public function testInstallmentsTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationMonth' => '11',
+                'expirationYear' => '2099'
+            ],
+            'installments' => [
+                'count' => 4
+            ],
+            'merchantAccountId' => 'card_processor_brl',
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(4, $transaction->installmentCount);
+    }
+
+    public function testInstallmentAdjustmentsTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationMonth' => '11',
+                'expirationYear' => '2099'
+            ],
+            'installments' => [
+                'count' => 4
+            ],
+            'merchantAccountId' => 'card_processor_brl',
+            'options' => ['submitForSettlement' => true]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $installments = $transaction->installments;
+        
+        foreach ($installments as $index=>$installment) {
+            $this->assertEquals($transaction->id."_INST_".($index+1), $installment["id"]);
+            $this->assertEquals("25.00", $installment["amount"]);
+        }
+        $refunded_transaction = Braintree\Transaction::refund($transaction->id, '20.00')->transaction;
+        foreach ($refunded_transaction->refundedInstallments as $refundedInstallment) {
+            $this->assertEquals("REFUND", $refundedInstallment["adjustments"][0]["kind"]);
+            $this->assertEquals("-5.00",$refundedInstallment["adjustments"][0]["amount"]);
+        }
     }
 }

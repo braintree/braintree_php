@@ -129,9 +129,11 @@ class CreditCardTest extends Setup
 
     public function testCreate_withSecurityParams()
     {
+        error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\CreditCard::create([
             'customerId' => $customer->id,
+            'deviceData' => 'device_data',
             'deviceSessionId' => 'abc_123',
             'fraudMerchantId' => '456',
             'cardholderName' => 'Cardholder',
@@ -140,6 +142,7 @@ class CreditCardTest extends Setup
         ]);
 
         $this->assertTrue($result->success);
+        error_reporting(E_ALL); // reset error reporting
     }
 
     public function testCreate_withExpirationMonthAndYear()
@@ -216,6 +219,7 @@ class CreditCardTest extends Setup
 
     public function testCreate_withCardVerificationReturnsVerificationWithRiskData()
     {
+        error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
         $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
         $customer = $gateway->customer()->createNoValidate();
         $result = $gateway->creditCard()->create([
@@ -223,7 +227,8 @@ class CreditCardTest extends Setup
             'number' => '4111111111111111',
             'expirationDate' => '05/2011',
             'options' => ['verifyCard' => true],
-            'deviceSessionId' => 'abc123'
+            'deviceSessionId' => 'abc123',
+            'deviceData' => 'device_data'
         ]);
         $this->assertTrue($result->success);
         $this->assertNotNull($result->creditCard->verification->riskData);
@@ -231,6 +236,7 @@ class CreditCardTest extends Setup
         $this->assertNotNull($result->creditCard->verification->riskData->deviceDataCaptured);
         $this->assertNotNull($result->creditCard->verification->riskData->id);
         $this->assertNotNull($result->creditCard->verification->riskData->fraudServiceProvider);
+        error_reporting(E_ALL); // reset error reporting
     }
 
     public function testCreate_withCardVerificationAndOverriddenAmount()

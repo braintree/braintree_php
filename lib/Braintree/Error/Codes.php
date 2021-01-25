@@ -306,6 +306,7 @@ class Codes
 
     const TRANSACTION_EXTERNAL_VAULT_STATUS_IS_INVALID                                      = '915175';
     const TRANSACTION_EXTERNAL_VAULT_STATUS_WITH_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID = '915177';
+    // NEXT_MAJOR_VERSION remove this validation error as it is no longer returned by the gateway
     const TRANSACTION_EXTERNAL_VAULT_CARD_TYPE_IS_INVALID                                   = '915178';
     const TRANSACTION_EXTERNAL_VAULT_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID             = '915179';
 
@@ -624,6 +625,7 @@ class Codes
     const TRANSACTION_REFUND_AMOUNT_IS_TOO_LARGE                                      = '91521';
     const TRANSACTION_REFUND_AUTH_HARD_DECLINED                                       = '915200';
     const TRANSACTION_REFUND_AUTH_SOFT_DECLINED                                       = '915201';
+    const TRANSACTION_SCA_EXEMPTION_INVALID                                           = '915213';
     const TRANSACTION_SERVICE_FEE_AMOUNT_CANNOT_BE_NEGATIVE                           = '91554';
     const TRANSACTION_SERVICE_FEE_AMOUNT_FORMAT_IS_INVALID                            = '91555';
     const TRANSACTION_SERVICE_FEE_AMOUNT_IS_TOO_LARGE                                 = '91556';
@@ -698,6 +700,7 @@ class Codes
     const MERCHANT_ACOUNT_DOES_NOT_MATCH3_D_SECURE_MERCHANT_ACCOUNT                                           = "94284";
     const AMOUNT_DOES_NOT_MATCH3_D_SECURE_AMOUNT                                                              = "94285";
 
+    # NEXT_MAJOR_VERSION Remove CustomerBrowserIsTooLong code as it is no longer applied
     const RISK_DATA_CUSTOMER_BROWSER_IS_TOO_LONG                                                              = "94701";
     const RISK_DATA_CUSTOMER_DEVICE_ID_IS_TOO_LONG                                                            = "94702";
     const RISK_DATA_CUSTOMER_LOCATION_ZIP_INVALID_CHARACTERS                                                  = "94703";

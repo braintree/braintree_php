@@ -1,3 +1,9 @@
+## 5.5.0
+* Add `scaExemption` to Transaction sale
+* Deprecate `deviceSessionId` and `fraudMerchantId` in `CreditCardGateway`, `CustomerGateway`, `PaymentMethodGateway`, and `TransactionGateway` classes
+* Add `installments` to Transaction sale
+* Add `count` to `installments`
+
 ## 5.4.0
 * Add `AcquirerReferenceNumber` to `Transaction`
 * Add `billingAgreementId` to `PayPalDetails`

@@ -527,18 +527,21 @@ class CustomerTest extends Setup
 
     public function testCreate_withFraudParams()
     {
+        error_reporting(E_ALL & ~E_USER_DEPRECATED);
         $result = Braintree\Customer::create([
             'firstName' => 'Mike',
+            'deviceData' => 'Device Data',
+            'deviceSessionId' => 'abc123',
+            'fraudMerchantId' => '456',
             'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
                 'cvv' => '123',
-                'cardholderName' => 'Mike Jones',
-                'deviceSessionId' => 'abc123',
-                'fraudMerchantId' => '456'
+                'cardholderName' => 'Mike Jones'
             ]
         ]);
         $this->assertEquals(true, $result->success);
+        error_reporting(E_ALL);
     }
 
     public function testCreate_withRiskData()

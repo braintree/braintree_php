@@ -79,12 +79,13 @@ class CustomerGateway
      * </code>
      *
      * @access public
-     * @param array $attribs
+     * @param array $attribs (Note: $deviceSessionId and $fraudMerchantId params are deprecated. Use $deviceData instead)
      * @return Result\Successful|Result\Error
      */
     public function create($attribs = [])
     {
         Util::verifyKeys(self::createSignature(), $attribs);
+        $this->_checkForDeprecatedAttributes($attribs);
         return $this->_doCreate('/customers', ['customer' => $attribs]);
     }
 
@@ -113,8 +114,8 @@ class CustomerGateway
         unset($creditCardSignature[array_search('customerId', $creditCardSignature)]);
         $signature = [
             'id', 'company', 'email', 'fax', 'firstName',
-            'lastName', 'phone', 'website', 'deviceData',
-            'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce',
+            'lastName', 'phone', 'website', 'deviceData', 'paymentMethodNonce',
+            'deviceSessionId', 'fraudMerchantId', // NEXT_MAJOR_VERSION remove deviceSessionId and fraudMerchantId
             ['riskData' =>
                 ['customerBrowser', 'customerIp', 'customer_browser', 'customer_ip']
             ],
@@ -160,7 +161,8 @@ class CustomerGateway
         $signature = [
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
-            'deviceSessionId', 'fraudMerchantId', 'paymentMethodNonce', 'defaultPaymentMethodToken',
+            'paymentMethodNonce', 'defaultPaymentMethodToken',
+            'deviceSessionId', 'fraudMerchantId', // NEXT_MAJOR_VERSION Remove deviceSessionId and fraudMerchantId
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
             ['options' => [
@@ -339,13 +341,14 @@ class CustomerGateway
      *
      * @access public
      * @param string $customerId (optional)
-     * @param array $attributes
+     * @param array $attributes (Note: $deviceSessionId and fraudMerchantId params are deprecated. Use $deviceData instead)
      * @return Result\Successful|Result\Error
      */
     public function update($customerId, $attributes)
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
         $this->_validateId($customerId);
+        $this->_checkForDeprecatedAttributes($attributes);
         return $this->_doUpdate(
             'put',
             '/customers/' . $customerId,
@@ -586,6 +589,16 @@ class CustomerGateway
             throw new Exception\Unexpected(
             "Expected customer or apiErrorResponse"
             );
+        }
+    }
+
+    private function _checkForDeprecatedAttributes($attributes)
+    {
+        if (isset($attributes['deviceSessionId'])) {
+            trigger_error('$deviceSessionId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
+        }
+        if (isset($attributes['fraudMerchantId'])) {
+            trigger_error('$fraudMerchantId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
         }
     }
 }

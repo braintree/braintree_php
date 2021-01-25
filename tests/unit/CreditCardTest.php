@@ -40,9 +40,10 @@ class CreditCardTest extends Setup
     public function testCreateSignature()
     {
         $expected = [
-            'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
+            'billingAddressId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
-            'deviceData', 'fraudMerchantId', 'paymentMethodNonce',
+            'deviceData', 'paymentMethodNonce',
+            'deviceSessionId', 'fraudMerchantId',
             ['options' => ['makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'verificationAccountType', 'venmoSdkSession', 'failOnDuplicatePaymentMethod']],
             [
                 'billingAddress' => [
@@ -80,9 +81,10 @@ class CreditCardTest extends Setup
     public function testUpdateSignature()
     {
         $expected = [
-            'billingAddressId', 'cardholderName', 'cvv', 'number', 'deviceSessionId',
+            'billingAddressId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
-            'deviceData', 'fraudMerchantId', 'paymentMethodNonce',
+            'deviceData', 'paymentMethodNonce',
+            'deviceSessionId', 'fraudMerchantId',
             [
                 'options' => [
                     'makeDefault',
