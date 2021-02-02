@@ -304,7 +304,7 @@ class TransactionTest extends Setup
 
   public function testSaleAndSkipAdvancedFraudChecking()
   {
-        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $gateway = Test\Helper::advancedFraudKountIntegrationMerchantGateway();
         $result = $gateway->transaction()->sale([
           'amount' => Braintree\Test\TransactionAmounts::$authorize,
           'creditCard' => [
@@ -2047,7 +2047,7 @@ class TransactionTest extends Setup
   public function testSaleWithRiskData()
     {
         error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
-        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
         $result = $gateway->transaction()->sale([
             'amount' => '100.00',
             'deviceSessionId' => 'abc123',
@@ -2065,6 +2065,8 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->riskData->id);
         $this->assertNotNull($transaction->riskData->deviceDataCaptured);
         $this->assertNotNull($transaction->riskData->fraudServiceProvider);
+        $this->assertNotNull($transaction->riskData->decisionReasons);
+        $this->assertNotNull($transaction->riskData->transactionRiskScore);
         error_reporting(E_ALL); // reset error reporting
     }
 
@@ -4452,7 +4454,7 @@ class TransactionTest extends Setup
 
   public function testGatewayRejectionOnFraud()
     {
-        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $gateway = Test\Helper::advancedFraudKountIntegrationMerchantGateway();
         $result = $gateway->transaction()->sale([
             'amount' => '100.00',
             'creditCard' => [
@@ -4468,7 +4470,7 @@ class TransactionTest extends Setup
 
   public function testGatewayRejectionOnRiskThreshold()
     {
-        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $gateway = Test\Helper::advancedFraudKountIntegrationMerchantGateway();
         $result = $gateway->transaction()->sale([
             'amount' => '100.00',
             'creditCard' => [

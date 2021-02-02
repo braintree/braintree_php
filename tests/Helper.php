@@ -41,13 +41,23 @@ class Helper
         Braintree\Configuration::privateKey('integration2_private_key');
     }
 
-    public static function advancedFraudIntegrationMerchantGateway()
+    public static function advancedFraudKountIntegrationMerchantGateway()
     {
         return new Braintree\Gateway([
             'environment' => 'development',
             'merchantId' => 'advanced_fraud_integration_merchant_id',
             'publicKey' => 'advanced_fraud_integration_public_key',
             'privateKey' => 'advanced_fraud_integration_private_key'
+        ]);
+    }
+
+    public static function fraudProtectionEnterpriseIntegrationMerchantGateway()
+    {
+        return new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'fraud_protection_enterprise_integration_merchant_id',
+            'publicKey' => 'fraud_protection_enterprise_integration_public_key',
+            'privateKey' => 'fraud_protection_enterprise_integration_private_key'
         ]);
     }
 

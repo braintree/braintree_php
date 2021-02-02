@@ -220,7 +220,7 @@ class CreditCardTest extends Setup
     public function testCreate_withCardVerificationReturnsVerificationWithRiskData()
     {
         error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
-        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
         $customer = $gateway->customer()->createNoValidate();
         $result = $gateway->creditCard()->create([
             'customerId' => $customer->id,
@@ -236,6 +236,8 @@ class CreditCardTest extends Setup
         $this->assertNotNull($result->creditCard->verification->riskData->deviceDataCaptured);
         $this->assertNotNull($result->creditCard->verification->riskData->id);
         $this->assertNotNull($result->creditCard->verification->riskData->fraudServiceProvider);
+        $this->assertNotNull($result->creditCard->verification->riskData->decisionReasons);
+        $this->assertNotNull($result->creditCard->verification->riskData->transactionRiskScore);
         error_reporting(E_ALL); // reset error reporting
     }
 
