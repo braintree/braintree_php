@@ -2,15 +2,21 @@
 namespace Braintree;
 
 /**
- * @property-read string $enrolled
  * @property-read boolean $liabilityShiftPossible
- * @property-read string $liabilityShifted
- * @property-read string $status
- * @property-read boolean $xid
+ * @property-read boolean $liabilityShifted
+ * @property-read mixed $authentication contains $transStatus and $transStatusReason
+ * @property-read mixed $lookup contains $transStatus and $transStatusReason
+ * @property-read string $acsTransactionId
  * @property-read string $cavv
- * @property-read string $eciFlag
  * @property-read string $dsTransactionId
+ * @property-read string $eciFlag
+ * @property-read string $enrolled
+ * @property-read string $paresStatus
+ * @property-read string $status
+ * @property-read string $threeDSecureAuthenticationId
+ * @property-read string $threeDSecureServerTransactionId
  * @property-read string $threeDSecureVersion
+ * @property-read string $xid
  */
 class ThreeDSecureInfo extends Base
 {

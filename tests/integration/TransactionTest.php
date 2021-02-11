@@ -3525,6 +3525,8 @@ class TransactionTest extends Setup
         $this->assertEquals("somebase64value", $info->cavv);
         $this->assertEquals("xidvalue", $info->xid);
         $this->assertEquals("07", $info->eciFlag);
+        $this->assertEquals("Y", $info->paresStatus);
+        $this->assertTrue(is_string($info->threeDSecureAuthenticationId));
     }
 
   public function testFindExposesNullThreeDSecureInfo()
