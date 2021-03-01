@@ -2066,7 +2066,6 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->riskData->deviceDataCaptured);
         $this->assertNotNull($transaction->riskData->fraudServiceProvider);
         $this->assertNotNull($transaction->riskData->decisionReasons);
-        $this->assertNotNull($transaction->riskData->transactionRiskScore);
         error_reporting(E_ALL); // reset error reporting
     }
 

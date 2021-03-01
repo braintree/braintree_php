@@ -11,5 +11,5 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc
 RUN apt-get update
 
 RUN apt-get -y install rake php7.2 php7.2-cli php7.2-curl php-pear phpunit php7.2-xml php7.2-mbstring
-
+RUN update-alternatives --set php /usr/bin/php7.2
 WORKDIR /braintree-php
