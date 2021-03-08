@@ -1726,11 +1726,11 @@ class TransactionTest extends Setup
         $this->assertEquals('47.00', $transaction->amount);
         $applePayDetails = $transaction->applePayCardDetails;
         $this->assertSame(Braintree\ApplePayCard::AMEX, $applePayDetails->cardType);
-        $this->assertContains("AmEx ", $applePayDetails->sourceDescription);
-        $this->assertContains("AmEx ", $applePayDetails->paymentInstrumentName);
+        $this->assertStringContainsString("AmEx ", $applePayDetails->sourceDescription);
+        $this->assertStringContainsString("AmEx ", $applePayDetails->paymentInstrumentName);
         $this->assertTrue(intval($applePayDetails->expirationMonth) > 0);
         $this->assertTrue(intval($applePayDetails->expirationYear) > 0);
-        $this->assertContains('apple_pay', $applePayDetails->imageUrl);
+        $this->assertStringContainsString('apple_pay', $applePayDetails->imageUrl);
         $this->assertNotNull($applePayDetails->cardholderName);
         $this->assertNotNull($applePayDetails->bin);
         $this->assertNotNull($applePayDetails->commercial);
@@ -1788,7 +1788,7 @@ class TransactionTest extends Setup
         $this->assertSame(Braintree\CreditCard::VISA, $androidPayCardDetails->sourceCardType);
         $this->assertSame("1881", $androidPayCardDetails->sourceCardLast4);
         $this->assertSame("Visa 1881", $androidPayCardDetails->sourceDescription);
-        $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
+        $this->assertStringContainsString('android_pay', $androidPayCardDetails->imageUrl);
         $this->assertSame("10", $androidPayCardDetails->expirationMonth);
         $this->assertSame("17", $androidPayCardDetails->expirationYear);
         $this->assertNotNull($androidPayCardDetails->bin);
@@ -1821,7 +1821,7 @@ class TransactionTest extends Setup
         $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCardDetails->sourceCardType);
         $this->assertSame("1111", $androidPayCardDetails->sourceCardLast4);
         $this->assertSame("Discover 1111", $androidPayCardDetails->sourceDescription);
-        $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
+        $this->assertStringContainsString('android_pay', $androidPayCardDetails->imageUrl);
         $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
         $this->assertNotNull($androidPayCardDetails->bin);
@@ -1854,7 +1854,7 @@ class TransactionTest extends Setup
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $androidPayCardDetails->sourceCardType);
         $this->assertSame("4444", $androidPayCardDetails->sourceCardLast4);
         $this->assertSame("MasterCard 4444", $androidPayCardDetails->sourceDescription);
-        $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
+        $this->assertStringContainsString('android_pay', $androidPayCardDetails->imageUrl);
         $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
         $this->assertNotNull($androidPayCardDetails->bin);
@@ -1887,7 +1887,7 @@ class TransactionTest extends Setup
         $this->assertSame("0005", $amexExpressCheckoutCardDetails->cardMemberNumber);
         $this->assertNull($amexExpressCheckoutCardDetails->token);
         $this->assertNotNull($amexExpressCheckoutCardDetails->sourceDescription);
-        $this->assertContains(".png", $amexExpressCheckoutCardDetails->imageUrl);
+        $this->assertStringContainsString(".png", $amexExpressCheckoutCardDetails->imageUrl);
         $this->assertTrue(intval($amexExpressCheckoutCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($amexExpressCheckoutCardDetails->expirationYear) > 0);
     }
@@ -1924,7 +1924,7 @@ class TransactionTest extends Setup
 
         $this->assertNull($venmoAccountDetails->token);
         $this->assertNotNull($venmoAccountDetails->sourceDescription);
-        $this->assertContains(".png", $venmoAccountDetails->imageUrl);
+        $this->assertStringContainsString(".png", $venmoAccountDetails->imageUrl);
         $this->assertSame("venmojoe", $venmoAccountDetails->username);
         $this->assertSame("Venmo-Joe-1", $venmoAccountDetails->venmoUserId);
     }

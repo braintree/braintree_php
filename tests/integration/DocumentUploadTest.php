@@ -11,7 +11,7 @@ class DocumentUploadTest extends Setup
     private $gateway;
     private $pngFile;
 
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
 
         $this->gateway = new Braintree\Gateway([

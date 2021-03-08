@@ -23,7 +23,7 @@ class VisaCheckoutCardTest extends Setup
         $this->assertNotNull($visaCheckoutCard->token);
         $this->assertSame(Braintree\CreditCard::DISCOVER, $visaCheckoutCard->cardType);
         $this->assertTrue($visaCheckoutCard->default);
-        $this->assertContains('discover', $visaCheckoutCard->imageUrl);
+        $this->assertStringContainsString('discover', $visaCheckoutCard->imageUrl);
         $this->assertTrue(intval($visaCheckoutCard->expirationMonth) > 0);
         $this->assertTrue(intval($visaCheckoutCard->expirationYear) > 0);
         $this->assertSame($customer->id, $visaCheckoutCard->customerId);

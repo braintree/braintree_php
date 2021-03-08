@@ -10,7 +10,7 @@ class CustomerTest extends Setup
 {
     public function testGet_givesErrorIfInvalidProperty()
     {
-        $this->expectException('PHPUnit\Framework\Error\Error', 'Undefined property on Braintree\Customer: foo');
+        $this->expectError();
         $c = Braintree\Customer::factory([]);
         $c->foo;
     }

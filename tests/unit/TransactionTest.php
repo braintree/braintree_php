@@ -19,7 +19,7 @@ class TransactionTest extends Setup
             'subscription' => ['billingPeriodStartDate' => '1983-07-12'],
             'statusHistory' => []
         ]);
-        $this->expectException('PHPUnit\Framework\Error\Error', 'Undefined property on Braintree\Transaction: foo');
+        $this->expectError();
         $t->foo;
     }
 

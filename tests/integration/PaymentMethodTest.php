@@ -160,10 +160,10 @@ class PaymentMethodTest extends Setup
         $this->assertNotNull($applePayCard->token);
         $this->assertNotNull($applePayCard->bin);
         $this->assertSame(Braintree\ApplePayCard::VISA, $applePayCard->cardType);
-        $this->assertContains("Visa ", $applePayCard->paymentInstrumentName);
-        $this->assertContains("Visa ", $applePayCard->sourceDescription);
+        $this->assertStringContainsString("Visa ", $applePayCard->paymentInstrumentName);
+        $this->assertStringContainsString("Visa ", $applePayCard->sourceDescription);
         $this->assertTrue($applePayCard->default);
-        $this->assertContains('apple_pay', $applePayCard->imageUrl);
+        $this->assertStringContainsString('apple_pay', $applePayCard->imageUrl);
         $this->assertTrue(intval($applePayCard->expirationMonth) > 0);
         $this->assertTrue(intval($applePayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $applePayCard->customerId);
@@ -188,7 +188,7 @@ class PaymentMethodTest extends Setup
         $this->assertSame("1111", $androidPayCard->sourceCardLast4);
         $this->assertSame("Discover 1111", $androidPayCard->sourceDescription);
         $this->assertTrue($androidPayCard->default);
-        $this->assertContains('android_pay', $androidPayCard->imageUrl);
+        $this->assertStringContainsString('android_pay', $androidPayCard->imageUrl);
         $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $androidPayCard->customerId);
@@ -214,7 +214,7 @@ class PaymentMethodTest extends Setup
         $this->assertSame("4444", $androidPayCard->sourceCardLast4);
         $this->assertSame("MasterCard 4444", $androidPayCard->sourceDescription);
         $this->assertTrue($androidPayCard->default);
-        $this->assertContains('android_pay', $androidPayCard->imageUrl);
+        $this->assertStringContainsString('android_pay', $androidPayCard->imageUrl);
         $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $androidPayCard->customerId);
@@ -240,7 +240,7 @@ class PaymentMethodTest extends Setup
         $this->assertSame("0005", $amexExpressCheckoutCard->cardMemberNumber);
         $this->assertSame("American Express", $amexExpressCheckoutCard->cardType);
         $this->assertNotNull($amexExpressCheckoutCard->sourceDescription);
-        $this->assertContains(".png", $amexExpressCheckoutCard->imageUrl);
+        $this->assertStringContainsString(".png", $amexExpressCheckoutCard->imageUrl);
         $this->assertTrue(intval($amexExpressCheckoutCard->expirationMonth) > 0);
         $this->assertTrue(intval($amexExpressCheckoutCard->expirationYear) > 0);
         $this->assertTrue($amexExpressCheckoutCard->default);
@@ -262,7 +262,7 @@ class PaymentMethodTest extends Setup
 
         $this->assertNotNull($venmoAccount->token);
         $this->assertNotNull($venmoAccount->sourceDescription);
-        $this->assertContains(".png", $venmoAccount->imageUrl);
+        $this->assertStringContainsString(".png", $venmoAccount->imageUrl);
         $this->assertTrue($venmoAccount->default);
         $this->assertSame($customer->id, $venmoAccount->customerId);
         $this->assertEquals(array(), $venmoAccount->subscriptions);
@@ -1223,7 +1223,7 @@ class PaymentMethodTest extends Setup
         $this->assertSame("1111", $foundAndroidPayCard->sourceCardLast4);
         $this->assertSame($customer->id, $foundAndroidPayCard->customerId);
         $this->assertTrue($foundAndroidPayCard->default);
-        $this->assertContains('android_pay', $foundAndroidPayCard->imageUrl);
+        $this->assertStringContainsString('android_pay', $foundAndroidPayCard->imageUrl);
         $this->assertTrue(intval($foundAndroidPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($foundAndroidPayCard->expirationYear) > 0);
         $this->assertFalse($foundAndroidPayCard->isNetworkTokenized);

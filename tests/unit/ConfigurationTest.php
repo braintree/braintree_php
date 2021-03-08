@@ -8,14 +8,12 @@ use Braintree;
 
 class ConfigurationTest extends Setup
 {
-    public function setUp()
-    {
+    public function setUp(): void {
         Braintree\Configuration::reset();
         $this->config = new Braintree\Configuration();
     }
 
-    public function teardown()
-    {
+    public function teardown(): void {
         Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
         Braintree\Configuration::publicKey('integration_public_key');

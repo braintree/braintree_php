@@ -11,7 +11,7 @@ class DisputeTest extends Setup
 {
     private $attributes;
 
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
 
         $this->attributes = [

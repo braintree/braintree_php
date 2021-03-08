@@ -411,7 +411,7 @@ class CustomerTest extends Setup
         $this->assertEquals('021000021', $usBankAccount->routingNumber);
         $this->assertEquals('1234', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
-        $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/CHASE/', $usBankAccount->bankName);
     }
 
     public function testCreate_withUnicode()
@@ -1052,7 +1052,7 @@ class CustomerTest extends Setup
         $this->assertEquals('021000021', $usBankAccount->routingNumber);
         $this->assertEquals('1234', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
-        $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/CHASE/', $usBankAccount->bankName);
     }
 
     public function testFind_throwsExceptionIfNotFound()

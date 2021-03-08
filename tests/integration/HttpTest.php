@@ -8,7 +8,7 @@ use Braintree;
 
 class HttpTest extends Setup
 {
-    public function setUp(){
+    public function setUp(): void{
         parent::setUp();
 
         Braintree\Configuration::environment('development');
@@ -65,13 +65,11 @@ class HttpTest extends Setup
 
     public function testSslError()
     {
-        try {
-            Braintree\Configuration::environment('sandbox');
-            $http = new Braintree\Http(Braintree\Configuration::$global);
-            $http->_doUrlRequest('get', '/malformed_url');
-        } catch (Braintree\Exception\Connection $e) {
-            $this->assertEquals("<url> malformed", $e->getMessage());
-        }
+        $this->expectException('Braintree\Exception\Connection', null, 35);
+
+        Braintree\Configuration::environment('sandbox');
+        $http = new Braintree\Http(Braintree\Configuration::$global);
+        $http->_doUrlRequest('get', '/malformed_url');
     }
 
     public function testAcceptGzipEncodingSetFalse()

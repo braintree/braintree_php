@@ -31,7 +31,7 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
-        $this->assertRegExp('/CHASE/', $transaction->usBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/CHASE/', $transaction->usBankAccount->bankName);
         $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
     }
@@ -104,7 +104,7 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertEquals('0000', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
-        $this->assertRegExp('/FEDERAL/', $transaction->usBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/FEDERAL/', $transaction->usBankAccount->bankName);
         $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
     }
@@ -148,7 +148,7 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertEquals('1234', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
-        $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/CHASE/', $usBankAccount->bankName);
         $this->assertEquals(false, $usBankAccount->verified);
 
         $this->assertEquals(0, count($usBankAccount->verifications));
@@ -210,7 +210,7 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertEquals('0000', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
-        $this->assertRegexp('/FEDERAL/', $usBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/FEDERAL/', $usBankAccount->bankName);
         $this->assertEquals(true, $usBankAccount->verified);
 
         $this->assertEquals(1, count($usBankAccount->verifications));

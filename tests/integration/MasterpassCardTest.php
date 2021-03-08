@@ -22,7 +22,7 @@ class MasterpassCardTest extends Setup
         $masterpassCard = $result->paymentMethod;
         $this->assertSame(Braintree\CreditCard::DISCOVER, $masterpassCard->cardType);
         $this->assertTrue($masterpassCard->default);
-        $this->assertContains('discover', $masterpassCard->imageUrl);
+        $this->assertStringContainsString('discover', $masterpassCard->imageUrl);
         $this->assertTrue(intval($masterpassCard->expirationMonth) > 0);
         $this->assertTrue(intval($masterpassCard->expirationYear) > 0);
         $this->assertSame($customer->id, $masterpassCard->customerId);

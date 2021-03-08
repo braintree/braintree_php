@@ -447,6 +447,6 @@ class UtilTest extends Setup
         $this->success = true;
         $this->transaction = new stdClass();
         $t = Braintree\Util::returnObjectOrThrowException('Braintree\Transaction', $this);
-        $this->assertInternalType('object', $t);
+        $this->assertIsObject($t);
     }
 }

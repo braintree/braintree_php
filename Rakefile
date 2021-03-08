@@ -1,3 +1,5 @@
+do_not_cache = "--do-not-cache-result"
+
 task :default => :test
 task :test => %w[test:unit test:integration]
 
@@ -14,11 +16,11 @@ namespace :test do
   desc "run unit tests"
   task :unit, [:file_name, :test_name] => :version do |task, args|
     if args.file_name.nil?
-      sh "php ./vendor/bin/phpunit --testsuite unit"
+      sh "php ./vendor/bin/phpunit --testsuite unit #{do_not_cache}"
     elsif args.test_name.nil?
-      sh "./vendor/bin/phpunit tests/unit/#{args.file_name}"
+      sh "./vendor/bin/phpunit #{do_not_cache} tests/unit/#{args.file_name}"
     else
-      sh "./vendor/bin/phpunit tests/unit/#{args.file_name} --filter #{args.test_name}"
+      sh "./vendor/bin/phpunit #{do_not_cache} tests/unit/#{args.file_name} --filter #{args.test_name}"
     end
   end
 
@@ -29,11 +31,11 @@ namespace :test do
   desc "run integration tests"
   task :integration, [:file_name, :test_name] do |task, args|
     if args.file_name.nil?
-      sh "php ./vendor/bin/phpunit --testsuite integration"
+      sh "php ./vendor/bin/phpunit --testsuite integration #{do_not_cache}"
     elsif args.test_name.nil?
-      sh "./vendor/bin/phpunit tests/integration/#{args.file_name}"
+      sh "./vendor/bin/phpunit #{do_not_cache} tests/integration/#{args.file_name}"
     else
-      sh "./vendor/bin/phpunit tests/integration/#{args.file_name} --filter #{args.test_name}"
+      sh "./vendor/bin/phpunit #{do_not_cache} tests/integration/#{args.file_name} --filter #{args.test_name}"
     end
   end
 

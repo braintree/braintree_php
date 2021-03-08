@@ -10,7 +10,7 @@ class DisputeTest extends Setup
 {
     private $gateway;
 
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
 
         $this->gateway = new Braintree\Gateway([
@@ -138,7 +138,7 @@ class DisputeTest extends Setup
         $this->assertTrue($result->success);
         $this->assertEquals("text evidence", $evidence->comment);
         $this->assertNotNull($evidence->createdAt);
-        $this->assertRegExp('/^\w{16,}$/', $evidence->id);
+        $this->assertMatchesRegularExpression('/^\w{16,}$/', $evidence->id);
         $this->assertNull($evidence->sentToProcessorAt);
         $this->assertNull($evidence->url);
         $this->assertNull($evidence->tag);
@@ -161,7 +161,7 @@ class DisputeTest extends Setup
         $this->assertTrue($result->success);
         $this->assertEquals("UPS", $evidence->comment);
         $this->assertNotNull($evidence->createdAt);
-        $this->assertRegExp('/^\w{16,}$/', $evidence->id);
+        $this->assertMatchesRegularExpression('/^\w{16,}$/', $evidence->id);
         $this->assertNull($evidence->sentToProcessorAt);
         $this->assertNull($evidence->url);
         $this->assertEquals("CARRIER_NAME", $evidence->category);

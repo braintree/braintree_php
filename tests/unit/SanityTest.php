@@ -13,7 +13,7 @@ class SanityTest extends Setup
         foreach ($codeFiles as $codeFile) {
             if ($codeFile == "") continue;
             $code = file_get_contents($codeFile);
-            $this->assertNotContains("?>", $code, "$codeFile should not contain a PHP close tag");
+            $this->assertStringNotContainsString("?>", $code, "$codeFile should not contain a PHP close tag");
         }
     }
 }
