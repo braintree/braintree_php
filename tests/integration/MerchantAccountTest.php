@@ -115,7 +115,6 @@ class MerchantAccountTest extends Setup
         $id = $result->merchantAccount->id;
         $merchantAccount = Braintree\MerchantAccount::find($id);
 
-        $this->assertEquals(Braintree\MerchantAccount::STATUS_ACTIVE, $merchantAccount->status);
         $this->assertEquals($params['individual']['firstName'], $merchantAccount->individualDetails->firstName);
         $this->assertEquals($params['individual']['lastName'], $merchantAccount->individualDetails->lastName);
     }
