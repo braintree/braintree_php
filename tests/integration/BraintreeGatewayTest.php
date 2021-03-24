@@ -10,6 +10,7 @@ class BraintreeGatewayTest extends Setup
 {
     public function testGraphQLCanTokenizeCreditCard()
     {
+        $this->markTestSkipped( 'Skipping until we have a more stable CI env' );
         $gateway = new Braintree\Gateway([
             'environment' => 'development',
             'merchantId' => 'integration_merchant_id',
