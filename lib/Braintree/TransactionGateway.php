@@ -285,7 +285,11 @@ class TransactionGateway
 
     public static function refundSignature()
     {
-        return ['amount', 'orderId'];
+        return [
+            'amount',
+            'merchantAccountId',
+            'orderId'
+        ];
     }
 
     /**

@@ -4317,7 +4317,8 @@ class TransactionTest extends Setup
         $transaction = $this->createTransactionToRefund();
         $options = [
             "orderId" => 'abcd',
-            "amount" => '1.00'
+            "amount" => '1.00',
+            "merchantAccountId" => Test\Helper::nonDefaultMerchantAccountId()
         ];
         $result = Braintree\Transaction::refund($transaction->id, $options);
         $this->assertTrue($result->success);
@@ -4328,6 +4329,10 @@ class TransactionTest extends Setup
         $this->assertEquals(
             '1.00',
             $result->transaction->amount
+        );
+        $this->assertEquals(
+            Test\Helper::nonDefaultMerchantAccountId(),
+            $result->transaction->merchantAccountId
         );
     }
 
