@@ -1,4 +1,5 @@
 ## Unreleased
+* Add `storeId` and `storeIds` to Transaction search
 * Add `merchantAccountId` parameter to Transaction refund
 
 ## 5.5.0
