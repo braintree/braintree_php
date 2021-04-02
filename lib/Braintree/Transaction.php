@@ -565,6 +565,17 @@ class Transaction extends Base
         return $instance;
     }
 
+    /**
+     * adjustAuthorization: It is a static method to invoke
+     * method in the TransactionGateway
+     *
+     * @param string transactionId
+     * @param string amount
+     */
+    public static function adjustAuthorization($transactionId, $amount)
+    {
+        return Configuration::gateway()->transaction()->adjustAuthorization($transactionId, $amount);
+    }
 
     // static methods redirecting to gateway
 

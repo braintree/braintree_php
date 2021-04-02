@@ -415,6 +415,25 @@ class TransactionGateway
     }
 
     /**
+     * Adjusts the authorization amount of a transaction
+     *
+     * @access public
+     * @param string $transactionId
+     * @param string amount
+     *
+     * @return Result\Successful|Result\Error
+     * @throws Exception\Unexpected
+     */
+    public function adjustAuthorization($transactionId, $amount)
+    {
+        self::_validateId($transactionId);
+        $params = ['amount' => $amount];
+        $path = $this->_config->merchantPath() . '/transactions/'. $transactionId . '/adjust_authorization';
+        $response = $this->_http->put($path, ['transaction' => $params]);
+        return $this->_verifyGatewayResponse($response);
+    }
+
+    /**
      * void a transaction by id
      *
      * @param string $id transaction id

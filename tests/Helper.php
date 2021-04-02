@@ -96,6 +96,11 @@ class Helper
         return 'fake_first_data_venmo_account';
     }
 
+    public static function fakeFirstDataMerchantAccountId()
+    {
+        return 'fake_first_data_merchant_account';
+    }
+
     public static function usBankMerchantAccount() {
         return 'us_bank_merchant_account';
     }

@@ -1,4 +1,5 @@
 ## Unreleased
+* Add `adjustAuthorization` method to Transaction, for supporting multiple authorizations on a single transaction
 * Add `storeId` and `storeIds` to Transaction search
 * Add `merchantAccountId` parameter to Transaction refund
 

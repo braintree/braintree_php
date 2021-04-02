@@ -6609,4 +6609,196 @@ class TransactionTest extends Setup
             $this->assertEquals("-5.00",$refundedInstallment["adjustments"][0]["amount"]);
         }
     }
+    
+    public function testAdjustAuthorization()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
+
+        $this->assertTrue($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("85.50", $adjusted_transaction->amount);
+    }
+
+    public function testAdjustAuthorizationOnNonSupportingMultiAuthAdjustmentProcessor()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::defaultMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '06/2009'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::PROCESSOR_DOES_NOT_SUPPORT_AUTH_ADJUSTMENT, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnAmountSubmittedIsZero()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '0.0');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+        $baseErrors = $adjust_authorize_result->errors->forKey('authorizationAdjustment')->onAttribute('amount');
+        $this->assertEquals(Braintree\Error\Codes::ADJUSTMENT_AMOUNT_MUST_BE_GREATER_THAN_ZERO, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnAmountSubmittedIsSameAsAuthorizedAmount()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '75.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('authorizationAdjustment')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::NO_NET_AMOUNT_TO_PERFORM_AUTH_ADJUSTMENT, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnNotAuthorizedTransaction()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ],
+            'options' => [
+                'submitForSettlement' => true,
+            ],
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_MUST_BE_IN_STATE_AUTHORIZED, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnNonPreAuthTransaction()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ],
+            'transactionSource' => 'recurring_first',
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_IS_NOT_ELIGIBLE_FOR_ADJUSTMENT, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnProcessorNotSupportingIncremetnalAuth()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeFirstDataMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '06/2009'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::PROCESSOR_DOES_NOT_SUPPORT_INCREMENTAL_AUTH, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnProcessorNotSupportingAuthReversal()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeFirstDataMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '06/2009'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '65.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::PROCESSOR_DOES_NOT_SUPPORT_PARTIAL_AUTH_REVERSAL, $baseErrors[0]->code);
+    }
 }
