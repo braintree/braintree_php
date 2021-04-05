@@ -322,54 +322,38 @@ class CustomerTest extends Setup
         $this->assertNotNull($customer->paymentMethods[0]);
     }
 
-    public function testCreateCustomerWithAndroidPayProxyCard()
+    public function testCreateCustomerWithGooglePayProxyCard()
     {
-        $nonce = Braintree\Test\Nonces::$androidPayDiscover;
+        $nonce = Braintree\Test\Nonces::$googlePayDiscover;
         $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
         ]);
         $this->assertTrue($result->success);
         $customer = $result->customer;
-        $this->assertNotNull($customer->androidPayCards[0]);
+        $this->assertNotNull($customer->googlePayCards[0]);
         $this->assertNotNull($customer->paymentMethods[0]);
-        $androidPayCard = $customer->androidPayCards[0];
-        $this->assertTrue($androidPayCard instanceof Braintree\AndroidPayCard);
-        $this->assertNotNull($androidPayCard->token);
-        $this->assertNotNull($androidPayCard->expirationYear);
-        $this->assertFalse($androidPayCard->isNetworkTokenized);
+        $googlePayCard = $customer->googlePayCards[0];
+        $this->assertTrue($googlePayCard instanceof Braintree\GooglePayCard);
+        $this->assertNotNull($googlePayCard->token);
+        $this->assertNotNull($googlePayCard->expirationYear);
+        $this->assertFalse($googlePayCard->isNetworkTokenized);
     }
 
-    public function testCreateCustomerWithAndroidPayNetworkToken()
+    public function testCreateCustomerWithGooglePayNetworkToken()
     {
-        $nonce = Braintree\Test\Nonces::$androidPayMasterCard;
+        $nonce = Braintree\Test\Nonces::$googlePayMasterCard;
         $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce
         ]);
         $this->assertTrue($result->success);
         $customer = $result->customer;
-        $this->assertNotNull($customer->androidPayCards[0]);
+        $this->assertNotNull($customer->googlePayCards[0]);
         $this->assertNotNull($customer->paymentMethods[0]);
-        $androidPayCard = $customer->androidPayCards[0];
-        $this->assertTrue($androidPayCard instanceof Braintree\AndroidPayCard);
-        $this->assertNotNull($androidPayCard->token);
-        $this->assertNotNull($androidPayCard->expirationYear);
-        $this->assertTrue($androidPayCard->isNetworkTokenized);
-    }
-
-    public function testCreateCustomerWithAmexExpressCheckoutCard()
-    {
-        $nonce = Braintree\Test\Nonces::$amexExpressCheckout;
-        $result = Braintree\Customer::create([
-            'paymentMethodNonce' => $nonce
-        ]);
-        $this->assertTrue($result->success);
-        $customer = $result->customer;
-        $this->assertNotNull($customer->amexExpressCheckoutCards[0]);
-        $this->assertNotNull($customer->paymentMethods[0]);
-        $amexExpressCheckoutCard = $customer->amexExpressCheckoutCards[0];
-        $this->assertTrue($amexExpressCheckoutCard instanceof Braintree\AmexExpressCheckoutCard);
-        $this->assertNotNull($amexExpressCheckoutCard->token);
-        $this->assertNotNull($amexExpressCheckoutCard->expirationYear);
+        $googlePayCard = $customer->googlePayCards[0];
+        $this->assertTrue($googlePayCard instanceof Braintree\GooglePayCard);
+        $this->assertNotNull($googlePayCard->token);
+        $this->assertNotNull($googlePayCard->expirationYear);
+        $this->assertTrue($googlePayCard->isNetworkTokenized);
     }
 
     public function testCreateCustomerWithVenmoAccount()
@@ -525,14 +509,11 @@ class CustomerTest extends Setup
         $this->assertEquals('some custom value', $customFields['store_me']);
     }
 
-    public function testCreate_withFraudParams()
+    public function testCreate_withDeviceData()
     {
-        error_reporting(E_ALL & ~E_USER_DEPRECATED);
         $result = Braintree\Customer::create([
             'firstName' => 'Mike',
             'deviceData' => 'Device Data',
-            'deviceSessionId' => 'abc123',
-            'fraudMerchantId' => '456',
             'creditCard' => [
                 'number' => '5105105105105100',
                 'expirationDate' => '05/12',
@@ -541,7 +522,6 @@ class CustomerTest extends Setup
             ]
         ]);
         $this->assertEquals(true, $result->success);
-        error_reporting(E_ALL);
     }
 
     public function testCreate_withRiskData()
@@ -555,8 +535,8 @@ class CustomerTest extends Setup
                 'cardholderName' => 'Mike Jones',
             ],
             'riskData' => [
-                'customer_browser' => 'IE5',
-                'customer_ip' => '192.168.0.1'
+                'customerBrowser' => 'IE5',
+                'customerIp' => '192.168.0.1'
             ]
         ]);
         $this->assertEquals(true, $result->success);

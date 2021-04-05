@@ -54,7 +54,7 @@ class Curl
             $httpRequest->setOption(CURLOPT_POSTFIELDS, $requestBody);
         }
 
-        if ($config->isUsingInstanceProxy()) {
+        if ($config->isUsingProxy()) {
             $proxyHost = $config->getProxyHost();
             $proxyPort = $config->getProxyPort();
             $proxyType = $config->getProxyType();
@@ -64,7 +64,7 @@ class Curl
             if (!empty($proxyType)) {
                 $httpRequest->setOption(CURLOPT_PROXYTYPE, $proxyType);
             }
-            if ($config->isAuthenticatedInstanceProxy()) {
+            if ($config->isAuthenticatedProxy()) {
                 $httpRequest->setOption(CURLOPT_PROXYUSERPWD, $proxyUser . ':' . $proxyPwd);
             }
         }

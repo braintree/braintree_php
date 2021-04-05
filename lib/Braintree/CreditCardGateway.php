@@ -32,7 +32,6 @@ class CreditCardGateway
     public function create($attribs)
     {
         Util::verifyKeys(self::createSignature(), $attribs);
-        $this->_checkForDeprecatedAttributes($attribs);
         return $this->_doCreate('/payment_methods', ['credit_card' => $attribs]);
     }
 
@@ -230,7 +229,7 @@ class CreditCardGateway
      * is the 2nd attribute. $token is not sent in object context.
      *
      * @access public
-     * @param array $attributes (Note: $deviceSessionId and $fraudMerchantId params are deprecated. Use $deviceData instead)
+     * @param array $attributes
      * @param string $token (optional)
      * @return Result\Successful|Result\Error
      */
@@ -238,7 +237,6 @@ class CreditCardGateway
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
         $this->_validateId($token);
-        $this->_checkForDeprecatedAttributes($attributes);
         return $this->_doUpdate('put', '/payment_methods/credit_card/' . $token, ['creditCard' => $attributes]);
     }
 
@@ -280,7 +278,6 @@ class CreditCardGateway
              'billingAddressId', 'cardholderName', 'cvv', 'number',
              'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
              'deviceData', 'paymentMethodNonce',
-             'deviceSessionId', 'fraudMerchantId', // NEXT_MAJOR_VERSION remove deviceSessionId and fraudMerchantId
              ['options' => $options],
              [
                  'billingAddress' => self::billingAddressSignature()
@@ -437,13 +434,4 @@ class CreditCardGateway
         }
     }
 
-    private function _checkForDeprecatedAttributes($attributes)
-    {
-        if (isset($attributes['deviceSessionId'])) {
-            trigger_error('$deviceSessionId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
-        }
-        if (isset($attributes['fraudMerchantId'])) {
-            trigger_error('$fraudMerchantId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
-        }
-    }
 }

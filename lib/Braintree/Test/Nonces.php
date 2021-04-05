@@ -27,14 +27,11 @@ class Nonces
    public static $applePayVisa = "fake-apple-pay-visa-nonce";
    public static $applePayMasterCard = "fake-apple-pay-visa-nonce";
    public static $applePayAmEx = "fake-apple-pay-amex-nonce";
-   // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
-   public static $androidPay = "fake-android-pay-nonce";
-   public static $androidPayDiscover = "fake-android-pay-discover-nonce";
-   public static $androidPayVisa = "fake-android-pay-visa-nonce";
-   public static $androidPayMasterCard = "fake-android-pay-mastercard-nonce";
-   public static $androidPayAmEx = "fake-android-pay-amex-nonce";
-   // NEXT_MAJOR_VERSION remove deprecated amex express checkout
-   public static $amexExpressCheckout = "fake-amex-express-checkout-nonce";
+   public static $googlePay = "fake-android-pay-nonce";
+   public static $googlePayDiscover = "fake-android-pay-discover-nonce";
+   public static $googlePayVisa = "fake-android-pay-visa-nonce";
+   public static $googlePayMasterCard = "fake-android-pay-mastercard-nonce";
+   public static $googlePayAmEx = "fake-android-pay-amex-nonce";
    public static $abstractTransactable = "fake-abstract-transactable-nonce";
    public static $europe = "fake-europe-bank-account-nonce";
    public static $transactableVisa = "fake-valid-visa-nonce";
@@ -86,11 +83,6 @@ class Nonces
    public static $visaCheckoutDiscover = "fake-visa-checkout-discover-nonce";
    public static $visaCheckoutMasterCard = "fake-visa-checkout-mastercard-nonce";
    public static $visaCheckoutVisa = "fake-visa-checkout-visa-nonce";
-   // NEXT_MAJOR_VERSION remove deprecated masterpass test nonces
-   public static $masterpassAmEx = "fake-masterpass-amex-nonce";
-   public static $masterpassDiscover = "fake-masterpass-discover-nonce";
-   public static $masterpassMasterCard = "fake-masterpass-mastercard-nonce";
-   public static $masterpassVisa = "fake-masterpass-visa-nonce";
    public static $samsungPayAmEx = "tokensam_fake_american_express";
    public static $samsungPayDiscover = "tokensam_fake_discover";
    public static $samsungPayMasterCard = "tokensam_fake_mastercard";

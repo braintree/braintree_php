@@ -213,14 +213,14 @@ class ConfigurationTest extends Setup
         $this->assertEquals('MY_PROXY', $this->config->proxyType());
     }
 
-    function testInstanceProxyIsConfigured()
+    function testProxyIsConfigured()
     {
         $config = new Braintree\Configuration([
             'proxyHost' => 'example.com',
             'proxyPort' => '5678',
         ]);
 
-        $this->assertTrue($config->isUsingInstanceProxy());
+        $this->assertTrue($config->isUsingProxy());
     }
 
     function testProxyUser()
@@ -235,7 +235,7 @@ class ConfigurationTest extends Setup
         $this->assertEquals('password', $this->config->proxyPassword());
     }
 
-    function testInstanceIsAuthenticatedProxy()
+    function testIsAuthenticatedProxy()
     {
 
         $config = new Braintree\Configuration([
@@ -243,7 +243,7 @@ class ConfigurationTest extends Setup
             'proxyPassword' => 'password',
         ]);
 
-        $this->assertTrue($config->isAuthenticatedInstanceProxy());
+        $this->assertTrue($config->isAuthenticatedProxy());
     }
 
     function testTimeout()

@@ -39,13 +39,13 @@ class TransactionGateway
     /**
      * @ignore
      * @access private
-     * @param array $attribs (Note: $deviceSessionId and $fraudMerchantId params are deprecated. Use $deviceData instead)
+     * @param array $attribs
      * @return Result\Successful|Result\Error
      */
     private function create($attribs)
     {
         Util::verifyKeys(self::createSignature(), $attribs);
-        $this->_checkForDeprecatedAttributes($attribs);
+        $attribs = Util::replaceKey($attribs, 'googlePayCard', 'androidPayCard');
         return $this->_doCreate('/transactions', ['transaction' => $attribs]);
     }
 
@@ -104,12 +104,10 @@ class TransactionGateway
             'shippingAmount',
             'discountAmount',
             'shipsFromPostalCode',
-            'deviceSessionId', 'fraudMerchantId', // NEXT_MAJOR_VERSION remove deviceSessionId and fraudMerchantId
             ['riskData' =>
                 [
-                    //NEXT_MAJOR_VERSION remove snake case parameters, PHP should only accept camel case
-                    'customerBrowser', 'customerIp', 'customer_browser', 'customer_ip',
-                    'customerDeviceId', 'customerLocationZip', 'customerTenure'],
+                    'customerBrowser', 'customerIp', 'customerDeviceId',
+                    'customerLocationZip', 'customerTenure'],
             ],
             ['creditCard' =>
                 ['token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'],
@@ -259,8 +257,7 @@ class TransactionGateway
             ['externalVault' =>
                 ['status' , 'previousNetworkTransactionId'],
             ],
-            // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
-            ['androidPayCard' => ['number', 'cryptogram', 'expirationMonth', 'expirationYear', 'eciIndicator', 'sourceCardType', 'sourceCardLastFour', 'googleTransactionId']],
+            ['googlePayCard' => ['number', 'cryptogram', 'expirationMonth', 'expirationYear', 'eciIndicator', 'sourceCardType', 'sourceCardLastFour', 'googleTransactionId']],
             ['installments' => ['count']]
         ];
     }
@@ -599,13 +596,4 @@ class TransactionGateway
         }
     }
 
-    private function _checkForDeprecatedAttributes($attributes)
-    {
-        if (isset($attributes['deviceSessionId'])) {
-            trigger_error('$deviceSessionId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
-        }
-        if (isset($attributes['fraudMerchantId'])) {
-            trigger_error('$fraudMerchantId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
-        }
-    }
 }

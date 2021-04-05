@@ -363,6 +363,23 @@ class Util
             throw new InvalidArgumentException('invalid keys: ' . $sortedList);
         }
     }
+
+    /**
+     * replaces the value of a key in an array
+     * @param $array
+     * @param string $oldKey
+     * @param string $newKey
+     * @return array
+     */
+    public static function replaceKey($array, $oldKey, $newKey)
+    {
+        if (array_key_exists($oldKey, $array)) {
+            $array[$newKey] = $array[$oldKey];
+            unset($array[$oldKey]);
+        }
+        return $array;
+    } 
+
     /**
      * flattens a numerically indexed nested array to a single level
      * @param array $keys

@@ -101,8 +101,8 @@ class Generator
      */
     private static function _generateXmlAttribute($value)
     {
-        if ($value instanceof DateTime) {
-            return ['type', 'datetime', self::_dateTimeToXmlTimestamp($value)];
+        if ($value instanceof DateTime || is_a($value, 'DateTimeImmutable')) {
+            return ['type', 'datetime', self::_convertDateTimeObjectToXmlTimestamp($value)];
         }
         if (is_int($value)) {
             return ['type', 'integer', $value];
@@ -120,9 +120,13 @@ class Generator
      * @param object $dateTime
      * @return string XML schema formatted timestamp
      */
-    private static function _dateTimeToXmlTimestamp($dateTime)
+    private static function _convertDateTimeObjectToXmlTimestamp($dateTime)
     {
-        $dateTimeForUTC = clone $dateTime;
+        if (is_a($dateTime, 'DateTimeImmutable')) {
+            $dateTimeForUTC = DateTime::createFromImmutable($dateTime);
+        } else {
+            $dateTimeForUTC = clone $dateTime;
+        }
 
         $dateTimeForUTC->setTimeZone(new DateTimeZone('UTC'));
         return ($dateTimeForUTC->format('Y-m-d\TH:i:s') . 'Z');
@@ -135,7 +139,7 @@ class Generator
                return false;
             }
             $dateTime = new DateTime($string);
-            return self::_dateTimeToXmlTimestamp($dateTime);
+            return self::_convertDateTimeObjectToXmlTimestamp($dateTime);
         } catch (Exception $e) {
             // not a datetime
             return false;

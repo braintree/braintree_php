@@ -5,7 +5,7 @@ require_once dirname(__DIR__) . '/Setup.php';
 
 use Test\Setup;
 
-class SanityTest extends Setup
+class OmitPHPCloseTagTest extends Setup
 {
     public function testCodeFiles_allOmitPHPCloseTag()
     {

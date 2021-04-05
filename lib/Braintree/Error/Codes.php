@@ -308,8 +308,6 @@ class Codes
 
     const TRANSACTION_EXTERNAL_VAULT_STATUS_IS_INVALID                                      = '915175';
     const TRANSACTION_EXTERNAL_VAULT_STATUS_WITH_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID = '915177';
-    // NEXT_MAJOR_VERSION remove this validation error as it is no longer returned by the gateway
-    const TRANSACTION_EXTERNAL_VAULT_CARD_TYPE_IS_INVALID                                   = '915178';
     const TRANSACTION_EXTERNAL_VAULT_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID             = '915179';
 
     const MERCHANT_COUNTRY_CANNOT_BE_BLANK              = '83603';
@@ -709,9 +707,6 @@ class Codes
     const MERCHANT_ACCOUNT_DOES_NOT_SUPPORT3_D_SECURE                                                         = "942169";
     const MERCHANT_ACOUNT_DOES_NOT_MATCH3_D_SECURE_MERCHANT_ACCOUNT                                           = "94284";
     const AMOUNT_DOES_NOT_MATCH3_D_SECURE_AMOUNT                                                              = "94285";
-
-    # NEXT_MAJOR_VERSION Remove CustomerBrowserIsTooLong code as it is no longer applied
-    const RISK_DATA_CUSTOMER_BROWSER_IS_TOO_LONG                                                              = "94701";
     const RISK_DATA_CUSTOMER_DEVICE_ID_IS_TOO_LONG                                                            = "94702";
     const RISK_DATA_CUSTOMER_LOCATION_ZIP_INVALID_CHARACTERS                                                  = "94703";
     const RISK_DATA_CUSTOMER_LOCATION_ZIP_IS_INVALID                                                          = "94704";

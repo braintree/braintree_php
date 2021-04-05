@@ -10,7 +10,7 @@ class DisputeTest extends Setup
 {
     private $gateway;
 
-    public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
 
         $this->gateway = new Braintree\Gateway([

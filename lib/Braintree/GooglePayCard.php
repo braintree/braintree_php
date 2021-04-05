@@ -1,11 +1,9 @@
 <?php
 namespace Braintree;
 
-// NEXT_MAJOR_VERSION rename to GooglePayCard
-
 /**
- * Braintree AndroidPayCard module
- * Creates and manages Braintree Android Pay cards
+ * Braintree GooglePayCard module
+ * Creates and manages Braintree Google Pay cards
  *
  * <b>== More information ==</b>
  *
@@ -34,7 +32,7 @@ namespace Braintree;
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
  */
-class AndroidPayCard extends Base
+class GooglePayCard extends Base
 {
     /* instance methods */
     /**
@@ -48,11 +46,11 @@ class AndroidPayCard extends Base
     }
 
     /**
-     *  factory method: returns an instance of AndroidPayCard
+     *  factory method: returns an instance of GooglePayCard
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return AndroidPayCard
+     * @return GooglePayCard
      */
     public static function factory($attributes)
     {
@@ -72,17 +70,17 @@ class AndroidPayCard extends Base
      * sets instance properties from an array of values
      *
      * @access protected
-     * @param array $androidPayCardAttribs array of Android Pay card properties
+     * @param array $googlePayCardAttribs array of Google Pay card properties
      * @return void
      */
-    protected function _initialize($androidPayCardAttribs)
+    protected function _initialize($googlePayCardAttribs)
     {
         // set the attributes
-        $this->_attributes = $androidPayCardAttribs;
+        $this->_attributes = $googlePayCardAttribs;
 
         $subscriptionArray = [];
-        if (isset($androidPayCardAttribs['subscriptions'])) {
-            foreach ($androidPayCardAttribs['subscriptions'] AS $subscription) {
+        if (isset($googlePayCardAttribs['subscriptions'])) {
+            foreach ($googlePayCardAttribs['subscriptions'] AS $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }

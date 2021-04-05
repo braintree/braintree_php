@@ -13,8 +13,7 @@ namespace Braintree;
  * @category   Resources
  *
  * @property-read \Braintree\Address[] $addresses
- * @property-read \Braintree\AndroidPayCard[] $androidPayCards
- * @property-read \Braintree\AmexExpressCheckoutCard[] $amexExpressCheckoutCards DEPRECATED
+ * @property-read \Braintree\GooglePayCard[] $googlePayCards
  * @property-read \Braintree\ApplePayCard[] $applePayCards
  * @property-read string $company
  * @property-read \DateTime $createdAt
@@ -26,7 +25,6 @@ namespace Braintree;
  * @property-read string $graphQLId
  * @property-read string $id
  * @property-read string $lastName
- * @property-read \Braintree\MasterpassCard[] $masterpassCards DEPRECATED
  * @property-read \Braintree\PaymentMethod[] $paymentMethods
  * @property-read \Braintree\PayPalAccount[] $paypalAccounts
  * @property-read string $phone
@@ -227,23 +225,13 @@ class Customer extends Base
         }
         $this->_set('applePayCards', $applePayCardArray);
 
-        // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
-        $androidPayCardArray = [];
+        $googlePayCardArray = [];
         if (isset($customerAttribs['androidPayCards'])) {
-            foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
-                $androidPayCardArray[] = AndroidPayCard::factory($androidPayCard);
+            foreach ($customerAttribs['androidPayCards'] AS $googlePayCard) {
+                $googlePayCardArray[] = GooglePayCard::factory($googlePayCard);
             }
         }
-        $this->_set('androidPayCards', $androidPayCardArray);
-
-        // NEXT_MAJOR_VERSION remove deprecated AmexExpressCheckout
-        $amexExpressCheckoutCardArray = [];
-        if (isset($customerAttribs['amexExpressCheckoutCards'])) {
-            foreach ($customerAttribs['amexExpressCheckoutCards'] AS $amexExpressCheckoutCard) {
-                $amexExpressCheckoutCardArray[] = AmexExpressCheckoutCard::factory($amexExpressCheckoutCard);
-            }
-        }
-        $this->_set('amexExpressCheckoutCards', $amexExpressCheckoutCardArray);
+        $this->_set('googlePayCards', $googlePayCardArray);
 
         $venmoAccountArray = array();
         if (isset($customerAttribs['venmoAccounts'])) {
@@ -260,15 +248,6 @@ class Customer extends Base
             }
         }
         $this->_set('visaCheckoutCards', $visaCheckoutCardArray);
-
-        // NEXT_MAJOR_VERSION remove deprecated Masterpass
-        $masterpassCardArray = [];
-        if (isset($customerAttribs['masterpassCards'])) {
-            foreach ($customerAttribs['masterpassCards'] AS $masterpassCard) {
-                $masterpassCardArray[] = MasterpassCard::factory($masterpassCard);
-            }
-        }
-        $this->_set('masterpassCards', $masterpassCardArray);
 
         $samsungPayCardArray = [];
         if (isset($customerAttribs['samsungPayCards'])) {
@@ -290,11 +269,9 @@ class Customer extends Base
             $this->creditCards,
             $this->paypalAccounts,
             $this->applePayCards,
-            $this->androidPayCards,
-            $this->amexExpressCheckoutCards,
+            $this->googlePayCards,
             $this->venmoAccounts,
             $this->visaCheckoutCards,
-            $this->masterpassCards,
             $this->samsungPayCards,
             $this->usBankAccounts
         ));

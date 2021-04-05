@@ -87,4 +87,20 @@ abstract class Base implements JsonSerializable
     {
 	return $this->_attributes;
     }
+
+    /**
+     * Implementation of to an Array
+     *
+     * @ignore
+     * @return array
+	 */
+    public function toArray()
+    {
+        return array_map(function ($value) {
+            if (!is_array($value))
+                return method_exists($value, 'toArray') ? $value->toArray() : $value;
+            else
+                return $value;
+        }, $this->_attributes);
+    }
 }
