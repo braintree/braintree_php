@@ -529,7 +529,7 @@ class Transaction extends Base
         }
     }
 
-    /** @return void|Braintree\Customer */
+    /** @return null|\Braintree\Customer */
     public function vaultCustomer()
     {
         $customerId = $this->customerDetails->id;
