@@ -228,7 +228,6 @@ class CreditCardTest extends Setup
         $this->assertNotNull($result->creditCard->verification->riskData);
         $this->assertNotNull($result->creditCard->verification->riskData->decision);
         $this->assertNotNull($result->creditCard->verification->riskData->id);
-        $this->assertNotNull($result->creditCard->verification->riskData->fraudServiceProvider);
         $this->assertNotNull($result->creditCard->verification->riskData->decisionReasons);
     }
 
