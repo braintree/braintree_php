@@ -144,8 +144,7 @@ namespace Braintree;
  * @property-read \Braintree\AddOn[] $addOns
  * @property-read string $additionalProcessorResponse raw response from processor
  * @property-read string $amount transaction amount
- * @property-read \Braintree\Transaction\AmexExpressCheckoutCardDetails $amexExpressCheckoutCardDetails DEPRECATED transaction Amex Express Checkout card info.
- * @property-read \Braintree\Transaction\AndroidPayCardDetails $androidPayCardDetails transaction Android Pay card info
+ * @property-read \Braintree\Transaction\GooglePayCardDetails $googlePayCardDetails transaction Google Pay card info
  * @property-read \Braintree\Transaction\ApplePayCardDetails $applePayCardDetails transaction Apple Pay card info
  * @property-read \Braintree\AuthorizationAdjustment[] $authorizationAdjustments populated when a transaction has authorization adjustments created when submitted for settlement
  * @property-read \DateTime $authorizationExpiresAt DateTime authorization will expire
@@ -172,7 +171,6 @@ namespace Braintree;
  * @property-read string $graphQLId transaction graphQLId
  * @property-read string $id transaction id
  * @property-read \Braintree\TransactionLineItem[] $lineItems
- * @property-read \Braintree\Transaction\MasterpassCardDetails $masterpassCardDetails DEPRECATED transaction Masterpass card info
  * @property-read string $merchantAccountId
  * @property-read string $networkTransactionId
  * @property-read string $orderId
@@ -299,20 +297,11 @@ class Transaction extends Base
             );
         }
 
-        // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
+        // Rename androidPayCard from API responses to GooglePayCard
         if (isset($transactionAttribs['androidPayCard'])) {
-            $this->_set('androidPayCardDetails',
-                new Transaction\AndroidPayCardDetails(
+            $this->_set('googlePayCardDetails',
+                new Transaction\GooglePayCardDetails(
                     $transactionAttribs['androidPayCard']
-                )
-            );
-        }
-
-        // NEXT_MAJOR_VERSION remove deprecated masterpassCard
-        if (isset($transactionAttribs['masterpassCard'])) {
-            $this->_set('masterpassCardDetails',
-                new Transaction\MasterpassCardDetails(
-                    $transactionAttribs['masterpassCard']
                 )
             );
         }
@@ -329,15 +318,6 @@ class Transaction extends Base
             $this->_set('samsungPayCardDetails',
                 new Transaction\SamsungPayCardDetails(
                     $transactionAttribs['samsungPayCard']
-                )
-            );
-        }
-
-        // NEXT_MAJOR_VERSION remove deprecated amexExpressCheckoutCard
-        if (isset($transactionAttribs['amexExpressCheckoutCard'])) {
-            $this->_set('amexExpressCheckoutCardDetails',
-                new Transaction\AmexExpressCheckoutCardDetails(
-                    $transactionAttribs['amexExpressCheckoutCard']
                 )
             );
         }
@@ -565,6 +545,17 @@ class Transaction extends Base
         return $instance;
     }
 
+    /**
+     * adjustAuthorization: It is a static method to invoke
+     * method in the TransactionGateway
+     *
+     * @param string transactionId
+     * @param string amount
+     */
+    public static function adjustAuthorization($transactionId, $amount)
+    {
+        return Configuration::gateway()->transaction()->adjustAuthorization($transactionId, $amount);
+    }
 
     // static methods redirecting to gateway
 

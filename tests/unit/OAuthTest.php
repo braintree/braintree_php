@@ -10,8 +10,7 @@ class OAuthTest extends Setup
 {
     protected $gateway;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         $this->gateway = new Braintree\Gateway([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'

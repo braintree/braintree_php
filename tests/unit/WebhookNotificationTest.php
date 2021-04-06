@@ -10,8 +10,7 @@ use Braintree;
 
 class WebhookNotificationTest extends Setup
 {
-    public function setUp()
-    {
+    public function setUp(): void {
         self::integrationMerchantConfig();
     }
 
@@ -918,6 +917,24 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("my_payment_method_token", $metadata->token);
         $this->assertTrue($metadata->revokedPaymentMethod instanceof Braintree\PayPalAccount);
         $this->assertNotNull($metadata->revokedPaymentMethod->revokedAt);
+    }
+
+    public function testLocalPaymentReversedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::LOCAL_PAYMENT_REVERSED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::LOCAL_PAYMENT_REVERSED, $webhookNotification->kind);
+        $localPaymentReversed = $webhookNotification->localPaymentReversed;
+
+        $this->assertEquals("a-payment-id", $localPaymentReversed->paymentId);
     }
 
     public function testLocalPaymentCompletedWebhook()

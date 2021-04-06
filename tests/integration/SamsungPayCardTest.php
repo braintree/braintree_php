@@ -38,7 +38,7 @@ class SamsungPayCardTest extends Setup
         $this->assertNotNull($samsungPayCard->token);
         $this->assertSame(Braintree\CreditCard::DISCOVER, $samsungPayCard->cardType);
         $this->assertTrue($samsungPayCard->default);
-        $this->assertContains('discover', $samsungPayCard->imageUrl);
+        $this->assertStringContainsString('discover', $samsungPayCard->imageUrl);
         $this->assertTrue(intval($samsungPayCard->expirationMonth) > 0);
         $this->assertTrue(intval($samsungPayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $samsungPayCard->customerId);

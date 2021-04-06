@@ -447,6 +447,50 @@ class UtilTest extends Setup
         $this->success = true;
         $this->transaction = new stdClass();
         $t = Braintree\Util::returnObjectOrThrowException('Braintree\Transaction', $this);
-        $this->assertInternalType('object', $t);
+        $this->assertIsObject($t);
+    }
+
+    public function testReplaceKeyReplacesKeyWhenMatch()
+    {
+        $oldKey = 'googlePayCard';
+        $newKey = 'androidPayCard';
+
+        $originalParams = [
+            'googlePayCard'=> [
+                'number'=> '4111111111111111'
+            ],
+            'someOtherKey' => 'someOtherValue'
+        ];
+        $expectedParams = [
+            'androidPayCard'=> [
+                'number'=> '4111111111111111'
+            ],
+            'someOtherKey' => 'someOtherValue'
+        ];
+        
+        $returnedParams = Braintree\Util::replaceKey($originalParams, $oldKey, $newKey);
+        $this->assertEquals($returnedParams, $expectedParams);
+    }
+
+	public function testReplaceKeyDoesNotReplaceKeyWhenNoMatch()
+      {
+        $oldKey = 'googlePayCard';
+        $newKey = 'androidPayCard';
+
+        $originalParams = [
+            'creditCard'=> [
+                'number'=> '4111111111111111'
+            ],
+            'someOtherKey' => 'someOtherValue'
+        ];
+        $expectedParams = [
+            'creditCard'=> [
+                'number'=> '4111111111111111'
+            ],
+            'someOtherKey' => 'someOtherValue'
+        ];
+
+        $returnedParams = Braintree\Util::replaceKey($originalParams, $oldKey, $newKey);
+        $this->assertEquals($returnedParams, $expectedParams);
     }
 }

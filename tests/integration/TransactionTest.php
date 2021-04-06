@@ -304,7 +304,7 @@ class TransactionTest extends Setup
 
   public function testSaleAndSkipAdvancedFraudChecking()
   {
-        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $gateway = Test\Helper::advancedFraudKountIntegrationMerchantGateway();
         $result = $gateway->transaction()->sale([
           'amount' => Braintree\Test\TransactionAmounts::$authorize,
           'creditCard' => [
@@ -1726,11 +1726,11 @@ class TransactionTest extends Setup
         $this->assertEquals('47.00', $transaction->amount);
         $applePayDetails = $transaction->applePayCardDetails;
         $this->assertSame(Braintree\ApplePayCard::AMEX, $applePayDetails->cardType);
-        $this->assertContains("AmEx ", $applePayDetails->sourceDescription);
-        $this->assertContains("AmEx ", $applePayDetails->paymentInstrumentName);
+        $this->assertStringContainsString("AmEx ", $applePayDetails->sourceDescription);
+        $this->assertStringContainsString("AmEx ", $applePayDetails->paymentInstrumentName);
         $this->assertTrue(intval($applePayDetails->expirationMonth) > 0);
         $this->assertTrue(intval($applePayDetails->expirationYear) > 0);
-        $this->assertContains('apple_pay', $applePayDetails->imageUrl);
+        $this->assertStringContainsString('apple_pay', $applePayDetails->imageUrl);
         $this->assertNotNull($applePayDetails->cardholderName);
         $this->assertNotNull($applePayDetails->bin);
         $this->assertNotNull($applePayDetails->commercial);
@@ -1759,137 +1759,113 @@ class TransactionTest extends Setup
     }
 
   public function testCreateTransactionUsingRawGooglePayParams()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '1.02',
-            'androidPayCard' => [
-                'number' => "4012888888881881",
-                'cryptogram' => "AAAAAAAA/COBt84dnIEcwAA3gAAGhgEDoLABAAhAgAABAAAALnNCLw==",
-                'expirationMonth' => "10",
-                'expirationYear' => "17",
-                'eciIndicator' => "07",
-                'sourceCardLastFour' => "1881",
-                'sourceCardType' => "Visa",
-                'googleTransactionId' => "transaction-id"
-            ]
-        ]);
+  {
+      $result = Braintree\Transaction::sale([
+          'amount' => '1.02',
+          'googlePayCard' => [
+              'number' => "4012888888881881",
+              'cryptogram' => "AAAAAAAA/COBt84dnIEcwAA3gAAGhgEDoLABAAhAgAABAAAALnNCLw==",
+              'expirationMonth' => "10",
+              'expirationYear' => "17",
+              'eciIndicator' => "07",
+              'sourceCardLastFour' => "1881",
+              'sourceCardType' => "Visa",
+              'googleTransactionId' => "transaction-id"
+          ]
+      ]);
 
-        $this->assertTrue($result->success);
-        $transaction = $result->transaction;
-        $this->assertEquals('1.02', $transaction->amount);
-        $this->assertEquals('android_pay_card', $transaction->paymentInstrumentType);
+      $this->assertTrue($result->success);
+      $transaction = $result->transaction;
+      $this->assertEquals('1.02', $transaction->amount);
+      $this->assertEquals('android_pay_card', $transaction->paymentInstrumentType);
 
-        $androidPayCardDetails = $transaction->androidPayCardDetails;
-        $this->assertSame(Braintree\CreditCard::VISA, $androidPayCardDetails->cardType);
-        $this->assertSame("1881", $androidPayCardDetails->last4);
-        $this->assertNull($androidPayCardDetails->token);
-        $this->assertSame(Braintree\CreditCard::VISA, $androidPayCardDetails->virtualCardType);
-        $this->assertSame("1881", $androidPayCardDetails->virtualCardLast4);
-        $this->assertSame(Braintree\CreditCard::VISA, $androidPayCardDetails->sourceCardType);
-        $this->assertSame("1881", $androidPayCardDetails->sourceCardLast4);
-        $this->assertSame("Visa 1881", $androidPayCardDetails->sourceDescription);
-        $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
-        $this->assertSame("10", $androidPayCardDetails->expirationMonth);
-        $this->assertSame("17", $androidPayCardDetails->expirationYear);
-        $this->assertNotNull($androidPayCardDetails->bin);
-        $this->assertNotNull($androidPayCardDetails->commercial);
-        $this->assertNotNull($androidPayCardDetails->debit);
-        $this->assertNotNull($androidPayCardDetails->durbinRegulated);
-        $this->assertNotNull($androidPayCardDetails->healthcare);
-        $this->assertNotNull($androidPayCardDetails->payroll);
-        $this->assertNotNull($androidPayCardDetails->prepaid);
-        $this->assertNotNull($androidPayCardDetails->productId);
-        $this->assertTrue($androidPayCardDetails->isNetworkTokenized);
+        $googlePayCardDetails = $transaction->googlePayCardDetails;
+        $this->assertSame(Braintree\CreditCard::VISA, $googlePayCardDetails->cardType);
+        $this->assertSame("1881", $googlePayCardDetails->last4);
+        $this->assertNull($googlePayCardDetails->token);
+        $this->assertSame(Braintree\CreditCard::VISA, $googlePayCardDetails->virtualCardType);
+        $this->assertSame("1881", $googlePayCardDetails->virtualCardLast4);
+        $this->assertSame(Braintree\CreditCard::VISA, $googlePayCardDetails->sourceCardType);
+        $this->assertSame("1881", $googlePayCardDetails->sourceCardLast4);
+        $this->assertSame("Visa 1881", $googlePayCardDetails->sourceDescription);
+        $this->assertStringContainsString('android_pay', $googlePayCardDetails->imageUrl);
+        $this->assertSame("10", $googlePayCardDetails->expirationMonth);
+        $this->assertSame("17", $googlePayCardDetails->expirationYear);
+        $this->assertNotNull($googlePayCardDetails->bin);
+        $this->assertNotNull($googlePayCardDetails->commercial);
+        $this->assertNotNull($googlePayCardDetails->debit);
+        $this->assertNotNull($googlePayCardDetails->durbinRegulated);
+        $this->assertNotNull($googlePayCardDetails->healthcare);
+        $this->assertNotNull($googlePayCardDetails->payroll);
+        $this->assertNotNull($googlePayCardDetails->prepaid);
+        $this->assertNotNull($googlePayCardDetails->productId);
+        $this->assertTrue($googlePayCardDetails->isNetworkTokenized);
     }
 
-  public function testCreateTransactionUsingFakeAndroidPayProxyCardNonce()
+  public function testCreateTransactionUsingFakeGooglePayProxyCardNonce()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '47.00',
-            'paymentMethodNonce' => Braintree\Test\Nonces::$androidPayDiscover
+            'paymentMethodNonce' => Braintree\Test\Nonces::$googlePayDiscover
         ]);
 
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals('47.00', $transaction->amount);
-        $androidPayCardDetails = $transaction->androidPayCardDetails;
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCardDetails->cardType);
-        $this->assertSame("1117", $androidPayCardDetails->last4);
-        $this->assertNull($androidPayCardDetails->token);
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCardDetails->virtualCardType);
-        $this->assertSame("1117", $androidPayCardDetails->virtualCardLast4);
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCardDetails->sourceCardType);
-        $this->assertSame("1111", $androidPayCardDetails->sourceCardLast4);
-        $this->assertSame("Discover 1111", $androidPayCardDetails->sourceDescription);
-        $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
-        $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
-        $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
-        $this->assertNotNull($androidPayCardDetails->bin);
-        $this->assertNotNull($androidPayCardDetails->commercial);
-        $this->assertNotNull($androidPayCardDetails->debit);
-        $this->assertNotNull($androidPayCardDetails->durbinRegulated);
-        $this->assertNotNull($androidPayCardDetails->healthcare);
-        $this->assertNotNull($androidPayCardDetails->payroll);
-        $this->assertNotNull($androidPayCardDetails->prepaid);
-        $this->assertNotNull($androidPayCardDetails->productId);
-        $this->assertFalse($androidPayCardDetails->isNetworkTokenized);
+        $googlePayCardDetails = $transaction->googlePayCardDetails;
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCardDetails->cardType);
+        $this->assertSame("1117", $googlePayCardDetails->last4);
+        $this->assertNull($googlePayCardDetails->token);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCardDetails->virtualCardType);
+        $this->assertSame("1117", $googlePayCardDetails->virtualCardLast4);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCardDetails->sourceCardType);
+        $this->assertSame("1111", $googlePayCardDetails->sourceCardLast4);
+        $this->assertSame("Discover 1111", $googlePayCardDetails->sourceDescription);
+        $this->assertStringContainsString('android_pay', $googlePayCardDetails->imageUrl);
+        $this->assertTrue(intval($googlePayCardDetails->expirationMonth) > 0);
+        $this->assertTrue(intval($googlePayCardDetails->expirationYear) > 0);
+        $this->assertNotNull($googlePayCardDetails->bin);
+        $this->assertNotNull($googlePayCardDetails->commercial);
+        $this->assertNotNull($googlePayCardDetails->debit);
+        $this->assertNotNull($googlePayCardDetails->durbinRegulated);
+        $this->assertNotNull($googlePayCardDetails->healthcare);
+        $this->assertNotNull($googlePayCardDetails->payroll);
+        $this->assertNotNull($googlePayCardDetails->prepaid);
+        $this->assertNotNull($googlePayCardDetails->productId);
+        $this->assertFalse($googlePayCardDetails->isNetworkTokenized);
     }
 
-  public function testCreateTransactionUsingFakeAndroidPayNetworkTokenNonce()
+  public function testCreateTransactionUsingFakeGooglePayNetworkTokenNonce()
     {
         $result = Braintree\Transaction::sale([
             'amount' => '47.00',
-            'paymentMethodNonce' => Braintree\Test\Nonces::$androidPayMasterCard
+            'paymentMethodNonce' => Braintree\Test\Nonces::$googlePayMasterCard
         ]);
 
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals('47.00', $transaction->amount);
-        $androidPayCardDetails = $transaction->androidPayCardDetails;
-        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $androidPayCardDetails->cardType);
-        $this->assertSame("4444", $androidPayCardDetails->last4);
-        $this->assertNull($androidPayCardDetails->token);
-        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $androidPayCardDetails->virtualCardType);
-        $this->assertSame("4444", $androidPayCardDetails->virtualCardLast4);
-        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $androidPayCardDetails->sourceCardType);
-        $this->assertSame("4444", $androidPayCardDetails->sourceCardLast4);
-        $this->assertSame("MasterCard 4444", $androidPayCardDetails->sourceDescription);
-        $this->assertContains('android_pay', $androidPayCardDetails->imageUrl);
-        $this->assertTrue(intval($androidPayCardDetails->expirationMonth) > 0);
-        $this->assertTrue(intval($androidPayCardDetails->expirationYear) > 0);
-        $this->assertNotNull($androidPayCardDetails->bin);
-        $this->assertNotNull($androidPayCardDetails->commercial);
-        $this->assertNotNull($androidPayCardDetails->debit);
-        $this->assertNotNull($androidPayCardDetails->durbinRegulated);
-        $this->assertNotNull($androidPayCardDetails->healthcare);
-        $this->assertNotNull($androidPayCardDetails->payroll);
-        $this->assertNotNull($androidPayCardDetails->prepaid);
-        $this->assertNotNull($androidPayCardDetails->productId);
-        $this->assertTrue($androidPayCardDetails->isNetworkTokenized);
-    }
-
-    public function testCreateTransactionUsingFakeAmexExpressCheckoutNonce()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '47.00',
-            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
-            'paymentMethodNonce' => Braintree\Test\Nonces::$amexExpressCheckout
-        ]);
-
-        $this->assertTrue($result->success);
-        $transaction = $result->transaction;
-        $this->assertEquals('47.00', $transaction->amount);
-        $amexExpressCheckoutCardDetails = $transaction->amexExpressCheckoutCardDetails;
-
-        $this->assertSame(Braintree\CreditCard::AMEX, $amexExpressCheckoutCardDetails->cardType);
-        $this->assertSame("341111", $amexExpressCheckoutCardDetails->bin);
-        $this->assertSame("12/21", $amexExpressCheckoutCardDetails->cardMemberExpiryDate);
-        $this->assertSame("0005", $amexExpressCheckoutCardDetails->cardMemberNumber);
-        $this->assertNull($amexExpressCheckoutCardDetails->token);
-        $this->assertNotNull($amexExpressCheckoutCardDetails->sourceDescription);
-        $this->assertContains(".png", $amexExpressCheckoutCardDetails->imageUrl);
-        $this->assertTrue(intval($amexExpressCheckoutCardDetails->expirationMonth) > 0);
-        $this->assertTrue(intval($amexExpressCheckoutCardDetails->expirationYear) > 0);
+        $googlePayCardDetails = $transaction->googlePayCardDetails;
+        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCardDetails->cardType);
+        $this->assertSame("4444", $googlePayCardDetails->last4);
+        $this->assertNull($googlePayCardDetails->token);
+        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCardDetails->virtualCardType);
+        $this->assertSame("4444", $googlePayCardDetails->virtualCardLast4);
+        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCardDetails->sourceCardType);
+        $this->assertSame("4444", $googlePayCardDetails->sourceCardLast4);
+        $this->assertSame("MasterCard 4444", $googlePayCardDetails->sourceDescription);
+        $this->assertStringContainsString('android_pay', $googlePayCardDetails->imageUrl);
+        $this->assertTrue(intval($googlePayCardDetails->expirationMonth) > 0);
+        $this->assertTrue(intval($googlePayCardDetails->expirationYear) > 0);
+        $this->assertNotNull($googlePayCardDetails->bin);
+        $this->assertNotNull($googlePayCardDetails->commercial);
+        $this->assertNotNull($googlePayCardDetails->debit);
+        $this->assertNotNull($googlePayCardDetails->durbinRegulated);
+        $this->assertNotNull($googlePayCardDetails->healthcare);
+        $this->assertNotNull($googlePayCardDetails->payroll);
+        $this->assertNotNull($googlePayCardDetails->prepaid);
+        $this->assertNotNull($googlePayCardDetails->productId);
+        $this->assertTrue($googlePayCardDetails->isNetworkTokenized);
     }
 
     public function testCreateTransactionUsingFakeVenmoAccountNonceAndProfileId()
@@ -1924,7 +1900,7 @@ class TransactionTest extends Setup
 
         $this->assertNull($venmoAccountDetails->token);
         $this->assertNotNull($venmoAccountDetails->sourceDescription);
-        $this->assertContains(".png", $venmoAccountDetails->imageUrl);
+        $this->assertStringContainsString(".png", $venmoAccountDetails->imageUrl);
         $this->assertSame("venmojoe", $venmoAccountDetails->username);
         $this->assertSame("Venmo-Joe-1", $venmoAccountDetails->venmoUserId);
     }
@@ -2046,11 +2022,9 @@ class TransactionTest extends Setup
 
   public function testSaleWithRiskData()
     {
-        error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
-        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
         $result = $gateway->transaction()->sale([
             'amount' => '100.00',
-            'deviceSessionId' => 'abc123',
             'deviceData' => 'device_data',
             'creditCard' => [
                 'cardholderName' => 'The Cardholder',
@@ -2063,9 +2037,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->riskData);
         $this->assertNotNull($transaction->riskData->decision);
         $this->assertNotNull($transaction->riskData->id);
-        $this->assertNotNull($transaction->riskData->deviceDataCaptured);
-        $this->assertNotNull($transaction->riskData->fraudServiceProvider);
-        error_reporting(E_ALL); // reset error reporting
+        $this->assertNotNull($transaction->riskData->decisionReasons);
     }
 
   public function testRecurring()
@@ -3523,6 +3495,8 @@ class TransactionTest extends Setup
         $this->assertEquals("somebase64value", $info->cavv);
         $this->assertEquals("xidvalue", $info->xid);
         $this->assertEquals("07", $info->eciFlag);
+        $this->assertEquals("Y", $info->paresStatus);
+        $this->assertTrue(is_string($info->threeDSecureAuthenticationId));
     }
 
   public function testFindExposesNullThreeDSecureInfo()
@@ -3676,13 +3650,10 @@ class TransactionTest extends Setup
         $this->assertNull($transaction->vaultCustomer());
     }
 
-  public function testSale_withFraudParams()
+  public function testSale_withDeviceData()
     {
-        error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
         $result = Braintree\Transaction::sale([
             'deviceData' => 'device_data',
-            'deviceSessionId' => '123abc',
-            'fraudMerchantId' => '456',
             'amount' => '100.00',
             'creditCard' => [
                 'number' => '5105105105105100',
@@ -3691,7 +3662,6 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertTrue($result->success);
-        error_reporting(E_ALL); // reset error reporting
     }
 
   public function testSale_withRiskData()
@@ -4314,7 +4284,8 @@ class TransactionTest extends Setup
         $transaction = $this->createTransactionToRefund();
         $options = [
             "orderId" => 'abcd',
-            "amount" => '1.00'
+            "amount" => '1.00',
+            "merchantAccountId" => Test\Helper::nonDefaultMerchantAccountId()
         ];
         $result = Braintree\Transaction::refund($transaction->id, $options);
         $this->assertTrue($result->success);
@@ -4325,6 +4296,10 @@ class TransactionTest extends Setup
         $this->assertEquals(
             '1.00',
             $result->transaction->amount
+        );
+        $this->assertEquals(
+            Test\Helper::nonDefaultMerchantAccountId(),
+            $result->transaction->merchantAccountId
         );
     }
 
@@ -4452,7 +4427,7 @@ class TransactionTest extends Setup
 
   public function testGatewayRejectionOnFraud()
     {
-        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $gateway = Test\Helper::advancedFraudKountIntegrationMerchantGateway();
         $result = $gateway->transaction()->sale([
             'amount' => '100.00',
             'creditCard' => [
@@ -4468,7 +4443,7 @@ class TransactionTest extends Setup
 
   public function testGatewayRejectionOnRiskThreshold()
     {
-        $gateway = Test\Helper::advancedFraudIntegrationMerchantGateway();
+        $gateway = Test\Helper::advancedFraudKountIntegrationMerchantGateway();
         $result = $gateway->transaction()->sale([
             'amount' => '100.00',
             'creditCard' => [
@@ -6600,5 +6575,197 @@ class TransactionTest extends Setup
             $this->assertEquals("REFUND", $refundedInstallment["adjustments"][0]["kind"]);
             $this->assertEquals("-5.00",$refundedInstallment["adjustments"][0]["amount"]);
         }
+    }
+    
+    public function testAdjustAuthorization()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
+
+        $this->assertTrue($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("85.50", $adjusted_transaction->amount);
+    }
+
+    public function testAdjustAuthorizationOnNonSupportingMultiAuthAdjustmentProcessor()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::defaultMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '06/2009'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::PROCESSOR_DOES_NOT_SUPPORT_AUTH_ADJUSTMENT, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnAmountSubmittedIsZero()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '0.0');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+        $baseErrors = $adjust_authorize_result->errors->forKey('authorizationAdjustment')->onAttribute('amount');
+        $this->assertEquals(Braintree\Error\Codes::ADJUSTMENT_AMOUNT_MUST_BE_GREATER_THAN_ZERO, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnAmountSubmittedIsSameAsAuthorizedAmount()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '75.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('authorizationAdjustment')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::NO_NET_AMOUNT_TO_PERFORM_AUTH_ADJUSTMENT, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnNotAuthorizedTransaction()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ],
+            'options' => [
+                'submitForSettlement' => true,
+            ],
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_MUST_BE_IN_STATE_AUTHORIZED, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnNonPreAuthTransaction()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ],
+            'transactionSource' => 'recurring_first',
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_IS_NOT_ELIGIBLE_FOR_ADJUSTMENT, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnProcessorNotSupportingIncremetnalAuth()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeFirstDataMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '06/2009'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::PROCESSOR_DOES_NOT_SUPPORT_INCREMENTAL_AUTH, $baseErrors[0]->code);
+    }
+
+    public function testAdjustAuthorizationOnProcessorNotSupportingAuthReversal()
+    {
+        $initial_result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::fakeFirstDataMerchantAccountId(),
+            'amount' => '75.50',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '06/2009'
+            ]
+        ]);
+
+        $this->assertTrue($initial_result->success);
+        $initial_transaction = $initial_result->transaction;
+
+        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '65.50');
+
+        $this->assertFalse($adjust_authorize_result->success);
+        $adjusted_transaction = $adjust_authorize_result->transaction;
+        $this->assertEquals("75.50", $adjusted_transaction->amount);
+
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::PROCESSOR_DOES_NOT_SUPPORT_PARTIAL_AUTH_REVERSAL, $baseErrors[0]->code);
     }
 }

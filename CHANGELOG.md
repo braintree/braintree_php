@@ -1,3 +1,25 @@
+## 6.0.0
+* Add `LocalPaymentReversed` webhook
+* Add `adjustAuthorization` method to Transaction, for supporting multiple authorizations on a single transaction
+* Add `storeId` and `storeIds` to Transaction search
+* Add `merchantAccountId` parameter to Transaction refund
+* Parameters that supported DateTime objects can also support DateTimeImmutable objects (closes #278)
+* Add `toArray` function to Base and Instance classes (resolves #289)
+* Add `jsonSerialize` to Instance class
+* Breaking Changes:
+  * Require PHP 7.3 or higher
+  * Rename `AndroidPayCard` to `GooglePayCard`
+  * Rename `AndroidPayCardDetails` to `GooglePayCardDetails`
+  * Remove Configuration#isAuthenticatedInstanceProxy method in favor of Configuration#isAuthenticatedProxy
+  * Remove Configuration#isUsingInstanceProxy method in favor of Configuration#isUsingProxy
+  * Remove `TRANSACTION_EXTERNAL_VAULT_CARD_TYPE_IS_INVALID ` and `RISK_DATA_CUSTOMER_BROWSER_IS_TOO_LONG` error codes
+  * Remove `customer_ip` and `customer_browser` snake case parameters in favor of camel case `customerIp` and `customerBrowser` accepted in `Customer#create` and `Transaction#sale`
+  * Remove `AmexExpressCheckoutCard` and `AmexExpressCheckoutCardDetails`
+  * Remove `MasterpassCard` and `MasterpassCardDetails`
+  * Remove deprecated parameters:
+    * `deviceSessionId` from CreditCardGateway#update, CreditCardGateway#create, CustomerGateway#create, CustomerGateway#update, PaymentMethodGateay#update, and TransactionGateway#create
+    * `fraudMerchantId` from CreditCardGateway#update, CreditCardGateway#create, CustomerGateway#create, CustomerGateway#update, PaymentMethodGateay#update, and TransactionGateway#create
+
 ## 5.5.0
 * Add `scaExemption` to Transaction sale
 * Deprecate `deviceSessionId` and `fraudMerchantId` in `CreditCardGateway`, `CustomerGateway`, `PaymentMethodGateway`, and `TransactionGateway` classes

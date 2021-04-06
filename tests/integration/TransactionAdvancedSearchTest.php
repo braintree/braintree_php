@@ -1602,4 +1602,28 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($transaction->id, $collection->firstItem()->id);
     }
+
+    public function testSearchOnStoreids()
+    {
+        $transactionId = "contact_visa_transaction";
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::id()->is($transactionId),
+            Braintree\TransactionSearch::StoreIds()->in(["store-id"])
+        ]);
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transactionId, $collection->firstItem()->id);
+    }
+
+    public function testSearchOnStoreid()
+    {
+        $transactionId = "contact_visa_transaction";
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::id()->is($transactionId),
+            Braintree\TransactionSearch::StoreId()->is("store-id")
+        ]);
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transactionId, $collection->firstItem()->id);
+    }
 }

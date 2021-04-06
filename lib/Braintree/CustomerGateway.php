@@ -79,13 +79,12 @@ class CustomerGateway
      * </code>
      *
      * @access public
-     * @param array $attribs (Note: $deviceSessionId and $fraudMerchantId params are deprecated. Use $deviceData instead)
+     * @param array $attribs
      * @return Result\Successful|Result\Error
      */
     public function create($attribs = [])
     {
         Util::verifyKeys(self::createSignature(), $attribs);
-        $this->_checkForDeprecatedAttributes($attribs);
         return $this->_doCreate('/customers', ['customer' => $attribs]);
     }
 
@@ -115,9 +114,8 @@ class CustomerGateway
         $signature = [
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData', 'paymentMethodNonce',
-            'deviceSessionId', 'fraudMerchantId', // NEXT_MAJOR_VERSION remove deviceSessionId and fraudMerchantId
             ['riskData' =>
-                ['customerBrowser', 'customerIp', 'customer_browser', 'customer_ip']
+                ['customerBrowser', 'customerIp']
             ],
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
@@ -162,7 +160,6 @@ class CustomerGateway
             'id', 'company', 'email', 'fax', 'firstName',
             'lastName', 'phone', 'website', 'deviceData',
             'paymentMethodNonce', 'defaultPaymentMethodToken',
-            'deviceSessionId', 'fraudMerchantId', // NEXT_MAJOR_VERSION Remove deviceSessionId and fraudMerchantId
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
             ['options' => [
@@ -341,14 +338,13 @@ class CustomerGateway
      *
      * @access public
      * @param string $customerId (optional)
-     * @param array $attributes (Note: $deviceSessionId and fraudMerchantId params are deprecated. Use $deviceData instead)
+     * @param array $attributes
      * @return Result\Successful|Result\Error
      */
     public function update($customerId, $attributes)
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
         $this->_validateId($customerId);
-        $this->_checkForDeprecatedAttributes($attributes);
         return $this->_doUpdate(
             'put',
             '/customers/' . $customerId,
@@ -427,17 +423,16 @@ class CustomerGateway
         }
         $this->_set('applePayCards', $applePayCardArray);
 
-        // map each androidPayCard into its own object
-        // NEXT_MAJOR_VERSION rename Android Pay to Google Pay
-        $androidPayCardArray = [];
+        // map each androidPayCard from gateway response to googlePayCard objects
+        $googlePayCardArray = [];
         if (isset($customerAttribs['androidPayCards'])) {
-            foreach ($customerAttribs['androidPayCards'] AS $androidPayCard) {
-                $androidPayCardArray[] = AndroidPayCard::factory($androidPayCard);
+            foreach ($customerAttribs['androidPayCards'] AS $googlePayCard) {
+                $googlePayCardArray[] = GooglePayCard::factory($googlePayCard);
             }
         }
-        $this->_set('androidPayCards', $androidPayCardArray);
+        $this->_set('googlePayCards', $googlePayCardArray);
 
-        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->androidPayCards));
+        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->googlePayCards));
     }
 
     /**
@@ -475,7 +470,7 @@ class CustomerGateway
     /**
      * returns the customer's default payment method
      *
-     * @return CreditCard|PayPalAccount|ApplePayCard|AndroidPayCard
+     * @return CreditCard|PayPalAccount|ApplePayCard|GooglePayCard
      */
     public function defaultPaymentMethod()
     {
@@ -592,13 +587,4 @@ class CustomerGateway
         }
     }
 
-    private function _checkForDeprecatedAttributes($attributes)
-    {
-        if (isset($attributes['deviceSessionId'])) {
-            trigger_error('$deviceSessionId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
-        }
-        if (isset($attributes['fraudMerchantId'])) {
-            trigger_error('$fraudMerchantId is deprecated, use $deviceData instead', E_USER_DEPRECATED);
-        }
-    }
 }

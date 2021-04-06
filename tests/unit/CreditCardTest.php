@@ -11,7 +11,7 @@ class CreditCardTest extends Setup
 {
     public function testGet_givesErrorIfInvalidProperty()
     {
-        $this->expectException('PHPUnit\Framework\Error\Error', 'Undefined property on Braintree\CreditCard: foo');
+        $this->expectError();
         $cc = Braintree\CreditCard::factory([]);
         $cc->foo;
     }
@@ -43,7 +43,6 @@ class CreditCardTest extends Setup
             'billingAddressId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
             'deviceData', 'paymentMethodNonce',
-            'deviceSessionId', 'fraudMerchantId',
             ['options' => ['makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'verificationAccountType', 'venmoSdkSession', 'failOnDuplicatePaymentMethod']],
             [
                 'billingAddress' => [
@@ -84,7 +83,6 @@ class CreditCardTest extends Setup
             'billingAddressId', 'cardholderName', 'cvv', 'number',
             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
             'deviceData', 'paymentMethodNonce',
-            'deviceSessionId', 'fraudMerchantId',
             [
                 'options' => [
                     'makeDefault',

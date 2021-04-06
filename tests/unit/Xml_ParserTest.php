@@ -529,7 +529,7 @@ XML;
            'root' => 'bar',
         ]];
         $xml = Braintree\Xml::buildXmlFromArray($array);
-        $this->assertRegExp('<\?xml version=\"1.0\" encoding=\"UTF-8\"\?>', $xml);
+        $this->assertMatchesRegularExpression('<\?xml version=\"1.0\" encoding=\"UTF-8\"\?>', $xml);
 
     }
 

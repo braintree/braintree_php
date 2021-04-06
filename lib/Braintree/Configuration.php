@@ -212,21 +212,6 @@ class Configuration
         self::$global->setProxyType($value);
     }
 
-    /**
-     * @deprecated Use isUsingInstanceProxy instead.
-     * Specifies whether or not a proxy is properly configured
-     *
-     * @return bool true if a proxy is configured properly, false if not
-     */
-    public static function isUsingProxy()
-    {
-        // NEXT_MAJOR_VERSION Remove this method and rename isUsingInstanceProxy to isUsingProxy
-        trigger_error('DEPRECATED: Use isUsingInstanceProxy instead.', E_USER_DEPRECATED);
-        $proxyHost = self::$global->getProxyHost();
-        $proxyPort = self::$global->getProxyPort();
-        return !empty($proxyHost) && !empty($proxyPort);
-    }
-
     public static function proxyUser($value = null)
     {
         if (empty($value)) {
@@ -241,22 +226,6 @@ class Configuration
             return self::$global->getProxyPassword();
         }
         self::$global->setProxyPassword($value);
-    }
-
-    /**
-     * @deprecated Use isAuthenticatedInstanceProxy instead.
-     * Specified whether or not a username and password have been provided for
-     * use with an authenticated proxy
-     *
-     * @return bool true if both proxyUser and proxyPassword are present
-     */
-    public static function isAuthenticatedProxy()
-    {
-        // NEXT_MAJOR_VERSION Remove this method and rename isAuthenticatedInstanceProxy to isAuthenticatedProxy
-        trigger_error('DEPRECATED: Use isAuthenticatedInstanceProxy instead.', E_USER_DEPRECATED);
-        $proxyUser = self::$global->getProxyUser();
-        $proxyPwd = self::$global->getProxyPassword();
-        return !empty($proxyUser) && !empty($proxyPwd);
     }
 
     /**
@@ -556,14 +525,25 @@ class Configuration
         return getenv("GRAPHQL_PORT") ?: 8080;
     }
 
-    public function isUsingInstanceProxy()
+    /**
+     * Specifies whether or not a proxy is properly configured
+     *
+     * @return bool true if a proxy is configured properly, false if not
+     */
+    public function isUsingProxy()
     {
         $proxyHost = $this->getProxyHost();
         $proxyPort = $this->getProxyPort();
         return !empty($proxyHost) && !empty($proxyPort);
     }
 
-    public function isAuthenticatedInstanceProxy()
+    /**
+     * Specified whether or not a username and password have been provided for
+     * use with an authenticated proxy
+     *
+     * @return bool true if both proxyUser and proxyPassword are present
+     */
+    public function isAuthenticatedProxy()
     {
         $proxyUser = $this->getProxyUser();
         $proxyPwd = $this->getProxyPassword();

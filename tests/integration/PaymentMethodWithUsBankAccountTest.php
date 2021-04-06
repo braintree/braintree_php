@@ -25,7 +25,7 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         $this->assertEquals('1234', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
-        $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/CHASE/', $usBankAccount->bankName);
         $this->assertEquals(true, $usBankAccount->verified);
 
         $this->assertEquals(1, count($usBankAccount->verifications));
@@ -53,7 +53,7 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         $this->assertEquals('0000', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
-        $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/CHASE/', $usBankAccount->bankName);
         $this->assertEquals(true, $usBankAccount->verified);
 
         $this->assertEquals(1, count($usBankAccount->verifications));
@@ -81,7 +81,7 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         $this->assertEquals('0000', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
-        $this->assertRegexp('/FEDERAL/', $usBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/FEDERAL/', $usBankAccount->bankName);
         $this->assertEquals(true, $usBankAccount->verified);
 
         $this->assertEquals(1, count($usBankAccount->verifications));
@@ -109,7 +109,7 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         $this->assertEquals('1234', $foundUsBankAccount->last4);
         $this->assertEquals('checking', $foundUsBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
-        $this->assertRegExp('/CHASE/', $foundUsBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/CHASE/', $foundUsBankAccount->bankName);
     }
 
     public function testCompliantCreate_fromUsBankAccountNonce()
@@ -134,7 +134,7 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         $this->assertEquals('1234', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
-        $this->assertRegexp('/CHASE/', $usBankAccount->bankName);
+        $this->assertMatchesRegularExpression('/CHASE/', $usBankAccount->bankName);
         $this->assertEquals(false, $usBankAccount->verified);
 
         $this->assertEquals(0, count($usBankAccount->verifications));

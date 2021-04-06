@@ -10,7 +10,7 @@ class PayPalAccountTest extends Setup
 {
     public function testGet_givesErrorIfInvalidProperty()
     {
-        $this->expectException('PHPUnit\Framework\Error\Error', 'Undefined property on Braintree\PayPalAccount: foo');
+        $this->expectError();
         $paypalAccount = Braintree\PayPalAccount::factory([]);
         $paypalAccount->foo;
     }

@@ -29,19 +29,13 @@ class PaymentMethodParser
         } else if (isset($response['applePayCard'])) {
             return ApplePayCard::factory($response['applePayCard']);
         } else if (isset($response['androidPayCard'])) {
-            return AndroidPayCard::factory($response['androidPayCard']);
-        } else if (isset($response['amexExpressCheckoutCard'])) {
-        // NEXT_MAJOR_VERSION remove deprecated amexExpressCheckoutCard
-            return AmexExpressCheckoutCard::factory($response['amexExpressCheckoutCard']);
+            return GooglePayCard::factory($response['androidPayCard']);
         } else if (isset($response['usBankAccount'])) {
             return UsBankAccount::factory($response['usBankAccount']);
         } else if (isset($response['venmoAccount'])) {
             return VenmoAccount::factory($response['venmoAccount']);
         } else if (isset($response['visaCheckoutCard'])) {
             return VisaCheckoutCard::factory($response['visaCheckoutCard']);
-        // NEXT_MAJOR_VERSION remove deprecated masterpassCard
-        } else if (isset($response['masterpassCard'])) {
-            return MasterpassCard::factory($response['masterpassCard']);
         } else if (isset($response['samsungPayCard'])) {
             return SamsungPayCard::factory($response['samsungPayCard']);
         } else if (is_array($response)) {

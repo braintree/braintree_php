@@ -106,6 +106,9 @@ class WebhookTestingGateway
             case WebhookNotification::LOCAL_PAYMENT_COMPLETED:
                 $subjectXml = self::_localPaymentCompletedSampleXml();
                 break;
+            case WebhookNotification::LOCAL_PAYMENT_REVERSED:
+                $subjectXml = self::_localPaymentReversedSampleXml();
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -611,6 +614,15 @@ class WebhookTestingGateway
                 <order-id>order1234</order-id>
             </transaction>
 		</local-payment>
+        ";
+    }
+
+    private static function _localPaymentReversedSampleXml()
+	{
+        return "
+		<local-payment-reversed>
+            <payment-id>a-payment-id</payment-id>
+		</local-payment-reversed>
         ";
     }
 

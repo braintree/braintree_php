@@ -46,6 +46,8 @@ class Codes
     const ADDRESS_STREET_ADDRESS_IS_TOO_LONG                           = '81812';
     const ADDRESS_TOO_MANY_ADDRESSES_PER_CUSTOMER                      = '91818';
 
+    const ADJUSTMENT_AMOUNT_MUST_BE_GREATER_THAN_ZERO                   = '95605';
+
     const APPLE_PAY_CARDS_ARE_NOT_ACCEPTED                                  = '83501';
     const APPLE_PAY_CUSTOMER_ID_IS_REQUIRED_FOR_VAULTING                    = '83502';
     const APPLE_PAY_TOKEN_IS_IN_USE                                         = '93503';
@@ -306,8 +308,6 @@ class Codes
 
     const TRANSACTION_EXTERNAL_VAULT_STATUS_IS_INVALID                                      = '915175';
     const TRANSACTION_EXTERNAL_VAULT_STATUS_WITH_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID = '915177';
-    // NEXT_MAJOR_VERSION remove this validation error as it is no longer returned by the gateway
-    const TRANSACTION_EXTERNAL_VAULT_CARD_TYPE_IS_INVALID                                   = '915178';
     const TRANSACTION_EXTERNAL_VAULT_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID             = '915179';
 
     const MERCHANT_COUNTRY_CANNOT_BE_BLANK              = '83603';
@@ -424,6 +424,8 @@ class Codes
     const MERCHANT_ACCOUNT_FUNDING_MOBILE_PHONE_IS_REQUIRED = '82682';
     const MERCHANT_ACCOUNT_FUNDING_MOBILE_PHONE_IS_INVALID = '82683';
 
+    const NO_NET_AMOUNT_TO_PERFORM_AUTH_ADJUSTMENT          = '95606';
+
     const OAUTH_INVALID_GRANT          = '93801';
     const OAUTH_INVALID_CREDENTIALS    = '93802';
     const OAUTH_INVALID_SCOPE          = '93803';
@@ -457,6 +459,10 @@ class Codes
     const PAYPAL_ACCOUNT_PAYPAL_ACCOUNTS_ARE_NOT_ACCEPTED                        = '82904';
     const PAYPAL_ACCOUNT_PAYPAL_COMMUNICATION_ERROR                              = '92910';
     const PAYPAL_ACCOUNT_TOKEN_IS_IN_USE                                         = '92906';
+
+    const PROCESSOR_DOES_NOT_SUPPORT_AUTH_ADJUSTMENT                                  = '915222';
+    const PROCESSOR_DOES_NOT_SUPPORT_INCREMENTAL_AUTH                                 = '915220';
+    const PROCESSOR_DOES_NOT_SUPPORT_PARTIAL_AUTH_REVERSAL                            = '915221';
 
     const SETTLEMENT_BATCH_SUMMARY_SETTLEMENT_DATE_IS_INVALID  = '82302';
     const SETTLEMENT_BATCH_SUMMARY_SETTLEMENT_DATE_IS_REQUIRED = '82301';
@@ -564,6 +570,7 @@ class Codes
     const TRANSACTION_CUSTOM_FIELD_IS_TOO_LONG                                        = '81527';
     const TRANSACTION_PAYMENT_INSTRUMENT_WITH_EXTERNAL_VAULT_IS_INVALID               = '915176';
     const TRANSACTION_HAS_ALREADY_BEEN_REFUNDED                                       = '91512';
+    const TRANSACTION_IS_NOT_ELIGIBLE_FOR_ADJUSTMENT                                  = '915219';
     const TRANSACTION_LINE_ITEMS_EXPECTED                                             = '915158';
     const TRANSACTION_TOO_MANY_LINE_ITEMS                                             = '915157';
     const TRANSACTION_DISCOUNT_AMOUNT_FORMAT_IS_INVALID                               = '915159';
@@ -584,6 +591,7 @@ class Codes
     const TRANSACTION_MERCHANT_ACCOUNT_ID_IS_INVALID                                  = '91513';
     const TRANSACTION_MERCHANT_ACCOUNT_IS_SUSPENDED                                   = '91514';
     const TRANSACTION_MERCHANT_ACCOUNT_NAME_IS_INVALID                                = '91513'; //Deprecated
+    const TRANSACTION_MUST_BE_IN_STATE_AUTHORIZED                                     = '915218';
     const TRANSACTION_OPTIONS_PAY_PAL_CUSTOM_FIELD_TOO_LONG                           = '91580';
     const TRANSACTION_OPTIONS_SUBMIT_FOR_SETTLEMENT_IS_REQUIRED_FOR_CLONING           = '91544';
     const TRANSACTION_OPTIONS_SUBMIT_FOR_SETTLEMENT_IS_REQUIRED_FOR_PAYPAL_UNILATERAL = '91582';
@@ -699,9 +707,6 @@ class Codes
     const MERCHANT_ACCOUNT_DOES_NOT_SUPPORT3_D_SECURE                                                         = "942169";
     const MERCHANT_ACOUNT_DOES_NOT_MATCH3_D_SECURE_MERCHANT_ACCOUNT                                           = "94284";
     const AMOUNT_DOES_NOT_MATCH3_D_SECURE_AMOUNT                                                              = "94285";
-
-    # NEXT_MAJOR_VERSION Remove CustomerBrowserIsTooLong code as it is no longer applied
-    const RISK_DATA_CUSTOMER_BROWSER_IS_TOO_LONG                                                              = "94701";
     const RISK_DATA_CUSTOMER_DEVICE_ID_IS_TOO_LONG                                                            = "94702";
     const RISK_DATA_CUSTOMER_LOCATION_ZIP_INVALID_CHARACTERS                                                  = "94703";
     const RISK_DATA_CUSTOMER_LOCATION_ZIP_IS_INVALID                                                          = "94704";

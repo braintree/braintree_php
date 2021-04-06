@@ -15,9 +15,9 @@ The following PHP extensions are required:
 * openssl
 * xmlwriter
 
-PHP version >= 7.2 is required. The Braintree PHP SDK is tested against PHP versions 7.3 and 7.4.
+PHP version >= 7.3 is required. The Braintree PHP SDK is tested against PHP versions 7.3 and 7.4, and 8.0.
 
-_The PHP core development community has released [End-of-Life branches](https://www.php.net/eol.php) for PHP versions 5.4 - 7.1, and are no longer receiving security updates. As a result, Braintree does not support these versions of PHP._
+_The PHP core development community has released [End-of-Life branches](https://www.php.net/eol.php) for PHP versions 5.4 - 7.2, and are no longer receiving security updates. As a result, Braintree does not support these versions of PHP._
 
 ## Versions
 
@@ -25,7 +25,8 @@ Braintree employs a deprecation policy for our SDKs. For more information on the
 
 | Major version number | Status | Released | Deprecated | Unsupported |
 | -------------------- | ------ | -------- | ---------- | ----------- |
-| 5.x.x | Active | March 2020 | TBA | TBA |
+| 6.x.x | Active | March 2021 | TBA | TBA |
+| 5.x.x | Inactive | March 2020 | March 2023 | March 2024 |
 | 4.x.x | Inactive | May 2019 | March 2022 | March 2023 |
 | 3.x.x | Inactive | May 2015 | March 2022 | March 2023 |
 
@@ -61,9 +62,10 @@ $gateway = new Braintree\Gateway($config)
 
 // Then, create a transaction:
 $result = $gateway->transaction()->sale([
-    'amount' => '1000.00',
-    'paymentMethodNonce' => 'nonceFromTheClient',
-    'options' => [ 'submitForSettlement' => true ]
+    'amount' => '10.00',
+    'paymentMethodNonce' => $nonceFromTheClient,
+    'deviceData' => $deviceDataFromTheClient,
+    'options' => [ 'submitForSettlement' => True ]
 ]);
 
 if ($result->success) {
@@ -73,8 +75,9 @@ if ($result->success) {
     print_r("\n  code: " . $result->transaction->processorResponseCode);
     print_r("\n  text: " . $result->transaction->processorResponseText);
 } else {
-    print_r("Validation errors: \n");
-    print_r($result->errors->deepAll());
+    foreach($result->errors->deepAll() AS $error) {
+      print_r($error->code . ": " . $error->message . "\n");
+    }
 }
 ```
 

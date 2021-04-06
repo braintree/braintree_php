@@ -10,8 +10,7 @@ use Braintree;
 
 class TestTransactionTest extends Setup
 {
-    public function setUp()
-    {
+    public function setUp(): void {
         parent::setUp();
 
         Braintree\Configuration::environment('development');

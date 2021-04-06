@@ -160,92 +160,65 @@ class PaymentMethodTest extends Setup
         $this->assertNotNull($applePayCard->token);
         $this->assertNotNull($applePayCard->bin);
         $this->assertSame(Braintree\ApplePayCard::VISA, $applePayCard->cardType);
-        $this->assertContains("Visa ", $applePayCard->paymentInstrumentName);
-        $this->assertContains("Visa ", $applePayCard->sourceDescription);
+        $this->assertStringContainsString("Visa ", $applePayCard->paymentInstrumentName);
+        $this->assertStringContainsString("Visa ", $applePayCard->sourceDescription);
         $this->assertTrue($applePayCard->default);
-        $this->assertContains('apple_pay', $applePayCard->imageUrl);
+        $this->assertStringContainsString('apple_pay', $applePayCard->imageUrl);
         $this->assertTrue(intval($applePayCard->expirationMonth) > 0);
         $this->assertTrue(intval($applePayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $applePayCard->customerId);
     }
 
-    public function testCreate_fromFakeAndroidPayProxyCardNonce()
+    public function testCreate_fromFakeGooglePayProxyCardNonce()
     {
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => Braintree\Test\Nonces::$androidPayDiscover
+            'paymentMethodNonce' => Braintree\Test\Nonces::$googlePayDiscover
         ]);
 
         $this->assertTrue($result->success);
-        $androidPayCard = $result->paymentMethod;
-        $this->assertNotNull($androidPayCard->token);
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCard->virtualCardType);
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCard->cardType);
-        $this->assertSame("1117", $androidPayCard->virtualCardLast4);
-        $this->assertSame("1117", $androidPayCard->last4);
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $androidPayCard->sourceCardType);
-        $this->assertSame("1111", $androidPayCard->sourceCardLast4);
-        $this->assertSame("Discover 1111", $androidPayCard->sourceDescription);
-        $this->assertTrue($androidPayCard->default);
-        $this->assertContains('android_pay', $androidPayCard->imageUrl);
-        $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
-        $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
-        $this->assertSame($customer->id, $androidPayCard->customerId);
-        $this->assertFalse($androidPayCard->isNetworkTokenized);
+        $googlePayCard = $result->paymentMethod;
+        $this->assertNotNull($googlePayCard->token);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCard->virtualCardType);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCard->cardType);
+        $this->assertSame("1117", $googlePayCard->virtualCardLast4);
+        $this->assertSame("1117", $googlePayCard->last4);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCard->sourceCardType);
+        $this->assertSame("1111", $googlePayCard->sourceCardLast4);
+        $this->assertSame("Discover 1111", $googlePayCard->sourceDescription);
+        $this->assertTrue($googlePayCard->default);
+        $this->assertStringContainsString('android_pay', $googlePayCard->imageUrl);
+        $this->assertTrue(intval($googlePayCard->expirationMonth) > 0);
+        $this->assertTrue(intval($googlePayCard->expirationYear) > 0);
+        $this->assertSame($customer->id, $googlePayCard->customerId);
+        $this->assertFalse($googlePayCard->isNetworkTokenized);
     }
 
-    public function testCreate_fromFakeAndroidPayNetworkTokenNonce()
+    public function testCreate_fromFakeGooglePayNetworkTokenNonce()
     {
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => Braintree\Test\Nonces::$androidPayMasterCard
+            'paymentMethodNonce' => Braintree\Test\Nonces::$googlePayMasterCard
         ]);
 
         $this->assertTrue($result->success);
-        $androidPayCard = $result->paymentMethod;
-        $this->assertNotNull($androidPayCard->token);
-        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $androidPayCard->virtualCardType);
-        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $androidPayCard->cardType);
-        $this->assertSame("4444", $androidPayCard->virtualCardLast4);
-        $this->assertSame("4444", $androidPayCard->last4);
-        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $androidPayCard->sourceCardType);
-        $this->assertSame("4444", $androidPayCard->sourceCardLast4);
-        $this->assertSame("MasterCard 4444", $androidPayCard->sourceDescription);
-        $this->assertTrue($androidPayCard->default);
-        $this->assertContains('android_pay', $androidPayCard->imageUrl);
-        $this->assertTrue(intval($androidPayCard->expirationMonth) > 0);
-        $this->assertTrue(intval($androidPayCard->expirationYear) > 0);
-        $this->assertSame($customer->id, $androidPayCard->customerId);
-        $this->assertTrue($androidPayCard->isNetworkTokenized);
-    }
-
-    public function testCreate_fromFakeAmexExpressCheckoutCardNonce()
-    {
-        $customer = Braintree\Customer::createNoValidate();
-        $result = Braintree\PaymentMethod::create([
-            'customerId' => $customer->id,
-            'paymentMethodNonce' => Braintree\Test\Nonces::$amexExpressCheckout
-        ]);
-
-        $this->assertTrue($result->success);
-        $amexExpressCheckoutCard = $result->paymentMethod;
-        $this->assertInstanceOf('Braintree\AmexExpressCheckoutCard', $amexExpressCheckoutCard);
-
-        $this->assertNotNull($amexExpressCheckoutCard->token);
-        $this->assertSame(Braintree\CreditCard::AMEX, $amexExpressCheckoutCard->cardType);
-        $this->assertSame("341111", $amexExpressCheckoutCard->bin);
-        $this->assertSame("12/21", $amexExpressCheckoutCard->cardMemberExpiryDate);
-        $this->assertSame("0005", $amexExpressCheckoutCard->cardMemberNumber);
-        $this->assertSame("American Express", $amexExpressCheckoutCard->cardType);
-        $this->assertNotNull($amexExpressCheckoutCard->sourceDescription);
-        $this->assertContains(".png", $amexExpressCheckoutCard->imageUrl);
-        $this->assertTrue(intval($amexExpressCheckoutCard->expirationMonth) > 0);
-        $this->assertTrue(intval($amexExpressCheckoutCard->expirationYear) > 0);
-        $this->assertTrue($amexExpressCheckoutCard->default);
-        $this->assertSame($customer->id, $amexExpressCheckoutCard->customerId);
-        $this->assertEquals([], $amexExpressCheckoutCard->subscriptions);
+        $googlePayCard = $result->paymentMethod;
+        $this->assertNotNull($googlePayCard->token);
+        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCard->virtualCardType);
+        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCard->cardType);
+        $this->assertSame("4444", $googlePayCard->virtualCardLast4);
+        $this->assertSame("4444", $googlePayCard->last4);
+        $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCard->sourceCardType);
+        $this->assertSame("4444", $googlePayCard->sourceCardLast4);
+        $this->assertSame("MasterCard 4444", $googlePayCard->sourceDescription);
+        $this->assertTrue($googlePayCard->default);
+        $this->assertStringContainsString('android_pay', $googlePayCard->imageUrl);
+        $this->assertTrue(intval($googlePayCard->expirationMonth) > 0);
+        $this->assertTrue(intval($googlePayCard->expirationYear) > 0);
+        $this->assertSame($customer->id, $googlePayCard->customerId);
+        $this->assertTrue($googlePayCard->isNetworkTokenized);
     }
 
     public function testCreate_fromFakeVenmoAccountNonce()
@@ -262,7 +235,7 @@ class PaymentMethodTest extends Setup
 
         $this->assertNotNull($venmoAccount->token);
         $this->assertNotNull($venmoAccount->sourceDescription);
-        $this->assertContains(".png", $venmoAccount->imageUrl);
+        $this->assertStringContainsString(".png", $venmoAccount->imageUrl);
         $this->assertTrue($venmoAccount->default);
         $this->assertSame($customer->id, $venmoAccount->customerId);
         $this->assertEquals(array(), $venmoAccount->subscriptions);
@@ -1202,31 +1175,31 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(intval($foundApplePayCard->expirationYear) > 0);
     }
 
-    public function testFind_returnsAndroidPayCards()
+    public function testFind_returnsGooglePayCards()
     {
-        $paymentMethodToken = 'ANDROID-PAY-' . strval(rand());
+        $paymentMethodToken = 'GOOGLE-PAY-' . strval(rand());
         $customer = Braintree\Customer::createNoValidate();
-        $nonce = Braintree\Test\Nonces::$androidPay;
+        $nonce = Braintree\Test\Nonces::$googlePay;
         Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
             'paymentMethodNonce' => $nonce,
             'token' => $paymentMethodToken
         ]);
 
-        $foundAndroidPayCard = Braintree\PaymentMethod::find($paymentMethodToken);
+        $foundGooglePayCard = Braintree\PaymentMethod::find($paymentMethodToken);
 
-        $this->assertSame($paymentMethodToken, $foundAndroidPayCard->token);
-        $this->assertInstanceOf('Braintree\AndroidPayCard', $foundAndroidPayCard);
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $foundAndroidPayCard->virtualCardType);
-        $this->assertSame("1117", $foundAndroidPayCard->virtualCardLast4);
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $foundAndroidPayCard->sourceCardType);
-        $this->assertSame("1111", $foundAndroidPayCard->sourceCardLast4);
-        $this->assertSame($customer->id, $foundAndroidPayCard->customerId);
-        $this->assertTrue($foundAndroidPayCard->default);
-        $this->assertContains('android_pay', $foundAndroidPayCard->imageUrl);
-        $this->assertTrue(intval($foundAndroidPayCard->expirationMonth) > 0);
-        $this->assertTrue(intval($foundAndroidPayCard->expirationYear) > 0);
-        $this->assertFalse($foundAndroidPayCard->isNetworkTokenized);
+        $this->assertSame($paymentMethodToken, $foundGooglePayCard->token);
+        $this->assertInstanceOf('Braintree\GooglePayCard', $foundGooglePayCard);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $foundGooglePayCard->virtualCardType);
+        $this->assertSame("1117", $foundGooglePayCard->virtualCardLast4);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $foundGooglePayCard->sourceCardType);
+        $this->assertSame("1111", $foundGooglePayCard->sourceCardLast4);
+        $this->assertSame($customer->id, $foundGooglePayCard->customerId);
+        $this->assertTrue($foundGooglePayCard->default);
+        $this->assertStringContainsString('android_pay', $foundGooglePayCard->imageUrl);
+        $this->assertTrue(intval($foundGooglePayCard->expirationMonth) > 0);
+        $this->assertTrue(intval($foundGooglePayCard->expirationYear) > 0);
+        $this->assertFalse($foundGooglePayCard->isNetworkTokenized);
     }
 
     public function testFind_returnsAbstractPaymentMethods()

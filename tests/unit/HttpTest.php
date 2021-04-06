@@ -8,7 +8,7 @@ use Braintree;
 
 class HttpTest extends Setup
 {
-    public function setUp(){
+    public function setUp(): void {
         parent::setUp();
         Braintree\Configuration::environment('development');
         Braintree\Configuration::sslVersion(null);
@@ -27,13 +27,11 @@ class HttpTest extends Setup
 
     public function testMalformedUrlUsingSsl()
     {
-        try {
-            Braintree\Configuration::environment('sandbox');
-            $http = new Braintree\Http(Braintree\Configuration::$global);
-            $http->_doUrlRequest('get', '/a_malformed_url_using_ssl');
-        } catch (Braintree\Exception\Connection $e) {
-            $this->assertEquals("<url> malformed", $e->getMessage());
-        }
+        $this->ExpectException('Braintree\Exception\Connection', null, 3);
+ 
+        Braintree\Configuration::environment('sandbox');
+        $http = new Braintree\Http(Braintree\Configuration::$global);
+        $http->_doUrlRequest('get', '/a_malformed_url_using_ssl');
     }
 
     public function testOlderSSLVersionsError()

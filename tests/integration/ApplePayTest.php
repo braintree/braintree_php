@@ -11,13 +11,11 @@ class ApplePayTest extends Setup
 {
     private static $gateway;
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void {
         self::$gateway = self::_buildMerchantGateway();
     }
 
-    public static function tearDownAfterClass()
-    {
+    public static function tearDownAfterClass(): void {
         self::$gateway = null;
     }
 
