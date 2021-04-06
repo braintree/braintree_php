@@ -1,4 +1,4 @@
-## 6.0.0 (unreleased)
+## 6.0.0
 * Add `LocalPaymentReversed` webhook
 * Add `adjustAuthorization` method to Transaction, for supporting multiple authorizations on a single transaction
 * Add `storeId` and `storeIds` to Transaction search
