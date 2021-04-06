@@ -2,14 +2,14 @@
 namespace Braintree;
 
 /**
- * Braintree LocalPaymentCompleted module
+ * Braintree LocalPaymentReversed module
  *
  * @package    Braintree
  * @category   Resources
  */
 
 /**
- * Manages Braintree LocalPaymentCompleted 
+ * Manages Braintree LocalPaymentReversed 
  *
  * <b>== More information ==</b>
  *
@@ -18,18 +18,15 @@ namespace Braintree;
  * @category   Resources
  *
  * @property-read string $paymentId
- * @property-read string $payerId
- * @property-read string $paymentMethodNonce
- * @property-read \Braintree\Transaction $transaction
  */
-class LocalPaymentCompleted extends Base
+class LocalPaymentReversed extends Base
 {
     /**
-     *  factory method: returns an instance of LocalPaymentCompleted
+     *  factory method: returns an instance of LocalPaymentReversed
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return LocalPaymentCompleted 
+     * @return LocalPaymentReversed 
      */
     public static function factory($attributes)
     {
@@ -44,21 +41,13 @@ class LocalPaymentCompleted extends Base
      * sets instance properties from an array of values
      *
      * @access protected
-     * @param array $LocalPaymentCompletedAttribs array of localPaymentCompleted data
+     * @param array $LocalPaymentReversedAttribs array of localPaymentReversed data
      * @return void
      */
-    protected function _initialize($localPaymentCompletedAttribs)
+    protected function _initialize($localPaymentReversedAttribs)
     {
         // set the attributes
-        $this->_attributes = $localPaymentCompletedAttribs;
-
-        if (isset($transactionAttribs['transaction'])) {
-            $this->_set('transaction',
-                new Transaction(
-                    $transactionAttribs['transaction']
-                )
-            );
-        }
+        $this->_attributes = $localPaymentReversedAttribs;
     }
 
     /**

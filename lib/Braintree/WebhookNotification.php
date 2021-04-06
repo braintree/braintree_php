@@ -3,6 +3,28 @@ namespace Braintree;
 
 class WebhookNotification extends Base
 {
+    const ACCOUNT_UPDATER_DAILY_REPORT = 'account_updater_daily_report';
+    const CHECK = 'check';
+    const CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED = 'connected_merchant_paypal_status_changed';
+    const CONNECTED_MERCHANT_STATUS_TRANSITIONED = 'connected_merchant_status_transitioned';
+    const DISBURSEMENT = 'disbursement';
+    const DISBURSEMENT_EXCEPTION = 'disbursement_exception';
+    const DISPUTE_ACCEPTED = 'dispute_accepted';
+    const DISPUTE_DISPUTED = 'dispute_disputed';
+    const DISPUTE_EXPIRED = 'dispute_expired';
+    const DISPUTE_LOST = 'dispute_lost';
+    const DISPUTE_OPENED = 'dispute_opened';
+    const DISPUTE_WON = 'dispute_won';
+    const GRANTED_PAYMENT_METHOD_REVOKED = 'granted_payment_method_revoked';
+    const GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD = 'grantor_updated_granted_payment_method';
+    const LOCAL_PAYMENT_COMPLETED = "local_payment_completed";
+    const LOCAL_PAYMENT_REVERSED = "local_payment_reversed";
+    const OAUTH_ACCESS_REVOKED = 'oauth_access_revoked';
+    const PARTNER_MERCHANT_CONNECTED = 'partner_merchant_connected';
+    const PARTNER_MERCHANT_DECLINED = 'partner_merchant_declined';
+    const PARTNER_MERCHANT_DISCONNECTED = 'partner_merchant_disconnected';
+    const PAYMENT_METHOD_REVOKED_BY_CUSTOMER = 'payment_method_revoked_by_customer';
+    const RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD = 'recipient_updated_granted_payment_method';
     const SUBSCRIPTION_CANCELED = 'subscription_canceled';
     const SUBSCRIPTION_CHARGED_SUCCESSFULLY = 'subscription_charged_successfully';
     const SUBSCRIPTION_CHARGED_UNSUCCESSFULLY = 'subscription_charged_unsuccessfully';
@@ -15,27 +37,6 @@ class WebhookNotification extends Base
     const TRANSACTION_DISBURSED = 'transaction_disbursed';
     const TRANSACTION_SETTLED = 'transaction_settled';
     const TRANSACTION_SETTLEMENT_DECLINED = 'transaction_settlement_declined';
-    const DISBURSEMENT_EXCEPTION = 'disbursement_exception';
-    const DISBURSEMENT = 'disbursement';
-    const DISPUTE_OPENED = 'dispute_opened';
-    const DISPUTE_LOST = 'dispute_lost';
-    const DISPUTE_WON = 'dispute_won';
-    const DISPUTE_ACCEPTED = 'dispute_accepted';
-    const DISPUTE_DISPUTED = 'dispute_disputed';
-    const DISPUTE_EXPIRED = 'dispute_expired';
-    const PARTNER_MERCHANT_CONNECTED = 'partner_merchant_connected';
-    const PARTNER_MERCHANT_DISCONNECTED = 'partner_merchant_disconnected';
-    const PARTNER_MERCHANT_DECLINED = 'partner_merchant_declined';
-    const OAUTH_ACCESS_REVOKED = 'oauth_access_revoked';
-    const CHECK = 'check';
-    const ACCOUNT_UPDATER_DAILY_REPORT = 'account_updater_daily_report';
-    const CONNECTED_MERCHANT_STATUS_TRANSITIONED = 'connected_merchant_status_transitioned';
-    const CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED = 'connected_merchant_paypal_status_changed';
-    const GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD = 'grantor_updated_granted_payment_method';
-    const RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD = 'recipient_updated_granted_payment_method';
-    const GRANTED_PAYMENT_METHOD_REVOKED = 'granted_payment_method_revoked';
-    const PAYMENT_METHOD_REVOKED_BY_CUSTOMER = 'payment_method_revoked_by_customer';
-    const LOCAL_PAYMENT_COMPLETED = "local_payment_completed";
 
     public static function parse($signature, $payload) {
         return Configuration::gateway()->webhookNotification()->parse($signature, $payload);
@@ -116,6 +117,10 @@ class WebhookNotification extends Base
 
         if (isset($wrapperNode['localPayment'])) {
             $this->_set('localPaymentCompleted', LocalPaymentCompleted::factory($wrapperNode['localPayment']));
+        }
+
+        if (isset($wrapperNode['localPaymentReversed'])) {
+            $this->_set('localPaymentReversed', LocalPaymentReversed::factory($wrapperNode['localPaymentReversed']));
         }
 
         if (isset($wrapperNode['errors'])) {

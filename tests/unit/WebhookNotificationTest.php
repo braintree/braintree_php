@@ -919,6 +919,24 @@ class WebhookNotificationTest extends Setup
         $this->assertNotNull($metadata->revokedPaymentMethod->revokedAt);
     }
 
+    public function testLocalPaymentReversedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::LOCAL_PAYMENT_REVERSED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::LOCAL_PAYMENT_REVERSED, $webhookNotification->kind);
+        $localPaymentReversed = $webhookNotification->localPaymentReversed;
+
+        $this->assertEquals("a-payment-id", $localPaymentReversed->paymentId);
+    }
+
     public function testLocalPaymentCompletedWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
