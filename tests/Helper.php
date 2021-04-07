@@ -109,6 +109,10 @@ class Helper
         return 'another_us_bank_merchant_account';
     }
 
+    public static function cardProcessorBRLMerchantAccountId() {
+        return 'card_processor_brl';
+    }
+
     public static function suppressDeprecationWarnings()
     {
         set_error_handler("Test\Helper::_errorHandler", E_USER_NOTICE);

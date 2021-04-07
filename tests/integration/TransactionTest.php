@@ -3043,6 +3043,7 @@ class TransactionTest extends Setup
     {
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
+            'merchantAccountId' => Test\Helper::cardProcessorBRLMerchantAccountId(),
             'creditCard' => [
                 'number' => '4111111111111111',
                 'expirationDate' => '05/12'
