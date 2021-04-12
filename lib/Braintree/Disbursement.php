@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class Disbursement extends Base
@@ -15,7 +16,8 @@ class Disbursement extends Base
         $this->merchantAccountDetails = $disbursementAttribs['merchantAccount'];
 
         if (isset($disbursementAttribs['merchantAccount'])) {
-            $this->_set('merchantAccount',
+            $this->_set(
+                'merchantAccount',
                 MerchantAccount::factory($disbursementAttribs['merchantAccount'])
             );
         }
@@ -37,7 +39,7 @@ class Disbursement extends Base
         return $instance;
     }
 
-    public function  __toString()
+    public function __toString()
     {
         $display = [
             'id', 'merchantAccountDetails', 'exceptionMessage', 'amount',
@@ -46,11 +48,11 @@ class Disbursement extends Base
             ];
 
         $displayAttributes = [];
-        foreach ($display AS $attrib) {
+        foreach ($display as $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
         return __CLASS__ . '[' .
-                Util::attributesToString($displayAttributes) .']';
+                Util::attributesToString($displayAttributes) . ']';
     }
 
     public function isDebit()

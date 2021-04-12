@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -26,17 +27,17 @@ class AccountUpdaterDailyReport extends Base
         return $instance;
     }
 
-    public function  __toString()
+    public function __toString()
     {
         $display = [
             'reportDate', 'reportUrl'
             ];
 
         $displayAttributes = [];
-        foreach ($display AS $attrib) {
+        foreach ($display as $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
         return __CLASS__ . '[' .
-                Util::attributesToString($displayAttributes) .']';
+                Util::attributesToString($displayAttributes) . ']';
     }
 }

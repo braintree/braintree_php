@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\Error;
 
 use Braintree\Util;
@@ -9,6 +10,7 @@ use Braintree\Util;
  *
  * <b>== More information ==</b>
  *
+ * // phpcs:ignore Generic.Files.LineLength
  * For more detailed information on Validation errors, see {@link https://developers.braintreepayments.com/reference/general/validation-errors/overview/php https://developers.braintreepayments.com/reference/general/validation-errors/overview/php}
  *
  * @package    Braintree
@@ -28,7 +30,7 @@ class Validation
      * @ignore
      * @param array $attributes
      */
-    public function  __construct($attributes)
+    public function __construct($attributes)
     {
         $this->_initializeFromArray($attributes);
     }
@@ -41,7 +43,7 @@ class Validation
      */
     private function _initializeFromArray($attributes)
     {
-        foreach($attributes AS $name => $value) {
+        foreach ($attributes as $name => $value) {
             $varName = "_$name";
             $this->$varName = Util::delimiterToCamelCase($value, '_');
         }
@@ -51,7 +53,7 @@ class Validation
      *
      * @ignore
      */
-    public function  __get($name)
+    public function __get($name)
     {
         $varName = "_$name";
         return isset($this->$varName) ? $this->$varName : null;

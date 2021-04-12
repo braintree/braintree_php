@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -28,10 +29,8 @@ class AddOnsTest extends Setup
 
         $addOns = Braintree\AddOn::all();
 
-        foreach ($addOns as $addOn)
-        {
-            if ($addOn->id == $newId)
-            {
+        foreach ($addOns as $addOn) {
+            if ($addOn->id == $newId) {
                 $actualAddOn = $addOn;
             }
         }
@@ -72,10 +71,8 @@ class AddOnsTest extends Setup
         ]);
         $addOns = $gateway->addOn()->all();
 
-        foreach ($addOns as $addOn)
-        {
-            if ($addOn->id == $newId)
-            {
+        foreach ($addOns as $addOn) {
+            if ($addOn->id == $newId) {
                 $actualAddOn = $addOn;
             }
         }

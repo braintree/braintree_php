@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -12,7 +13,7 @@ class GraphQLClient
         $this->_service = new GraphQL($config);
     }
 
-    public function query($definition, $variables = Null)
+    public function query($definition, $variables = null)
     {
         return $this->_service->request($definition, $variables);
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -22,4 +23,3 @@ class UnknownPaymentMethodTest extends Setup
         $this->assertEquals('https://assets.braintreegateway.com/payment_method_logo/unknown.png', $unknownPaymentMethodObject->imageUrl);
     }
 }
-

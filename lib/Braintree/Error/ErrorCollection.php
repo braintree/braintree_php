@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\Error;
 
 use Braintree\Util;
@@ -82,9 +83,11 @@ class ErrorCollection implements Countable, JsonSerializable
     {
         $pieces = preg_split("/[\[\]]+/", $field, 0, PREG_SPLIT_NO_EMPTY);
         $errors = $this;
-        foreach(array_slice($pieces, 0, -1) as $key) {
+        foreach (array_slice($pieces, 0, -1) as $key) {
             $errors = $errors->forKey(Util::delimiterToCamelCase($key));
-            if (!isset($errors)) { return []; }
+            if (!isset($errors)) {
+                return [];
+            }
         }
         $finalKey = Util::delimiterToCamelCase(end($pieces));
         return $errors->onAttribute($finalKey);
@@ -107,7 +110,7 @@ class ErrorCollection implements Countable, JsonSerializable
      *
      * @ignore
      */
-    public function  __get($name)
+    public function __get($name)
     {
         $varName = "_$name";
         return isset($this->$varName) ? $this->$varName : null;
@@ -117,7 +120,7 @@ class ErrorCollection implements Countable, JsonSerializable
      *
      * @ignore
      */
-    public function  __toString()
+    public function __toString()
     {
         return sprintf('%s', $this->_errors);
     }

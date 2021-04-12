@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -28,10 +29,8 @@ class DiscountTest extends Setup
 
         $discounts = Braintree\Discount::all();
 
-        foreach ($discounts as $discount)
-        {
-            if ($discount->id == $newId)
-            {
+        foreach ($discounts as $discount) {
+            if ($discount->id == $newId) {
                 $actualDiscount = $discount;
             }
         }
@@ -72,10 +71,8 @@ class DiscountTest extends Setup
         ]);
         $discounts = $gateway->discount()->all();
 
-        foreach ($discounts as $discount)
-        {
-            if ($discount->id == $newId)
-            {
+        foreach ($discounts as $discount) {
+            if ($discount->id == $newId) {
                 $actualDiscount = $discount;
             }
         }

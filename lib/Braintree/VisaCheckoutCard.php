@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -7,6 +8,7 @@ namespace Braintree;
  *
  * <b>== More information ==</b>
  *
+ * // phpcs:ignore Generic.Files.LineLength
  * For more detailed information on CreditCard verifications, see {@link https://developers.braintreepayments.com/reference/response/credit-card-verification/php https://developers.braintreepayments.com/reference/response/credit-card-verification/php}
  *
  * @package    Braintree
@@ -84,7 +86,7 @@ class VisaCheckoutCard extends Base
 
         $subscriptionArray = [];
         if (isset($creditCardAttribs['subscriptions'])) {
-            foreach ($creditCardAttribs['subscriptions'] AS $subscription) {
+            foreach ($creditCardAttribs['subscriptions'] as $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
@@ -94,7 +96,7 @@ class VisaCheckoutCard extends Base
         $this->_set('expirationDate', $this->expirationMonth . '/' . $this->expirationYear);
         $this->_set('maskedNumber', $this->bin . '******' . $this->last4);
 
-        if(isset($creditCardAttribs['verifications']) && count($creditCardAttribs['verifications']) > 0) {
+        if (isset($creditCardAttribs['verifications']) && count($creditCardAttribs['verifications']) > 0) {
             $verifications = $creditCardAttribs['verifications'];
             usort($verifications, [$this, '_compareCreatedAtOnVerifications']);
 
@@ -124,10 +126,10 @@ class VisaCheckoutCard extends Base
      * ClassName[property=value, property=value]
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) . ']';
     }
 
     /**

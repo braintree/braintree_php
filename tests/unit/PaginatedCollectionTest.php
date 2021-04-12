@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -6,18 +7,22 @@ require_once dirname(__DIR__) . '/Setup.php';
 use Test\Setup;
 use Braintree;
 
-class Pager {
+class Pager
+{
     private $_pagingFunc;
 
-    public function __construct($pagingFunc) {
+    public function __construct($pagingFunc)
+    {
         $this->_pagingFunc = $pagingFunc;
     }
 
-    public function page ($page) {
+    public function page($page)
+    {
         return call_user_func($this->_pagingFunc, $page);
     }
 }
 
+// phpcs:ignore
 class PaginatedCollectionTest extends Setup
 {
     public function testFetchesOnePageWhenPageAndTotalSizesMatch()
@@ -25,12 +30,9 @@ class PaginatedCollectionTest extends Setup
 
         $pager = [
             'object' => new Pager(function ($page) {
-                if ($page > 1)
-                {
+                if ($page > 1) {
                     throw new \Exception('too many pages fetched');
-                }
-                else
-                {
+                } else {
                     return new Braintree\PaginatedResult(1, 1, [1]);
                 }
             }),
@@ -39,8 +41,7 @@ class PaginatedCollectionTest extends Setup
         $collection = new Braintree\PaginatedCollection($pager);
 
         $items = [];
-        foreach($collection as $item)
-        {
+        foreach ($collection as $item) {
             array_push($items, $item);
         }
 
@@ -52,12 +53,9 @@ class PaginatedCollectionTest extends Setup
     {
         $pager = [
             'object' => new Pager(function ($page) {
-                if ($page > 1)
-                {
+                if ($page > 1) {
                     throw new \Exception('too many pages fetched');
-                }
-                else
-                {
+                } else {
                     return new Braintree\PaginatedResult(2, 5, [1, 2]);
                 }
             }),
@@ -66,8 +64,7 @@ class PaginatedCollectionTest extends Setup
         $collection = new Braintree\PaginatedCollection($pager);
 
         $items = [];
-        foreach($collection as $item)
-        {
+        foreach ($collection as $item) {
             array_push($items, $item);
         }
 
@@ -80,12 +77,9 @@ class PaginatedCollectionTest extends Setup
     {
         $pager = [
             'object' => new Pager(function ($page) {
-                if ($page > 2)
-                {
+                if ($page > 2) {
                     throw new \Exception('too many pages fetched');
-                }
-                else
-                {
+                } else {
                     return new Braintree\PaginatedResult(2, 1, [$page]);
                 }
             }),
@@ -94,8 +88,7 @@ class PaginatedCollectionTest extends Setup
         $collection = new Braintree\PaginatedCollection($pager);
 
         $items = [];
-        foreach($collection as $item)
-        {
+        foreach ($collection as $item) {
             array_push($items, $item);
         }
 

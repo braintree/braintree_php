@@ -1,4 +1,5 @@
 <?php
+
 namespace Test;
 
 require_once __DIR__ . '/Helper.php';
@@ -15,7 +16,8 @@ use PHPUnit\Framework\TestCase;
 
 class Setup extends TestCase
 {
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
 
         self::integrationMerchantConfig();

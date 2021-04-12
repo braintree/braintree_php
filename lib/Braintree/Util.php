@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use DateTime;
@@ -23,7 +24,7 @@ class Util
      */
     public static function extractAttributeAsArray(&$attribArray, $attributeName)
     {
-        if(!isset($attribArray[$attributeName])):
+        if (!isset($attribArray[$attributeName])) :
             return [];
         endif;
 
@@ -31,10 +32,10 @@ class Util
         $data = $attribArray[$attributeName];
         // set up the class that will be used to convert each array element
         $classFactory = self::buildClassName($attributeName) . '::factory';
-        if(is_array($data)):
+        if (is_array($data)) :
             // create an object from the data in each element
             $objectArray = array_map($classFactory, $data);
-        else:
+        else :
             return [$data];
         endif;
 
@@ -48,35 +49,35 @@ class Util
      * @throws Exception multiple types depending on the error
      * @return void
      */
-    public static function throwStatusCodeException($statusCode, $message=null)
+    public static function throwStatusCodeException($statusCode, $message = null)
     {
-        switch($statusCode) {
-        case 401:
-            throw new Exception\Authentication();
+        switch ($statusCode) {
+            case 401:
+                throw new Exception\Authentication();
             break;
-        case 403:
-            throw new Exception\Authorization($message);
+            case 403:
+                throw new Exception\Authorization($message);
             break;
-        case 404:
-            throw new Exception\NotFound();
+            case 404:
+                throw new Exception\NotFound();
             break;
-        case 408;
-            throw new Exception\RequestTimeout();
+            case 408:
+                throw new Exception\RequestTimeout();
             break;
-        case 426:
-            throw new Exception\UpgradeRequired();
+            case 426:
+                throw new Exception\UpgradeRequired();
             break;
-        case 429:
-            throw new Exception\TooManyRequests();
+            case 429:
+                throw new Exception\TooManyRequests();
             break;
-        case 500:
-            throw new Exception\ServerError();
+            case 500:
+                throw new Exception\ServerError();
             break;
-        case 504;
-            throw new Exception\GatewayTimeout();
+            case 504:
+                throw new Exception\GatewayTimeout();
             break;
-        default:
-            throw new Exception\Unexpected('Unexpected HTTP_RESPONSE #' . $statusCode);
+            default:
+                throw new Exception\Unexpected('Unexpected HTTP_RESPONSE #' . $statusCode);
             break;
         }
     }
@@ -89,7 +90,7 @@ class Util
      */
     public static function throwGraphQLResponseException($response)
     {
-        if(!array_key_exists("errors", $response) || !($errors = $response["errors"])) {
+        if (!array_key_exists("errors", $response) || !($errors = $response["errors"])) {
             return;
         }
 
@@ -103,19 +104,19 @@ class Util
 
             if ($errorClass == "VALIDATION") {
                 continue;
-            } else if ($errorClass == "AUTHENTICATION") {
+            } elseif ($errorClass == "AUTHENTICATION") {
                 throw new Exception\Authentication();
-            } else if ($errorClass == "AUTHORIZATION") {
+            } elseif ($errorClass == "AUTHORIZATION") {
                 throw new Exception\Authorization($message);
-            } else if ($errorClass == "NOT_FOUND") {
+            } elseif ($errorClass == "NOT_FOUND") {
                 throw new Exception\NotFound();
-            } else if ($errorClass == "UNSUPPORTED_CLIENT") {
+            } elseif ($errorClass == "UNSUPPORTED_CLIENT") {
                 throw new Exception\UpgradeRequired();
-            } else if ($errorClass == "RESOURCE_LIMIT") {
+            } elseif ($errorClass == "RESOURCE_LIMIT") {
                 throw new Exception\TooManyRequests();
-            } else if ($errorClass == "INTERNAL") {
+            } elseif ($errorClass == "INTERNAL") {
                 throw new Exception\ServerError();
-            } else if ($errorClass == "SERVICE_AVAILABILITY") {
+            } elseif ($errorClass == "SERVICE_AVAILABILITY") {
                 throw new Exception\ServiceUnavailable();
             } else {
                 throw new Exception\Unexpected('Unexpected exception ' . $message);
@@ -316,7 +317,7 @@ class Util
     {
         // build a new array with joined keys and values
         $tmpArray = null;
-        foreach ($array AS $key => $value) {
+        foreach ($array as $key => $value) {
             if ($value instanceof DateTime) {
                 $value = $value->format('r');
             }
@@ -326,12 +327,13 @@ class Util
         return (is_array($tmpArray)) ? implode($glue, $tmpArray) : false;
     }
 
-    public static function attributesToString($attributes) {
+    public static function attributesToString($attributes)
+    {
         $printableAttribs = [];
-        foreach ($attributes AS $key => $value) {
+        foreach ($attributes as $key => $value) {
             if (is_array($value)) {
                 $pAttrib = self::attributesToString($value);
-            } else if ($value instanceof DateTime) {
+            } elseif ($value instanceof DateTime) {
                 $pAttrib = $value->format(DateTime::RFC850);
             } else {
                 $pAttrib = $value;
@@ -357,7 +359,7 @@ class Util
         $invalidKeys = array_diff($userKeys, $validKeys);
         $invalidKeys = self::_removeWildcardKeys($validKeys, $invalidKeys);
 
-        if(!empty($invalidKeys)) {
+        if (!empty($invalidKeys)) {
             asort($invalidKeys);
             $sortedList = join(', ', $invalidKeys);
             throw new InvalidArgumentException('invalid keys: ' . $sortedList);
@@ -378,7 +380,7 @@ class Util
             unset($array[$oldKey]);
         }
         return $array;
-    } 
+    }
 
     /**
      * flattens a numerically indexed nested array to a single level
@@ -389,8 +391,8 @@ class Util
     private static function _flattenArray($keys, $namespace = null)
     {
         $flattenedArray = [];
-        foreach($keys AS $key) {
-            if(is_array($key)) {
+        foreach ($keys as $key) {
+            if (is_array($key)) {
                 $theKeys = array_keys($key);
                 $theValues = array_values($key);
                 $scope = $theKeys[0];
@@ -407,25 +409,25 @@ class Util
 
     private static function _flattenUserKeys($keys, $namespace = null)
     {
-       $flattenedArray = [];
+        $flattenedArray = [];
 
-       foreach($keys AS $key => $value) {
-           $fullKey = empty($namespace) ? $key : $namespace;
-           if (!is_numeric($key) && $namespace != null) {
-              $fullKey .= '[' . $key . ']';
-           }
-           if (is_numeric($key) && is_string($value)) {
-              $fullKey .= '[' . $value . ']';
-           }
-           if(is_array($value)) {
-               $more = self::_flattenUserKeys($value, $fullKey);
-               $flattenedArray = array_merge($flattenedArray, $more);
-           } else {
-               $flattenedArray[] = $fullKey;
-           }
-       }
-       sort($flattenedArray);
-       return $flattenedArray;
+        foreach ($keys as $key => $value) {
+            $fullKey = empty($namespace) ? $key : $namespace;
+            if (!is_numeric($key) && $namespace != null) {
+                $fullKey .= '[' . $key . ']';
+            }
+            if (is_numeric($key) && is_string($value)) {
+                $fullKey .= '[' . $value . ']';
+            }
+            if (is_array($value)) {
+                $more = self::_flattenUserKeys($value, $fullKey);
+                $flattenedArray = array_merge($flattenedArray, $more);
+            } else {
+                $flattenedArray[] = $fullKey;
+            }
+        }
+        sort($flattenedArray);
+        return $flattenedArray;
     }
 
     /**
@@ -436,10 +438,10 @@ class Util
      */
     private static function _removeWildcardKeys($validKeys, $invalidKeys)
     {
-        foreach($validKeys AS $key) {
+        foreach ($validKeys as $key) {
             if (stristr($key, '[_anyKey_]')) {
                 $wildcardKey = str_replace('[_anyKey_]', '', $key);
-                foreach ($invalidKeys AS $index => $invalidKey) {
+                foreach ($invalidKeys as $index => $invalidKey) {
                     if (stristr($invalidKey, $wildcardKey)) {
                         unset($invalidKeys[$index]);
                     }

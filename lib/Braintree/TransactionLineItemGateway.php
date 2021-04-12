@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use InvalidArgumentException;
@@ -39,7 +40,7 @@ class TransactionLineItemGateway
 
             $lineItems = [];
             if (isset($response['lineItems'])) {
-                foreach ($response['lineItems'] AS $lineItem) {
+                foreach ($response['lineItems'] as $lineItem) {
                     $lineItems[] = new TransactionLineItem($lineItem);
                 }
             }
@@ -55,9 +56,10 @@ class TransactionLineItemGateway
      * @param string transaction id
      * @throws InvalidArgumentException
      */
-    private function _validateId($id = null) {
+    private function _validateId($id = null)
+    {
         if (empty($id)) {
-           throw new InvalidArgumentException('expected transaction id to be set');
+            throw new InvalidArgumentException('expected transaction id to be set');
         }
         if (!preg_match('/^[0-9a-z]+$/', $id)) {
             throw new InvalidArgumentException($id . ' is an invalid transaction id.');

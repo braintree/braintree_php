@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class KeyValueNode
@@ -6,7 +7,7 @@ class KeyValueNode
     public function __construct($name)
     {
         $this->name = $name;
-        $this->searchTerm = True;
+        $this->searchTerm = true;
     }
 
     public function is($value)

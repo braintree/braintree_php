@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\Transaction;
 
 use Braintree\Instance;
@@ -46,6 +47,5 @@ class SamsungPayCardDetails extends Instance
         parent::__construct($attributes);
         $this->_attributes['expirationDate'] = $this->expirationMonth . '/' . $this->expirationYear;
         $this->_attributes['maskedNumber'] = $this->bin . '******' . $this->last4;
-
     }
 }

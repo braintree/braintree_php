@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -11,7 +12,8 @@ class DocumentUploadTest extends Setup
     private $gateway;
     private $pngFile;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
 
         $this->gateway = new Braintree\Gateway([
@@ -72,7 +74,7 @@ class DocumentUploadTest extends Setup
     public function testCreate_whenFileIsOver4Mb_returnsError()
     {
         $bigFile = fopen(dirname(__DIR__) . '/fixtures/large_file.png', 'w+');
-        foreach(range(0, 1048577) as $i) {
+        foreach (range(0, 1048577) as $i) {
             fwrite($bigFile, 'aaaa');
         }
 

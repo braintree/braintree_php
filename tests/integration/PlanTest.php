@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -15,7 +16,6 @@ class PlanTest extends Setup
         $plans = Braintree\Plan::all();
         $this->assertEquals($plans, []);
         self::integrationMerchantConfig();
-
     }
 
     public function testAll_returnsAllPlans()
@@ -61,10 +61,8 @@ class PlanTest extends Setup
 
         $plans = Braintree\Plan::all();
 
-        foreach ($plans as $plan)
-        {
-            if ($plan->id == $newId)
-            {
+        foreach ($plans as $plan) {
+            if ($plan->id == $newId) {
                 $actualPlan = $plan;
             }
         }
@@ -112,10 +110,8 @@ class PlanTest extends Setup
         ]);
         $plans = $gateway->plan()->all();
 
-        foreach ($plans as $plan)
-        {
-            if ($plan->id == $newId)
-            {
+        foreach ($plans as $plan) {
+            if ($plan->id == $newId) {
                 $actualPlan = $plan;
             }
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -17,7 +18,7 @@ class AchMandate extends Base
      * @ignore
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes) . ']';
@@ -48,6 +49,5 @@ class AchMandate extends Base
         $instance = new self();
         $instance->_initialize($attributes);
         return $instance;
-
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use InvalidArgumentException;
@@ -53,7 +54,6 @@ class UsBankAccountGateway
                 'US bank account with token ' . $token . ' not found'
             );
         }
-
     }
 
     /**
@@ -92,13 +92,13 @@ class UsBankAccountGateway
         if (isset($response['usBankAccount'])) {
             // return a populated instance of UsBankAccount
             return new Result\Successful(
-                    UsBankAccount::factory($response['usBankAccount'])
+                UsBankAccount::factory($response['usBankAccount'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            'Expected US bank account or apiErrorResponse'
+                'Expected US bank account or apiErrorResponse'
             );
         }
     }

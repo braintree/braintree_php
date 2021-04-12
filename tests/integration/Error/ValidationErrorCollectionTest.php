@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration\Error;
 
 require_once dirname(dirname(__DIR__)) . '/Setup.php';
@@ -10,7 +11,7 @@ class ValidationErrorCollectionTest extends Setup
 {
     public function mapValidationErrorsToCodes($validationErrors)
     {
-        $validationFunction = function($validationError) {
+        $validationFunction = function ($validationError) {
             return $validationError->code;
         };
         $codes = array_map($validationFunction, $validationErrors);

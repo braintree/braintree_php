@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -10,7 +11,8 @@ class DisputeTest extends Setup
 {
     private $gateway;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
 
         $this->gateway = new Braintree\Gateway([
@@ -96,7 +98,8 @@ class DisputeTest extends Setup
         $disputeId = $this->createSampleDispute()->id;
         $documentId = $this->createSampleDocument()->id;
 
-        $result = Braintree\Dispute::addFileEvidence($disputeId,
+        $result = Braintree\Dispute::addFileEvidence(
+            $disputeId,
             [
                 'category' => 'GENERAL',
                 'documentId' => $documentId,
@@ -149,7 +152,8 @@ class DisputeTest extends Setup
     {
         $disputeId = $this->createSampleDispute()->id;
 
-        $result = $this->gateway->dispute()->addTextEvidence($disputeId,
+        $result = $this->gateway->dispute()->addTextEvidence(
+            $disputeId,
             [
                 'content' => "UPS",
                 'category' => "CARRIER_NAME",
@@ -286,7 +290,8 @@ class DisputeTest extends Setup
         $disputeId = $this->createSampleDispute()->id;
         $documentId = $this->createSampleDocument()->id;
 
-        $result = Braintree\Dispute::addFileEvidence($disputeId,
+        $result = Braintree\Dispute::addFileEvidence(
+            $disputeId,
             [
                 'category' => 'DEVICE_ID',
                 'documentId' => $documentId,
@@ -303,7 +308,8 @@ class DisputeTest extends Setup
         $disputeId = $this->createSampleDispute()->id;
         $documentId = $this->createSampleDocument()->id;
 
-        $result = Braintree\Dispute::addFileEvidence($disputeId,
+        $result = Braintree\Dispute::addFileEvidence(
+            $disputeId,
             [
                 'category' => 'NOTREALCATEGORY',
                 'documentId' => $documentId,
@@ -319,7 +325,8 @@ class DisputeTest extends Setup
     {
         $disputeId = $this->createSampleDispute()->id;
 
-        $result = Braintree\Dispute::addTextEvidence($disputeId,
+        $result = Braintree\Dispute::addTextEvidence(
+            $disputeId,
             [
                 'category' => 'NOTREALCATEGORY',
                 'content' => 'evidence',
@@ -335,7 +342,8 @@ class DisputeTest extends Setup
     {
         $disputeId = $this->createSampleDispute()->id;
 
-        $result = Braintree\Dispute::addTextEvidence($disputeId,
+        $result = Braintree\Dispute::addTextEvidence(
+            $disputeId,
             [
                 'category' => 'MERCHANT_WEBSITE_OR_APP_ACCESS',
                 'content' => 'evidence',
@@ -351,7 +359,8 @@ class DisputeTest extends Setup
     {
         $disputeId = $this->createSampleDispute()->id;
 
-        $result = Braintree\Dispute::addTextEvidence($disputeId,
+        $result = Braintree\Dispute::addTextEvidence(
+            $disputeId,
             [
                 'category' => 'DOWNLOAD_DATE_TIME',
                 'content' => 'baddate',
@@ -367,7 +376,8 @@ class DisputeTest extends Setup
     {
         $disputeId = $this->createSampleDispute()->id;
 
-        $result = Braintree\Dispute::addTextEvidence($disputeId,
+        $result = Braintree\Dispute::addTextEvidence(
+            $disputeId,
             [
                 'category' => 'DOWNLOAD_DATE_TIME',
                 'content' => '2018-10-20T18:00:00-0500',
@@ -381,7 +391,8 @@ class DisputeTest extends Setup
     {
         $disputeId = $this->createSampleDispute()->id;
 
-        Braintree\Dispute::addTextEvidence($disputeId,
+        Braintree\Dispute::addTextEvidence(
+            $disputeId,
             [
                 'category' => 'DEVICE_ID',
                 'content' => 'iphone_id',
@@ -400,7 +411,8 @@ class DisputeTest extends Setup
     {
         $disputeId = $this->createSampleDispute()->id;
 
-        Braintree\Dispute::addTextEvidence($disputeId,
+        Braintree\Dispute::addTextEvidence(
+            $disputeId,
             [
                 'category' => 'PRIOR_NON_DISPUTED_TRANSACTION_ARN',
                 'content' => '123',

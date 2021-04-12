@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class Merchant extends Base
@@ -9,7 +10,7 @@ class Merchant extends Base
 
         $merchantAccountArray = [];
         if (isset($attribs['merchantAccounts'])) {
-            foreach ($attribs['merchantAccounts'] AS $merchantAccount) {
+            foreach ($attribs['merchantAccounts'] as $merchantAccount) {
                 $merchantAccountArray[] = MerchantAccount::factory($merchantAccount);
             }
         }
@@ -27,9 +28,9 @@ class Merchant extends Base
      * returns a string representation of the merchant
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) . ']';
     }
 }

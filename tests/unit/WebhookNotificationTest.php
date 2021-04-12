@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -10,7 +11,8 @@ use Braintree;
 
 class WebhookNotificationTest extends Setup
 {
-    public function setUp(): void {
+    public function setUp(): void
+    {
         self::integrationMerchantConfig();
     }
 
@@ -568,9 +570,9 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("my_id", $webhookNotification->disbursement->id);
         $this->assertEquals(false, $webhookNotification->disbursement->retry);
         $this->assertEquals(true, $webhookNotification->disbursement->success);
-        $this->assertEquals(NULL, $webhookNotification->disbursement->exceptionMessage);
+        $this->assertEquals(null, $webhookNotification->disbursement->exceptionMessage);
         $this->assertEquals(100.00, $webhookNotification->disbursement->amount);
-        $this->assertEquals(NULL, $webhookNotification->disbursement->followUpAction);
+        $this->assertEquals(null, $webhookNotification->disbursement->followUpAction);
         $this->assertEquals("merchant_account_token", $webhookNotification->disbursement->merchantAccount->id);
         $this->assertEquals(new DateTime("2014-02-10"), $webhookNotification->disbursement->disbursementDate);
         $this->assertEquals(["asdfg", "qwert"], $webhookNotification->disbursement->transactionIds);
@@ -755,7 +757,8 @@ class WebhookNotificationTest extends Setup
             $sampleNotification['bt_payload']
         );
 
-        $this->assertEquals(Braintree\WebhookNotification::RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD, $webhookNotification->kind); $update = $webhookNotification->grantedPaymentInstrumentUpdate;
+        $this->assertEquals(Braintree\WebhookNotification::RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD, $webhookNotification->kind);
+        $update = $webhookNotification->grantedPaymentInstrumentUpdate;
 
         $this->assertEquals("vczo7jqrpwrsi2px", $update->grantOwnerMerchantId);
         $this->assertEquals("cf0i8wgarszuy6hc", $update->grantRecipientMerchantId);
@@ -822,8 +825,8 @@ class WebhookNotificationTest extends Setup
     }
 
     public function testGrantedPaymentMethodRevokedPayPalAccountWebhook()
-	{
-		$xmlPayload = "
+    {
+        $xmlPayload = "
 			<notification>
 				<source-merchant-id>12345</source-merchant-id>
 				<timestamp type='datetime'>2018-10-10T22:46:41Z</timestamp>
@@ -845,24 +848,24 @@ class WebhookNotificationTest extends Setup
 				</subject>
 			</notification>";
 
-		$sampleNotification = Helper::sampleNotificationFromXml($xmlPayload);
+        $sampleNotification = Helper::sampleNotificationFromXml($xmlPayload);
 
-		$webhookNotification = Braintree\WebhookNotification::parse(
-			$sampleNotification['bt_signature'],
-			$sampleNotification['bt_payload']
-		);
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
 
-		$this->assertEquals(Braintree\WebhookNotification::GRANTED_PAYMENT_METHOD_REVOKED, $webhookNotification->kind);
-		$metadata = $webhookNotification->revokedPaymentMethodMetadata;
+        $this->assertEquals(Braintree\WebhookNotification::GRANTED_PAYMENT_METHOD_REVOKED, $webhookNotification->kind);
+        $metadata = $webhookNotification->revokedPaymentMethodMetadata;
 
-		$this->assertEquals("paypal_customer_id", $metadata->customerId);
-		$this->assertEquals("paypal_token", $metadata->token);
-		$this->assertTrue($metadata->revokedPaymentMethod instanceof Braintree\PayPalAccount);
-	}
+        $this->assertEquals("paypal_customer_id", $metadata->customerId);
+        $this->assertEquals("paypal_token", $metadata->token);
+        $this->assertTrue($metadata->revokedPaymentMethod instanceof Braintree\PayPalAccount);
+    }
 
-	public function testGrantedPaymentMethodRevokedVenmoAccountWebhook()
-	{
-		$xmlPayload = "
+    public function testGrantedPaymentMethodRevokedVenmoAccountWebhook()
+    {
+        $xmlPayload = "
 			 <notification>
 				<source-merchant-id>12345</source-merchant-id>
 				<timestamp type='datetime'>2018-10-10T22:46:41Z</timestamp>
@@ -884,20 +887,20 @@ class WebhookNotificationTest extends Setup
 				</subject>
 			 </notification>";
 
-		$sampleNotification = Helper::sampleNotificationFromXml($xmlPayload);
+        $sampleNotification = Helper::sampleNotificationFromXml($xmlPayload);
 
-		$webhookNotification = Braintree\WebhookNotification::parse(
-			$sampleNotification['bt_signature'],
-			$sampleNotification['bt_payload']
-		);
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
 
-		$this->assertEquals(Braintree\WebhookNotification::GRANTED_PAYMENT_METHOD_REVOKED, $webhookNotification->kind);
-		$metadata = $webhookNotification->revokedPaymentMethodMetadata;
+        $this->assertEquals(Braintree\WebhookNotification::GRANTED_PAYMENT_METHOD_REVOKED, $webhookNotification->kind);
+        $metadata = $webhookNotification->revokedPaymentMethodMetadata;
 
-		$this->assertEquals("venmo_customer_id", $metadata->customerId);
-		$this->assertEquals("venmo_token", $metadata->token);
-		$this->assertTrue($metadata->revokedPaymentMethod instanceof Braintree\VenmoAccount);
-	}
+        $this->assertEquals("venmo_customer_id", $metadata->customerId);
+        $this->assertEquals("venmo_token", $metadata->token);
+        $this->assertTrue($metadata->revokedPaymentMethod instanceof Braintree\VenmoAccount);
+    }
 
     public function testPaymentMethodRevokedByCustomerWebhook()
     {

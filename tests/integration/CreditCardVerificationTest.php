@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -45,21 +46,21 @@ class CreditCardVerificationTest extends Setup
         $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::SOFT_DECLINED);
     }
 
-	public function test_createWithInvalidRequest()
-	{
+    public function test_createWithInvalidRequest()
+    {
         $result = Braintree\CreditCardVerification::create([
             'creditCard' => [
                 'number' => Braintree\Test\CreditCardNumbers::$failsSandboxVerification['Visa'],
                 'expirationDate' => '05/2011',
-				],
-			'options' => [
-			    'amount' => '-5.00'
-				],
+                ],
+            'options' => [
+                'amount' => '-5.00'
+                ],
         ]);
         $this->assertFalse($result->success);
 
-		$amountErrors = $result->errors->forKey('verification')->forKey('options')->onAttribute('amount');
-		$this->assertEquals(Braintree\Error\Codes::VERIFICATION_OPTIONS_AMOUNT_CANNOT_BE_NEGATIVE, $amountErrors[0]->code);
+        $amountErrors = $result->errors->forKey('verification')->forKey('options')->onAttribute('amount');
+        $this->assertEquals(Braintree\Error\Codes::VERIFICATION_OPTIONS_AMOUNT_CANNOT_BE_NEGATIVE, $amountErrors[0]->code);
     }
 
     public function test_createWithAccountTypeCredit()

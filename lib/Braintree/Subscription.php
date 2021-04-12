@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -6,10 +7,11 @@ namespace Braintree;
  *
  * <b>== More information ==</b>
  *
+ * // phpcs:ignore
  * For more detailed information on Subscriptions, see {@link https://developers.braintreepayments.com/reference/response/subscription/php https://developers.braintreepayments.com/reference/response/subscription/php}
  *
  * @package   Braintree
- * 
+ *
  * @property-read \Braintree\Addon[] $addOns
  * @property-read string $balance
  * @property-read int $billingDayOfMonth
@@ -74,7 +76,7 @@ class Subscription extends Base
 
         $addOnArray = [];
         if (isset($attributes['addOns'])) {
-            foreach ($attributes['addOns'] AS $addOn) {
+            foreach ($attributes['addOns'] as $addOn) {
                 $addOnArray[] = AddOn::factory($addOn);
             }
         }
@@ -82,7 +84,7 @@ class Subscription extends Base
 
         $discountArray = [];
         if (isset($attributes['discounts'])) {
-            foreach ($attributes['discounts'] AS $discount) {
+            foreach ($attributes['discounts'] as $discount) {
                 $discountArray[] = Discount::factory($discount);
             }
         }
@@ -98,7 +100,7 @@ class Subscription extends Base
 
         $statusHistory = [];
         if (isset($attributes['statusHistory'])) {
-            foreach ($attributes['statusHistory'] AS $history) {
+            foreach ($attributes['statusHistory'] as $history) {
                 $statusHistory[] = new Subscription\StatusDetails($history);
             }
         }
@@ -106,7 +108,7 @@ class Subscription extends Base
 
         $transactionArray = [];
         if (isset($attributes['transactions'])) {
-            foreach ($attributes['transactions'] AS $transaction) {
+            foreach ($attributes['transactions'] as $transaction) {
                 $transactionArray[] = Transaction::factory($transaction);
             }
         }
@@ -117,19 +119,19 @@ class Subscription extends Base
      * returns a string representation of the customer
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         $excludedAttributes = ['statusHistory'];
 
         $displayAttributes = [];
-        foreach($this->_attributes as $key => $val) {
+        foreach ($this->_attributes as $key => $val) {
             if (!in_array($key, $excludedAttributes)) {
                 $displayAttributes[$key] = $val;
             }
         }
 
         return __CLASS__ . '[' .
-                Util::attributesToString($displayAttributes) .']';
+                Util::attributesToString($displayAttributes) . ']';
     }
 
 

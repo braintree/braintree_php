@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use finfo;
@@ -25,13 +26,14 @@ class GraphQL extends Http
         ];
     }
 
-    public function request($definition, $variables = Null)
+    public function request($definition, $variables = null)
     {
         $graphQLRequest = ["query" => $definition];
         if ($variables) {
             $graphQLRequest["variables"] = $variables;
         }
 
+        // phpcs:ignore Generic.Files.LineLength
         $response = $this->_doUrlRequest('POST', $this->_config->graphQLBaseUrl(), json_encode($graphQLRequest), null, $this->graphQLHeaders());
 
         $result = json_decode($response["body"], true);

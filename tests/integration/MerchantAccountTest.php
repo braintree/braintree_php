@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -66,7 +67,7 @@ class MerchantAccountTest extends Setup
     public function testCreateWithId()
     {
         $rand = rand(1, 1000);
-        $subMerchantAccountId = "sub_merchant_account_id".$rand;
+        $subMerchantAccountId = "sub_merchant_account_id" . $rand;
         $validParamsWithId = array_merge([], self::$validParams);
         $validParamsWithId['id'] = $subMerchantAccountId;
         $result = Braintree\MerchantAccount::create($validParamsWithId);
@@ -74,7 +75,7 @@ class MerchantAccountTest extends Setup
         $merchantAccount = $result->merchantAccount;
         $this->assertEquals(Braintree\MerchantAccount::STATUS_PENDING, $merchantAccount->status);
         $this->assertEquals("sandbox_master_merchant_account", $merchantAccount->masterMerchantAccount->id);
-        $this->assertEquals("sub_merchant_account_id".$rand, $merchantAccount->id);
+        $this->assertEquals("sub_merchant_account_id" . $rand, $merchantAccount->id);
     }
 
     public function testFailedCreate()
@@ -559,7 +560,7 @@ class MerchantAccountTest extends Setup
 
         $result = $gateway->merchantAccount()->all();
         $merchantAccounts = [];
-        foreach($result as $ma) {
+        foreach ($result as $ma) {
             array_push($merchantAccounts, $ma);
         }
         $this->assertEquals(true, count($merchantAccounts) > 20);
@@ -584,7 +585,7 @@ class MerchantAccountTest extends Setup
 
         $result = $gateway->merchantAccount()->all();
         $merchantAccounts = [];
-        foreach($result as $ma) {
+        foreach ($result as $ma) {
             array_push($merchantAccounts, $ma);
         }
 

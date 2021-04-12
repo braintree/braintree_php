@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -230,7 +231,6 @@ class UtilTest extends Setup
             ]
         ];
         $this->assertNull(Braintree\Util::throwGraphQLResponseException($response));
-
     }
 
     public function testThrowGraphQLUnexpectedExceptionAndNotValidationExceptionWhenBothArePresent()
@@ -322,13 +322,13 @@ class UtilTest extends Setup
         $this->assertNull(Braintree\Util::verifyKeys($signature, $data));
     }
 
-	public function testVerifyKeys_withArrayOfArrays()
-	{
+    public function testVerifyKeys_withArrayOfArrays()
+    {
         $signature = [
-			['addOns' => [['update' => ['amount', 'existingId']]]]
-		];
+            ['addOns' => [['update' => ['amount', 'existingId']]]]
+        ];
 
-		$goodData = [
+        $goodData = [
             'addOns' => [
                 'update' => [
                     [
@@ -341,11 +341,11 @@ class UtilTest extends Setup
                     ]
                 ]
             ]
-		];
+        ];
 
         Braintree\Util::verifyKeys($signature, $goodData);
 
-		$badData = [
+        $badData = [
             'addOns' => [
                 'update' => [
                     [
@@ -353,11 +353,11 @@ class UtilTest extends Setup
                     ]
                 ]
             ]
-		];
+        ];
 
         $this->expectException('InvalidArgumentException');
         Braintree\Util::verifyKeys($signature, $badData);
-	}
+    }
 
     public function testVerifyKeys_arrayAsValue()
     {
@@ -456,36 +456,36 @@ class UtilTest extends Setup
         $newKey = 'androidPayCard';
 
         $originalParams = [
-            'googlePayCard'=> [
-                'number'=> '4111111111111111'
+            'googlePayCard' => [
+                'number' => '4111111111111111'
             ],
             'someOtherKey' => 'someOtherValue'
         ];
         $expectedParams = [
-            'androidPayCard'=> [
-                'number'=> '4111111111111111'
+            'androidPayCard' => [
+                'number' => '4111111111111111'
             ],
             'someOtherKey' => 'someOtherValue'
         ];
-        
+
         $returnedParams = Braintree\Util::replaceKey($originalParams, $oldKey, $newKey);
         $this->assertEquals($returnedParams, $expectedParams);
     }
 
-	public function testReplaceKeyDoesNotReplaceKeyWhenNoMatch()
-      {
+    public function testReplaceKeyDoesNotReplaceKeyWhenNoMatch()
+    {
         $oldKey = 'googlePayCard';
         $newKey = 'androidPayCard';
 
         $originalParams = [
-            'creditCard'=> [
-                'number'=> '4111111111111111'
+            'creditCard' => [
+                'number' => '4111111111111111'
             ],
             'someOtherKey' => 'someOtherValue'
         ];
         $expectedParams = [
-            'creditCard'=> [
-                'number'=> '4111111111111111'
+            'creditCard' => [
+                'number' => '4111111111111111'
             ],
             'someOtherKey' => 'someOtherValue'
         ];

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use InvalidArgumentException;
@@ -87,7 +88,6 @@ class AddressGateway
     {
         $result = $this->create($attribs);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
-
     }
 
     /**
@@ -131,11 +131,10 @@ class AddressGateway
             return Address::factory($response['address']);
         } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
-            'address for customer ' . $customerId .
+                'address for customer ' . $customerId .
                 ' with id ' . $addressId . ' not found.'
             );
         }
-
     }
 
     /**
@@ -162,7 +161,6 @@ class AddressGateway
         $response = $this->_http->put($path, ['address' => $attributes]);
 
         return $this->_verifyGatewayResponse($response);
-
     }
 
     /**
@@ -205,7 +203,6 @@ class AddressGateway
     public static function updateSignature()
     {
         return self::createSignature();
-
     }
 
     /**
@@ -218,12 +215,12 @@ class AddressGateway
     {
         if (empty($id) || trim($id) == "") {
             throw new InvalidArgumentException(
-            'expected address id to be set'
+                'expected address id to be set'
             );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
             throw new InvalidArgumentException(
-            $id . ' is an invalid address id.'
+                $id . ' is an invalid address id.'
             );
         }
     }
@@ -238,15 +235,14 @@ class AddressGateway
     {
         if (empty($id) || trim($id) == "") {
             throw new InvalidArgumentException(
-            'expected customer id to be set'
+                'expected customer id to be set'
             );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
             throw new InvalidArgumentException(
-            $id . ' is an invalid customer id.'
+                $id . ' is an invalid customer id.'
             );
         }
-
     }
 
     /**
@@ -260,7 +256,6 @@ class AddressGateway
         $customerId = ($customerOrId instanceof Customer) ? $customerOrId->id : $customerOrId;
         $this->_validateCustomerId($customerId);
         return $customerId;
-
     }
 
     /* private class methods */
@@ -299,13 +294,12 @@ class AddressGateway
             return new Result\Successful(
                 Address::factory($response['address'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            "Expected address or apiErrorResponse"
+                "Expected address or apiErrorResponse"
             );
         }
-
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -64,5 +65,4 @@ class UnknownPaymentMethod extends Base
         $this->imageUrl = 'https://assets.braintreegateway.com/payment_method_logo/unknown.png';
         $this->_attributes = $unknownPaymentMethodAttribs;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -19,7 +20,7 @@ class CustomerTest extends Setup
     {
         Braintree\CustomerGateway::updateSignature();
         foreach (Braintree\CreditCardGateway::updateSignature() as $key => $value) {
-            if(is_array($value) and array_key_exists('options', $value)) {
+            if (is_array($value) and array_key_exists('options', $value)) {
                 $this->assertEquals([
                     'makeDefault',
                     'verificationMerchantAccountId',

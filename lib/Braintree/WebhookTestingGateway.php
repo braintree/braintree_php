@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class WebhookTestingGateway
@@ -14,7 +15,9 @@ class WebhookTestingGateway
     {
         $xml = self::_sampleXml($kind, $id, $sourceMerchantId);
         $payload = base64_encode($xml) . "\n";
-        $signature = $this->config->getPublicKey() . "|" . Digest::hexDigestSha1($this->config->getPrivateKey(), $payload);
+        $publicKey = $this->config->getPublicKey();
+        $sha = Digest::hexDigestSha1($this->config->getPrivateKey(), $payload);
+        $signature = $publicKey . "|" . $sha;
 
         return [
             'bt_signature' => $signature,
@@ -558,7 +561,7 @@ class WebhookTestingGateway
     }
 
     private static function _grantedPaymentInstrumentUpdateSampleXml()
-	{
+    {
         return "
 		<granted-payment-instrument-update>
 		  <grant-owner-merchant-id>vczo7jqrpwrsi2px</grant-owner-merchant-id>
@@ -601,7 +604,7 @@ class WebhookTestingGateway
     }
 
     private static function _localPaymentCompletedSampleXml()
-	{
+    {
         return "
 		<local-payment>
             <payment-id>a-payment-id</payment-id>
@@ -618,7 +621,7 @@ class WebhookTestingGateway
     }
 
     private static function _localPaymentReversedSampleXml()
-	{
+    {
         return "
 		<local-payment-reversed>
             <payment-id>a-payment-id</payment-id>

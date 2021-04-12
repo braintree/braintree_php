@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -377,7 +378,6 @@ class CreditCardTest extends Setup
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('creditCard')->onAttribute('venmoSdkPaymentMethodCode');
         $this->assertEquals($errors[0]->code, Braintree\Error\Codes::CREDIT_CARD_INVALID_VENMO_SDK_PAYMENT_METHOD_CODE);
-
     }
 
     public function testCreate_with_venmoSdkSession()
@@ -638,7 +638,7 @@ class CreditCardTest extends Setup
         $this->assertTrue($collection->maximumCount() > 1);
 
         $arr = [];
-        foreach($collection as $creditCard) {
+        foreach ($collection as $creditCard) {
             $this->assertTrue($creditCard->isExpired());
             array_push($arr, $creditCard->token);
         }
@@ -656,7 +656,7 @@ class CreditCardTest extends Setup
         $this->assertTrue($collection->maximumCount() > 1);
 
         $arr = [];
-        foreach($collection as $creditCard) {
+        foreach ($collection as $creditCard) {
             $this->assertEquals('2010', $creditCard->expirationYear);
             array_push($arr, $creditCard->token);
         }
@@ -672,9 +672,9 @@ class CreditCardTest extends Setup
         );
         $this->assertTrue($collection->maximumCount() > 1);
 
-        foreach($collection as $creditCard) {
-            foreach($creditCard->subscriptions as $subscription) {
-                foreach($subscription->transactions as $transaction) {
+        foreach ($collection as $creditCard) {
+            foreach ($creditCard->subscriptions as $subscription) {
+                foreach ($subscription->transactions as $transaction) {
                     $this->assertNotNull($transaction->creditCardDetails->expirationMonth);
                 }
             }
@@ -1067,7 +1067,7 @@ class CreditCardTest extends Setup
                 'countryCodeAlpha3' => 'THA',
                 'countryCodeNumeric' => '764',
                 'options' => [
-                    'updateExisting' => True
+                    'updateExisting' => true
                 ]
             ]
         ])->creditCard;

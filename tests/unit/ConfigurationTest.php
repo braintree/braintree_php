@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -8,12 +9,14 @@ use Braintree;
 
 class ConfigurationTest extends Setup
 {
-    public function setUp(): void {
+    public function setUp(): void
+    {
         Braintree\Configuration::reset();
         $this->config = new Braintree\Configuration();
     }
 
-    public function teardown(): void {
+    public function teardown(): void
+    {
         Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
         Braintree\Configuration::publicKey('integration_public_key');
@@ -37,7 +40,7 @@ class ConfigurationTest extends Setup
         $this->assertFalse($config->getAcceptGzipEncoding());
     }
 
-    function testConstructWithProxyServerAndSslVersionAttributes()
+    public function testConstructWithProxyServerAndSslVersionAttributes()
     {
         $config = new Braintree\Configuration([
             'environment' => 'sandbox',
@@ -72,7 +75,7 @@ class ConfigurationTest extends Setup
             $this->fail();
         }
 
-        $this->assertTrue(TRUE);
+        $this->assertTrue(true);
     }
 
     public function testAssertGlobalHasAccessTokenOrKeysWithoutPublicKey()
@@ -195,25 +198,25 @@ class ConfigurationTest extends Setup
         $this->assertEquals('https://api.braintreegateway.com:443', $bu);
     }
 
-    function testProxyHost()
+    public function testProxyHost()
     {
         $this->config->proxyHost('example.com');
         $this->assertEquals('example.com', $this->config->proxyHost());
     }
 
-    function testProxyPort()
+    public function testProxyPort()
     {
         $this->config->proxyPort('1234');
         $this->assertEquals('1234', $this->config->proxyPort());
     }
 
-    function testProxyType()
+    public function testProxyType()
     {
         $this->config->proxyType('MY_PROXY');
         $this->assertEquals('MY_PROXY', $this->config->proxyType());
     }
 
-    function testProxyIsConfigured()
+    public function testProxyIsConfigured()
     {
         $config = new Braintree\Configuration([
             'proxyHost' => 'example.com',
@@ -223,19 +226,19 @@ class ConfigurationTest extends Setup
         $this->assertTrue($config->isUsingProxy());
     }
 
-    function testProxyUser()
+    public function testProxyUser()
     {
         $this->config->proxyUser('user');
         $this->assertEquals('user', $this->config->proxyUser());
     }
 
-    function testProxyPassword()
+    public function testProxyPassword()
     {
         $this->config->proxyPassword('password');
         $this->assertEquals('password', $this->config->proxyPassword());
     }
 
-    function testIsAuthenticatedProxy()
+    public function testIsAuthenticatedProxy()
     {
 
         $config = new Braintree\Configuration([
@@ -246,26 +249,26 @@ class ConfigurationTest extends Setup
         $this->assertTrue($config->isAuthenticatedProxy());
     }
 
-    function testTimeout()
+    public function testTimeout()
     {
         Braintree\Configuration::timeout(30);
 
         $this->assertEquals(30, Braintree\Configuration::timeout());
     }
 
-    function testTimeoutDefaultsToSixty()
+    public function testTimeoutDefaultsToSixty()
     {
         $this->assertEquals(60, Braintree\Configuration::timeout());
     }
 
-    function testSslVersion()
+    public function testSslVersion()
     {
         $this->config->sslVersion(6);
 
         $this->assertEquals(6, $this->config->sslVersion());
     }
 
-    function testSslVersionDefaultsToNull()
+    public function testSslVersionDefaultsToNull()
     {
         $this->assertEquals(null, $this->config->sslVersion());
     }
@@ -422,7 +425,7 @@ class ConfigurationTest extends Setup
     public function testClientIdTypeFail()
     {
         $this->expectException('Braintree\Exception\Configuration', 'Value passed for clientId is not a clientId');
-        
+
         $config = new Braintree\Configuration([
             'clientId' => 'client_secret$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret'
@@ -441,7 +444,7 @@ class ConfigurationTest extends Setup
     public function testInvalidAccessTokenType()
     {
         $this->expectException('Braintree\Exception\Configuration', 'Value passed for accessToken is not an accessToken');
-        
+
         $config = new Braintree\Configuration([
             'accessToken' => 'client_id$development$integration_merchant_id$integration_access_token',
         ]);
@@ -450,7 +453,7 @@ class ConfigurationTest extends Setup
     public function testInvalidAccessTokenSyntax()
     {
         $this->expectException('Braintree\Exception\Configuration', 'Incorrect accessToken syntax. Expected: type$environment$merchant_id$token');
-        
+
         $config = new Braintree\Configuration([
             'accessToken' => 'client_id$development$integration_client_id',
         ]);
@@ -459,7 +462,7 @@ class ConfigurationTest extends Setup
     public function testInvalidAccessTokenEnvironment()
     {
         $this->expectException('Braintree\Exception\Configuration', '"invalid" is not a valid environment.');
-        
+
         $config = new Braintree\Configuration([
             'accessToken' => 'access_token$invalid$integration_merchant_id$integration_access_token',
         ]);
@@ -480,7 +483,7 @@ class ConfigurationTest extends Setup
     public function testInvalidEnvironmentWithOAuthClientCredentialsAndAccessToken()
     {
         $this->expectException('Braintree\Exception\Configuration', 'Mismatched credential environments: clientId environment is development and accessToken environment is sandbox');
-        
+
         $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',
@@ -491,7 +494,7 @@ class ConfigurationTest extends Setup
     public function testCannotMixKeysWithOAuthCredentials()
     {
         $this->expectException('Braintree\Exception\Configuration', 'Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId)');
-        
+
         $config = new Braintree\Configuration([
             'clientId' => 'client_id$development$integration_client_id',
             'clientSecret' => 'client_secret$development$integration_client_secret',

@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -8,7 +9,8 @@ use Braintree;
 
 class HttpTest extends Setup
 {
-    public function setUp(): void{
+    public function setUp(): void
+    {
         parent::setUp();
 
         Braintree\Configuration::environment('development');
@@ -88,7 +90,7 @@ class HttpTest extends Setup
             $this->assertEquals(true, $result->success);
             $customer = $result->customer;
             $this->assertEquals('Mike', $customer->firstName);
-        } catch(Braintree\Exception $e) {
+        } catch (Braintree\Exception $e) {
             throw $e;
         }
     }
@@ -109,7 +111,7 @@ class HttpTest extends Setup
             $this->assertEquals(true, $result->success);
             $customer = $result->customer;
             $this->assertEquals('Mike', $customer->firstName);
-        } catch(Braintree\Exception $e) {
+        } catch (Braintree\Exception $e) {
             throw $e;
         }
     }

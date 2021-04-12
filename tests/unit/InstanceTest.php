@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -10,7 +11,7 @@ class InstanceTest extends Setup
 {
     public function test__isset()
     {
-      $transaction = Braintree\Transaction::factory([
+        $transaction = Braintree\Transaction::factory([
         'creditCard' => [
           'expirationMonth' => '05',
           'expirationYear' => '2010',
@@ -18,26 +19,26 @@ class InstanceTest extends Setup
           'last4' => '5100',
           'cardType' => 'MasterCard',
         ],
-      ]);
-      $this->assertEquals('MasterCard', $transaction->creditCardDetails->cardType);
-      $this->assertFalse(empty($transaction->creditCardDetails->cardType));
-      $this->assertTrue(isset($transaction->creditCardDetails->cardType));
+        ]);
+        $this->assertEquals('MasterCard', $transaction->creditCardDetails->cardType);
+        $this->assertFalse(empty($transaction->creditCardDetails->cardType));
+        $this->assertTrue(isset($transaction->creditCardDetails->cardType));
 
-      $transaction = Braintree\Transaction::factory([
+        $transaction = Braintree\Transaction::factory([
         'creditCard' => [
           'expirationMonth' => '05',
           'expirationYear' => '2010',
           'bin' => '510510',
           'last4' => '5100',
         ],
-      ]);
-      $this->assertTrue(empty($transaction->creditCardDetails->cardType));
-      $this->assertFalse(isset($transaction->creditCardDetails->cardType));
+        ]);
+        $this->assertTrue(empty($transaction->creditCardDetails->cardType));
+        $this->assertFalse(isset($transaction->creditCardDetails->cardType));
     }
 
     public function testToArray()
     {
-      $transaction = Braintree\Transaction::factory([
+        $transaction = Braintree\Transaction::factory([
         'creditCard' => [
           'expirationMonth' => '05',
           'expirationYear' => '2010',
@@ -45,14 +46,14 @@ class InstanceTest extends Setup
           'last4' => '5100',
           'cardType' => 'MasterCard',
         ],
-      ]);
-      $detailsArray = $transaction->creditCardDetails->toArray();
-      $this->assertEquals('MasterCard', $detailsArray["cardType"]);
+        ]);
+        $detailsArray = $transaction->creditCardDetails->toArray();
+        $this->assertEquals('MasterCard', $detailsArray["cardType"]);
     }
 
     public function testJsonSerialize()
     {
-      $transaction = Braintree\Transaction::factory([
+        $transaction = Braintree\Transaction::factory([
         'creditCard' => [
           'expirationMonth' => '05',
           'expirationYear' => '2010',
@@ -60,8 +61,8 @@ class InstanceTest extends Setup
           'last4' => '5100',
           'cardType' => 'MasterCard',
         ],
-      ]);
-      $serialized = $transaction->creditCardDetails->jsonSerialize();
-      $this->assertEquals('MasterCard', $serialized["cardType"]);
+        ]);
+        $serialized = $transaction->creditCardDetails->jsonSerialize();
+        $this->assertEquals('MasterCard', $serialized["cardType"]);
     }
 }

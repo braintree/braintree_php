@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class SettlementBatchSummaryGateway
@@ -39,19 +40,17 @@ class SettlementBatchSummaryGateway
      * @param string $groupByCustomField
      * @return SettlementBatchSummary|Result\Error
      */
-    public function generate($settlement_date, $groupByCustomField = NULL)
+    public function generate($settlement_date, $groupByCustomField = null)
     {
         $criteria = ['settlement_date' => $settlement_date];
-        if (isset($groupByCustomField))
-        {
+        if (isset($groupByCustomField)) {
             $criteria['group_by_custom_field'] = $groupByCustomField;
         }
         $params = ['settlement_batch_summary' => $criteria];
         $path = $this->_config->merchantPath() . '/settlement_batch_summary';
         $response = $this->_http->post($path, $params);
 
-        if (isset($groupByCustomField))
-        {
+        if (isset($groupByCustomField)) {
             $response['settlementBatchSummary']['records'] = $this->_underscoreCustomField(
                 $groupByCustomField,
                 $response['settlementBatchSummary']['records']
@@ -71,8 +70,7 @@ class SettlementBatchSummaryGateway
     {
         $updatedRecords = [];
 
-        foreach ($records as $record)
-        {
+        foreach ($records as $record) {
             $camelized = Util::delimiterToCamelCase($groupByCustomField);
             $record[$groupByCustomField] = $record[$camelized];
             unset($record[$camelized]);
@@ -94,7 +92,7 @@ class SettlementBatchSummaryGateway
             return new Result\Successful(
                 SettlementBatchSummary::factory($response['settlementBatchSummary'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(

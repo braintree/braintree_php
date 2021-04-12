@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -18,7 +19,7 @@ class Version
      * @ignore
      * @access protected
      */
-    protected function  __construct()
+    protected function __construct()
     {
     }
 

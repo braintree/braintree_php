@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -27,7 +28,7 @@ class AuthorizationAdjustment extends Base
         $this->_attributes = $authorizationAdjustmentAttribs;
     }
 
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' . Util::attributesToString($this->_attributes) . ']';
     }

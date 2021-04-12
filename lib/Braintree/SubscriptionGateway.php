@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use InvalidArgumentException;
@@ -8,6 +9,7 @@ use InvalidArgumentException;
  *
  * <b>== More information ==</b>
  *
+ * // phpcs:ignore Generic.Files.LineLength
  * For more detailed information on Subscriptions, see {@link https://developers.braintreepayments.com/reference/response/subscription/php https://developers.braintreepayments.com/reference/response/subscription/php}
  *
  * @package   Braintree
@@ -45,7 +47,6 @@ class SubscriptionGateway
         } catch (Exception\NotFound $e) {
             throw new Exception\NotFound('subscription with id ' . $id . ' not found');
         }
-
     }
 
     public function search($query)
@@ -185,16 +186,17 @@ class SubscriptionGateway
     /**
      * @ignore
      */
-    private function _validateId($id = null) {
+    private function _validateId($id = null)
+    {
         if (empty($id)) {
-           throw new InvalidArgumentException(
-                   'expected subscription id to be set'
-                   );
+            throw new InvalidArgumentException(
+                'expected subscription id to be set'
+            );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $id)) {
             throw new InvalidArgumentException(
-                    $id . ' is an invalid subscription id.'
-                    );
+                $id . ' is an invalid subscription id.'
+            );
         }
     }
 
@@ -207,16 +209,16 @@ class SubscriptionGateway
             return new Result\Successful(
                 Subscription::factory($response['subscription'])
             );
-        } else if (isset($response['transaction'])) {
+        } elseif (isset($response['transaction'])) {
             // return a populated instance of Transaction, for subscription retryCharge
             return new Result\Successful(
                 Transaction::factory($response['transaction'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            "Expected subscription, transaction, or apiErrorResponse"
+                "Expected subscription, transaction, or apiErrorResponse"
             );
         }
     }

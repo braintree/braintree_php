@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -1094,9 +1095,9 @@ class CustomerTest extends Setup
             'firstName' => 'Bat',
             'lastName' => 'Manderson',
             'creditCard' => [
-				'options' => [
-					'updateExistingToken' => $customer->creditCards[0]->token
-				],
+                'options' => [
+                    'updateExistingToken' => $customer->creditCards[0]->token
+                ],
                 'billingAddress' => [
                     'countryName' => 'Gabon',
                     'countryCodeAlpha2' => 'GA',
@@ -1105,7 +1106,7 @@ class CustomerTest extends Setup
                     'options' => [
                         'updateExisting' => true
                     ]
-            	]
+                ]
             ]
         ]);
 
@@ -1385,7 +1386,6 @@ class CustomerTest extends Setup
 
         $this->assertTrue($result->success);
         $this->assertEquals($result->customer->defaultPaymentMethod()->token, $paypalAccountToken);
-
     }
 
     public function testUpdate_worksWithOrderPaymentPayPalNonce()
@@ -1641,7 +1641,6 @@ class CustomerTest extends Setup
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('customer')->forKey('paypalAccount')->errors;
         $this->assertEquals(Braintree\Error\Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT, $errors[0]->code);
-
     }
 
     public function testUpdateNoValidate()

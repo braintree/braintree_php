@@ -1,4 +1,5 @@
-<?php
+<?php // phpcs:ignore
+
 namespace Braintree;
 
 /**
@@ -79,7 +80,9 @@ class Configuration
         }
 
         if (isset($attribs['clientId']) || isset($attribs['accessToken'])) {
+            // phpcs:ignore Generic.Files.LineLength
             if (isset($attribs['environment']) || isset($attribs['merchantId']) || isset($attribs['publicKey']) || isset($attribs['privateKey'])) {
+                // phpcs:ignore Generic.Files.LineLength
                 throw new Exception\Configuration('Cannot mix OAuth credentials (clientId, clientSecret, accessToken) with key credentials (publicKey, privateKey, environment, merchantId).');
             }
             $parsedCredentials = new CredentialsParser($attribs);
@@ -106,7 +109,7 @@ class Configuration
         return new Gateway(self::$global);
     }
 
-    public static function environment($value=null)
+    public static function environment($value = null)
     {
         if (empty($value)) {
             return self::$global->getEnvironment();
@@ -115,7 +118,7 @@ class Configuration
         self::$global->setEnvironment($value);
     }
 
-    public static function merchantId($value=null)
+    public static function merchantId($value = null)
     {
         if (empty($value)) {
             return self::$global->getMerchantId();
@@ -123,7 +126,7 @@ class Configuration
         self::$global->setMerchantId($value);
     }
 
-    public static function publicKey($value=null)
+    public static function publicKey($value = null)
     {
         if (empty($value)) {
             return self::$global->getPublicKey();
@@ -131,7 +134,7 @@ class Configuration
         self::$global->setPublicKey($value);
     }
 
-    public static function privateKey($value=null)
+    public static function privateKey($value = null)
     {
         if (empty($value)) {
             return self::$global->getPrivateKey();
@@ -145,7 +148,7 @@ class Configuration
      * @param integer $value If provided, sets the read timeout
      * @return integer The read timeout used for connecting to Braintree
      */
-    public static function timeout($value=null)
+    public static function timeout($value = null)
     {
         if (empty($value)) {
             return self::$global->getTimeout();
@@ -161,7 +164,7 @@ class Configuration
      * @param integer $value If provided, sets the SSL version
      * @return integer The SSL version used for connecting to Braintree
      */
-    public static function sslVersion($value=null)
+    public static function sslVersion($value = null)
     {
         if (empty($value)) {
             return self::$global->getSslVersion();
@@ -231,6 +234,7 @@ class Configuration
     /**
      * Specify if the HTTP client is able to decode gzipped responses.
      *
+     * // phpcs:ignore Generic.Files.LineLength
      * @param bool $value If true, will send an Accept-Encoding header with a gzip value. If false, will not send an Accept-Encoding header with a gzip value.
      * @return bool true if an Accept-Encoding header with a gzip value will be sent, false if not
      */
@@ -251,12 +255,13 @@ class Configuration
     {
         if (empty($this->_accessToken)) {
             if (empty($this->_merchantId)) {
+                // phpcs:ignore Generic.Files.LineLength
                 throw new Exception\Configuration('Braintree\\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\\Gateway).');
-            } else if (empty($this->_environment)) {
+            } elseif (empty($this->_environment)) {
                 throw new Exception\Configuration('Braintree\\Configuration::environment needs to be set.');
-            } else if (empty($this->_publicKey)) {
+            } elseif (empty($this->_publicKey)) {
                 throw new Exception\Configuration('Braintree\\Configuration::publicKey needs to be set.');
-            } else if (empty($this->_privateKey)) {
+            } elseif (empty($this->_privateKey)) {
                 throw new Exception\Configuration('Braintree\\Configuration::privateKey needs to be set.');
             }
         }
@@ -457,10 +462,10 @@ class Configuration
      * @param none
      * @return string Braintree GraphQL URL
      */
-     public function graphQLBaseUrl()
-     {
+    public function graphQLBaseUrl()
+    {
         return sprintf('%s://%s:%d/graphql', $this->protocol(), $this->graphQLServerName(), $this->graphQLPortNumber());
-     }
+    }
 
     /**
      * sets the merchant path based on merchant ID
@@ -481,14 +486,13 @@ class Configuration
      * @param none
      * @return string filepath
      */
-    public function caFile($sslPath = NULL)
+    public function caFile($sslPath = null)
     {
         $sslPath = $sslPath ? $sslPath : DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                    'ssl' . DIRECTORY_SEPARATOR;
         $caPath = __DIR__ . $sslPath . 'api_braintreegateway_com.ca.crt';
 
-        if (!file_exists($caPath))
-        {
+        if (!file_exists($caPath)) {
             throw new Exception\SSLCaFileNotFound();
         }
 
@@ -571,21 +575,21 @@ class Configuration
      */
     public function serverName()
     {
-        switch($this->_environment) {
-         case 'production':
-             $serverName = 'api.braintreegateway.com';
-             break;
-         case 'qa':
-             $serverName = 'gateway.qa.braintreepayments.com';
-             break;
-         case 'sandbox':
-             $serverName = 'api.sandbox.braintreegateway.com';
-             break;
-         case 'development':
-         case 'integration':
-         default:
-             $serverName = 'localhost';
-             break;
+        switch ($this->_environment) {
+            case 'production':
+                $serverName = 'api.braintreegateway.com';
+                break;
+            case 'qa':
+                $serverName = 'gateway.qa.braintreepayments.com';
+                break;
+            case 'sandbox':
+                $serverName = 'api.sandbox.braintreegateway.com';
+                break;
+            case 'development':
+            case 'integration':
+            default:
+                $serverName = 'localhost';
+                break;
         }
 
         return $serverName;
@@ -600,21 +604,21 @@ class Configuration
      */
     public function graphQLServerName()
     {
-        switch($this->_environment) {
-         case 'production':
-             $graphQLServerName = 'payments.braintree-api.com';
-             break;
-         case 'qa':
-             $graphQLServerName = 'payments-qa.dev.braintree-api.com';
-             break;
-         case 'sandbox':
-             $graphQLServerName = 'payments.sandbox.braintree-api.com';
-             break;
-         case 'development':
-         case 'integration':
-         default:
-             $graphQLServerName = 'graphql.bt.local';
-             break;
+        switch ($this->_environment) {
+            case 'production':
+                $graphQLServerName = 'payments.braintree-api.com';
+                break;
+            case 'qa':
+                $graphQLServerName = 'payments-qa.dev.braintree-api.com';
+                break;
+            case 'sandbox':
+                $graphQLServerName = 'payments.sandbox.braintree-api.com';
+                break;
+            case 'development':
+            case 'integration':
+            default:
+                $graphQLServerName = 'graphql.bt.local';
+                break;
         }
 
         return $graphQLServerName;
@@ -630,20 +634,20 @@ class Configuration
      */
     public function sslOn()
     {
-        switch($this->_environment) {
-         case 'integration':
-         case 'development':
-             $ssl = false;
-             break;
-         case 'production':
-         case 'qa':
-         case 'sandbox':
-         default:
-             $ssl = true;
-             break;
+        switch ($this->_environment) {
+            case 'integration':
+            case 'development':
+                $ssl = false;
+                break;
+            case 'production':
+            case 'qa':
+            case 'sandbox':
+            default:
+                $ssl = true;
+                break;
         }
 
-       return $ssl;
+        return $ssl;
     }
 
     /**

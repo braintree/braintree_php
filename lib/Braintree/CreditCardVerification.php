@@ -1,9 +1,10 @@
 <?php
+
 namespace Braintree;
 
 /**
  * {@inheritdoc}
- * 
+ *
  * @property-read string $amount
  * @property-read mixed $billing
  * @property-read string $company

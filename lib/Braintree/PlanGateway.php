@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class PlanGateway
@@ -19,7 +20,7 @@ class PlanGateway
     {
         $path = $this->_config->merchantPath() . '/plans';
         $response = $this->_http->get($path);
-        if (key_exists('plans', $response)){
+        if (key_exists('plans', $response)) {
             $plans = ["plan" => $response['plans']];
         } else {
             $plans = ["plan" => []];

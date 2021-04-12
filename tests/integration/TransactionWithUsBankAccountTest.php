@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -84,7 +85,7 @@ class UsBankAccountTransactionTest extends Setup
 
     public function testSaleWithPlaidUsBankAccountNonce()
     {
-        $this->markTestSkipped( 'Skipping until we have a more stable CI env' );
+        $this->markTestSkipped('Skipping until we have a more stable CI env');
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'merchantAccountId' => Test\Helper::usBankMerchantAccount(),
@@ -190,7 +191,7 @@ class UsBankAccountTransactionTest extends Setup
 
     public function testCompliantMerchantPlaidToken()
     {
-        $this->markTestSkipped( 'Skipping until we have a more stable CI env' );
+        $this->markTestSkipped('Skipping until we have a more stable CI env');
         Test\Helper::integration2MerchantConfig();
         $customer = Braintree\Customer::create([
             'firstName' => 'Joe',
@@ -233,7 +234,7 @@ class UsBankAccountTransactionTest extends Setup
 
     public function testCompliantMerchantPlaidNonce()
     {
-        $this->markTestSkipped( 'Skipping until we have a more stable CI env' );
+        $this->markTestSkipped('Skipping until we have a more stable CI env');
         Test\Helper::integration2MerchantConfig();
 
         $sale = Braintree\Transaction::sale([

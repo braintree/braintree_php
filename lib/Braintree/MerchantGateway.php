@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class MerchantGateway
@@ -30,11 +31,11 @@ class MerchantGateway
                 Merchant::factory($response['response']['merchant']),
                 OAuthCredentials::factory($response['response']['credentials']),
             ]);
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            "Expected merchant or apiErrorResponse"
+                "Expected merchant or apiErrorResponse"
             );
         }
     }

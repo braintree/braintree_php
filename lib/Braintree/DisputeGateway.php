@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use InvalidArgumentException;
@@ -145,7 +146,7 @@ class DisputeGateway
             if (array_key_exists('sequenceNumber', $request)) {
                 if (trim($request['sequenceNumber']) == "") {
                     throw new InvalidArgumentException('sequenceNumber cannot be blank');
-                } else if ((string)(int)($request['sequenceNumber']) != $request['sequenceNumber']) {
+                } elseif ((string)(int)($request['sequenceNumber']) != $request['sequenceNumber']) {
                     throw new InvalidArgumentException('sequenceNumber must be an integer');
                 }
                 $evidence['sequenceNumber'] = (int)$request['sequenceNumber'];
@@ -236,7 +237,8 @@ class DisputeGateway
 
             return new Result\Successful();
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound('evidence with id "' . $evidenceId . '" for dispute with id "' . $disputeId . '" not found');
+            $message = 'evidence with id "' . $evidenceId . '" for dispute with id "' . $disputeId . '" not found';
+            throw new Exception\NotFound($message);
         }
     }
 

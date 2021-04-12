@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class RangeNode
@@ -29,7 +30,7 @@ class RangeNode
 
     public function between($min, $max)
     {
-		return $this->greaterThanOrEqualTo($min)->lessThanOrEqualTo($max);
+        return $this->greaterThanOrEqualTo($min)->lessThanOrEqualTo($max);
     }
 
     public function toParam()

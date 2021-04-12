@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -31,10 +32,9 @@ class BinData extends Base
      * returns a string representation of the bin data
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
-            Util::attributesToString($this->_attributes) .']';
+            Util::attributesToString($this->_attributes) . ']';
     }
-
 }

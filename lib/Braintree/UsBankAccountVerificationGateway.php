@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use InvalidArgumentException;
@@ -84,6 +85,7 @@ class UsBankAccountVerificationGateway
     public function confirmMicroTransferAmounts($token, $amounts)
     {
         try {
+            // phpcs:ignore Generic.Files.LineLength
             $path = $this->_config->merchantPath() . '/us_bank_account_verifications/' . $token . '/confirm_micro_transfer_amounts';
             $response = $this->_http->put($path, [
                 "us_bank_account_verification" => ["deposit_amounts" => $amounts]
@@ -113,7 +115,7 @@ class UsBankAccountVerificationGateway
     {
         if (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
-        } else if (isset($response['usBankAccountVerification'])) {
+        } elseif (isset($response['usBankAccountVerification'])) {
             // return a populated instance of UsBankAccountVerification
             return new Result\Successful(
                 UsBankAccountVerification::factory($response['usBankAccountVerification'])

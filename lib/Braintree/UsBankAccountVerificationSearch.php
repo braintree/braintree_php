@@ -1,33 +1,41 @@
 <?php
+
 namespace Braintree;
 
 class UsBankAccountVerificationSearch
 {
-    public static function accountHolderName() {
+    public static function accountHolderName()
+    {
         return new TextNode('account_holder_name');
     }
 
-    public static function customerEmail() {
+    public static function customerEmail()
+    {
         return new TextNode('customer_email');
     }
 
-    public static function customerId() {
+    public static function customerId()
+    {
         return new TextNode('customer_id');
     }
 
-    public static function id() {
+    public static function id()
+    {
         return new TextNode('id');
     }
 
-    public static function paymentMethodToken(){
+    public static function paymentMethodToken()
+    {
         return new TextNode('payment_method_token');
     }
 
-    public static function routingNumber() {
+    public static function routingNumber()
+    {
         return new TextNode('routiner_number');
     }
 
-    public static function ids() {
+    public static function ids()
+    {
         return new MultipleValueNode('ids');
     }
 
@@ -47,7 +55,8 @@ class UsBankAccountVerificationSearch
         );
     }
 
-    public static function createdAt() {
+    public static function createdAt()
+    {
         return new RangeNode("created_at");
     }
 

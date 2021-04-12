@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -47,7 +48,7 @@ class TransactionTest extends Setup
         $transactionGateway
             ->expects($this->once())
             ->method('_doCreate')
-            ->will($this->returnCallback(function($path, $params) {
+            ->will($this->returnCallback(function ($path, $params) {
                 $this->assertTrue($params["transaction"]["options"]["skipAdvancedFraudChecking"]);
             }));
         $transactionGateway->sale([
@@ -68,7 +69,7 @@ class TransactionTest extends Setup
         $transactionGateway
             ->expects($this->once())
             ->method('_doCreate')
-            ->will($this->returnCallback(function($path, $params) {
+            ->will($this->returnCallback(function ($path, $params) {
                 $this->assertFalse($params["transaction"]["options"]["skipAdvancedFraudChecking"]);
             }));
         $transactionGateway->sale([
@@ -89,7 +90,7 @@ class TransactionTest extends Setup
         $transactionGateway
             ->expects($this->once())
             ->method('_doCreate')
-            ->will($this->returnCallback(function($path, $params) {
+            ->will($this->returnCallback(function ($path, $params) {
                 $this->assertArrayNotHasKey("skipAdvancedFraudChecking", $params["transaction"]["options"]);
             }));
         $transactionGateway->sale([

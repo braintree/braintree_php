@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -310,7 +311,7 @@ class SubscriptionTest extends Setup
         $plan = SubscriptionHelper::billingDayOfMonthPlan();
 
         $tomorrow = new DateTime("now + 1 day");
-        $tomorrow->setTime(0,0,0);
+        $tomorrow->setTime(0, 0, 0);
 
         $result = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
@@ -329,7 +330,7 @@ class SubscriptionTest extends Setup
         $plan = SubscriptionHelper::billingDayOfMonthPlan();
 
         $past = new DateTime("now - 3 days");
-        $past->setTime(0,0,0);
+        $past->setTime(0, 0, 0);
 
         $result = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
@@ -796,7 +797,6 @@ class SubscriptionTest extends Setup
     {
         $this->expectException('Braintree\Exception\NotFound', 'subscription with id does-not-exist not found');
         Braintree\Subscription::find('does-not-exist');
-
     }
 
     public function testUpdate_whenSuccessful()

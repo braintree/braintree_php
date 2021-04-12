@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -10,9 +11,8 @@ class Xml
     /**
      * @ignore
      */
-    protected function  __construct()
+    protected function __construct()
     {
-
     }
 
     /**

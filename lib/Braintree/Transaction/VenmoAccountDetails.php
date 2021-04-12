@@ -1,7 +1,9 @@
 <?php
+
 namespace Braintree\Transaction;
 
 use Braintree\Instance;
+
 /**
  * Venmo account details from a transaction
  *

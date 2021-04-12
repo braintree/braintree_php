@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -80,7 +81,7 @@ class SamsungPayCard extends Base
 
         $subscriptionArray = [];
         if (isset($creditCardAttribs['subscriptions'])) {
-            foreach ($creditCardAttribs['subscriptions'] AS $subscription) {
+            foreach ($creditCardAttribs['subscriptions'] as $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
@@ -108,10 +109,10 @@ class SamsungPayCard extends Base
      * ClassName[property=value, property=value]
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) . ']';
     }
 
     /**

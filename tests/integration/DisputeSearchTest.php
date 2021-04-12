@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -112,9 +113,10 @@ class DisputeSearchTest extends Setup
         $this->assertEquals($disputes[0]->statusHistory[0]->disbursementDate, DateTime::createFromFormat('Ymd His', '20140305 000000'));
     }
 
-    private function collectionToArray($collection) {
+    private function collectionToArray($collection)
+    {
         $array = [];
-        foreach($collection as $element) {
+        foreach ($collection as $element) {
             array_push($array, $element);
         }
         return $array;

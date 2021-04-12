@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -158,7 +159,9 @@ class PayPalAccountTest extends Setup
         ])->subscription;
 
         $paypalAccount = Braintree\PayPalAccount::find($token);
-        $getIds = function($sub) { return $sub->id; };
+        $getIds = function ($sub) {
+            return $sub->id;
+        };
         $subIds = array_map($getIds, $paypalAccount->subscriptions);
         $this->assertTrue(in_array($subscription1->id, $subIds));
         $this->assertTrue(in_array($subscription2->id, $subIds));
@@ -192,7 +195,6 @@ class PayPalAccountTest extends Setup
 
         $this->expectException('Braintree\Exception\NotFound');
         Braintree\PayPalAccount::find($originalToken);
-
     }
 
     public function testUpdateAndMakeDefault()

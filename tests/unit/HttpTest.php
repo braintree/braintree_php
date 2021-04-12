@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -8,7 +9,8 @@ use Braintree;
 
 class HttpTest extends Setup
 {
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         Braintree\Configuration::environment('development');
         Braintree\Configuration::sslVersion(null);
@@ -28,7 +30,7 @@ class HttpTest extends Setup
     public function testMalformedUrlUsingSsl()
     {
         $this->ExpectException('Braintree\Exception\Connection', null, 3);
- 
+
         Braintree\Configuration::environment('sandbox');
         $http = new Braintree\Http(Braintree\Configuration::$global);
         $http->_doUrlRequest('get', '/a_malformed_url_using_ssl');

@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -89,7 +90,7 @@ class PaymentMethodTest extends Setup
         ]);
         $this->assertTrue($result->success);
     }
- 
+
     public function testCreate_fromThreeDSecureNonce()
     {
         $customer = Braintree\Customer::createNoValidate();
@@ -446,8 +447,12 @@ class PaymentMethodTest extends Setup
 
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('paypalAccount')->errors;
-        $this->assertContains(Braintree\Error\Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT,
-            array_map(function ($error) { return $error->code; }, $errors));
+        $this->assertContains(
+            Braintree\Error\Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT,
+            array_map(function ($error) {
+                return $error->code;
+            }, $errors)
+        );
     }
 
     public function testCreate_handlesValidationErrorsForPayPalAccounts()
@@ -468,10 +473,18 @@ class PaymentMethodTest extends Setup
 
         $this->assertFalse($result->success);
         $errors = $result->errors->forKey('paypalAccount')->errors;
-        $this->assertContains(Braintree\Error\Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT,
-            array_map(function ($error) { return $error->code; }, $errors));
-        $this->assertContains(Braintree\Error\Codes::PAYPAL_ACCOUNT_CONSENT_CODE_OR_ACCESS_TOKEN_IS_REQUIRED,
-            array_map(function ($error) { return $error->code; }, $errors));
+        $this->assertContains(
+            Braintree\Error\Codes::PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT,
+            array_map(function ($error) {
+                return $error->code;
+            }, $errors)
+        );
+        $this->assertContains(
+            Braintree\Error\Codes::PAYPAL_ACCOUNT_CONSENT_CODE_OR_ACCESS_TOKEN_IS_REQUIRED,
+            array_map(function ($error) {
+                return $error->code;
+            }, $errors)
+        );
     }
 
     public function testCreate_allowsPassingDefaultOptionWithNonce()
@@ -649,7 +662,7 @@ class PaymentMethodTest extends Setup
         $token = $result->paymentMethod->token;
 
         $foundCreditCard = Braintree\CreditCard::find($token);
-        $this->assertTrue(NULL != $foundCreditCard);
+        $this->assertTrue(null != $foundCreditCard);
         $this->assertEquals('123 Abc Way', $foundCreditCard->billingAddress->streetAddress);
     }
 
@@ -684,7 +697,7 @@ class PaymentMethodTest extends Setup
         $token = $result->paymentMethod->token;
 
         $foundCreditCard = Braintree\CreditCard::find($token);
-        $this->assertTrue(NULL != $foundCreditCard);
+        $this->assertTrue(null != $foundCreditCard);
         $this->assertEquals('123 Abc Way', $foundCreditCard->billingAddress->streetAddress);
     }
 
@@ -717,7 +730,7 @@ class PaymentMethodTest extends Setup
         $token = $result->paymentMethod->token;
 
         $foundCreditCard = Braintree\CreditCard::find($token);
-        $this->assertTrue(NULL != $foundCreditCard);
+        $this->assertTrue(null != $foundCreditCard);
         $this->assertEquals('456 Xyz Way', $foundCreditCard->billingAddress->streetAddress);
     }
 
@@ -752,7 +765,7 @@ class PaymentMethodTest extends Setup
         $token = $result->paymentMethod->token;
 
         $foundCreditCard = Braintree\CreditCard::find($token);
-        $this->assertTrue(NULL != $foundCreditCard);
+        $this->assertTrue(null != $foundCreditCard);
         $this->assertEquals('Bobby', $foundCreditCard->billingAddress->firstName);
         $this->assertEquals('Tables', $foundCreditCard->billingAddress->lastName);
     }
@@ -804,7 +817,7 @@ class PaymentMethodTest extends Setup
         $token = $result->paymentMethod->token;
 
         $foundPaypalAccount = Braintree\PaypalAccount::find($token);
-        $this->assertTrue(NULL != $foundPaypalAccount);
+        $this->assertTrue(null != $foundPaypalAccount);
     }
 
     public function testCreate_ignoresPassedBillingAddressIdForPaypalAccount()
@@ -827,7 +840,7 @@ class PaymentMethodTest extends Setup
         $token = $result->paymentMethod->token;
 
         $foundPaypalAccount = Braintree\PaypalAccount::find($token);
-        $this->assertTrue(NULL != $foundPaypalAccount);
+        $this->assertTrue(null != $foundPaypalAccount);
     }
 
     public function testCreate_acceptsNumberAndOtherCreditCardParameters()
@@ -1001,7 +1014,7 @@ class PaymentMethodTest extends Setup
     }
 
     public function testUpdate_fromThreeDSecureNonceWithPassThruParams()
-    { 
+    {
         $customer = Braintree\Customer::createNoValidate();
         $creditCardResult = Braintree\CreditCard::create([
             'cardholderName' => 'Original Holder',
@@ -1306,7 +1319,7 @@ class PaymentMethodTest extends Setup
         $this->assertTrue($updateResult->success);
         $updatedCreditCard = $updateResult->paymentMethod;
         $this->assertSame("IL", $updatedCreditCard->billingAddress->region);
-        $this->assertSame(NULL, $updatedCreditCard->billingAddress->streetAddress);
+        $this->assertSame(null, $updatedCreditCard->billingAddress->streetAddress);
         $this->assertFalse($creditCard->billingAddress->id == $updatedCreditCard->billingAddress->id);
     }
 
@@ -1424,7 +1437,7 @@ class PaymentMethodTest extends Setup
 
         $this->assertFalse($updateResult->success);
         $this->assertEquals(Braintree\Result\CreditCardVerification::PROCESSOR_DECLINED, $updateResult->creditCardVerification->status);
-        $this->assertEquals(NULL, $updateResult->creditCardVerification->gatewayRejectionReason);
+        $this->assertEquals(null, $updateResult->creditCardVerification->gatewayRejectionReason);
     }
 
     public function testUpdate_canPassCustomVerificationAmount()
@@ -1450,7 +1463,7 @@ class PaymentMethodTest extends Setup
 
         $this->assertFalse($updateResult->success);
         $this->assertEquals(Braintree\Result\CreditCardVerification::PROCESSOR_DECLINED, $updateResult->creditCardVerification->status);
-        $this->assertEquals(NULL, $updateResult->creditCardVerification->gatewayRejectionReason);
+        $this->assertEquals(null, $updateResult->creditCardVerification->gatewayRejectionReason);
     }
 
     public function testUpdate_canUpdateTheBillingAddress()
@@ -1631,7 +1644,6 @@ class PaymentMethodTest extends Setup
 
         $updatedPaypalAccount = Braintree\PaymentMethod::find($originalToken);
         $this->assertTrue($updatedPaypalAccount->default);
-
     }
 
     public function testUpdate_returnsAnErrorIfATokenForAccountIsUsedToAttemptAnUpdate()
@@ -1676,7 +1688,6 @@ class PaymentMethodTest extends Setup
         $this->assertFalse($updateResult->success);
         $resultErrors = $updateResult->errors->deepAll();
         $this->assertEquals("92906", $resultErrors[0]->code);
-
     }
 
     public function testDelete_worksWithCreditCards()

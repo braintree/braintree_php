@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -34,7 +35,7 @@ class Plan extends Base
 
         $addOnArray = [];
         if (isset($attributes['addOns'])) {
-            foreach ($attributes['addOns'] AS $addOn) {
+            foreach ($attributes['addOns'] as $addOn) {
                 $addOnArray[] = AddOn::factory($addOn);
             }
         }
@@ -42,7 +43,7 @@ class Plan extends Base
 
         $discountArray = [];
         if (isset($attributes['discounts'])) {
-            foreach ($attributes['discounts'] AS $discount) {
+            foreach ($attributes['discounts'] as $discount) {
                 $discountArray[] = Discount::factory($discount);
             }
         }
@@ -50,7 +51,7 @@ class Plan extends Base
 
         $planArray = [];
         if (isset($attributes['plans'])) {
-            foreach ($attributes['plans'] AS $plan) {
+            foreach ($attributes['plans'] as $plan) {
                 $planArray[] = self::factory($plan);
             }
         }

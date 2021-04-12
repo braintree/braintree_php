@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -80,7 +81,7 @@ class GooglePayCard extends Base
 
         $subscriptionArray = [];
         if (isset($googlePayCardAttribs['subscriptions'])) {
-            foreach ($googlePayCardAttribs['subscriptions'] AS $subscription) {
+            foreach ($googlePayCardAttribs['subscriptions'] as $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }

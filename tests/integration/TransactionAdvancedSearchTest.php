@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -26,7 +27,7 @@ class TransactionAdvancedSearchTest extends Setup
             Braintree\TransactionSearch::billingFirstName()->is('thisnameisnotreal')
         ]);
 
-        foreach($collection as $transaction) {
+        foreach ($collection as $transaction) {
             $resultsReturned = true;
             break;
         }
@@ -127,7 +128,7 @@ class TransactionAdvancedSearchTest extends Setup
         ];
 
         $query = [Braintree\TransactionSearch::id()->is($transaction->id)];
-        foreach ($search_criteria AS $criterion => $value) {
+        foreach ($search_criteria as $criterion => $value) {
             $query[] = Braintree\TransactionSearch::$criterion()->is($value);
         }
 
@@ -136,7 +137,7 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($transaction->id, $collection->firstItem()->id);
 
-        foreach ($search_criteria AS $criterion => $value) {
+        foreach ($search_criteria as $criterion => $value) {
             $collection = Braintree\Transaction::search([
                 Braintree\TransactionSearch::$criterion()->is($value),
                 Braintree\TransactionSearch::id()->is($transaction->id)
@@ -686,7 +687,7 @@ class TransactionAdvancedSearchTest extends Setup
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::creditCardCardholderName()->is($creditCard->cardholderName),
             Braintree\TransactionSearch::type()->is($credit->type),
-            Braintree\TransactionSearch::refund()->is(True)
+            Braintree\TransactionSearch::refund()->is(true)
         ]);
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($refund->id, $collection->firstItem()->id);
@@ -694,7 +695,7 @@ class TransactionAdvancedSearchTest extends Setup
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::creditCardCardholderName()->is($creditCard->cardholderName),
             Braintree\TransactionSearch::type()->is($credit->type),
-            Braintree\TransactionSearch::refund()->is(False)
+            Braintree\TransactionSearch::refund()->is(false)
         ]);
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($credit->id, $collection->firstItem()->id);
@@ -778,7 +779,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_rangeNode_disbursementDate_lessThanOrEqualTo()
     {
-        $compareLessThan = function($time) {
+        $compareLessThan = function ($time) {
             return Braintree\TransactionSearch::disbursementDate()->lessThanOrEqualTo($time);
         };
         $collection = $this->runDisbursementDateSearchTests("2013-04-10", $compareLessThan);
@@ -790,7 +791,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_rangeNode_disbursementDate_GreaterThanOrEqualTo()
     {
-        $comparison = function($time) {
+        $comparison = function ($time) {
             return Braintree\TransactionSearch::disbursementDate()->GreaterThanOrEqualTo($time);
         };
         $collection = $this->runDisbursementDateSearchTests("2013-04-11", $comparison);
@@ -876,7 +877,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     private function createTestDisputedTransaction()
     {
-        if(self::$disputedTransaction !== null) {
+        if (self::$disputedTransaction !== null) {
             return self::$disputedTransaction;
         }
 
@@ -889,7 +890,7 @@ class TransactionAdvancedSearchTest extends Setup
         ]);
         self::$disputedTransaction = $result->transaction;
 
-        for($i = 0; $i < 60; $i++) {
+        for ($i = 0; $i < 60; $i++) {
             sleep(1);
 
             $collection = Braintree\Transaction::search([
@@ -897,7 +898,7 @@ class TransactionAdvancedSearchTest extends Setup
                 Braintree\TransactionSearch::disputeDate()->is($result->transaction->disputes[0]->receivedDate)
             ]);
 
-            if($collection->maximumCount() > 0) {
+            if ($collection->maximumCount() > 0) {
                 return self::$disputedTransaction;
             }
         }
@@ -934,7 +935,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_rangeNode_disputeDate_lessThanOrEqualTo()
     {
-        $compareLessThan = function($time) {
+        $compareLessThan = function ($time) {
             return Braintree\TransactionSearch::disputeDate()->lessThanOrEqualTo($time);
         };
 
@@ -947,7 +948,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_rangeNode_disputeDate_GreaterThanOrEqualTo()
     {
-        $comparison = function($time) {
+        $comparison = function ($time) {
             return Braintree\TransactionSearch::disputeDate()->GreaterThanOrEqualTo($time);
         };
 
@@ -1537,7 +1538,7 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertGreaterThan(100, $collection->maximumCount());
 
         $arr = [];
-        foreach($collection as $transaction) {
+        foreach ($collection as $transaction) {
             array_push($arr, $transaction->id);
         }
         $unique_transaction_ids = array_unique(array_values($arr));

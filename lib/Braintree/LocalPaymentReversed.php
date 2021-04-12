@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -9,7 +10,7 @@ namespace Braintree;
  */
 
 /**
- * Manages Braintree LocalPaymentReversed 
+ * Manages Braintree LocalPaymentReversed
  *
  * <b>== More information ==</b>
  *
@@ -26,7 +27,7 @@ class LocalPaymentReversed extends Base
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return LocalPaymentReversed 
+     * @return LocalPaymentReversed
      */
     public static function factory($attributes)
     {
@@ -55,7 +56,7 @@ class LocalPaymentReversed extends Base
      * ClassName[property=value, property=value]
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes) . ']';

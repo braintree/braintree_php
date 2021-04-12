@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -71,21 +72,22 @@ class Dispute extends Base
         }
 
         if (isset($disputeAttribs['evidence'])) {
-            $evidenceArray = array_map(function($evidence) {
+            $evidenceArray = array_map(function ($evidence) {
                 return new Dispute\EvidenceDetails($evidence);
             }, $disputeAttribs['evidence']);
             $this->_set('evidence', $evidenceArray);
         }
 
         if (isset($disputeAttribs['statusHistory'])) {
-            $statusHistoryArray = array_map(function($statusHistory) {
+            $statusHistoryArray = array_map(function ($statusHistory) {
                 return new Dispute\StatusHistoryDetails($statusHistory);
             }, $disputeAttribs['statusHistory']);
             $this->_set('statusHistory', $statusHistoryArray);
         }
 
         if (isset($disputeAttribs['transaction'])) {
-            $this->_set('transaction',
+            $this->_set(
+                'transaction',
                 new Dispute\TransactionDetails($disputeAttribs['transaction'])
             );
         }
@@ -98,7 +100,7 @@ class Dispute extends Base
         return $instance;
     }
 
-    public function  __toString()
+    public function __toString()
     {
         $display = [
             'amount', 'reason', 'status',
@@ -106,11 +108,11 @@ class Dispute extends Base
             ];
 
         $displayAttributes = [];
-        foreach ($display AS $attrib) {
+        foreach ($display as $attrib) {
             $displayAttributes[$attrib] = $this->$attrib;
         }
         return __CLASS__ . '[' .
-                Util::attributesToString($displayAttributes) .']';
+                Util::attributesToString($displayAttributes) . ']';
     }
 
     /**
@@ -138,6 +140,7 @@ class Dispute extends Base
      * Adds text evidence to a dispute, given a dispute ID and content
      *
      * @param string $id
+     * // phpcs:ignore Generic.Files.LineLength
      * @param string|mixed $contentOrRequest If a string, $contentOrRequest is the text-based content for the dispute evidence.
      * Alternatively, the second argument can also be an array containing:
      *  string $content The text-based content for the dispute evidence, and

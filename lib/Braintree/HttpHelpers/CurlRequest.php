@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\HttpHelpers;
 
 class CurlRequest implements HttpRequest

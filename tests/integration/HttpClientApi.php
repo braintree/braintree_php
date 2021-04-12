@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -35,7 +36,7 @@ class HttpClientApi extends Braintree\Http
         ]);
         curl_setopt($curl, CURLOPT_USERPWD, $this->_config->publicKey() . ':' . $this->_config->privateKey());
 
-        if(!empty($requestBody)) {
+        if (!empty($requestBody)) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
         }
 
@@ -46,7 +47,8 @@ class HttpClientApi extends Braintree\Http
         return ['status' => $httpStatus, 'body' => $response];
     }
 
-    public function get_configuration($options) {
+    public function get_configuration($options)
+    {
         $encoded_fingerprint = urlencode($options["authorization_fingerprint"]);
         $url = "/client_api/v1/configuration?";
         $url .= "authorizationFingerprint=" . $encoded_fingerprint;
@@ -60,7 +62,8 @@ class HttpClientApi extends Braintree\Http
         }
     }
 
-    public function get_cards($options) {
+    public function get_cards($options)
+    {
         $encoded_fingerprint = urlencode($options["authorization_fingerprint"]);
         $url = "/client_api/v1/payment_methods.json?";
         $url .= "authorizationFingerprint=" . $encoded_fingerprint;
@@ -70,7 +73,8 @@ class HttpClientApi extends Braintree\Http
         return $this->get($url);
     }
 
-    public function nonce_for_new_card($options) {
+    public function nonce_for_new_card($options)
+    {
         $clientTokenOptions = [];
         if (array_key_exists("customerId", $options)) {
             $clientTokenOptions["customerId"] = $options["customerId"];
@@ -91,7 +95,8 @@ class HttpClientApi extends Braintree\Http
         }
     }
 
-    public function nonceForPayPalAccount($options) {
+    public function nonceForPayPalAccount($options)
+    {
         $clientToken = json_decode(Test\Helper::decodedClientToken());
         $options["authorization_fingerprint"] = $clientToken->authorizationFingerprint;
         $response = $this->post('/client_api/v1/payment_methods/paypal_accounts.json', json_encode($options));

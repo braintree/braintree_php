@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(dirname(__DIR__)) . '/Setup.php';
@@ -14,7 +15,8 @@ class CurlTest extends Setup
     private $_config;
     private $_mockHttpRequest;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         $this->_config = new Braintree\Configuration();
         $this->_mockHttpRequest = new MockHttpRequest();
     }

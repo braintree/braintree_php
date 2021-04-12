@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -26,12 +27,9 @@ class ApplePayGateway
     {
         $path = $this->_config->merchantPath() . '/processing/apple_pay/validate_domains';
         $response = $this->_http->post($path, ['url' => $domain]);
-        if (array_key_exists('response', $response) && $response['response']['success'])
-        {
-            return new Result\Successful;
-        }
-        else if (array_key_exists('apiErrorResponse', $response))
-        {
+        if (array_key_exists('response', $response) && $response['response']['success']) {
+            return new Result\Successful();
+        } elseif (array_key_exists('apiErrorResponse', $response)) {
             return new Result\Error($response['apiErrorResponse']);
         }
     }
@@ -40,24 +38,19 @@ class ApplePayGateway
     {
         $path = $this->_config->merchantPath() . '/processing/apple_pay/unregister_domain';
         $this->_http->delete($path, ['url' => $domain]);
-        return new Result\Successful;
+        return new Result\Successful();
     }
 
     public function registeredDomains()
     {
         $path = $this->_config->merchantPath() . '/processing/apple_pay/registered_domains';
         $response = $this->_http->get($path);
-        if (array_key_exists('response', $response) && array_key_exists('domains', $response['response']))
-        {
+        if (array_key_exists('response', $response) && array_key_exists('domains', $response['response'])) {
             $options = ApplePayOptions::factory($response['response']);
             return new Result\Successful($options, 'applePayOptions');
-        }
-        else if (array_key_exists('apiErrorResponse', $response))
-        {
+        } elseif (array_key_exists('apiErrorResponse', $response)) {
             return new Result\Error($response['apiErrorResponse']);
-        }
-        else
-        {
+        } else {
             throw new Exception\Unexpected('expected response or apiErrorResponse');
         }
     }

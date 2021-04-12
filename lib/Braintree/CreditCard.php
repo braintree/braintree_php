@@ -1,6 +1,8 @@
 <?php
+
 namespace Braintree;
 
+// phpcs:disable Generic.Files.LineLength
 /**
  * Braintree CreditCard module
  * Creates and manages Braintree CreditCards
@@ -44,6 +46,8 @@ namespace Braintree;
  * @property-read \DateTime $updatedAt
  * @property-read \Braintree\CreditCardVerification|null $verification
  */
+// phpcs:enable Generic.Files.LineLength
+
 class CreditCard extends Base
 {
     // Card Type
@@ -145,7 +149,7 @@ class CreditCard extends Base
 
         $subscriptionArray = [];
         if (isset($creditCardAttribs['subscriptions'])) {
-            foreach ($creditCardAttribs['subscriptions'] AS $subscription) {
+            foreach ($creditCardAttribs['subscriptions'] as $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
@@ -155,7 +159,7 @@ class CreditCard extends Base
         $this->_set('expirationDate', $this->expirationMonth . '/' . $this->expirationYear);
         $this->_set('maskedNumber', $this->bin . '******' . $this->last4);
 
-        if(isset($creditCardAttribs['verifications']) && count($creditCardAttribs['verifications']) > 0) {
+        if (isset($creditCardAttribs['verifications']) && count($creditCardAttribs['verifications']) > 0) {
             $verifications = $creditCardAttribs['verifications'];
             usort($verifications, [$this, '_compareCreatedAtOnVerifications']);
 
@@ -185,10 +189,10 @@ class CreditCard extends Base
      * ClassName[property=value, property=value]
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) . ']';
     }
 
     /**
