@@ -79,6 +79,11 @@ class DisputeSearch
         return new MultipleValueNode("status");
     }
 
+    public static function chargebackProtectionLevel()
+    {
+        return new MultipleValueNode("chargeback_protection_level", Dispute::allChargebackProtectionLevelTypes();
+    }
+
     public static function transactionId()
     {
         return new TextNode("transaction_id");
