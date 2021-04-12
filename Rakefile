@@ -1,8 +1,8 @@
 do_not_cache = "--do-not-cache-result"
 
 task :default => :test
-task :test => %w[lint:sniff[y] test:unit test:integration]
-task :lint => %w[lint:sniff[y]]
+task :test => %w[lint:sniff test:unit test:integration]
+task :lint => %w[lint:sniff]
 
 namespace :lint do
   # Usage:
