@@ -84,5 +84,48 @@ class BaseTest extends Setup
         'channel' => 'sonic',
       ]);
       $this->assertTrue(isset($transaction->channel));
+      $this->assertFalse(empty($transaction->channel));
+
+
+      $transaction = Braintree\Transaction::factory([
+        'creditCard' => [
+          'expirationMonth' => '05',
+          'expirationYear' => '2010',
+          'bin' => '510510',
+          'last4' => '5100',
+          'cardType' => 'MasterCard',
+        ],
+        'channel' => false,
+      ]);
+      $this->assertTrue(isset($transaction->channel));
+      $this->assertTrue(empty($transaction->channel));
+
+
+      $transaction = Braintree\Transaction::factory([
+        'creditCard' => [
+          'expirationMonth' => '05',
+          'expirationYear' => '2010',
+          'bin' => '510510',
+          'last4' => '5100',
+          'cardType' => 'MasterCard',
+        ],
+        'channel' => null,
+      ]);
+      $this->assertFalse(isset($transaction->channel));
+      $this->assertTrue(empty($transaction->channel));
+
+
+      $transaction = Braintree\Transaction::factory([
+        'creditCard' => [
+          'expirationMonth' => '05',
+          'expirationYear' => '2010',
+          'bin' => '510510',
+          'last4' => '5100',
+          'cardType' => 'MasterCard',
+        ],
+      ]);
+      $this->assertFalse(isset($transaction->channel));
+      $this->assertTrue(empty($transaction->channel));
+
     }
 }

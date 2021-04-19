@@ -33,6 +33,30 @@ class InstanceTest extends Setup
       ]);
       $this->assertTrue(empty($transaction->creditCardDetails->cardType));
       $this->assertFalse(isset($transaction->creditCardDetails->cardType));
+
+      $transaction = Braintree\Transaction::factory([
+        'creditCard' => [
+          'expirationMonth' => '05',
+          'expirationYear' => '2010',
+          'bin' => '510510',
+          'last4' => '5100',
+          'cardType' => null,
+        ],
+      ]);
+      $this->assertTrue(empty($transaction->creditCardDetails->cardType));
+      $this->assertFalse(isset($transaction->creditCardDetails->cardType));
+
+      $transaction = Braintree\Transaction::factory([
+        'creditCard' => [
+          'expirationMonth' => '05',
+          'expirationYear' => '2010',
+          'bin' => '510510',
+          'last4' => '5100',
+          'cardType' => false,
+        ],
+      ]);
+      $this->assertTrue(empty($transaction->creditCardDetails->cardType));
+      $this->assertTrue(isset($transaction->creditCardDetails->cardType));
     }
 
     public function testToArray()
