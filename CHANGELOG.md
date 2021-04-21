@@ -1,5 +1,5 @@
 ## 6.0.1
-* Fix __isset methods for Instance and Base classes
+* Fix bug where `__isset` methods in `Instance` and `Base` classes treated `null` value as set
 
 ## 6.0.0
 * Add `LocalPaymentReversed` webhook
