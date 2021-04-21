@@ -1,3 +1,6 @@
+## 6.0.1
+* Fix bug where `__isset` methods in `Instance` and `Base` classes treated `null` value as set
+
 ## 6.0.0
 * Add `LocalPaymentReversed` webhook
 * Add `adjustAuthorization` method to Transaction, for supporting multiple authorizations on a single transaction
