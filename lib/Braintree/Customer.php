@@ -329,18 +329,19 @@ class Customer extends Base
      * @var array registry of customer data
      */
     protected $_attributes = [
-        'addresses'   => '',
-        'company'     => '',
-        'creditCards' => '',
-        'email'       => '',
-        'fax'         => '',
-        'firstName'   => '',
-        'id'          => '',
-        'lastName'    => '',
-        'phone'       => '',
-        'createdAt'   => '',
-        'updatedAt'   => '',
-        'website'     => '',
+        'addresses'      => '',
+        'company'        => '',
+        'creditCards'    => '',
+        'email'          => '',
+        'fax'            => '',
+        'firstName'      => '',
+        'id'             => '',
+        'lastName'       => '',
+        'phone'          => '',
+        'taxIdentifiers' => '',
+        'createdAt'      => '',
+        'updatedAt'      => '',
+        'website'        => '',
         ];
 
     /**
