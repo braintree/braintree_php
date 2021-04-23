@@ -1,3 +1,6 @@
+## Unreleased
+* Add `chargeback_protection_level` into dispute search
+
 ## 6.0.0
 * Add `LocalPaymentReversed` webhook
 * Add `adjustAuthorization` method to Transaction, for supporting multiple authorizations on a single transaction

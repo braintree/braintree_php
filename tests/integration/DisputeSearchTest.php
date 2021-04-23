@@ -68,6 +68,22 @@ class DisputeSearchTest extends Setup
         $this->assertGreaterThanOrEqual(2, count($disputes));
     }
 
+    public function testAdvancededSearch_byChargebackProtectionLevel_returnsDispute()
+        {
+            $collection = Braintree\Dispute::search([
+                Braintree\DisputeSearch::chargebackProtectionLevel()->in([
+                    Braintree\Dispute::EFFORTLESS,
+                ])
+            ]);
+
+            $disputes = $this->collectionToArray($collection);
+
+            $this->assertEquals(1, count($disputes));
+            $this->assertEquals($disputes[0]->caseNumber, "CASE-CHARGEBACK-PROTECTED");
+            $this->assertEquals($disputes[0]->reason, Braintree\Dispute::FRAUD);
+            $this->assertEquals($disputes[0]->chargebackProtectionLevel, Braintree\Dispute::EFFORTLESS);
+        }
+
     public function testAdvancedSearch_byReceivedDateRange_returnsDispute()
     {
         $collection = Braintree\Dispute::search([
