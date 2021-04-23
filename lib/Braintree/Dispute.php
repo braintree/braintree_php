@@ -207,7 +207,7 @@ class Dispute extends Base
         return [
             Dispute::EFFORTLESS,
             Dispute::STANDARD,
-            Dispute::NOT_PROTECTED,
+            Dispute::NOT_PROTECTED
         ];
     }
 }
