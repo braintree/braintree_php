@@ -21,6 +21,7 @@ class DisputeTest extends Setup
             'amountDisputed' => '100.00',
             'amountWon' => '0.00',
             'caseNumber' => 'CB123456',
+            'chargebackProtectionLevel' => 'effortless',
             'createdAt' => DateTime::createFromFormat('Ymd-His', '20130410-105039'),
             'currencyIsoCode' => 'USD',
             'dateOpened' => DateTime::createFromFormat('Ymd-His', '20130401-000000'),
@@ -129,6 +130,7 @@ class DisputeTest extends Setup
         $this->assertEquals("100.00", $dispute->amountDisputed);
         $this->assertEquals("0.00", $dispute->amountWon);
         $this->assertEquals("CB123456", $dispute->caseNumber);
+        $this->assertEquals("effortless", $dispute->chargebackProtectionLevel);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->createdAt);
         $this->assertEquals("Forwarded comments", $dispute->processorComments);
         $this->assertEquals("abc123", $dispute->merchantAccountId);
