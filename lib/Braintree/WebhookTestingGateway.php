@@ -489,7 +489,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _subscriptionExpired($id) {
+    private static function _subscriptionExpiredSampleXml($id) {
         return "
         <subscription>
             <id>{$id}</id>
@@ -504,7 +504,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _subscriptionCanceled($id) {
+    private static function _subscriptionCanceledSampleXml($id) {
         return "
         <subscription>
             <id>{$id}</id>
@@ -519,7 +519,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _subscriptionWentPastDue($id) {
+    private static function _subscriptionWentPastDueSampleXml($id) {
         return "
         <subscription>
             <id>{$id}</id>
