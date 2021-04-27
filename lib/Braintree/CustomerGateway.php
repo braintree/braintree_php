@@ -121,6 +121,9 @@ class CustomerGateway
             ],
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
+            ['taxIdentifiers' =>
+                ['countryCode', 'identifier']
+            ],
             ['options' => [
                 ['paypal' => [
                     'payee_email',
@@ -164,6 +167,9 @@ class CustomerGateway
             'paymentMethodNonce', 'defaultPaymentMethodToken',
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
+            ['taxIdentifiers' =>
+                ['countryCode', 'identifier']
+            ],
             ['options' => [
                 ['paypal' => [
                     'payee_email',
