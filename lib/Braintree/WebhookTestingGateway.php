@@ -89,13 +89,13 @@ class WebhookTestingGateway
                 $subjectXml = self::_subscriptionChargedUnsuccessfullySampleXml($id);
                 break;
             case WebhookNotification::SUBSCRIPTION_EXPIRED:
-                $subjectXml = self::_subscriptionExpired($id);
+                $subjectXml = self::_subscriptionExpiredSampleXml($id);
                 break;
             case WebhookNotification::SUBSCRIPTION_CANCELED:
-                $subjectXml = self::_subscriptionCanceled($id);
+                $subjectXml = self::_subscriptionCanceledSampleXml($id);
                 break;
             case WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE:
-                $subjectXml = self::_subscriptionWentPastDue($id);
+                $subjectXml = self::_subscriptionWentPastDueSampleXml($id);
                 break;
             case WebhookNotification::CHECK:
                 $subjectXml = self::_checkSampleXml();
