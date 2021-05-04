@@ -26,6 +26,7 @@ namespace Braintree;
  * @property-read string $referenceNumber
  * @property-read \DateTime $replyByDate
  * @property-read string $status
+ * @property-read \Braintree\Dispute\PayPalMessageDetails[] $paypalMessages
  * @property-read \Braintree\Dispute\StatusHistoryDetails[] $statusHistory
  * @property-read \Braintree\Dispute\TransactionDetails $transaction
  * @property-read \Braintree\Dispute\TransactionDetails $transactionDetails
@@ -76,6 +77,13 @@ class Dispute extends Base
                 return new Dispute\EvidenceDetails($evidence);
             }, $disputeAttribs['evidence']);
             $this->_set('evidence', $evidenceArray);
+        }
+
+        if (isset($disputeAttribs['paypalMessages'])) {
+            $paypalMessagesArray = array_map(function ($paypalMessages) {
+                return new Dispute\PayPalMessageDetails($paypalMessages);
+            }, $disputeAttribs['paypalMessages']);
+            $this->_set('paypalMessages', $paypalMessagesArray);
         }
 
         if (isset($disputeAttribs['statusHistory'])) {
