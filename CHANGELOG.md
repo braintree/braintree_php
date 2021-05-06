@@ -1,4 +1,4 @@
-## unreleased
+## 6.1.0
 * Add `paypalMessages` to `Dispute`
 * Fix bug where `__isset` methods in `Instance` and `Base` classes treated `null` value as set (Thanks @sklodzio)
 * Add `tax_identifiers` parameter to `Customer.create` and `Customer.update`
