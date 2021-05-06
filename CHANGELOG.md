@@ -1,5 +1,6 @@
-## 6.0.1
+## unreleased
 * Fix bug where `__isset` methods in `Instance` and `Base` classes treated `null` value as set
+* Add sample webhook notifications for `SUBSCRIPTION_EXPIRED`, `SUBSCRIPTION_CANCELED` and `SUBSCRIPTION_WENT_PAST_DUE` (thanks @antonvolokha)
 
 ## 6.0.0
 * Add `LocalPaymentReversed` webhook
