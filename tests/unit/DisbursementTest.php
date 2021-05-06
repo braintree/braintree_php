@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -31,7 +32,7 @@ class DisbursementTest extends Setup
             "success" => false
         ]);
 
-       $this->assertEquals((string) $disbursement, 'Braintree\Disbursement[id=123456, merchantAccountDetails=id=sandbox_sub_merchant_account, masterMerchantAccount=id=sandbox_master_merchant_account, status=active, status=active, exceptionMessage=invalid_account_number, amount=100.00, disbursementDate=Wednesday, 10-Apr-13 00:00:00 UTC, followUpAction=update, retry=, success=, transactionIds=0=sub_merchant_transaction, disbursementType=credit]');
+        $this->assertEquals((string) $disbursement, 'Braintree\Disbursement[id=123456, merchantAccountDetails=id=sandbox_sub_merchant_account, masterMerchantAccount=id=sandbox_master_merchant_account, status=active, status=active, exceptionMessage=invalid_account_number, amount=100.00, disbursementDate=Wednesday, 10-Apr-13 00:00:00 UTC, followUpAction=update, retry=, success=, transactionIds=0=sub_merchant_transaction, disbursementType=credit]');
     }
 
     public function testIsDebit()

@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -8,11 +9,13 @@ use Braintree;
 
 class GatewayTest extends Setup
 {
-    public function setUp(): void {
+    public function setUp(): void
+    {
         Braintree\Configuration::reset();
     }
 
-    public function teardown(): void {
+    public function teardown(): void
+    {
         Braintree\Configuration::environment('development');
         Braintree\Configuration::merchantId('integration_merchant_id');
         Braintree\Configuration::publicKey('integration_public_key');

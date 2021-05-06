@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -24,7 +25,7 @@ class CustomerAdvancedSearchTest extends Setup
             Braintree\CustomerSearch::firstName()->is('badname')
         ]);
 
-        foreach($collection as $customer) {
+        foreach ($collection as $customer) {
             $resultsReturned = true;
             break;
         }
@@ -44,8 +45,7 @@ class CustomerAdvancedSearchTest extends Setup
         $collection = Braintree\Customer::search($query);
 
         $customerIds = [];
-        foreach($collection as $customer)
-        {
+        foreach ($collection as $customer) {
             $customerIds[] = $customer->id;
         }
 
@@ -106,7 +106,7 @@ class CustomerAdvancedSearchTest extends Setup
         ]);
 
         $query = [Braintree\CustomerSearch::id()->is($customer->id)];
-        foreach ($search_criteria AS $criterion => $value) {
+        foreach ($search_criteria as $criterion => $value) {
             $query[] = Braintree\CustomerSearch::$criterion()->is($value);
         }
 
@@ -115,7 +115,7 @@ class CustomerAdvancedSearchTest extends Setup
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($customer->id, $collection->firstItem()->id);
 
-        foreach ($search_criteria AS $criterion => $value) {
+        foreach ($search_criteria as $criterion => $value) {
             $collection = Braintree\Customer::search([
                 Braintree\CustomerSearch::$criterion()->is($value),
                 Braintree\CustomerSearch::id()->is($customer->id),

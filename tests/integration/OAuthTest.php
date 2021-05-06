@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -40,7 +41,7 @@ class OAuthTest extends Setup
 
         $this->expectException('Braintree\Exception\Configuration', 'clientSecret needs to be passed to Braintree\Gateway');
         $gateway->oauth()->createTokenFromCode([
-            'code' => 'integration_oauth_auth_code_' . rand(0,299)
+            'code' => 'integration_oauth_auth_code_' . rand(0, 299)
         ]);
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration\Result;
 
 require_once dirname(dirname(__DIR__)) . '/Setup.php';

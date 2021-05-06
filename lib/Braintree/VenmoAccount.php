@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -64,7 +65,7 @@ class VenmoAccount extends Base
 
         $subscriptionArray = array();
         if (isset($venmoAccountAttribs['subscriptions'])) {
-            foreach ($venmoAccountAttribs['subscriptions'] AS $subscription) {
+            foreach ($venmoAccountAttribs['subscriptions'] as $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }

@@ -1,9 +1,11 @@
 <?php
+
 namespace Braintree;
 
 class DisputeSearch
 {
-    public static function amountDisputed() {
+    public static function amountDisputed()
+    {
         return new RangeNode("amount_disputed");
     }
 

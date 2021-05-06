@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class ClientToken
@@ -13,7 +14,7 @@ class ClientToken
      * @param array $params
      * @return string
      */
-    public static function generate($params=[])
+    public static function generate($params = [])
     {
         return Configuration::gateway()->clientToken()->generate($params);
     }

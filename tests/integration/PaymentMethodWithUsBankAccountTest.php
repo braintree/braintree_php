@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -66,7 +67,7 @@ class PaymentMethodWithUsBankAccountTest extends Setup
 
     public function testCreate_fromPlaidUsBankAccountNonce()
     {
-        $this->markTestSkipped( 'Skipping until we have a more stable CI env' );
+        $this->markTestSkipped('Skipping until we have a more stable CI env');
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
@@ -140,5 +141,4 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         $this->assertEquals(0, count($usBankAccount->verifications));
         self::integrationMerchantConfig();
     }
-
 }

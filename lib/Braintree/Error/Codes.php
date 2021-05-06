@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\Error;
 
 /**
@@ -17,6 +18,7 @@ namespace Braintree\Error;
  */
 class Codes
 {
+    // phpcs:disable Generic.Files.LineLength
     const ADDRESS_CANNOT_BE_BLANK                                      = '81801';
     const ADDRESS_COMPANY_IS_INVALID                                   = '91821';
     const ADDRESS_COMPANY_IS_TOO_LONG                                  = '81802';
@@ -468,46 +470,46 @@ class Codes
     const SETTLEMENT_BATCH_SUMMARY_SETTLEMENT_DATE_IS_REQUIRED = '82301';
     const SETTLEMENT_BATCH_SUMMARY_CUSTOM_FIELD_IS_INVALID     = '82303';
 
-	const SUBSCRIPTION_BILLING_DAY_OF_MONTH_CANNOT_BE_UPDATED                              = '91918';
-	const SUBSCRIPTION_BILLING_DAY_OF_MONTH_IS_INVALID                                     = '91914';
-	const SUBSCRIPTION_BILLING_DAY_OF_MONTH_MUST_BE_NUMERIC                                = '91913';
-	const SUBSCRIPTION_CANNOT_ADD_DUPLICATE_ADDON_OR_DISCOUNT                              = '91911';
-	const SUBSCRIPTION_CANNOT_EDIT_CANCELED_SUBSCRIPTION                                   = '81901';
-	const SUBSCRIPTION_CANNOT_EDIT_EXPIRED_SUBSCRIPTION                                    = '81910';
-	const SUBSCRIPTION_CANNOT_EDIT_PRICE_CHANGING_FIELDS_ON_PAST_DUE_SUBSCRIPTION          = '91920';
-	const SUBSCRIPTION_FIRST_BILLING_DATE_CANNOT_BE_IN_THE_PAST                            = '91916';
-	const SUBSCRIPTION_FIRST_BILLING_DATE_CANNOT_BE_UPDATED                                = '91919';
-	const SUBSCRIPTION_FIRST_BILLING_DATE_IS_INVALID                                       = '91915';
-	const SUBSCRIPTION_ID_IS_IN_USE                                                        = '81902';
-	const SUBSCRIPTION_INCONSISTENT_NUMBER_OF_BILLING_CYCLES                               = '91908';
-	const SUBSCRIPTION_INCONSISTENT_START_DATE                                             = '91917';
-	const SUBSCRIPTION_INVALID_REQUEST_FORMAT                                              = '91921';
-	const SUBSCRIPTION_MERCHANT_ACCOUNT_ID_IS_INVALID                                      = '91901';
-	const SUBSCRIPTION_MISMATCH_CURRENCY_ISO_CODE                                          = '91923';
-	const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_CANNOT_BE_BLANK                            = '91912';
-	const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_IS_TOO_SMALL                               = '91909';
-	const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_MUST_BE_GREATER_THAN_ZERO                  = '91907';
-	const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_MUST_BE_NUMERIC                            = '91906';
-	const SUBSCRIPTION_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED                      = '91924';
-	const SUBSCRIPTION_PAYMENT_METHOD_NONCE_IS_INVALID                                     = '91925';
-	const SUBSCRIPTION_PAYMENT_METHOD_NONCE_NOT_ASSOCIATED_WITH_CUSTOMER                   = '91926';
-	const SUBSCRIPTION_PAYMENT_METHOD_NONCE_UNVAULTED_CARD_IS_NOT_ACCEPTED                 = '91927';
-	const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_CARD_TYPE_IS_NOT_ACCEPTED                      = '91902';
-	const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_IS_INVALID                                     = '91903';
-	const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_NOT_ASSOCIATED_WITH_CUSTOMER                   = '91905';
-	const SUBSCRIPTION_PLAN_BILLING_FREQUENCY_CANNOT_BE_UPDATED                            = '91922';
-	const SUBSCRIPTION_PLAN_ID_IS_INVALID                                                  = '91904';
-	const SUBSCRIPTION_PRICE_CANNOT_BE_BLANK                                               = '81903';
-	const SUBSCRIPTION_PRICE_FORMAT_IS_INVALID                                             = '81904';
-	const SUBSCRIPTION_PRICE_IS_TOO_LARGE                                                  = '81923';
-	const SUBSCRIPTION_STATUS_IS_CANCELED                                                  = '81905';
-	const SUBSCRIPTION_TOKEN_FORMAT_IS_INVALID                                             = '81906';
-	const SUBSCRIPTION_TRIAL_DURATION_FORMAT_IS_INVALID                                    = '81907';
-	const SUBSCRIPTION_TRIAL_DURATION_IS_REQUIRED                                          = '81908';
-	const SUBSCRIPTION_TRIAL_DURATION_UNIT_IS_INVALID                                      = '81909';
-	const SUBSCRIPTION_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_INSTRUMENT_TYPE                   = '91930';
-	const SUBSCRIPTION_PAYMENT_METHOD_NONCE_INSTRUMENT_TYPE_DOES_NOT_SUPPORT_SUBSCRIPTIONS = '91929';
-	const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_INSTRUMENT_TYPE_DOES_NOT_SUPPORT_SUBSCRIPTIONS = '91928';
+    const SUBSCRIPTION_BILLING_DAY_OF_MONTH_CANNOT_BE_UPDATED                              = '91918';
+    const SUBSCRIPTION_BILLING_DAY_OF_MONTH_IS_INVALID                                     = '91914';
+    const SUBSCRIPTION_BILLING_DAY_OF_MONTH_MUST_BE_NUMERIC                                = '91913';
+    const SUBSCRIPTION_CANNOT_ADD_DUPLICATE_ADDON_OR_DISCOUNT                              = '91911';
+    const SUBSCRIPTION_CANNOT_EDIT_CANCELED_SUBSCRIPTION                                   = '81901';
+    const SUBSCRIPTION_CANNOT_EDIT_EXPIRED_SUBSCRIPTION                                    = '81910';
+    const SUBSCRIPTION_CANNOT_EDIT_PRICE_CHANGING_FIELDS_ON_PAST_DUE_SUBSCRIPTION          = '91920';
+    const SUBSCRIPTION_FIRST_BILLING_DATE_CANNOT_BE_IN_THE_PAST                            = '91916';
+    const SUBSCRIPTION_FIRST_BILLING_DATE_CANNOT_BE_UPDATED                                = '91919';
+    const SUBSCRIPTION_FIRST_BILLING_DATE_IS_INVALID                                       = '91915';
+    const SUBSCRIPTION_ID_IS_IN_USE                                                        = '81902';
+    const SUBSCRIPTION_INCONSISTENT_NUMBER_OF_BILLING_CYCLES                               = '91908';
+    const SUBSCRIPTION_INCONSISTENT_START_DATE                                             = '91917';
+    const SUBSCRIPTION_INVALID_REQUEST_FORMAT                                              = '91921';
+    const SUBSCRIPTION_MERCHANT_ACCOUNT_ID_IS_INVALID                                      = '91901';
+    const SUBSCRIPTION_MISMATCH_CURRENCY_ISO_CODE                                          = '91923';
+    const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_CANNOT_BE_BLANK                            = '91912';
+    const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_IS_TOO_SMALL                               = '91909';
+    const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_MUST_BE_GREATER_THAN_ZERO                  = '91907';
+    const SUBSCRIPTION_NUMBER_OF_BILLING_CYCLES_MUST_BE_NUMERIC                            = '91906';
+    const SUBSCRIPTION_PAYMENT_METHOD_NONCE_CARD_TYPE_IS_NOT_ACCEPTED                      = '91924';
+    const SUBSCRIPTION_PAYMENT_METHOD_NONCE_IS_INVALID                                     = '91925';
+    const SUBSCRIPTION_PAYMENT_METHOD_NONCE_NOT_ASSOCIATED_WITH_CUSTOMER                   = '91926';
+    const SUBSCRIPTION_PAYMENT_METHOD_NONCE_UNVAULTED_CARD_IS_NOT_ACCEPTED                 = '91927';
+    const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_CARD_TYPE_IS_NOT_ACCEPTED                      = '91902';
+    const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_IS_INVALID                                     = '91903';
+    const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_NOT_ASSOCIATED_WITH_CUSTOMER                   = '91905';
+    const SUBSCRIPTION_PLAN_BILLING_FREQUENCY_CANNOT_BE_UPDATED                            = '91922';
+    const SUBSCRIPTION_PLAN_ID_IS_INVALID                                                  = '91904';
+    const SUBSCRIPTION_PRICE_CANNOT_BE_BLANK                                               = '81903';
+    const SUBSCRIPTION_PRICE_FORMAT_IS_INVALID                                             = '81904';
+    const SUBSCRIPTION_PRICE_IS_TOO_LARGE                                                  = '81923';
+    const SUBSCRIPTION_STATUS_IS_CANCELED                                                  = '81905';
+    const SUBSCRIPTION_TOKEN_FORMAT_IS_INVALID                                             = '81906';
+    const SUBSCRIPTION_TRIAL_DURATION_FORMAT_IS_INVALID                                    = '81907';
+    const SUBSCRIPTION_TRIAL_DURATION_IS_REQUIRED                                          = '81908';
+    const SUBSCRIPTION_TRIAL_DURATION_UNIT_IS_INVALID                                      = '81909';
+    const SUBSCRIPTION_MERCHANT_ACCOUNT_DOES_NOT_SUPPORT_INSTRUMENT_TYPE                   = '91930';
+    const SUBSCRIPTION_PAYMENT_METHOD_NONCE_INSTRUMENT_TYPE_DOES_NOT_SUPPORT_SUBSCRIPTIONS = '91929';
+    const SUBSCRIPTION_PAYMENT_METHOD_TOKEN_INSTRUMENT_TYPE_DOES_NOT_SUPPORT_SUBSCRIPTIONS = '91928';
 
     const SUBSCRIPTION_MODIFICATION_AMOUNT_CANNOT_BE_BLANK                             = '92003';
     const SUBSCRIPTION_MODIFICATION_AMOUNT_IS_INVALID                                  = '92002';
@@ -688,7 +690,7 @@ class Codes
     const VERIFICATION_OPTIONS_MERCHANT_ACCOUNT_CANNOT_BE_SUB_MERCHANT_ACCOUNT = '94208';
     const VERIFICATION_OPTIONS_ACCOUNT_TYPE_IS_INVALID                         = '942184';
     const VERIFICATION_OPTIONS_ACCOUNT_TYPE_NOT_SUPPORTED                      = '942185';
- 
+
     const VERIFICATION_THREE_D_SECURE_ECI_FLAG_IS_REQUIRED                                                    = "942113";
     const VERIFICATION_THREE_D_SECURE_ECI_FLAG_IS_INVALID                                                     = "942114";
     const VERIFICATION_THREE_D_SECURE_CAVV_IS_REQUIRED                                                        = "942116";
@@ -713,4 +715,5 @@ class Codes
     const RISK_DATA_CUSTOMER_LOCATION_ZIP_IS_TOO_LONG                                                         = "94705";
     const RISK_DATA_CUSTOMER_TENURE_IS_TOO_LONG                                                               = "94706";
     const RISK_DATA_CUSTOMER_TENURE_IS_INVALID                                                                = "94707";
+    // phpcs:enable Generic.Files.LineLength
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -39,7 +40,6 @@ class RiskData extends Base
     public function __toString()
     {
         return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) . ']';
     }
-
 }

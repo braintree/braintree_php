@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -54,7 +55,7 @@ class UsBankAccountVerification extends Result\UsBankAccountVerification
      * ClassName[property=value, property=value]
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' . Util::attributesToString($this->_attributes) . ']';
     }

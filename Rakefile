@@ -1,7 +1,30 @@
 do_not_cache = "--do-not-cache-result"
 
 task :default => :test
-task :test => %w[test:unit test:integration]
+task :test => %w[lint:sniff test:unit test:integration]
+task :lint => %w[lint:sniff]
+
+namespace :lint do
+  # Usage:
+  # rake lint:sniff for a summary view of code smells
+  # rake lint:sniff[y] for a more detailed report of smells
+  desc "sniff for code smells"
+  task :sniff, [:details] do |task, args|
+    if args.details.nil?
+      sh "php ./vendor/bin/phpcs --standard=phpcs.xml --report=summary lib tests"
+    else
+      sh "php ./vendor/bin/phpcs --standard=phpcs.xml lib tests"
+    end
+  end
+
+  desc "Use Code Beautifier and Fixer (cbf) to auto-format what we can, then sniff for the rest"
+  # Usage:
+  # rake lint:fix
+  task :fix do
+    sh "php ./vendor/bin/phpcbf lib tests || true" #always run sniffer after fixing
+	  Rake::Task["lint:sniff"].invoke
+  end
+end
 
 namespace :test do
   desc "print PHP version"
@@ -14,7 +37,7 @@ namespace :test do
   #   rake test:unit[ConfigurationTest]
   #   rake test:unit[ConfigurationTest,testConstructWithArrayOfCredentials]
   desc "run unit tests"
-  task :unit, [:file_name, :test_name] => :version do |task, args|
+  task :unit, [:file_name, :test_name] => :lint do |task, args|
     if args.file_name.nil?
       sh "php ./vendor/bin/phpunit --testsuite unit #{do_not_cache}"
     elsif args.test_name.nil?
@@ -29,7 +52,7 @@ namespace :test do
   #   rake test:integration[PlanTest]
   #   rake test:integration[PlanTest,testAll_returnsAllPlans]
   desc "run integration tests"
-  task :integration, [:file_name, :test_name] do |task, args|
+  task :integration, [:file_name, :test_name] => :lint do |task, args|
     if args.file_name.nil?
       sh "php ./vendor/bin/phpunit --testsuite integration #{do_not_cache}"
     elsif args.test_name.nil?

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\Transaction;
 
 use Braintree\Instance;
@@ -36,8 +37,8 @@ class PayPalHereDetails extends Instance
      /**
      * @ignore
      */
-     public function __construct($attributes)
-     {
-         parent::__construct($attributes);
-     }
+    public function __construct($attributes)
+    {
+        parent::__construct($attributes);
+    }
 }

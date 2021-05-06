@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -36,7 +37,7 @@ class PaymentMethod extends Base
         return Configuration::gateway()->paymentMethod()->update($token, $attribs);
     }
 
-    public static function delete($token, $options=[])
+    public static function delete($token, $options = [])
     {
         return Configuration::gateway()->paymentMethod()->delete($token, $options);
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\Test;
 
 /**
@@ -78,11 +79,11 @@ class CreditCardNumbers
     public static function getAll()
     {
         return array_merge(
-                self::$amExes,
-                self::$discoverCards,
-                self::$eloCards,
-                self::$masterCards,
-                self::$visas
-                );
+            self::$amExes,
+            self::$discoverCards,
+            self::$eloCards,
+            self::$masterCards,
+            self::$visas
+        );
     }
 }

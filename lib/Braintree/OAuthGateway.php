@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -56,12 +57,12 @@ class OAuthGateway
                 OAuthCredentials::factory($response['credentials'])
             );
             return $this->_mapSuccess($result);
-        } else if (isset($response['result'])) {
+        } elseif (isset($response['result'])) {
             $result =  new Result\Successful(
                 OAuthResult::factory($response['result'])
             );
             return $this->_mapAccessTokenRevokeSuccess($result);
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             $result = new Result\Error($response['apiErrorResponse']);
             return $this->_mapError($result);
         } else {
@@ -77,9 +78,9 @@ class OAuthGateway
 
         if ($error->code == Error\Codes::OAUTH_INVALID_GRANT) {
             $result->error = 'invalid_grant';
-        } else if ($error->code == Error\Codes::OAUTH_INVALID_CREDENTIALS) {
+        } elseif ($error->code == Error\Codes::OAUTH_INVALID_CREDENTIALS) {
             $result->error = 'invalid_credentials';
-        } else if ($error->code == Error\Codes::OAUTH_INVALID_SCOPE) {
+        } elseif ($error->code == Error\Codes::OAUTH_INVALID_SCOPE) {
             $result->error = 'invalid_scope';
         }
         $result->errorDescription = explode(': ', $error->message)[1];

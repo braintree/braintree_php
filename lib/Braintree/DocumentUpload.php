@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use InvalidArgumentException;
@@ -12,8 +13,9 @@ use InvalidArgumentException;
  *          "file" => $pngFile
  *      ]);
  *
- * For more information on DocumentUploads, see https://developers.braintreepayments.com/reference/request/document_upload/create
- * 
+ * For more information on DocumentUploads, see
+ * https://developers.braintreepayments.com/reference/request/document_upload/create
+ *
  * @property-read string $contentType
  * @property-read \DateTime $expiresAt
  * @property-read string $id

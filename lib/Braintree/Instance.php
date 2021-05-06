@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -14,7 +15,7 @@ abstract class Instance
      *
      * @param array $attributes
      */
-    public function  __construct($attributes)
+    public function __construct($attributes)
     {
         if (!empty($attributes)) {
             $this->_initializeFromArray($attributes);
@@ -53,10 +54,10 @@ abstract class Instance
      * ClassName[property=value, property=value]
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         $objOutput = Util::implodeAssociativeArray($this->_attributes);
-        return get_class($this) .'[' . $objOutput . ']';
+        return get_class($this) . '[' . $objOutput . ']';
     }
     /**
      * initializes instance properties from the keys/values of an array
@@ -90,11 +91,11 @@ abstract class Instance
     public function toArray()
     {
         return array_map(function ($value) {
-            if (!is_array($value))
+            if (!is_array($value)) {
                 return method_exists($value, 'toArray') ? $value->toArray() : $value;
-            else 
+            } else {
                 return $value;
+            }
         }, $this->_attributes);
-
     }
 }

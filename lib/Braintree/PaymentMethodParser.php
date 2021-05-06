@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -24,21 +25,21 @@ class PaymentMethodParser
     {
         if (isset($response['creditCard'])) {
             return CreditCard::factory($response['creditCard']);
-        } else if (isset($response['paypalAccount'])) {
+        } elseif (isset($response['paypalAccount'])) {
             return PayPalAccount::factory($response['paypalAccount']);
-        } else if (isset($response['applePayCard'])) {
+        } elseif (isset($response['applePayCard'])) {
             return ApplePayCard::factory($response['applePayCard']);
-        } else if (isset($response['androidPayCard'])) {
+        } elseif (isset($response['androidPayCard'])) {
             return GooglePayCard::factory($response['androidPayCard']);
-        } else if (isset($response['usBankAccount'])) {
+        } elseif (isset($response['usBankAccount'])) {
             return UsBankAccount::factory($response['usBankAccount']);
-        } else if (isset($response['venmoAccount'])) {
+        } elseif (isset($response['venmoAccount'])) {
             return VenmoAccount::factory($response['venmoAccount']);
-        } else if (isset($response['visaCheckoutCard'])) {
+        } elseif (isset($response['visaCheckoutCard'])) {
             return VisaCheckoutCard::factory($response['visaCheckoutCard']);
-        } else if (isset($response['samsungPayCard'])) {
+        } elseif (isset($response['samsungPayCard'])) {
             return SamsungPayCard::factory($response['samsungPayCard']);
-        } else if (is_array($response)) {
+        } elseif (is_array($response)) {
             return UnknownPaymentMethod::factory($response);
         } else {
             throw new Exception\Unexpected(

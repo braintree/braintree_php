@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -31,7 +32,7 @@ class MultipleValueNodeTest extends Setup
             Braintree\SubscriptionSearch::status()->in([Braintree\Subscription::ACTIVE]),
             Braintree\SubscriptionSearch::price()->is('3'),
         ]);
-        foreach ($collection AS $item) {
+        foreach ($collection as $item) {
             $this->assertEquals(Braintree\Subscription::ACTIVE, $item->status);
         }
 
@@ -45,7 +46,7 @@ class MultipleValueNodeTest extends Setup
         $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::status()->is(Braintree\Subscription::PAST_DUE)
         ]);
-        foreach ($collection AS $item) {
+        foreach ($collection as $item) {
             $found = true;
             $this->assertEquals(Braintree\Subscription::PAST_DUE, $item->status);
         }
@@ -58,7 +59,7 @@ class MultipleValueNodeTest extends Setup
         $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::status()->in([Braintree\Subscription::EXPIRED])
         ]);
-        foreach ($collection AS $item) {
+        foreach ($collection as $item) {
             $found = true;
             $this->assertEquals(Braintree\Subscription::EXPIRED, $item->status);
         }

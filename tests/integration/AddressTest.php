@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -94,7 +95,7 @@ class AddressTest extends Setup
 
     public function testCreate_withNotFoundErrors()
     {
-        $this->expectException('Braintree\Exception\NotFound','Customer nonExistentCustomerId not found.');
+        $this->expectException('Braintree\Exception\NotFound', 'Customer nonExistentCustomerId not found.');
         $result = Braintree\Address::create([
             'customerId' => 'nonExistentCustomerId',
         ]);

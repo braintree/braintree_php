@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\Dispute;
 
 use Braintree\Instance;

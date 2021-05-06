@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -8,7 +9,7 @@ namespace Braintree;
  */
 class ProcessorResponseTypes
 {
-   const APPROVED      = 'approved';
-   const SOFT_DECLINED = 'soft_declined';
-   const HARD_DECLINED = 'hard_declined';
+    const APPROVED      = 'approved';
+    const SOFT_DECLINED = 'soft_declined';
+    const HARD_DECLINED = 'hard_declined';
 }

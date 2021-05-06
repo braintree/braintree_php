@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -37,10 +38,9 @@ class ThreeDSecureInfo extends Base
      * returns a string representation of the three d secure info
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) . ']';
     }
-
 }

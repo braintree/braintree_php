@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -10,7 +11,8 @@ use Braintree;
 
 class TestTransactionTest extends Setup
 {
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
 
         Braintree\Configuration::environment('development');

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use InvalidArgumentException;
@@ -9,6 +10,7 @@ use InvalidArgumentException;
  *
  * <b>== More information ==</b>
  *
+ // phpcs:ignore Generic.Files.LineLength
  * For more detailed information on Customers, see {@link https://developers.braintreepayments.com/reference/response/customer/php https://developers.braintreepayments.com/reference/response/customer/php}
  *
  * @package    Braintree
@@ -119,6 +121,9 @@ class CustomerGateway
             ],
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
+            ['taxIdentifiers' =>
+                ['countryCode', 'identifier']
+            ],
             ['options' => [
                 ['paypal' => [
                     'payee_email',
@@ -141,7 +146,7 @@ class CustomerGateway
         ];
         return $signature;
     }
- 
+
     /**
      * creates a full array signature of a valid update request
      * @return array update request format
@@ -150,8 +155,8 @@ class CustomerGateway
     {
         $creditCardSignature = CreditCardGateway::updateSignature();
 
-        foreach($creditCardSignature AS $key => $value) {
-            if(is_array($value) and array_key_exists('options', $value)) {
+        foreach ($creditCardSignature as $key => $value) {
+            if (is_array($value) and array_key_exists('options', $value)) {
                 array_push($creditCardSignature[$key]['options'], 'updateExistingToken');
             }
         }
@@ -162,6 +167,9 @@ class CustomerGateway
             'paymentMethodNonce', 'defaultPaymentMethodToken',
             ['creditCard' => $creditCardSignature],
             ['customFields' => ['_anyKey_']],
+            ['taxIdentifiers' =>
+                ['countryCode', 'identifier']
+            ],
             ['options' => [
                 ['paypal' => [
                     'payee_email',
@@ -208,7 +216,7 @@ class CustomerGateway
             return Customer::factory($response['customer']);
         } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
-            'customer with id ' . $id . ' not found'
+                'customer with id ' . $id . ' not found'
             );
         }
     }
@@ -225,10 +233,11 @@ class CustomerGateway
     {
         $this->_validateId($customerId);
         return Transaction::credit(
-                array_merge($transactionAttribs,
-                        ['customerId' => $customerId]
-                        )
-                );
+            array_merge(
+                $transactionAttribs,
+                ['customerId' => $customerId]
+            )
+        );
     }
 
     /**
@@ -273,10 +282,11 @@ class CustomerGateway
     {
         $this->_validateId($customerId);
         return Transaction::sale(
-                array_merge($transactionAttribs,
-                        ['customerId' => $customerId]
-                        )
-                );
+            array_merge(
+                $transactionAttribs,
+                ['customerId' => $customerId]
+            )
+        );
     }
 
     /**
@@ -301,6 +311,7 @@ class CustomerGateway
      *
      * If <b>query</b> is a string, the search will be a basic search.
      * If <b>query</b> is a hash, the search will be an advanced search.
+     // phpcs:ignore Generic.Files.LineLength
      * For more detailed information and examples, see {@link https://developers.braintreepayments.com/reference/request/customer/search/php https://developers.braintreepayments.com/reference/request/customer/search/php}
      *
      * @param mixed $query search query
@@ -312,7 +323,7 @@ class CustomerGateway
         $criteria = [];
         foreach ($query as $term) {
             $result = $term->toparam();
-            if(is_null($result) || empty($result)) {
+            if (is_null($result) || empty($result)) {
                 throw new InvalidArgumentException('Operator must be provided');
             }
 
@@ -389,8 +400,7 @@ class CustomerGateway
         // map each address into its own object
         $addressArray = [];
         if (isset($customerAttribs['addresses'])) {
-
-            foreach ($customerAttribs['addresses'] AS $address) {
+            foreach ($customerAttribs['addresses'] as $address) {
                 $addressArray[] = Address::factory($address);
             }
         }
@@ -399,7 +409,7 @@ class CustomerGateway
         // map each creditCard into its own object
         $creditCardArray = [];
         if (isset($customerAttribs['creditCards'])) {
-            foreach ($customerAttribs['creditCards'] AS $creditCard) {
+            foreach ($customerAttribs['creditCards'] as $creditCard) {
                 $creditCardArray[] = CreditCard::factory($creditCard);
             }
         }
@@ -408,7 +418,7 @@ class CustomerGateway
         // map each paypalAccount into its own object
         $paypalAccountArray = [];
         if (isset($customerAttribs['paypalAccounts'])) {
-            foreach ($customerAttribs['paypalAccounts'] AS $paypalAccount) {
+            foreach ($customerAttribs['paypalAccounts'] as $paypalAccount) {
                 $paypalAccountArray[] = PayPalAccount::factory($paypalAccount);
             }
         }
@@ -417,7 +427,7 @@ class CustomerGateway
         // map each applePayCard into its own object
         $applePayCardArray = [];
         if (isset($customerAttribs['applePayCards'])) {
-            foreach ($customerAttribs['applePayCards'] AS $applePayCard) {
+            foreach ($customerAttribs['applePayCards'] as $applePayCard) {
                 $applePayCardArray[] = ApplePayCard::factory($applePayCard);
             }
         }
@@ -426,23 +436,29 @@ class CustomerGateway
         // map each androidPayCard from gateway response to googlePayCard objects
         $googlePayCardArray = [];
         if (isset($customerAttribs['androidPayCards'])) {
-            foreach ($customerAttribs['androidPayCards'] AS $googlePayCard) {
+            foreach ($customerAttribs['androidPayCards'] as $googlePayCard) {
                 $googlePayCardArray[] = GooglePayCard::factory($googlePayCard);
             }
         }
         $this->_set('googlePayCards', $googlePayCardArray);
 
-        $this->_set('paymentMethods', array_merge($this->creditCards, $this->paypalAccounts, $this->applePayCards, $this->googlePayCards));
+        $paymentMethodsArray = array_merge(
+            $this->creditCards,
+            $this->paypalAccounts,
+            $this->applePayCards,
+            $this->googlePayCards
+        );
+        $this->_set('paymentMethods', $paymentMethodsArray);
     }
 
     /**
      * returns a string representation of the customer
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) . ']';
     }
 
     /**
@@ -474,6 +490,7 @@ class CustomerGateway
      */
     public function defaultPaymentMethod()
     {
+        // phpcs:ignore Generic.Files.LineLength
         $defaultPaymentMethods = array_filter($this->paymentMethods, 'Braintree\\Customer::_defaultPaymentMethodFilter');
         return current($defaultPaymentMethods);
     }
@@ -526,7 +543,8 @@ class CustomerGateway
      * @param string customer id
      * @throws InvalidArgumentException
      */
-    private function _validateId($id = null) {
+    private function _validateId($id = null)
+    {
         if (is_null($id)) {
             throw new InvalidArgumentException(
                 'expected customer id to be set'
@@ -576,15 +594,14 @@ class CustomerGateway
         if (isset($response['customer'])) {
             // return a populated instance of Customer
             return new Result\Successful(
-                    Customer::factory($response['customer'])
+                Customer::factory($response['customer'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            "Expected customer or apiErrorResponse"
+                "Expected customer or apiErrorResponse"
             );
         }
     }
-
 }

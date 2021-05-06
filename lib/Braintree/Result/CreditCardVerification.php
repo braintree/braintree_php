@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\Result;
 
 use Braintree\RiskData;
@@ -43,7 +44,7 @@ class CreditCardVerification extends Base
     /**
      * @ignore
      */
-    public function  __construct($attributes)
+    public function __construct($attributes)
     {
         $this->_initializeFromArray($attributes);
     }
@@ -57,21 +58,19 @@ class CreditCardVerification extends Base
      */
     private function _initializeFromArray($attributes)
     {
-        if(isset($attributes['riskData']))
-        {
+        if (isset($attributes['riskData'])) {
             $attributes['riskData'] = RiskData::factory($attributes['riskData']);
         }
 
-        if(isset($attributes['globalId']))
-        {
+        if (isset($attributes['globalId'])) {
             $attributes['graphQLId'] = $attributes['globalId'];
         }
 
-        if(isset($attributes['threeDSecureInfo'])) {
+        if (isset($attributes['threeDSecureInfo'])) {
             $attributes['threeDSecureInfo'] = ThreeDSecureInfo::factory($attributes['threeDSecureInfo']);
         }
         $this->_attributes = $attributes;
-        foreach($attributes AS $name => $value) {
+        foreach ($attributes as $name => $value) {
             $varName = "_$name";
             $this->$varName = $value;
         }
@@ -80,7 +79,7 @@ class CreditCardVerification extends Base
     /**
      * @ignore
      */
-    public function  __get($name)
+    public function __get($name)
     {
         $varName = "_$name";
         return isset($this->$varName) ? $this->$varName : null;
@@ -90,7 +89,7 @@ class CreditCardVerification extends Base
      * returns a string representation of the customer
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes) . ']';

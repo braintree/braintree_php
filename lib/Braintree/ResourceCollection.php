@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use Iterator;
@@ -38,7 +39,7 @@ class ResourceCollection implements Iterator
      * @param array $response
      * @param array $pager
      */
-    public function  __construct($response, $pager)
+    public function __construct($response, $pager)
     {
         $this->_pageSize = $response["searchResults"]["pageSize"];
         $this->_ids = $response["searchResults"]["ids"];
@@ -110,12 +111,9 @@ class ResourceCollection implements Iterator
 
     private function _getNextPage()
     {
-        if (empty($this->_ids))
-        {
+        if (empty($this->_ids)) {
             $this->_items = [];
-        }
-        else
-        {
+        } else {
             $this->_items = $this->_getPage(array_slice($this->_ids, $this->_batchIndex, $this->_pageSize));
             $this->_batchIndex += $this->_pageSize;
             $this->_index = 0;
@@ -150,6 +148,6 @@ class ResourceCollection implements Iterator
      */
     public function getIds()
     {
-       return $this->_ids;
+        return $this->_ids;
     }
 }

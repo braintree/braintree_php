@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -17,7 +18,8 @@ namespace Braintree;
  */
 class DisbursementDetails extends Instance
 {
-    public function isValid() {
+    public function isValid()
+    {
         return !is_null($this->disbursementDate);
     }
 }

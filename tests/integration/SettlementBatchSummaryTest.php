@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -58,7 +59,7 @@ class SettlementBatchSummaryTest extends Setup
         ]);
         Braintree\Test\Transaction::settle($transaction->id);
 
-        $today = new Datetime;
+        $today = new Datetime();
         $result = Braintree\SettlementBatchSummary::generate(Test\Helper::nowInEastern());
 
         $this->assertTrue($result->success);
@@ -85,7 +86,7 @@ class SettlementBatchSummaryTest extends Setup
 
         Braintree\Test\Transaction::settle($transaction->id);
 
-        $today = new Datetime;
+        $today = new Datetime();
         $result = Braintree\SettlementBatchSummary::generate(Test\Helper::nowInEastern(), 'store_me');
 
         $this->assertTrue($result->success);

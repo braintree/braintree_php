@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class SignatureService
@@ -19,5 +20,4 @@ class SignatureService
     {
         return call_user_func($this->digest, $this->key, $data);
     }
-
 }

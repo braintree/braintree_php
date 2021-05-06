@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use InvalidArgumentException;
@@ -54,7 +55,6 @@ class PayPalAccountGateway
                 'paypal account with token ' . $token . ' not found'
             );
         }
-
     }
 
     /**
@@ -143,13 +143,13 @@ class PayPalAccountGateway
         if (isset($response['paypalAccount'])) {
             // return a populated instance of PayPalAccount
             return new Result\Successful(
-                    PayPalAccount::factory($response['paypalAccount'])
+                PayPalAccount::factory($response['paypalAccount'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            'Expected paypal account or apiErrorResponse'
+                'Expected paypal account or apiErrorResponse'
             );
         }
     }
@@ -164,14 +164,14 @@ class PayPalAccountGateway
     private function _validateId($identifier = null, $identifierType = 'token')
     {
         if (empty($identifier)) {
-           throw new InvalidArgumentException(
-                   'expected paypal account id to be set'
-                   );
+            throw new InvalidArgumentException(
+                'expected paypal account id to be set'
+            );
         }
         if (!preg_match('/^[0-9A-Za-z_-]+$/', $identifier)) {
             throw new InvalidArgumentException(
-                    $identifier . ' is an invalid paypal account ' . $identifierType . '.'
-                    );
+                $identifier . ' is an invalid paypal account ' . $identifierType . '.'
+            );
         }
     }
 }

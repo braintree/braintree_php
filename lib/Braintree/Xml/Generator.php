@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\Xml;
 
 use DateTime;
@@ -62,21 +63,20 @@ class Generator
             } else {
                 $writer->text($aData);
             }
-          return;
+            return;
         }
-        foreach ($aData AS $elementName => $element) {
+        foreach ($aData as $elementName => $element) {
             // handle child elements
             $writer->startElement($elementName);
             if (is_array($element)) {
                 if (array_key_exists(0, $element) || empty($element)) {
                     $writer->writeAttribute('type', 'array');
-                    foreach ($element AS $ignored => $itemInArray) {
+                    foreach ($element as $ignored => $itemInArray) {
                         $writer->startElement('item');
                         self::_createElementsFromArray($writer, $itemInArray);
                         $writer->endElement();
                     }
-                }
-                else {
+                } else {
                     self::_createElementsFromArray($writer, $element);
                 }
             } else {
@@ -110,7 +110,7 @@ class Generator
         if (is_bool($value)) {
             return ['type', 'boolean', ($value ? 'true' : 'false')];
         }
-        if ($value === NULL) {
+        if ($value === null) {
             return ['nil', 'true', $value];
         }
     }
@@ -136,7 +136,7 @@ class Generator
     {
         try {
             if (empty($string)) {
-               return false;
+                return false;
             }
             $dateTime = new DateTime($string);
             return self::_convertDateTimeObjectToXmlTimestamp($dateTime);

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -44,7 +45,7 @@ class PaymentMethodNonceGateway
                     'recurringCustomerConsent',
                     'recurringMaxAmount'
                 ]
-            ]]
+                ]]
         ]];
         Util::verifyKeys($schema, $params);
         $response = $this->_http->post($fullPath, $params);
@@ -67,9 +68,8 @@ class PaymentMethodNonceGateway
             return PaymentMethodNonce::factory($response['paymentMethodNonce']);
         } catch (Exception\NotFound $e) {
             throw new Exception\NotFound(
-            'payment method nonce with id ' . $nonce . ' not found'
+                'payment method nonce with id ' . $nonce . ' not found'
             );
         }
-
     }
 }

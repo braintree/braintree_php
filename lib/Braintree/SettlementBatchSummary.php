@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -40,7 +41,7 @@ class SettlementBatchSummary extends Base
      * @param string $groupByCustomField
      * @return Result\Successful|Result\Error
      */
-    public static function generate($settlement_date, $groupByCustomField = NULL)
+    public static function generate($settlement_date, $groupByCustomField = null)
     {
         return Configuration::gateway()->settlementBatchSummary()->generate($settlement_date, $groupByCustomField);
     }

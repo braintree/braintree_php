@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -25,9 +26,9 @@ class FacilitatorDetails extends Base
      * returns a string representation of the facilitator details
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
-                Util::attributesToString($this->_attributes) .']';
+                Util::attributesToString($this->_attributes) . ']';
     }
 }

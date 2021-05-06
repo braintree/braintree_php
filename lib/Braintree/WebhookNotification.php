@@ -1,8 +1,10 @@
 <?php
+
 namespace Braintree;
 
 class WebhookNotification extends Base
 {
+    // phpcs:disable Generic.Files.LineLength
     const ACCOUNT_UPDATER_DAILY_REPORT = 'account_updater_daily_report';
     const CHECK = 'check';
     const CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED = 'connected_merchant_paypal_status_changed';
@@ -37,12 +39,15 @@ class WebhookNotification extends Base
     const TRANSACTION_DISBURSED = 'transaction_disbursed';
     const TRANSACTION_SETTLED = 'transaction_settled';
     const TRANSACTION_SETTLEMENT_DECLINED = 'transaction_settlement_declined';
+    // phpcs:enable Generic.Files.LineLength
 
-    public static function parse($signature, $payload) {
+    public static function parse($signature, $payload)
+    {
         return Configuration::gateway()->webhookNotification()->parse($signature, $payload);
     }
 
-    public static function verify($challenge) {
+    public static function verify($challenge)
+    {
         return Configuration::gateway()->webhookNotification()->verify($challenge);
     }
 
@@ -55,6 +60,7 @@ class WebhookNotification extends Base
 
     protected function _initialize($attributes)
     {
+        // phpcs:disable Generic.Files.LineLength
         $this->_attributes = $attributes;
 
         if (!isset($attributes['sourceMerchantId'])) {
@@ -127,5 +133,6 @@ class WebhookNotification extends Base
             $this->_set('errors', new Error\ValidationErrorCollection($wrapperNode['errors']));
             $this->_set('message', $wrapperNode['message']);
         }
+        // phpcs:enable Generic.Files.LineLength
     }
 }

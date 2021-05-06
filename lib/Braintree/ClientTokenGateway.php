@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use InvalidArgumentException;
@@ -35,7 +36,7 @@ class ClientTokenGateway
         $this->_http = new Http($gateway->config);
     }
 
-    public function generate($params=[])
+    public function generate($params = [])
     {
         if (!array_key_exists("version", $params)) {
             $params["version"] = ClientToken::DEFAULT_VERSION;
@@ -124,5 +125,4 @@ class ClientTokenGateway
             );
         }
     }
-
 }

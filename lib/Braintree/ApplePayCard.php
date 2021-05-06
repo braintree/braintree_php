@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -91,7 +92,7 @@ class ApplePayCard extends Base
 
         $subscriptionArray = [];
         if (isset($applePayCardAttribs['subscriptions'])) {
-            foreach ($applePayCardAttribs['subscriptions'] AS $subscription) {
+            foreach ($applePayCardAttribs['subscriptions'] as $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }

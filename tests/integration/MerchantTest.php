@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -163,8 +164,8 @@ class MerchantTest extends Setup
 
     private function getMerchantAccountForCurrency($merchantAccounts, $currency)
     {
-        foreach($merchantAccounts as $merchantAccount) {
-            if($merchantAccount->id == $currency) {
+        foreach ($merchantAccounts as $merchantAccount) {
+            if ($merchantAccount->id == $currency) {
                 return $merchantAccount;
             }
         }

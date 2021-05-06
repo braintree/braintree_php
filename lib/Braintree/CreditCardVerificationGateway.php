@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class CreditCardVerificationGateway
@@ -17,18 +18,19 @@ class CreditCardVerificationGateway
 
     public function create($attributes)
     {
-        $response = $this->_http->post($this->_config->merchantPath() . "/verifications", ['verification' => $attributes]);
+        $queryPath = $this->_config->merchantPath() . "/verifications";
+        $response = $this->_http->post($queryPath, ['verification' => $attributes]);
         return $this->_verifyGatewayResponse($response);
     }
 
     private function _verifyGatewayResponse($response)
     {
 
-        if(isset($response['verification'])){
+        if (isset($response['verification'])) {
             return new Result\Successful(
                 CreditCardVerification::factory($response['verification'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(

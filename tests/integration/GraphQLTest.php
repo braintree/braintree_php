@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -13,7 +14,7 @@ class GraphQLTest extends Setup
         Braintree\Configuration::environment('development');
         $graphQL = new Braintree\GraphQL(Braintree\Configuration::$global);
         $definition = "query { ping }";
-        $response = $graphQL->request($definition, NULL);
+        $response = $graphQL->request($definition, null);
 
         $this->assertEquals('pong', $response["data"]["ping"]);
     }
@@ -25,7 +26,7 @@ class GraphQLTest extends Setup
         $definition = "query { ping }";
 
         $this->expectException('Braintree\Exception\Authentication');
-        $response = $graphQL->request($definition, NULL);
+        $response = $graphQL->request($definition, null);
     }
 
     public function testGraphQLSandboxSSL()
@@ -35,7 +36,7 @@ class GraphQLTest extends Setup
         $definition = "query { ping }";
 
         $this->expectException('Braintree\Exception\Authentication');
-        $response = $graphQL->request($definition, NULL);
+        $response = $graphQL->request($definition, null);
     }
 
     public function testGraphQLWithVariableInputs()

@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -20,23 +21,23 @@ class AddressTest extends Setup
     public function testIsEqual()
     {
         $first = Braintree\Address::factory(
-                ['customerId' => 'c1', 'id' => 'a1']
-                );
+            ['customerId' => 'c1', 'id' => 'a1']
+        );
         $second = Braintree\Address::factory(
-                ['customerId' => 'c1', 'id' => 'a1']
-                );
+            ['customerId' => 'c1', 'id' => 'a1']
+        );
 
         $this->assertTrue($first->isEqual($second));
         $this->assertTrue($second->isEqual($first));
-
     }
-    public function testIsNotEqual() {
+    public function testIsNotEqual()
+    {
         $first = Braintree\Address::factory(
-                ['customerId' => 'c1', 'id' => 'a1']
-                );
+            ['customerId' => 'c1', 'id' => 'a1']
+        );
         $second = Braintree\Address::factory(
-                ['customerId' => 'c1', 'id' => 'not a1']
-                );
+            ['customerId' => 'c1', 'id' => 'not a1']
+        );
 
         $this->assertFalse($first->isEqual($second));
         $this->assertFalse($second->isEqual($first));
@@ -45,11 +46,11 @@ class AddressTest extends Setup
     public function testCustomerIdNotEqual()
     {
         $first = Braintree\Address::factory(
-                ['customerId' => 'c1', 'id' => 'a1']
-                );
+            ['customerId' => 'c1', 'id' => 'a1']
+        );
         $second = Braintree\Address::factory(
-                ['customerId' => 'not c1', 'id' => 'a1']
-                );
+            ['customerId' => 'not c1', 'id' => 'a1']
+        );
 
         $this->assertFalse($first->isEqual($second));
         $this->assertFalse($second->isEqual($first));

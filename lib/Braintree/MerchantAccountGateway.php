@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class MerchantAccountGateway
@@ -35,7 +36,8 @@ class MerchantAccountGateway
     public function update($merchant_account_id, $attributes)
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
-        return $this->_doUpdate('/merchant_accounts/' . $merchant_account_id . '/update_via_api', ['merchant_account' => $attributes]);
+        $queryPath = '/merchant_accounts/' . $merchant_account_id . '/update_via_api';
+        return $this->_doUpdate($queryPath, ['merchant_account' => $attributes]);
     }
 
     public static function updateSignature()
@@ -47,7 +49,8 @@ class MerchantAccountGateway
 
     public function createForCurrency($attribs)
     {
-        $response = $this->_http->post($this->_config->merchantPath() . '/merchant_accounts/create_for_currency', ['merchant_account' => $attribs]);
+        $queryPath = $this->_config->merchantPath() . '/merchant_accounts/create_for_currency';
+        $response = $this->_http->post($queryPath, ['merchant_account' => $attribs]);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -133,13 +136,13 @@ class MerchantAccountGateway
         if (isset($response['merchantAccount'])) {
             // return a populated instance of merchantAccount
             return new Result\Successful(
-                    MerchantAccount::factory($response['merchantAccount'])
+                MerchantAccount::factory($response['merchantAccount'])
             );
-        } else if (isset($response['apiErrorResponse'])) {
+        } elseif (isset($response['apiErrorResponse'])) {
             return new Result\Error($response['apiErrorResponse']);
         } else {
             throw new Exception\Unexpected(
-            "Expected merchant account or apiErrorResponse"
+                "Expected merchant account or apiErrorResponse"
             );
         }
     }

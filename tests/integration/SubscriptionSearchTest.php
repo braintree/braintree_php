@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -93,7 +94,7 @@ class SubscriptionSearchTest extends Setup
         $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::status()->in([Braintree\Subscription::PAST_DUE])
         ]);
-        foreach ($collection AS $item) {
+        foreach ($collection as $item) {
             $found = true;
             $this->assertEquals(Braintree\Subscription::PAST_DUE, $item->status);
         }
@@ -252,7 +253,7 @@ class SubscriptionSearchTest extends Setup
         $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::daysPastDue()->between(2, 10)
         ]);
-        foreach ($collection AS $item) {
+        foreach ($collection as $item) {
             $found = true;
             $this->assertTrue($item->daysPastDue <= 10);
             $this->assertTrue($item->daysPastDue >= 2);
@@ -324,7 +325,7 @@ class SubscriptionSearchTest extends Setup
         $creditCard = SubscriptionHelper::createCreditCard();
         $plan = SubscriptionHelper::trialPlan();
 
-        $subscription= Braintree\Subscription::create([
+        $subscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
         ])->subscription;
@@ -353,7 +354,7 @@ class SubscriptionSearchTest extends Setup
         $creditCard = SubscriptionHelper::createCreditCard();
         $plan = SubscriptionHelper::trialPlan();
 
-        $subscription= Braintree\Subscription::create([
+        $subscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
         ])->subscription;
@@ -382,7 +383,7 @@ class SubscriptionSearchTest extends Setup
         $creditCard = SubscriptionHelper::createCreditCard();
         $plan = SubscriptionHelper::trialPlan();
 
-        $subscription= Braintree\Subscription::create([
+        $subscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
         ])->subscription;
@@ -413,7 +414,7 @@ class SubscriptionSearchTest extends Setup
         $creditCard = SubscriptionHelper::createCreditCard();
         $plan = SubscriptionHelper::trialPlan();
 
-        $subscription= Braintree\Subscription::create([
+        $subscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
         ])->subscription;
@@ -439,7 +440,7 @@ class SubscriptionSearchTest extends Setup
         $creditCard = SubscriptionHelper::createCreditCard();
         $plan = SubscriptionHelper::trialPlan();
 
-        $subscription= Braintree\Subscription::create([
+        $subscription = Braintree\Subscription::create([
             'paymentMethodToken' => $creditCard->token,
             'planId' => $plan['id'],
         ])->subscription;

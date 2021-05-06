@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -8,7 +9,8 @@ use Braintree;
 
 class TestResource
 {
-    public function lookup($id) {
+    public function lookup($id)
+    {
         return ResourceCollectionTest::$values[intval($id)];
     }
 
@@ -19,6 +21,7 @@ class TestResource
     }
 }
 
+// phpcs:ignore
 class ResourceCollectionTest extends Setup
 {
     public static $values = ["a", "b", "c", "d", "e"];
@@ -44,8 +47,7 @@ class ResourceCollectionTest extends Setup
 
         $count = 0;
         $index = 0;
-        foreach ($collection as $value)
-        {
+        foreach ($collection as $value) {
             $this->assertEquals(self::$values[$index], $value);
             $index += 1;
             $count += 1;
@@ -75,8 +77,7 @@ class ResourceCollectionTest extends Setup
 
         $count = 0;
         $index = 0;
-        foreach ($collection as $value)
-        {
+        foreach ($collection as $value) {
             $index += 1;
             $count += 1;
             break;

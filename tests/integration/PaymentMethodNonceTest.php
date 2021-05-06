@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -14,7 +15,7 @@ class PaymentMethodNonceTest extends Setup
     const INDIAN_MERCHANT_TOKEN = 'india_three_d_secure_merchant_account';
     const EUROPEAN_MERCHANT_TOKEN = 'european_three_d_secure_merchant_account';
     const AMOUNT_THRESHOLD_FOR_RBI = 2000;
-    
+
     public function testCreate_fromPaymentMethodToken()
     {
         $customer = Braintree\Customer::createNoValidate();
@@ -74,57 +75,63 @@ class PaymentMethodNonceTest extends Setup
     public function testCreate_nonceWithAuthInsightRegulationEnvironmentUnregulated()
     {
         $authInsight = $this->_requestAuthenticationInsights(
-            self::EUROPEAN_MERCHANT_TOKEN, 
-            self::INDIAN_PAYMENT_TOKEN)->paymentMethodNonce->authenticationInsight;
+            self::EUROPEAN_MERCHANT_TOKEN,
+            self::INDIAN_PAYMENT_TOKEN
+        )->paymentMethodNonce->authenticationInsight;
         $this->assertEquals('unregulated', $authInsight['regulationEnvironment']);
     }
 
     public function testCreate_nonceWithAuthInsightRegulationEnvironmentPsd2()
     {
         $authInsight = $this->_requestAuthenticationInsights(
-            self::EUROPEAN_MERCHANT_TOKEN, 
-            self::EUROPEAN_PAYMENT_TOKEN)->paymentMethodNonce->authenticationInsight;
+            self::EUROPEAN_MERCHANT_TOKEN,
+            self::EUROPEAN_PAYMENT_TOKEN
+        )->paymentMethodNonce->authenticationInsight;
         $this->assertEquals('psd2', $authInsight['regulationEnvironment']);
     }
 
     public function testCreate_nonceWithAuthInsightRegulationEnvironmentRbi()
     {
         $authInsight = $this->_requestAuthenticationInsights(
-            self::INDIAN_MERCHANT_TOKEN, 
-            self::INDIAN_PAYMENT_TOKEN, 
-            self::AMOUNT_THRESHOLD_FOR_RBI)->paymentMethodNonce->authenticationInsight;
+            self::INDIAN_MERCHANT_TOKEN,
+            self::INDIAN_PAYMENT_TOKEN,
+            self::AMOUNT_THRESHOLD_FOR_RBI
+        )->paymentMethodNonce->authenticationInsight;
         $this->assertEquals('rbi', $authInsight['regulationEnvironment']);
     }
 
     public function testCreate_nonceWithAuthInsightScaIndicatorUnavailableWithoutAmount()
     {
         $authInsight = $this->_requestAuthenticationInsights(
-            self::INDIAN_MERCHANT_TOKEN, 
-            self::INDIAN_PAYMENT_TOKEN)->paymentMethodNonce->authenticationInsight;
+            self::INDIAN_MERCHANT_TOKEN,
+            self::INDIAN_PAYMENT_TOKEN
+        )->paymentMethodNonce->authenticationInsight;
         $this->assertEquals('unavailable', $authInsight['scaIndicator']);
     }
 
     public function testCreate_nonceWithAuthInsightScaIndicatorScaRequired()
     {
         $authInsight = $this->_requestAuthenticationInsights(
-            self::INDIAN_MERCHANT_TOKEN, 
+            self::INDIAN_MERCHANT_TOKEN,
             self::INDIAN_PAYMENT_TOKEN,
-            self::AMOUNT_THRESHOLD_FOR_RBI + 1)->paymentMethodNonce->authenticationInsight;
+            self::AMOUNT_THRESHOLD_FOR_RBI + 1
+        )->paymentMethodNonce->authenticationInsight;
         $this->assertEquals('sca_required', $authInsight['scaIndicator']);
     }
 
     public function testCreate_nonceWithAuthInsightScaIndicatorScaOptional()
     {
         $authInsight = $this->_requestAuthenticationInsights(
-            self::INDIAN_MERCHANT_TOKEN, 
+            self::INDIAN_MERCHANT_TOKEN,
             self::INDIAN_PAYMENT_TOKEN,
             1000,
             true,
-            1500)->paymentMethodNonce->authenticationInsight;
+            1500
+        )->paymentMethodNonce->authenticationInsight;
         $this->assertEquals('sca_optional', $authInsight['scaIndicator']);
     }
 
-    protected function _requestAuthenticationInsights($merchantToken, $paymentToken, $amount=null, $recurringCustomerConsent=null, $recurringMaxAmount=null)
+    protected function _requestAuthenticationInsights($merchantToken, $paymentToken, $amount = null, $recurringCustomerConsent = null, $recurringMaxAmount = null)
     {
         $params = [
             "paymentMethodNonce" => [
@@ -141,7 +148,7 @@ class PaymentMethodNonceTest extends Setup
         $result = Braintree\PaymentMethodNonce::create($paymentToken, $params);
         return $result;
     }
-    
+
     public function testCreate_fromNonExistentPaymentMethodToken()
     {
         $this->expectException('Braintree\Exception\NotFound');

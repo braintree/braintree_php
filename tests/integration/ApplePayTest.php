@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -11,11 +12,13 @@ class ApplePayTest extends Setup
 {
     private static $gateway;
 
-    public static function setUpBeforeClass(): void {
+    public static function setUpBeforeClass(): void
+    {
         self::$gateway = self::_buildMerchantGateway();
     }
 
-    public static function tearDownAfterClass(): void {
+    public static function tearDownAfterClass(): void
+    {
         self::$gateway = null;
     }
 

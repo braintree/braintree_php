@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -16,7 +17,7 @@ namespace Braintree;
  *
  * @package    Braintree
  * @category   Resources
- * 
+ *
  * @property-read \Braintree\BinData $binData
  * @property-read boolean $default
  * @property-read string $nonce
@@ -50,15 +51,15 @@ class PaymentMethodNonce extends Base
         $this->_set('nonce', $nonceAttributes['nonce']);
         $this->_set('type', $nonceAttributes['type']);
 
-        if(isset($nonceAttributes['authenticationInsight'])) {
+        if (isset($nonceAttributes['authenticationInsight'])) {
             $this->_set('authenticationInsight', $nonceAttributes['authenticationInsight']);
         }
 
-        if(isset($nonceAttributes['binData'])) {
+        if (isset($nonceAttributes['binData'])) {
             $this->_set('binData', BinData::factory($nonceAttributes['binData']));
         }
-        
-        if(isset($nonceAttributes['threeDSecureInfo'])) {
+
+        if (isset($nonceAttributes['threeDSecureInfo'])) {
             $this->_set('threeDSecureInfo', ThreeDSecureInfo::factory($nonceAttributes['threeDSecureInfo']));
         }
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use Iterator;
@@ -37,7 +38,7 @@ class PaginatedCollection implements Iterator
      *
      * @param array $pager
      */
-    public function  __construct($pager)
+    public function __construct($pager)
     {
         $this->_pager = $pager;
         $this->_pageSize = 0;
@@ -84,8 +85,7 @@ class PaginatedCollection implements Iterator
      */
     public function valid()
     {
-        if ($this->_currentPage == 0 || $this->_index % $this->_pageSize == 0 && $this->_index < $this->_totalItems)
-        {
+        if ($this->_currentPage == 0 || $this->_index % $this->_pageSize == 0 && $this->_index < $this->_totalItems) {
             $this->_getNextPage();
         }
 
@@ -112,7 +112,7 @@ class PaginatedCollection implements Iterator
             );
         }
 
-        $this->_totalItems= $result->getTotalItems();
+        $this->_totalItems = $result->getTotalItems();
         $this->_pageSize = $result->getPageSize();
         $this->_items = $result->getCurrentPage();
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\Result;
 
 use Braintree\RiskData;
@@ -43,7 +44,7 @@ class UsBankAccountVerification extends Base
     /**
      * @ignore
      */
-    public function  __construct($attributes)
+    public function __construct($attributes)
     {
         $this->_initializeFromArray($attributes);
 
@@ -63,7 +64,7 @@ class UsBankAccountVerification extends Base
     private function _initializeFromArray($attributes)
     {
         $this->_attributes = $attributes;
-        foreach($attributes AS $name => $value) {
+        foreach ($attributes as $name => $value) {
             $varName = "_$name";
             $this->$varName = $value;
         }
@@ -72,7 +73,7 @@ class UsBankAccountVerification extends Base
     /**
      * @ignore
      */
-    public function  __get($name)
+    public function __get($name)
     {
         $varName = "_$name";
         return isset($this->$varName) ? $this->$varName : null;
@@ -82,7 +83,7 @@ class UsBankAccountVerification extends Base
      * returns a string representation of the customer
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes) . ']';

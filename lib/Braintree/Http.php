@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 use Braintree\HttpHelpers\Curl;
@@ -24,7 +25,7 @@ class Http
         $responseCode = $response['status'];
         if ($responseCode === 200 || $responseCode === 204) {
             return true;
-        } else if ($responseCode === 422) {
+        } elseif ($responseCode === 422) {
             return Xml::buildArrayFromXml($response['body']);
         } else {
             Util::throwStatusCodeException($response['status']);
@@ -96,6 +97,7 @@ class Http
     public function _doUrlRequest($httpVerb, $url, $requestBody = null, $file = null, $customHeaders = null)
     {
         $curlRequest = new CurlRequest($url);
+        // phpcs:ignore Generic.Files.LineLength
         return Curl::makeRequest($httpVerb, $url, $this->_config, $curlRequest, $requestBody, $file, $customHeaders, $this->_useClientCredentials);
     }
 }

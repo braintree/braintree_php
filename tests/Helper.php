@@ -1,4 +1,5 @@
 <?php
+
 namespace Test;
 
 require_once __DIR__ . '/Setup.php';
@@ -80,7 +81,7 @@ class Helper
     {
         return 'three_d_secure_merchant_account';
     }
-    
+
     public static function adyenMerchantAccountId()
     {
         return 'adyen_ma';
@@ -101,12 +102,19 @@ class Helper
         return 'fake_first_data_merchant_account';
     }
 
-    public static function usBankMerchantAccount() {
+    public static function usBankMerchantAccount()
+    {
         return 'us_bank_merchant_account';
     }
 
-    public static function anotherUsBankMerchantAccount() {
+    public static function anotherUsBankMerchantAccount()
+    {
         return 'another_us_bank_merchant_account';
+    }
+
+    public static function cardProcessorBRLMerchantAccountId()
+    {
+        return 'card_processor_brl';
     }
 
     public static function suppressDeprecationWarnings()
@@ -123,7 +131,7 @@ class Helper
 
     public static function includes($collection, $targetItem)
     {
-        foreach ($collection AS $item) {
+        foreach ($collection as $item) {
             if ($item->id == $targetItem->id) {
                 return true;
             }
@@ -166,12 +174,14 @@ class Helper
         return $now->format('Y-m-d');
     }
 
-    public static function decodedClientToken($params=[]) {
+    public static function decodedClientToken($params = [])
+    {
         $encodedClientToken = Braintree\ClientToken::generate($params);
         return base64_decode($encodedClientToken);
     }
 
-    public static function generateValidUsBankAccountNonce($accountNumber = '567891234') {
+    public static function generateValidUsBankAccountNonce($accountNumber = '567891234')
+    {
         $client_token = json_decode(Helper::decodedClientToken(), true);
         $url = $client_token['braintree_api']['url'] . '/graphql';
         $token = $client_token['braintree_api']['access_token'];
@@ -231,7 +241,8 @@ class Helper
         return $jsonResponse['data']['tokenizeUsBankAccount']['paymentMethod']['id'];
     }
 
-    public static function generatePlaidUsBankAccountNonce() {
+    public static function generatePlaidUsBankAccountNonce()
+    {
         $client_token = json_decode(Helper::decodedClientToken(), true);
         $url = $client_token['braintree_api']['url'] . '/graphql';
         $token = $client_token['braintree_api']['access_token'];
@@ -291,23 +302,27 @@ class Helper
         return $jsonResponse['data']['tokenizeUsBankLogin']['paymentMethod']['id'];
     }
 
-    public static function generateInvalidUsBankAccountNonce() {
+    public static function generateInvalidUsBankAccountNonce()
+    {
         $valid_characters = str_split(self::$valid_nonce_characters);
         $nonce = 'tokenusbankacct';
-        for($i=0; $i<4; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $nonce = $nonce . '_';
-            for($j=0; $j<6; $j++) {
-                $t = rand(0, sizeof($valid_characters)-1);
+            for ($j = 0; $j < 6; $j++) {
+                $t = rand(0, sizeof($valid_characters) - 1);
                 $nonce = $nonce . $valid_characters[$t];
             }
         }
         return $nonce . "_xxx";
     }
 
-    public static function sampleNotificationFromXml($xml) {
+    public static function sampleNotificationFromXml($xml)
+    {
         $config = Helper::integrationMerchantGateway()->config;
         $payload = base64_encode($xml) . "\n";
-        $signature = $config->getPublicKey() . "|" . Braintree\Digest::hexDigestSha1($config->getPrivateKey(), $payload);
+        $publicKey = $config->getPublicKey();
+        $sha = Braintree\Digest::hexDigestSha1($config->getPrivateKey(), $payload);
+        $signature = $publicKey . "|" . $sha;
 
         return [
             'bt_signature' => $signature,

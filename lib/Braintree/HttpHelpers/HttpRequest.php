@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree\HttpHelpers;
 
 interface HttpRequest
@@ -10,4 +11,3 @@ interface HttpRequest
     public function getError();
     public function close();
 }
-

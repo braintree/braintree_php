@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class Modification extends Base
@@ -15,7 +16,8 @@ class Modification extends Base
         return $instance;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return get_called_class() . '[' . Util::attributesToString($this->_attributes) . ']';
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 /**
@@ -71,7 +72,7 @@ class PayPalAccount extends Base
 
         $subscriptionArray = [];
         if (isset($paypalAccountAttribs['subscriptions'])) {
-            foreach ($paypalAccountAttribs['subscriptions'] AS $subscription) {
+            foreach ($paypalAccountAttribs['subscriptions'] as $subscription) {
                 $subscriptionArray[] = Subscription::factory($subscription);
             }
         }
@@ -84,7 +85,7 @@ class PayPalAccount extends Base
      * ClassName[property=value, property=value]
      * @return string
      */
-    public function  __toString()
+    public function __toString()
     {
         return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes) . ']';

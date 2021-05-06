@@ -130,9 +130,20 @@ The `Makefile` and `Dockerfile` will build an image containing the dependencies 
 make
 ```
 
+## Linting
+
+The Rakefile includes commands to run [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) and [PHP Code Beautifier & Fixer](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Fixing-Errors-Automatically). To run the linter commands use rake:
+
+```sh
+rake lint:fix # runs the auto-fixer first, then sniffs for any remaining code smells
+rake lint:sniff[y] # gives a detailed report of code smells
+```
+
 ## Testing
 
 The unit specs can be run by anyone on any system, but the integration specs are meant to be run against a local development server of our gateway code. These integration specs are not meant for public consumption and will likely fail if run on your system. To run unit tests use rake: `rake test:unit`.
+
+To lint and run all tests, use rake: `rake test`.
 
 ## License
 

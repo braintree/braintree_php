@@ -1,4 +1,5 @@
 <?php
+
 namespace Braintree;
 
 class WebhookNotificationGateway
@@ -62,8 +63,7 @@ class WebhookNotificationGateway
 
     private function _matchingSignature($signaturePairs)
     {
-        foreach ($signaturePairs as $pair)
-        {
+        foreach ($signaturePairs as $pair) {
             $components = preg_split("/\|/", $pair);
             if ($components[0] == $this->config->getPublicKey()) {
                 return $components[1];

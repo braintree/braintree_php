@@ -1,5 +1,8 @@
-## unreleased
-* Fix bug where `__isset` methods in `Instance` and `Base` classes treated `null` value as set
+## 6.1.0
+* Add `paypalMessages` to `Dispute`
+* Fix bug where `__isset` methods in `Instance` and `Base` classes treated `null` value as set (Thanks @sklodzio)
+* Add `tax_identifiers` parameter to `Customer.create` and `Customer.update`
+* Add webhook sample for `GrantedPaymentMethodRevoked`
 * Add sample webhook notifications for `SUBSCRIPTION_EXPIRED`, `SUBSCRIPTION_CANCELED` and `SUBSCRIPTION_WENT_PAST_DUE` (thanks @antonvolokha)
 
 ## 6.0.0

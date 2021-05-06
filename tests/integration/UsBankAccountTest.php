@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -51,7 +52,7 @@ class UsBankAccountAccountTest extends Setup
             ]
         ]);
 
-        $foundUsBankAccount= Braintree\UsBankAccount::find($result->paymentMethod->token);
+        $foundUsBankAccount = Braintree\UsBankAccount::find($result->paymentMethod->token);
         $this->assertInstanceOf('Braintree\UsBankAccount', $foundUsBankAccount);
         $this->assertEquals('021000021', $foundUsBankAccount->routingNumber);
         $this->assertEquals('1234', $foundUsBankAccount->last4);

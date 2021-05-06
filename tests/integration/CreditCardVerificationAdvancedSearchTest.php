@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
@@ -31,7 +32,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $verification = $result->creditCardVerification;
 
         $query = [Braintree\CreditCardVerificationSearch::id()->is($verification->id)];
-        foreach ($searchCriteria AS $criterion => $value) {
+        foreach ($searchCriteria as $criterion => $value) {
             $query[] = Braintree\CreditCardVerificationSearch::$criterion()->is($value);
         }
 
@@ -39,7 +40,7 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($result->creditCardVerification->id, $collection->firstItem()->id);
 
-        foreach ($searchCriteria AS $criterion => $value) {
+        foreach ($searchCriteria as $criterion => $value) {
             $collection = Braintree\CreditCardVerification::search([
                 Braintree\CreditCardVerificationSearch::$criterion()->is($value),
                 Braintree\CreditCardVerificationSearch::id()->is($result->creditCardVerification->id)
@@ -76,14 +77,14 @@ class CreditCardVerificationAdvancedSearchTest extends Setup
         $customer = $result->customer;
 
         $query = [];
-        foreach ($searchCriteria AS $criterion => $value) {
+        foreach ($searchCriteria as $criterion => $value) {
             $query[] = Braintree\CreditCardVerificationSearch::$criterion()->is($value);
         }
 
         $collection = Braintree\CreditCardVerification::search($query);
         $this->assertEquals(1, $collection->maximumCount());
 
-        foreach ($searchCriteria AS $criterion => $value) {
+        foreach ($searchCriteria as $criterion => $value) {
             $collection = Braintree\CreditCardVerification::search([
                 Braintree\CreditCardVerificationSearch::$criterion()->is($value),
             ]);

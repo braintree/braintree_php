@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Unit\Xml;
 
 require_once dirname(__DIR__) . '/Setup.php';
