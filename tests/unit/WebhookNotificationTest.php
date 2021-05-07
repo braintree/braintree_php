@@ -279,6 +279,7 @@ class WebhookNotificationTest extends Setup
 
         $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY, $webhookNotification->kind);
         $this->assertEquals("my_id", $webhookNotification->subscription->id);
+        $this->assertEquals("Active", $webhookNotification->subscription->status);
         $this->assertEquals(new DateTime('2016-03-21'), $webhookNotification->subscription->billingPeriodStartDate);
         $this->assertEquals(new DateTime('2017-03-31'), $webhookNotification->subscription->billingPeriodEndDate);
         $this->assertEquals(1, count($webhookNotification->subscription->transactions));
@@ -302,6 +303,7 @@ class WebhookNotificationTest extends Setup
 
         $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_CHARGED_UNSUCCESSFULLY, $webhookNotification->kind);
         $this->assertEquals("my_id", $webhookNotification->subscription->id);
+        $this->assertEquals("Active", $webhookNotification->subscription->status);
         $this->assertEquals(new DateTime('2016-03-21'), $webhookNotification->subscription->billingPeriodStartDate);
         $this->assertEquals(new DateTime('2017-03-31'), $webhookNotification->subscription->billingPeriodEndDate);
         $this->assertEquals(1, count($webhookNotification->subscription->transactions));
@@ -309,6 +311,60 @@ class WebhookNotificationTest extends Setup
         $transaction = $webhookNotification->subscription->transactions[0];
         $this->assertEquals('failed', $transaction->status);
         $this->assertEquals('49.99', $transaction->amount);
+    }
+
+    public function testBuildsASampleNotificationForASubscriptionExpiredWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::SUBSCRIPTION_EXPIRED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_EXPIRED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->subscription->id);
+        $this->assertEquals("Expired", $webhookNotification->subscription->status);
+        $this->assertEquals(0, count($webhookNotification->subscription->transactions));
+    }
+
+    public function testBuildsASampleNotificationForASubscriptionCanceledWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::SUBSCRIPTION_CANCELED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_CANCELED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->subscription->id);
+        $this->assertEquals("Canceled", $webhookNotification->subscription->status);
+        $this->assertEquals(0, count($webhookNotification->subscription->transactions));
+    }
+
+    public function testBuildsASampleNotificationForASubscriptionWentPastDueWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->subscription->id);
+        $this->assertEquals("Past Due", $webhookNotification->subscription->status);
+        $this->assertEquals(0, count($webhookNotification->subscription->transactions));
     }
 
     public function testBuildsASampleNotificationForAMerchantAccountApprovedWebhook()
@@ -900,6 +956,26 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("venmo_customer_id", $metadata->customerId);
         $this->assertEquals("venmo_token", $metadata->token);
         $this->assertTrue($metadata->revokedPaymentMethod instanceof Braintree\VenmoAccount);
+    }
+
+    public function testGrantedPaymentMethodRevokedWebhookSample()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::GRANTED_PAYMENT_METHOD_REVOKED,
+            "my_payment_method_token"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::GRANTED_PAYMENT_METHOD_REVOKED, $webhookNotification->kind);
+        $metadata = $webhookNotification->revokedPaymentMethodMetadata;
+
+        $this->assertEquals("my_payment_method_token", $metadata->token);
+        $this->assertTrue($metadata->revokedPaymentMethod instanceof Braintree\VenmoAccount);
+        $this->assertEquals("venmo_customer_id", $metadata->customerId);
     }
 
     public function testPaymentMethodRevokedByCustomerWebhook()

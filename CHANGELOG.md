@@ -1,6 +1,14 @@
 ## Unreleased
 * Add `chargeback_protection_level` into dispute search
 
+## 6.1.0
+* Add `paypalMessages` to `Dispute`
+* Fix bug where `__isset` methods in `Instance` and `Base` classes treated `null` value as set (Thanks @sklodzio)
+* Add `tax_identifiers` parameter to `Customer.create` and `Customer.update`
+* Add webhook sample for `GrantedPaymentMethodRevoked`
+* Add sample webhook notifications for `SUBSCRIPTION_EXPIRED`, `SUBSCRIPTION_CANCELED` and `SUBSCRIPTION_WENT_PAST_DUE` (thanks @antonvolokha)
+
+
 ## 6.0.0
 * Add `LocalPaymentReversed` webhook
 * Add `adjustAuthorization` method to Transaction, for supporting multiple authorizations on a single transaction

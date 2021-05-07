@@ -46,7 +46,7 @@ abstract class Instance
      */
     public function __isset($name)
     {
-        return array_key_exists($name, $this->_attributes);
+        return isset($this->_attributes[$name]);
     }
 
     /**

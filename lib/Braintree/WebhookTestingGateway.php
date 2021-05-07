@@ -91,6 +91,15 @@ class WebhookTestingGateway
             case WebhookNotification::SUBSCRIPTION_CHARGED_UNSUCCESSFULLY:
                 $subjectXml = self::_subscriptionChargedUnsuccessfullySampleXml($id);
                 break;
+            case WebhookNotification::SUBSCRIPTION_EXPIRED:
+                $subjectXml = self::_subscriptionExpiredSampleXml($id);
+                break;
+            case WebhookNotification::SUBSCRIPTION_CANCELED:
+                $subjectXml = self::_subscriptionCanceledSampleXml($id);
+                break;
+            case WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE:
+                $subjectXml = self::_subscriptionWentPastDueSampleXml($id);
+                break;
             case WebhookNotification::CHECK:
                 $subjectXml = self::_checkSampleXml();
                 break;
@@ -102,6 +111,9 @@ class WebhookTestingGateway
                 break;
             case WebhookNotification::RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD:
                 $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
+                break;
+            case WebhookNotification::GRANTED_PAYMENT_METHOD_REVOKED:
+                $subjectXml = self::_grantedPaymentMethodRevokedXml($id);
                 break;
             case WebhookNotification::PAYMENT_METHOD_REVOKED_BY_CUSTOMER:
                 $subjectXml = self::_paymentMethodRevokedByCustomerSampleXml($id);
@@ -426,6 +438,7 @@ class WebhookTestingGateway
         return "
         <subscription>
             <id>{$id}</id>
+            <status>Active</status>
             <transactions type=\"array\">
             </transactions>
             <add_ons type=\"array\">
@@ -441,6 +454,7 @@ class WebhookTestingGateway
         return "
         <subscription>
             <id>{$id}</id>
+            <status>Active</status>
             <billing-period-start-date type=\"date\">2016-03-21</billing-period-start-date>
             <billing-period-end-date type=\"date\">2017-03-31</billing-period-end-date>
             <transactions type=\"array\">
@@ -463,6 +477,7 @@ class WebhookTestingGateway
         return "
         <subscription>
             <id>{$id}</id>
+            <status>Active</status>
             <billing-period-start-date type=\"date\">2016-03-21</billing-period-start-date>
             <billing-period-end-date type=\"date\">2017-03-31</billing-period-end-date>
             <transactions type=\"array\">
@@ -471,6 +486,54 @@ class WebhookTestingGateway
                     <status>failed</status>
                     <amount>49.99</amount>
                 </transaction>
+            </transactions>
+            <add_ons type=\"array\">
+            </add_ons>
+            <discounts type=\"array\">
+            </discounts>
+        </subscription>
+        ";
+    }
+
+    private static function _subscriptionExpiredSampleXml($id)
+    {
+        return "
+        <subscription>
+            <id>{$id}</id>
+            <status>Expired</status>
+            <transactions type=\"array\">
+            </transactions>
+            <add_ons type=\"array\">
+            </add_ons>
+            <discounts type=\"array\">
+            </discounts>
+        </subscription>
+        ";
+    }
+
+    private static function _subscriptionCanceledSampleXml($id)
+    {
+        return "
+        <subscription>
+            <id>{$id}</id>
+            <status>Canceled</status>
+            <transactions type=\"array\">
+            </transactions>
+            <add_ons type=\"array\">
+            </add_ons>
+            <discounts type=\"array\">
+            </discounts>
+        </subscription>
+        ";
+    }
+
+    private static function _subscriptionWentPastDueSampleXml($id)
+    {
+        return "
+        <subscription>
+            <id>{$id}</id>
+            <status>Past Due</status>
+            <transactions type=\"array\">
             </transactions>
             <add_ons type=\"array\">
             </add_ons>
@@ -577,6 +640,25 @@ class WebhookTestingGateway
 			<item>expiration-year</item>
 		  </updated-fields>
 		</granted-payment-instrument-update>
+        ";
+    }
+
+    private static function _grantedPaymentMethodRevokedXml($id)
+    {
+        return "
+        <venmo-account>
+            <created-at type='dateTime'>2018-10-11T21:28:37Z</created-at>
+            <updated-at type='dateTime'>2018-10-11T21:28:37Z</updated-at>
+            <default type='boolean'>true</default>
+            <image-url>https://assets.braintreegateway.com/payment_method_logo/venmo.png?environment=test</image-url>
+            <token>{$id}</token>
+            <source-description>Venmo Account: venmojoe</source-description>
+            <username>venmojoe</username>
+            <venmo-user-id>456</venmo-user-id>
+            <subscriptions type='array'/>
+            <customer-id>venmo_customer_id</customer-id>
+            <global-id>cGF5bWVudG1ldGhvZF92ZW5tb2FjY291bnQ</global-id>
+        </venmo-account>
         ";
     }
 

@@ -543,6 +543,23 @@ class CustomerTest extends Setup
         $this->assertEquals(true, $result->success);
     }
 
+    public function testCreate_withTaxIdentifiers()
+    {
+        $result = Braintree\Customer::create([
+            'taxIdentifiers' => [
+                [
+                    'countryCode' => 'US',
+                    'identifier' => '123456789'
+                ],
+                [
+                    'countryCode' => 'GB',
+                    'identifier' => '987654321'
+                ]
+            ]
+        ]);
+        $this->assertEquals(true, $result->success);
+    }
+
     public function testCreate_withCreditCard()
     {
         $result = Braintree\Customer::create([
@@ -1116,6 +1133,33 @@ class CustomerTest extends Setup
         $this->assertEquals('GA', $updatedCustomer->creditCards[0]->billingAddress->countryCodeAlpha2);
         $this->assertEquals('GAB', $updatedCustomer->creditCards[0]->billingAddress->countryCodeAlpha3);
         $this->assertEquals('266', $updatedCustomer->creditCards[0]->billingAddress->countryCodeNumeric);
+    }
+
+    public function testUpdate_withTaxIdentifiers()
+    {
+        $customer = Braintree\Customer::create([
+            'taxIdentifiers' => [
+                [
+                    'countryCode' => 'US',
+                    'identifier' => '123456789'
+                ],
+                [
+                    'countryCode' => 'GB',
+                    'identifier' => '987654321'
+                ]
+            ]
+        ])->customer;
+
+        $result = Braintree\Customer::update($customer->id, [
+            'taxIdentifiers' => [
+                [
+                    'countryCode' => 'US',
+                    'identifier' => '567891234'
+                ]
+            ]
+        ]);
+
+        $this->assertEquals(true, $result->success);
     }
 
     public function testUpdate_withUpdatingExistingCreditCard()

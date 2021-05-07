@@ -67,7 +67,12 @@ class DisputeTest extends Setup
                 'orderId' => null,
                 'purchaseOrderNumber' => 'po',
                 'paymentInstrumentSubtype' => 'Visa',
-            ]
+            ],
+            'paypalMessages' => [[
+                'message' => 'message',
+                'sender' => 'seller',
+                'sentAt' => DateTime::createFromFormat('Ymd-His', '20130410-105039'),
+            ]],
         ];
     }
 
@@ -151,6 +156,9 @@ class DisputeTest extends Setup
         $this->assertEquals('evidence2', $dispute->evidence[1]->id);
         $this->assertEquals('2009-04-11', $dispute->evidence[1]->sentToProcessorAt);
         $this->assertNull($dispute->evidence[1]->url);
+        $this->assertEquals('message', $dispute->paypalMessages[0]->message);
+        $this->assertEquals('seller', $dispute->paypalMessages[0]->sender);
+        $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->paypalMessages[0]->sentAt);
         $this->assertEquals('2013-04-10', $dispute->statusHistory[0]->effectiveDate);
         $this->assertEquals('open', $dispute->statusHistory[0]->status);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->statusHistory[0]->timestamp);
@@ -163,6 +171,7 @@ class DisputeTest extends Setup
             'dateOpened' => null,
             'dateWon' => null,
             'evidence' => null,
+            'paypalMessages' => null,
             'replyByDate' => null,
             'statusHistory' => null
         ];
@@ -175,6 +184,7 @@ class DisputeTest extends Setup
         $this->assertNull($dispute->dateOpened);
         $this->assertNull($dispute->dateWon);
         $this->assertNull($dispute->evidence);
+        $this->assertNull($dispute->paypalMessages);
         $this->assertNull($dispute->replyByDate);
         $this->assertNull($dispute->statusHistory);
     }
