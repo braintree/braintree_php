@@ -1,5 +1,5 @@
 ## Unreleased
-* Add `chargeback_protection_level` into dispute search
+* Add `chargebackProtectionLevel ` to `Dispute` and `DisputeSearch`
 
 ## 6.1.0
 * Add `paypalMessages` to `Dispute`
@@ -7,7 +7,6 @@
 * Add `tax_identifiers` parameter to `Customer.create` and `Customer.update`
 * Add webhook sample for `GrantedPaymentMethodRevoked`
 * Add sample webhook notifications for `SUBSCRIPTION_EXPIRED`, `SUBSCRIPTION_CANCELED` and `SUBSCRIPTION_WENT_PAST_DUE` (thanks @antonvolokha)
-
 
 ## 6.0.0
 * Add `LocalPaymentReversed` webhook
