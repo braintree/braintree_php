@@ -1,3 +1,6 @@
+## Unreleased
+* Add `chargebackProtectionLevel ` to `Dispute` and `DisputeSearch`
+
 ## 6.1.0
 * Add `paypalMessages` to `Dispute`
 * Fix bug where `__isset` methods in `Instance` and `Base` classes treated `null` value as set (Thanks @sklodzio)

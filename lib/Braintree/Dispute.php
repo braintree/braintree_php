@@ -26,6 +26,7 @@ namespace Braintree;
  * @property-read string $referenceNumber
  * @property-read \DateTime $replyByDate
  * @property-read string $status
+ * @property-read string $chargebackProtectionLevel
  * @property-read \Braintree\Dispute\PayPalMessageDetails[] $paypalMessages
  * @property-read \Braintree\Dispute\StatusHistoryDetails[] $statusHistory
  * @property-read \Braintree\Dispute\TransactionDetails $transaction
@@ -56,6 +57,11 @@ class Dispute extends Base
     const PRODUCT_UNSATISFACTORY          = "product_unsatisfactory";
     const TRANSACTION_AMOUNT_DIFFERS      = "transaction_amount_differs";
     const RETRIEVAL                       = "retrieval";
+
+    /* Dispute ChargebackProtectionLevel */
+    const EFFORTLESS      = 'effortless';
+    const STANDARD        = 'standard';
+    const NOT_PROTECTED   = 'not_protected';
 
     /* Dispute Kind */
     const CHARGEBACK      = 'chargeback';
@@ -201,5 +207,15 @@ class Dispute extends Base
     public static function search($query)
     {
         return Configuration::gateway()->dispute()->search($query);
+    }
+
+    /** @return array */
+    public static function allChargebackProtectionLevelTypes()
+    {
+        return [
+            Dispute::EFFORTLESS,
+            Dispute::STANDARD,
+            Dispute::NOT_PROTECTED
+        ];
     }
 }
