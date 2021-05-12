@@ -543,6 +543,44 @@ class CustomerTest extends Setup
         $this->assertEquals(true, $result->success);
     }
 
+    public function testCreate_includesRiskDataWhenSkipAdvancedFraudCheckingIsFalse()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $result = $gateway->customer()->create([
+            'firstName' => 'Jane',
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '05/2011',
+                'options' => [
+                    'verifyCard' => true,
+                    'skipAdvancedFraudChecking' => false
+                ],
+            ],
+        ]);
+        $this->assertTrue($result->success);
+        $verification = $result->customer->creditCards[0]->verification;
+        $this->assertNotNull($verification->riskData);
+    }
+
+    public function testCreate_doesNotIncludeRiskDataWhenSkipAdvancedFraudCheckingIsTrue()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $result = $gateway->customer()->create([
+            'firstName' => 'Jane',
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '05/2011',
+                'options' => [
+                    'verifyCard' => true,
+                    'skipAdvancedFraudChecking' => true
+                ],
+            ],
+        ]);
+        $this->assertTrue($result->success);
+        $verification = $result->customer->creditCards[0]->verification;
+        $this->assertNull($verification->riskData);
+    }
+
     public function testCreate_withTaxIdentifiers()
     {
         $result = Braintree\Customer::create([
@@ -1285,6 +1323,54 @@ class CustomerTest extends Setup
         ]);
 
         $this->assertTrue($result->success);
+    }
+
+    public function testUpdate_includesRiskDataWhenSkipAdvancedFraudCheckingIsFalse()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $createResult = $gateway->customer()->create([
+            'firstName' => 'Jane',
+            'lastName' => 'Doe',
+        ]);
+
+        $updateResult = $gateway->customer()->update($createResult->customer->id, [
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '05/2011',
+                'options' => [
+                    'verifyCard' => true,
+                    'skipAdvancedFraudChecking' => false
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($updateResult->success);
+        $verification = $updateResult->customer->creditCards[0]->verification;
+        $this->assertNotNull($verification->riskData);
+    }
+
+    public function testUpdate_doesNotIncludeRiskDataWhenSkipAdvancedFraudCheckingIsTrue()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $createResult = $gateway->customer()->create([
+            'firstName' => 'Jane',
+            'lastName' => 'Doe',
+        ]);
+
+        $updateResult = $gateway->customer()->update($createResult->customer->id, [
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '05/2011',
+                'options' => [
+                    'verifyCard' => true,
+                    'skipAdvancedFraudChecking' => true
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($updateResult->success);
+        $verification = $updateResult->customer->creditCards[0]->verification;
+        $this->assertNull($verification->riskData);
     }
 
     public function testUpdate_failOnDuplicatePaymentMethod()

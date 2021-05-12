@@ -278,8 +278,13 @@ class CreditCardGateway
     private static function baseOptions()
     {
         return [
-            'makeDefault', 'verificationMerchantAccountId', 'verifyCard',
-            'verificationAmount', 'verificationAccountType', 'venmoSdkSession'
+            'makeDefault',
+            'skipAdvancedFraudChecking',
+            'venmoSdkSession',
+            'verificationAccountType',
+            'verificationAmount',
+            'verificationMerchantAccountId',
+            'verifyCard',
         ];
     }
 

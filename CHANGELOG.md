@@ -1,5 +1,8 @@
 ## Unreleased
 * Add `chargebackProtectionLevel ` to `Dispute` and `DisputeSearch`
+* Add `skipAdvancedFraudChecking` to: 
+  * `CreditCard.create` and `CreditCard.update`
+  * `PaymentMethod.create` and `PaymentMethod.update`
 
 ## 6.1.0
 * Add `paypalMessages` to `Dispute`

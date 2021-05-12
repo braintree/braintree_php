@@ -232,6 +232,42 @@ class CreditCardTest extends Setup
         $this->assertNotNull($result->creditCard->verification->riskData->decisionReasons);
     }
 
+    public function testCreate_includesRiskDataWhenSkipAdvancedFraudCheckingIsFalse()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $customer = $gateway->customer()->createNoValidate();
+        $result = $gateway->creditCard()->create([
+            'customerId' => $customer->id,
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2011',
+            'options' => [
+                'verifyCard' => true,
+                'skipAdvancedFraudChecking' => false
+            ],
+        ]);
+        $this->assertTrue($result->success);
+        $verification = $result->creditCard->verification;
+        $this->assertNotNull($verification->riskData);
+    }
+
+    public function testCreate_doesNotIncludeRiskDataWhenSkipAdvancedFraudCheckingIsTrue()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $customer = $gateway->customer()->createNoValidate();
+        $result = $gateway->creditCard()->create([
+            'customerId' => $customer->id,
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2011',
+            'options' => [
+                'verifyCard' => true,
+                'skipAdvancedFraudChecking' => true
+            ],
+        ]);
+        $this->assertTrue($result->success);
+        $verification = $result->creditCard->verification;
+        $this->assertNull($verification->riskData);
+    }
+
     public function testCreate_withCardVerificationAndOverriddenAmount()
     {
         $customer = Braintree\Customer::createNoValidate();
@@ -1076,6 +1112,44 @@ class CreditCardTest extends Setup
         $this->assertEquals('THA', $updatedCreditCard->billingAddress->countryCodeAlpha3);
         $this->assertEquals('764', $updatedCreditCard->billingAddress->countryCodeNumeric);
         $this->assertEquals($initialCreditCard->billingAddress->id, $updatedCreditCard->billingAddress->id);
+    }
+
+    public function testUpdate_includesRiskDataWhenSkipAdvancedFraudCheckingIsFalse()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $customer = $gateway->customer()->createNoValidate();
+        $initialCreditCard = $gateway->creditCard()->create([
+            'customerId' => $customer->id,
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2011',
+        ])->creditCard;
+        $result = $gateway->creditCard()->update($initialCreditCard->token, [
+            'expirationDate' => '06/2023',
+            'options' => ['verifyCard' => true, 'skipAdvancedFraudChecking' => false],
+        ]);
+
+        $this->assertTrue($result->success);
+        $verification = $result->creditCard->verification;
+        $this->assertNotNull($verification->riskData);
+    }
+
+    public function testUpdate_doesNotIncludeRiskDataWhenSkipAdvancedFraudCheckingIsTrue()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $customer = $gateway->customer()->createNoValidate();
+        $initialCreditCard = $gateway->creditCard()->create([
+            'customerId' => $customer->id,
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2011',
+        ])->creditCard;
+        $result = $gateway->creditCard()->update($initialCreditCard->token, [
+            'expirationDate' => '06/2023',
+            'options' => ['verifyCard' => true, 'skipAdvancedFraudChecking' => true],
+        ]);
+
+        $this->assertTrue($result->success);
+        $verification = $result->creditCard->verification;
+        $this->assertNull($verification->riskData);
     }
 
     public function testUpdate_canChangeToken()
