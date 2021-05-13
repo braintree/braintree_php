@@ -112,11 +112,12 @@ class PaymentMethodGateway
         $optionsSignature = [
             'failOnDuplicatePaymentMethod',
             'makeDefault',
-            'verificationMerchantAccountId',
-            'verifyCard',
+            'skipAdvancedFraudChecking',
+            'usBankAccountVerificationMethod',
             'verificationAccountType',
             'verificationAmount',
-            'usBankAccountVerificationMethod',
+            'verificationMerchantAccountId',
+            'verifyCard',
             ['paypal' => [
                 'payee_email',
                 'payeeEmail',
