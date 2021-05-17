@@ -634,6 +634,60 @@ class PaymentMethodTest extends Setup
         $this->assertEquals("81724", $resultErrors[0]->code);
     }
 
+    public function testCreate_includesRiskDataWhenSkipAdvancedFraudCheckingIsFalse()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $customer = $gateway->customer()->createNoValidate();
+        $http = new HttpClientApi($gateway->config);
+        $nonce = $http->nonce_for_new_card([
+            'credit_card' => [
+                'number' => '4111111111111111',
+                'expirationMonth' => '11',
+                'expirationYear' => '2099'
+            ],
+        ]);
+
+        $result = $gateway->paymentMethod()->create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verifyCard' => true,
+                'skipAdvancedFraudChecking' => false
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $verification = $result->paymentMethod->verification;
+        $this->assertNotNull($verification->riskData);
+    }
+
+    public function testCreate_doesNotIncludeRiskDataWhenSkipAdvancedFraudCheckingIsTrue()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $customer = $gateway->customer()->createNoValidate();
+        $http = new HttpClientApi($gateway->config);
+        $nonce = $http->nonce_for_new_card([
+            'credit_card' => [
+                'number' => '4111111111111111',
+                'expirationMonth' => '11',
+                'expirationYear' => '2099'
+            ],
+        ]);
+
+        $result = $gateway->paymentMethod()->create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verifyCard' => true,
+                'skipAdvancedFraudChecking' => true
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $verification = $result->paymentMethod->verification;
+        $this->assertNull($verification->riskData);
+    }
+
     public function testCreate_allowsPassingABillingAddressOutsideOfTheNonce()
     {
         $customer = Braintree\Customer::createNoValidate();
@@ -1045,6 +1099,52 @@ class PaymentMethodTest extends Setup
         ]);
 
         $this->assertTrue($result->success);
+    }
+
+    public function testUpdate_includesRiskDataWhenSkipAdvancedFraudCheckingIsFalse()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $customer = $gateway->customer()->createNoValidate();
+        $creditCard = $gateway->creditCard()->create([
+            'customerId' => $customer->id,
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2011',
+        ])->creditCard;
+
+        $result = $gateway->paymentMethod()->update($creditCard->token, [
+            'expirationDate' => '06/2023',
+            'options' => [
+                'verifyCard' => true,
+                'skipAdvancedFraudChecking' => false
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $verification = $result->paymentMethod->verification;
+        $this->assertNotNull($verification->riskData);
+    }
+
+    public function testUpdate_doesNotIncludeRiskDataWhenSkipAdvancedFraudCheckingIsTrue()
+    {
+        $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
+        $customer = $gateway->customer()->createNoValidate();
+        $creditCard = $gateway->creditCard()->create([
+            'customerId' => $customer->id,
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2011',
+        ])->creditCard;
+
+        $result = $gateway->paymentMethod()->update($creditCard->token, [
+            'expirationDate' => '06/2023',
+            'options' => [
+                'verifyCard' => true,
+                'skipAdvancedFraudChecking' => true
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $verification = $result->paymentMethod->verification;
+        $this->assertNull($verification->riskData);
     }
 
     public function testCreate_ErrorsWithVerificationAccountTypeIsInvalid()
