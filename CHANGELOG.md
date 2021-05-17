@@ -1,4 +1,4 @@
-## Unreleased
+## 6.2.0
 * Add `chargebackProtectionLevel ` to `Dispute` and `DisputeSearch`
 * Add `skipAdvancedFraudChecking` to: 
   * `CreditCard.create` and `CreditCard.update`
