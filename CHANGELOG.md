@@ -1,3 +1,6 @@
+## Unreleased
+* Add `paymentReaderCardDetails` parameter to `Transaction.sale`
+
 ## 6.2.0
 * Add `chargebackProtectionLevel ` to `Dispute` and `DisputeSearch`
 * Add `skipAdvancedFraudChecking` to: 

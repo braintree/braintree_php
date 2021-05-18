@@ -112,7 +112,16 @@ class TransactionGateway
                     'customerLocationZip', 'customerTenure'],
             ],
             ['creditCard' =>
-                ['token', 'cardholderName', 'cvv', 'expirationDate', 'expirationMonth', 'expirationYear', 'number'],
+                [
+                    'token',
+                    'cardholderName',
+                    'cvv',
+                    'expirationDate',
+                    'expirationMonth',
+                    'expirationYear',
+                    'number',
+                    ['paymentReaderCardDetails' => ['encryptedCardData', 'keySerialNumber']],
+                ],
             ],
             ['customer' =>
                 [

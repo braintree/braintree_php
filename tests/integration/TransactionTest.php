@@ -6527,6 +6527,36 @@ class TransactionTest extends Setup
         $this->assertFalse($transaction->processedWithNetworkToken);
     }
 
+    public function testValidManualKeyEntryTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'creditCard' => [
+                'paymentReaderCardDetails' => [
+                    'encryptedCardData' => '8F34DFB312DC79C24FD5320622F3E11682D79E6B0C0FD881',
+                    'keySerialNumber' => 'FFFFFF02000572A00005',
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+    }
+
+    public function testInvalidManualKeyEntryTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'creditCard' => [
+                'paymentReaderCardDetails' => [
+                    'encryptedCardData' => 'invalid',
+                    'keySerialNumber' => 'invalid',
+                ],
+            ],
+        ]);
+
+        $this->assertFalse($result->success);
+    }
+
     public function testInstallmentsTransaction()
     {
         $result = Braintree\Transaction::sale([
