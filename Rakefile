@@ -10,6 +10,9 @@ namespace :lint do
   # rake lint:sniff[y] for a more detailed report of smells
   desc "sniff for code smells"
   task :sniff, [:details] do |task, args|
+    sh "php ./vendor/bin/phpcs --config-set show_progress 1"
+    sh "php ./vendor/bin/phpcs --config-set colors 1"
+    sh "php ./vendor/bin/phpcs --config-set php_version 70300"
     if args.details.nil?
       sh "php ./vendor/bin/phpcs --standard=phpcs.xml --report=summary lib tests"
     else
