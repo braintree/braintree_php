@@ -23,11 +23,12 @@ class CustomerTest extends Setup
             if (is_array($value) and array_key_exists('options', $value)) {
                 $this->assertEquals([
                     'makeDefault',
+                    'skipAdvancedFraudChecking',
+                    'venmoSdkSession',
+                    'verificationAccountType',
+                    'verificationAmount',
                     'verificationMerchantAccountId',
                     'verifyCard',
-                    'verificationAmount',
-                    'verificationAccountType',
-                    'venmoSdkSession',
                     'failOnDuplicatePaymentMethod',
                 ], $value['options']);
             }

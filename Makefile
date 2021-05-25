@@ -10,4 +10,7 @@ build:
 	docker build -t braintree-php .
 
 lint: build
-	docker run -i -v="$(PWD):/braintree-php" --net="host" braintree-php /bin/bash -l -c "bundle install;rake lint"
+	docker run -i -v="$(PWD):/braintree-php" --net="host" braintree-php /bin/bash -l -c "\
+		curl -sS https://getcomposer.org/installer | php -d suhosin.executor.include.whitelist=phar && \
+		php -d suhosin.executor.include.whitelist=phar ./composer.phar install; \
+		rake lint"
