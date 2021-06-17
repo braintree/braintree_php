@@ -1,3 +1,6 @@
+## 6.2.1
+* Add multibyte character support to `Util` functions
+
 ## 6.2.0
 * Add `chargebackProtectionLevel ` to `Dispute` and `DisputeSearch`
 * Add `skipAdvancedFraudChecking` to: 
