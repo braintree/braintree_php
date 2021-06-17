@@ -226,7 +226,7 @@ class Util
         static $callback = null;
         if ($callback === null) {
             $callback = function ($matches) {
-                return strtoupper($matches[1]);
+                return extension_loaded('mbstring') ? mb_strtoupper($matches[1]) : strtoupper($matches[1]);
             };
         }
 
@@ -256,7 +256,9 @@ class Util
      */
     public static function camelCaseToDelimiter($string, $delimiter = '-')
     {
-        return strtolower(preg_replace('/([A-Z])/', "$delimiter\\1", $string));
+        return extension_loaded('mbstring') ?
+            mb_strtolower(preg_replace('/([A-Z])/', "$delimiter\\1", $string)) :
+            strtolower(preg_replace('/([A-Z])/', "$delimiter\\1", $string));
     }
 
     public static function delimiterToCamelCaseArray($array, $delimiter = '[\-\_]')
