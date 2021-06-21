@@ -1,4 +1,4 @@
-## Unreleased
+## 6.3.0
 * Add `paymentReaderCardDetails` parameter to `Transaction.sale`
 * Add error code `TRANSACTION_TAX_AMOUNT_IS_REQUIRED_FOR_AIB_SWEDISH` for attribute `taxAmount` in `transaction` key for AIB:Domestic transactions in Sweden.
 
