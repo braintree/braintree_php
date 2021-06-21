@@ -303,6 +303,24 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_OPTIONS_CREDIT_CARD_ACCOUNT_TYPE_DEBIT_DOES_NOT_SUPPORT_AUTHS, $errors[0]->code);
     }
 
+    public function testCreateErrorsWithTaxAmountIsRequiredForAibSwedish()
+    {
+        $result = Braintree\Transaction::sale([
+          'amount' => '47.00',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationMonth' => '10',
+              'expirationYear' => '2020',
+              'cvv' => '737',
+          ],
+          'merchantAccountId' => 'aib_swe_ma',
+        ]);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('taxAmount');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_TAX_AMOUNT_IS_REQUIRED_FOR_AIB_SWEDISH, $errors[0]->code);
+    }
+
     public function testSaleAndSkipAdvancedFraudChecking()
     {
         $gateway = Test\Helper::advancedFraudKountIntegrationMerchantGateway();
