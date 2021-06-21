@@ -41,10 +41,29 @@ class CreditCardTest extends Setup
     public function testCreateSignature()
     {
         $expected = [
-            'billingAddressId', 'cardholderName', 'cvv', 'number',
-            'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
-            'deviceData', 'paymentMethodNonce',
-            ['options' => ['makeDefault', 'verificationMerchantAccountId', 'verifyCard', 'verificationAmount', 'verificationAccountType', 'venmoSdkSession', 'failOnDuplicatePaymentMethod']],
+            'billingAddressId',
+            'cardholderName',
+            'cvv',
+            'number',
+            'expirationDate',
+            'expirationMonth',
+            'expirationYear',
+            'token',
+            'venmoSdkPaymentMethodCode',
+            'deviceData',
+            'paymentMethodNonce',
+            [
+                'options' => [
+                    'makeDefault',
+                    'skipAdvancedFraudChecking',
+                    'venmoSdkSession',
+                    'verificationAccountType',
+                    'verificationAmount',
+                    'verificationMerchantAccountId',
+                    'verifyCard',
+                    'failOnDuplicatePaymentMethod',
+                ]
+            ],
             [
                 'billingAddress' => [
                     'firstName',
@@ -81,17 +100,26 @@ class CreditCardTest extends Setup
     public function testUpdateSignature()
     {
         $expected = [
-            'billingAddressId', 'cardholderName', 'cvv', 'number',
-            'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
-            'deviceData', 'paymentMethodNonce',
+            'billingAddressId',
+            'cardholderName',
+            'cvv',
+            'number',
+            'expirationDate',
+            'expirationMonth',
+            'expirationYear',
+            'token',
+            'venmoSdkPaymentMethodCode',
+            'deviceData',
+            'paymentMethodNonce',
             [
                 'options' => [
                     'makeDefault',
+                    'skipAdvancedFraudChecking',
+                    'venmoSdkSession',
+                    'verificationAccountType',
+                    'verificationAmount',
                     'verificationMerchantAccountId',
                     'verifyCard',
-                    'verificationAmount',
-                    'verificationAccountType',
-                    'venmoSdkSession',
                     'failOnDuplicatePaymentMethod',
                 ]
             ],

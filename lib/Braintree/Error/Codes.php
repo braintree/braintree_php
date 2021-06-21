@@ -651,6 +651,7 @@ class Codes
     const TRANSACTION_SUB_MERCHANT_ACCOUNT_REQUIRES_SERVICE_FEE_AMOUNT                = '91553';
     const TRANSACTION_TAX_AMOUNT_CANNOT_BE_NEGATIVE                                   = '81534';
     const TRANSACTION_TAX_AMOUNT_FORMAT_IS_INVALID                                    = '81535';
+    const TRANSACTION_TAX_AMOUNT_IS_REQUIRED_FOR_AIB_SWEDISH                          = '815224';
     const TRANSACTION_TAX_AMOUNT_IS_TOO_LARGE                                         = '81536';
 
     const TRANSACTION_THREE_D_SECURE_AUTHENTICATION_FAILED                            = '81571';
