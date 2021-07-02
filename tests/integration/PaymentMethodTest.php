@@ -160,6 +160,16 @@ class PaymentMethodTest extends Setup
         $applePayCard = $result->paymentMethod;
         $this->assertNotNull($applePayCard->token);
         $this->assertNotNull($applePayCard->bin);
+        $this->assertNotNull($applePayCard->prepaid);
+        $this->assertNotNull($applePayCard->healthcare);
+        $this->assertNotNull($applePayCard->debit);
+        $this->assertNotNull($applePayCard->durbin_regulated);
+        $this->assertNotNull($applePayCard->commercial);
+        $this->assertNotNull($applePayCard->payroll);
+        $this->assertNotNull($applePayCard->issuing_bank);
+        $this->assertNotNull($applePayCard->country_of_issuance);
+        $this->assertNotNull($applePayCard->product_id);
+
         $this->assertSame(Braintree\ApplePayCard::VISA, $applePayCard->cardType);
         $this->assertStringContainsString("Visa ", $applePayCard->paymentInstrumentName);
         $this->assertStringContainsString("Visa ", $applePayCard->sourceDescription);
