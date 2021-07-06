@@ -159,6 +159,7 @@ class PaymentMethodTest extends Setup
         $this->assertTrue($result->success);
         $applePayCard = $result->paymentMethod;
         $this->assertNotNull($applePayCard->token);
+        $this->assertNotNull($applePayCard->bin);
         $this->assertNotNull($applePayCard->prepaid);
         $this->assertNotNull($applePayCard->healthcare);
         $this->assertNotNull($applePayCard->debit);
