@@ -2,9 +2,9 @@
 
 namespace Braintree;
 
-/**
  * Braintree ApplePayCard module
  * Creates and manages Braintree Apple Pay cards
+/**
  *
  * <b>== More information ==</b>
  *
@@ -24,7 +24,6 @@ namespace Braintree;
  * @property-read boolean $expired
  * @property-read string $imageUrl
  * @property-read string $last4
- * @property-read string $token
  * @property-read string $prepaid
  * @property-read string $healthcare
  * @property-read string $debit
@@ -77,8 +76,8 @@ class ApplePayCard extends Base
     public static function factory($attributes)
     {
         $defaultAttributes = [
-            'expirationMonth'    => '',
-            'expirationYear'    => '',
+            'expirationMonth' => '',
+            'expirationYear' => '',
             'last4'  => '',
         ];
 
