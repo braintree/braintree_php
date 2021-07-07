@@ -32,6 +32,15 @@ namespace Braintree;
  * @property-read \DateTime $updatedAt
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
+ * @property-read string $commercial
+ * @property-read string $debit
+ * @property-read string $durbinRegulated
+ * @property-read string $healthcare
+ * @property-read string $prepaid
+ * @property-read string $payroll
+ * @property-read string $productId
+ * @property-read string $issuingBank
+ * @property-read string $countryOfIssuance
  */
 class GooglePayCard extends Base
 {
