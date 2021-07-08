@@ -3596,8 +3596,6 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->paypalDetails->sellerProtectionStatus);
         $this->assertNotNull($transaction->paypalDetails->captureId);
         $this->assertNotNull($transaction->paypalDetails->refundId);
-        $this->assertNotNull($transaction->paypalDetails->taxId);
-        $this->assertNotNull($transaction->paypalDetails->taxIdType);
         $this->assertNotNull($transaction->paypalDetails->transactionFeeAmount);
         $this->assertNotNull($transaction->paypalDetails->transactionFeeCurrencyIsoCode);
         $this->assertNotNull($transaction->paypalDetails->refundFromTransactionFeeAmount);
