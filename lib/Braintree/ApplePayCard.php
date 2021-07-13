@@ -25,6 +25,15 @@ namespace Braintree;
  * @property-read string $imageUrl
  * @property-read string $last4
  * @property-read string $token
+ * @property-read string $prepaid
+ * @property-read string $healthcare
+ * @property-read string $debit
+ * @property-read string $durbinRegulated
+ * @property-read string $commercial
+ * @property-read string $payroll
+ * @property-read string $issuingBank
+ * @property-read string $countryOfIssuance
+ * @property-read string $productId
  * @property-read string $paymentInstrumentName
  * @property-read string $sourceDescription
  * @property-read \Braintree\Subscription[] $subscriptions
@@ -68,8 +77,8 @@ class ApplePayCard extends Base
     public static function factory($attributes)
     {
         $defaultAttributes = [
-            'expirationMonth'    => '',
-            'expirationYear'    => '',
+            'expirationMonth' => '',
+            'expirationYear' => '',
             'last4'  => '',
         ];
 
