@@ -1,4 +1,4 @@
-## Unreleased
+## 6.4.0
 * Add `exchangeRateQuoteId` to `Transaction.sale`
 * Add error code `EXCHANGE_RATE_QUOTE_ID_IS_TOO_LONG`
 * Added the following fields to GooglePayCard and ApplePayCard:
