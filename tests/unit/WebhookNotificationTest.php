@@ -1035,5 +1035,54 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("a-payer-id", $localPaymentCompleted->payerId);
         $this->assertEquals("ee257d98-de40-47e8-96b3-a6954ea7a9a4", $localPaymentCompleted->paymentMethodNonce);
         $this->assertNotNull($localPaymentCompleted->transaction);
+        $t = $localPaymentCompleted->transaction;
+        $this->assertEquals("1", $t['id']);
+        $this->assertEquals("authorizing", $t['status']);
+        $this->assertEquals("10.00", $t['amount']);
+        $this->assertEquals("order1234", $t['orderId']);
+    }
+
+    public function testLocalPaymentFundedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::LOCAL_PAYMENT_FUNDED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::LOCAL_PAYMENT_FUNDED, $webhookNotification->kind);
+        $localPaymentFunded = $webhookNotification->localPaymentFunded;
+
+        $this->assertEquals("a-payment-id", $localPaymentFunded->paymentId);
+        $this->assertEquals("a-payment-context-id", $localPaymentFunded->paymentContextId);
+        $transaction = $localPaymentFunded->transaction;
+
+        $this->assertNotNull($transaction);
+        $this->assertEquals("1", $transaction["id"]);
+        $this->assertEquals("settled", $transaction["status"]);
+        $this->assertEquals("order1234", $transaction["orderId"]);
+    }
+
+    public function testLocalPaymentExpiredWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::LOCAL_PAYMENT_EXPIRED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::LOCAL_PAYMENT_EXPIRED, $webhookNotification->kind);
+        $localPaymentExpired = $webhookNotification->localPaymentExpired;
+
+        $this->assertEquals("a-payment-id", $localPaymentExpired->paymentId);
+        $this->assertEquals("a-payment-context-id", $localPaymentExpired->paymentContextId);
     }
 }

@@ -11,6 +11,7 @@
   * `productId`
   * `countryOfIssuance`
   * `issuingBank`
+* Add `LocalPaymentExpired` and `LocalPaymentFunded` webhook notification support
 
 ## 6.3.0
 * Add `paymentReaderCardDetails` parameter to `Transaction.sale`
@@ -18,7 +19,7 @@
 
 ## 6.2.0
 * Add `chargebackProtectionLevel ` to `Dispute` and `DisputeSearch`
-* Add `skipAdvancedFraudChecking` to: 
+* Add `skipAdvancedFraudChecking` to:
   * `CreditCard.create` and `CreditCard.update`
   * `PaymentMethod.create` and `PaymentMethod.update`
 

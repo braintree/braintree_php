@@ -121,6 +121,12 @@ class WebhookTestingGateway
             case WebhookNotification::LOCAL_PAYMENT_COMPLETED:
                 $subjectXml = self::_localPaymentCompletedSampleXml();
                 break;
+            case WebhookNotification::LOCAL_PAYMENT_EXPIRED:
+                $subjectXml = self::_localPaymentExpiredSampleXml();
+                break;
+            case WebhookNotification::LOCAL_PAYMENT_FUNDED:
+                $subjectXml = self::_localPaymentFundedSampleXml();
+                break;
             case WebhookNotification::LOCAL_PAYMENT_REVERSED:
                 $subjectXml = self::_localPaymentReversedSampleXml();
                 break;
@@ -699,6 +705,32 @@ class WebhookTestingGateway
                 <order-id>order1234</order-id>
             </transaction>
 		</local-payment>
+        ";
+    }
+
+    private static function _localPaymentExpiredSampleXml()
+    {
+        return "
+        <local-payment-expired>
+            <payment-id>a-payment-id</payment-id>
+            <payment-context-id>a-payment-context-id</payment-context-id>
+        </local-payment-expired>
+        ";
+    }
+
+    private static function _localPaymentFundedSampleXml()
+    {
+        return "
+        <local-payment-funded>
+            <payment-id>a-payment-id</payment-id>
+            <payment-context-id>a-payment-context-id</payment-context-id>
+            <transaction>
+                <id>1</id>
+                <status>settled</status>
+                <amount>10.00</amount>
+                <order-id>order1234</order-id>
+            </transaction>
+        </local-payment-funded>
         ";
     }
 
