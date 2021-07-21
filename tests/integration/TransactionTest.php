@@ -2379,6 +2379,7 @@ class TransactionTest extends Setup
             'amount' => '100.00',
             'orderId' => '123',
             'channel' => 'MyShoppingCardProvider',
+            'exchangeRateQuoteId' => 'dummyExchangeRateQuoteId-Brainree-PHP',
             'creditCard' => [
                 'cardholderName' => 'The Cardholder',
                 'number' => '5105105105105100',
@@ -2529,6 +2530,43 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $this->assertEquals('05', $transaction->creditCardDetails->expirationMonth);
         $this->assertEquals('2012', $transaction->creditCardDetails->expirationYear);
+    }
+
+    public function testSale_withExchangeRateQuoteId()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '10.00',
+            'orderId' => '123',
+            'channel' => 'MyShoppingCardProvider',
+            'exchangeRateQuoteId' => 'dummyExchangeRateQuoteId-Brainree-PHP',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2011',
+                'cvv' => '123'
+            ],
+        ]);
+        $this->assertTrue($result->success);
+    }
+
+    public function testSale_withInvalidExchangeRateQuoteId()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '10.00',
+            'orderId' => '123',
+            'channel' => 'MyShoppingCardProvider',
+            'exchangeRateQuoteId' => str_repeat('a', 4010),
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2011',
+                'cvv' => '123'
+            ],
+        ]);
+
+        $this->assertFalse($result->success);
+        $exchangeRateQuoteIdError = $result->errors->forKey('transaction')->onAttribute('exchangeRateQuoteId');
+        $this->assertEquals(Braintree\Error\Codes::EXCHANGE_RATE_QUOTE_ID_IS_TOO_LONG, $exchangeRateQuoteIdError[0]->code);
     }
 
     public function testSale_underscoresAllCustomFields()

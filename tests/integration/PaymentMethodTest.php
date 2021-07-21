@@ -160,6 +160,16 @@ class PaymentMethodTest extends Setup
         $applePayCard = $result->paymentMethod;
         $this->assertNotNull($applePayCard->token);
         $this->assertNotNull($applePayCard->bin);
+        $this->assertNotNull($applePayCard->prepaid);
+        $this->assertNotNull($applePayCard->healthcare);
+        $this->assertNotNull($applePayCard->debit);
+        $this->assertNotNull($applePayCard->durbinRegulated);
+        $this->assertNotNull($applePayCard->commercial);
+        $this->assertNotNull($applePayCard->payroll);
+        $this->assertNotNull($applePayCard->issuingBank);
+        $this->assertNotNull($applePayCard->countryOfIssuance);
+        $this->assertNotNull($applePayCard->productId);
+
         $this->assertSame(Braintree\ApplePayCard::VISA, $applePayCard->cardType);
         $this->assertStringContainsString("Visa ", $applePayCard->paymentInstrumentName);
         $this->assertStringContainsString("Visa ", $applePayCard->sourceDescription);
@@ -220,6 +230,15 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(intval($googlePayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $googlePayCard->customerId);
         $this->assertTrue($googlePayCard->isNetworkTokenized);
+        $this->assertNotNull($googlePayCard->prepaid);
+        $this->assertNotNull($googlePayCard->healthcare);
+        $this->assertNotNull($googlePayCard->debit);
+        $this->assertNotNull($googlePayCard->durbinRegulated);
+        $this->assertNotNull($googlePayCard->commercial);
+        $this->assertNotNull($googlePayCard->payroll);
+        $this->assertNotNull($googlePayCard->issuingBank);
+        $this->assertNotNull($googlePayCard->countryOfIssuance);
+        $this->assertNotNull($googlePayCard->productId);
     }
 
     public function testCreate_fromFakeVenmoAccountNonce()

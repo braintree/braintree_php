@@ -81,6 +81,7 @@ class TransactionGateway
             'channel',
             'customerId',
             'deviceData',
+            'exchangeRateQuoteId',
             'merchantAccountId',
             'orderId',
             'paymentMethodNonce',

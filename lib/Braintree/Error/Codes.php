@@ -205,6 +205,8 @@ class Codes
     const DOCUMENT_UPLOAD_FILE_IS_TOO_LONG               = '84905';
     const DOCUMENT_UPLOAD_FILE_IS_EMPTY                  = '84906';
 
+    const EXCHANGE_RATE_QUOTE_ID_IS_TOO_LONG  = '915229';
+
     const FAILED_AUTH_ADJUSTMENT_ALLOW_RETRY                    = '95603';
     const FAILED_AUTH_ADJUSTMENT_HARD_DECLINE                   = '95602';
     const FINAL_AUTH_SUBMIT_FOR_SETTLEMENT_FOR_DIFFERENT_AMOUNT = '95601';

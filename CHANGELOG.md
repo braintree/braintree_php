@@ -1,3 +1,17 @@
+## 6.4.0
+* Add `exchangeRateQuoteId` to `Transaction.sale`
+* Add error code `EXCHANGE_RATE_QUOTE_ID_IS_TOO_LONG`
+* Added the following fields to GooglePayCard and ApplePayCard:
+  * `commercial`
+  * `debit`
+  * `durbinRegulated`
+  * `healthcare`
+  * `payroll`
+  * `prepaid`
+  * `productId`
+  * `countryOfIssuance`
+  * `issuingBank`
+
 ## 6.3.0
 * Add `paymentReaderCardDetails` parameter to `Transaction.sale`
 * Add error code `TRANSACTION_TAX_AMOUNT_IS_REQUIRED_FOR_AIB_SWEDISH` for attribute `taxAmount` in `transaction` key for AIB:Domestic transactions in Sweden.
