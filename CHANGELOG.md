@@ -1,4 +1,4 @@
-## 6.4.0
+## 6.4.1
 * Add `exchangeRateQuoteId` to `Transaction.sale`
 * Add error code `EXCHANGE_RATE_QUOTE_ID_IS_TOO_LONG`
 * Added the following fields to GooglePayCard and ApplePayCard:
@@ -11,6 +11,7 @@
   * `productId`
   * `countryOfIssuance`
   * `issuingBank`
+* Add `LocalPaymentExpired` and `LocalPaymentFunded` webhook notification support
 
 ## 6.3.0
 * Add `paymentReaderCardDetails` parameter to `Transaction.sale`
@@ -18,7 +19,7 @@
 
 ## 6.2.0
 * Add `chargebackProtectionLevel ` to `Dispute` and `DisputeSearch`
-* Add `skipAdvancedFraudChecking` to: 
+* Add `skipAdvancedFraudChecking` to:
   * `CreditCard.create` and `CreditCard.update`
   * `PaymentMethod.create` and `PaymentMethod.update`
 

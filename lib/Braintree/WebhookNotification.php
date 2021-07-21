@@ -20,6 +20,8 @@ class WebhookNotification extends Base
     const GRANTED_PAYMENT_METHOD_REVOKED = 'granted_payment_method_revoked';
     const GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD = 'grantor_updated_granted_payment_method';
     const LOCAL_PAYMENT_COMPLETED = "local_payment_completed";
+    const LOCAL_PAYMENT_EXPIRED = "local_payment_expired";
+    const LOCAL_PAYMENT_FUNDED = "local_payment_funded";
     const LOCAL_PAYMENT_REVERSED = "local_payment_reversed";
     const OAUTH_ACCESS_REVOKED = 'oauth_access_revoked';
     const PARTNER_MERCHANT_CONNECTED = 'partner_merchant_connected';
@@ -123,6 +125,14 @@ class WebhookNotification extends Base
 
         if (isset($wrapperNode['localPayment'])) {
             $this->_set('localPaymentCompleted', LocalPaymentCompleted::factory($wrapperNode['localPayment']));
+        }
+
+        if (isset($wrapperNode['localPaymentExpired'])) {
+            $this->_set('localPaymentExpired', LocalPaymentExpired::factory($wrapperNode['localPaymentExpired']));
+        }
+
+        if (isset($wrapperNode['localPaymentFunded'])) {
+            $this->_set('localPaymentFunded', LocalPaymentFunded::factory($wrapperNode['localPaymentFunded']));
         }
 
         if (isset($wrapperNode['localPaymentReversed'])) {
