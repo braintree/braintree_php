@@ -182,15 +182,7 @@ class PaymentMethodNonceTest extends Setup
 
     public function testFind_exposesThreeDSecureInfo()
     {
-        $creditCard = [
-            'creditCard' => [
-                'number' => '4111111111111111',
-                'expirationMonth' => '12',
-                'expirationYear' => '2020'
-            ]
-        ];
-        $nonce = Helper::generate3DSNonce($creditCard);
-        $foundNonce = Braintree\PaymentMethodNonce::find($nonce);
+        $foundNonce = Braintree\PaymentMethodNonce::find('fake-three-d-secure-visa-full-authentication-nonce');
         $info = $foundNonce->threeDSecureInfo;
 
         $this->assertEquals($nonce, $foundNonce->nonce);
