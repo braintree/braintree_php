@@ -125,4 +125,99 @@ class PlanTest extends Setup
         $this->assertEquals($params["numberOfBillingCycles"], $actualPlan->numberOfBillingCycles);
         $this->assertEquals($params["price"], $actualPlan->price);
     }
+
+    public function testCreate_doesNotAcceptBadAttributes()
+    {
+        $this->expectException('InvalidArgumentException', 'invalid keys: bad');
+        $result = Braintree\Subscription::create([
+            'bad' => 'value'
+        ]);
+    }
+
+    public function testCreate_whenSuccessful()
+    {
+        $newId = strval(rand());
+        $params = [
+            "id" => $newId,
+            "billingDayOfMonth" => "12",
+            "billingFrequency" => "1",
+            "currencyIsoCode" => "USD",
+            "description" => "my description",
+            "name" => "my plan name",
+            "numberOfBillingCycles" => "1",
+            "price" => "9.99",
+            "trialPeriod" => "false"
+        ];
+
+        $result = Braintree\Plan::create($params);
+        $this->assertTrue($result->success);
+        $plan = $result->plan;
+        $this->assertEquals(12, $plan->billingDayOfMonth);
+        $this->assertEquals("USD", $plan->currencyIsoCode);
+        $this->assertEquals("my plan name", $plan->name);
+        $this->assertEquals("9.99", $plan->price);
+        $this->assertEquals(1, $plan->numberOfBillingCycles);
+    }
+
+    public function testFind()
+    {
+        $params = [
+            "billingDayOfMonth" => "12",
+            "billingFrequency" => "1",
+            "currencyIsoCode" => "USD",
+            "description" => "my description",
+            "name" => "my plan name",
+            "numberOfBillingCycles" => "1",
+            "price" => "9.99",
+            "trialPeriod" => "false"
+        ];
+
+        $result = Braintree\Plan::create($params);
+        $this->assertTrue($result->success);
+        $plan = Braintree\Plan::find($result->plan->id);
+        $this->assertEquals($result->plan->id, $plan->id);
+        $this->assertEquals($result->plan->price, $plan->price);
+    }
+
+    public function testFind_throwsIfNotFound()
+    {
+        $this->expectException('Braintree\Exception\NotFound', 'plan with id does-not-exist not found');
+        Braintree\Plan::find('does-not-exist');
+    }
+
+    public function testUpdate_doesNotAcceptBadAttributes()
+    {
+        $this->expectException('InvalidArgumentException', 'invalid keys: bad');
+        $result = Braintree\Plan::update('id', [
+            'bad' => 'value'
+        ]);
+    }
+
+    public function testUpdate_whenSuccessful()
+    {
+        $createParams = [
+            "billingDayOfMonth" => "12",
+            "billingFrequency" => "1",
+            "currencyIsoCode" => "USD",
+            "description" => "my description",
+            "name" => "my plan name",
+            "numberOfBillingCycles" => "1",
+            "price" => "9.99",
+            "trialPeriod" => "false"
+        ];
+
+        $createResult = Braintree\Plan::create($createParams);
+        $this->assertTrue($createResult->success);
+        $plan = $createResult->plan;
+
+        $updatedParams = [
+            "name" => "my updated plan name",
+            "price" => "99.99"
+        ];
+        $updatedResult = Braintree\Plan::update($plan->id, $updatedParams);
+        $this->assertTrue($updatedResult->success);
+        $updatedPlan = $updatedResult->plan;
+        $this->assertEquals($updatedPlan->price, "99.99");
+        $this->assertEquals($updatedPlan->name, "my updated plan name");
+    }
 }
