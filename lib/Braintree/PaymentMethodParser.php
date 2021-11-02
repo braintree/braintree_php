@@ -3,24 +3,17 @@
 namespace Braintree;
 
 /**
- * Braintree PaymentMethodParser module
- *
- * @package    Braintree
- * @category   Resources
- */
-
-/**
- * Manages Braintree PaymentMethodParser
- *
- * <b>== More information ==</b>
- *
- *
- * @package    Braintree
- * @category   Resources
- *
+ * Manages Braintree PaymentMethodParser module
  */
 class PaymentMethodParser
 {
+    /**
+     * Creates instances of the payment method in the response object
+     *
+     * @param mixed $response from Braintree API
+     *
+     * @return mixed|Exception
+     */
     public static function parsePaymentMethod($response)
     {
         if (isset($response['creditCard'])) {

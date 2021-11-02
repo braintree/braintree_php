@@ -10,22 +10,14 @@ use Braintree\Collection;
  * <b>== More information ==</b>
  *
  * // phpcs:ignore Generic.Files.LineLength
- * For more detailed information on Validation errors, see {@link https://developers.braintreepayments.com/reference/general/validation-errors/overview/php https://developers.braintreepayments.com/reference/general/validation-errors/overview/php}
- *
- * @package    Braintree
- * @subpackage Error
- *
- * @property-read array $errors
- * @property-read array $nested
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/general/result-objects#error-results developer docs} for information on attributes
  */
 class ValidationErrorCollection extends Collection
 {
     private $_errors = [];
     private $_nested = [];
 
-    /**
-     * @ignore
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($data)
     {
         foreach ($data as $key => $errorData) {
@@ -40,6 +32,11 @@ class ValidationErrorCollection extends Collection
         }
     }
 
+    /*
+     * Deeply retrieve all validation errors
+     *
+     * @return array
+     */
     public function deepAll()
     {
         $validationErrors = array_merge([], $this->_errors);
@@ -49,6 +46,11 @@ class ValidationErrorCollection extends Collection
         return $validationErrors;
     }
 
+    /*
+     * Deeply retrieve a count of errors
+     *
+     * @return int
+     */
     public function deepSize()
     {
         $total = sizeof($this->_errors);
@@ -58,16 +60,33 @@ class ValidationErrorCollection extends Collection
         return $total;
     }
 
+    /*
+     * Checks if index if a set variable
+     *
+     * @return bool
+     */
     public function forIndex($index)
     {
         return $this->forKey("index" . $index);
     }
 
+    /*
+     * Checks if the value for a given key is a set variable
+     *
+     * @return bool
+     */
     public function forKey($key)
     {
         return isset($this->_nested[$key]) ? $this->_nested[$key] : null;
     }
 
+    /*
+     * Returns any errors that match on a given attribute
+     *
+     * @param string $attribute to be checked for matching errors
+     *
+     * @return array
+     */
     public function onAttribute($attribute)
     {
         $matches = [];
@@ -79,25 +98,24 @@ class ValidationErrorCollection extends Collection
         return $matches;
     }
 
-
+    /*
+     * Get all errors
+     *
+     * @return object
+     */
     public function shallowAll()
     {
         return $this->_errors;
     }
 
-    /**
-     *
-     * @ignore
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __get($name)
     {
         $varName = "_$name";
         return isset($this->$varName) ? $this->$varName : null;
     }
 
-    /**
-     * @ignore
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         $output = [];
@@ -113,9 +131,6 @@ class ValidationErrorCollection extends Collection
         return join(', ', $output);
     }
 
-    /**
-     * @ignore
-     */
     private function _inspect($errors, $scope = null)
     {
         $eOutput = '[' . __CLASS__ . '/errors:[';

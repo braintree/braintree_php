@@ -14,9 +14,9 @@ namespace :lint do
     sh "php ./vendor/bin/phpcs --config-set colors 1"
     sh "php ./vendor/bin/phpcs --config-set php_version 70300"
     if args.details.nil?
-      sh "php ./vendor/bin/phpcs --standard=phpcs.xml --report=summary lib tests"
+      sh "php ./vendor/bin/phpcs --standard=phpcs.xml --report=summary -s lib tests"
     else
-      sh "php ./vendor/bin/phpcs --standard=phpcs.xml lib tests"
+      sh "php ./vendor/bin/phpcs --standard=phpcs.xml -s lib tests"
     end
   end
 

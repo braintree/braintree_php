@@ -1,10 +1,12 @@
 <?php
 
+//phpcs:disable PEAR.Commenting
 namespace Braintree;
 
 class SignatureService
 {
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($key, $digest)
     {
         $this->key = $key;

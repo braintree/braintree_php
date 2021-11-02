@@ -5,19 +5,11 @@ namespace Braintree;
 /**
  * Braintree AchMandate module
  *
- * @package   Braintree
- *
- * @property-read string $text
- * @property-read string $acceptedAt
+ * See our {link https://developer.paypal.com/braintree/docs/reference/response/us-bank-account/php#ach_mandate developer docs} for information on attributes
  */
 class AchMandate extends Base
 {
-    /**
-     * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
-     * @ignore
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .
@@ -27,9 +19,8 @@ class AchMandate extends Base
     /**
      * sets instance properties from an array of values
      *
-     * @ignore
-     * @access protected
      * @param array $achAttribs array of achMandate data
+     *
      * @return void
      */
     protected function _initialize($achAttribs)
@@ -41,7 +32,9 @@ class AchMandate extends Base
     /**
      *  factory method: returns an instance of AchMandate
      *  to the requesting method, with populated properties
-     * @ignore
+     *
+     * @param array $attributes response object attributes
+     *
      * @return AchMandate
      */
     public static function factory($attributes)

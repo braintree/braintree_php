@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:disable PEAR.Commenting.FunctionComment.MissingParamComment
 
 namespace Braintree;
 
@@ -13,22 +13,18 @@ use ArrayIterator;
  *
  * Based on Generic Collection class from:
  * {@link http://codeutopia.net/code/library/CU/Collection.php}
- *
- * @package   Braintree
- * @subpackage Utility
  */
 
 class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
-    /**
-     *
-     * @var array collection storage
-     */
     protected $_collection = [];
 
     /**
      * Add a value into the collection
-     * @param string $value
+     *
+     * @param string $value to be added
+     *
+     * @return mixed
      */
     public function add($value)
     {
@@ -37,9 +33,13 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Set index's value
-     * @param integer $index
-     * @param mixed $value
+     *
+     * @param integer $index thats being set
+     * @param mixed   $value to set at the index
+     *
      * @throws OutOfRangeException
+     *
+     * @return mixed
      */
     public function set($index, $value)
     {
@@ -52,8 +52,12 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Remove a value from the collection
+     *
      * @param integer $index index to remove
+     *
      * @throws OutOfRangeException if index is out of range
+     *
+     * @return mixed
      */
     public function remove($index)
     {
@@ -66,9 +70,12 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Return value at index
-     * @param integer $index
-     * @return mixed
+     *
+     * @param integer $index of value to be retrieved
+     *
      * @throws OutOfRangeException
+     *
+     * @return mixed
      */
     public function get($index)
     {
@@ -81,7 +88,9 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Determine if index exists
-     * @param integer $index
+     *
+     * @param integer $index to check for existence
+     *
      * @return boolean
      */
     public function exists($index)
@@ -95,6 +104,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Return count of items in collection
      * Implements countable
+     *
      * @return integer
      */
     public function count()
@@ -106,6 +116,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Return an iterator
      * Implements IteratorAggregate
+     *
      * @return ArrayIterator
      */
     public function getIterator()
@@ -116,9 +127,13 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Set offset to value
      * Implements ArrayAccess
-     * @see set
+     *
      * @param integer $offset
-     * @param mixed $value
+     * @param mixed   $value
+     *
+     * @see set
+     *
+     * @return mixed
      */
     public function offsetSet($offset, $value)
     {
@@ -128,8 +143,12 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Unset offset
      * Implements ArrayAccess
-     * @see remove
+     *
      * @param integer $offset
+     *
+     * @see remove
+     *
+     * @return mixed
      */
     public function offsetUnset($offset)
     {
@@ -139,8 +158,11 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * get an offset's value
      * Implements ArrayAccess
-     * @see get
+     *
      * @param integer $offset
+     *
+     * @see get
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -151,8 +173,11 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Determine if offset exists
      * Implements ArrayAccess
-     * @see exists
+     *
      * @param integer $offset
+     *
+     * @see exists
+     *
      * @return boolean
      */
     public function offsetExists($offset)

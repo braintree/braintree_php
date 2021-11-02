@@ -4,8 +4,6 @@ namespace Braintree;
 
 /**
  * Processor response types.
- *
- * @package    Braintree
  */
 class ProcessorResponseTypes
 {

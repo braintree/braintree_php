@@ -6,23 +6,7 @@ namespace Braintree;
  * Braintree VenmoAccount module
  * Creates and manages Braintree Venmo accounts
  *
- * <b>== More information ==</b>
- *
- * See {@link https://developers.braintreepayments.com/javascript+php}<br />
- *
- * @package    Braintree
- * @category   Resources
- *
- * @property-read \DateTime $createdAt
- * @property-read string $customerId
- * @property-read boolean $default
- * @property-read string $imageUrl
- * @property-read string $sourceDescription
- * @property-read \Braintree\Subscription[] $subscriptions
- * @property-read string $token
- * @property-read \DateTime $updatedAt
- * @property-read string $username
- * @property-read string $venmoUserId
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/response/venmo-account developer docs} for information on attributes
  */
 class VenmoAccount extends Base
 {
@@ -38,10 +22,10 @@ class VenmoAccount extends Base
     }
 
     /**
-     *  factory method: returns an instance of VenmoAccount
-     *  to the requesting method, with populated properties
+     * Creates an instance from given attributes
      *
-     * @ignore
+     * @param array $attributes response object attributes
+     *
      * @return VenmoAccount
      */
     public static function factory($attributes)
@@ -55,8 +39,8 @@ class VenmoAccount extends Base
     /**
      * sets instance properties from an array of values
      *
-     * @access protected
      * @param array $venmoAccountAttribs array of Venmo account properties
+     *
      * @return void
      */
     protected function _initialize($venmoAccountAttribs)

@@ -6,9 +6,6 @@ use Braintree\Exception;
 
 /**
  * Raised when the SSL CaFile is not found.
- *
- * @package    Braintree
- * @subpackage Exception
  */
 class SSLCaFileNotFound extends Exception
 {

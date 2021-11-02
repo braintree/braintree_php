@@ -3,18 +3,19 @@
 namespace Braintree;
 
 /**
- * @property-read string $commercial
- * @property-read string $countryOfIssuance
- * @property-read string $debit
- * @property-read string $durbinRegulated
- * @property-read string $healthcare
- * @property-read string $issuingBank
- * @property-read string $payroll
- * @property-read string $prepaid
- * @property-read string $productId
+ * Bank Identification Number (BIN) Data Class
+ *
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/response/payment-method-nonce/php#bin_data developer docs} for information on attributes
  */
 class BinData extends Base
 {
+    /**
+     * Creates an instance of an BinData from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return BinData
+     */
     public static function factory($attributes)
     {
         $instance = new self();
@@ -28,10 +29,7 @@ class BinData extends Base
         $this->_attributes = $attributes;
     }
 
-    /**
-     * returns a string representation of the bin data
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .

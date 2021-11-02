@@ -5,8 +5,6 @@ namespace Braintree;
 /**
  * Braintree OAuthGateway module
  * Creates and manages Braintree Addresses
- *
- * @package   Braintree
  */
 class OAuthGateway
 {
@@ -14,6 +12,7 @@ class OAuthGateway
     private $_config;
     private $_http;
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -24,18 +23,36 @@ class OAuthGateway
         $this->_config->assertHasClientCredentials();
     }
 
+    /* Create an oAuth token from an authorization code
+     *
+     * @param mixed $params of request details
+     *
+     * @return Result\Successful|Result\Error
+     */
     public function createTokenFromCode($params)
     {
         $params['grantType'] = "authorization_code";
         return $this->_createToken($params);
     }
 
+    /* Create an oAuth token from a refresh token
+     *
+     * @param mixed $params of request details
+     *
+     * @return Result\Successful|Result\Error
+     */
     public function createTokenFromRefreshToken($params)
     {
         $params['grantType'] = "refresh_token";
         return $this->_createToken($params);
     }
 
+    /* Revoke an oAuth Access token
+     *
+     * @param mixed $params of request details
+     *
+     * @return Result\Successful|Result\Error
+     */
     public function revokeAccessToken($accessToken)
     {
         $params = ['token' => $accessToken];
@@ -50,6 +67,7 @@ class OAuthGateway
         return $this->_verifyGatewayResponse($response);
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['credentials'])) {
@@ -72,6 +90,7 @@ class OAuthGateway
         }
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function _mapError($result)
     {
         $error = $result->errors->deepAll()[0];
@@ -87,12 +106,14 @@ class OAuthGateway
         return $result;
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function _mapAccessTokenRevokeSuccess($result)
     {
         $result->revocationResult = $result->success;
         return $result;
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function _mapSuccess($result)
     {
         $credentials = $result->credentials;
@@ -103,6 +124,13 @@ class OAuthGateway
         return $result;
     }
 
+    /*
+     * Create URL for oAuth connection
+     *
+     * @param array $params optional
+     *
+     * @return string
+     */
     public function connectUrl($params = [])
     {
         $query = Util::camelCaseToDelimiterArray($params, '_');

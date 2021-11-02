@@ -3,7 +3,6 @@
 namespace Braintree\Error;
 
 /**
- *
  * Validation Error codes and messages
  *
  * ErrorCodes class provides constants for validation errors.
@@ -11,10 +10,6 @@ namespace Braintree\Error;
  * error in a ValidationErrorCollection.
  * The error messages returned from the server may change;
  * but the codes will remain the same.
- *
- * @package    Braintree
- * @subpackage Errors
- * @category   Validation
  */
 class Codes
 {

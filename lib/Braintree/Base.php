@@ -9,14 +9,12 @@ use JsonSerializable;
  *
  * Braintree base class and initialization
  * Provides methods to child classes. This class cannot be instantiated.
- *
  */
 abstract class Base implements JsonSerializable
 {
     protected $_attributes = [];
 
     /**
-     * @ignore
      * don't permit an explicit call of the constructor!
      * (like $t = new Transaction())
      */
@@ -26,8 +24,6 @@ abstract class Base implements JsonSerializable
 
     /**
      * Disable cloning of objects
-     *
-     * @ignore
      */
     protected function __clone()
     {
@@ -36,8 +32,8 @@ abstract class Base implements JsonSerializable
     /**
      * Accessor for instance properties stored in the private $_attributes property
      *
-     * @ignore
-     * @param string $name
+     * @param string $name of the key whose value is to be returned
+     *
      * @return mixed
      */
     public function __get($name)
@@ -56,8 +52,8 @@ abstract class Base implements JsonSerializable
     /**
      * Checks for the existence of a property stored in the private $_attributes property
      *
-     * @ignore
-     * @param string $name
+     * @param string $name of the key
+     *
      * @return boolean
      */
     public function __isset($name)
@@ -68,9 +64,10 @@ abstract class Base implements JsonSerializable
     /**
      * Mutator for instance properties stored in the private $_attributes property
      *
-     * @ignore
-     * @param string $key
-     * @param mixed $value
+     * @param string $key   to be set
+     * @param mixed  $value to be set
+     *
+     * @return mixed
      */
     public function _set($key, $value)
     {
@@ -80,7 +77,6 @@ abstract class Base implements JsonSerializable
     /**
      * Implementation of JsonSerializable
      *
-     * @ignore
      * @return array
      */
     public function jsonSerialize()
@@ -91,7 +87,6 @@ abstract class Base implements JsonSerializable
     /**
      * Implementation of to an Array
      *
-     * @ignore
      * @return array
      */
     public function toArray()

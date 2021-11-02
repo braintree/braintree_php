@@ -2,6 +2,10 @@
 
 namespace Braintree;
 
+/**
+ * WebhookNotification class
+ * module for webhook objects
+ */
 class WebhookNotification extends Base
 {
     // phpcs:disable Generic.Files.LineLength
@@ -43,16 +47,42 @@ class WebhookNotification extends Base
     const TRANSACTION_SETTLEMENT_DECLINED = 'transaction_settlement_declined';
     // phpcs:enable Generic.Files.LineLength
 
+    /**
+     * Static methods redirecting to gateway class
+     *
+     * @param string $signature used to verify before parsing
+     * @param mixed  $payload   to be parsed
+     *
+     * @see WebHookNotificationGateway::parse()
+     *
+     * @return WebhookNotification object|Exception
+     */
     public static function parse($signature, $payload)
     {
         return Configuration::gateway()->webhookNotification()->parse($signature, $payload);
     }
 
+    /*
+     * Static methods redirecting to gateway class
+     *
+     * @param object $challenge to be verified
+     *
+     * @see WebHookNotificationGateway::verify()
+     *
+     * @return string|Exception
+     */
     public static function verify($challenge)
     {
         return Configuration::gateway()->webhookNotification()->verify($challenge);
     }
 
+    /**
+     * Creates an instance from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return WebhookNotification
+     */
     public static function factory($attributes)
     {
         $instance = new self();

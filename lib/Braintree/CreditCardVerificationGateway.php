@@ -2,12 +2,17 @@
 
 namespace Braintree;
 
+/**
+ * Braintree CreditCardVerificationGateway module
+ * Creates and manages CreditCardVerifications
+ */
 class CreditCardVerificationGateway
 {
     private $_gateway;
     private $_config;
     private $_http;
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -16,6 +21,13 @@ class CreditCardVerificationGateway
         $this->_http = new Http($gateway->config);
     }
 
+    /**
+     * Creates a credit card verification  using the given +attributes+.
+     *
+     * @param array $attributes containing request parameters
+     *
+     * @return Result\Successful|Result\Error
+     */
     public function create($attributes)
     {
         $queryPath = $this->_config->merchantPath() . "/verifications";
@@ -39,6 +51,14 @@ class CreditCardVerificationGateway
         }
     }
 
+    /**
+     * Retrieve a credit card verification
+     *
+     * @param array $query search parameters
+     * @param array $ids   of verifications to search
+     *
+     * @return Array of CreditCardVerification objects
+     */
     public function fetch($query, $ids)
     {
         $criteria = [];
@@ -55,6 +75,13 @@ class CreditCardVerificationGateway
         );
     }
 
+    /**
+     * Returns a ResourceCollection of customers matching the search query.
+     *
+     * @param mixed $query search query
+     *
+     * @return ResourceCollection
+     */
     public function search($query)
     {
         $criteria = [];

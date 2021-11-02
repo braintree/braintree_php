@@ -18,9 +18,6 @@ use Iterator;
  *   print_r($transaction->id);
  * }
  * </code>
- *
- * @package    Braintree
- * @subpackage Utility
  */
 class ResourceCollection implements Iterator
 {
@@ -31,14 +28,7 @@ class ResourceCollection implements Iterator
     private $_pageSize;
     private $_pager;
 
-    /**
-     * set up the resource collection
-     *
-     * expects an array of attributes with literal keys
-     *
-     * @param array $response
-     * @param array $pager
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($response, $pager)
     {
         $this->_pageSize = $response["searchResults"]["pageSize"];
@@ -47,7 +37,9 @@ class ResourceCollection implements Iterator
     }
 
     /**
-     * returns the current item when iterating with foreach
+     * returns the current item when iterating with foreachi
+     *
+     * @return object
      */
     public function current()
     {
@@ -66,6 +58,11 @@ class ResourceCollection implements Iterator
         return $page[0];
     }
 
+    /*
+     * returns null
+     *
+     * @return null
+     */
     public function key()
     {
         return null;
@@ -73,6 +70,8 @@ class ResourceCollection implements Iterator
 
     /**
      * advances to the next item in the collection when iterating with foreach
+     *
+     * @return object
      */
     public function next()
     {
@@ -81,6 +80,8 @@ class ResourceCollection implements Iterator
 
     /**
      * rewinds the testIterateOverResults collection to the first item when iterating with foreach
+     *
+     * @return object
      */
     public function rewind()
     {
@@ -90,6 +91,8 @@ class ResourceCollection implements Iterator
 
     /**
      * returns whether the current item is valid when iterating with foreach
+     *
+     * @return bool
      */
     public function valid()
     {
@@ -104,6 +107,11 @@ class ResourceCollection implements Iterator
         }
     }
 
+    /*
+     * returns a maximum count
+     *
+     * @return int
+     */
     public function maximumCount()
     {
         return count($this->_ids);
@@ -120,11 +128,6 @@ class ResourceCollection implements Iterator
         }
     }
 
-    /**
-     * requests the next page of results for the collection
-     *
-     * @return void
-     */
     private function _getPage($ids)
     {
         $object = $this->_pager['object'];

@@ -7,9 +7,7 @@ use Braintree\Exception;
 /**
  * Raised when the Braintree library is not completely configured.
  *
- * @package    Braintree
- * @subpackage Exception
- * @see        Configuration
+ * @see Configuration
  */
 class Configuration extends Exception
 {

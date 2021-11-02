@@ -4,33 +4,20 @@ namespace Braintree;
 
 /**
  * Braintree GrantedPaymentInstrumentUpdate module
- *
- * @package    Braintree
- * @category   Resources
  */
 
 /**
  * Manages Braintree GrantedPaymentInstrumentUpdate
  *
- * <b>== More information ==</b>
- *
- *
- * @package    Braintree
- * @category   Resources
- *
- * @property-read string $grantOwnerMerchantId
- * @property-read string $grantRecipientMerchantId
- * @property-read string $paymentMethodNonce
- * @property-read string $token
- * @property-read string $updatedFields
+ * See our {@link https://developer.paypal.com/braintree/docs/guides/extend/grant-api/webhooks developer docs} for more information
  */
 class GrantedPaymentInstrumentUpdate extends Base
 {
     /**
-     *  factory method: returns an instance of GrantedPaymentInstrumentUpdate
-     *  to the requesting method, with populated properties
+     * Creates an instance from given attributes
      *
-     * @ignore
+     * @param array $attributes response object attributes
+     *
      * @return GrantedPaymentInstrumentUpdate
      */
     public static function factory($attributes)
@@ -45,8 +32,8 @@ class GrantedPaymentInstrumentUpdate extends Base
     /**
      * sets instance properties from an array of values
      *
-     * @access protected
      * @param array $GrantedPaymentInstrumentAttribs array of grantedPaymentInstrumentUpdate data
+     *
      * @return void
      */
     protected function _initialize($grantedPaymentInstrumentUpdateAttribs)
@@ -60,11 +47,7 @@ class GrantedPaymentInstrumentUpdate extends Base
         $this->_set('paymentMethodNonce', $paymentMethodNonce);
     }
 
-    /**
-     * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .

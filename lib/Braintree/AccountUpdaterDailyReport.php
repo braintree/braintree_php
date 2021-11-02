@@ -5,11 +5,7 @@ namespace Braintree;
 /**
  * Creates an instance of AccountUpdaterDailyReport
  *
- *
- * @package    Braintree
- *
- * @property-read string $reportUrl
- * @property-read date   $reportDate
+ * For attributes see our {@link https://developer.paypal.com/braintree/docs/reference/general/webhooks/account-updater/php#notification-kinds developer documentation}
  */
 class AccountUpdaterDailyReport extends Base
 {
@@ -20,6 +16,13 @@ class AccountUpdaterDailyReport extends Base
         $this->_attributes = $disputeAttribs;
     }
 
+    /**
+     * Creates an instance of an AccountUpdaterDailyReport from given attributes
+     *
+     * @param array $attributes to generate new AccountUpdaterDailyReport
+     *
+     * @return AccountUpdaterDailyReport
+     */
     public static function factory($attributes)
     {
         $instance = new self();
@@ -27,6 +30,7 @@ class AccountUpdaterDailyReport extends Base
         return $instance;
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         $display = [

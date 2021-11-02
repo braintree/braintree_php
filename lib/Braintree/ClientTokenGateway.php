@@ -4,30 +4,19 @@ namespace Braintree;
 
 use InvalidArgumentException;
 
+/**
+ * Braintree ClientTokenGateway module
+ *
+ * Manages Braintree ClientTokens
+ * For more detailed information on ClientTokens, see {@link https://developer.paypal.com/braintree/docsreference/response/client-token/php our developer docs}. <br />
+ */
 class ClientTokenGateway
 {
-    /**
-     *
-     * @var Gateway
-     */
     private $_gateway;
-
-    /**
-     *
-     * @var Configuration
-     */
     private $_config;
-
-    /**
-     *
-     * @var Http
-     */
     private $_http;
 
-    /**
-     *
-     * @param Gateway $gateway
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -36,6 +25,13 @@ class ClientTokenGateway
         $this->_http = new Http($gateway->config);
     }
 
+    /**
+     * Generate a client token for client-side authorization
+     *
+     * @param Optional $params containing request parameters
+     *
+     * @return string client token
+     */
     public function generate($params = [])
     {
         if (!array_key_exists("version", $params)) {
@@ -48,14 +44,7 @@ class ClientTokenGateway
         return $this->_doGenerate('/client_token', $generateParams);
     }
 
-    /**
-     * sends the generate request to the gateway
-     *
-     * @ignore
-     * @param var $url
-     * @param array $params
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function _doGenerate($subPath, $params)
     {
         $fullPath = $this->_config->merchantPath() . $subPath;
@@ -64,10 +53,12 @@ class ClientTokenGateway
         return $this->_verifyGatewayResponse($response);
     }
 
-    /**
+    /*
+     * Checks if customer id is provided prior to verifying keys provided in params
      *
-     * @param array $params
-     * @throws InvalidArgumentException
+     * @param array $params to be verified
+     *
+     * @return array
      */
     public function conditionallyVerifyKeys($params)
     {
@@ -78,9 +69,11 @@ class ClientTokenGateway
         }
     }
 
-    /**
+    /*
+     * returns an array of keys including customer id
      *
-     * @return mixed[]
+     * @return array
+     *
      */
     public function generateWithCustomerIdSignature()
     {
@@ -90,9 +83,10 @@ class ClientTokenGateway
             "merchantAccountId"];
     }
 
-    /**
+    /*
+     * returns an array of keys without customer id
      *
-     * @return string[]
+     * @return array
      */
     public function generateWithoutCustomerIdSignature()
     {
@@ -106,10 +100,11 @@ class ClientTokenGateway
      * Otherwise, throws an InvalidArgumentException with the error
      * response from the Gateway or an HTTP status code exception.
      *
-     * @ignore
      * @param array $response gateway response values
-     * @return string client token
+     *
      * @throws InvalidArgumentException | HTTP status code exception
+     *
+     * @return string client token
      */
     private function _verifyGatewayResponse($response)
     {

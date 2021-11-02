@@ -8,40 +8,17 @@ namespace Braintree;
  *
  * <b>== More information ==</b>
  *
- * // phpcs:ignore Generic.Files.LineLength
- * For more detailed information on Customers, see {@link https://developers.braintreepayments.com/reference/response/customer/php https://developers.braintreepayments.com/reference/response/customer/php}
- *
- * @package    Braintree
- * @category   Resources
- *
- * @property-read \Braintree\Address[] $addresses
- * @property-read \Braintree\GooglePayCard[] $googlePayCards
- * @property-read \Braintree\ApplePayCard[] $applePayCards
- * @property-read string $company
- * @property-read \DateTime $createdAt
- * @property-read \Braintree\CreditCard[] $creditCards
- * @property-read array  $customFields custom fields passed with the request
- * @property-read string $email
- * @property-read string $fax
- * @property-read string $firstName
- * @property-read string $graphQLId
- * @property-read string $id
- * @property-read string $lastName
- * @property-read \Braintree\PaymentMethod[] $paymentMethods
- * @property-read \Braintree\PayPalAccount[] $paypalAccounts
- * @property-read string $phone
- * @property-read \Braintree\SamsungPayCard[] $samsungPayCards
- * @property-read \DateTime $updatedAt
- * @property-read \Braintree\UsBankAccount[] $usBankAccounts
- * @property-read \Braintree\VenmoAccount[] $venmoAccounts
- * @property-read \Braintree\VisaCheckoutCard[] $visaCheckoutCards
- * @property-read string $website
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/response/customer developer docs} for information on attributes
  */
 class Customer extends Base
 {
-    /**
+
+    /*
+     * Static method redirecting to gateway class
      *
-     * @return Customer[]
+     * @see CustomerGateway::all()
+     *
+     * @return ResourceCollection
      */
     public static function all()
     {
@@ -49,9 +26,13 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
      *
-     * @param array $query
-     * @param int[] $ids
+     * @param array $query containing request params
+     * @param int[] $ids   containing customer IDs
+     *
+     * @see CustomerGateway::fetch()
+     *
      * @return Customer|Customer[]
      */
     public static function fetch($query, $ids)
@@ -60,8 +41,12 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
      *
-     * @param array $attribs
+     * @param array $attribs containing request parameters
+     *
+     * @see CustomerGateway::create()
+     *
      * @return Result\Successful|Result\Error
      */
     public static function create($attribs = [])
@@ -70,8 +55,14 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
      *
-     * @param array $attribs
+     * @param array $attribs of request parameters
+     *
+     * @see CustomerGateway::createNoValidate()
+     *
+     * @throws Exception\ValidationError
+     *
      * @return Customer
      */
     public static function createNoValidate($attribs = [])
@@ -80,10 +71,16 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
+     *
+     * @param string $id                  customer Id
+     * @param string $associationFilterId association filter Id
+     *
+     * @see CustomerGateway::find()
      *
      * @throws Exception\NotFound
-     * @param string $id customer id
-     * @return Customer
+     *
+     * @return Customer|boolean The customer object or false if the request fails.
      */
     public static function find($id, $associationFilterId = null)
     {
@@ -91,9 +88,13 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
      *
-     * @param int $customerId
-     * @param array $transactionAttribs
+     * @param integer $customerId         unique identifier
+     * @param array   $transactionAttribs containing request parameters
+     *
+     * @see CustomerGateway::credit()
+     *
      * @return Result\Successful|Result\Error
      */
     public static function credit($customerId, $transactionAttribs)
@@ -102,10 +103,15 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
+     *
+     * @param integer $customerId         unique identifier
+     * @param array   $transactionAttribs containing request parameters
+     *
+     * @see CustomerGateway::creditNoValidate()
      *
      * @throws Exception\ValidationError
-     * @param type $customerId
-     * @param type $transactionAttribs
+     *
      * @return Transaction
      */
     public static function creditNoValidate($customerId, $transactionAttribs)
@@ -114,9 +120,12 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
      *
-     * @throws Exception on invalid id or non-200 http response code
-     * @param int $customerId
+     * @param string $customerId unique identifier
+     *
+     * @see CustomerGateway::delete()
+     *
      * @return Result\Successful
      */
     public static function delete($customerId)
@@ -125,10 +134,14 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
      *
-     * @param int $customerId
-     * @param array $transactionAttribs
-     * @return Transaction
+     * @param string $customerId         unique identifier
+     * @param array  $transactionAttribs containing request parameters
+     *
+     * @see CustomerGateway::sale()
+     *
+     * @return Result\Successful|Result\Error
      */
     public static function sale($customerId, $transactionAttribs)
     {
@@ -136,9 +149,15 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
      *
-     * @param int $customerId
-     * @param array $transactionAttribs
+     * @param string $customerId         unique identifier
+     * @param array  $transactionAttribs containing request parameters
+     *
+     * @see CustomerGateway::saleNoValidate()
+     *
+     * @throws Exception\ValidationsFailed
+     *
      * @return Transaction
      */
     public static function saleNoValidate($customerId, $transactionAttribs)
@@ -147,9 +166,14 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
+     *
+     * @param mixed $query search query
+     *
+     * @see CustomerGateway::search()
      *
      * @throws InvalidArgumentException
-     * @param array $query
+     *
      * @return ResourceCollection
      */
     public static function search($query)
@@ -158,10 +182,13 @@ class Customer extends Base
     }
 
     /**
+     * Static method redirecting to gateway class
      *
-     * @throws Exception\Unexpected
-     * @param int $customerId
-     * @param array $attributes
+     * @param string $customerId to be updated
+     * @param array  $attributes containing request params
+     *
+     * @see CustomerGateway::update()
+     *
      * @return Result\Successful|Result\Error
      */
     public static function update($customerId, $attributes)
@@ -170,26 +197,26 @@ class Customer extends Base
     }
 
     /**
+     * update a customer record, assuming validations will pass
      *
-     * @throws Exception\Unexpected
-     * @param int $customerId
-     * @param array $attributes
-     * @return CustomerGateway
+     * if calling this method in static context, customerId
+     * is the 2nd attribute. customerId is not sent in object context.
+     * returns a Customer object on success
+     *
+     * @param string $customerId unique identifier
+     * @param array  $attributes request parameters
+     *
+     * @see CustomerGateway::updateNoValidate()
+     *
+     * @throws Exception\ValidationsFailed
+     *
+     * @return Customer
      */
     public static function updateNoValidate($customerId, $attributes)
     {
         return Configuration::gateway()->customer()->updateNoValidate($customerId, $attributes);
     }
 
-    /* instance methods */
-
-    /**
-     * sets instance properties from an array of values
-     *
-     * @ignore
-     * @access protected
-     * @param array $customerAttribs array of customer data
-     */
     protected function _initialize($customerAttribs)
     {
         $this->_attributes = $customerAttribs;
@@ -284,10 +311,7 @@ class Customer extends Base
         $this->_set('customFields', $customFields);
     }
 
-    /**
-     * returns a string representation of the customer
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .
@@ -299,6 +323,7 @@ class Customer extends Base
      * or is a Customer with a different id
      *
      * @param object $otherCust customer to compare against
+     *
      * @return boolean
      */
     public function isEqual($otherCust)
@@ -317,17 +342,12 @@ class Customer extends Base
         return current($defaultPaymentMethods);
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public static function _defaultPaymentMethodFilter($paymentMethod)
     {
         return $paymentMethod->isDefault();
     }
 
-    /* private class properties  */
-
-    /**
-     * @access protected
-     * @var array registry of customer data
-     */
     protected $_attributes = [
         'addresses'      => '',
         'company'        => '',
@@ -345,11 +365,10 @@ class Customer extends Base
         ];
 
     /**
-     *  factory method: returns an instance of Customer
-     *  to the requesting method, with populated properties
+     * Creates an instance of a Customer from given attributes
      *
-     * @ignore
-     * @param array $attributes
+     * @param array $attributes response object attributes
+     *
      * @return Customer
      */
     public static function factory($attributes)

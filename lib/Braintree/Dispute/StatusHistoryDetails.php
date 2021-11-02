@@ -7,12 +7,7 @@ use Braintree\Instance;
 /**
  * Status History for a dispute
  *
- * @package    Braintree
- *
- * @property-read \DateTime $disbursementDate
- * @property-read \DateTime $effectiveDate
- * @property-read string $status
- * @property-read \DateTime $timestamp
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/response/dispute#status_history developer docs} for information on attributes
  */
 class StatusHistoryDetails extends Instance
 {

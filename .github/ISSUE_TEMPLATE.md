@@ -1,4 +1,4 @@
-<!-- Only open an issue here if you think you've found an issue with our SDK. If you need help troubleshooting your integration, reach out to Braintree Support at https://help.braintreepayments.com. -->
+<!-- Only open an issue here if you think you've found an issue with our SDK. If you need help troubleshooting your integration, reach out to Braintree Support at https://developer.paypal.com/braintree/help. -->
 
 ### General information
 

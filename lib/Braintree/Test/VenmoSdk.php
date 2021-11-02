@@ -4,9 +4,6 @@ namespace Braintree\Test;
 
 /**
  * VenmoSdk payment method codes used for testing purposes
- *
- * @package    Braintree
- * @subpackage Test
  */
 class VenmoSdk
 {

@@ -27,17 +27,18 @@ use Braintree\Error\ErrorCollection;
  * }
  * </code>
  *
- * @package    Braintree
- * @subpackage Result
- *
  * @property-read array $params original passed params
  * @property-read \Braintree\Error\ErrorCollection $errors
  * @property-read \Braintree\Result\CreditCardVerification $creditCardVerification credit card verification data
+ *
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/general/result-objects developer docs} for more information
  */
 class Error extends Base
 {
     /**
-    * @var bool always false
+    * used to determine whether an API request was successful or not
+     *
+    * @var boolean always false
     */
     public $success = false;
 
@@ -46,7 +47,8 @@ class Error extends Base
      * For example, if a user tried to submit 'invalid-email' in the html field transaction[customer][email],
      * $result->valueForHtmlField("transaction[customer][email]") would yield "invalid-email"
      *
-     * @param string $field
+     * @param string $field to check submitted value
+     *
      * @return string
      */
     public function valueForHtmlField($field)
@@ -65,11 +67,7 @@ class Error extends Base
         return $fieldValue;
     }
 
-   /**
-    * overrides default constructor
-    * @ignore
-    * @param array $response gateway response array
-    */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($response)
     {
         $this->_attributes = $response;
@@ -106,12 +104,7 @@ class Error extends Base
         }
     }
 
-   /**
-     * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
-     * @ignore
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         $output = Util::attributesToString($this->_attributes);

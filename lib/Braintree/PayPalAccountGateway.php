@@ -7,18 +7,9 @@ use InvalidArgumentException;
 /**
  * Braintree PayPalAccountGateway module
  *
- * @package    Braintree
- * @category   Resources
- */
-
-/**
  * Manages Braintree PayPalAccounts
  *
- * <b>== More information ==</b>
- *
- *
- * @package    Braintree
- * @category   Resources
+ * For more detailed information on PayPal Accounts, see {@link https://developer.paypal.com/braintree/docs/reference/response/paypal-account our developer docs}<br />
  */
 class PayPalAccountGateway
 {
@@ -26,6 +17,7 @@ class PayPalAccountGateway
     private $_config;
     private $_http;
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -36,12 +28,13 @@ class PayPalAccountGateway
 
 
     /**
-     * find a paypalAccount by token
+     * Find a paypalAccount by token
      *
-     * @access public
      * @param string $token paypal accountunique id
-     * @return PayPalAccount
+     *
      * @throws Exception\NotFound
+     *
+     * @return PayPalAccount
      */
     public function find($token)
     {
@@ -63,9 +56,9 @@ class PayPalAccountGateway
      * if calling this method in context, $token
      * is the 2nd attribute. $token is not sent in object context.
      *
-     * @access public
-     * @param array $attributes
-     * @param string $token (optional)
+     * @param string $token      (optional)
+     * @param array  $attributes including request parameters
+     *
      * @return Result\Successful or Result\Error
      */
     public function update($token, $attributes)
@@ -75,6 +68,13 @@ class PayPalAccountGateway
         return $this->_doUpdate('put', '/payment_methods/paypal_account/' . $token, ['paypalAccount' => $attributes]);
     }
 
+    /**
+     * Delete a PayPal Account record
+     *
+     * @param string $token paypal account identifier
+     *
+     * @return Result
+     */
     public function delete($token)
     {
         $this->_validateId($token);
@@ -86,10 +86,10 @@ class PayPalAccountGateway
     /**
      * create a new sale for the current PayPal account
      *
-     * @param string $token
-     * @param array $transactionAttribs
+     * @param string $token              paypal account identifier
+     * @param array  $transactionAttribs containing request parameters
+     *
      * @return Result\Successful|Result\Error
-     * @see Transaction::sale()
      */
     public function sale($token, $transactionAttribs)
     {
@@ -102,6 +102,7 @@ class PayPalAccountGateway
         );
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public static function updateSignature()
     {
         return [
@@ -110,14 +111,7 @@ class PayPalAccountGateway
         ];
     }
 
-    /**
-     * sends the update request to the gateway
-     *
-     * @ignore
-     * @param string $subPath
-     * @param array $params
-     * @return mixed
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     private function _doUpdate($httpVerb, $subPath, $params)
     {
         $fullPath = $this->_config->merchantPath() . $subPath;
@@ -133,10 +127,11 @@ class PayPalAccountGateway
      * encapsulates a Errors object inside a Result\Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
-     * @ignore
      * @param array $response gateway response values
-     * @return Result\Successful|Result\Error
+     *
      * @throws Exception\Unexpected
+     *
+     * @return Result\Successful|Result\Error
      */
     private function _verifyGatewayResponse($response)
     {
@@ -156,9 +151,10 @@ class PayPalAccountGateway
 
     /**
      * verifies that a valid paypal account identifier is being used
-     * @ignore
-     * @param string $identifier
-     * @param Optional $string $identifierType type of identifier supplied, default 'token'
+     *
+     * @param string   $identifier
+     * @param Optional $string     $identifierType type of identifier supplied, default 'token'
+     *
      * @throws InvalidArgumentException
      */
     private function _validateId($identifier = null, $identifierType = 'token')

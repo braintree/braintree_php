@@ -8,13 +8,8 @@ use InvalidArgumentException;
  * Braintree CustomerGateway module
  * Creates and manages Customers
  *
- * <b>== More information ==</b>
- *
  // phpcs:ignore Generic.Files.LineLength
- * For more detailed information on Customers, see {@link https://developers.braintreepayments.com/reference/response/customer/php https://developers.braintreepayments.com/reference/response/customer/php}
- *
- * @package    Braintree
- * @category   Resources
+ * For more detailed information on Customers, see {@link https://developer.paypal.com/braintree/docs/reference/response/customer/php our developer docs}
  */
 class CustomerGateway
 {
@@ -22,6 +17,7 @@ class CustomerGateway
     private $_config;
     private $_http;
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -30,6 +26,11 @@ class CustomerGateway
         $this->_http = new Http($gateway->config);
     }
 
+    /*
+     * Return all customers
+     *
+     * @return ResourceCollection
+     */
     public function all()
     {
         $path = $this->_config->merchantPath() . '/customers/advanced_search_ids';
@@ -43,6 +44,14 @@ class CustomerGateway
         return new ResourceCollection($response, $pager);
     }
 
+    /**
+     * Retrieve a customer
+     *
+     * @param array $query containing request params
+     * @param int[] $ids   containing customer IDs
+     *
+     * @return Customer|Customer[]
+     */
     public function fetch($query, $ids)
     {
         $criteria = [];
@@ -80,8 +89,8 @@ class CustomerGateway
      *   }
      * </code>
      *
-     * @access public
-     * @param array $attribs
+     * @param array $attribs containing request parameters
+     *
      * @return Result\Successful|Result\Error
      */
     public function create($attribs = [])
@@ -94,10 +103,11 @@ class CustomerGateway
      * attempts the create operation assuming all data will validate
      * returns a Customer object instead of a Result
      *
-     * @access public
-     * @param array $attribs
-     * @return Customer
+     * @param array $attribs of request parameters
+     *
      * @throws Exception\ValidationError
+     *
+     * @return Customer
      */
     public function createNoValidate($attribs = [])
     {
@@ -107,6 +117,7 @@ class CustomerGateway
 
     /**
      * creates a full array signature of a valid create request
+     *
      * @return array gateway create request format
      */
     public static function createSignature()
@@ -149,6 +160,7 @@ class CustomerGateway
 
     /**
      * creates a full array signature of a valid update request
+     *
      * @return array update request format
      */
     public static function updateSignature()
@@ -197,11 +209,12 @@ class CustomerGateway
     /**
      * find a customer by id
      *
-     * @access public
-     * @param string id customer Id
-     * @param string associationFilterId association filter Id
-     * @return Customer|boolean The customer object or false if the request fails.
+     * @param string $id                  customer Id
+     * @param string $associationFilterId association filter Id
+     *
      * @throws Exception\NotFound
+     *
+     * @return Customer|boolean The customer object or false if the request fails.
      */
     public function find($id, $associationFilterId = null)
     {
@@ -224,9 +237,9 @@ class CustomerGateway
     /**
      * credit a customer for the passed transaction
      *
-     * @access public
-     * @param int $customerId
-     * @param array $transactionAttribs
+     * @param integer $customerId         unique identifier
+     * @param array   $transactionAttribs containing request parameters
+     *
      * @return Result\Successful|Result\Error
      */
     public function credit($customerId, $transactionAttribs)
@@ -245,11 +258,12 @@ class CustomerGateway
      *
      * returns a Transaction object on success
      *
-     * @access public
-     * @param int $customerId
-     * @param array $transactionAttribs
-     * @return Transaction
+     * @param integer $customerId         unique identifier
+     * @param array   $transactionAttribs containing request parameters
+     *
      * @throws Exception\ValidationError
+     *
+     * @return Transaction
      */
     public function creditNoValidate($customerId, $transactionAttribs)
     {
@@ -260,7 +274,9 @@ class CustomerGateway
     /**
      * delete a customer by id
      *
-     * @param string $customerId
+     * @param string $customerId unique identifier
+     *
+     * @return Result\Successful
      */
     public function delete($customerId)
     {
@@ -273,10 +289,10 @@ class CustomerGateway
     /**
      * create a new sale for a customer
      *
-     * @param string $customerId
-     * @param array $transactionAttribs
+     * @param string $customerId         unique identifier
+     * @param array  $transactionAttribs containing request parameters
+     *
      * @return Result\Successful|Result\Error
-     * @see Transaction::sale()
      */
     public function sale($customerId, $transactionAttribs)
     {
@@ -293,12 +309,13 @@ class CustomerGateway
      * create a new sale for a customer, assuming validations will pass
      *
      * returns a Transaction object on success
-     * @access public
-     * @param string $customerId
-     * @param array $transactionAttribs
-     * @return Transaction
+     *
+     * @param string $customerId         unique identifier
+     * @param array  $transactionAttribs containing request parameters
+     *
      * @throws Exception\ValidationsFailed
-     * @see Transaction::sale()
+     *
+     * @return Transaction
      */
     public function saleNoValidate($customerId, $transactionAttribs)
     {
@@ -312,11 +329,13 @@ class CustomerGateway
      * If <b>query</b> is a string, the search will be a basic search.
      * If <b>query</b> is a hash, the search will be an advanced search.
      // phpcs:ignore Generic.Files.LineLength
-     * For more detailed information and examples, see {@link https://developers.braintreepayments.com/reference/request/customer/search/php https://developers.braintreepayments.com/reference/request/customer/search/php}
+     * For more detailed information and examples, see {@link https://developer.paypal.com/braintree/docs/reference/request/customer/search/php our developer docs}
      *
      * @param mixed $query search query
-     * @return ResourceCollection
+     *
      * @throws InvalidArgumentException
+     *
+     * @return ResourceCollection
      */
     public function search($query)
     {
@@ -347,9 +366,9 @@ class CustomerGateway
      * if calling this method in static context, customerId
      * is the 2nd attribute. customerId is not sent in object context.
      *
-     * @access public
-     * @param string $customerId (optional)
-     * @param array $attributes
+     * @param string $customerId to be updated
+     * @param array  $attributes containing request params
+     *
      * @return Result\Successful|Result\Error
      */
     public function update($customerId, $attributes)
@@ -370,11 +389,12 @@ class CustomerGateway
      * is the 2nd attribute. customerId is not sent in object context.
      * returns a Customer object on success
      *
-     * @access public
-     * @param string $customerId
-     * @param array $attributes
-     * @return Customer
+     * @param string $customerId unique identifier
+     * @param array  $attributes request parameters
+     *
      * @throws Exception\ValidationsFailed
+     *
+     * @return Customer
      */
     public function updateNoValidate($customerId, $attributes)
     {
@@ -382,16 +402,6 @@ class CustomerGateway
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
 
-    /* instance methods */
-
-    /**
-     * sets instance properties from an array of values
-     *
-     * @ignore
-     * @access protected
-     * @param array $customerAttribs array of customer data
-     * @return void
-     */
     protected function _initialize($customerAttribs)
     {
         // set the attributes
@@ -451,10 +461,7 @@ class CustomerGateway
         $this->_set('paymentMethods', $paymentMethodsArray);
     }
 
-    /**
-     * returns a string representation of the customer
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .
@@ -466,6 +473,7 @@ class CustomerGateway
      * or is a Customer with a different id
      *
      * @param object $otherCust customer to compare against
+     *
      * @return boolean
      */
     public function isEqual($otherCust)
@@ -495,17 +503,12 @@ class CustomerGateway
         return current($defaultPaymentMethods);
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public static function _defaultPaymentMethodFilter($paymentMethod)
     {
         return $paymentMethod->isDefault();
     }
 
-    /* private class properties  */
-
-    /**
-     * @access protected
-     * @var array registry of customer data
-     */
     protected $_attributes = [
         'addresses'   => '',
         'company'     => '',
@@ -521,14 +524,7 @@ class CustomerGateway
         'website'     => '',
         ];
 
-    /**
-     * sends the create request to the gateway
-     *
-     * @ignore
-     * @param string $subPath
-     * @param array $params
-     * @return mixed
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function _doCreate($subPath, $params)
     {
         $fullPath = $this->_config->merchantPath() . $subPath;
@@ -537,12 +533,6 @@ class CustomerGateway
         return $this->_verifyGatewayResponse($response);
     }
 
-    /**
-     * verifies that a valid customer id is being used
-     * @ignore
-     * @param string customer id
-     * @throws InvalidArgumentException
-     */
     private function _validateId($id = null)
     {
         if (is_null($id)) {
@@ -557,17 +547,6 @@ class CustomerGateway
         }
     }
 
-
-    /* private class methods */
-
-    /**
-     * sends the update request to the gateway
-     *
-     * @ignore
-     * @param string $subPath
-     * @param array $params
-     * @return mixed
-     */
     private function _doUpdate($httpVerb, $subPath, $params)
     {
         $fullPath = $this->_config->merchantPath() . $subPath;
@@ -576,19 +555,6 @@ class CustomerGateway
         return $this->_verifyGatewayResponse($response);
     }
 
-    /**
-     * generic method for validating incoming gateway responses
-     *
-     * creates a new Customer object and encapsulates
-     * it inside a Result\Successful object, or
-     * encapsulates a Errors object inside a Result\Error
-     * alternatively, throws an Unexpected exception if the response is invalid.
-     *
-     * @ignore
-     * @param array $response gateway response values
-     * @return Result\Successful|Result\Error
-     * @throws Exception\Unexpected
-     */
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['customer'])) {

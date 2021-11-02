@@ -4,32 +4,20 @@ namespace Braintree;
 
 /**
  * Braintree LocalPaymentCompleted module
- *
- * @package    Braintree
- * @category   Resources
  */
 
 /**
  * Manages Braintree LocalPaymentCompleted
  *
- * <b>== More information ==</b>
- *
- *
- * @package    Braintree
- * @category   Resources
- *
- * @property-read string $paymentId
- * @property-read string $payerId
- * @property-read string $paymentMethodNonce
- * @property-read \Braintree\Transaction $transaction
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/general/webhooks/local-payment-methods developer docs} for more information
  */
 class LocalPaymentCompleted extends Base
 {
     /**
-     *  factory method: returns an instance of LocalPaymentCompleted
-     *  to the requesting method, with populated properties
+     * Creates an instance from given attributes
      *
-     * @ignore
+     * @param array $attributes response object attributes
+     *
      * @return LocalPaymentCompleted
      */
     public static function factory($attributes)
@@ -44,8 +32,8 @@ class LocalPaymentCompleted extends Base
     /**
      * sets instance properties from an array of values
      *
-     * @access protected
      * @param array $LocalPaymentCompletedAttribs array of localPaymentCompleted data
+     *
      * @return void
      */
     protected function _initialize($localPaymentCompletedAttribs)
@@ -63,11 +51,7 @@ class LocalPaymentCompleted extends Base
         }
     }
 
-    /**
-     * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .

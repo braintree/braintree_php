@@ -2,15 +2,29 @@
 
 namespace Braintree;
 
+/**
+ * WebhookTestingGateway module
+ * Creates and manages test webhooks
+ */
 class WebhookTestingGateway
 {
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->config = $gateway->config;
         $this->config->assertHasAccessTokenOrKeys();
     }
 
+    /**
+     * Build a sample Webhook
+     *
+     * @param string $kind             the kind of Webhook you want to generate
+     * @param string $id               unique identifier
+     * @param string $sourceMerchantId optional
+     *
+     * @return Webhook
+     */
     public function sampleNotification($kind, $id, $sourceMerchantId = null)
     {
         $xml = self::_sampleXml($kind, $id, $sourceMerchantId);

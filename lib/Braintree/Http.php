@@ -14,11 +14,20 @@ class Http
     protected $_config;
     private $_useClientCredentials = false;
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($config)
     {
         $this->_config = $config;
     }
 
+    /*
+     * DELETE request
+     *
+     * @param string $path URL path
+     * @param object $params optional any addition request parameters
+     *
+     * @return array|Exception
+     */
     public function delete($path, $params = null)
     {
         $response = $this->_doRequest('DELETE', $path, $this->_buildXml($params));
@@ -32,6 +41,13 @@ class Http
         }
     }
 
+    /*
+     * GET request
+     *
+     * @param string $path URL path
+     *
+     * @return array|Exception
+     */
     public function get($path)
     {
         $response = $this->_doRequest('GET', $path);
@@ -42,6 +58,14 @@ class Http
         }
     }
 
+    /*
+     * POST request
+     *
+     * @param string $path URL path
+     * @param object $params optional any addition request parameters
+     *
+     * @return array|Exception
+     */
     public function post($path, $params = null)
     {
         $response = $this->_doRequest('POST', $path, $this->_buildXml($params));
@@ -53,6 +77,15 @@ class Http
         }
     }
 
+    /*
+     * POST request for multi parts to be sent
+     *
+     * @param string $path URL path
+     * @param object $params additional request parameters
+     * @param object $file to be uploaded
+     *
+     * @return array|Exception
+     */
     public function postMultipart($path, $params, $file)
     {
         $headers = [
@@ -68,6 +101,14 @@ class Http
         }
     }
 
+    /*
+     * PUT request
+     *
+     * @param string $path URL path
+     * @param object $params optional any addition request parameters
+     *
+     * @return array|Exception
+     */
     public function put($path, $params = null)
     {
         $response = $this->_doRequest('PUT', $path, $this->_buildXml($params));
@@ -84,6 +125,9 @@ class Http
         return empty($params) ? null : Xml::buildXmlFromArray($params);
     }
 
+    /*
+     * Sets internal variable to true
+     */
     public function useClientCredentials()
     {
         $this->_useClientCredentials = true;
@@ -94,6 +138,7 @@ class Http
         return $this->_doUrlRequest($httpVerb, $this->_config->baseUrl() . $path, $requestBody, $file, $headers);
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function _doUrlRequest($httpVerb, $url, $requestBody = null, $file = null, $customHeaders = null)
     {
         $curlRequest = new CurlRequest($url);

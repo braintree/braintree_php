@@ -4,29 +4,20 @@ namespace Braintree;
 
 /**
  * Braintree LocalPaymentReversed module
- *
- * @package    Braintree
- * @category   Resources
  */
 
 /**
  * Manages Braintree LocalPaymentReversed
  *
- * <b>== More information ==</b>
- *
- *
- * @package    Braintree
- * @category   Resources
- *
- * @property-read string $paymentId
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/general/webhooks/local-payment-methods developer docs} for more information
  */
 class LocalPaymentReversed extends Base
 {
     /**
-     *  factory method: returns an instance of LocalPaymentReversed
-     *  to the requesting method, with populated properties
+     * Creates an instance from given attributes
      *
-     * @ignore
+     * @param array $attributes response object attributes
+     *
      * @return LocalPaymentReversed
      */
     public static function factory($attributes)
@@ -41,8 +32,8 @@ class LocalPaymentReversed extends Base
     /**
      * sets instance properties from an array of values
      *
-     * @access protected
      * @param array $LocalPaymentReversedAttribs array of localPaymentReversed data
+     *
      * @return void
      */
     protected function _initialize($localPaymentReversedAttribs)
@@ -51,11 +42,7 @@ class LocalPaymentReversed extends Base
         $this->_attributes = $localPaymentReversedAttribs;
     }
 
-    /**
-     * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .

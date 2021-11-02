@@ -8,22 +8,16 @@ namespace Braintree;
  */
 class Version
 {
-    /**
-     * class constants
-     */
     const MAJOR = 6;
     const MINOR = 4;
     const TINY = 1;
 
-    /**
-     * @ignore
-     * @access protected
-     */
     protected function __construct()
     {
     }
 
     /**
+     * Get the version
      *
      * @return string the current library version
      */

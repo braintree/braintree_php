@@ -13,15 +13,7 @@ use InvalidArgumentException;
  *          "file" => $pngFile
  *      ]);
  *
- * For more information on DocumentUploads, see
- * https://developers.braintreepayments.com/reference/request/document_upload/create
- *
- * @property-read string $contentType
- * @property-read \DateTime $expiresAt
- * @property-read string $id
- * @property-read string $kind
- * @property-read string $name
- * @property-read int $size
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/response/document-upload developer docs} for information on attributes
  */
 class DocumentUpload extends Base
 {
@@ -35,15 +27,27 @@ class DocumentUpload extends Base
 
     /**
      * Creates a DocumentUpload object
-     * @param kind The kind of document
-     * @param file The open file to upload
+     *
+     * @param mixed $params containing:
+     *                      kind - The kind of document
+     *                      file - The open file to upload
+     *
      * @throws InvalidArgumentException if the params are not expected
+     *
+     * @return Result\Successful|Result\Error
      */
     public static function create($params)
     {
         return Configuration::gateway()->documentUpload()->create($params);
     }
 
+    /**
+     * Creates an instance of a DocumentUpload from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return DocumentUpload
+     */
     public static function factory($attributes)
     {
         $instance = new self();

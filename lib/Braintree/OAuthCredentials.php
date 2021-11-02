@@ -4,9 +4,6 @@ namespace Braintree;
 
 /**
  * Braintree OAuthCredentials module
- *
- * @package    Braintree
- * @category   Resources
  */
 class OAuthCredentials extends Base
 {
@@ -15,6 +12,13 @@ class OAuthCredentials extends Base
         $this->_attributes = $attribs;
     }
 
+    /**
+     * Creates an instance from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return OauthCredentials
+     */
     public static function factory($attributes)
     {
         $instance = new self();
@@ -22,10 +26,7 @@ class OAuthCredentials extends Base
         return $instance;
     }
 
-    /**
-     * returns a string representation of the access token
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .

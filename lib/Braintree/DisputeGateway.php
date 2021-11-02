@@ -7,29 +7,14 @@ use InvalidArgumentException;
 /**
  * Braintree DisputeGateway module
  * Creates and manages Braintree Disputes
- *
- * @package   Braintree
  */
 class DisputeGateway
 {
-    /**
-     * @var Gateway
-     */
     private $_gateway;
-
-    /**
-     * @var Configuration
-     */
     private $_config;
-
-    /**
-     * @var Http
-     */
     private $_http;
 
-    /**
-     * @param Gateway $gateway
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -38,12 +23,12 @@ class DisputeGateway
         $this->_http = new Http($gateway->config);
     }
 
-    /* public class methods */
-
     /**
      * Accepts a dispute, given a dispute ID
      *
-     * @param string $id
+     * @param string $id of the dispute to be accepted
+     *
+     * @return Dispute|Exception\NotFound|Result\Error
      */
     public function accept($id)
     {
@@ -68,8 +53,10 @@ class DisputeGateway
     /**
      * Adds file evidence to a dispute, given a dispute ID and a document ID
      *
-     * @param string $disputeId
-     * @param string $documentIdOrRequest
+     * @param string $disputeId           to have evidence added
+     * @param string $documentIdOrRequest either a string of the unique identifier for a DocumentUpload object or a set of request params including the DocumentUpload ID
+     *
+     * @return EvidenceDetails|Exception\NotFound
      */
     public function addFileEvidence($disputeId, $documentIdOrRequest)
     {
@@ -112,8 +99,10 @@ class DisputeGateway
     /**
      * Adds text evidence to a dispute, given a dispute ID and content
      *
-     * @param string $id
-     * @param string $content
+     * @param string $id               of the dispute
+     * @param mixed  $contentOrRequest text-based content for the dispute evidence
+     *
+     * @return EvidenceDetails|Exception\NotFound
      */
     public function addTextEvidence($id, $contentOrRequest)
     {
@@ -173,7 +162,9 @@ class DisputeGateway
     /**
      * Finalize a dispute, given a dispute ID
      *
-     * @param string $id
+     * @param string $id of the dispute
+     *
+     * @return Dispute|Result\Error
      */
     public function finalize($id)
     {
@@ -198,7 +189,9 @@ class DisputeGateway
     /**
      * Find a dispute, given a dispute ID
      *
-     * @param string $id
+     * @param string $id of the dispute
+     *
+     * @return Dispute|Exception\NotFound
      */
     public function find($id)
     {
@@ -218,8 +211,10 @@ class DisputeGateway
     /**
      * Remove evidence from a dispute, given a dispute ID and evidence ID
      *
-     * @param string $disputeId
-     * @param string $evidenceId
+     * @param string $disputeId  unique dispute identifier
+     * @param string $evidenceId uniqye evidence identifier
+     *
+     * @return true|Result\Error|Exception\NotFound
      */
     public function removeEvidence($disputeId, $evidenceId)
     {
@@ -245,7 +240,9 @@ class DisputeGateway
     /**
      * Search for Disputes, given a DisputeSearch query
      *
-     * @param array $query
+     * @param array $query containing search fields
+     *
+     * @return ResourceCollection of Dispute objects
      */
     public function search($query)
     {
@@ -261,6 +258,14 @@ class DisputeGateway
         return new PaginatedCollection($pager);
     }
 
+    /**
+     * Similar to search, with a paging object
+     *
+     * @param array  $query containing search fields
+     * @param object $page  to iterate over results
+     *
+     * @return PaginatedResults
+     */
     public function fetchDisputes($query, $page)
     {
         $response = $this->_http->post($this->_config->merchantPath() . '/disputes/advanced_search?page=' . $page, [

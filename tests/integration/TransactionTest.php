@@ -4588,19 +4588,6 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::TOKEN_ISSUANCE, $transaction->gatewayRejectionReason);
     }
 
-    public function createTransactionViaTr($regularParams, $trParams)
-    {
-        Test\Helper::suppressDeprecationWarnings();
-        $trData = Braintree\TransparentRedirect::transactionData(
-            array_merge($trParams, ["redirectUrl" => "http://www.example.com"])
-        );
-        return Test\Helper::submitTrRequest(
-            Braintree\Transaction::createTransactionUrl(),
-            $regularParams,
-            $trData
-        );
-    }
-
     public function createTransactionToRefund()
     {
         $transaction = Braintree\Transaction::saleNoValidate([

@@ -2,6 +2,9 @@
 
 namespace Braintree;
 
+/**
+ * Merchant class
+ */
 class Merchant extends Base
 {
     protected function _initialize($attribs)
@@ -17,6 +20,13 @@ class Merchant extends Base
         $this->_set('merchantAccounts', $merchantAccountArray);
     }
 
+    /**
+     * Creates an instance from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return Merchant
+     */
     public static function factory($attributes)
     {
         $instance = new self();
@@ -24,10 +34,7 @@ class Merchant extends Base
         return $instance;
     }
 
-    /**
-     * returns a string representation of the merchant
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .
