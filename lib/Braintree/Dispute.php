@@ -72,13 +72,6 @@ class Dispute extends Base
             }, $disputeAttribs['statusHistory']);
             $this->_set('statusHistory', $statusHistoryArray);
         }
-
-        if (isset($disputeAttribs['transaction'])) {
-            $this->_set(
-                'transaction',
-                new Dispute\TransactionDetails($disputeAttribs['transaction'])
-            );
-        }
     }
 
     /**
