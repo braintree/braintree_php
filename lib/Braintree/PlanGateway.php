@@ -44,6 +44,13 @@ class PlanGateway
         );
     }
 
+    /*
+     * Request a new plan be created
+     *
+     * @param array $attributes containing request params
+     *
+     * @return Result\Sucessful|Result\Error
+     */
     public function create($attributes)
     {
         Util::verifyKeys(self::_createSignature(), $attributes);
@@ -52,6 +59,13 @@ class PlanGateway
         return $this->_verifyGatewayResponse($response);
     }
 
+    /*
+     * Look up a single plan
+     *
+     * @param string $id of the plan to find
+     *
+     * @return plan|Exception\NotFound
+     */
     public function find($id)
     {
         $this->_validateId($id);
@@ -65,6 +79,14 @@ class PlanGateway
         }
     }
 
+    /*
+     * Updates a specific plan with given details
+     *
+     * @param string $planId the ID of the plan to be updated
+     * @param mixed $attributes
+     *
+     * @return plan|Exception\NotFound
+     */
     public function update($planId, $attributes)
     {
         Util::verifyKeys(self::_updateSignature(), $attributes);
