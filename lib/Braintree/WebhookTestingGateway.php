@@ -51,6 +51,9 @@ class WebhookTestingGateway
             case WebhookNotification::TRANSACTION_DISBURSED:
                 $subjectXml = self::_transactionDisbursedSampleXml($id);
                 break;
+            case WebhookNotification::TRANSACTION_REVIEWED:
+                $subjectXml = self::_transactionReviewedSampleXml($id);
+                break;
             case WebhookNotification::TRANSACTION_SETTLED:
                 $subjectXml = self::_transactionSettledSampleXml($id);
                 break;
@@ -218,6 +221,19 @@ class WebhookTestingGateway
                 <disbursement-date type=\"date\">2013-07-09</disbursement-date>
             </disbursement-details>
         </transaction>
+        ";
+    }
+
+    private static function _transactionReviewedSampleXml($id)
+    {
+        return "
+        <transaction-review>
+            <transaction-id>my_id</transaction-id>
+            <decision>smart_decision</decision>
+            <reviewer-email>hey@girl.com</reviewer-email>
+            <reviewer-note>I reviewed this</reviewer-note>
+            <reviewer-time type='dateTime'>2018-10-11T21:28:37Z</reviewer-time>
+        </transaction-review>
         ";
     }
 
