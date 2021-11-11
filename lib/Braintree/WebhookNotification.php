@@ -43,6 +43,7 @@ class WebhookNotification extends Base
     const SUB_MERCHANT_ACCOUNT_APPROVED = 'sub_merchant_account_approved';
     const SUB_MERCHANT_ACCOUNT_DECLINED = 'sub_merchant_account_declined';
     const TRANSACTION_DISBURSED = 'transaction_disbursed';
+    const TRANSACTION_REVIEWED = 'transaction_reviewed';
     const TRANSACTION_SETTLED = 'transaction_settled';
     const TRANSACTION_SETTLEMENT_DECLINED = 'transaction_settlement_declined';
     // phpcs:enable Generic.Files.LineLength
@@ -115,6 +116,10 @@ class WebhookNotification extends Base
 
         if (isset($wrapperNode['transaction'])) {
             $this->_set('transaction', Transaction::factory($wrapperNode['transaction']));
+        }
+
+        if (isset($wrapperNode['transactionReview'])) {
+            $this->_set('transactionReview', TransactionReview::factory($wrapperNode['transactionReview']));
         }
 
         if (isset($wrapperNode['disbursement'])) {
