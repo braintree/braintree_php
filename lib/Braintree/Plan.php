@@ -64,4 +64,41 @@ class Plan extends Base
     {
         return Configuration::gateway()->plan()->all();
     }
+
+    /**
+     * static methods redirecting to gateway class
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return Plan
+     */
+    public static function create($attributes)
+    {
+        return Configuration::gateway()->plan()->create($attributes);
+    }
+
+    /**
+     * static methods redirecting to gateway class
+     *
+     * @param $id int planId
+     *
+     * @return Plan
+     */
+    public static function find($id)
+    {
+        return Configuration::gateway()->plan()->find($id);
+    }
+
+    /**
+     * static methods redirecting to gateway class
+     *
+     * @param $planId     int planId
+     * @param array $attributes response object attributes
+     *
+     * @return Plan
+     */
+    public static function update($planId, $attributes)
+    {
+        return Configuration::gateway()->plan()->update($planId, $attributes);
+    }
 }
