@@ -4,8 +4,13 @@ namespace Braintree;
 
 use InvalidArgumentException;
 
+/**
+ * Braintree MultipleValueNode
+ * MultipleValueNode is an object for elements with possible values returned from the Braintree API
+ */
 class MultipleValueNode
 {
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($name, $allowedValues = [])
     {
         $this->name = $name;
@@ -13,6 +18,15 @@ class MultipleValueNode
         $this->allowedValues = $allowedValues;
     }
 
+    /**
+     * Sets the value of the object's items key to $values
+     *
+     * @param array $values to be set
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return object
+     */
     public function in($values)
     {
         $bad_values = array_diff($values, $this->allowedValues);
@@ -29,11 +43,23 @@ class MultipleValueNode
         return $this;
     }
 
+    /**
+     * Sets the value of the object's items key to [$value]
+     *
+     * @param object $value to be set
+     *
+     * @return object
+     */
     public function is($value)
     {
         return $this->in([$value]);
     }
 
+    /**
+     * Retrieves items(params) from the object
+     *
+     * @return object
+     */
     public function toParam()
     {
         return $this->items;

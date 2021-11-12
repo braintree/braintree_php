@@ -4,28 +4,20 @@ namespace Braintree;
 
 /**
  * Braintree UsBankAccountVerification module
- *
- * @package    Braintree
- * @category   Resources
  */
 
 /**
  * Manages Braintree UsBankAccountVerifications
  *
  * <b>== More information ==</b>
- *
- *
- * @package    Braintree
- * @category   Resources
- *
  */
 class UsBankAccountVerification extends Result\UsBankAccountVerification
 {
     /**
-     *  factory method: returns an instance of UsBankAccountVerification
-     *  to the requesting method, with populated properties
+     * Creates an instance from given attributes
      *
-     * @ignore
+     * @param array $attributes response object attributes
+     *
      * @return UsBankAccountVerification
      */
     public static function factory($attributes)
@@ -40,8 +32,8 @@ class UsBankAccountVerification extends Result\UsBankAccountVerification
     /**
      * sets instance properties from an array of values
      *
-     * @access protected
      * @param array $usBankAccountVerificationAttribs array of usBankAccountVerification data
+     *
      * @return void
      */
     protected function _initialize($usBankAccountVerificationAttribs)
@@ -50,24 +42,20 @@ class UsBankAccountVerification extends Result\UsBankAccountVerification
         $this->_attributes = $usBankAccountVerificationAttribs;
     }
 
-    /**
-     * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' . Util::attributesToString($this->_attributes) . ']';
     }
 
 
-    // static methods redirecting to gateway
-
     /**
-     * finds a US bank account verification
+     * Static methods redirecting to gateway class
      *
-     * @access public
      * @param string $token unique id
+     *
+     * @see UsBankAccountVerificationGateway::find()
+     *
      * @return UsBankAccountVerification
      */
     public static function find($token)
@@ -76,10 +64,12 @@ class UsBankAccountVerification extends Result\UsBankAccountVerification
     }
 
     /**
-     * Returns a ResourceCollection of US bank account verifications matching the search query.
+     * Static methods redirecting to gateway class
      *
-     * @access public
      * @param mixed $query search query
+     *
+     * @see UsBankAccountVerificationGateway::search()
+     *
      * @return ResourceCollection
      */
     public static function search($query)
@@ -88,11 +78,13 @@ class UsBankAccountVerification extends Result\UsBankAccountVerification
     }
 
     /**
-     * Returns a ResourceCollection of US bank account verifications matching the search query.
+     * Static methods redirecting to gateway class
      *
-     * @access public
-     * @param string $token unique id
-     * @param array $amounts micro transfer amounts
+     * @param string $token   unique id
+     * @param array  $amounts micro transfer amounts
+     *
+     * @see UsBankAccountVerificationGateway::confirmMicroTransferAmounts()
+     *
      * @return ResourceCollection
      */
     public static function confirmMicroTransferAmounts($token, $amounts)

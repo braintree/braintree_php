@@ -2,6 +2,12 @@
 
 namespace Braintree;
 
+/**
+ * Modification class
+ * For changes to Subscriptions
+ *
+ * @see AddOn
+ */
 class Modification extends Base
 {
     protected function _initialize($attributes)
@@ -9,6 +15,13 @@ class Modification extends Base
         $this->_attributes = $attributes;
     }
 
+    /**
+     * Creates an instance from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return Modification
+     */
     public static function factory($attributes)
     {
         $instance = new self();
@@ -16,6 +29,7 @@ class Modification extends Base
         return $instance;
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return get_called_class() . '[' . Util::attributesToString($this->_attributes) . ']';

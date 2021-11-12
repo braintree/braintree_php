@@ -10,22 +10,7 @@ namespace Braintree;
  * CreditCard as the billing address. It can also be used
  * as the shipping address when creating a Transaction.
  *
- * @package   Braintree
- *
- * @property-read string $company
- * @property-read string $countryName
- * @property-read \DateTime $createdAt
- * @property-read string $customerId
- * @property-read string $extendedAddress
- * @property-read string $firstName
- * @property-read string $id
- * @property-read string $lastName
- * @property-read string $locality
- * @property-read string $phoneNumber
- * @property-read string $postalCode
- * @property-read string $region
- * @property-read string $streetAddress
- * @property-read \DateTime $updatedAt
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/response/address developer docs} for information on attributes
  */
 class Address extends Base
 {
@@ -34,6 +19,7 @@ class Address extends Base
      * or is a Address with a different id
      *
      * @param object $other address to compare against
+     *
      * @return boolean
      */
     public function isEqual($other)
@@ -43,26 +29,14 @@ class Address extends Base
             ($this->id === $other->id && $this->customerId === $other->customerId);
     }
 
-    /**
-     * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
-     * @ignore
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .
                 Util::attributesToString($this->_attributes) . ']';
     }
 
-    /**
-     * sets instance properties from an array of values
-     *
-     * @ignore
-     * @access protected
-     * @param array $addressAttribs array of address data
-     * @return void
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     protected function _initialize($addressAttribs)
     {
         // set the attributes
@@ -70,9 +44,10 @@ class Address extends Base
     }
 
     /**
-     *  factory method: returns an instance of Address
-     *  to the requesting method, with populated properties
-     * @ignore
+     * Creates an instance of an Address from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
      * @return Address
      */
     public static function factory($attributes)
@@ -82,13 +57,14 @@ class Address extends Base
         return $instance;
     }
 
-
-    // static methods redirecting to gateway
-
     /**
+     * static method redirecting to gateway class
      *
-     * @param array $attribs
-     * @return Address
+     * @param array $attribs containing request parameters
+     *
+     * @see AddressGateway::create()
+     *
+     * @return Result\Successful|Result\Error
      */
     public static function create($attribs)
     {
@@ -96,8 +72,14 @@ class Address extends Base
     }
 
     /**
+     * static method redirecting to gateway class
      *
-     * @param array $attribs
+     * @param array $attribs containing request parameters
+     *
+     * @see AddressGateway::createNoValidate()
+     *
+     * @throws Exception\ValidationError
+     *
      * @return Address
      */
     public static function createNoValidate($attribs)
@@ -106,11 +88,14 @@ class Address extends Base
     }
 
     /**
+     * static method redirecting to gateway class
      *
-     * @param Customer|int $customerOrId
-     * @param int $addressId
-     * @throws InvalidArgumentException
-     * @return Result\Successful
+     * @param mixed  $customerOrId either a customer object or string ID of customer
+     * @param string $addressId    optional unique identifier
+     *
+     * @see AddressGateway::delete()
+     *
+     * @return Result\Successful|Result\Error
      */
     public static function delete($customerOrId = null, $addressId = null)
     {
@@ -118,10 +103,15 @@ class Address extends Base
     }
 
     /**
+     * static method redirecting to gateway class
      *
-     * @param Customer|int $customerOrId
-     * @param int $addressId
+     * @param mixed  $customerOrId either a customer object or string ID of customer
+     * @param string $addressId    optional unique identifier
+     *
+     * @see AddressGateway::find()
+     *
      * @throws Exception\NotFound
+     *
      * @return Address
      */
     public static function find($customerOrId, $addressId)
@@ -130,11 +120,14 @@ class Address extends Base
     }
 
     /**
+     * static method redirecting to gateway class
      *
-     * @param Customer|int $customerOrId
-     * @param int $addressId
-     * @param array $attributes
-     * @throws Exception\Unexpected
+     * @param mixed  $customerOrId (only used in call)
+     * @param string $addressId    (only used in call)
+     * @param array  $attributes   containing request parameters
+     *
+     * @see AddressGateway::update()
+     *
      * @return Result\Successful|Result\Error
      */
     public static function update($customerOrId, $addressId, $attributes)
@@ -142,6 +135,19 @@ class Address extends Base
         return Configuration::gateway()->address()->update($customerOrId, $addressId, $attributes);
     }
 
+    /**
+     * static method redirecting to gateway class
+     *
+     * @param mixed  $customerOrId (only used in call)
+     * @param string $addressId    (only used in call)
+     * @param array  $attributes   containing request parameters
+     *
+     * @see AddressGateway::updateNoValidate()
+     *
+     * @throws Exception\ValidationsFailed
+     *
+     * @return Address
+     */
     public static function updateNoValidate($customerOrId, $addressId, $attributes)
     {
         return Configuration::gateway()->address()->updateNoValidate($customerOrId, $addressId, $attributes);

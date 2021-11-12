@@ -1,3 +1,7 @@
+## 6.5.0
+* Add plan create/update/find API endpoint
+* Add `TransactionReview` webhook notification
+
 ## 6.4.1
 * Add `exchangeRateQuoteId` to `Transaction.sale`
 * Add error code `EXCHANGE_RATE_QUOTE_ID_IS_TOO_LONG`

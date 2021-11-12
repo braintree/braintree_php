@@ -1,16 +1,9 @@
-<?php
+<?php //phpcs:disable
 
 namespace Braintree;
 
 /**
- * @property-read \Braintree\MerchantAccount\BusinessDetails $businessDetails
- * @property-read string $currencyIsoCode
- * @property-read boolean $default
- * @property-read \Braintree\MerchantAccount\FundingDetails $fundingDetails
- * @property-read string $id
- * @property-read \Braintree\MerchantAccount\IndividualDetails $individualDetails
- * @property-read \Braintree\MerchantAccount $masterMerchantAccount
- * @property-read string $status
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/response/merchant-account developer docs} for information on attributes
  */
 class MerchantAccount extends Base
 {
@@ -22,6 +15,13 @@ class MerchantAccount extends Base
     const FUNDING_DESTINATION_EMAIL = 'email';
     const FUNDING_DESTINATION_MOBILE_PHONE = 'mobile_phone';
 
+    /**
+     * Creates an instance from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return MerchantAccount
+     */
     public static function factory($attributes)
     {
         $instance = new self();

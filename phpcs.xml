@@ -9,7 +9,8 @@
     <!-- Exclude some rules -->
     <!-- This rule pops up for Braintree.php and test files,
          and aren't really that smelly for those instances -->
-    <rule ref="PSR1.Files.SideEffects">
+    <rule ref="PSR1">
+      <exclude-pattern>tests/*</exclude-pattern>
         <exclude name="PSR1.Files.SideEffects"/>
     </rule>
 
@@ -19,7 +20,7 @@
     </rule>
 
     <rule ref="Generic.Files.LineLength">
-      <exclude-pattern>tests/*</exclude-pattern>
+      <exclude name="Generic.Files.LineLength.TooLong"/>
     </rule>
 
     <!-- We mark internal properties and methods with `_`
@@ -36,5 +37,34 @@
 				 https://www.php.net/manual/en/language.oop5.constants.php -->
     <rule ref="PSR12.Properties.ConstantVisibility">
         <exclude name="PSR12.Properties.ConstantVisibility"/>
+    </rule>
+
+    <!-- scan for missing phpDoc -->
+    <rule ref="Generic.Commenting">
+      <exclude-pattern>tests/*</exclude-pattern>
+      <exclude-pattern>lib/Braintree/Test/*</exclude-pattern>
+			<exclude name="Generic.Commenting.DocComment.ShortNotCapital"/>
+			<exclude name="Generic.Commenting.DocComment.LongNotCapital"/>
+    </rule>
+
+    <!-- NEXT_MAJOR_VERSION there are a number of public functions that are marked to ignore the rule
+      PEAR.Commenting.FunctionComment.Missing in their class files. This is because they're public functions
+      that aren't meant to be used by merchants as standalone functions. -->
+    <rule ref="PEAR.Commenting">
+			<properties>
+				<property name="minimumVisibility" value="public" />
+			</properties>
+      <exclude-pattern>tests/*</exclude-pattern>
+      <exclude-pattern>lib/Braintree/Test/*</exclude-pattern>
+      <exclude name="PEAR.Commenting.FileComment.Missing"/>
+      <exclude name="PEAR.Commenting.ClassComment.MissingCategoryTag"/>
+      <exclude name="PEAR.Commenting.ClassComment.MissingAuthorTag"/>
+      <exclude name="PEAR.Commenting.ClassComment.MissingLicenseTag"/>
+      <exclude name="PEAR.Commenting.ClassComment.MissingLinkTag"/>
+      <exclude name="PEAR.Commenting.ClassComment.CategoryTagOrder"/>
+      <exclude name="PEAR.Commenting.ClassComment.PackageTagOrder"/>
+      <exclude name="PEAR.Commenting.ClassComment.MissingPackageTag"/>
+      <exclude name="PEAR.Commenting.FunctionComment.WrongStyle"/>
+      <exclude name="PEAR.Commenting.FileComment.WrongStyle"/>
     </rule>
 </ruleset>

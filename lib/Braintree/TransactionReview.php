@@ -3,20 +3,20 @@
 namespace Braintree;
 
 /**
- * Braintree OAuth Revocation module
+ * Braintree TransactionReview
  *
- * A revoked OAuth access token
+ * A class of information related to when a transaction is manually reviewed in the Fraud Protection Dashboard.
  *
- * For more information, see {@link https://developer.paypal.com/braintree/docs/guides/extend/oauth/access-tokens/php#managing-access-tokens our developer docs}
+ * For more information, see {@link https://developer.paypal.com/braintree/docs/guides/premium-fraud-management-tools/overview our developer docs}
  */
-class OAuthAccessRevocation extends Base
+class TransactionReview extends Base
 {
     /**
      * Creates an instance from given attributes
      *
      * @param array $attributes response object attributes
      *
-     * @return OauthAccessRevocation
+     * @return TransactionReview
      */
     public static function factory($attributes)
     {

@@ -7,18 +7,7 @@ use InvalidArgumentException;
 /**
  * Braintree UsBankAccountGateway module
  *
- * @package    Braintree
- * @category   Resources
- */
-
-/**
  * Manages Braintree UsBankAccounts
- *
- * <b>== More information ==</b>
- *
- *
- * @package    Braintree
- * @category   Resources
  */
 class UsBankAccountGateway
 {
@@ -26,6 +15,7 @@ class UsBankAccountGateway
     private $_config;
     private $_http;
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -38,10 +28,11 @@ class UsBankAccountGateway
     /**
      * find a usBankAccount by token
      *
-     * @access public
      * @param string $token paypal accountunique id
-     * @return UsBankAccount
+     *
      * @throws Exception\NotFound
+     *
+     * @return UsBankAccount
      */
     public function find($token)
     {
@@ -59,10 +50,12 @@ class UsBankAccountGateway
     /**
      * create a new sale for the current UsBank account
      *
-     * @param string $token
-     * @param array $transactionAttribs
-     * @return Result\Successful|Result\Error
+     * @param string $token              payment method identifier
+     * @param array  $transactionAttribs request parameters
+     *
      * @see Transaction::sale()
+     *
+     * @return Result\Successful|Result\Error
      */
     public function sale($token, $transactionAttribs)
     {
@@ -82,10 +75,11 @@ class UsBankAccountGateway
      * encapsulates a Errors object inside a Result\Error
      * alternatively, throws an Unexpected exception if the response is invalid.
      *
-     * @ignore
      * @param array $response gateway response values
-     * @return Result\Successful|Result\Error
+     *
      * @throws Exception\Unexpected
+     *
+     * @return Result\Successful|Result\Error
      */
     private function _verifyGatewayResponse($response)
     {

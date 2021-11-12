@@ -7,9 +7,6 @@ namespace Braintree\Test;
  *
  * The constants in this class can be used to create transactions with
  * the desired status in the sandbox environment.
- *
- * @package    Braintree
- * @subpackage Test
  */
 class TransactionAmounts
 {

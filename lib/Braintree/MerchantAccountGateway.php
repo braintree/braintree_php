@@ -1,4 +1,4 @@
-<?php
+<?php //phpcs:disable
 
 namespace Braintree;
 
@@ -8,6 +8,7 @@ class MerchantAccountGateway
     private $_config;
     private $_http;
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -112,6 +113,7 @@ class MerchantAccountGateway
         ];
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function _doCreate($subPath, $params)
     {
         $fullPath = $this->_config->merchantPath() . $subPath;

@@ -8,16 +8,16 @@ namespace Braintree;
  */
 class Xml
 {
-    /**
-     * @ignore
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     protected function __construct()
     {
     }
 
     /**
+     * Create an array from XML element(s)
      *
-     * @param string $xml
+     * @param string $xml elements(s)
+     *
      * @return array
      */
     public static function buildArrayFromXml($xml)
@@ -26,8 +26,10 @@ class Xml
     }
 
     /**
+     * Create an XML string from an Array object
      *
-     * @param array $array
+     * @param array $array object
+     *
      * @return string
      */
     public static function buildXmlFromArray($array)

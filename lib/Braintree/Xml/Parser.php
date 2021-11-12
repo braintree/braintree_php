@@ -17,7 +17,8 @@ class Parser
     /**
      * Converts an XML string into a multidimensional array
      *
-     * @param string $xml
+     * @param string $xml string to be parsed
+     *
      * @return array
      */
     public static function arrayFromXml($xml)
@@ -36,6 +37,7 @@ class Parser
      * Converts a node to an array of values or nodes
      *
      * @param DOMNode @node
+     *
      * @return mixed
      */
     private static function _nodeToArray($node)
@@ -86,6 +88,7 @@ class Parser
      * Converts a node to a PHP value
      *
      * @param DOMNode $node
+     *
      * @return mixed
      */
     private static function _nodeToValue($node)
@@ -128,6 +131,7 @@ class Parser
      * Converts XML timestamps into DateTime instances
      *
      * @param string $timestamp
+     *
      * @return DateTime
      */
     private static function _timestampToUTC($timestamp)

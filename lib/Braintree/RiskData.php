@@ -3,17 +3,17 @@
 namespace Braintree;
 
 /**
- * @property-read string $customerDeviceId
- * @property-read string $customerLocationZip
- * @property-read string $customerTenure
- * @property-read string $decision
- * @property-read array $decisionReasons
- * @property-read boolean $deviceDataCaptured
- * @property-read string $id
- * @property-read string $transactionRiskScore
+ * Any applicable risk data associated with the transaction. For detailed reference information on properties, see the {@link developer docs https://developer.paypal.com/braintree/docs/reference/response/transaction#risk_data}.
  */
 class RiskData extends Base
 {
+    /**
+     * Creates an instance from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return RiskData
+     */
     public static function factory($attributes)
     {
         $instance = new self();
@@ -27,16 +27,18 @@ class RiskData extends Base
         $this->_attributes = $attributes;
     }
 
+    /**
+     * returns the rules triggered by the fraud provider when generating the decision.
+     *
+     * @return array of strings
+     */
     public function decisionReasons()
     {
         return $this->_attributes['decisionReasons'];
     }
 
 
-    /**
-     * returns a string representation of the risk data
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .

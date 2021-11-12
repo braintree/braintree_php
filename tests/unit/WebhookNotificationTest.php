@@ -426,6 +426,26 @@ class WebhookNotificationTest extends Setup
         $this->assertNotNull($webhookNotification->transaction->disbursementDetails->disbursementDate);
     }
 
+
+    public function testBuildsASampleNotificationForATransactionReviewedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::TRANSACTION_REVIEWED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::TRANSACTION_REVIEWED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->transactionReview->transactionId);
+        $this->assertEquals("smart_decision", $webhookNotification->transactionReview->decision);
+        $this->assertEquals("hey@girl.com", $webhookNotification->transactionReview->reviewerEmail);
+        $this->assertEquals("I reviewed this", $webhookNotification->transactionReview->reviewerNote);
+        $this->assertNotNull($webhookNotification->transactionReview->reviewedTime);
+    }
     public function testBuildsASampleNotificationForATransactionSettledWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(

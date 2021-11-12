@@ -11,33 +11,14 @@ use InvalidArgumentException;
  * An Address belongs to a Customer. It can be associated to a
  * CreditCard as the billing address. It can also be used
  * as the shipping address when creating a Transaction.
- *
- * @package   Braintree
  */
 class AddressGateway
 {
-    /**
-     *
-     * @var Gateway
-     */
     private $_gateway;
-
-    /**
-     *
-     * @var Configuration
-     */
     private $_config;
-
-    /**
-     *
-     * @var Http
-     */
     private $_http;
 
-    /**
-     *
-     * @param Gateway $gateway
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
@@ -47,11 +28,11 @@ class AddressGateway
     }
 
 
-    /* public class methods */
     /**
+     * Create an Address
      *
-     * @access public
-     * @param  array  $attribs
+     * @param array $attribs containing request parameters
+     *
      * @return Result\Successful|Result\Error
      */
     public function create($attribs)
@@ -79,10 +60,11 @@ class AddressGateway
      * attempts the create operation assuming all data will validate
      * returns a Address object instead of a Result
      *
-     * @access public
-     * @param  array $attribs
-     * @return self
+     * @param array $attribs containing request parameters
+     *
      * @throws Exception\ValidationError
+     *
+     * @return Address
      */
     public function createNoValidate($attribs)
     {
@@ -93,8 +75,10 @@ class AddressGateway
     /**
      * delete an address by id
      *
-     * @param mixed $customerOrId
-     * @param string $addressId
+     * @param mixed  $customerOrId either a customer object or string ID of customer
+     * @param string $addressId    optional unique identifier
+     *
+     * @return Result\Successful|Result\Error
      */
     public function delete($customerOrId = null, $addressId = null)
     {
@@ -112,12 +96,12 @@ class AddressGateway
      * to the given <b>customerOrId</b>.
      * If the address cannot be found, a NotFound exception will be thrown.
      *
+     * @param mixed  $customerOrId either a customer object or string ID of customer
+     * @param string $addressId    optional unique identifier
      *
-     * @access public
-     * @param mixed $customerOrId
-     * @param string $addressId
-     * @return Address
      * @throws Exception\NotFound
+     *
+     * @return Address
      */
     public function find($customerOrId, $addressId)
     {
@@ -144,11 +128,10 @@ class AddressGateway
      * customerOrId is the 2nd attribute, addressId 3rd.
      * customerOrId & addressId are not sent in object context.
      *
+     * @param mixed  $customerOrId (only used in call)
+     * @param string $addressId    (only used in call)
+     * @param array  $attributes   containing request parameters
      *
-     * @access public
-     * @param array $attributes
-     * @param mixed $customerOrId (only used in call)
-     * @param string $addressId (only used in call)
      * @return Result\Successful|Result\Error
      */
     public function update($customerOrId, $addressId, $attributes)
@@ -170,12 +153,15 @@ class AddressGateway
      * customerOrId is the 2nd attribute, addressId 3rd.
      * customerOrId & addressId are not sent in object context.
      *
-     * @access public
-     * @param array $transactionAttribs
-     * @param string $customerId
-     * @return Transaction
+     * @param mixed  $customerOrId (only used in call)
+     * @param string $addressId    (only used in call)
+     * @param array  $attributes   containing request parameters
+     *
      * @throws Exception\ValidationsFailed
+     *
      * @see Address::update()
+     *
+     * @return Address
      */
     public function updateNoValidate($customerOrId, $addressId, $attributes)
     {
@@ -185,6 +171,7 @@ class AddressGateway
 
     /**
      * creates a full array signature of a valid create request
+     *
      * @return array gateway create request format
      */
     public static function createSignature()
@@ -198,6 +185,7 @@ class AddressGateway
 
     /**
      * creates a full array signature of a valid update request
+     *
      * @return array gateway update request format
      */
     public static function updateSignature()
@@ -207,9 +195,12 @@ class AddressGateway
 
     /**
      * verifies that a valid address id is being used
-     * @ignore
+     *
      * @param string $id address id
+     *
      * @throws InvalidArgumentException
+     *
+     * @return self
      */
     private function _validateId($id = null)
     {
@@ -227,9 +218,12 @@ class AddressGateway
 
     /**
      * verifies that a valid customer id is being used
-     * @ignore
+     *
      * @param string $id customer id
+     *
      * @throws InvalidArgumentException
+     *
+     * @return self
      */
     private function _validateCustomerId($id = null)
     {
@@ -247,8 +241,9 @@ class AddressGateway
 
     /**
      * determines if a string id or Customer object was passed
-     * @ignore
-     * @param mixed $customerOrId
+     *
+     * @param mixed $customerOrId either a customer object or string unique identifier
+     *
      * @return string customerId
      */
     private function _determineCustomerId($customerOrId)
@@ -258,14 +253,6 @@ class AddressGateway
         return $customerId;
     }
 
-    /* private class methods */
-    /**
-     * sends the create request to the gateway
-     * @ignore
-     * @param string $subPath
-     * @param array $params
-     * @return Result\Successful|Result\Error
-     */
     private function _doCreate($subPath, $params)
     {
         $fullPath = $this->_config->merchantPath() . $subPath;
@@ -274,19 +261,6 @@ class AddressGateway
         return $this->_verifyGatewayResponse($response);
     }
 
-    /**
-     * generic method for validating incoming gateway responses
-     *
-     * creates a new Address object and encapsulates
-     * it inside a Result\Successful object, or
-     * encapsulates an Errors object inside a Result\Error
-     * alternatively, throws an Unexpected exception if the response is invalid
-     *
-     * @ignore
-     * @param array $response gateway response values
-     * @return Result\Successful|Result\Error
-     * @throws Exception\Unexpected
-     */
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['address'])) {

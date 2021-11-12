@@ -3,24 +3,19 @@
 namespace Braintree;
 
 /**
- * @property-read \Braintree\Addon[] $addOns
- * @property-read string $id
- * @property-read int|null $billingDayOfMonth
- * @property-read int $billingFrequency
- * @property-read \DateTime $createdAt
- * @property-read string $currencyIsoCode
- * @property-read string|null $description
- * @property-read \Braintree\Discount[] $discounts
- * @property-read string $name
- * @property-read int|null $numberOfBillingCycles
- * @property-read string $price
- * @property-read int|null $trialDuration
- * @property-read string|null $trialDurationUnit
- * @property-read boolean $trialPeriod
- * @property-read \DateTime $updatedAt
+ * Plan class object. A plan is a template for subscriptions.
+ *
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/response/plan developer docs} for information on attributes
  */
 class Plan extends Base
 {
+    /**
+     * Creates an instance from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return Plan
+     */
     public static function factory($attributes)
     {
         $instance = new self();
@@ -58,11 +53,52 @@ class Plan extends Base
         $this->_attributes['plans'] = $planArray;
     }
 
-
-    // static methods redirecting to gateway
-
+    /**
+     * static methods redirecting to gateway class
+     *
+     * @see PlanGateway::all()
+     *
+     * @return Plan[]
+     */
     public static function all()
     {
         return Configuration::gateway()->plan()->all();
+    }
+
+    /**
+     * static methods redirecting to gateway class
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return Plan
+     */
+    public static function create($attributes)
+    {
+        return Configuration::gateway()->plan()->create($attributes);
+    }
+
+    /**
+     * static methods redirecting to gateway class
+     *
+     * @param $id int planId
+     *
+     * @return Plan
+     */
+    public static function find($id)
+    {
+        return Configuration::gateway()->plan()->find($id);
+    }
+
+    /**
+     * static methods redirecting to gateway class
+     *
+     * @param $planId     int planId
+     * @param array $attributes response object attributes
+     *
+     * @return Plan
+     */
+    public static function update($planId, $attributes)
+    {
+        return Configuration::gateway()->plan()->update($planId, $attributes);
     }
 }

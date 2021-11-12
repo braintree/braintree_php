@@ -4,6 +4,11 @@ namespace Braintree\MerchantAccount;
 
 use Braintree\Base;
 
+/**
+ * Braintree BusinessDetails class
+ *
+ * Object containing information on business details of a merchant account
+ */
 class BusinessDetails extends Base
 {
     protected function _initialize($businessAttribs)
@@ -14,6 +19,13 @@ class BusinessDetails extends Base
         }
     }
 
+    /**
+     * Creates an instance from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return BusinessDetails
+     */
     public static function factory($attributes)
     {
         $instance = new self();

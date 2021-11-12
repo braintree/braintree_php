@@ -2,6 +2,11 @@
 
 namespace Braintree;
 
+/**
+ * PaymentInstrumentType module
+ *
+ * Contains constants for all payment methods that are possible to integrate with Braintree
+ */
 class PaymentInstrumentType
 {
     const GOOGLE_PAY_CARD    = 'android_pay_card';

@@ -22,7 +22,6 @@ class Pager
     }
 }
 
-// phpcs:ignore
 class PaginatedCollectionTest extends Setup
 {
     public function testFetchesOnePageWhenPageAndTotalSizesMatch()

@@ -4,40 +4,17 @@ namespace Braintree;
 
 /**
  * Braintree UsBankAccount module
- *
- * @package    Braintree
- * @category   Resources
- */
-
-/**
  * Manages Braintree UsBankAccounts
  *
- * <b>== More information ==</b>
- *
- *
- * @package    Braintree
- * @category   Resources
- *
- * @property-read string $customerId
- * @property-read string $email
- * @property-read string $token
- * @property-read string $imageUrl
- * @property-read string $routingNumber
- * @property-read string $accountType
- * @property-read string $accountHolderName
- * @property-read string $last4
- * @property-read string $bankName
- * @property-read string $achMandate
- * @property-read boolean $default
- * @property-read boolean $verified
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/response/us-bank-account developer docs} for information on attributes
  */
 class UsBankAccount extends Base
 {
     /**
-     *  factory method: returns an instance of UsBankAccount
-     *  to the requesting method, with populated properties
+     * Creates an instance from given attributes
      *
-     * @ignore
+     * @param array $attributes response object attributes
+     *
      * @return UsBankAccount
      */
     public static function factory($attributes)
@@ -47,14 +24,12 @@ class UsBankAccount extends Base
         return $instance;
     }
 
-    /* instance methods */
-
     /**
      * sets instance properties from an array of values
      *
-     * @access protected
      * @param array $usBankAccountAttribs array of usBankAccount data
-     * @return void
+     *
+     * @return mixed
      */
     protected function _initialize($usBankAccountAttribs)
     {
@@ -79,11 +54,7 @@ class UsBankAccount extends Base
         }
     }
 
-    /**
-     * create a printable representation of the object as:
-     * ClassName[property=value, property=value]
-     * @return string
-     */
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .
@@ -100,13 +71,28 @@ class UsBankAccount extends Base
         return $this->default;
     }
 
-    // static methods redirecting to gateway
-
+    /**
+     * Static methods redirecting to gateway class
+     *
+     * @param string $token the payment method identifier
+     *
+     * @see USBankAccountGateway::find()
+     *
+     * @return UsBankAccount|Error
+     */
     public static function find($token)
     {
         return Configuration::gateway()->usBankAccount()->find($token);
     }
 
+    /**
+     * DO NOT USE, Use Transaction#sale instead. If you do choose to use this function, note that the subsequent transaction (if successful) will be automatically submitted for settlement.
+     *
+     * @param string $token              the payment method identifier
+     * @param array  $transactionAttribs all other transaction parameters
+     *
+     * @return UsBankAccount|Error
+     */
     public static function sale($token, $transactionAttribs)
     {
         $transactionAttribs['options'] = [

@@ -2,15 +2,29 @@
 
 namespace Braintree;
 
+/**
+ * WebhookTestingGateway module
+ * Creates and manages test webhooks
+ */
 class WebhookTestingGateway
 {
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->config = $gateway->config;
         $this->config->assertHasAccessTokenOrKeys();
     }
 
+    /**
+     * Build a sample Webhook
+     *
+     * @param string $kind             the kind of Webhook you want to generate
+     * @param string $id               unique identifier
+     * @param string $sourceMerchantId optional
+     *
+     * @return Webhook
+     */
     public function sampleNotification($kind, $id, $sourceMerchantId = null)
     {
         $xml = self::_sampleXml($kind, $id, $sourceMerchantId);
@@ -36,6 +50,9 @@ class WebhookTestingGateway
                 break;
             case WebhookNotification::TRANSACTION_DISBURSED:
                 $subjectXml = self::_transactionDisbursedSampleXml($id);
+                break;
+            case WebhookNotification::TRANSACTION_REVIEWED:
+                $subjectXml = self::_transactionReviewedSampleXml($id);
                 break;
             case WebhookNotification::TRANSACTION_SETTLED:
                 $subjectXml = self::_transactionSettledSampleXml($id);
@@ -204,6 +221,19 @@ class WebhookTestingGateway
                 <disbursement-date type=\"date\">2013-07-09</disbursement-date>
             </disbursement-details>
         </transaction>
+        ";
+    }
+
+    private static function _transactionReviewedSampleXml($id)
+    {
+        return "
+        <transaction-review>
+            <transaction-id>my_id</transaction-id>
+            <decision>smart_decision</decision>
+            <reviewer-email>hey@girl.com</reviewer-email>
+            <reviewer-note>I reviewed this</reviewer-note>
+            <reviewed-time type='dateTime'>2018-10-11T21:28:37Z</reviewed-time>
+        </transaction-review>
         ";
     }
 

@@ -4,9 +4,6 @@ namespace Braintree\Test;
 
 /**
  * Merchant Account constants used for testing purposes
- *
- * @package    Braintree
- * @subpackage Test
  */
 class MerchantAccount
 {

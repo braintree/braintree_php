@@ -1,5 +1,6 @@
 <?php
 
+// phpcs:disable PEAR.Commenting
 namespace Braintree;
 
 class TestingGateway

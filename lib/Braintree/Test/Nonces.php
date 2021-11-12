@@ -4,9 +4,6 @@ namespace Braintree\Test;
 
 /**
  * Nonces used for testing purposes
- *
- * @package    Braintree
- * @subpackage Test
  */
 
 /**
@@ -14,9 +11,6 @@ namespace Braintree\Test;
  *
  * The constants in this class can be used to perform nonce operations
  * with the desired status in the sandbox environment.
- *
- * @package    Braintree
- * @subpackage Test
  */
 class Nonces
 {

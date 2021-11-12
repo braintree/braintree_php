@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:disable PEAR.Commenting
 
 namespace Braintree;
 
@@ -8,6 +8,7 @@ class MerchantGateway
     private $_config;
     private $_http;
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;

@@ -3,21 +3,21 @@
 namespace Braintree;
 
 /**
- * @property-read string $amount
- * @property-read \DateTime $createdAt
- * @property-read int|null $currentBillingCycle
- * @property-read string $description
- * @property-read string $id
- * @property-read string|null $kind
- * @property-read string $merchantId
- * @property-read string $name
- * @property-read boolean $neverExpires
- * @property-read int|null $numberOfBillingCycles
- * @property-read int|null $quantity
- * @property-read \DateTime $updatedAt
+ * Discount class
+ *
+ * Object containing information on Discountss of a subscription
+ *
+ * See our {@link https://developer.paypal.com/braintree/docs/reference/response/discount developer docs} for information on attributes
  */
 class Discount extends Modification
 {
+    /**
+     * Creates an instance of a Discount from given attributes
+     *
+     * @param array $attributes response object attributes
+     *
+     * @return Discount
+     */
     public static function factory($attributes)
     {
         $instance = new self();
@@ -25,9 +25,13 @@ class Discount extends Modification
         return $instance;
     }
 
-
-    // static methods redirecting to gateway
-
+    /**
+     * static methods redirecting to gateway class
+     *
+     * @see DiscountGateway::all()
+     *
+     * @return Discount[]
+     */
     public static function all()
     {
         return Configuration::gateway()->discount()->all();

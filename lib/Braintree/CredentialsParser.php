@@ -3,11 +3,7 @@
 namespace Braintree;
 
 /**
- *
  * CredentialsParser registry
- *
- * @package    Braintree
- * @subpackage Utility
  */
 
 class CredentialsParser
@@ -18,6 +14,7 @@ class CredentialsParser
     private $_environment;
     private $_merchantId;
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($attribs)
     {
         foreach ($attribs as $kind => $value) {
@@ -34,12 +31,6 @@ class CredentialsParser
         $this->parse();
     }
 
-    /**
-     *
-     * @access protected
-     * @static
-     * @var array valid environments, used for validation
-     */
     private static $_validEnvironments = [
         'development',
         'integration',
@@ -48,7 +39,11 @@ class CredentialsParser
         'qa',
     ];
 
-
+    /*
+     * Parses environment credentials and sets the _environment variable
+     *
+     * @return object|Exception\Configuration
+     */
     public function parse()
     {
         $environments = [];
@@ -77,6 +72,13 @@ class CredentialsParser
         $this->_environment = $checkEnv[1];
     }
 
+    /*
+     * Checks that the environment passed is valid
+     *
+     * @param string $environment
+     *
+     * @return self|Exception\Configuration
+     */
     public static function assertValidEnvironment($environment)
     {
         if (!in_array($environment, self::$_validEnvironments)) {
@@ -125,26 +127,51 @@ class CredentialsParser
         return $environment;
     }
 
+    /*
+     * Getter methid to retrieve the ClientId
+     *
+     * @return string
+     */
     public function getClientId()
     {
         return $this->_clientId;
     }
 
+    /*
+     * Getter methid to retrieve the ClientSecret
+     *
+     * @return string
+     */
     public function getClientSecret()
     {
         return $this->_clientSecret;
     }
 
+    /*
+     * Getter methid to retrieve the AccessToken
+     *
+     * @return string
+     */
     public function getAccessToken()
     {
         return $this->_accessToken;
     }
 
+    /*
+     * Getter methid to retrieve the Environment
+     *
+     * @return string
+     */
     public function getEnvironment()
     {
         return $this->_environment;
     }
 
+    /*
+     * Getter methid to retrieve the Merchant Id
+     *
+     * @return string
+     */
     public function getMerchantId()
     {
         return $this->_merchantId;
