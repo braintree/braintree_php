@@ -444,7 +444,7 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("smart_decision", $webhookNotification->transactionReview->decision);
         $this->assertEquals("hey@girl.com", $webhookNotification->transactionReview->reviewerEmail);
         $this->assertEquals("I reviewed this", $webhookNotification->transactionReview->reviewerNote);
-        $this->assertNotNull($webhookNotification->transactionReview->reviewerTime);
+        $this->assertNotNull($webhookNotification->transactionReview->reviewedTime);
     }
     public function testBuildsASampleNotificationForATransactionSettledWebhook()
     {

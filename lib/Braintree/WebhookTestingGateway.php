@@ -232,7 +232,7 @@ class WebhookTestingGateway
             <decision>smart_decision</decision>
             <reviewer-email>hey@girl.com</reviewer-email>
             <reviewer-note>I reviewed this</reviewer-note>
-            <reviewer-time type='dateTime'>2018-10-11T21:28:37Z</reviewer-time>
+            <reviewed-time type='dateTime'>2018-10-11T21:28:37Z</reviewed-time>
         </transaction-review>
         ";
     }
