@@ -1,4 +1,8 @@
 # Changelog
+
+## Unreleased
+* Fix bug where `method_exists` checks might be performed on null values
+
 ## 6.8.0
 * Add `retried` to `Transaction`
 
