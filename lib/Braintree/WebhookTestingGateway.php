@@ -8,7 +8,6 @@ namespace Braintree;
  */
 class WebhookTestingGateway
 {
-
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {
@@ -777,7 +776,7 @@ class WebhookTestingGateway
     {
         $originalZone = date_default_timezone_get();
         date_default_timezone_set('UTC');
-        $timestamp = strftime('%Y-%m-%dT%TZ');
+        $timestamp = date("Y-m-d\TH:i:s\Z", time());
         date_default_timezone_set($originalZone);
 
         return $timestamp;

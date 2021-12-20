@@ -33,7 +33,7 @@ class DisputeGateway
     public function accept($id)
     {
         try {
-            if (trim($id) == "") {
+            if (is_null($id) || trim($id) == "") {
                 throw new Exception\NotFound();
             }
 
@@ -62,11 +62,11 @@ class DisputeGateway
     {
         $request = is_array($documentIdOrRequest) ? $documentIdOrRequest : ['documentId' => $documentIdOrRequest];
 
-        if (trim($disputeId) == "") {
+        if (is_null($disputeId) || trim($disputeId) == "") {
             throw new Exception\NotFound('dispute with id "' . $disputeId . '" not found');
         }
 
-        if (trim($request['documentId']) == "") {
+        if (is_null($request['documentId']) || trim($request['documentId']) == "") {
             throw new Exception\NotFound('document with id "' . $request['documentId'] . '" not found');
         }
 
@@ -107,7 +107,7 @@ class DisputeGateway
     public function addTextEvidence($id, $contentOrRequest)
     {
         $request = is_array($contentOrRequest) ? $contentOrRequest : ['content' => $contentOrRequest];
-        if (trim($request['content']) == "") {
+        if (is_null($request['content']) || trim($request['content']) == "") {
             throw new InvalidArgumentException('content cannot be blank');
         }
 
@@ -116,7 +116,7 @@ class DisputeGateway
                 'comments' => $request['content'],
             ];
 
-            if (trim($id) == "") {
+            if (is_null($id) || trim($id) == "") {
                 throw new Exception\NotFound();
             }
 
@@ -169,7 +169,7 @@ class DisputeGateway
     public function finalize($id)
     {
         try {
-            if (trim($id) == "") {
+            if (is_null($id) || trim($id) == "") {
                 throw new Exception\NotFound();
             }
 
@@ -195,7 +195,7 @@ class DisputeGateway
      */
     public function find($id)
     {
-        if (trim($id) == "") {
+        if (is_null($id) || trim($id) == "") {
             throw new Exception\NotFound('dispute with id "' . $id . '" not found');
         }
 
@@ -219,7 +219,7 @@ class DisputeGateway
     public function removeEvidence($disputeId, $evidenceId)
     {
         try {
-            if (trim($disputeId) == "" || trim($evidenceId) == "") {
+            if (is_null($disputeId) || trim($disputeId) == "" || is_null($evidenceId) || trim($evidenceId) == "") {
                 throw new Exception\NotFound();
             }
 

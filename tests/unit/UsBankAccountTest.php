@@ -10,7 +10,6 @@ use Braintree;
 
 class UsBankAccountTest extends Setup
 {
-
     public function testIsDefault()
     {
         $usBankAccount = Braintree\UsBankAccount::factory(['default' => true]);

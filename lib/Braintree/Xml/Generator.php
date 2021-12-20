@@ -87,7 +87,11 @@ class Generator
                     $writer->writeAttribute($attribute[0], $attribute[1]);
                     $element = $attribute[2];
                 }
-                $writer->text($element);
+                if (!is_null($element)) {
+                    $writer->text($element);
+                } else {
+                    $writer->text("");
+                }
             }
             $writer->endElement();
         }

@@ -10,5 +10,4 @@ use Braintree\Exception;
  */
 class Authentication extends Exception
 {
-
 }

@@ -31,6 +31,7 @@ class ErrorCollection implements Countable, JsonSerializable
      *
      * @return integer
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return $this->deepSize();
@@ -126,6 +127,7 @@ class ErrorCollection implements Countable, JsonSerializable
      *
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->_errors->deepAll();

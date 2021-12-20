@@ -60,6 +60,9 @@ class Util
                 throw new Exception\Authentication();
             break;
             case 403:
+                if (is_null($message)) {
+                    $message = "";
+                }
                 throw new Exception\Authorization($message);
             break;
             case 404:

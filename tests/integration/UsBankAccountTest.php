@@ -10,8 +10,6 @@ use Braintree;
 
 class UsBankAccountAccountTest extends Setup
 {
-
-
     public function testReturnUsBankAccount()
     {
         $customer = Braintree\Customer::createNoValidate();

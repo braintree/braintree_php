@@ -9,5 +9,4 @@ use Braintree\Exception;
  */
 class GatewayTimeout extends Exception
 {
-
 }

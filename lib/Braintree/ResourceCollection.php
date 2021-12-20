@@ -41,6 +41,7 @@ class ResourceCollection implements Iterator
      *
      * @return object
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->_items[$this->_index];
@@ -63,6 +64,7 @@ class ResourceCollection implements Iterator
      *
      * @return null
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return null;
@@ -73,6 +75,7 @@ class ResourceCollection implements Iterator
      *
      * @return object
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->_index;
@@ -83,6 +86,7 @@ class ResourceCollection implements Iterator
      *
      * @return object
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->_batchIndex = 0;
@@ -94,6 +98,7 @@ class ResourceCollection implements Iterator
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         if ($this->_index == count($this->_items) && $this->_batchIndex < count($this->_ids)) {
