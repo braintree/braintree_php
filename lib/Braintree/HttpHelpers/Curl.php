@@ -88,6 +88,9 @@ class Curl
         }
 
         $httpRequest->close();
+        if (is_null($error)) {
+            $error = "";
+        }
         if ($config->sslOn() && $errorCode == 35) {
             throw new Exception\SSLCertificate($error, $errorCode);
         }

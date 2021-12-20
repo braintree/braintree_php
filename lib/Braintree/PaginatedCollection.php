@@ -43,6 +43,7 @@ class PaginatedCollection implements Iterator
      *
      * @return object of the current item
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->_items[($this->_index % $this->_pageSize)];
@@ -53,6 +54,7 @@ class PaginatedCollection implements Iterator
      *
      * @return null
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return null;
@@ -63,6 +65,7 @@ class PaginatedCollection implements Iterator
      *
      * @return object of the next item in the collection
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->_index;
@@ -73,6 +76,7 @@ class PaginatedCollection implements Iterator
      *
      * @return mixed collection with index set to 0
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->_index = 0;
@@ -87,6 +91,7 @@ class PaginatedCollection implements Iterator
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         if ($this->_currentPage == 0 || $this->_index % $this->_pageSize == 0 && $this->_index < $this->_totalItems) {

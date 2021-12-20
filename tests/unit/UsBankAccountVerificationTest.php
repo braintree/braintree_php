@@ -10,7 +10,6 @@ use Braintree;
 
 class UsBankAccountVerificationTest extends Setup
 {
-
     public function testAttributes()
     {
         $verification = Braintree\UsBankAccountVerification::factory([

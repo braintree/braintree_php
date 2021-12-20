@@ -11,5 +11,4 @@ use Braintree\Exception;
  */
 class Connection extends Exception
 {
-
 }

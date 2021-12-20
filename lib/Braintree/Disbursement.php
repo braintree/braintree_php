@@ -8,7 +8,6 @@ namespace Braintree;
  */
 class Disbursement extends Base
 {
-
     const TYPE_CREDIT = "credit";
     const TYPE_DEBIT  = "debit";
 

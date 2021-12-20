@@ -1,3 +1,6 @@
+## 6.5.1
+* Address PHP 8.1 Deprecation warnings
+
 ## 6.5.0
 * Add plan create/update/find API endpoint
 * Add `TransactionReview` webhook notification

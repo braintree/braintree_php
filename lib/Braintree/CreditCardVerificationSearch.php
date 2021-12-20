@@ -7,7 +7,6 @@ namespace Braintree;
  */
 class CreditCardVerificationSearch
 {
-
     /*
      * Create a new text node for id
      *

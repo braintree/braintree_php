@@ -8,7 +8,6 @@ namespace Braintree;
  */
 class WebhookNotificationGateway
 {
-
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)
     {

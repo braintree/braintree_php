@@ -12,7 +12,6 @@ namespace Braintree;
  */
 class Customer extends Base
 {
-
     /*
      * Static method redirecting to gateway class
      *

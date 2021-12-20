@@ -11,8 +11,6 @@ namespace Braintree;
 
 class UnknownPaymentMethod extends Base
 {
-
-
     /**
      * Creates an instance from given attributes
      *

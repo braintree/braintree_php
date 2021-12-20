@@ -10,7 +10,6 @@ use Braintree;
 
 class RiskDataTest extends Setup
 {
-
     public function testAttributes()
     {
         $riskData = Braintree\RiskData::factory([
