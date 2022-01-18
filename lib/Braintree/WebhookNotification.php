@@ -46,6 +46,7 @@ class WebhookNotification extends Base
     const TRANSACTION_REVIEWED = 'transaction_reviewed';
     const TRANSACTION_SETTLED = 'transaction_settled';
     const TRANSACTION_SETTLEMENT_DECLINED = 'transaction_settlement_declined';
+    const PAYMENT_METHOD_CUSTOMER_DATA_UPDATED = 'payment_method_customer_data_updated';
     // phpcs:enable Generic.Files.LineLength
 
     /**
@@ -172,6 +173,10 @@ class WebhookNotification extends Base
 
         if (isset($wrapperNode['localPaymentReversed'])) {
             $this->_set('localPaymentReversed', LocalPaymentReversed::factory($wrapperNode['localPaymentReversed']));
+        }
+
+        if (isset($wrapperNode['paymentMethodCustomerDataUpdatedMetadata'])) {
+            $this->_set('paymentMethodCustomerDataUpdatedMetadata', PaymentMethodCustomerDataUpdatedMetadata::factory($wrapperNode['paymentMethodCustomerDataUpdatedMetadata']));
         }
 
         if (isset($wrapperNode['errors'])) {

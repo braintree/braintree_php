@@ -146,6 +146,9 @@ class WebhookTestingGateway
             case WebhookNotification::LOCAL_PAYMENT_REVERSED:
                 $subjectXml = self::_localPaymentReversedSampleXml();
                 break;
+            case WebhookNotification::PAYMENT_METHOD_CUSTOMER_DATA_UPDATED:
+                $subjectXml = self::_paymentMethodCustomerDataUpdatedSampleXml($id);
+                break;
             default:
                 $subjectXml = self::_subscriptionSampleXml($id);
                 break;
@@ -770,6 +773,51 @@ class WebhookTestingGateway
             <payment-id>a-payment-id</payment-id>
 		</local-payment-reversed>
         ";
+    }
+
+    private static function _paymentMethodCustomerDataUpdatedSampleXml($id)
+    {
+        $venmoAccountXml = self::_venmo_account_xml($id);
+        return "
+        <payment-method-customer-data-updated-metadata>
+          <token>TOKEN-12345</token>
+          <payment-method>
+            {$venmoAccountXml}
+          </payment-method>
+          <datetime-updated type='dateTime'>2022-01-01T21:28:37Z</datetime-updated>
+          <enriched-customer-data>
+            <fields-updated type='array'>
+                <item>firstName</item>
+            </fields-updated>
+            <profile-data>
+              <username>venmo_username</username>
+              <first-name>John</first-name>
+              <last-name>Doe</last-name>
+              <phone-number>1231231234</phone-number>
+              <email>john.doe@paypal.com</email>
+            </profile-data>
+          </enriched-customer-data>
+        </payment-method-customer-data-updated-metadata>
+        ";
+    }
+
+    private static function _venmo_account_xml($id)
+    {
+        return "
+		<venmo-account>
+          <created-at type='dateTime'>2018-10-11T21:28:37Z</created-at>
+          <updated-at type='dateTime'>2018-10-11T21:28:37Z</updated-at>
+          <default type='boolean'>true</default>
+          <image-url>https://assets.braintreegateway.com/payment_method_logo/venmo.png?environment=test</image-url>
+          <token>{$id}</token>
+          <source-description>Venmo Account: venmojoe</source-description>
+          <username>venmojoe</username>
+          <venmo-user-id>456</venmo-user-id>
+          <subscriptions type='array'/>
+          <customer-id>venmo_customer_id</customer-id>
+          <global-id>cGF5bWVudG1ldGhvZF92ZW5tb2FjY291bnQ</global-id>
+        </venmo-account>
+	";
     }
 
     private static function _timestamp()
