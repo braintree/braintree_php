@@ -28,7 +28,7 @@ class EnrichedCustomerDataTest extends Setup
 
         $enrichedCustomerDataParams = [
             "fieldsUpdated" => array("username"),
-            "profileData" => $profileDataParams 
+            "profileData" => $profileDataParams,
         ];
 
         $enrichedCustomerData = Braintree\EnrichedCustomerData::factory($enrichedCustomerDataParams);
@@ -36,5 +36,3 @@ class EnrichedCustomerDataTest extends Setup
         $this->assertEquals("Braintree\EnrichedCustomerData[fieldsUpdated=0=username, profileData=Braintree\VenmoProfileData[username=venmo_username, firstName=John, lastName=Doe, phoneNumber=1231231234, email=john.doe@paypal.com]]", (string) $enrichedCustomerData);
     }
 }
-
-

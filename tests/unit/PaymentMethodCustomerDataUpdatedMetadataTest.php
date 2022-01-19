@@ -28,7 +28,7 @@ class PaymentMethodCustomerDataUpdatedMetadataTest extends Setup
 
         $enrichedCustomerDataParams = [
             "fieldsUpdated" => array("username"),
-            "profileData" => $profileDataParams 
+            "profileData" => $profileDataParams,
         ];
 
         $venmoAccountParams = [
@@ -36,13 +36,13 @@ class PaymentMethodCustomerDataUpdatedMetadataTest extends Setup
             "updatedAt" => "2018-10-11T21:28:37Z",
             "default" => true,
             "imageUrl" => "https://assets.braintreegateway.com/payment_method_logo/mastercard.png?environment=test",
-            "token" => "venmo_account", 
-            "sourceDescription" =>"Venmo Account: venmojoe" ,
+            "token" => "venmo_account",
+            "sourceDescription" => "Venmo Account: venmojoe",
             "username" => "venmojoe",
             "venmoUserId" => "456",
             "subscriptions" => array(),
             "customerId" => "venmo_customer_id",
-            "globalId" => "cGF5bWVudG1ldGhvZF92ZW5tb2FjY291bnQ", 
+            "globalId" => "cGF5bWVudG1ldGhvZF92ZW5tb2FjY291bnQ",
         ];
 
         $venmoAccount = [

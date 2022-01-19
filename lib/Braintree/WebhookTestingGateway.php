@@ -777,7 +777,7 @@ class WebhookTestingGateway
 
     private static function _paymentMethodCustomerDataUpdatedSampleXml($id)
     {
-        $venmoAccountXml = self::_venmo_account_xml($id);
+        $venmoAccountXml = self::_venmoAccountXml($id);
         return "
         <payment-method-customer-data-updated-metadata>
           <token>TOKEN-12345</token>
@@ -801,7 +801,7 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _venmo_account_xml($id)
+    private static function _venmoAccountXml($id)
     {
         return "
 		<venmo-account>

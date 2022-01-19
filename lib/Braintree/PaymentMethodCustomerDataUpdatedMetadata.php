@@ -8,12 +8,12 @@ namespace Braintree;
 class PaymentMethodCustomerDataUpdatedMetadata extends Base
 {
     /**
-     *  factory method: returns an instance of PaymentMethodCustomerDataUpdatedMetadata 
+     *  factory method: returns an instance of PaymentMethodCustomerDataUpdatedMetadata
      *  to the requesting method, with populated properties
      *
      * @param array $attributes used to create the object
      *
-     * @return PaymentMethodCustomerDataUpdatedMetadata 
+     * @return PaymentMethodCustomerDataUpdatedMetadata
      */
     public static function factory($attributes)
     {
@@ -26,7 +26,7 @@ class PaymentMethodCustomerDataUpdatedMetadata extends Base
     {
         // set the attributes
         $this->_attributes = $metadataAttribs;
-        $this->paymentMethod = PaymentMethodParser::parsePaymentMethod($metadataAttribs);  
+        $this->paymentMethod = PaymentMethodParser::parsePaymentMethod($metadataAttribs);
         if (isset($metadataAttribs['enrichedCustomerData'])) {
             $this->_set(
                 'enrichedCustomerData',
@@ -37,6 +37,7 @@ class PaymentMethodCustomerDataUpdatedMetadata extends Base
         }
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .

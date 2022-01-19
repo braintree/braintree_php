@@ -27,9 +27,7 @@ class VenmoProfileDataTest extends Setup
         ];
 
         $profileData = Braintree\VenmoProfileData::factory($profileDataParams);
-        var_dump($profileData);
 
         $this->assertEquals("Braintree\VenmoProfileData[username=venmo_username, firstName=John, lastName=Doe, phoneNumber=1231231234, email=john.doe@paypal.com]", (string) $profileData);
     }
 }
-

@@ -8,7 +8,7 @@ namespace Braintree;
 class EnrichedCustomerData extends Base
 {
     /**
-     *  factory method: returns an instance of EnrichedCustomerData 
+     *  factory method: returns an instance of EnrichedCustomerData
      *  to the requesting method, with populated properties
      *
      * @param array $attributes used to create the object
@@ -37,6 +37,7 @@ class EnrichedCustomerData extends Base
         }
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .

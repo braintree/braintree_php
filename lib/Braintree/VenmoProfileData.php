@@ -27,6 +27,7 @@ class VenmoProfileData extends Base
         $this->_attributes = $venmoProfileDataAttribs;
     }
 
+    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {
         return __CLASS__ . '[' .

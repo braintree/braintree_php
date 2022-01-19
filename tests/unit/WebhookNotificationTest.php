@@ -1120,10 +1120,10 @@ class WebhookNotificationTest extends Setup
 
         $this->assertEquals(Braintree\WebhookNotification::PAYMENT_METHOD_CUSTOMER_DATA_UPDATED, $webhookNotification->kind);
 
-        $paymentMethodCustomerDataUpdated= $webhookNotification->paymentMethodCustomerDataUpdatedMetadata;
+        $paymentMethodCustomerDataUpdated = $webhookNotification->paymentMethodCustomerDataUpdatedMetadata;
         $this->assertEquals('TOKEN-12345', $paymentMethodCustomerDataUpdated->token);
         $this->assertEquals('2022-01-01T21:28:37Z', $paymentMethodCustomerDataUpdated->datetimeUpdated);
-        $enrichedCustomerData= $paymentMethodCustomerDataUpdated->enrichedCustomerData;
+        $enrichedCustomerData = $paymentMethodCustomerDataUpdated->enrichedCustomerData;
         $this->assertEquals(array("firstName"), $enrichedCustomerData->fieldsUpdated);
 
         $profileData = $enrichedCustomerData->profileData;
