@@ -26,7 +26,10 @@ class PaymentMethodCustomerDataUpdatedMetadata extends Base
     {
         // set the attributes
         $this->_attributes = $metadataAttribs;
-        $this->paymentMethod = PaymentMethodParser::parsePaymentMethod($metadataAttribs);
+        if (isset($metadataAttribs['paymentMethod'])) {
+            $this->paymentMethod = PaymentMethodParser::parsePaymentMethod($metadataAttribs['paymentMethod']);
+        }
+
         if (isset($metadataAttribs['enrichedCustomerData'])) {
             $this->_set(
                 'enrichedCustomerData',
