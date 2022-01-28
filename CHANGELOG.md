@@ -1,3 +1,5 @@
+## Unreleased
+Add `PaymentMethodCustomerDataUpdated` webhook notification support
 ## 6.5.1
 * Address PHP 8.1 Deprecation warnings
 

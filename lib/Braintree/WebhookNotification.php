@@ -31,6 +31,7 @@ class WebhookNotification extends Base
     const PARTNER_MERCHANT_CONNECTED = 'partner_merchant_connected';
     const PARTNER_MERCHANT_DECLINED = 'partner_merchant_declined';
     const PARTNER_MERCHANT_DISCONNECTED = 'partner_merchant_disconnected';
+    const PAYMENT_METHOD_CUSTOMER_DATA_UPDATED = 'payment_method_customer_data_updated';
     const PAYMENT_METHOD_REVOKED_BY_CUSTOMER = 'payment_method_revoked_by_customer';
     const RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD = 'recipient_updated_granted_payment_method';
     const SUBSCRIPTION_CANCELED = 'subscription_canceled';
@@ -172,6 +173,10 @@ class WebhookNotification extends Base
 
         if (isset($wrapperNode['localPaymentReversed'])) {
             $this->_set('localPaymentReversed', LocalPaymentReversed::factory($wrapperNode['localPaymentReversed']));
+        }
+
+        if (isset($wrapperNode['paymentMethodCustomerDataUpdatedMetadata'])) {
+            $this->_set('paymentMethodCustomerDataUpdatedMetadata', PaymentMethodCustomerDataUpdatedMetadata::factory($wrapperNode['paymentMethodCustomerDataUpdatedMetadata']));
         }
 
         if (isset($wrapperNode['errors'])) {
