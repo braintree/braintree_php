@@ -129,7 +129,7 @@ class WebhookTestingGateway
                 $subjectXml = self::_grantedPaymentInstrumentUpdateSampleXml();
                 break;
             case WebhookNotification::GRANTED_PAYMENT_METHOD_REVOKED:
-                $subjectXml = self::_grantedPaymentMethodRevokedXml($id);
+                $subjectXml = self::_venmoAccountXml($id);
                 break;
             case WebhookNotification::PAYMENT_METHOD_REVOKED_BY_CUSTOMER:
                 $subjectXml = self::_paymentMethodRevokedByCustomerSampleXml($id);
@@ -681,25 +681,6 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _grantedPaymentMethodRevokedXml($id)
-    {
-        return "
-        <venmo-account>
-            <created-at type='dateTime'>2018-10-11T21:28:37Z</created-at>
-            <updated-at type='dateTime'>2018-10-11T21:28:37Z</updated-at>
-            <default type='boolean'>true</default>
-            <image-url>https://assets.braintreegateway.com/payment_method_logo/venmo.png?environment=test</image-url>
-            <token>{$id}</token>
-            <source-description>Venmo Account: venmojoe</source-description>
-            <username>venmojoe</username>
-            <venmo-user-id>456</venmo-user-id>
-            <subscriptions type='array'/>
-            <customer-id>venmo_customer_id</customer-id>
-            <global-id>cGF5bWVudG1ldGhvZF92ZW5tb2FjY291bnQ</global-id>
-        </venmo-account>
-        ";
-    }
-
     private static function _paymentMethodRevokedByCustomerSampleXml($id)
     {
         return "
@@ -817,7 +798,7 @@ class WebhookTestingGateway
           <customer-id>venmo_customer_id</customer-id>
           <global-id>cGF5bWVudG1ldGhvZF92ZW5tb2FjY291bnQ</global-id>
         </venmo-account>
-	";
+        ";
     }
 
     private static function _timestamp()
