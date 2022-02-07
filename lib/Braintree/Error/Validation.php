@@ -42,7 +42,7 @@ class Validation implements JsonSerializable
         return isset($this->$varName) ? $this->$varName : null;
     }
 
-        /**
+     /**
      * Implementation of JsonSerializable
      *
      * @return array
