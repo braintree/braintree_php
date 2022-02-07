@@ -3,6 +3,7 @@
 namespace Braintree\Error;
 
 use Braintree\Util;
+use JsonSerializable;
 
 /**
  * error object returned as part of a validation error collection
@@ -13,7 +14,7 @@ use Braintree\Util;
  * // phpcs:ignore Generic.Files.LineLength
  * See our {@link https://developer.paypal.com/braintree/docs/reference/general/result-objects#error-results developer docs} for more information
  */
-class Validation
+class Validation implements JsonSerializable
 {
     private $_attribute;
     private $_code;
@@ -39,5 +40,20 @@ class Validation
     {
         $varName = "_$name";
         return isset($this->$varName) ? $this->$varName : null;
+    }
+
+     /**
+     * Implementation of JsonSerializable
+     *
+     * @return array
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        return array(
+                    'code' => $this->__get('code'),
+                    'attribute' => $this->__get('attribute'),
+                    'message' => $this->__get('message')
+                );
     }
 }

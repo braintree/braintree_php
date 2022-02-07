@@ -1,3 +1,6 @@
+## unreleased
+* Make Error\Validation jsonSerializable
+
 ## 6.5.1
 * Address PHP 8.1 Deprecation warnings
 
