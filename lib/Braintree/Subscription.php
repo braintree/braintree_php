@@ -104,7 +104,7 @@ class Subscription extends Base
      *
      * @see SubscriptionGateway::create()
      *
-     * @return Result\Sucessful|Result\Error
+     * @return Result\Successful|Result\Error
      */
     public static function create($attributes)
     {
