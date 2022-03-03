@@ -25,7 +25,7 @@ class PaymentMethodNonceGateway
      * @param string     $token  the identifier of the payment method
      * @param mixed|null $params additional parameters to be included in the request
      *
-     * @return PaymentMethodNonce|Error
+     * @return PaymentMethodNonce|Result\Error
      */
     public function create($token, $params = [])
     {

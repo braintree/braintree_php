@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.7.1
+* Fix wrong namespacing for the `Braintree\Result\ERror` class on docblocks
+
 ## 6.7.0
 * Fix lint errors on unit test
 

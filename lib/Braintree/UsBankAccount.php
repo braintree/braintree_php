@@ -78,7 +78,7 @@ class UsBankAccount extends Base
      *
      * @see USBankAccountGateway::find()
      *
-     * @return UsBankAccount|Error
+     * @return UsBankAccount|Result\Error
      */
     public static function find($token)
     {
@@ -91,7 +91,7 @@ class UsBankAccount extends Base
      * @param string $token              the payment method identifier
      * @param array  $transactionAttribs all other transaction parameters
      *
-     * @return UsBankAccount|Error
+     * @return UsBankAccount|Result\Error
      */
     public static function sale($token, $transactionAttribs)
     {
