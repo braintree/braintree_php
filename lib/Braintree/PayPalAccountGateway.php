@@ -153,7 +153,7 @@ class PayPalAccountGateway
      * verifies that a valid paypal account identifier is being used
      *
      * @param string   $identifier
-     * @param Optional $string     $identifierType type of identifier supplied, default 'token'
+     * @param string   $identifierType Optional, type of identifier supplied, default 'token'
      *
      * @throws InvalidArgumentException
      */
