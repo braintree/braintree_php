@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.7.1
+* Fix warning with PHP 8.1
+
 ## 6.7.0
 * Fix lint errors on unit test
 
