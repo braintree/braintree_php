@@ -55,6 +55,11 @@ class ResourceCollection implements Iterator
     public function firstItem()
     {
         $ids = $this->_ids;
+
+        if (!isset($ids[0])) {
+            return null;
+        }
+
         $page = $this->_getPage([$ids[0]]);
         return $page[0];
     }
