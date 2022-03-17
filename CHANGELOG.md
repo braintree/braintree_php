@@ -1,4 +1,6 @@
 # Changelog
+## Unreleased
+* Add `retried` to `Transaction`
 
 ## 6.7.0
 * Fix lint errors on unit test
