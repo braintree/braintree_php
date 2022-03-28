@@ -260,7 +260,7 @@ class PaymentMethodTest extends Setup
         $this->assertSame($customer->id, $venmoAccount->customerId);
         $this->assertEquals(array(), $venmoAccount->subscriptions);
         $this->assertSame("venmojoe", $venmoAccount->username);
-        $this->assertSame("Venmo-Joe-1", $venmoAccount->venmoUserId);
+        $this->assertSame("1234567891234567891", $venmoAccount->venmoUserId);
     }
 
     public function testCreate_fromUnvalidatedCreditCardNonce()

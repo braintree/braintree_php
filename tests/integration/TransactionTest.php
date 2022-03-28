@@ -1921,7 +1921,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($venmoAccountDetails->sourceDescription);
         $this->assertStringContainsString(".png", $venmoAccountDetails->imageUrl);
         $this->assertSame("venmojoe", $venmoAccountDetails->username);
-        $this->assertSame("Venmo-Joe-1", $venmoAccountDetails->venmoUserId);
+        $this->assertSame("1234567891234567891", $venmoAccountDetails->venmoUserId);
     }
 
     public function testCreateTransactionReturnsPaymentInstrumentType()
