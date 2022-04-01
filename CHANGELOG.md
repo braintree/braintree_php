@@ -1,5 +1,5 @@
 # Changelog
-## Unreleased
+## 6.8.0
 * Add `retried` to `Transaction`
 
 ## 6.7.0
