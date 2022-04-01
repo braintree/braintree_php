@@ -552,6 +552,17 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals(0, $collection->maximumCount());
     }
 
+    public function testSearchForSettlementConfirmedTransaction()
+    {
+        $transactionId = "settlement_confirmed_txn";
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::id()->is($transactionId)
+        ]);
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transactionId, $collection->firstItem()->id);
+    }
+
     public function test_multipleValueNode_status_authorizationExpired()
     {
         $collection = Braintree\Transaction::search([

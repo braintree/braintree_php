@@ -177,7 +177,7 @@ class PaymentMethodNonceTest extends Setup
 
         $this->assertEquals('99', $details['lastTwo']);
         $this->assertEquals('venmojoe', $details['username']);
-        $this->assertEquals('Venmo-Joe-1', $details['venmoUserId']);
+        $this->assertEquals('1234567891234567891', $details['venmoUserId']);
     }
 
     public function testFind_exposesThreeDSecureInfo()

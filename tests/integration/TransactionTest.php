@@ -1921,7 +1921,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($venmoAccountDetails->sourceDescription);
         $this->assertStringContainsString(".png", $venmoAccountDetails->imageUrl);
         $this->assertSame("venmojoe", $venmoAccountDetails->username);
-        $this->assertSame("Venmo-Joe-1", $venmoAccountDetails->venmoUserId);
+        $this->assertSame("1234567891234567891", $venmoAccountDetails->venmoUserId);
     }
 
     public function testCreateTransactionReturnsPaymentInstrumentType()
@@ -6841,5 +6841,42 @@ class TransactionTest extends Setup
 
         $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
         $this->assertEquals(Braintree\Error\Codes::PROCESSOR_DOES_NOT_SUPPORT_PARTIAL_AUTH_REVERSAL, $baseErrors[0]->code);
+    }
+
+    public function testNonRetriedTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '1000.00',
+            'paymentMethodToken' => 'network_tokenized_credit_card'
+        ]);
+
+        $transaction = $result->transaction;
+        $this->assertFalse(property_exists($transaction, "retried"));
+    }
+
+    public function testRetriedTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '2000.00',
+            'paymentMethodToken' => 'network_tokenized_credit_card'
+        ]);
+
+        $transaction = $result->transaction;
+        $this->assertTrue($transaction->retried);
+    }
+
+    public function testIneligibleRetryTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'merchantAccountId' => Test\Helper::nonDefaultMerchantAccountId(),
+            'amount' => '2000.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2012'
+            ],
+        ]);
+
+        $transaction = $result->transaction;
+        $this->assertFalse(property_exists($transaction, "retried"));
     }
 }
