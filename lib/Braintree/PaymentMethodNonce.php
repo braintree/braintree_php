@@ -21,7 +21,7 @@ class PaymentMethodNonce extends Base
      *
      * @see PaymentMethodNonceGateway::create()
      *
-     * @return PaymentMethodNonce|Error
+     * @return PaymentMethodNonce|Result\Error
      */
     public static function create($token, $params = [])
     {
