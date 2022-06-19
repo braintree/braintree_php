@@ -1,4 +1,7 @@
 # Changelog
+## 6.9.0
+* Address PHP 8.2 deprecation warnings due to string interpolation patterns.
+
 ## 6.8.0
 * Add `retried` to `Transaction`
 

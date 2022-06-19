@@ -217,7 +217,7 @@ class WebhookTestingGateway
     {
         return "
         <transaction>
-            <id>${id}</id>
+            <id>{$id}</id>
             <amount>100</amount>
             <disbursement-details>
                 <disbursement-date type=\"date\">2013-07-09</disbursement-date>
@@ -243,7 +243,7 @@ class WebhookTestingGateway
     {
         return "
         <transaction>
-          <id>${id}</id>
+          <id>{$id}</id>
           <status>settled</status>
           <type>sale</type>
           <currency-iso-code>USD</currency-iso-code>
@@ -264,7 +264,7 @@ class WebhookTestingGateway
     {
         return "
         <transaction>
-          <id>${id}</id>
+          <id>{$id}</id>
           <status>settlement_declined</status>
           <type>sale</type>
           <currency-iso-code>USD</currency-iso-code>
@@ -285,7 +285,7 @@ class WebhookTestingGateway
     {
         return "
         <disbursement>
-          <id>${id}</id>
+          <id>{$id}</id>
           <transaction-ids type=\"array\">
             <item>asdfg</item>
             <item>qwert</item>
@@ -310,7 +310,7 @@ class WebhookTestingGateway
     {
         return "
         <disbursement>
-          <id>${id}</id>
+          <id>{$id}</id>
           <transaction-ids type=\"array\">
             <item>asdfg</item>
             <item>qwert</item>
@@ -344,9 +344,9 @@ class WebhookTestingGateway
           <kind>chargeback</kind>
           <status>open</status>
           <reason>fraud</reason>
-          <id>${id}</id>
+          <id>{$id}</id>
           <transaction>
-            <id>${id}</id>
+            <id>{$id}</id>
             <amount>250.00</amount>
           </transaction>
           <date-opened type=\"date\">2014-03-21</date-opened>
@@ -367,9 +367,9 @@ class WebhookTestingGateway
           <kind>chargeback</kind>
           <status>lost</status>
           <reason>fraud</reason>
-          <id>${id}</id>
+          <id>{$id}</id>
           <transaction>
-            <id>${id}</id>
+            <id>{$id}</id>
             <amount>250.00</amount>
             <next_billing-date type=\"date\">2020-02-10</next_billing-date>
           </transaction>
@@ -391,9 +391,9 @@ class WebhookTestingGateway
           <kind>chargeback</kind>
           <status>won</status>
           <reason>fraud</reason>
-          <id>${id}</id>
+          <id>{$id}</id>
           <transaction>
-            <id>${id}</id>
+            <id>{$id}</id>
             <amount>250.00</amount>
           </transaction>
           <date-opened type=\"date\">2014-03-21</date-opened>
@@ -415,9 +415,9 @@ class WebhookTestingGateway
           <kind>chargeback</kind>
           <status>accepted</status>
           <reason>fraud</reason>
-          <id>${id}</id>
+          <id>{$id}</id>
           <transaction>
-            <id>${id}</id>
+            <id>{$id}</id>
             <amount>250.00</amount>
           </transaction>
           <date-opened type=\"date\">2014-03-21</date-opened>
@@ -438,9 +438,9 @@ class WebhookTestingGateway
           <kind>chargeback</kind>
           <status>disputed</status>
           <reason>fraud</reason>
-          <id>${id}</id>
+          <id>{$id}</id>
           <transaction>
-            <id>${id}</id>
+            <id>{$id}</id>
             <amount>250.00</amount>
           </transaction>
           <date-opened type=\"date\">2014-03-21</date-opened>
@@ -461,9 +461,9 @@ class WebhookTestingGateway
           <kind>chargeback</kind>
           <status>expired</status>
           <reason>fraud</reason>
-          <id>${id}</id>
+          <id>{$id}</id>
           <transaction>
-            <id>${id}</id>
+            <id>{$id}</id>
             <amount>250.00</amount>
           </transaction>
           <date-opened type=\"date\">2014-03-21</date-opened>
