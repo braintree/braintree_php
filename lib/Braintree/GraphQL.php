@@ -51,6 +51,7 @@ class GraphQL extends Http
         $response = $this->_doUrlRequest('POST', $this->_config->graphQLBaseUrl(), json_encode($graphQLRequest), null, $this->graphQLHeaders());
 
         $result = json_decode($response["body"], true);
+
         Util::throwGraphQLResponseException($result);
 
         return $result;

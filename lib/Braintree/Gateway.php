@@ -121,6 +121,15 @@ class Gateway
 
     /**
      *
+     * @return ExchangeRateQuoteGateway
+     */
+    public function exchangeRateQuote()
+    {
+        return new ExchangeRateQuoteGateway($this);
+    }
+
+    /**
+     *
      * @return MerchantGateway
      */
     public function merchant()

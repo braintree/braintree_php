@@ -2,6 +2,7 @@
 
 ## Unreleased
 * Add `LiabilityShift` class and `liabilityShift` to RiskData
+* Add support for `ExchangeRateQuoteAPI`
 
 ## 6.8.0
 * Add `retried` to `Transaction`

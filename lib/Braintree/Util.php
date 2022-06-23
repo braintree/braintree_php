@@ -106,6 +106,9 @@ class Util
 
         foreach ($errors as $error) {
             $message = $error["message"];
+            if (!array_key_exists("extensions", $error)) {
+                return;
+            }
             if ($error["extensions"] == null) {
                 throw new Exception\Unexpected("Unexpected exception:" . $message);
             }
