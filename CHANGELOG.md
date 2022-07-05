@@ -3,6 +3,7 @@
 ## Unreleased
 * Add `LiabilityShift` class and `liabilityShift` to RiskData
 * Add support for `ExchangeRateQuoteAPI`
+* Fix various PHP 8.1 `null` warnings (thanks @simoheinonen & @robbieaverill)
 
 ## 6.8.0
 * Add `retried` to `Transaction`
