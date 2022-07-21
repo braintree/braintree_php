@@ -1638,4 +1638,43 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($transactionId, $collection->firstItem()->id);
     }
+
+    public function test_rangeNode_achReturnResponsesCreatedAt()
+    {
+        $yesterday = date_create("now -1 day", new DateTimeZone("UTC"));
+        $tomorrow = date_create("now +1 day", new DateTimeZone("UTC"));
+
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::achReturnResponsesCreatedAt()->between($yesterday, $tomorrow)
+        ]);
+
+        $this->assertEquals(2, $collection->maximumCount());
+    }
+
+    public function test_multipleValueNode_reasonCode_is_R01()
+    {
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::reasonCode()->in(["R01"])
+        ]);
+
+        $this->assertEquals(1, $collection->maximumCount());
+    }
+
+    public function test_multipleValueNode_reasonCode_multiple()
+    {
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::reasonCode()->in(["R01", "R02"])
+        ]);
+
+        $this->assertEquals(2, $collection->maximumCount());
+    }
+
+    public function test_multipleValueNode_reasonCode_any()
+    {
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::reasonCode()->is(Braintree\Transaction::TRANSACTION_REASON_CODE)
+        ]);
+
+        $this->assertEquals(2, $collection->maximumCount());
+    }
 }

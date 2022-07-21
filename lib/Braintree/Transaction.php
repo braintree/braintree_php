@@ -199,6 +199,9 @@ class Transaction extends Base
     const LAUNDRY    = 'laundry';
     const OTHER      = 'other';
 
+    // Reason Codes
+    const TRANSACTION_REASON_CODE = 'any_reason_code';
+
     /**
      * sets instance properties from an array of values
      *

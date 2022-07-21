@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+* Add `TRANSACTION_REASON_CODE` to search for transaction that have any ach return response with reason code associated.
+* Add `reasonCode` criteria to `TransactionSearch`
+* Add `achReturnResponsesCreatedAt` criteria to `TransactionSearch`
 * Add `LiabilityShift` class and `liabilityShift` to RiskData
 * Add support for `ExchangeRateQuoteAPI`
 * Fix various PHP 8.1 `null` warnings (thanks @simoheinonen & @robbieaverill)
