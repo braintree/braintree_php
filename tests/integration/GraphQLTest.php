@@ -46,13 +46,11 @@ class GraphQLTest extends Setup
         $definition = '
 mutation CreateClientToken($input: CreateClientTokenInput!) {
     createClientToken(input: $input) {
-        clientMutationId
         clientToken
     }
 }';
         $variables = [
           "input" => [
-            "clientMutationId" => "abc123",
             "clientToken" => [
               "merchantAccountId" => "ABC123"
             ]
