@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 6.9.0
 * Add `TRANSACTION_REASON_CODE` to search for transaction that have any ach return response with reason code associated.
 * Add `reasonCode` criteria to `TransactionSearch`
 * Add `achReturnResponsesCreatedAt` criteria to `TransactionSearch`
