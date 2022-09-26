@@ -8,6 +8,16 @@ namespace Braintree;
 class TransactionSearch
 {
     /*
+     * Create a new range node for cosmos ach return response created at
+     *
+     * @return RangeNode
+     */
+    public static function achReturnResponsesCreatedAt()
+    {
+        return new RangeNode("achReturnResponsesCreatedAt");
+    }
+
+    /*
      * Create a new range node for amount
      *
      * @return RangeNode
@@ -418,6 +428,16 @@ class TransactionSearch
     public static function processorDeclinedAt()
     {
         return new RangeNode("processorDeclinedAt");
+    }
+
+    /*
+     * Create a new multiple value node for reason codes
+     *
+     * @return MultipleValueNode
+     */
+    public static function reasonCode()
+    {
+        return new MultipleValueNode('reason_code');
     }
 
     /*

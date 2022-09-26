@@ -94,7 +94,7 @@ abstract class Base implements JsonSerializable
     {
         return array_map(function ($value) {
             if (!is_array($value)) {
-                return method_exists($value, 'toArray') ? $value->toArray() : $value;
+                return is_object($value) && method_exists($value, 'toArray') ? $value->toArray() : $value;
             } else {
                 return $value;
             }

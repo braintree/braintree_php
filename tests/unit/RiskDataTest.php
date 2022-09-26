@@ -23,6 +23,10 @@ class RiskDataTest extends Setup
             'decisionReasons' => [
                 'foo', 'bar'
             ],
+            'liabilityShift' => [
+                'responsibleParty' => 'paypal',
+                'conditions' => ['unauthorized']
+            ]
         ]);
 
         $this->assertEquals('deviceId', $riskData->customerDeviceId);
@@ -34,5 +38,34 @@ class RiskDataTest extends Setup
         $this->assertTrue($riskData->deviceDataCaptured);
         $this->assertContains('foo', $riskData->decisionReasons);
         $this->assertContains('bar', $riskData->decisionReasons);
+        $this->assertEquals('paypal', $riskData->liabilityShift->responsibleParty);
+        $this->assertEquals(["unauthorized"], $riskData->liabilityShift->conditions);
+    }
+
+    public function testAttributesWithoutLiabilityShift()
+    {
+        $riskData = Braintree\RiskData::factory([
+            'customerDeviceId' => 'deviceId',
+            'customerLocationZip' => '12345',
+            'customerTenure' => 'tenure',
+            'decision' => 'decision',
+            'id' => 'id',
+            'transactionRiskScore' => '100',
+            'deviceDataCaptured' => true,
+            'decisionReasons' => [
+                'foo', 'bar'
+            ]
+        ]);
+
+        $this->assertEquals('deviceId', $riskData->customerDeviceId);
+        $this->assertEquals('12345', $riskData->customerLocationZip);
+        $this->assertEquals('tenure', $riskData->customerTenure);
+        $this->assertEquals('decision', $riskData->decision);
+        $this->assertEquals('id', $riskData->id);
+        $this->assertEquals('100', $riskData->transactionRiskScore);
+        $this->assertTrue($riskData->deviceDataCaptured);
+        $this->assertContains('foo', $riskData->decisionReasons);
+        $this->assertContains('bar', $riskData->decisionReasons);
+        $this->assertObjectNotHasAttribute('liabilityShift', $riskData);
     }
 }

@@ -2059,6 +2059,23 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->riskData->decisionReasons);
     }
 
+    public function testSaleWithChargebackProtectionRiskData()
+    {
+        $gateway = Test\Helper::effortlessChargebackProtectionGateway();
+        $result = $gateway->transaction()->sale([
+            'amount' => '100.00',
+            'deviceData' => 'device_data',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '4111111111111111',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $riskData = $result->transaction->riskData;
+        $this->assertNotNull($riskData->liabilityShift);
+    }
+
     public function testRecurring()
     {
         error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs

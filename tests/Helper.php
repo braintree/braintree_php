@@ -62,6 +62,16 @@ class Helper
         ]);
     }
 
+    public static function effortlessChargebackProtectionGateway()
+    {
+        return new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'fraud_protection_effortless_chargeback_protection_merchant_id',
+            'publicKey' => 'effortless_chargeback_protection_public_key',
+            'privateKey' => 'effortless_chargeback_protection_private_key'
+        ]);
+    }
+
     public static function defaultMerchantAccountId()
     {
         return 'sandbox_credit_card';
