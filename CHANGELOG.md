@@ -11,7 +11,6 @@
 * Add support for `ExchangeRateQuoteAPI`
 * Fix various PHP 8.1 `null` warnings (thanks @simoheinonen & @robbieaverill)
 
-
 ## 6.8.0
 * Add `retried` to `Transaction`
 
