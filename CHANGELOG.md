@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 6.9.1
 * Address PHP 8.2 deprecation warnings due to string interpolation patterns. (thanks @Ayesh)
 
 ## 6.9.0
