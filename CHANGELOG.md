@@ -1,7 +1,7 @@
 # Changelog
 
-## unreleased
-* Address PHP 8.2 deprecation warnings due to string interpolation patterns.
+## 6.9.1
+* Address PHP 8.2 deprecation warnings due to string interpolation patterns. (thanks @Ayesh)
 
 ## 6.9.0
 * Add `TRANSACTION_REASON_CODE` to search for transaction that have any ach return response with reason code associated.
