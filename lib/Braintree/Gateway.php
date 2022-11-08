@@ -184,6 +184,15 @@ class Gateway
 
     /**
      *
+     * @return SepaDirectDebitAccountGateway
+     */
+    public function sepaDirectDebitAccount()
+    {
+        return new SepaDirectDebitAccountGateway($this);
+    }
+
+    /**
+     *
      * @return PlanGateway
      */
     public function plan()

@@ -284,6 +284,14 @@ class Customer extends Base
         }
         $this->_set('samsungPayCards', $samsungPayCardArray);
 
+        $sepaDirectDebitArray = [];
+        if (isset($customerAttribs['sepaDebitAccounts'])) {
+            foreach ($customerAttribs['sepaDebitAccounts'] as $sepaDirectDebitAccount) {
+                $sepaDirectDebitArray[] = SepaDirectDebitAccount::factory($sepaDirectDebitAccount);
+            }
+        }
+        $this->_set('sepaDirectDebitAccounts', $sepaDirectDebitArray);
+
         $usBankAccountArray = array();
         if (isset($customerAttribs['usBankAccounts'])) {
             foreach ($customerAttribs['usBankAccounts'] as $usBankAccount) {

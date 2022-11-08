@@ -277,6 +277,15 @@ class Transaction extends Base
             );
         }
 
+        if (isset($transactionAttribs['sepaDebitAccountDetail'])) {
+            $this->_set(
+                'sepaDirectDebitAccountDetails',
+                new Transaction\SepaDirectDebitAccountDetails(
+                    $transactionAttribs['sepaDebitAccountDetail']
+                )
+            );
+        }
+
         if (isset($transactionAttribs['paypal'])) {
             $this->_set(
                 'paypalDetails',

@@ -180,6 +180,17 @@ class PaymentMethodNonceTest extends Setup
         $this->assertEquals('1234567891234567891', $details['venmoUserId']);
     }
 
+    public function testFind_exposesSepaDirectDebitAccountDetails()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$sepaDirectDebit);
+        $details = $nonce->details;
+
+        $this->assertEquals('1234', $details['ibanLastChars']);
+        $this->assertEquals('a-fake-mp-customer-id', $details['merchantOrPartnerCustomerId']);
+        $this->assertEquals('a-fake-bank-reference-token', $details['bankReferenceToken']);
+        $this->assertEquals('RECURRENT', $details['mandateType']);
+    }
+
     public function testFind_exposesThreeDSecureInfo()
     {
         $nonce = 'fake-three-d-secure-visa-full-authentication-nonce';

@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+* Add `SEPADirectDebitAccount` payment method
+* Add `SEPADirectDebitAccountDetails` to transaction object
+* Add `SEPA_DIRECT_DEBIT_ACCOUNT` to payment instrument type
+* Add SEPA Direct Debit specific error codes
+* Add SEPA Direct Debit array to customer object
+
 ## 6.9.1
 * Address PHP 8.2 deprecation warnings due to string interpolation patterns. (thanks @Ayesh)
 

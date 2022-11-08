@@ -60,4 +60,16 @@ class CustomerTest extends Setup
         $this->expectException('InvalidArgumentException');
         Braintree\Customer::find('\t');
     }
+
+    public function testCustomerWithSepaDebitAccount()
+    {
+        $sepaDebitAccount = Braintree\SepaDirectDebitAccount::factory([
+            'last4' => '1234',
+        ]);
+        $customer = Braintree\Customer::factory([
+            'sepaDebitAccounts' => $sepaDebitAccount,
+        ]);
+        $sepaDirectDebitAccount = $customer -> sepaDirectDebitAccounts[0];
+        $this->assertEquals("1234", $sepaDirectDebitAccount -> toArray()['last4']);
+    }
 }
