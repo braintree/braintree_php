@@ -157,14 +157,27 @@ class DisputeSearch
         return new MultipleValueNode("status");
     }
 
-    /*
+    // NEXT_MAJOR_VERSION Remove this function
+    /**
      * Create a new multiple value node for chargeback protection level
+     *
+     * @deprecated Use protectionLevel() instead
      *
      * @return MultipleValueNode
      */
     public static function chargebackProtectionLevel()
     {
         return new MultipleValueNode("chargeback_protection_level", Dispute::allChargebackProtectionLevelTypes());
+    }
+
+    /*
+     * Create a new multiple value node for protection level
+     *
+     * @return MultipleValueNode
+     */
+    public static function protectionLevel()
+    {
+        return new MultipleValueNode("protection_level", Dispute::allProtectionLevelTypes());
     }
 
     /*

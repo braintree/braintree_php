@@ -6,6 +6,7 @@
 * Add `SEPA_DIRECT_DEBIT_ACCOUNT` to payment instrument type
 * Add SEPA Direct Debit specific error codes
 * Add SEPA Direct Debit array to customer object
+* Deprecate `chargebackProtectionLevel` and add `protectionLevel` to `Dispute` and `DisputeSearch`
 
 ## 6.9.1
 * Address PHP 8.2 deprecation warnings due to string interpolation patterns. (thanks @Ayesh)

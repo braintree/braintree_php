@@ -135,7 +135,9 @@ class DisputeTest extends Setup
         $this->assertEquals("100.00", $dispute->amountDisputed);
         $this->assertEquals("0.00", $dispute->amountWon);
         $this->assertEquals("CB123456", $dispute->caseNumber);
+        // NEXT_MAJOR_VERSION Remove this assertion when chargebackProtectionLevel is removed from the SDK
         $this->assertEquals("effortless", $dispute->chargebackProtectionLevel);
+        $this->assertEquals("Effortless Chargeback Protection tool", $dispute->protectionLevel);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->createdAt);
         $this->assertEquals("Forwarded comments", $dispute->processorComments);
         $this->assertEquals("abc123", $dispute->merchantAccountId);
@@ -162,6 +164,66 @@ class DisputeTest extends Setup
         $this->assertEquals('2013-04-10', $dispute->statusHistory[0]->effectiveDate);
         $this->assertEquals('open', $dispute->statusHistory[0]->status);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->statusHistory[0]->timestamp);
+    }
+
+    public function testConstructorHandleStandardCBPLevel()
+    {
+        $emptyAttributes = [
+            'chargebackProtectionLevel' => 'standard'
+        ];
+
+        $attrs = array_merge([], $this->attributes, $emptyAttributes);
+
+        $dispute = Braintree\Dispute::factory($attrs);
+
+        // NEXT_MAJOR_VERSION Remove this assertion when chargebackProtectionLevel is removed from the SDK
+        $this->assertEquals("standard", $dispute->chargebackProtectionLevel);
+        $this->assertEquals("Chargeback Protection tool", $dispute->protectionLevel);
+    }
+
+    public function testConstructorHandleNullCBPLevel()
+    {
+        $emptyAttributes = [
+            'chargebackProtectionLevel' => null
+        ];
+
+        $attrs = array_merge([], $this->attributes, $emptyAttributes);
+
+        $dispute = Braintree\Dispute::factory($attrs);
+
+        // NEXT_MAJOR_VERSION Remove this assertion when chargebackProtectionLevel is removed from the SDK
+        $this->assertEquals("", $dispute->chargebackProtectionLevel);
+        $this->assertEquals("No Protection", $dispute->protectionLevel);
+    }
+
+    public function testConstructorHandleEmptyCBPLevel()
+    {
+        $emptyAttributes = [
+            'chargebackProtectionLevel' => ''
+        ];
+
+        $attrs = array_merge([], $this->attributes, $emptyAttributes);
+
+        $dispute = Braintree\Dispute::factory($attrs);
+
+        // NEXT_MAJOR_VERSION Remove this assertion when chargebackProtectionLevel is removed from the SDK
+        $this->assertEquals("", $dispute->chargebackProtectionLevel);
+        $this->assertEquals("No Protection", $dispute->protectionLevel);
+    }
+
+    public function testConstructorHandleNotprotectedCBPLevel()
+    {
+        $emptyAttributes = [
+            'chargebackProtectionLevel' => 'not_protected'
+        ];
+
+        $attrs = array_merge([], $this->attributes, $emptyAttributes);
+
+        $dispute = Braintree\Dispute::factory($attrs);
+
+        // NEXT_MAJOR_VERSION Remove this assertion when chargebackProtectionLevel is removed from the SDK
+        $this->assertEquals("not_protected", $dispute->chargebackProtectionLevel);
+        $this->assertEquals("No Protection", $dispute->protectionLevel);
     }
 
     public function testConstructorHandlesNullFields()
