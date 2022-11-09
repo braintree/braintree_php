@@ -30,6 +30,7 @@ class Nonces
     public static $googlePayAmEx = "fake-android-pay-amex-nonce";
     public static $abstractTransactable = "fake-abstract-transactable-nonce";
     public static $europe = "fake-europe-bank-account-nonce";
+    public static $sepaDirectDebit = "fake-sepa-direct-debit-nonce";
     public static $transactableVisa = "fake-valid-visa-nonce";
     public static $transactableAmEx = "fake-valid-amex-nonce";
     public static $transactableMasterCard = "fake-valid-mastercard-nonce";

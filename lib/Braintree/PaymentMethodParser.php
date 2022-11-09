@@ -32,6 +32,8 @@ class PaymentMethodParser
             return VisaCheckoutCard::factory($response['visaCheckoutCard']);
         } elseif (isset($response['samsungPayCard'])) {
             return SamsungPayCard::factory($response['samsungPayCard']);
+        } elseif (isset($response['sepaDebitAccount'])) {
+            return SepaDirectDebitAccount::factory($response['sepaDebitAccount']);
         } elseif (is_array($response)) {
             return UnknownPaymentMethod::factory($response);
         } else {

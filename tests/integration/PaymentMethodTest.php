@@ -263,6 +263,32 @@ class PaymentMethodTest extends Setup
         $this->assertSame("1234567891234567891", $venmoAccount->venmoUserId);
     }
 
+    public function testCreate_fromFakeSepaDirectDebitAccountNonce()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\PaymentMethod::create(array(
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$sepaDirectDebit
+        ));
+
+        $this->assertTrue($result->success);
+        $sepaDirectDebitAccount = $result->paymentMethod;
+
+        $this->assertInstanceOf('Braintree\SepaDirectDebitAccount', $sepaDirectDebitAccount);
+        $this->assertEquals($customer->id, $sepaDirectDebitAccount->customerId);
+        $this->assertNotNull($sepaDirectDebitAccount->customerGlobalId);
+        $this->assertNotNull($sepaDirectDebitAccount->globalId);
+        $this->assertNotNull($sepaDirectDebitAccount->imageUrl);
+        $this->assertNotNull($sepaDirectDebitAccount->token);
+        $this->assertEquals('a-fake-mp-customer-id', $sepaDirectDebitAccount->merchantOrPartnerCustomerId);
+        $this->assertEquals(true, $sepaDirectDebitAccount->default);
+        $this->assertEquals('1234', $sepaDirectDebitAccount->last4);
+        $this->assertEquals('a-fake-bank-reference-token', $sepaDirectDebitAccount->bankReferenceToken);
+        $this->assertEquals('RECURRENT', $sepaDirectDebitAccount->mandateType);
+        $this->assertEquals('DateTime', get_class($sepaDirectDebitAccount->createdAt));
+        $this->assertEquals('DateTime', get_class($sepaDirectDebitAccount->updatedAt));
+    }
+
     public function testCreate_fromUnvalidatedCreditCardNonce()
     {
         $customer = Braintree\Customer::createNoValidate();

@@ -831,6 +831,18 @@ class CustomerTest extends Setup
         $customer = Braintree\Customer::createNoValidate(['email' => 'invalid']);
     }
 
+    public function testCreate_worksWithSepaDirectDebitNonce()
+    {
+        $nonce = Braintree\Test\Nonces::$sepaDirectDebit;
+
+        $result = Braintree\Customer::create([
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertTrue($result->success);
+        $this->assertCount(1, $result->customer->sepaDirectDebitAccounts);
+    }
+
     public function testCreate_worksWithFuturePayPalNonce()
     {
         $nonce = Braintree\Test\Nonces::$paypalFuturePayment;

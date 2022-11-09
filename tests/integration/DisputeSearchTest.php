@@ -81,7 +81,9 @@ class DisputeSearchTest extends Setup
         $this->assertEquals(1, count($disputes));
         $this->assertEquals($disputes[0]->caseNumber, "CASE-CHARGEBACK-PROTECTED");
         $this->assertEquals($disputes[0]->reason, Braintree\Dispute::FRAUD);
+        // NEXT_MAJOR_VERSION Remove this assertion when chargebackProtectionLevel is removed from the SDK
         $this->assertEquals($disputes[0]->chargebackProtectionLevel, Braintree\Dispute::EFFORTLESS);
+        $this->assertEquals($disputes[0]->protectionLevel, Braintree\Dispute::EFFORTLESS_CBP);
     }
 
     public function testAdvancedSearch_byReceivedDateRange_returnsDispute()

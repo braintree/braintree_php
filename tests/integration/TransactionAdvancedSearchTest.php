@@ -358,6 +358,48 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals($transaction->id, $collection->firstItem()->id);
     }
 
+    public function test_multipleValueNode_paymentInstrumentType_is_sepaDebit()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$sepaDirectDebit,
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::id()->is($transaction->id),
+            Braintree\TransactionSearch::paymentInstrumentType()->is("SEPADebitAccountDetail")
+        ]);
+
+
+        $this->assertEquals($transaction->paymentInstrumentType, Braintree\PaymentInstrumentType::SEPA_DIRECT_DEBIT_ACCOUNT);
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
+    public function test_multipleValueNode_paypalV2OrderId_is_sepaDebit()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$sepaDirectDebit,
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::id()->is($transaction->id),
+            Braintree\TransactionSearch::sepaDebitPaypalV2OrderId()->is(
+                $transaction->sepaDirectDebitAccountDetails->paypalV2OrderId
+            )
+        ]);
+
+
+        $this->assertEquals($transaction->paymentInstrumentType, Braintree\PaymentInstrumentType::SEPA_DIRECT_DEBIT_ACCOUNT);
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+    }
+
     public function test_multipleValueNode_paymentInstrumentType_is_applepay()
     {
         $transaction = Braintree\Transaction::saleNoValidate([

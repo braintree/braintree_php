@@ -451,6 +451,16 @@ class TransactionSearch
     }
 
     /*
+     * Create a new text node for SEPA direct debit PayPal V2 order ID
+     *
+     * @return TextNode
+     */
+    public static function sepaDebitPaypalV2OrderId()
+    {
+        return new TextNode('sepa_debit_paypal_v2_order_id');
+    }
+
+    /*
      * Create a new range node for settled at
      *
      * @return RangeNode

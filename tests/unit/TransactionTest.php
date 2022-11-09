@@ -4,6 +4,7 @@ namespace Test\Unit;
 
 require_once dirname(__DIR__) . '/Setup.php';
 
+use DateTime;
 use Test\Setup;
 use Braintree;
 
@@ -103,6 +104,27 @@ class TransactionTest extends Setup
                 'submitForSettlement' => true
             ]
         ]);
+    }
+
+    public function testTransactionWithSepaDebitAccountDetail()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'id' => '123',
+            'type' => 'sale',
+            'amount' => '12.34',
+            'status' => 'settled',
+            'customer' => [],
+            'creditCard' => ['expirationMonth' => '05', 'expirationYear' => '2010', 'bin' => '510510', 'last4' => '5100'],
+            'createdAt' => DateTime::createFromFormat('Ymd', '20121212'),
+            'sepaDebitAccountDetail' => [
+                [
+                    'last4' => "1234",
+                ],
+            ]
+        ]);
+
+        $details = $transaction -> sepaDirectDebitAccountDetails -> toArray()[0];
+        $this->assertEquals("1234", $details["last4"]);
     }
 
     private function mockTransactionGatewayDoCreate()
