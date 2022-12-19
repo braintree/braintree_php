@@ -181,6 +181,16 @@ class DisputeSearch
     }
 
     /*
+     * Create a new multiple value node for protection level
+     *
+     * @return MultipleValueNode
+     */
+    public static function preDisputeProgram()
+    {
+        return new MultipleValueNode("pre_dispute_program", Dispute::allPreDisputePrograms());
+    }
+
+    /*
      * Create a new text node for transaction id
      *
      * @return TextNode

@@ -1,5 +1,8 @@
 # Changelog
 
+## unreleased
+* Add `preDisputeProgram` to `Dispute` and `DisputeSearch`
+
 ## 6.10.0
 * Add `SEPADirectDebitAccount` payment method
 * Add `SEPADirectDebitAccountDetails` to transaction object

@@ -47,6 +47,10 @@ class Dispute extends Base
     const PRE_ARBITRATION = 'pre_arbitration';
     // RETRIEVAL for kind already defined under Dispute Reason
 
+    /* Dispute PreDisputeProgram */
+    const NONE = 'none';
+    const VISA_RDR = 'visa_rdr';
+
     protected function _initialize($disputeAttribs)
     {
         $this->_attributes = $disputeAttribs;
@@ -250,6 +254,19 @@ class Dispute extends Base
             Dispute::EFFORTLESS_CBP,
             Dispute::STANDARD_CBP,
             Dispute::NO_PROTECTION
+        ];
+    }
+
+   /*
+     * Retrieve all pre-dispute programs
+     *
+     * @return array
+     */
+    public static function allPreDisputePrograms()
+    {
+        return [
+            Dispute::NONE,
+            Dispute::VISA_RDR
         ];
     }
 }

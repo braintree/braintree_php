@@ -26,6 +26,7 @@ class DisputeTest extends Setup
             'currencyIsoCode' => 'USD',
             'dateOpened' => DateTime::createFromFormat('Ymd-His', '20130401-000000'),
             'dateWon' => DateTime::createFromFormat('Ymd-His', '20130402-000000'),
+            'preDisputeProgram' => 'visa_rdr',
             'processorComments' => 'Forwarded comments',
             'id' => '123456',
             'kind' => 'chargeback',
@@ -139,6 +140,7 @@ class DisputeTest extends Setup
         $this->assertEquals("effortless", $dispute->chargebackProtectionLevel);
         $this->assertEquals("Effortless Chargeback Protection tool", $dispute->protectionLevel);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->createdAt);
+        $this->assertEquals(Braintree\Dispute::VISA_RDR, $dispute->preDisputeProgram);
         $this->assertEquals("Forwarded comments", $dispute->processorComments);
         $this->assertEquals("abc123", $dispute->merchantAccountId);
         $this->assertEquals("original_dispute_id", $dispute->originalDisputeId);
