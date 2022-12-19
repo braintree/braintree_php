@@ -2,6 +2,8 @@
 
 ## unreleased
 * Add `preDisputeProgram` to `Dispute` and `DisputeSearch`
+* Add `AUTO_ACCEPTED` Dispute Status
+* Add `DISPUTE_AUTO_ACCEPTED` WebhookNotification
 
 ## 6.10.0
 * Add `SEPADirectDebitAccount` payment method

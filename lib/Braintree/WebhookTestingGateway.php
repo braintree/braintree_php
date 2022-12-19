@@ -95,6 +95,9 @@ class WebhookTestingGateway
             case WebhookNotification::DISPUTE_ACCEPTED:
                 $subjectXml = self::_disputeAcceptedSampleXml($id);
                 break;
+            case WebhookNotification::DISPUTE_AUTO_ACCEPTED:
+                $subjectXml = self::_disputeAutoAcceptedSampleXml($id);
+                break;
             case WebhookNotification::DISPUTE_DISPUTED:
                 $subjectXml = self::_disputeDisputedSampleXml($id);
                 break;
@@ -414,6 +417,29 @@ class WebhookTestingGateway
           <reply-by-date type=\"date\">2014-03-21</reply-by-date>
           <kind>chargeback</kind>
           <status>accepted</status>
+          <reason>fraud</reason>
+          <id>{$id}</id>
+          <transaction>
+            <id>{$id}</id>
+            <amount>250.00</amount>
+          </transaction>
+          <date-opened type=\"date\">2014-03-21</date-opened>
+        </dispute>
+        ";
+    }
+
+    private static function _disputeAutoAcceptedSampleXml($id)
+    {
+        return "
+        <dispute>
+          <amount>250.00</amount>
+          <amount-disputed>250.0</amount-disputed>
+          <amount-won>245.00</amount-won>
+          <currency-iso-code>USD</currency-iso-code>
+          <received-date type=\"date\">2014-03-01</received-date>
+          <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <kind>chargeback</kind>
+          <status>auto_accepted</status>
           <reason>fraud</reason>
           <id>{$id}</id>
           <transaction>

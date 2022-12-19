@@ -13,6 +13,7 @@ class Dispute extends Base
 
     /* Dispute Status */
     const ACCEPTED = 'accepted';
+    const AUTO_ACCEPTED = 'auto_accepted';
     const DISPUTED = 'disputed';
     const EXPIRED = 'expired';
     const OPEN  = 'open';
