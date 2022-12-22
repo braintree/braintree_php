@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.11.0
+* Address PHP 8.2 deprecation warnings for dynamic properties usage.
+
 ## 6.10.0
 * Add `SEPADirectDebitAccount` payment method
 * Add `SEPADirectDebitAccountDetails` to transaction object
