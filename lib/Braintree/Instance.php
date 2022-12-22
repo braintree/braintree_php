@@ -7,7 +7,7 @@ namespace Braintree;
  *
  * @abstract
  */
-abstract class Instance
+abstract class Instance extends \stdClass
 {
     protected $_attributes = [];
 
