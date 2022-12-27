@@ -18,6 +18,7 @@ class Nonces
     public static $transactable = "fake-valid-nonce";
     public static $consumed = "fake-consumed-nonce";
     public static $paypalOneTimePayment = "fake-paypal-one-time-nonce";
+    // NEXT_MAJOR_VERSION - no longer supported in the Gateway, remove this constant
     public static $paypalFuturePayment = "fake-paypal-future-nonce";
     public static $paypalBillingAgreement = "fake-paypal-billing-agreement-nonce";
     public static $applePayVisa = "fake-apple-pay-visa-nonce";
