@@ -1,6 +1,6 @@
 # Changelog
 
-## 6.11.0
+## 6.11.0 
 * Add `preDisputeProgram` to `Dispute` and `DisputeSearch`
 * Add `AUTO_ACCEPTED` Dispute Status
 * Add `DISPUTE_AUTO_ACCEPTED` WebhookNotification
