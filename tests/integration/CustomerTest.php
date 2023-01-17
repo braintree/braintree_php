@@ -845,7 +845,7 @@ class CustomerTest extends Setup
 
     public function testCreate_worksWithFuturePayPalNonce()
     {
-        $nonce = Braintree\Test\Nonces::$paypalFuturePayment;
+        $nonce = Braintree\Test\Nonces::$paypalBillingAgreement;
 
         $result = Braintree\Customer::create([
             'paymentMethodNonce' => $nonce

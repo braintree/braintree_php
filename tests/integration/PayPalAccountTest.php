@@ -86,7 +86,7 @@ class PayPalAccountTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => Braintree\Test\Nonces::$paypalFuturePayment,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$paypalBillingAgreement,
         ]);
         $this->assertTrue($result->success);
 
@@ -295,7 +295,7 @@ class PayPalAccountTest extends Setup
 
     public function testSale_createsASaleUsingGivenToken()
     {
-        $nonce = Braintree\Test\Nonces::$paypalFuturePayment;
+        $nonce = Braintree\Test\Nonces::$paypalBillingAgreement;
         $customer = Braintree\Customer::createNoValidate([
             'paymentMethodNonce' => $nonce
         ]);

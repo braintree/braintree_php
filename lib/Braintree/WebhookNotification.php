@@ -16,6 +16,7 @@ class WebhookNotification extends Base
     const DISBURSEMENT = 'disbursement';
     const DISBURSEMENT_EXCEPTION = 'disbursement_exception';
     const DISPUTE_ACCEPTED = 'dispute_accepted';
+    const DISPUTE_AUTO_ACCEPTED = 'dispute_auto_accepted';
     const DISPUTE_DISPUTED = 'dispute_disputed';
     const DISPUTE_EXPIRED = 'dispute_expired';
     const DISPUTE_LOST = 'dispute_lost';

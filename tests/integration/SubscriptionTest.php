@@ -738,7 +738,7 @@ class SubscriptionTest extends Setup
     public function testCreate_fromPayPalACcountDoesNotWorkWithFutureNonce()
     {
         $plan = SubscriptionHelper::triallessPlan();
-        $nonce = Braintree\Test\Nonces::$paypalFuturePayment;
+        $nonce = Braintree\Test\Nonces::$paypalBillingAgreement;
 
         $subscriptionResult = Braintree\Subscription::create([
             'paymentMethodNonce' => $nonce,

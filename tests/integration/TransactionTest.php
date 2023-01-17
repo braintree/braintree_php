@@ -4515,6 +4515,24 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::FRAUD, $result->transaction->gatewayRejectionReason);
     }
 
+    public function testGatewayRejectionOnExcessiveRetry()
+    {
+        $gateway = Test\Helper::duplicateCheckingMerchantGateway();
+        for ($i = 0; $i <= 16; $i++) {
+            $result = $gateway->transaction()->sale([
+                'amount' => Braintree\Test\TransactionAmounts::$decline,
+                'creditCard' => [
+                    'number' => Braintree\Test\CreditCardNumbers::$visa,
+                    'expirationDate' => '05/17',
+                    'cvv' => '333'
+                ]
+            ]);
+        }
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Transaction::EXCESSIVE_RETRY, $result->transaction->gatewayRejectionReason);
+    }
+
     public function testGatewayRejectionOnRiskThreshold()
     {
         $gateway = Test\Helper::advancedFraudKountIntegrationMerchantGateway();

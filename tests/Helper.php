@@ -72,6 +72,16 @@ class Helper
         ]);
     }
 
+    public static function duplicateCheckingMerchantGateway()
+    {
+        return new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'dup_checking_integration_merchant_id',
+            'publicKey' => 'dup_checking_integration_public_key',
+            'privateKey' => 'dup_checking_integration_private_key'
+        ]);
+    }
+
     public static function defaultMerchantAccountId()
     {
         return 'sandbox_credit_card';

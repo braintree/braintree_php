@@ -568,6 +568,24 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
     }
 
+    public function testBuildsASampleNotificationForADisputeAutoAcceptedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::DISPUTE_AUTO_ACCEPTED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::DISPUTE_AUTO_ACCEPTED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->dispute->id);
+        $this->assertEquals(Braintree\Dispute::AUTO_ACCEPTED, $webhookNotification->dispute->status);
+        $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
+    }
+
     public function testBuildsASampleNotificationForADisputeDisputedWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(

@@ -13,6 +13,7 @@ class Dispute extends Base
 
     /* Dispute Status */
     const ACCEPTED = 'accepted';
+    const AUTO_ACCEPTED = 'auto_accepted';
     const DISPUTED = 'disputed';
     const EXPIRED = 'expired';
     const OPEN  = 'open';
@@ -46,6 +47,10 @@ class Dispute extends Base
     const CHARGEBACK      = 'chargeback';
     const PRE_ARBITRATION = 'pre_arbitration';
     // RETRIEVAL for kind already defined under Dispute Reason
+
+    /* Dispute PreDisputeProgram */
+    const NONE = 'none';
+    const VISA_RDR = 'visa_rdr';
 
     protected function _initialize($disputeAttribs)
     {
@@ -250,6 +255,19 @@ class Dispute extends Base
             Dispute::EFFORTLESS_CBP,
             Dispute::STANDARD_CBP,
             Dispute::NO_PROTECTION
+        ];
+    }
+
+   /*
+     * Retrieve all pre-dispute programs
+     *
+     * @return array
+     */
+    public static function allPreDisputePrograms()
+    {
+        return [
+            Dispute::NONE,
+            Dispute::VISA_RDR
         ];
     }
 }

@@ -78,12 +78,44 @@ class DisputeSearchTest extends Setup
 
         $disputes = $this->collectionToArray($collection);
 
+        $this->assertEquals(true, count($disputes) > 0);
+
+        foreach ($disputes as &$dispute) {
+            $this->assertEquals($dispute->reason, Braintree\Dispute::FRAUD);
+            // NEXT_MAJOR_VERSION Remove this assertion when chargebackProtectionLevel is removed from the SDK
+            $this->assertEquals($dispute->chargebackProtectionLevel, Braintree\Dispute::EFFORTLESS);
+            $this->assertEquals($dispute->protectionLevel, Braintree\Dispute::EFFORTLESS_CBP);
+        }
+    }
+
+    public function testAdvancedSearch_byPreDisputeProgram_returnsDispute()
+    {
+        $collection = Braintree\Dispute::search([
+            Braintree\DisputeSearch::preDisputeProgram()->in([
+                Braintree\Dispute::VISA_RDR
+            ])
+        ]);
+
+        $disputes = $this->collectionToArray($collection);
+
         $this->assertEquals(1, count($disputes));
-        $this->assertEquals($disputes[0]->caseNumber, "CASE-CHARGEBACK-PROTECTED");
-        $this->assertEquals($disputes[0]->reason, Braintree\Dispute::FRAUD);
-        // NEXT_MAJOR_VERSION Remove this assertion when chargebackProtectionLevel is removed from the SDK
-        $this->assertEquals($disputes[0]->chargebackProtectionLevel, Braintree\Dispute::EFFORTLESS);
-        $this->assertEquals($disputes[0]->protectionLevel, Braintree\Dispute::EFFORTLESS_CBP);
+        $this->assertEquals($disputes[0]->preDisputeProgram, Braintree\Dispute::VISA_RDR);
+    }
+
+    public function testAdvancedSearch_forNonPreDisputes_returnsDisputes()
+    {
+        $collection = Braintree\Dispute::search([
+            Braintree\DisputeSearch::preDisputeProgram()->is(Braintree\Dispute::NONE)
+        ]);
+
+        $disputes = $this->collectionToArray($collection);
+        $preDisputePrograms = array_unique(array_map(function ($d) {
+            return $d->preDisputeProgram;
+        }, $disputes));
+
+        $this->assertGreaterThan(1, count($disputes));
+        $this->assertEquals(1, count($preDisputePrograms));
+        $this->assertTrue(in_array(Braintree\Dispute::NONE, $preDisputePrograms));
     }
 
     public function testAdvancedSearch_byReceivedDateRange_returnsDispute()
