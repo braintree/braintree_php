@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.12.0
+* Address PHP 8.2 deprecation warnings for dynamic properties usage.
+
 ## 6.11.0 
 * Add `preDisputeProgram` to `Dispute` and `DisputeSearch`
 * Add `AUTO_ACCEPTED` Dispute Status

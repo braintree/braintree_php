@@ -10,6 +10,10 @@ use InvalidArgumentException;
  */
 class MultipleValueNode
 {
+    private $name;
+    private $items;
+    private $allowedValues;
+
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($name, $allowedValues = [])
     {
