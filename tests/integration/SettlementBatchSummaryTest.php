@@ -63,7 +63,7 @@ class SettlementBatchSummaryTest extends Setup
         $result = Braintree\SettlementBatchSummary::generate(Test\Helper::nowInEastern());
 
         $this->assertTrue($result->success);
-        $masterCardRecords = array_filter($result->settlementBatchSummary->records, 'self::isMasterCard');
+        $masterCardRecords = array_filter($result->settlementBatchSummary->records, (self::class . '::isMasterCard'));
         $masterCardKeys = array_keys($masterCardRecords);
         $masterCardIndex = $masterCardKeys[0];
         $this->assertTrue(count($masterCardRecords) > 0);

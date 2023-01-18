@@ -9,6 +9,9 @@ namespace Braintree;
  */
 class KeyValueNode
 {
+    public $name;
+    public $searchTerm;
+
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($name)
     {

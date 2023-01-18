@@ -9,6 +9,8 @@ use Braintree;
 
 class ConfigurationTest extends Setup
 {
+    private $config;
+
     public function setUp(): void
     {
         Braintree\Configuration::reset();

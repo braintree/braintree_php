@@ -9,7 +9,7 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc
 
 RUN apt-get update
 
-RUN apt-get -y install rake php8.1 php8.1-cli php8.1-curl php-pear php8.1-xml php8.1-mbstring
+RUN apt-get -y install rake php8.2 php8.2-cli php8.2-curl php-pear php8.2-xml php8.2-mbstring
 
-RUN update-alternatives --set php /usr/bin/php8.1 && php -v
+RUN update-alternatives --set php /usr/bin/php8.2 && php -v
 WORKDIR /braintree-php

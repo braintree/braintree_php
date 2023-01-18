@@ -1,7 +1,7 @@
 # Changelog
 
-## 6.12.0
-* Address PHP 8.2 deprecation warnings for dynamic properties usage.
+## 6.11.1
+* Resolved various dynamic property warnings for PHP 8.2 (thanks to @mvoelker & @markdavidsonEE)
 
 ## 6.11.0 
 * Add `preDisputeProgram` to `Dispute` and `DisputeSearch`

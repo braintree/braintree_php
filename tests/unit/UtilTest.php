@@ -11,6 +11,9 @@ use Braintree;
 
 class UtilTest extends Setup
 {
+    public $success;
+    public $transaction;
+
     public function testThrow401Exception()
     {
         $this->expectException('Braintree\Exception\Authentication');
