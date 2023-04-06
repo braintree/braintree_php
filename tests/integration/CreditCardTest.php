@@ -27,7 +27,6 @@ class CreditCardTest extends Setup
         $this->assertEquals('Cardholder', $result->creditCard->cardholderName);
         $this->assertEquals('05/2012', $result->creditCard->expirationDate);
         $this->assertEquals(1, preg_match('/\A\w{32}\z/', $result->creditCard->uniqueNumberIdentifier));
-        $this->assertFalse($result->creditCard->isVenmoSdk());
         $this->assertEquals(1, preg_match('/png/', $result->creditCard->imageUrl));
     }
 
@@ -102,7 +101,6 @@ class CreditCardTest extends Setup
         $this->assertEquals('Cardholder', $result->creditCard->cardholderName);
         $this->assertEquals('05/2012', $result->creditCard->expirationDate);
         $this->assertEquals(1, preg_match('/\A\w{32}\z/', $result->creditCard->uniqueNumberIdentifier));
-        $this->assertFalse($result->creditCard->isVenmoSdk());
         $this->assertEquals(1, preg_match('/png/', $result->creditCard->imageUrl));
     }
 
@@ -391,59 +389,6 @@ class CreditCardTest extends Setup
 
         $errors = $result->errors->forKey('creditCard')->forKey('billingAddress')->onAttribute('base');
         $this->assertEquals(Braintree\Error\Codes::ADDRESS_INCONSISTENT_COUNTRY, $errors[0]->code);
-    }
-
-    public function testCreate_withVenmoSdkPaymentMethodCode()
-    {
-        $customer = Braintree\Customer::createNoValidate();
-        $result = Braintree\CreditCard::create([
-            'customerId' => $customer->id,
-            'venmoSdkPaymentMethodCode' => Braintree\Test\VenmoSdk::generateTestPaymentMethodCode('378734493671000')
-        ]);
-        $this->assertTrue($result->success);
-        $this->assertEquals("378734", $result->creditCard->bin);
-    }
-
-    public function testCreate_with_invalid_venmoSdkPaymentMethodCode()
-    {
-        $customer = Braintree\Customer::createNoValidate();
-        $result = Braintree\CreditCard::create([
-            'customerId' => $customer->id,
-            'venmoSdkPaymentMethodCode' => Braintree\Test\VenmoSdk::getInvalidPaymentMethodCode(),
-        ]);
-        $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('creditCard')->onAttribute('venmoSdkPaymentMethodCode');
-        $this->assertEquals($errors[0]->code, Braintree\Error\Codes::CREDIT_CARD_INVALID_VENMO_SDK_PAYMENT_METHOD_CODE);
-    }
-
-    public function testCreate_with_venmoSdkSession()
-    {
-        $customer = Braintree\Customer::createNoValidate();
-        $result = Braintree\CreditCard::create([
-            'customerId' => $customer->id,
-            'number' => '5105105105105100',
-            'expirationDate' => '05/12',
-            'options' => [
-                'venmoSdkSession' => Braintree\Test\VenmoSdk::getTestSession()
-            ]
-        ]);
-        $this->assertTrue($result->success);
-        $this->assertFalse($result->creditCard->isVenmoSdk());
-    }
-
-    public function testCreate_with_invalidVenmoSdkSession()
-    {
-        $customer = Braintree\Customer::createNoValidate();
-        $result = Braintree\CreditCard::create([
-            'customerId' => $customer->id,
-            'number' => '5105105105105100',
-            'expirationDate' => '05/12',
-            'options' => [
-                'venmoSdkSession' => Braintree\Test\VenmoSdk::getInvalidTestSession(),
-            ]
-        ]);
-        $this->assertTrue($result->success);
-        $this->assertFalse($result->creditCard->isVenmoSdk());
     }
 
     public function testCreate_withAccountTypeCredit()

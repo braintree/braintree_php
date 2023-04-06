@@ -206,6 +206,78 @@ class DisputeTest extends Setup
         $this->assertEquals($evidence->comment, $refreshedEvidence->comment);
     }
 
+    public function testAddTextEvidence_shippingTracking_carrierName()
+    {
+        $disputeId = $this->createSampleDispute()->id;
+        $result = $this->gateway->dispute()->addTextEvidence(
+            $disputeId,
+            [
+                'content' => "UPS",
+                'category' => "CARRIER_NAME",
+                'sequenceNumber' => "0"
+            ]
+        );
+        $evidence = $result->evidence;
+
+        $this->assertTrue($result->success);
+        $this->assertEquals("UPS", $evidence->comment);
+        $this->assertNotNull($evidence->createdAt);
+        $this->assertMatchesRegularExpression('/^\w{16,}$/', $evidence->id);
+        $this->assertNull($evidence->sentToProcessorAt);
+        $this->assertNull($evidence->url);
+        $this->assertEquals("CARRIER_NAME", $evidence->category);
+        $this->assertEquals("CARRIER_NAME", $evidence->tag);
+        $this->assertEquals("0", $evidence->sequenceNumber);
+    }
+
+    public function testAddTextEvidence_shippingTracking_trackingNumber()
+    {
+        $disputeId = $this->createSampleDispute()->id;
+        $result = $this->gateway->dispute()->addTextEvidence(
+            $disputeId,
+            [
+                'content' => "3",
+                'category' => "TRACKING_NUMBER",
+                'sequenceNumber' => "0"
+            ]
+        );
+        $evidence = $result->evidence;
+
+        $this->assertTrue($result->success);
+        $this->assertEquals("3", $evidence->comment);
+        $this->assertNotNull($evidence->createdAt);
+        $this->assertMatchesRegularExpression('/^\w{16,}$/', $evidence->id);
+        $this->assertNull($evidence->sentToProcessorAt);
+        $this->assertNull($evidence->url);
+        $this->assertEquals("TRACKING_NUMBER", $evidence->category);
+        $this->assertEquals("TRACKING_NUMBER", $evidence->tag);
+        $this->assertEquals("0", $evidence->sequenceNumber);
+    }
+
+    public function testAddTextEvidence_shippingTracking_trackingUrl()
+    {
+        $disputeId = $this->createSampleDispute()->id;
+        $result = $this->gateway->dispute()->addTextEvidence(
+            $disputeId,
+            [
+                'content' => "https://example.com/tracking-number/abc12345",
+                'category' => "TRACKING_URL",
+                'sequenceNumber' => "1"
+            ]
+        );
+        $evidence = $result->evidence;
+
+        $this->assertTrue($result->success);
+        $this->assertEquals("https://example.com/tracking-number/abc12345", $evidence->comment);
+        $this->assertNotNull($evidence->createdAt);
+        $this->assertMatchesRegularExpression('/^\w{16,}$/', $evidence->id);
+        $this->assertNull($evidence->sentToProcessorAt);
+        $this->assertNull($evidence->url);
+        $this->assertEquals("TRACKING_URL", $evidence->category);
+        $this->assertEquals("TRACKING_URL", $evidence->tag);
+        $this->assertEquals("1", $evidence->sequenceNumber);
+    }
+
     public function testFinalize_changesDisputeStatus_toDisputed()
     {
         $disputeId = $this->createSampleDispute()->id;

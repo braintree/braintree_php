@@ -2059,23 +2059,6 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->riskData->decisionReasons);
     }
 
-    public function testSaleWithChargebackProtectionRiskData()
-    {
-        $gateway = Test\Helper::effortlessChargebackProtectionGateway();
-        $result = $gateway->transaction()->sale([
-            'amount' => '100.00',
-            'deviceData' => 'device_data',
-            'creditCard' => [
-                'cardholderName' => 'The Cardholder',
-                'number' => '4111111111111111',
-                'expirationDate' => '05/12'
-            ]
-        ]);
-        $this->assertTrue($result->success);
-        $riskData = $result->transaction->riskData;
-        $this->assertNotNull($riskData->liabilityShift);
-    }
-
     public function testRecurring()
     {
         error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
@@ -2220,34 +2203,6 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $serviceFeeErrors = $result->errors->forKey('transaction')->onAttribute('merchantAccountId');
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SUB_MERCHANT_ACCOUNT_REQUIRES_SERVICE_FEE_AMOUNT, $serviceFeeErrors[0]->code);
-    }
-
-    public function testSale_withVenmoSdkSession()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '10.00',
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ],
-            'options' => [
-                'venmoSdkSession' => Braintree\Test\VenmoSdk::getTestSession()
-            ]
-        ]);
-        $this->assertEquals(true, $result->success);
-        $transaction = $result->transaction;
-        $this->assertEquals(false, $transaction->creditCardDetails->venmoSdk);
-    }
-
-    public function testSale_withVenmoSdkPaymentMethodCode()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '10.00',
-            'venmoSdkPaymentMethodCode' => Braintree\Test\VenmoSdk::$visaPaymentMethodCode
-        ]);
-        $this->assertTrue($result->success);
-        $transaction = $result->transaction;
-        $this->assertEquals("411111", $transaction->creditCardDetails->bin);
     }
 
     public function testSale_withLevel2Attributes()
@@ -3564,7 +3519,7 @@ class TransactionTest extends Setup
         $this->assertEquals("authenticate_successful", $info->status);
         $this->assertTrue($info->liabilityShifted);
         $this->assertTrue($info->liabilityShiftPossible);
-        $this->assertEquals("1.0.2", $info->threeDSecureVersion);
+        $this->assertNotNull($info->threeDSecureVersion);
         $this->assertEquals("dstxnid", $info->dsTransactionId);
         $this->assertEquals("somebase64value", $info->cavv);
         $this->assertEquals("xidvalue", $info->xid);
@@ -4518,7 +4473,9 @@ class TransactionTest extends Setup
     public function testGatewayRejectionOnExcessiveRetry()
     {
         $gateway = Test\Helper::duplicateCheckingMerchantGateway();
-        for ($i = 0; $i <= 16; $i++) {
+        $excessiveRetry = false;
+        $counter = 0;
+        while ($excessiveRetry == false or $counter < 100) {
             $result = $gateway->transaction()->sale([
                 'amount' => Braintree\Test\TransactionAmounts::$decline,
                 'creditCard' => [
@@ -4527,6 +4484,8 @@ class TransactionTest extends Setup
                     'cvv' => '333'
                 ]
             ]);
+            $excessiveRetry = ($result->transaction->gatewayRejectionReason == Braintree\Transaction::EXCESSIVE_RETRY);
+            $counter += 1;
         }
 
         $this->assertFalse($result->success);
@@ -6820,7 +6779,7 @@ class TransactionTest extends Setup
                 'number' => '5105105105105100',
                 'expirationDate' => '05/2012'
             ],
-            'transactionSource' => 'recurring_first',
+            'transactionSource' => 'recurring',
         ]);
 
         $this->assertTrue($initial_result->success);

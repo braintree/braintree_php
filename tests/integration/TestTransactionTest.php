@@ -4,8 +4,6 @@ namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
 
-use DateTime;
-use Test;
 use Test\Setup;
 use Braintree;
 
@@ -35,7 +33,7 @@ class TestTransactionTest extends Setup
 
         $this->expectException('Braintree\Exception\TestOperationPerformedInProduction');
 
-        $transaction = Braintree\Test\Transaction::settle('foo');
+        Braintree\Test\Transaction::settle('foo');
     }
 
     public function testSettle()
@@ -51,7 +49,7 @@ class TestTransactionTest extends Setup
 
         $transaction = Braintree\Test\Transaction::settle($transaction->id);
 
-        $this->assertEquals('settled', $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SETTLED, $transaction->status);
     }
 
     public function testSettlementConfirmed()
@@ -67,7 +65,7 @@ class TestTransactionTest extends Setup
 
         $transaction = Braintree\Test\Transaction::settlementConfirm($transaction->id);
 
-        $this->assertEquals('settlement_confirmed', $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_CONFIRMED, $transaction->status);
     }
 
     public function testSettlementDeclined()
@@ -83,7 +81,7 @@ class TestTransactionTest extends Setup
 
         $transaction = Braintree\Test\Transaction::settlementDecline($transaction->id);
 
-        $this->assertEquals('settlement_declined', $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_DECLINED, $transaction->status);
     }
 
     public function testSettlementPending()
@@ -99,6 +97,30 @@ class TestTransactionTest extends Setup
 
         $transaction = Braintree\Test\Transaction::settlementPending($transaction->id);
 
-        $this->assertEquals('settlement_pending', $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $transaction->status);
+    }
+
+    public function testValidationError()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ],
+            'options' => ['submitForSettlement' => true]
+        ]);
+
+        $transaction = Braintree\Test\Transaction::settle($transaction->id);
+
+        $this->assertEquals(Braintree\Transaction::SETTLED, $transaction->status);
+
+        $result = Braintree\Test\Transaction::settle($transaction->id);
+
+        $this->assertFalse($result->success);
+
+        $errorCode = $result->errors->forKey('transaction')->onAttribute('base')[0]->code;
+
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_CANNOT_SIMULATE_SETTLEMENT, $errorCode);
     }
 }

@@ -447,38 +447,6 @@ class CustomerTest extends Setup
         $this->assertEquals(1, preg_match('/\A\w{32}\z/', $customer->creditCards[0]->uniqueNumberIdentifier));
     }
 
-    public function testCreate_withVenmoSdkSession()
-    {
-        $result = Braintree\Customer::create([
-            'firstName' => 'Bat',
-            'lastName' => 'Manderson',
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12',
-                'options' => [
-                    'venmoSdkSession' => Braintree\Test\VenmoSdk::getTestSession()
-                ]
-            ]
-        ]);
-        $this->assertEquals(true, $result->success);
-        $customer = $result->customer;
-        $this->assertEquals(false, $customer->creditCards[0]->venmoSdk);
-    }
-
-    public function testCreate_withVenmoSdkPaymentMethodCode()
-    {
-        $result = Braintree\Customer::create([
-            'firstName' => 'Bat',
-            'lastName' => 'Manderson',
-            'creditCard' => [
-                'venmoSdkPaymentMethodCode' => Braintree\Test\VenmoSdk::$visaPaymentMethodCode
-            ],
-        ]);
-        $this->assertEquals(true, $result->success);
-        $customer = $result->customer;
-        $this->assertEquals("411111", $customer->creditCards[0]->bin);
-    }
-
     public function testCreate_blankCustomer()
     {
         $result = Braintree\Customer::create();

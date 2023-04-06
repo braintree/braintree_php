@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.11.2 
+*  `TestingGateway` methods return type is `Result\Error` for validation errors.
+
 ## 6.11.1
 * Resolved various dynamic property warnings for PHP 8.2 (thanks to @mvoelker & @markdavidsonEE)
 

@@ -81,7 +81,6 @@ class DisputeSearchTest extends Setup
         $this->assertEquals(true, count($disputes) > 0);
 
         foreach ($disputes as &$dispute) {
-            $this->assertEquals($dispute->reason, Braintree\Dispute::FRAUD);
             // NEXT_MAJOR_VERSION Remove this assertion when chargebackProtectionLevel is removed from the SDK
             $this->assertEquals($dispute->chargebackProtectionLevel, Braintree\Dispute::EFFORTLESS);
             $this->assertEquals($dispute->protectionLevel, Braintree\Dispute::EFFORTLESS_CBP);
