@@ -13,7 +13,6 @@ class SepaDirectDebitAccountTest extends Setup
     public function testReturnSepaDirectDebitAccount()
     {
         $customer = Braintree\Customer::createNoValidate();
-        $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = Braintree\Test\Nonces::$sepaDirectDebit;
 
         $result = Braintree\PaymentMethod::create([
@@ -41,7 +40,6 @@ class SepaDirectDebitAccountTest extends Setup
     public function testFind()
     {
         $customer = Braintree\Customer::createNoValidate();
-        $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = Braintree\Test\Nonces::$sepaDirectDebit;
 
         $result = Braintree\PaymentMethod::create([
@@ -69,7 +67,6 @@ class SepaDirectDebitAccountTest extends Setup
     public function testSale_createsASaleUsingGivenToken()
     {
         $customer = Braintree\Customer::createNoValidate();
-        $http = new HttpClientApi(Braintree\Configuration::$global);
         $nonce = Braintree\Test\Nonces::$sepaDirectDebit;
 
         $result = Braintree\PaymentMethod::create([
@@ -111,5 +108,38 @@ class SepaDirectDebitAccountTest extends Setup
 
         $this->assertNotNull($details->captureId);
         $this->assertNotNull($details->globalId);
+    }
+
+    public function testFind_returnsSubscriptionsAssociatedWithASepaDirectDebitAccount()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $nonce = Braintree\Test\Nonces::$sepaDirectDebit;
+
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce
+        ]);
+        $this->assertTrue($result->success);
+
+        $token = $result->paymentMethod->token;
+        $triallessPlan = SubscriptionHelper::triallessPlan();
+
+        $subscription1 = Braintree\Subscription::create([
+            'paymentMethodToken' => $token,
+            'planId' => $triallessPlan['id']
+        ])->subscription;
+
+        $subscription2 = Braintree\Subscription::create([
+            'paymentMethodToken' => $token,
+            'planId' => $triallessPlan['id']
+        ])->subscription;
+
+        $sepaDirectDebitAccount = Braintree\SepaDirectDebitAccount::find($token);
+        $getIds = function ($sub) {
+            return $sub->id;
+        };
+        $subIds = array_map($getIds, $sepaDirectDebitAccount->subscriptions);
+        $this->assertTrue(in_array($subscription1->id, $subIds));
+        $this->assertTrue(in_array($subscription2->id, $subIds));
     }
 }

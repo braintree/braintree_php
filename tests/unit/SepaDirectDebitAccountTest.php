@@ -30,4 +30,30 @@ class SepaDirectDebitAccountTest extends Setup
         $this->expectException('InvalidArgumentException');
         Braintree\SepaDirectDebitAccount::find('');
     }
+
+    public function testSubscriptions()
+    {
+        $sepaDirectDebitAccount = Braintree\SepaDirectDebitAccount::factory([
+            'subscriptions' => [
+                [
+                    'id' => '120',
+                    'price' => '10.00'
+                ],
+                [
+                    'id' => '121',
+                    'price' => '12.00'
+                ],
+            ]
+        ]);
+
+        $this->assertEquals(2, count($sepaDirectDebitAccount->subscriptions));
+
+        $subscription1 = $sepaDirectDebitAccount->subscriptions[0];
+        $this->assertEquals('120', $subscription1->id);
+        $this->assertEquals('10.00', $subscription1->price);
+
+        $subscription2 = $sepaDirectDebitAccount->subscriptions[1];
+        $this->assertEquals('121', $subscription2->id);
+        $this->assertEquals('12.00', $subscription2->price);
+    }
 }

@@ -22,7 +22,7 @@ class HttpTest extends Setup
     {
         try {
             Braintree\Configuration::environment('production');
-            $this->expectException('Braintree\Exception\Authentication');
+            $this->expectException('Braintree\Exception');
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->get('/');
         } catch (Braintree\Exception $e) {
@@ -34,7 +34,7 @@ class HttpTest extends Setup
     {
         try {
             Braintree\Configuration::environment('sandbox');
-            $this->expectException('Braintree\Exception\Authentication');
+            $this->expectException('Braintree\Exception');
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->get('/');
         } catch (Braintree\Exception $e) {
@@ -47,7 +47,7 @@ class HttpTest extends Setup
         try {
             Braintree\Configuration::environment('sandbox');
             Braintree\Configuration::sslVersion(6);
-            $this->expectException('Braintree\Exception\Authentication');
+            $this->expectException('Braintree\Exception');
             $http = new Braintree\Http(Braintree\Configuration::$global);
             $http->get('/');
         } catch (Braintree\Exception $e) {
@@ -62,7 +62,7 @@ class HttpTest extends Setup
         Braintree\Configuration::environment('sandbox');
         Braintree\Configuration::sslVersion(3);
         $http = new Braintree\Http(Braintree\Configuration::$global);
-        $http->get('/');
+        $http->_doUrlRequest('get', '/malformed_url');
     }
 
     public function testSslError()

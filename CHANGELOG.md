@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.12.0
+* Add subscriptions for SEPA direct debit account
+* Add `merchant_advice_code` and `merchant_advice_code_text` to `Transaction`
+
 ## 6.11.2 
 *  `TestingGateway` methods return type is `Result\Error` for validation errors.
 

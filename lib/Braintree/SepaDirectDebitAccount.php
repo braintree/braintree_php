@@ -46,6 +46,15 @@ class SepaDirectDebitAccount extends Base
     protected function _initialize($sepaDirectDebitAttribs)
     {
         $this->_attributes = $sepaDirectDebitAttribs;
+
+        $subscriptionArray = array();
+        if (isset($sepaDirectDebitAttribs['subscriptions'])) {
+            foreach ($sepaDirectDebitAttribs['subscriptions'] as $subscription) {
+                $subscriptionArray[] = Subscription::factory($subscription);
+            }
+        }
+
+        $this->_set('subscriptions', $subscriptionArray);
     }
 
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing

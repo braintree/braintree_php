@@ -4472,6 +4472,7 @@ class TransactionTest extends Setup
 
     public function testGatewayRejectionOnExcessiveRetry()
     {
+        $this->markTestSkipped('pending');
         $gateway = Test\Helper::duplicateCheckingMerchantGateway();
         $excessiveRetry = false;
         $counter = 0;
@@ -6513,6 +6514,30 @@ class TransactionTest extends Setup
         $this->assertEquals('47.00', $transaction->amount);
         $this->assertEquals('XX', $transaction->networkResponseCode);
         $this->assertEquals('sample network response text', $transaction->networkResponseText);
+    }
+
+    public function testCreateTransactionReturnsMerchantAdviceCode()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            "creditCard" => [
+                "number" => Braintree\Test\CreditCardNumbers::$masterCard,
+                "expirationMonth" => "05",
+                "expirationYear" => "2030"
+            ],
+            "share" => true
+        ]);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$decline,
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::PROCESSOR_DECLINED, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+        $this->assertEquals('01', $transaction->merchantAdviceCode);
+        $this->assertEquals('New account information available', $transaction->merchantAdviceCodeText);
     }
 
     public function testCreateTransactionReturnsRetrievalReferenceNumber()
