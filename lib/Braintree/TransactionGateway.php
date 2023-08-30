@@ -196,6 +196,14 @@ class TransactionGateway
                         [
                             'profileId'
                         ]
+                    ],
+                    ['processingOverrides' =>
+                        [
+                            'customerEmail',
+                            'customerFirstName',
+                            'customerLastName',
+                            'customerTaxIdentifier'
+                        ]
                     ]
                 ],
             ],

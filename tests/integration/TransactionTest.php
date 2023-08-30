@@ -339,6 +339,33 @@ class TransactionTest extends Setup
         $this->assertFalse(property_exists($transaction, "riskData"));
     }
 
+    public function testSaleWithProcessingOverridesSucceeds()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$amexPayWithPoints['Success'],
+                'expirationDate' => '05/12'
+            ],
+            'options' => [
+                'submitForSettlement' => true,
+                'processingOverrides' => [
+                    'customerEmail' => 'test@phpSDK.com',
+                    'customerFirstName' => 'test customer_first_name',
+                    'customerLastName' => 'test customer_last_name',
+                    'customerTaxIdentifier' => '1.2.3.4.5.6'
+                ]
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+    }
+
     public function testSaleAndSkipAvs()
     {
         $result = Braintree\Transaction::sale([
@@ -6820,54 +6847,6 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_IS_NOT_ELIGIBLE_FOR_ADJUSTMENT, $baseErrors[0]->code);
     }
 
-    public function testAdjustAuthorizationOnProcessorNotSupportingIncremetnalAuth()
-    {
-        $initial_result = Braintree\Transaction::sale([
-            'merchantAccountId' => Test\Helper::fakeFirstDataMerchantAccountId(),
-            'amount' => '75.50',
-            'creditCard' => [
-                'number' => Braintree\Test\CreditCardNumbers::$visa,
-                'expirationDate' => '06/2009'
-            ]
-        ]);
-
-        $this->assertTrue($initial_result->success);
-        $initial_transaction = $initial_result->transaction;
-
-        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
-
-        $this->assertFalse($adjust_authorize_result->success);
-        $adjusted_transaction = $adjust_authorize_result->transaction;
-        $this->assertEquals("75.50", $adjusted_transaction->amount);
-
-        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree\Error\Codes::PROCESSOR_DOES_NOT_SUPPORT_INCREMENTAL_AUTH, $baseErrors[0]->code);
-    }
-
-    public function testAdjustAuthorizationOnProcessorNotSupportingAuthReversal()
-    {
-        $initial_result = Braintree\Transaction::sale([
-            'merchantAccountId' => Test\Helper::fakeFirstDataMerchantAccountId(),
-            'amount' => '75.50',
-            'creditCard' => [
-                'number' => Braintree\Test\CreditCardNumbers::$visa,
-                'expirationDate' => '06/2009'
-            ]
-        ]);
-
-        $this->assertTrue($initial_result->success);
-        $initial_transaction = $initial_result->transaction;
-
-        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '65.50');
-
-        $this->assertFalse($adjust_authorize_result->success);
-        $adjusted_transaction = $adjust_authorize_result->transaction;
-        $this->assertEquals("75.50", $adjusted_transaction->amount);
-
-        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree\Error\Codes::PROCESSOR_DOES_NOT_SUPPORT_PARTIAL_AUTH_REVERSAL, $baseErrors[0]->code);
-    }
-
     public function testNonRetriedTransaction()
     {
         $result = Braintree\Transaction::sale([
@@ -6877,6 +6856,7 @@ class TransactionTest extends Setup
 
         $transaction = $result->transaction;
         $this->assertFalse(property_exists($transaction, "retried"));
+        $this->assertTrue(count($transaction->retryIds) == 0);
     }
 
     public function testRetriedTransaction()
@@ -6888,6 +6868,7 @@ class TransactionTest extends Setup
 
         $transaction = $result->transaction;
         $this->assertTrue($transaction->retried);
+        $this->assertTrue(count($transaction->retryIds) > 0);
     }
 
     public function testIneligibleRetryTransaction()

@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.13.0 
+* Add `retry_ids` and `retry_transaction_id` to Transaction object
+* Add `processing_overrides` to `Transaction.sale` options
+
 ## 6.12.0
 * Add subscriptions for SEPA direct debit account
 * Add `merchant_advice_code` and `merchant_advice_code_text` to `Transaction`

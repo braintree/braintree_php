@@ -1719,4 +1719,25 @@ class TransactionAdvancedSearchTest extends Setup
 
         $this->assertEquals(2, $collection->maximumCount());
     }
+
+    public function testSearchRetryTrasactonId()
+    {
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '2000.00',
+             'paymentMethodToken' => 'network_tokenized_credit_card'
+        ]);
+
+        $transaction = $result->transaction;
+        $retryId = $transaction->retryIds[0];
+
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::id()->is($retryId),
+            Braintree\TransactionSearch::amount()->is('2000.00')
+        ]);
+
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($retryId, $collection->firstItem()->id);
+        $this->assertNotNull($collection->firstItem()->retriedTransactionId);
+    }
 }
