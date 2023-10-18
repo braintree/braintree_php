@@ -265,6 +265,26 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals(Braintree\WebhookNotification::CHECK, $webhookNotification->kind);
     }
 
+    public function testBuildsASampleNotificationForASubscriptionBillingSkippedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::SUBSCRIPTION_BILLING_SKIPPED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::SUBSCRIPTION_BILLING_SKIPPED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->subscription->id);
+        $this->assertEquals([], $webhookNotification->subscription->transactions);
+        $this->assertEquals([], $webhookNotification->subscription->discounts);
+        $this->assertEquals([], $webhookNotification->subscription->addOns);
+        $this->assertEquals("Active", $webhookNotification->subscription->status);
+    }
+
     public function testBuildsASampleNotificationForASubscriptionChargedSuccessfullyWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(

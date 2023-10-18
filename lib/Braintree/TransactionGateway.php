@@ -224,6 +224,7 @@ class TransactionGateway
                 ['industryType',
                     ['data' =>
                         [
+                            'arrivalDate',
                             'folioNumber',
                             'checkInDate',
                             'checkOutDate',
@@ -278,7 +279,8 @@ class TransactionGateway
                                     'kind',
                                     'amount'
                                 ]
-                            ]
+                            ],
+                            'ticketIssuerAddress'
                         ]
                     ]
                 ]
@@ -333,6 +335,71 @@ class TransactionGateway
             'shippingAmount',
             'discountAmount',
             'shipsFromPostalCode',
+            ['industry' =>
+                ['industryType',
+                    ['data' =>
+                        [
+                            'advancedDeposit',
+                            'arrivalDate',
+                            'checkInDate',
+                            'checkOutDate',
+                            'customerCode',
+                            'departureDate',
+                            'fareAmount',
+                            'feeAmount',
+                            'fireSafe',
+                            'folioNumber',
+                            'issuedDate',
+                            'issuingCarrierCode',
+                            'lodgingCheckInDate',
+                            'lodgingCheckOutDate',
+                            'lodgingName',
+                            'noShow',
+                            'passengerFirstName',
+                            'passengerLastName',
+                            'passengerMiddleInitial',
+                            'passengerTitle',
+                            'propertyPhone',
+                            'restrictedTicket',
+                            'roomRate',
+                            'roomTax',
+                            'taxAmount',
+                            'ticketIssuerAddress',
+                            'ticketNumber',
+                            'travelAgencyCode',
+                            'travelAgencyName',
+                            'travelPackage',
+                            ['legs' =>
+                                [
+                                    'arrivalAirportCode',
+                                    'arrivalTime',
+                                    'carrierCode',
+                                    'conjunctionTicket',
+                                    'couponNumber',
+                                    'departureAirportCode',
+                                    'departureDate',
+                                    'departureTime',
+                                    'endorsementOrRestrictions',
+                                    'exchangeTicket',
+                                    'fareAmount',
+                                    'fareBasisCode',
+                                    'feeAmount',
+                                    'flightNumber',
+                                    'serviceClass',
+                                    'stopoverPermitted',
+                                    'taxAmount',
+                                ]
+                            ],
+                            ['additionalCharges' =>
+                                [
+                                    'amount',
+                                    'kind'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
             ['lineItems' =>
                 [
                     'commodityCode',

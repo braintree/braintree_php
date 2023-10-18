@@ -106,6 +106,9 @@ class WebhookTestingGateway
             case WebhookNotification::DISPUTE_EXPIRED:
                 $subjectXml = self::_disputeExpiredSampleXml($id);
                 break;
+            case WebhookNotification::SUBSCRIPTION_BILLING_SKIPPED:
+                $subjectXml = self::_subscriptionBillingSkippedSampleXml($id);
+                break;
             case WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
                 $subjectXml = self::_subscriptionChargedSuccessfullySampleXml($id);
                 break;
@@ -500,6 +503,22 @@ class WebhookTestingGateway
     }
 
     private static function _subscriptionSampleXml($id)
+    {
+        return "
+        <subscription>
+            <id>{$id}</id>
+            <status>Active</status>
+            <transactions type=\"array\">
+            </transactions>
+            <add_ons type=\"array\">
+            </add_ons>
+            <discounts type=\"array\">
+            </discounts>
+        </subscription>
+        ";
+    }
+
+    private static function _subscriptionBillingSkippedSampleXml($id)
     {
         return "
         <subscription>

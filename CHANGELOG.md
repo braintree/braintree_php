@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.14.0
+* Add `arrivalDate` and `ticketIssuerAddress` to Transaction object
+* Add `SUBSCRIPTION_BILLING_SKIPPED` WebhookNotification
+
 ## 6.13.0 
 * Add `retry_ids` and `retry_transaction_id` to Transaction object
 * Add `processing_overrides` to `Transaction.sale` options

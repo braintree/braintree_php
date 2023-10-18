@@ -35,6 +35,7 @@ class WebhookNotification extends Base
     const PAYMENT_METHOD_CUSTOMER_DATA_UPDATED = 'payment_method_customer_data_updated';
     const PAYMENT_METHOD_REVOKED_BY_CUSTOMER = 'payment_method_revoked_by_customer';
     const RECIPIENT_UPDATED_GRANTED_PAYMENT_METHOD = 'recipient_updated_granted_payment_method';
+    const SUBSCRIPTION_BILLING_SKIPPED = 'subscription_billing_skipped';
     const SUBSCRIPTION_CANCELED = 'subscription_canceled';
     const SUBSCRIPTION_CHARGED_SUCCESSFULLY = 'subscription_charged_successfully';
     const SUBSCRIPTION_CHARGED_UNSUCCESSFULLY = 'subscription_charged_unsuccessfully';

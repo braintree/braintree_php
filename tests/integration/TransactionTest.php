@@ -5660,6 +5660,8 @@ class TransactionTest extends Setup
                     'feeAmount' => '10.00',
                     'taxAmount' => '20.00',
                     'restrictedTicket' => false,
+                    'arrivalDate' => '2020-01-05',
+                    'ticketIssuerAddress' => 'issuer-address',
                     'legs' => [
                         [
                             'conjunctionTicket' => 'CJ0001',
@@ -5704,6 +5706,78 @@ class TransactionTest extends Setup
             ]
         ]);
         $this->assertTrue($result->success);
+    }
+
+    public function testSubmitForSettlement_withTravelFlightIndustryData()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            "creditCard" => [
+                "number" => "4111111111111111",
+                "expirationMonth" => "11",
+                "expirationYear" => "2099"
+            ],
+            "share" => true
+        ]);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'paymentMethodNonce' => $nonce,
+            'merchantAccountId' => Test\Helper::fakeFirstDataMerchantAccountId()
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $this->assertEquals(Braintree\Transaction::SALE, $transaction->type);
+
+        $submitForSettlementParams = [
+            'industry' => [
+                'industryType' => Braintree\Transaction::TRAVEL_AND_FLIGHT_INDUSTRY,
+                'data' => [
+                    'passengerFirstName' => 'John',
+                    'passengerLastName' => 'Doe',
+                    'passengerMiddleInitial' => 'M',
+                    'passengerTitle' => 'Mr.',
+                    'issuedDate' => '2018-01-01',
+                    'travelAgencyName' => 'Expedia',
+                    'travelAgencyCode' => '12345678',
+                    'ticketNumber' => 'ticket-number',
+                    'issuingCarrierCode' => 'AA',
+                    'customerCode' => 'customer-code',
+                    'fareAmount' => '70.00',
+                    'feeAmount' => '10.00',
+                    'restrictedTicket' => false,
+                    'arrivalDate' => '2020-01-05',
+                    'ticketIssuerAddress' => 'issuer-address',
+                    'legs' => [
+                        [
+                            'conjunctionTicket' => 'CJ0001',
+                            'exchangeTicket' => 'ET0001',
+                            'couponNumber' => '1',
+                            'serviceClass' => 'Y',
+                            'carrierCode' => 'AA',
+                            'fareBasisCode' => 'W',
+                            'flightNumber' => 'AA100',
+                            'departureDate' => '2018-01-02',
+                            'departureAirportCode' => 'MDW',
+                            'departureTime' => '08:00',
+                            'arrivalAirportCode' => 'ATX',
+                            'arrivalTime' => '10:00',
+                            'stopoverPermitted' => false,
+                            'fareAmount' => '35.00',
+                            'feeAmount' => '5.00',
+                            'taxAmount' => '10.00',
+                            'endorsementOrRestrictions' => 'NOT REFUNDABLE'
+                        ],
+                    ]
+                ]
+            ]
+        ];
+        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, null, $submitForSettlementParams);
+        $this->assertEquals(true, $submitResult->success);
+        $submitTransaction = $submitResult->transaction;
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitTransaction->status);
     }
 
     public function testSale_withTravelFlightIndustryDataValidation()
@@ -6855,7 +6929,7 @@ class TransactionTest extends Setup
         ]);
 
         $transaction = $result->transaction;
-        $this->assertFalse(property_exists($transaction, "retried"));
+        $this->assertFalse($transaction->retried);
         $this->assertTrue(count($transaction->retryIds) == 0);
     }
 
@@ -6883,6 +6957,6 @@ class TransactionTest extends Setup
         ]);
 
         $transaction = $result->transaction;
-        $this->assertFalse(property_exists($transaction, "retried"));
+        $this->assertFalse($transaction->retried);
     }
 }
