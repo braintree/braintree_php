@@ -152,6 +152,7 @@ class PaymentMethodGateway
             'skipAdvancedFraudChecking',
             'usBankAccountVerificationMethod',
             'verificationAccountType',
+            'verificationAddOns',
             'verificationAmount',
             'verificationMerchantAccountId',
             'verifyCard',

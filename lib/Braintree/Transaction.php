@@ -233,6 +233,24 @@ class Transaction extends Base
             );
         }
 
+        if (isset($transactionAttribs['metaCheckoutCard'])) {
+            $this->_set(
+                'metaCheckoutCardDetails',
+                new Transaction\MetaCheckoutCardDetails(
+                    $transactionAttribs['metaCheckoutCard']
+                )
+            );
+        }
+
+        if (isset($transactionAttribs['metaCheckoutToken'])) {
+            $this->_set(
+                'metaCheckoutTokenDetails',
+                new Transaction\MetaCheckoutTokenDetails(
+                    $transactionAttribs['metaCheckoutToken']
+                )
+            );
+        }
+
         if (isset($transactionAttribs['visaCheckoutCard'])) {
             $this->_set(
                 'visaCheckoutCardDetails',

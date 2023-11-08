@@ -15,6 +15,7 @@ class UsBankAccountVerificationTest extends Setup
         $verification = Braintree\UsBankAccountVerification::factory([
             'status' => Braintree\Result\UsBankAccountVerification::VERIFIED,
             'verificationMethod' => Braintree\Result\UsBankAccountVerification::NETWORK_CHECK,
+            'verificationAddOns' => Braintree\Result\UsBankAccountVerification::CUSTOMER_VERIFICATION,
             'usBankAccount' => [
                 'token' => 'abc123',
             ],
@@ -24,6 +25,10 @@ class UsBankAccountVerificationTest extends Setup
         $this->assertEquals(
             Braintree\Result\UsBankAccountVerification::NETWORK_CHECK,
             $verification->verificationMethod
+        );
+        $this->assertEquals(
+            Braintree\Result\UsBankAccountVerification::CUSTOMER_VERIFICATION,
+            $verification->verificationAddOns
         );
 
         $this->assertEquals(

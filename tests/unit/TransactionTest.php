@@ -106,6 +106,36 @@ class TransactionTest extends Setup
         ]);
     }
 
+    public function testTransactionWithMetaCheckoutCardAttributes()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'amount' => '420',
+            'metaCheckoutCard' => [
+                'expirationMonth' => "12",
+                'expirationYear' => "2024",
+                'bin' => "401288",
+                'last4' => "1881",
+            ]
+        ]);
+
+        $this->assertTrue($transaction->metaCheckoutCardDetails instanceof Braintree\Transaction\MetaCheckoutCardDetails);
+    }
+
+    public function testTransactionWithMetaCheckoutTokenAttributes()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'amount' => '420',
+            'metaCheckoutToken' => [
+                'expirationMonth' => "12",
+                'expirationYear' => "2024",
+                'bin' => "401288",
+                'last4' => "1881",
+            ]
+        ]);
+
+        $this->assertTrue($transaction->metaCheckoutTokenDetails instanceof Braintree\Transaction\MetaCheckoutTokenDetails);
+    }
+
     public function testTransactionWithSepaDebitAccountDetail()
     {
         $transaction = Braintree\Transaction::factory([

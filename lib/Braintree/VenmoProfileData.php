@@ -25,6 +25,17 @@ class VenmoProfileData extends Base
     protected function _initialize($venmoProfileDataAttribs)
     {
         $this->_attributes = $venmoProfileDataAttribs;
+
+        $billingAddress = isset($venmoProfileDataAttribs['billingAddress']) ?
+            Address::factory($venmoProfileDataAttribs['billingAddress']) :
+            null;
+
+        $shippingAddress = isset($venmoProfileDataAttribs['shippingAddress']) ?
+            Address::factory($venmoProfileDataAttribs['shippingAddress']) :
+            null;
+
+        $this->_set('billingAddress', $billingAddress);
+        $this->_set('shippingAddress', $shippingAddress);
     }
 
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing

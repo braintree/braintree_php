@@ -42,7 +42,7 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\PaymentMethod::create([
             'customerId' => $customer->id,
-            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce('1000000000'),
+            'paymentMethodNonce' => Braintree\Test\Nonces::$usBankAccount,
             'options' => [
                 'verificationMerchantAccountId' => Test\Helper::usBankMerchantAccount(),
                 'usBankAccountVerificationMethod' => Braintree\Result\UsBankAccountVerification::NETWORK_CHECK,
@@ -50,11 +50,11 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         ]);
 
         $usBankAccount = $result->paymentMethod;
-        $this->assertEquals('021000021', $usBankAccount->routingNumber);
+        $this->assertEquals('123456789', $usBankAccount->routingNumber);
         $this->assertEquals('0000', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
-        $this->assertMatchesRegularExpression('/CHASE/', $usBankAccount->bankName);
+        $this->assertEquals('Wells Fargo', $usBankAccount->bankName);
         $this->assertEquals(true, $usBankAccount->verified);
 
         $this->assertEquals(1, count($usBankAccount->verifications));
@@ -63,6 +63,65 @@ class PaymentMethodWithUsBankAccountTest extends Setup
 
         $this->assertEquals(Braintree\Result\UsBankAccountVerification::VERIFIED, $verification->status);
         $this->assertEquals(Braintree\Result\UsBankAccountVerification::NETWORK_CHECK, $verification->verificationMethod);
+    }
+
+    public function testCreate_fromUsBankAccountNonceWithVerificationAddOns()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$usBankAccount,
+            'options' => [
+                'verificationMerchantAccountId' => Test\Helper::usBankMerchantAccount(),
+                'usBankAccountVerificationMethod' => Braintree\Result\UsBankAccountVerification::NETWORK_CHECK,
+                'verificationAddOns' => Braintree\Result\UsBankAccountVerification::CUSTOMER_VERIFICATION,
+            ]
+        ]);
+
+        $usBankAccount = $result->paymentMethod;
+        $this->assertEquals('123456789', $usBankAccount->routingNumber);
+        $this->assertEquals('0000', $usBankAccount->last4);
+        $this->assertEquals('checking', $usBankAccount->accountType);
+        $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
+        $this->assertEquals('Wells Fargo', $usBankAccount->bankName);
+        $this->assertEquals(true, $usBankAccount->verified);
+
+        $this->assertEquals(1, count($usBankAccount->verifications));
+
+        $verification = $usBankAccount->verifications[0];
+
+        $this->assertEquals(Braintree\Result\UsBankAccountVerification::VERIFIED, $verification->status);
+        $this->assertEquals(Braintree\Result\UsBankAccountVerification::NETWORK_CHECK, $verification->verificationMethod);
+        $this->assertEquals("1000", $verification->processorResponseCode);
+    }
+
+    public function testCreate_returnsAdditionalProcessorResponseForFailedVerification()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce('1000000005'),
+            'options' => [
+                'verificationMerchantAccountId' => Test\Helper::usBankMerchantAccount(),
+                'usBankAccountVerificationMethod' => Braintree\Result\UsBankAccountVerification::NETWORK_CHECK,
+            ]
+        ]);
+
+        $usBankAccount = $result->paymentMethod;
+        $this->assertEquals('0005', $usBankAccount->last4);
+        $this->assertEquals('checking', $usBankAccount->accountType);
+        $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
+        $this->assertEquals('JPMORGAN CHASE', $usBankAccount->bankName);
+        $this->assertEquals(false, $usBankAccount->verified);
+
+        $this->assertEquals(1, count($usBankAccount->verifications));
+
+        $verification = $usBankAccount->verifications[0];
+
+        $this->assertEquals(Braintree\Result\UsBankAccountVerification::PROCESSOR_DECLINED, $verification->status);
+        $this->assertEquals(Braintree\Result\UsBankAccountVerification::NETWORK_CHECK, $verification->verificationMethod);
+        $this->assertEquals("2061", $verification->processorResponseCode);
+        $this->assertEquals("Invalid routing number", $verification->additionalProcessorResponse);
     }
 
     public function testCreate_fromPlaidUsBankAccountNonce()

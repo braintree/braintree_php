@@ -13,6 +13,8 @@ class PaymentInstrumentType
     const CREDIT_CARD               = 'credit_card';
     const GOOGLE_PAY_CARD           = 'android_pay_card';
     const LOCAL_PAYMENT             = 'local_payment';
+    const META_CHECKOUT_CARD        = 'meta_checkout_card';
+    const META_CHECKOUT_TOKEN       = 'meta_checkout_token';
     const PAYPAL_ACCOUNT            = 'paypal_account';
     const PAYPAL_HERE               = 'paypal_here';
     const SAMSUNG_PAY_CARD          = 'samsung_pay_card';

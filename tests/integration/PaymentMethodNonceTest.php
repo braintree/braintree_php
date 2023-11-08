@@ -237,6 +237,34 @@ class PaymentMethodNonceTest extends Setup
         $this->assertEquals(Braintree\CreditCard::COMMERCIAL_YES, $nonce->binData->commercial);
     }
 
+    public function testFind_nonceShowsMetaCheckoutCardDetails()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$metaCheckoutCard);
+        $details = $nonce->details;
+
+        $this->assertEquals('401288', $details["bin"]);
+        $this->assertEquals('81', $details["lastTwo"]);
+        $this->assertEquals('1881', $details["lastFour"]);
+        $this->assertEquals('Visa', $details["cardType"]);
+        $this->assertEquals('Meta Checkout Card Cardholder', $details["cardholderName"]);
+        $this->assertEquals('2024', $details["expirationYear"]);
+        $this->assertEquals('12', $details["expirationMonth"]);
+    }
+
+    public function testFind_nonceShowsMetaCheckoutTokenDetails()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$metaCheckoutToken);
+        $details = $nonce->details;
+
+        $this->assertEquals('401288', $details["bin"]);
+        $this->assertEquals('81', $details["lastTwo"]);
+        $this->assertEquals('1881', $details["lastFour"]);
+        $this->assertEquals('Visa', $details["cardType"]);
+        $this->assertEquals('Meta Checkout Token Cardholder', $details["cardholderName"]);
+        $this->assertEquals('2024', $details["expirationYear"]);
+        $this->assertEquals('12', $details["expirationMonth"]);
+    }
+
     public function testFind_returnsBinDataForDebitNonce()
     {
         $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactableDebit);

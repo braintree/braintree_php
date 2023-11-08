@@ -34,6 +34,7 @@ class PaymentMethodTest extends Setup
                 'skipAdvancedFraudChecking',
                 'usBankAccountVerificationMethod',
                 'verificationAccountType',
+                'verificationAddOns',
                 'verificationAmount',
                 'verificationMerchantAccountId',
                 'verifyCard',

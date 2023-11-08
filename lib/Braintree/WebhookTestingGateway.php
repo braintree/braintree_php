@@ -823,6 +823,20 @@ class WebhookTestingGateway
               <last-name>Doe</last-name>
               <phone-number>1231231234</phone-number>
               <email>john.doe@paypal.com</email>
+              <billing-address>
+                <street-address>billing-street-address</street-address>
+                <extended-address>billing-extended-address</extended-address>
+                <locality>billing-locality</locality>
+                <region>billing-region</region>
+                <postal-code>billing-code</postal-code>
+              </billing-address>
+              <shipping-address>
+                <street-address>shipping-street-address</street-address>
+                <extended-address>shipping-extended-address</extended-address>
+                <locality>shipping-locality</locality>
+                <region>shipping-region</region>
+                <postal-code>shipping-code</postal-code>
+              </shipping-address>
             </profile-data>
           </enriched-customer-data>
         </payment-method-customer-data-updated-metadata>

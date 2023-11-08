@@ -1,5 +1,12 @@
 # Changelog
 
+## 6.15.0
+* Add `billingAddress` and `shippingAddress` to `VenmoProfileData` for `PaymentMethodCustomerDataUpdated` webhook
+* Add `MetaCheckoutCard` and `MetaCheckoutToken` payment methods
+* Add `MetaCheckoutCardDetails` and `MetaCheckoutTokenDetails` to Transaction object
+* Add `verificationAddOns` and `additionalProcessorResponse` to `PaymentMethodCreate` for ACH Network Check
+* Add `dateOfBirth` and `countryCode` to `industry_data`
+
 ## 6.14.0
 * Add `arrivalDate` and `ticketIssuerAddress` to Transaction object
 * Add `SUBSCRIPTION_BILLING_SKIPPED` WebhookNotification

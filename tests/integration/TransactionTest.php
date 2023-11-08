@@ -1760,6 +1760,56 @@ class TransactionTest extends Setup
         );
     }
 
+    public function testCreateMetaCheckoutCardTxnWithFakeNonce()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'paymentMethodNonce' => Braintree\Test\Nonces::$metaCheckoutCard
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $details = $transaction->metaCheckoutCardDetails;
+        $this->assertSame('401288', $details->bin);
+        $this->assertSame('Visa', $details->cardType);
+        $this->assertSame('Meta Checkout Card Cardholder', $details->cardholderName);
+        $this->assertSame('https://assets.braintreegateway.com/payment_method_logo/visa.png?environment=development', $details->imageUrl);
+        $this->assertSame('container123', $details->containerId);
+        $this->assertSame('US', $details->customerLocation);
+        $this->assertSame('12/2024', $details->expirationDate);
+        $this->assertSame('12', $details->expirationMonth);
+        $this->assertSame('2024', $details->expirationYear);
+        $this->assertSame('1881', $details->last4);
+        $this->assertSame('401288******1881', $details->maskedNumber);
+        $this->assertSame('No', $details->prepaid);
+    }
+
+    public function testCreateMetaCheckoutTokenTxnWithFakeNonce()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'paymentMethodNonce' => Braintree\Test\Nonces::$metaCheckoutToken
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $details = $transaction->metaCheckoutTokenDetails;
+        $this->assertSame('401288', $details->bin);
+        $this->assertSame('Visa', $details->cardType);
+        $this->assertSame('Meta Checkout Token Cardholder', $details->cardholderName);
+        $this->assertSame('https://assets.braintreegateway.com/payment_method_logo/visa.png?environment=development', $details->imageUrl);
+        $this->assertSame('container123', $details->containerId);
+        $this->assertSame('AlhlvxmN2ZKuAAESNFZ4GoABFA==', $details->cryptogram);
+        $this->assertSame('07', $details->ecommerceIndicator);
+        $this->assertSame('US', $details->customerLocation);
+        $this->assertSame('12/2024', $details->expirationDate);
+        $this->assertSame('12', $details->expirationMonth);
+        $this->assertSame('2024', $details->expirationYear);
+        $this->assertSame('1881', $details->last4);
+        $this->assertSame('401288******1881', $details->maskedNumber);
+        $this->assertSame('No', $details->prepaid);
+    }
+
     public function testCreateTransactionUsingFakeApplePayNonce()
     {
         $result = Braintree\Transaction::sale([
@@ -3047,6 +3097,120 @@ class TransactionTest extends Setup
         $this->assertEquals('123*123456789012345678', $submitResult->transaction->descriptor->name);
         $this->assertEquals('3334445555', $submitResult->transaction->descriptor->phone);
         $this->assertEquals('ebay.com', $submitResult->transaction->descriptor->url);
+    }
+
+    public function testSubmitForSettlement_withIndustryDataFlight()
+    {
+        $nonce = Braintree\Test\Nonces::$paypalOneTimePayment;
+        $transactionResult = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transactionResult->transaction->status);
+        $submitResult = Braintree\Transaction::submitForSettlement($transactionResult->transaction->id, '50.00', [
+
+            'industry' => [
+                'industryType' => Braintree\Transaction::TRAVEL_AND_FLIGHT_INDUSTRY,
+                'data' => [
+                    'countryCode' => 'US',
+                    'dateOfBirth' => '2012-12-12',
+                    'passengerFirstName' => 'John',
+                    'passengerLastName' => 'Doe',
+                    'passengerMiddleInitial' => 'M',
+                    'passengerTitle' => 'Mr.',
+                    'issuedDate' => '2018-01-01',
+                    'travelAgencyName' => 'Expedia',
+                    'travelAgencyCode' => '12345678',
+                    'ticketNumber' => 'ticket-number',
+                    'issuingCarrierCode' => 'AA',
+                    'customerCode' => 'customer-code',
+                    'fareAmount' => '70.00',
+                    'feeAmount' => '10.00',
+                    'taxAmount' => '20.00',
+                    'restrictedTicket' => false,
+                    'legs' => [
+                        [
+                            'conjunctionTicket' => 'CJ0001',
+                            'exchangeTicket' => 'ET0001',
+                            'couponNumber' => '1',
+                            'serviceClass' => 'Y',
+                            'carrierCode' => 'AA',
+                            'fareBasisCode' => 'W',
+                            'flightNumber' => 'AA100',
+                            'departureDate' => '2018-01-02',
+                            'departureAirportCode' => 'MDW',
+                            'departureTime' => '08:00',
+                            'arrivalAirportCode' => 'ATX',
+                            'arrivalTime' => '10:00',
+                            'stopoverPermitted' => false,
+                            'fareAmount' => '35.00',
+                            'feeAmount' => '5.00',
+                            'taxAmount' => '10.00',
+                            'endorsementOrRestrictions' => 'NOT REFUNDABLE'
+                        ],
+                        [
+                            'conjunctionTicket' => 'CJ0002',
+                            'exchangeTicket' => 'ET0002',
+                            'couponNumber' => '1',
+                            'serviceClass' => 'Y',
+                            'carrierCode' => 'AA',
+                            'fareBasisCode' => 'W',
+                            'flightNumber' => 'AA200',
+                            'departureDate' => '2018-01-03',
+                            'departureAirportCode' => 'ATX',
+                            'departureTime' => '12:00',
+                            'arrivalAirportCode' => 'MDW',
+                            'arrivalTime' => '14:00',
+                            'stopoverPermitted' => false,
+                            'fareAmount' => '35.00',
+                            'feeAmount' => '5.00',
+                            'taxAmount' => '10.00',
+                            'endorsementOrRestrictions' => 'NOT REFUNDABLE'
+                        ]
+                    ]
+                ]
+            ]
+
+        ]);
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals(Braintree\Transaction::SETTLING, $submitResult->transaction->status);
+        $this->assertEquals('50.00', $submitResult->transaction->amount);
+    }
+
+    public function testSubmitForSettlement_withTravelFlightIndustryDataValidation()
+    {
+        $nonce = Braintree\Test\Nonces::$paypalOneTimePayment;
+        $transactionResult = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transactionResult->transaction->status);
+        $result = Braintree\Transaction::submitForSettlement($transactionResult->transaction->id, '50.00', [
+            'industry' => [
+                'industryType' => Braintree\Transaction::TRAVEL_AND_FLIGHT_INDUSTRY,
+                'data' => [
+                    'fareAmount' => '-1.23',
+                    'legs' => [
+                        [
+                            'fareAmount' => '-1.23'
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(
+            Braintree\Error\Codes::INDUSTRY_DATA_TRAVEL_FLIGHT_FARE_AMOUNT_CANNOT_BE_NEGATIVE,
+            $result->errors->forKey('transaction')->forKey('industry')->onAttribute('fareAmount')[0]->code
+        );
+        $this->assertEquals(
+            Braintree\Error\Codes::INDUSTRY_DATA_LEG_TRAVEL_FLIGHT_FARE_AMOUNT_CANNOT_BE_NEGATIVE,
+            $result->errors->forKey('transaction')->forKey('industry')->forKey('legs')->forKey('index0')->onAttribute('fareAmount')[0]->code
+        );
     }
 
     public function testSubmitForSettlement_withInvalidParams()
@@ -5646,6 +5810,8 @@ class TransactionTest extends Setup
             'industry' => [
                 'industryType' => Braintree\Transaction::TRAVEL_AND_FLIGHT_INDUSTRY,
                 'data' => [
+                    'countryCode' => 'US',
+                    'dateOfBirth' => '2012-12-12',
                     'passengerFirstName' => 'John',
                     'passengerLastName' => 'Doe',
                     'passengerMiddleInitial' => 'M',
@@ -6074,6 +6240,120 @@ class TransactionTest extends Setup
         $this->assertEquals('123*123456789012345678', $submitResult->transaction->descriptor->name);
         $this->assertEquals('3334445555', $submitResult->transaction->descriptor->phone);
         $this->assertEquals('ebay.com', $submitResult->transaction->descriptor->url);
+    }
+
+    public function testSubmitForPartialSettlement_withIndustryDataFlight()
+    {
+        $nonce = Braintree\Test\Nonces::$paypalOneTimePayment;
+        $transactionResult = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transactionResult->transaction->status);
+
+        $params = [
+            'industry' => [
+                'industryType' => Braintree\Transaction::TRAVEL_AND_FLIGHT_INDUSTRY,
+                'data' => [
+                    'countryCode' => 'US',
+                    'dateOfBirth' => '2012-12-12',
+                    'passengerFirstName' => 'John',
+                    'passengerLastName' => 'Doe',
+                    'passengerMiddleInitial' => 'M',
+                    'passengerTitle' => 'Mr.',
+                    'issuedDate' => '2018-01-01',
+                    'travelAgencyName' => 'Expedia',
+                    'travelAgencyCode' => '12345678',
+                    'ticketNumber' => 'ticket-number',
+                    'issuingCarrierCode' => 'AA',
+                    'customerCode' => 'customer-code',
+                    'fareAmount' => '70.00',
+                    'feeAmount' => '10.00',
+                    'taxAmount' => '20.00',
+                    'restrictedTicket' => false,
+                    'legs' => [
+                        [
+                            'conjunctionTicket' => 'CJ0001',
+                            'exchangeTicket' => 'ET0001',
+                            'couponNumber' => '1',
+                            'serviceClass' => 'Y',
+                            'carrierCode' => 'AA',
+                            'fareBasisCode' => 'W',
+                            'flightNumber' => 'AA100',
+                            'departureDate' => '2018-01-02',
+                            'departureAirportCode' => 'MDW',
+                            'departureTime' => '08:00',
+                            'arrivalAirportCode' => 'ATX',
+                            'arrivalTime' => '10:00',
+                            'stopoverPermitted' => false,
+                            'fareAmount' => '35.00',
+                            'feeAmount' => '5.00',
+                            'taxAmount' => '10.00',
+                            'endorsementOrRestrictions' => 'NOT REFUNDABLE'
+                        ],
+                        [
+                            'conjunctionTicket' => 'CJ0002',
+                            'exchangeTicket' => 'ET0002',
+                            'couponNumber' => '1',
+                            'serviceClass' => 'Y',
+                            'carrierCode' => 'AA',
+                            'fareBasisCode' => 'W',
+                            'flightNumber' => 'AA200',
+                            'departureDate' => '2018-01-03',
+                            'departureAirportCode' => 'ATX',
+                            'departureTime' => '12:00',
+                            'arrivalAirportCode' => 'MDW',
+                            'arrivalTime' => '14:00',
+                            'stopoverPermitted' => false,
+                            'fareAmount' => '35.00',
+                            'feeAmount' => '5.00',
+                            'taxAmount' => '10.00',
+                            'endorsementOrRestrictions' => 'NOT REFUNDABLE'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $submitResult = Braintree\Transaction::submitForPartialSettlement($transactionResult->transaction->id, '20.00', $params);
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals(Braintree\Transaction::SETTLING, $submitResult->transaction->status);
+    }
+
+    public function testSubmitForPartialSettlement_withTravelFlightIndustryDataValidation()
+    {
+        $nonce = Braintree\Test\Nonces::$paypalOneTimePayment;
+        $transactionResult = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'paymentMethodNonce' => $nonce
+        ]);
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transactionResult->transaction->status);
+        $result = Braintree\Transaction::submitForPartialSettlement($transactionResult->transaction->id, '20.00', [
+            'industry' => [
+                'industryType' => Braintree\Transaction::TRAVEL_AND_FLIGHT_INDUSTRY,
+                'data' => [
+                    'fareAmount' => '-1.23',
+                    'legs' => [
+                        [
+                            'fareAmount' => '-1.23'
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+        $this->assertFalse($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals(
+            Braintree\Error\Codes::INDUSTRY_DATA_TRAVEL_FLIGHT_FARE_AMOUNT_CANNOT_BE_NEGATIVE,
+            $result->errors->forKey('transaction')->forKey('industry')->onAttribute('fareAmount')[0]->code
+        );
+        $this->assertEquals(
+            Braintree\Error\Codes::INDUSTRY_DATA_LEG_TRAVEL_FLIGHT_FARE_AMOUNT_CANNOT_BE_NEGATIVE,
+            $result->errors->forKey('transaction')->forKey('industry')->forKey('legs')->forKey('index0')->onAttribute('fareAmount')[0]->code
+        );
     }
 
     public function testSubmitForPartialSettlement_withInvalidParams()

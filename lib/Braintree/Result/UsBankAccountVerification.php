@@ -24,10 +24,14 @@ class UsBankAccountVerification extends Base
     const VERIFIED           = 'verified';
     const PENDING            = 'pending';
 
+    // Verification Method
     const TOKENIZED_CHECK   = 'tokenized_check';
     const NETWORK_CHECK     = 'network_check';
     const INDEPENDENT_CHECK = 'independent_check';
     const MICRO_TRANSFERS   = 'micro_transfers';
+
+    // Verification Add Ons
+    const CUSTOMER_VERIFICATION = 'customer_verification';
 
     private $_gatewayRejectionReason;
     private $_status;
@@ -101,6 +105,18 @@ class UsBankAccountVerification extends Base
             UsBankAccountVerification::NETWORK_CHECK,
             UsBankAccountVerification::INDEPENDENT_CHECK,
             UsBankAccountVerification::MICRO_TRANSFERS,
+        ];
+    }
+
+    /**
+     * returns an array of all possible US Bank Account Verification Add Ons
+     *
+     * @return array
+     */
+    public static function allVerificationAddOns()
+    {
+        return [
+            UsBankAccountVerification::CUSTOMER_VERIFICATION,
         ];
     }
 }

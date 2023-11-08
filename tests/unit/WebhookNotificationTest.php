@@ -1170,5 +1170,19 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals('Doe', $profileData->lastName);
         $this->assertEquals('1231231234', $profileData->phoneNumber);
         $this->assertEquals('john.doe@paypal.com', $profileData->email);
+
+        $billingAddress = $profileData->billingAddress;
+        $this->assertEquals('billing-street-address', $billingAddress->streetAddress);
+        $this->assertEquals('billing-extended-address', $billingAddress->extendedAddress);
+        $this->assertEquals('billing-locality', $billingAddress->locality);
+        $this->assertEquals('billing-region', $billingAddress->region);
+        $this->assertEquals('billing-code', $billingAddress->postalCode);
+
+        $shippingAddress = $profileData->shippingAddress;
+        $this->assertEquals('shipping-street-address', $shippingAddress->streetAddress);
+        $this->assertEquals('shipping-extended-address', $shippingAddress->extendedAddress);
+        $this->assertEquals('shipping-locality', $shippingAddress->locality);
+        $this->assertEquals('shipping-region', $shippingAddress->region);
+        $this->assertEquals('shipping-code', $shippingAddress->postalCode);
     }
 }
