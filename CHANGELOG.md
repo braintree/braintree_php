@@ -1,5 +1,21 @@
 # Changelog
 
+## 6.16.0
+* Deprecate `threeDSecureToken` in favor of `threeDSecureAuthenticationId`
+* Deprecate `venmoSdkSession`, `venmoSdkPaymentMethodCode`, and `isVenmoSdk()`
+* Add `PICKUP_IN_STORE` to `ShippingMethod` enum
+* Add to `CreditCardVerification` create request
+  * `externalVault`
+  * `paymentMethodNonce`
+  * `riskData`
+  * `threeDSecureAuthenticationId`
+  * `threeDSecurePassThru` 
+* Add `phoneNumber` to `Address`, `CreditCardGateway`, `PaymentMethodGateway` and `CustomerGateway`
+* Add `packages` to `Transaction`
+* Add `packageTracking` method to `TransactionGateway` to make request to add tracking information to transactions
+* Add check for empty `liabilityShift` in `RiskData`
+* Add `imageUrl`, `upcCode`, and `upcType` to `lineItems` in `TransactionGateway`
+
 ## 6.15.0
 * Add `billingAddress` and `shippingAddress` to `VenmoProfileData` for `PaymentMethodCustomerDataUpdated` webhook
 * Add `MetaCheckoutCard` and `MetaCheckoutToken` payment methods

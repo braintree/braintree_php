@@ -76,6 +76,7 @@ class HttpClientApi extends Braintree\Http
     public function nonce_for_new_card($options)
     {
         $clientTokenOptions = [];
+        // phpcs:ignore
         if (array_key_exists("customerId", $options)) {
             $clientTokenOptions["customerId"] = $options["customerId"];
             unset($options["customerId"]);

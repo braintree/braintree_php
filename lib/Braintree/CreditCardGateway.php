@@ -39,6 +39,7 @@ class CreditCardGateway
     public function create($attribs)
     {
         Util::verifyKeys(self::createSignature(), $attribs);
+        $this->_checkForDeprecatedAttributes($attribs);
         return $this->_doCreate('/payment_methods', ['credit_card' => $attribs]);
     }
 
@@ -54,6 +55,7 @@ class CreditCardGateway
      */
     public function createNoValidate($attribs)
     {
+        $this->_checkForDeprecatedAttributes($attribs);
         $result = $this->create($attribs);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
@@ -275,6 +277,7 @@ class CreditCardGateway
     public function update($token, $attributes)
     {
         Util::verifyKeys(self::updateSignature(), $attributes);
+        $this->_checkForDeprecatedAttributes($attributes);
         $this->_validateId($token);
         return $this->_doUpdate('put', '/payment_methods/credit_card/' . $token, ['creditCard' => $attributes]);
     }
@@ -295,6 +298,7 @@ class CreditCardGateway
      */
     public function updateNoValidate($token, $attributes)
     {
+        $this->_checkForDeprecatedAttributes($attributes);
         $result = $this->update($token, $attributes);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
@@ -314,12 +318,14 @@ class CreditCardGateway
         return new Result\Successful();
     }
 
+    // NEXT_MAJOR_VERSION Remove venmoSdkSession
+    // The old venmo SDK class has been deprecated
     private static function baseOptions()
     {
         return [
             'makeDefault',
             'skipAdvancedFraudChecking',
-            'venmoSdkSession',
+            'venmoSdkSession', //Deprecated
             'verificationAccountType',
             'verificationAmount',
             'verificationMerchantAccountId',
@@ -327,11 +333,13 @@ class CreditCardGateway
         ];
     }
 
+    // NEXT_MAJOR_VERSION Remove venmoSdkPaymentMethodCode
+    // The old venmo SDK class has been deprecated
     private static function baseSignature($options)
     {
          return [
              'billingAddressId', 'cardholderName', 'cvv', 'number',
-             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode',
+             'expirationDate', 'expirationMonth', 'expirationYear', 'token', 'venmoSdkPaymentMethodCode', // Deprecated
              'deviceData', 'paymentMethodNonce',
              ['options' => $options],
              [
@@ -355,7 +363,8 @@ class CreditCardGateway
             'locality',
             'region',
             'postalCode',
-            'streetAddress'
+            'streetAddress',
+            'phoneNumber'
         ];
     }
 
@@ -404,6 +413,7 @@ class CreditCardGateway
         ];
 
         foreach ($signature as $key => $value) {
+            // phpcs:ignore
             if (is_array($value) and array_key_exists('billingAddress', $value)) {
                 // phpcs:ignore
                 $signature[$key]['billingAddress'] = array_merge_recursive($value['billingAddress'], $updateExistingBillingSignature);
@@ -464,6 +474,13 @@ class CreditCardGateway
             throw new Exception\Unexpected(
                 "Expected address or apiErrorResponse"
             );
+        }
+    }
+
+    private function _checkForDeprecatedAttributes($attributes)
+    {
+        if (isset($attributes['venmoSdkSession']) || isset($attributes['venmoSdkPaymentMethodCode'])) {
+            trigger_error('The Venmo SDK integration is Unsupported. Please update your integration to use Pay with Venmo instead.', E_USER_DEPRECATED);
         }
     }
 }

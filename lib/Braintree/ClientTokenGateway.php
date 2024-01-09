@@ -34,6 +34,7 @@ class ClientTokenGateway
      */
     public function generate($params = [])
     {
+        // phpcs:ignore
         if (!array_key_exists("version", $params)) {
             $params["version"] = ClientToken::DEFAULT_VERSION;
         }
@@ -62,6 +63,7 @@ class ClientTokenGateway
      */
     public function conditionallyVerifyKeys($params)
     {
+        // phpcs:ignore
         if (array_key_exists("customerId", $params)) {
             Util::verifyKeys($this->generateWithCustomerIdSignature(), $params);
         } else {

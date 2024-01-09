@@ -75,6 +75,7 @@ class PaymentMethodGateway
     public function update($token, $attribs)
     {
         Util::verifyKeys(self::updateSignature(), $attribs);
+        $this->_checkForDeprecatedAttributes($attribs);
         return $this->_doUpdate('/payment_methods/any/' . $token, ['payment_method' => $attribs]);
     }
 
@@ -170,7 +171,7 @@ class PaymentMethodGateway
                         'firstName', 'lastName', 'company', 'countryName',
                         'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
                         'extendedAddress', 'locality', 'postalCode', 'region',
-                        'streetAddress'],
+                        'streetAddress', 'phoneNumber'],
                 ],
             ]],
         ];
@@ -220,8 +221,9 @@ class PaymentMethodGateway
             'threeDSecureVersion',
             'xid'
         ];
+        // NEXT_MAJOR_VERSION Remove venmoSdkPaymentMethodCode
         $signature = array_merge(self::baseSignature(), [
-            'venmoSdkPaymentMethodCode',
+            'venmoSdkPaymentMethodCode',  // Deprecated
             ['billingAddress' => $billingAddressSignature],
             ['threeDSecurePassThru' => $threeDSPassThruSignature]
         ]);
@@ -345,6 +347,13 @@ class PaymentMethodGateway
             throw new InvalidArgumentException(
                 $identifier . ' is an invalid payment method ' . $identifierType . '.'
             );
+        }
+    }
+
+    private function _checkForDeprecatedAttributes($attributes)
+    {
+        if (isset($attributes['venmoSdkPaymentMethodCode'])) {
+            trigger_error('The Venmo SDK integration is Unsupported. Please update your integration to use Pay with Venmo instead.', E_USER_DEPRECATED);
         }
     }
 }

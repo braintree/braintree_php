@@ -70,6 +70,7 @@ class Generator
             // handle child elements
             $writer->startElement($elementName);
             if (is_array($element)) {
+                // phpcs:ignore
                 if (array_key_exists(0, $element) || empty($element)) {
                     $writer->writeAttribute('type', 'array');
                     foreach ($element as $ignored => $itemInArray) {

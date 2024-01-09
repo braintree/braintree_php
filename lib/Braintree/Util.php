@@ -100,12 +100,14 @@ class Util
      */
     public static function throwGraphQLResponseException($response)
     {
+        // phpcs:ignore
         if (!array_key_exists("errors", $response) || !($errors = $response["errors"])) {
             return;
         }
 
         foreach ($errors as $error) {
             $message = $error["message"];
+            // phpcs:ignore
             if (!array_key_exists("extensions", $error)) {
                 return;
             }
@@ -432,6 +434,7 @@ class Util
      */
     public static function replaceKey($array, $oldKey, $newKey)
     {
+        // phpcs:ignore
         if (array_key_exists($oldKey, $array)) {
             $array[$newKey] = $array[$oldKey];
             unset($array[$oldKey]);

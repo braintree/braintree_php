@@ -28,6 +28,7 @@ abstract class Instance extends \stdClass
      */
     public function __get($name)
     {
+        // phpcs:ignore
         if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
         } else {

@@ -25,7 +25,8 @@ class AddressTest extends Setup
             'countryName' => 'Vatican City',
             'countryCodeAlpha2' => 'VA',
             'countryCodeAlpha3' => 'VAT',
-            'countryCodeNumeric' => '336'
+            'countryCodeNumeric' => '336',
+            'phoneNumber' => '312-123-4567'
         ]);
         $this->assertTrue($result->success);
         $address = $result->address;
@@ -41,6 +42,7 @@ class AddressTest extends Setup
         $this->assertEquals('VA', $address->countryCodeAlpha2);
         $this->assertEquals('VAT', $address->countryCodeAlpha3);
         $this->assertEquals('336', $address->countryCodeNumeric);
+        $this->assertEquals('312-123-4567', $address->phoneNumber);
     }
 
     public function testGatewayCreate()
@@ -59,6 +61,7 @@ class AddressTest extends Setup
             'locality' => 'Chicago',
             'region' => 'IL',
             'postalCode' => '60622',
+            'phoneNumber' => '312-123-4567'
         ]);
 
         $this->assertTrue($result->success);
@@ -67,6 +70,7 @@ class AddressTest extends Setup
         $this->assertEquals('Chicago', $address->locality);
         $this->assertEquals('IL', $address->region);
         $this->assertEquals('60622', $address->postalCode);
+        $this->assertEquals('312-123-4567', $address->phoneNumber);
     }
 
     public function testCreate_withValidationErrors()

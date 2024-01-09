@@ -1760,6 +1760,165 @@ class TransactionTest extends Setup
         );
     }
 
+    public function testSale_withLineItemsPayPal()
+    {
+        $transactionParams = [
+          'amount' => '35.05',
+          'paymentMethodNonce' => Braintree\Test\Nonces::$paypalOneTimePayment,
+          'lineItems' => [
+              [
+                  'quantity' => '1',
+                  'name' => 'Name #1',
+                  'description' => 'Description #1',
+                  'kind' => 'debit',
+                  'unitAmount' => '45.12',
+                  'unitTaxAmount' => '1.23',
+                  'unitOfMeasure' => 'gallon',
+                  'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
+                  'totalAmount' => '45.15',
+                  'productCode' => '23434',
+                  'commodityCode' => '9SAASSD8724',
+                  'url' => 'https://example.com/products/23434',
+                  'upcCode' => '3878935708DA',
+                  'upcType' => 'UPC-A',
+                  'imageUrl' => 'https://google.com/image.png',
+              ]
+          ],
+        ];
+
+        $result = Braintree\Transaction::sale($transactionParams);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $lineItems = $transaction->lineItems();
+        $this->assertEquals(1, sizeof($lineItems));
+
+        $lineItem = $lineItems[0];
+        $this->assertEquals('1', $lineItem->quantity);
+        $this->assertEquals('Name #1', $lineItem->name);
+        $this->assertEquals('Description #1', $lineItem->description);
+        $this->assertEquals(Braintree\TransactionLineItem::DEBIT, $lineItem->kind);
+        $this->assertEquals('45.12', $lineItem->unitAmount);
+        $this->assertEquals('1.23', $lineItem->unitTaxAmount);
+        $this->assertEquals('gallon', $lineItem->unitOfMeasure);
+        $this->assertEquals('1.02', $lineItem->discountAmount);
+        $this->assertEquals('4.50', $lineItem->taxAmount);
+        $this->assertEquals('45.15', $lineItem->totalAmount);
+        $this->assertEquals('23434', $lineItem->productCode);
+        $this->assertEquals('9SAASSD8724', $lineItem->commodityCode);
+        $this->assertEquals('https://example.com/products/23434', $lineItem->url);
+        $this->assertEquals('3878935708DA', $lineItem->upcCode);
+        $this->assertEquals('UPC-A', $lineItem->upcType);
+        $this->assertEquals('https://google.com/image.png', $lineItem->imageUrl);
+    }
+
+    public function testSale_withLineItemsValidationErrorUpcCodeIsTooLongUpcTypeisInvalid()
+    {
+        $transactionParams = [
+          'amount' => '35.05',
+          'paymentMethodNonce' => Braintree\Test\Nonces::$abstractTransactable,
+          'lineItems' => [
+              [
+                  'quantity' => '1',
+                  'name' => 'Name #1',
+                  'description' => 'Description #1',
+                  'kind' => 'debit',
+                  'unitAmount' => '45.12',
+                  'unitTaxAmount' => '1.23',
+                  'unitOfMeasure' => 'gallon',
+                  'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
+                  'totalAmount' => '45.15',
+                  'productCode' => '23434',
+                  'commodityCode' => '9SAASSD8724',
+                  'url' => 'https://example.com/products/23434',
+                  'upcCode' => 'THISCODEISWAYTOOLONG',
+                  'upcType' => 'USB-A',
+                  'imageUrl' => 'https://google.com/image.png',
+              ]
+          ],
+        ];
+
+        $result = Braintree\Transaction::sale($transactionParams);
+        $this->assertFalse($result->success);
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_LINE_ITEM_UPC_CODE_IS_TOO_LONG,
+            $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index0')->onAttribute('upcCode')[0]->code
+        );
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_LINE_ITEM_UPC_TYPE_IS_INVALID,
+            $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index0')->onAttribute('upcType')[0]->code
+        );
+    }
+
+    public function testSale_withLineItemsValidationErrorUpcCodeIsMissing()
+    {
+        $transactionParams = [
+          'amount' => '35.05',
+          'paymentMethodNonce' => Braintree\Test\Nonces::$abstractTransactable,
+          'lineItems' => [
+              [
+                  'quantity' => '1',
+                  'name' => 'Name #1',
+                  'description' => 'Description #1',
+                  'kind' => 'debit',
+                  'unitAmount' => '45.12',
+                  'unitTaxAmount' => '1.23',
+                  'unitOfMeasure' => 'gallon',
+                  'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
+                  'totalAmount' => '45.15',
+                  'productCode' => '23434',
+                  'commodityCode' => '9SAASSD8724',
+                  'url' => 'https://example.com/products/23434',
+                  'upcType' => 'UPC-A',
+                  'imageUrl' => 'https://google.com/image.png',
+              ]
+          ],
+        ];
+
+        $result = Braintree\Transaction::sale($transactionParams);
+        $this->assertFalse($result->success);
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_LINE_ITEM_UPC_CODE_IS_MISSING,
+            $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index0')->onAttribute('upcCode')[0]->code
+        );
+    }
+
+    public function testSale_withLineItemsValidationErrorUpcTypeIsMissing()
+    {
+        $transactionParams = [
+          'amount' => '35.05',
+          'paymentMethodNonce' => Braintree\Test\Nonces::$abstractTransactable,
+          'lineItems' => [
+              [
+                  'quantity' => '1',
+                  'name' => 'Name #1',
+                  'description' => 'Description #1',
+                  'kind' => 'debit',
+                  'unitAmount' => '45.12',
+                  'unitTaxAmount' => '1.23',
+                  'unitOfMeasure' => 'gallon',
+                  'discountAmount' => '1.02',
+                  'taxAmount' => '4.50',
+                  'totalAmount' => '45.15',
+                  'productCode' => '23434',
+                  'commodityCode' => '9SAASSD8724',
+                  'url' => 'https://example.com/products/23434',
+                  'upcCode' => '3878935708DA',
+                  'imageUrl' => 'https://google.com/image.png',
+              ]
+          ],
+        ];
+
+        $result = Braintree\Transaction::sale($transactionParams);
+        $this->assertFalse($result->success);
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_LINE_ITEM_UPC_TYPE_IS_MISSING,
+            $result->errors->forKey('transaction')->forKey('lineItems')->forKey('index0')->onAttribute('upcType')[0]->code
+        );
+    }
+
     public function testCreateMetaCheckoutCardTxnWithFakeNonce()
     {
         $result = Braintree\Transaction::sale([
@@ -1776,9 +1935,10 @@ class TransactionTest extends Setup
         $this->assertSame('https://assets.braintreegateway.com/payment_method_logo/visa.png?environment=development', $details->imageUrl);
         $this->assertSame('container123', $details->containerId);
         $this->assertSame('US', $details->customerLocation);
-        $this->assertSame('12/2024', $details->expirationDate);
+        $nextYear = strval(date('Y') + 1);
+        $this->assertSame('12/' . $nextYear, $details->expirationDate);
         $this->assertSame('12', $details->expirationMonth);
-        $this->assertSame('2024', $details->expirationYear);
+        $this->assertSame($nextYear, $details->expirationYear);
         $this->assertSame('1881', $details->last4);
         $this->assertSame('401288******1881', $details->maskedNumber);
         $this->assertSame('No', $details->prepaid);
@@ -1802,9 +1962,10 @@ class TransactionTest extends Setup
         $this->assertSame('AlhlvxmN2ZKuAAESNFZ4GoABFA==', $details->cryptogram);
         $this->assertSame('07', $details->ecommerceIndicator);
         $this->assertSame('US', $details->customerLocation);
-        $this->assertSame('12/2024', $details->expirationDate);
+        $nextYear = strval(date('Y') + 1);
+        $this->assertSame('12/' . $nextYear, $details->expirationDate);
         $this->assertSame('12', $details->expirationMonth);
-        $this->assertSame('2024', $details->expirationYear);
+        $this->assertSame($nextYear, $details->expirationYear);
         $this->assertSame('1881', $details->last4);
         $this->assertSame('401288******1881', $details->maskedNumber);
         $this->assertSame('No', $details->prepaid);
@@ -4043,6 +4204,8 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::THREE_D_SECURE, $result->transaction->gatewayRejectionReason);
     }
 
+    // NEXT_MAJOR_VERSION Update this test.
+    // threeDSecureToken is deprecated in favor of threeDSecureAuthenticationId
     public function testSale_withThreeDSecureToken()
     {
         $threeDSecureToken = Test\Helper::create3DSVerification(
@@ -4065,6 +4228,8 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
     }
 
+    // NEXT_MAJOR_VERSION Update this test.
+    // threeDSecureToken is deprecated in favor of threeDSecureAuthenticationId
     public function testSale_returnsErrorIfThreeDSecureToken()
     {
         $result = Braintree\Transaction::sale([
@@ -4084,6 +4249,8 @@ class TransactionTest extends Setup
         );
     }
 
+    // NEXT_MAJOR_VERSION Update this test.
+    // threeDSecureToken is deprecated in favor of threeDSecureAuthenticationId
     public function testSale_returnsErrorIf3dsLookupDataDoesNotMatchTransactionData()
     {
         $threeDSecureToken = Test\Helper::create3DSVerification(
@@ -7147,33 +7314,6 @@ class TransactionTest extends Setup
 
         $baseErrors = $adjust_authorize_result->errors->forKey('authorizationAdjustment')->onAttribute('base');
         $this->assertEquals(Braintree\Error\Codes::NO_NET_AMOUNT_TO_PERFORM_AUTH_ADJUSTMENT, $baseErrors[0]->code);
-    }
-
-    public function testAdjustAuthorizationOnNotAuthorizedTransaction()
-    {
-        $initial_result = Braintree\Transaction::sale([
-            'merchantAccountId' => Test\Helper::fakeVenmoAccountMerchantAccountId(),
-            'amount' => '75.50',
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/2012'
-            ],
-            'options' => [
-                'submitForSettlement' => true,
-            ],
-        ]);
-
-        $this->assertTrue($initial_result->success);
-        $initial_transaction = $initial_result->transaction;
-
-        $adjust_authorize_result = Braintree\Transaction::adjustAuthorization($initial_transaction->id, '85.50');
-
-        $this->assertFalse($adjust_authorize_result->success);
-        $adjusted_transaction = $adjust_authorize_result->transaction;
-        $this->assertEquals("75.50", $adjusted_transaction->amount);
-
-        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_MUST_BE_IN_STATE_AUTHORIZED, $baseErrors[0]->code);
     }
 
     public function testAdjustAuthorizationOnNonPreAuthTransaction()

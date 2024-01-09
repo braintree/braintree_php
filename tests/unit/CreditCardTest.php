@@ -38,6 +38,8 @@ class CreditCardTest extends Setup
         $this->assertEquals('123456******7890', $creditCard->maskedNumber);
     }
 
+    # NEXT_MAJOR_VERSION Remove venmoSdkPaymentMethodCode and venmoSdkSession
+    # The old venmo SDK class has been deprecated
     public function testCreateSignature()
     {
         $expected = [
@@ -49,14 +51,14 @@ class CreditCardTest extends Setup
             'expirationMonth',
             'expirationYear',
             'token',
-            'venmoSdkPaymentMethodCode',
+            'venmoSdkPaymentMethodCode',  // Deprecated
             'deviceData',
             'paymentMethodNonce',
             [
                 'options' => [
                     'makeDefault',
                     'skipAdvancedFraudChecking',
-                    'venmoSdkSession',
+                    'venmoSdkSession',  // Deprecated
                     'verificationAccountType',
                     'verificationAmount',
                     'verificationMerchantAccountId',
@@ -78,6 +80,7 @@ class CreditCardTest extends Setup
                     'region',
                     'postalCode',
                     'streetAddress',
+                    'phoneNumber',
                 ],
             ],
             'customerId',
@@ -97,6 +100,8 @@ class CreditCardTest extends Setup
         $this->assertEquals($expected, Braintree\CreditCardGateway::createSignature());
     }
 
+    # NEXT_MAJOR_VERSION Remove venmoSdkPaymentMethodCode and venmoSdkSession
+    # The old venmo SDK class has been deprecated
     public function testUpdateSignature()
     {
         $expected = [
@@ -108,14 +113,14 @@ class CreditCardTest extends Setup
             'expirationMonth',
             'expirationYear',
             'token',
-            'venmoSdkPaymentMethodCode',
+            'venmoSdkPaymentMethodCode', // Deprecated
             'deviceData',
             'paymentMethodNonce',
             [
                 'options' => [
                     'makeDefault',
                     'skipAdvancedFraudChecking',
-                    'venmoSdkSession',
+                    'venmoSdkSession',  // Deprecated
                     'verificationAccountType',
                     'verificationAmount',
                     'verificationMerchantAccountId',
@@ -137,6 +142,7 @@ class CreditCardTest extends Setup
                     'region',
                     'postalCode',
                     'streetAddress',
+                    'phoneNumber',
                     [
                         'options' => [
                             'updateExisting'

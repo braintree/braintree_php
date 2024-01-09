@@ -43,18 +43,21 @@ class TransactionGateway
     public function cloneTransaction($transactionId, $attribs)
     {
         Util::verifyKeys(self::cloneSignature(), $attribs);
+        $this->_checkForDeprecatedAttributes($attribs);
         return $this->_doCreate('/transactions/' . $transactionId . '/clone', ['transactionClone' => $attribs]);
     }
 
     private function create($attribs)
     {
         Util::verifyKeys(self::createSignature(), $attribs);
+        $this->_checkForDeprecatedAttributes($attribs);
         $attribs = Util::replaceKey($attribs, 'googlePayCard', 'androidPayCard');
         return $this->_doCreate('/transactions', ['transaction' => $attribs]);
     }
 
     private function createNoValidate($attribs)
     {
+        $this->_checkForDeprecatedAttributes($attribs);
         $result = $this->create($attribs);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
@@ -69,6 +72,9 @@ class TransactionGateway
         return ['amount', 'channel', ['options' => ['submitForSettlement']]];
     }
 
+    // NEXT_MAJOR_VERSION remove threeDSecureToken, venmoSdkPaymentMethodCode, and venmoSdkSession
+    // threeDSecureToken has been deprecated in favor of threeDSecureAuthenticationId
+    // The old venmo SDK class has been deprecated
     /**
      * creates a full array signature of a valid gateway request
      *
@@ -99,11 +105,11 @@ class TransactionGateway
             'shippingAddressId',
             'taxAmount',
             'taxExempt',
-            'threeDSecureToken',
+            'threeDSecureToken', //Deprecated
             'threeDSecureAuthenticationId',
             'transactionSource',
             'type',
-            'venmoSdkPaymentMethodCode',
+            'venmoSdkPaymentMethodCode',  // Deprecated
             'scaExemption',
             'shippingAmount',
             'discountAmount',
@@ -162,7 +168,7 @@ class TransactionGateway
                     'storeInVaultOnSuccess',
                     'submitForSettlement',
                     'addBillingAddressToPaymentMethod',
-                    'venmoSdkSession',
+                    'venmoSdkSession',  // Deprecated
                     'storeShippingAddressInVault',
                     'payeeId',
                     'payeeEmail',
@@ -292,6 +298,7 @@ class TransactionGateway
                     'commodityCode',
                     'description',
                     'discountAmount',
+                    'imageUrl',
                     'kind',
                     'name',
                     'productCode',
@@ -301,6 +308,8 @@ class TransactionGateway
                     'unitAmount',
                     'unitOfMeasure',
                     'unitTaxAmount',
+                    'upcCode',
+                    'upcType',
                     'url'
                 ]
             ],
@@ -320,6 +329,42 @@ class TransactionGateway
                 ]
             ],
             ['installments' => ['count']]
+        ];
+    }
+
+    /**
+     * creates a full array signature of a valid package tracking request
+     *
+     * @return array package tracking request signature format
+     */
+    public static function packageTrackingRequestSignature()
+    {
+        return
+        [
+            'carrier',
+            'trackingNumber',
+            'notifyPayer',
+            [
+                'lineItems' =>
+                    [
+                        'commodityCode',
+                        'description',
+                        'discountAmount',
+                        'imageUrl',
+                        'kind',
+                        'name',
+                        'productCode',
+                        'quantity',
+                        'taxAmount',
+                        'totalAmount',
+                        'unitAmount',
+                        'unitOfMeasure',
+                        'unitTaxAmount',
+                        'upcCode',
+                        'upcType',
+                        'url'
+                    ]
+            ],
         ];
     }
 
@@ -409,6 +454,7 @@ class TransactionGateway
                     'commodityCode',
                     'description',
                     'discountAmount',
+                    'imageUrl',
                     'kind',
                     'name',
                     'productCode',
@@ -418,6 +464,8 @@ class TransactionGateway
                     'unitAmount',
                     'unitOfMeasure',
                     'unitTaxAmount',
+                    'upcCode',
+                    'upcType',
                     'url'
                 ]
             ],
@@ -502,6 +550,7 @@ class TransactionGateway
      */
     public function sale($attribs)
     {
+        // phpcs:ignore
         if (array_key_exists('recurring', $attribs)) {
             trigger_error('$recurring is deprecated, use $transactionSource instead', E_USER_DEPRECATED);
         }
@@ -542,6 +591,7 @@ class TransactionGateway
 
         $path = $this->_config->merchantPath() . '/transactions/advanced_search_ids';
         $response = $this->_http->post($path, ['search' => $criteria]);
+        // phpcs:ignore
         if (array_key_exists('searchResults', $response)) {
             $pager = [
                 'object' => $this,
@@ -573,6 +623,7 @@ class TransactionGateway
         $path = $this->_config->merchantPath() . '/transactions/advanced_search';
         $response = $this->_http->post($path, ['search' => $criteria]);
 
+        // phpcs:ignore
         if (array_key_exists('creditCardTransactions', $response)) {
             return Util::extractattributeasarray(
                 $response['creditCardTransactions'],
@@ -679,6 +730,24 @@ class TransactionGateway
 
         $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/update_details';
         $response = $this->_http->put($path, ['transaction' => $attribs]);
+        return $this->_verifyGatewayResponse($response);
+    }
+
+    /**
+     * Supplement the transaction with package tracking details
+     *
+     * @param string $transactionId to be updated
+     * @param array  $attribs       package tracking request attributes
+     *
+     * @return Result\Successful|Result\Error
+     */
+    public function packageTracking($transactionId, $attribs = [])
+    {
+        $this->_validateId($transactionId);
+        Util::verifyKeys(self::packageTrackingRequestSignature(), $attribs);
+
+        $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/shipments';
+        $response = $this->_http->post($path, ['shipment' => $attribs]);
         return $this->_verifyGatewayResponse($response);
     }
 
@@ -831,6 +900,16 @@ class TransactionGateway
             throw new Exception\Unexpected(
                 "Expected transaction or apiErrorResponse"
             );
+        }
+    }
+
+    private function _checkForDeprecatedAttributes($attributes)
+    {
+        if (isset($attributes['threeDSecureToken'])) {
+            trigger_error('threeDSecureToken has been deprecated. Please use threeDSecureAuthenticationId instead.', E_USER_DEPRECATED);
+        }
+        if (isset($attributes['venmoSdkSession']) || isset($attributes['venmoSdkPaymentMethodCode'])) {
+            trigger_error('The Venmo SDK integration is Unsupported. Please update your integration to use Pay with Venmo instead.', E_USER_DEPRECATED);
         }
     }
 }

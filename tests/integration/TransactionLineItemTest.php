@@ -25,6 +25,9 @@ class TransactionLineItemTest extends Setup
                 'kind' => Braintree\TransactionLineItem::DEBIT,
                 'unitAmount' => '45.1232',
                 'totalAmount' => '45.15',
+                'upcCode' => '11223344556677889',
+                'upcType' => 'UPC-A',
+                'imageUrl' => 'https://google.com/image.png',
             ]]
         ]);
 
@@ -39,5 +42,8 @@ class TransactionLineItemTest extends Setup
         $this->assertEquals(Braintree\TransactionLineItem::DEBIT, $lineItem->kind);
         $this->assertEquals('45.1232', $lineItem->unitAmount);
         $this->assertEquals('45.15', $lineItem->totalAmount);
+        $this->assertEquals('11223344556677889', $lineItem->upcCode);
+        $this->assertEquals('UPC-A', $lineItem->upcType);
+        $this->assertEquals('https://google.com/image.png', $lineItem->imageUrl);
     }
 }

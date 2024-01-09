@@ -752,7 +752,8 @@ class PaymentMethodTest extends Setup
             'paymentMethodNonce' => $nonce,
             'customerId' => $customer->id,
             'billingAddress' => [
-                'streetAddress' => '123 Abc Way'
+                'streetAddress' => '123 Abc Way',
+                'phoneNumber' => '312-123-4567'
             ]
         ]);
 
@@ -763,6 +764,7 @@ class PaymentMethodTest extends Setup
         $foundCreditCard = Braintree\CreditCard::find($token);
         $this->assertTrue(null != $foundCreditCard);
         $this->assertEquals('123 Abc Way', $foundCreditCard->billingAddress->streetAddress);
+        $this->assertEquals('312-123-4567', $foundCreditCard->billingAddress->phoneNumber);
     }
 
     public function testCreate_overridesTheBillingAddressInTheNonce()

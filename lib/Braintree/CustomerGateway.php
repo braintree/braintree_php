@@ -150,7 +150,7 @@ class CustomerGateway
                             'firstName', 'lastName', 'company', 'countryName',
                             'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
                             'extendedAddress', 'locality', 'postalCode', 'region',
-                            'streetAddress'],
+                            'streetAddress', 'phoneNumber'],
                     ],
                 ]]
             ]],
@@ -168,6 +168,7 @@ class CustomerGateway
         $creditCardSignature = CreditCardGateway::updateSignature();
 
         foreach ($creditCardSignature as $key => $value) {
+            // phpcs:ignore
             if (is_array($value) and array_key_exists('options', $value)) {
                 array_push($creditCardSignature[$key]['options'], 'updateExistingToken');
             }
@@ -197,7 +198,7 @@ class CustomerGateway
                             'firstName', 'lastName', 'company', 'countryName',
                             'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
                             'extendedAddress', 'locality', 'postalCode', 'region',
-                            'streetAddress'],
+                            'streetAddress', 'phoneNumber'],
                     ],
                 ]],
             ]],

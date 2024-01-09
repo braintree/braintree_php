@@ -19,10 +19,8 @@ class RiskData extends Base
         $instance = new self();
         $instance->_initialize($attributes);
 
-        if (array_key_exists('liabilityShift', $attributes)) {
-            $liabilityShift = LiabilityShift::factory($attributes['liabilityShift']);
-
-            $instance->_set('liabilityShift', $liabilityShift);
+        if (isset($attributes['liabilityShift'])) {
+            $instance->_set('liabilityShift', LiabilityShift::factory($attributes['liabilityShift']));
         }
 
         return $instance;

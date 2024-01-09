@@ -101,6 +101,132 @@ class CreditCardVerificationTest extends Setup
         $this->assertEquals($verification->creditCard['accountType'], 'debit');
     }
 
+    public function test_createWithExternalVault()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2011',
+            ],
+            'externalVault' => [
+                'status' => 'will_vault'
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->processorResponseCode, '1000');
+        $this->assertEquals($verification->processorResponseText, 'Approved');
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
+    }
+
+    public function test_createWithIntendedTransactionSource()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2011',
+            ],
+            'intendedTransactionSource' => 'installment'
+        ]);
+
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->processorResponseCode, '1000');
+        $this->assertEquals($verification->processorResponseText, 'Approved');
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
+    }
+
+    public function test_createWithRiskData()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2011',
+            ],
+            'riskData' => [
+                'customerBrowser' => 'IE5',
+                'customerIp' => '192.168.0.1'
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->processorResponseCode, '1000');
+        $this->assertEquals($verification->processorResponseText, 'Approved');
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
+    }
+
+    public function test_createWithThreeDSecureAuthenticationIdWithNonce()
+    {
+        $creditCard = [
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationMonth' => '05',
+                'expirationYear' => '2011',
+            ]
+        ];
+
+        $nonce = Test\Helper::generate3DSNonce($creditCard);
+
+        $foundNonce = Braintree\PaymentMethodNonce::find($nonce);
+        $threeDSecureInfo = $foundNonce->threeDSecureInfo;
+
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'cardholderName' => 'Dee Hock',
+            ],
+            'options' => [
+                'merchantAccountId' => Test\Helper::threeDSecureMerchantAccountId()
+            ],
+            'paymentMethodNonce' => $nonce,
+            'threeDSecureAuthenticationId' => $threeDSecureInfo->threeDSecureAuthenticationId
+        ]);
+
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->processorResponseCode, '1000');
+        $this->assertEquals($verification->processorResponseText, 'Approved');
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
+    }
+
+    public function test_createWithThreeDSecurePassThru()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2011',
+            ],
+            'threeDSecurePassThru' => [
+                'authenticationResponse' => 'Y',
+                'cavv' => 'some_cavv',
+                'cavvAlgorithm' => '2',
+                'directoryResponse' => 'Y',
+                'dsTransactionId' => 'some_ds_id',
+                'eciFlag' => '02',
+                'threeDSecureVersion' => '1.0.2',
+                'xid' => 'some_xid'
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->processorResponseCode, '1000');
+        $this->assertEquals($verification->processorResponseText, 'Approved');
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
+    }
+
     public function test_createErrorsWithAccountTypeIsInvalid()
     {
         $result = Braintree\CreditCardVerification::create([

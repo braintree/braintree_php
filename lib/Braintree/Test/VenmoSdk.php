@@ -1,5 +1,7 @@
 <?php
 
+# NEXT_MAJOR_VERSION Remove this class
+# The old venmo SDK class has been deprecated
 namespace Braintree\Test;
 
 /**

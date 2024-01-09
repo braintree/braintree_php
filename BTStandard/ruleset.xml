@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<ruleset name="BTStandard">
+  <description>A custom Braintree coding standard.</description>
+</ruleset>

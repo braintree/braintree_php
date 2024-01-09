@@ -41,6 +41,7 @@ abstract class Base extends \stdClass implements JsonSerializable
         if (isset($this->_attributes['globalId'])) {
             $this->_attributes['graphQLId'] = $this->_attributes['globalId'];
         }
+        // phpcs:ignore
         if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
         } else {

@@ -176,7 +176,7 @@ class Helper
         $http = new Braintree\Http(Braintree\Configuration::$global);
         $path = Braintree\Configuration::$global->merchantPath() . '/three_d_secure/create_verification/' . $merchantAccountId;
         $response = $http->post($path, ['threeDSecureVerification' => $params]);
-        return $response['threeDSecureVerification']['threeDSecureToken'];
+        return $response['threeDSecureVerification']['threeDSecureAuthenticationId'];
     }
 
     public static function generate3DSNonce($params)

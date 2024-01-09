@@ -81,8 +81,11 @@ class CreditCard extends Base
         return $this->expired;
     }
 
+    // NEXT_MAJOR_VERSION Remove this method
     /**
      * checks whether the card is associated with venmo sdk
+     *
+     * @deprecated
      *
      * @return boolean
      */

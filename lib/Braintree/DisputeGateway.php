@@ -71,6 +71,7 @@ class DisputeGateway
         }
 
         try {
+            // phpcs:ignore
             if (array_key_exists('category', $request)) {
                 if (trim($request['category']) == "") {
                     throw new InvalidArgumentException('category cannot be blank');
@@ -120,11 +121,13 @@ class DisputeGateway
                 throw new Exception\NotFound();
             }
 
+            // phpcs:ignore
             if (array_key_exists('tag', $request)) {
                 trigger_error('$tag is deprecated, use $category instead', E_USER_DEPRECATED);
                 $evidence['category'] = $request['tag'];
             }
 
+            // phpcs:ignore
             if (array_key_exists('category', $request)) {
                 if (trim($request['category']) == "") {
                     throw new InvalidArgumentException('category cannot be blank');
@@ -132,6 +135,7 @@ class DisputeGateway
                 $evidence['category'] = $request['category'];
             }
 
+            // phpcs:ignore
             if (array_key_exists('sequenceNumber', $request)) {
                 if (trim($request['sequenceNumber']) == "") {
                     throw new InvalidArgumentException('sequenceNumber cannot be blank');

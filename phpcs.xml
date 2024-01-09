@@ -67,4 +67,7 @@
       <exclude name="PEAR.Commenting.FunctionComment.WrongStyle"/>
       <exclude name="PEAR.Commenting.FileComment.WrongStyle"/>
     </rule>
+
+    <!-- Custom sniffs made to fit Braintree SDK best practices -->
+    <rule ref="BTStandard"/>
 </ruleset>

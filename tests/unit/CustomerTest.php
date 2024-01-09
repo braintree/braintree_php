@@ -16,15 +16,18 @@ class CustomerTest extends Setup
         $c->foo;
     }
 
+    # NEXT_MAJOR_VERSION Remove venmoSdkSession
+    # The old venmo SDK class has been deprecated
     public function testUpdateSignature_doesNotAlterOptionsInCreditCardUpdateSignature()
     {
         Braintree\CustomerGateway::updateSignature();
         foreach (Braintree\CreditCardGateway::updateSignature() as $key => $value) {
+            // phpcs:ignore
             if (is_array($value) and array_key_exists('options', $value)) {
                 $this->assertEquals([
                     'makeDefault',
                     'skipAdvancedFraudChecking',
-                    'venmoSdkSession',
+                    'venmoSdkSession',  // Deprecated
                     'verificationAccountType',
                     'verificationAmount',
                     'verificationMerchantAccountId',
@@ -46,6 +49,7 @@ class CustomerTest extends Setup
 
     public function findCreditCardArray($el)
     {
+        // phpcs:ignore
         return is_array($el) && array_key_exists('creditCard', $el);
     }
 

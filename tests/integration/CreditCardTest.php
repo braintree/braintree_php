@@ -327,7 +327,8 @@ class CreditCardTest extends Setup
                 'countryName' => 'Micronesia',
                 'countryCodeAlpha2' => 'FM',
                 'countryCodeAlpha3' => 'FSM',
-                'countryCodeNumeric' => '583'
+                'countryCodeNumeric' => '583',
+                'phoneNumber' => '312-123-4567'
             ]
         ]);
         $this->assertTrue($result->success);
@@ -349,6 +350,7 @@ class CreditCardTest extends Setup
         $this->assertEquals('FM', $address->countryCodeAlpha2);
         $this->assertEquals('FSM', $address->countryCodeAlpha3);
         $this->assertEquals('583', $address->countryCodeNumeric);
+        $this->assertEquals('312-123-4567', $address->phoneNumber);
     }
 
     public function testCreate_withExistingBillingAddress()

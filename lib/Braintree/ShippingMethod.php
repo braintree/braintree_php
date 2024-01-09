@@ -15,4 +15,5 @@ class ShippingMethod
     const GROUND        = 'ground';
     const ELECTRONIC    = 'electronic';
     const SHIP_TO_STORE = 'ship_to_store';
+    const PICKUP_IN_STORE = 'pickup_in_store';
 }

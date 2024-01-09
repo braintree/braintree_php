@@ -247,7 +247,7 @@ class PaymentMethodNonceTest extends Setup
         $this->assertEquals('1881', $details["lastFour"]);
         $this->assertEquals('Visa', $details["cardType"]);
         $this->assertEquals('Meta Checkout Card Cardholder', $details["cardholderName"]);
-        $this->assertEquals('2024', $details["expirationYear"]);
+        $this->assertEquals(strval(date('Y') + 1), $details["expirationYear"]);
         $this->assertEquals('12', $details["expirationMonth"]);
     }
 
@@ -261,7 +261,7 @@ class PaymentMethodNonceTest extends Setup
         $this->assertEquals('1881', $details["lastFour"]);
         $this->assertEquals('Visa', $details["cardType"]);
         $this->assertEquals('Meta Checkout Token Cardholder', $details["cardholderName"]);
-        $this->assertEquals('2024', $details["expirationYear"]);
+        $this->assertEquals(strval(date('Y') + 1), $details["expirationYear"]);
         $this->assertEquals('12', $details["expirationMonth"]);
     }
 

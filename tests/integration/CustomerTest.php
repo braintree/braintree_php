@@ -434,7 +434,8 @@ class CustomerTest extends Setup
                    'countryName' => 'Gabon',
                    'countryCodeAlpha2' => 'GA',
                    'countryCodeAlpha3' => 'GAB',
-                   'countryCodeNumeric' => '266'
+                   'countryCodeNumeric' => '266',
+                   'phoneNumber' => '312-123-4567'
                 ]
             ]
         ]);
@@ -444,6 +445,7 @@ class CustomerTest extends Setup
         $this->assertEquals('GA', $customer->creditCards[0]->billingAddress->countryCodeAlpha2);
         $this->assertEquals('GAB', $customer->creditCards[0]->billingAddress->countryCodeAlpha3);
         $this->assertEquals('266', $customer->creditCards[0]->billingAddress->countryCodeNumeric);
+        $this->assertEquals('312-123-4567', $customer->creditCards[0]->billingAddress->phoneNumber);
         $this->assertEquals(1, preg_match('/\A\w{32}\z/', $customer->creditCards[0]->uniqueNumberIdentifier));
     }
 

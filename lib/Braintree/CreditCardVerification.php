@@ -72,13 +72,51 @@ class CreditCardVerification extends Result\CreditCardVerification
     public static function createSignature()
     {
         return [
-                ['options' => ['amount', 'merchantAccountId', 'accountType']],
                 ['creditCard' =>
                     [
-                        'cardholderName', 'cvv', 'number',
-                        'expirationDate', 'expirationMonth', 'expirationYear',
-                        ['billingAddress' => CreditCardGateway::billingAddressSignature()]
+                        ['billingAddress' => CreditCardGateway::billingAddressSignature()],
+                        'cardholderName',
+                        'cvv',
+                        'expirationDate',
+                        'expirationMonth',
+                        'expirationYear',
+                        'number'
                     ]
-                ]];
+                ],
+                ['externalVault' =>
+                    [
+                        'previousNetworkTransactionId',
+                        'status'
+                    ]
+                ],
+                'intendedTransactionSource',
+                ['options' =>
+                    [
+                        'accountType',
+                        'amount',
+                        'merchantAccountId',
+                    ]
+                ],
+                'paymentMethodNonce',
+                ['riskData' =>
+                    [
+                        'customerBrowser',
+                        'customerIp'
+                    ]
+                ],
+                'threeDSecureAuthenticationId',
+                ['threeDSecurePassThru' =>
+                    [
+                        'authenticationResponse',
+                        'cavv',
+                        'cavvAlgorithm',
+                        'directoryResponse',
+                        'dsTransactionId',
+                        'eciFlag',
+                        'threeDSecureVersion',
+                        'xid'
+                    ]
+                ]
+            ];
     }
 }

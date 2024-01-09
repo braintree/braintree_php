@@ -14,6 +14,7 @@ class EvidenceDetails extends Instance
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($attributes)
     {
+        // phpcs:ignore
         if (array_key_exists('category', $attributes)) {
             $attributes['tag'] = $attributes['category'];
         }
