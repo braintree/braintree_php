@@ -137,6 +137,11 @@ class Helper
         return 'card_processor_brl';
     }
 
+    public static function pinlessDebitMerchantAccountId()
+    {
+        return 'pinless_debit';
+    }
+
     public static function suppressDeprecationWarnings()
     {
         set_error_handler("Test\Helper::_errorHandler", E_USER_NOTICE);

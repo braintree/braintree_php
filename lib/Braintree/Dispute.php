@@ -16,9 +16,10 @@ class Dispute extends Base
     const AUTO_ACCEPTED = 'auto_accepted';
     const DISPUTED = 'disputed';
     const EXPIRED = 'expired';
-    const OPEN  = 'open';
-    const WON  = 'won';
     const LOST = 'lost';
+    const OPEN  = 'open';
+    const UNDER_REVIEW = 'under_review';
+    const WON  = 'won';
 
     /* Dispute Reason */
     const CANCELLED_RECURRING_TRANSACTION = "cancelled_recurring_transaction";

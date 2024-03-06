@@ -6,6 +6,7 @@ require_once dirname(__DIR__) . '/Setup.php';
 
 use DateTime;
 use DateTimeZone;
+use Test;
 use Test\Setup;
 use Braintree;
 
@@ -1739,5 +1740,39 @@ class TransactionAdvancedSearchTest extends Setup
         $this->assertEquals(1, $collection->maximumCount());
         $this->assertEquals($retryId, $collection->firstItem()->id);
         $this->assertNotNull($collection->firstItem()->retriedTransactionId);
+    }
+
+    public function test_multipleValueNode_debitNetwork()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => Test\Helper::pinlessDebitMerchantAccountId(),
+            'paymentMethodNonce' => Braintree\Test\Nonces::$transactablePinlessDebitVisa,
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+        $transaction = $result->transaction;
+
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::id()->is($transaction->id),
+            Braintree\TransactionSearch::creditCardCardType()->is($transaction->creditCardDetails->cardType)
+        ]);
+        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals($transaction->id, $collection->firstItem()->id);
+
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::id()->is($transaction->id),
+            Braintree\TransactionSearch::debitNetwork()->in(Braintree\Transaction::allDebitNetworks())
+        ]);
+        $this->assertTrue($collection->maximumCount() > 0);
+    }
+
+    public function test_multipleValueNode_debitNetwork_allowedValues()
+    {
+        $this->expectException('InvalidArgumentException', 'Invalid argument(s) for debitNetwork: noSuchDebitNetwork');
+        $collection = Braintree\Transaction::search([
+            Braintree\TransactionSearch::debitNetwork()->is('noSuchDebitNetwork')
+        ]);
     }
 }

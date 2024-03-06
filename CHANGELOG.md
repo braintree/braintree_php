@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.17.0
+* Add `UNDER_REVIEW` Dispute Status
+* Add `DISPUTE_UNDER_REVIEW` WebhookNotification
+* Add `debitNetwork` support `Transaction` and `TransactionSearch`
+* Add `process_debit_as_credit` to `TransactionOptionsCreditCardRequest`
+
 ## 6.16.0
 * Deprecate `threeDSecureToken` in favor of `threeDSecureAuthenticationId`
 * Deprecate `venmoSdkSession`, `venmoSdkPaymentMethodCode`, and `isVenmoSdk()`

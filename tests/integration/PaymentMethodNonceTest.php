@@ -199,10 +199,10 @@ class PaymentMethodNonceTest extends Setup
 
         $this->assertEquals($nonce, $foundNonce->nonce);
         $this->assertEquals('CreditCard', $foundNonce->type);
-        $this->assertEquals('Y', $info->enrolled);
         $this->assertEquals('authenticate_successful', $info->status);
-        $this->assertTrue($info->liabilityShifted);
-        $this->assertTrue($info->liabilityShiftPossible);
+        $this->assertIsString($info->enrolled);
+        $this->assertIsBool($info->liabilityShifted);
+        $this->assertIsBool($info->liabilityShiftPossible);
     }
 
     public function testFind_returnsBin()

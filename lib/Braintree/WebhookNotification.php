@@ -21,6 +21,7 @@ class WebhookNotification extends Base
     const DISPUTE_EXPIRED = 'dispute_expired';
     const DISPUTE_LOST = 'dispute_lost';
     const DISPUTE_OPENED = 'dispute_opened';
+    const DISPUTE_UNDER_REVIEW = 'dispute_under_review';
     const DISPUTE_WON = 'dispute_won';
     const GRANTED_PAYMENT_METHOD_REVOKED = 'granted_payment_method_revoked';
     const GRANTOR_UPDATED_GRANTED_PAYMENT_METHOD = 'grantor_updated_granted_payment_method';

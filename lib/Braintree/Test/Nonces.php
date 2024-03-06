@@ -82,6 +82,7 @@ class Nonces
     public static $transactablePrepaid = "fake-valid-prepaid-nonce";
     public static $transactableUnknownIndicators = "fake-valid-unknown-indicators-nonce";
     public static $transactableVisa = "fake-valid-visa-nonce";
+    public static $transactablePinlessDebitVisa = "fake-pinless-debit-visa-nonce";
     public static $usBankAccount = "fake-us-bank-account-nonce";
     public static $venmoAccount = "fake-venmo-account-nonce";
     public static $visaCheckoutAmEx = "fake-visa-checkout-amex-nonce";

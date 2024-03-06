@@ -85,15 +85,6 @@ class WebhookTestingGateway
             case WebhookNotification::CONNECTED_MERCHANT_PAYPAL_STATUS_CHANGED:
                 $subjectXml = self::_connectedMerchantPayPalStatusChangedSampleXml($id);
                 break;
-            case WebhookNotification::DISPUTE_OPENED:
-                $subjectXml = self::_disputeOpenedSampleXml($id);
-                break;
-            case WebhookNotification::DISPUTE_LOST:
-                $subjectXml = self::_disputeLostSampleXml($id);
-                break;
-            case WebhookNotification::DISPUTE_WON:
-                $subjectXml = self::_disputeWonSampleXml($id);
-                break;
             case WebhookNotification::DISPUTE_ACCEPTED:
                 $subjectXml = self::_disputeAcceptedSampleXml($id);
                 break;
@@ -105,6 +96,18 @@ class WebhookTestingGateway
                 break;
             case WebhookNotification::DISPUTE_EXPIRED:
                 $subjectXml = self::_disputeExpiredSampleXml($id);
+                break;
+            case WebhookNotification::DISPUTE_LOST:
+                $subjectXml = self::_disputeLostSampleXml($id);
+                break;
+            case WebhookNotification::DISPUTE_OPENED:
+                $subjectXml = self::_disputeOpenedSampleXml($id);
+                break;
+            case WebhookNotification::DISPUTE_UNDER_REVIEW:
+                $subjectXml = self::_disputeUnderReviewSampleXml($id);
+                break;
+            case WebhookNotification::DISPUTE_WON:
+                $subjectXml = self::_disputeWonSampleXml($id);
                 break;
             case WebhookNotification::SUBSCRIPTION_BILLING_SKIPPED:
                 $subjectXml = self::_subscriptionBillingSkippedSampleXml($id);
@@ -336,6 +339,29 @@ class WebhookTestingGateway
           <exception-message nil=\"true\"/>
           <follow-up-action nil=\"true\"/>
         </disbursement>
+        ";
+    }
+
+    private static function _disputeUnderReviewSampleXml($id)
+    {
+        return "
+        <dispute>
+          <amount>250.00</amount>
+          <amount-disputed>250.0</amount-disputed>
+          <amount-won>245.00</amount-won>
+          <currency-iso-code>USD</currency-iso-code>
+          <received-date type=\"date\">2014-03-01</received-date>
+          <reply-by-date type=\"date\">2014-03-21</reply-by-date>
+          <kind>chargeback</kind>
+          <status>under_review</status>
+          <reason>fraud</reason>
+          <id>{$id}</id>
+          <transaction>
+            <id>{$id}</id>
+            <amount>250.00</amount>
+          </transaction>
+          <date-opened type=\"date\">2014-03-21</date-opened>
+        </dispute>
         ";
     }
 

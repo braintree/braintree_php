@@ -202,6 +202,14 @@ class Transaction extends Base
     const LAUNDRY    = 'laundry';
     const OTHER      = 'other';
 
+    // Debit network
+    const ACCEL = "ACCEL";
+    const MAESTRO_DEBIT_NETWORK = "MAESTRO";
+    const NYCE = "NYCE";
+    const PULSE = "PULSE";
+    const STAR = "STAR";
+    const STAR_ACCESS = "STAR_ACCESS";
+
     // Reason Codes
     const TRANSACTION_REASON_CODE = 'any_reason_code';
 
@@ -838,5 +846,22 @@ class Transaction extends Base
     public static function refund($transactionId, $amount = null)
     {
         return Configuration::gateway()->transaction()->refund($transactionId, $amount);
+    }
+
+    /**
+     * All debit networks in an array
+     *
+     * @return array
+     */
+    public static function allDebitNetworks()
+    {
+        return [
+            Transaction::ACCEL,
+            Transaction::MAESTRO_DEBIT_NETWORK,
+            Transaction::NYCE,
+            Transaction::PULSE,
+            Transaction::STAR,
+            Transaction::STAR_ACCESS
+        ];
     }
 }
