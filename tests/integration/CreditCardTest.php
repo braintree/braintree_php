@@ -492,6 +492,8 @@ class CreditCardTest extends Setup
         $this->assertEquals('05/2012', $creditCard->expirationDate);
     }
 
+    // NEXT_MAJOR_VERSION Remove this test
+    // CreditCard::sale has been deprecated in favor of Transaction::sale
     public function testSale_createsASaleUsingGivenToken()
     {
         $customer = Braintree\Customer::createNoValidate([
@@ -510,6 +512,8 @@ class CreditCardTest extends Setup
         $this->assertEquals($creditCard->token, $result->transaction->creditCardDetails->token);
     }
 
+    // NEXT_MAJOR_VERSION Remove this test
+    // CreditCard::saleNoValidate has been deprecated in favor of Transaction::saleNoValidate
     public function testSaleNoValidate_createsASaleUsingGivenToken()
     {
         $customer = Braintree\Customer::createNoValidate([
@@ -527,6 +531,8 @@ class CreditCardTest extends Setup
         $this->assertEquals($creditCard->token, $transaction->creditCardDetails->token);
     }
 
+    // NEXT_MAJOR_VERSION Remove this test
+    // CreditCard::saleNoValidate has been deprecated in favor of Transaction::saleNoValidate
     public function testSaleNoValidate_createsASaleUsingGivenTokenAndCvv()
     {
         $customer = Braintree\Customer::createNoValidate([
@@ -548,6 +554,8 @@ class CreditCardTest extends Setup
         $this->assertEquals('S', $transaction->cvvResponseCode);
     }
 
+    // NEXT_MAJOR_VERSION Remove this test
+    // CreditCard::saleNoValidate has been deprecated in favor of Transaction::saleNoValidate
     public function testSaleNoValidate_throwsIfInvalid()
     {
         $customer = Braintree\Customer::createNoValidate([
@@ -563,6 +571,8 @@ class CreditCardTest extends Setup
         ]);
     }
 
+    // NEXT_MAJOR_VERSION Remove this test
+    // CreditCard::credit has been deprecated in favor of Transaction::credit
     public function testCredit_createsACreditUsingGivenToken()
     {
         $customer = Braintree\Customer::createNoValidate([
@@ -582,6 +592,8 @@ class CreditCardTest extends Setup
         $this->assertEquals($creditCard->token, $result->transaction->creditCardDetails->token);
     }
 
+    // NEXT_MAJOR_VERSION Remove this test
+    // CreditCard::creditNoValidate has been deprecated in favor of Transaction::creditNoValidate
     public function testCreditNoValidate_createsACreditUsingGivenToken()
     {
         $customer = Braintree\Customer::createNoValidate([
@@ -600,6 +612,8 @@ class CreditCardTest extends Setup
         $this->assertEquals($creditCard->token, $transaction->creditCardDetails->token);
     }
 
+    // NEXT_MAJOR_VERSION Remove this test
+    // CreditCard::creditNoValidate has been deprecated in favor of Transaction::creditNoValidate
     public function testCreditNoValidate_throwsIfInvalid()
     {
         $customer = Braintree\Customer::createNoValidate([

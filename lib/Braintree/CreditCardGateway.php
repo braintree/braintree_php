@@ -189,16 +189,20 @@ class CreditCardGateway
         }
     }
 
+    // NEXT_MAJOR_VERSION Remove this method
    /**
      * Create a credit on the card for the passed transaction
      *
      * @param string $token              belonging to the credit card
      * @param array  $transactionAttribs containing request parameters
      *
+     * @deprecated
+     *
      * @return Result\Successful|Result\Error
      */
     public function credit($token, $transactionAttribs)
     {
+        trigger_error("CreditCard::credit has been deprecated in favor of Transaction::credit", E_USER_DEPRECATED);
         $this->_validateId($token);
         return Transaction::credit(
             array_merge(
@@ -208,6 +212,7 @@ class CreditCardGateway
         );
     }
 
+    // NEXT_MAJOR_VERSION Remove this method
     /**
      * Create a credit on this card, assuming validations will pass
      *
@@ -218,24 +223,31 @@ class CreditCardGateway
      *
      * @throws Exception\ValidationError
      *
+     * @deprecated
+     *
      * @return Transaction
      */
     public function creditNoValidate($token, $transactionAttribs)
     {
+        trigger_error("CreditCard::creditNoValidate has been deprecated in favor of Transaction::creditNoValidate", E_USER_DEPRECATED);
         $result = $this->credit($token, $transactionAttribs);
         return Util::returnObjectOrThrowException('Braintree\Transaction', $result);
     }
 
+    // NEXT_MAJOR_VERSION Remove this method
     /**
      * Create a new sale for the current card
      *
      * @param string $token              belonging to the credit card
      * @param array  $transactionAttribs containing request parameters
      *
+     * @deprecated
+     *
      * @return Result\Successful|Result\Error
      */
     public function sale($token, $transactionAttribs)
     {
+        trigger_error("CreditCard::sale has been deprecated in favor of Transaction::sale", E_USER_DEPRECATED);
         $this->_validateId($token);
         return Transaction::sale(
             array_merge(
@@ -245,6 +257,7 @@ class CreditCardGateway
         );
     }
 
+    // NEXT_MAJOR_VERSION Remove this method
     /**
      * Create a new sale using this card, assuming validations will pass
      *
@@ -255,10 +268,13 @@ class CreditCardGateway
      *
      * @throws Exception\ValidationsFailed
      *
+     * @deprecated
+     *
      * @return Transaction
      */
     public function saleNoValidate($token, $transactionAttribs)
     {
+        trigger_error("CreditCard::saleNoValidate has been deprecated in favor of Transaction::saleNoValidate", E_USER_DEPRECATED);
         $result = $this->sale($token, $transactionAttribs);
         return Util::returnObjectOrThrowException('Braintree\Transaction', $result);
     }

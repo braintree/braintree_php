@@ -39,7 +39,7 @@ class ClientTokenGateway
             $params["version"] = ClientToken::DEFAULT_VERSION;
         }
 
-        $this->conditionallyVerifyKeys($params);
+        Util::verifyKeys(self::generateSignature(), $params);
         $generateParams = ["client_token" => $params];
 
         return $this->_doGenerate('/client_token', $generateParams);
@@ -54,10 +54,13 @@ class ClientTokenGateway
         return $this->_verifyGatewayResponse($response);
     }
 
-    /*
+    // NEXT_MAJOR_VERSION Remove this method
+    /**
      * Checks if customer id is provided prior to verifying keys provided in params
      *
      * @param array $params to be verified
+     *
+     * @deprecated
      *
      * @return array
      */
@@ -71,11 +74,31 @@ class ClientTokenGateway
         }
     }
 
-    /*
+    /**
+     * creates a full array signature of a valid generate request
+     *
+     * @return array gateway generate request format
+     */
+    public static function generateSignature()
+    {
+        return [
+            "customerId",
+            "merchantAccountId",
+            "proxyMerchantId",
+            "version",
+            ["domains" => ['_anyKey_']],
+            ["options" => ["makeDefault", "verifyCard", "failOnDuplicatePaymentMethod"]]
+        ];
+    }
+
+    // NEXT_MAJOR_VERSION Remove this method
+    // Replaced with generateSignature
+    /**
      * returns an array of keys including customer id
      *
-     * @return array
+     * @deprecated
      *
+     * @return array
      */
     public function generateWithCustomerIdSignature()
     {
@@ -85,8 +108,12 @@ class ClientTokenGateway
             "merchantAccountId"];
     }
 
-    /*
+    // NEXT_MAJOR_VERSION Remove this method
+    // Replaced with generateSignature
+    /**
      * returns an array of keys without customer id
+     *
+     * @deprecated
      *
      * @return array
      */

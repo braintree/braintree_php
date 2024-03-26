@@ -78,8 +78,10 @@ class Codes
 
     const CLIENT_TOKEN_CUSTOMER_DOES_NOT_EXIST                               = '92804';
     const CLIENT_TOKEN_FAIL_ON_DUPLICATE_PAYMENT_METHOD_REQUIRES_CUSTOMER_ID = '92803';
+    const CLIENT_TOKEN_INVALID_DOMAIN_FORMAT                                 = '92011';
     const CLIENT_TOKEN_MAKE_DEFAULT_REQUIRES_CUSTOMER_ID                     = '92801';
     const CLIENT_TOKEN_PROXY_MERCHANT_DOES_NOT_EXIST                         = '92805';
+    const CLIENT_TOKEN_TOO_MANY_DOMAINS                                      = '92810';
     const CLIENT_TOKEN_UNSUPPORTED_VERSION                                   = '92806';
     const CLIENT_TOKEN_VERIFY_CARD_REQUIRES_CUSTOMER_ID                      = '92802';
     const CLIENT_TOKEN_MERCHANT_ACCOUNT_DOES_NOT_EXIST                       = '92807';

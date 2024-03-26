@@ -24,6 +24,40 @@ class ClientTokenTest extends Setup
         $this->assertEquals(200, $response["status"]);
     }
 
+    public function test_DomainsOptionSupported()
+    {
+        $clientToken = Test\Helper::decodedClientToken([
+            "domains" => ["example.com"]
+        ]);
+        $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
+        $this->assertTrue(strpos(base64_decode($authorizationFingerprint), "example.com") !== false);
+    }
+
+    public function test_ErrorOnInvalidDomain()
+    {
+        $this->expectException('InvalidArgumentException', 'Client token domains must be valid domain names (RFC 1035), e.g. example.com');
+
+        $clientToken = Test\Helper::decodedClientToken([
+            "domains" => ["example"]
+        ]);
+    }
+
+    public function test_ErrorOnTooManyDomains()
+    {
+        $this->expectException('InvalidArgumentException', 'Cannot specify more than 5 client token domains');
+
+        $clientToken = Test\Helper::decodedClientToken([
+            "domains" => [
+                "example1.com",
+                "example2.com",
+                "example3.com",
+                "example4.com",
+                "example5.com",
+                "example6.com"
+            ]
+        ]);
+    }
+
     public function test_VersionOptionSupported()
     {
         $clientToken = Braintree\ClientToken::generate(["version" => 1]);

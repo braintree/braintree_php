@@ -23,12 +23,15 @@ class ClientToken
         return Configuration::gateway()->clientToken()->generate($params);
     }
 
-    /*
+    // NEXT_MAJOR_VERSION Remove this method
+    /**
      * static method redirecting to gateway class
      *
      * @param array $params to be verified
      *
      * @see ClientTokenGateway::conditionallyVerifyKeys()
+     *
+     * @deprecated
      *
      * @return array
      */
@@ -37,23 +40,42 @@ class ClientToken
         return Configuration::gateway()->clientToken()->conditionallyVerifyKeys($params);
     }
 
-    /*
+    /**
+     * static method redirecting to gateway class
+     *
+     * @see ClientTokenGateway::generateSignature()
+     *
+     * @return array
+     */
+    public static function generateSignature()
+    {
+        return Configuration::gateway()->clientToken()->generateSignature();
+    }
+
+    // NEXT_MAJOR_VERSION Remove this method
+    // Replaced with generateSignature
+    /**
      * static method redirecting to gateway class
      *
      * @see ClientTokenGateway::generateWithCustomerIdSignature()
      *
-     * @return array
+     * @deprecated
      *
+     * @return array
      */
     public static function generateWithCustomerIdSignature()
     {
         return Configuration::gateway()->clientToken()->generateWithCustomerIdSignature();
     }
 
-    /*
+    // NEXT_MAJOR_VERSION Remove this method
+    // Replaced with generateSignature
+    /**
      * static method redirecting to gateway class
      *
      * @see ClientTokenGateway::generateWithoutCustomerIdSignature()
+     *
+     * @deprecated
      *
      * @return array
      */

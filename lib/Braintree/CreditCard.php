@@ -291,19 +291,24 @@ class CreditCard extends Base
         return Configuration::gateway()->creditCard()->fromNonce($nonce);
     }
 
+    // NEXT_MAJOR_VERSION Remove this method
    /**
      * Create a credit on the card for the passed transaction
      *
      * @param string $token              belonging to the credit card
      * @param array  $transactionAttribs containing request parameters
      *
+     * @deprecated
+     *
      * @return Result\Successful|Result\Error
      */
     public static function credit($token, $transactionAttribs)
     {
+        trigger_error("CreditCard::credit has been deprecated in favor of Transaction::credit", E_USER_DEPRECATED);
         return Configuration::gateway()->creditCard()->credit($token, $transactionAttribs);
     }
 
+    // NEXT_MAJOR_VERSION Remove this method
     /**
      * Create a credit on this card, assuming validations will pass
      *
@@ -314,26 +319,34 @@ class CreditCard extends Base
      *
      * @throws Exception\ValidationError
      *
+     * @deprecated
+     *
      * @return Transaction
      */
     public static function creditNoValidate($token, $transactionAttribs)
     {
+        trigger_error("CreditCard::creditNoValidate has been deprecated in favor of Transaction::creditNoValidate", E_USER_DEPRECATED);
         return Configuration::gateway()->creditCard()->creditNoValidate($token, $transactionAttribs);
     }
 
+    // NEXT_MAJOR_VERSION Remove this method
     /**
      * Create a new sale for the current card
      *
      * @param string $token              belonging to the credit card
      * @param array  $transactionAttribs containing request parameters
      *
+     * @deprecated
+     *
      * @return Result\Successful|Result\Error
      */
     public static function sale($token, $transactionAttribs)
     {
+        trigger_error("CreditCard::sale has been deprecated in favor of Transaction::sale", E_USER_DEPRECATED);
         return Configuration::gateway()->creditCard()->sale($token, $transactionAttribs);
     }
 
+    // NEXT_MAJOR_VERSION Remove this method
     /**
      * Create a new sale using this card, assuming validations will pass
      *
@@ -342,12 +355,15 @@ class CreditCard extends Base
      * @param string $token              belonging to the credit card
      * @param array  $transactionAttribs containing request parameters
      *
+     * @deprecated
+     *
      * @throws Exception\ValidationsFailed
      *
      * @return Transaction
      */
     public static function saleNoValidate($token, $transactionAttribs)
     {
+        trigger_error("CreditCard::saleNoValidate has been deprecated in favor of Transaction::saleNoValidate", E_USER_DEPRECATED);
         return Configuration::gateway()->creditCard()->saleNoValidate($token, $transactionAttribs);
     }
 

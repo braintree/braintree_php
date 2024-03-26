@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.18.0
+* Deprecate `CreditCard::credit` in favor of `Transaction::credit`
+* Deprecate `CreditCard::sale` in favor of `Transaction::sale`
+* Add `domains` parameter support to `ClientToken::generate`
+* Refactor key validation in `ClientTokenGateway`
+
 ## 6.17.0
 * Add `UNDER_REVIEW` Dispute Status
 * Add `DISPUTE_UNDER_REVIEW` WebhookNotification
