@@ -2,6 +2,8 @@
 
 namespace Braintree;
 
+use Braintree\HttpHelpers\HttpClientAware;
+
 /**
  * Braintree ExchangeRateQuoteGateway module
  *
@@ -9,9 +11,10 @@ namespace Braintree;
  */
 class ExchangeRateQuoteGateway
 {
+    use HttpClientAware;
+
     private $_config;
     private $_graphQLClient;
-    private $_http;
 
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)

@@ -2,15 +2,18 @@
 
 namespace Braintree;
 
+use Braintree\HttpHelpers\HttpClientAware;
+
 /**
  * Braintree SettlementBatchSummaryGateway module
  * Creates and manages SettlementBatchSummarys
  */
 class SettlementBatchSummaryGateway
 {
+    use HttpClientAware;
+
     private $_gateway;
     private $_config;
-    private $_http;
 
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)

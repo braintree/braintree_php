@@ -2,15 +2,18 @@
 
 namespace Braintree;
 
+use Braintree\HttpHelpers\HttpClientAware;
+
 /**
  * Braintree CreditCardVerificationGateway module
  * Creates and manages CreditCardVerifications
  */
 class CreditCardVerificationGateway
 {
+    use HttpClientAware;
+
     private $_gateway;
     private $_config;
-    private $_http;
 
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)

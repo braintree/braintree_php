@@ -3,11 +3,14 @@
 // phpcs:disable PEAR.Commenting
 namespace Braintree;
 
+use Braintree\HttpHelpers\HttpClientAware;
+
 class TestingGateway
 {
+    use HttpClientAware;
+
     private $_gateway;
     private $_config;
-    private $_http;
 
     public function __construct($gateway)
     {

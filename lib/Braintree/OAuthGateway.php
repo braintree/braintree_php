@@ -2,15 +2,18 @@
 
 namespace Braintree;
 
+use Braintree\HttpHelpers\HttpClientAware;
+
 /**
  * Braintree OAuthGateway module
  * Creates and manages Braintree Addresses
  */
 class OAuthGateway
 {
+    use HttpClientAware;
+
     private $_gateway;
     private $_config;
-    private $_http;
 
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($gateway)

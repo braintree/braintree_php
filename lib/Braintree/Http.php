@@ -4,12 +4,13 @@ namespace Braintree;
 
 use Braintree\HttpHelpers\Curl;
 use Braintree\HttpHelpers\CurlRequest;
+use Braintree\HttpHelpers\HttpClient;
 
 /**
  * Braintree HTTP Client
  * processes Http requests using curl
  */
-class Http
+class Http implements HttpClient
 {
     protected $_config;
     private $_useClientCredentials = false;
@@ -144,5 +145,11 @@ class Http
         $curlRequest = new CurlRequest($url);
         // phpcs:ignore Generic.Files.LineLength
         return Curl::makeRequest($httpVerb, $url, $this->_config, $curlRequest, $requestBody, $file, $customHeaders, $this->_useClientCredentials);
+    }
+
+    public function setConfig(Configuration $config): HttpClient
+    {
+        $this->_config = $config;
+        return $this;
     }
 }

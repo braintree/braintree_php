@@ -2,6 +2,8 @@
 
 namespace Braintree;
 
+use Braintree\HttpHelpers\HttpClient;
+
 /**
  * Braintree Gateway module
  */
@@ -19,13 +21,16 @@ class Gateway
      */
     public $graphQLClient;
 
+    protected HttpClient $http;
+
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
-    public function __construct($config)
+    public function __construct($config, HttpClient $http = null)
     {
         if (is_array($config)) {
             $config = new Configuration($config);
         }
         $this->config = $config;
+        $this->http = $http ? $http->setConfig($config) : new Http($config);
         $this->graphQLClient = new GraphQLClient($config);
     }
 
@@ -35,7 +40,7 @@ class Gateway
      */
     public function addOn()
     {
-        return new AddOnGateway($this);
+        return (new AddOnGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -44,7 +49,7 @@ class Gateway
      */
     public function address()
     {
-        return new AddressGateway($this);
+        return (new AddressGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -53,7 +58,7 @@ class Gateway
      */
     public function applePay()
     {
-        return new ApplePayGateway($this);
+        return (new ApplePayGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -62,7 +67,7 @@ class Gateway
      */
     public function clientToken()
     {
-        return new ClientTokenGateway($this);
+        return (new ClientTokenGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -71,7 +76,7 @@ class Gateway
      */
     public function creditCard()
     {
-        return new CreditCardGateway($this);
+        return (new CreditCardGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -80,7 +85,7 @@ class Gateway
      */
     public function creditCardVerification()
     {
-        return new CreditCardVerificationGateway($this);
+        return (new CreditCardVerificationGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -89,7 +94,7 @@ class Gateway
      */
     public function customer()
     {
-        return new CustomerGateway($this);
+        return (new CustomerGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -98,7 +103,7 @@ class Gateway
      */
     public function discount()
     {
-        return new DiscountGateway($this);
+        return (new DiscountGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -107,7 +112,7 @@ class Gateway
      */
     public function dispute()
     {
-        return new DisputeGateway($this);
+        return (new DisputeGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -116,7 +121,7 @@ class Gateway
      */
     public function documentUpload()
     {
-        return new DocumentUploadGateway($this);
+        return (new DocumentUploadGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -125,7 +130,7 @@ class Gateway
      */
     public function exchangeRateQuote()
     {
-        return new ExchangeRateQuoteGateway($this);
+        return (new ExchangeRateQuoteGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -134,7 +139,7 @@ class Gateway
      */
     public function merchant()
     {
-        return new MerchantGateway($this);
+        return (new MerchantGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -143,7 +148,7 @@ class Gateway
      */
     public function merchantAccount()
     {
-        return new MerchantAccountGateway($this);
+        return (new MerchantAccountGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -152,7 +157,7 @@ class Gateway
      */
     public function oauth()
     {
-        return new OAuthGateway($this);
+        return (new OAuthGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -161,7 +166,7 @@ class Gateway
      */
     public function paymentMethod()
     {
-        return new PaymentMethodGateway($this);
+        return (new PaymentMethodGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -170,7 +175,7 @@ class Gateway
      */
     public function paymentMethodNonce()
     {
-        return new PaymentMethodNonceGateway($this);
+        return (new PaymentMethodNonceGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -179,7 +184,7 @@ class Gateway
      */
     public function payPalAccount()
     {
-        return new PayPalAccountGateway($this);
+        return (new PayPalAccountGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -188,7 +193,7 @@ class Gateway
      */
     public function sepaDirectDebitAccount()
     {
-        return new SepaDirectDebitAccountGateway($this);
+        return (new SepaDirectDebitAccountGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -197,7 +202,7 @@ class Gateway
      */
     public function plan()
     {
-        return new PlanGateway($this);
+        return (new PlanGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -206,7 +211,7 @@ class Gateway
      */
     public function settlementBatchSummary()
     {
-        return new SettlementBatchSummaryGateway($this);
+        return (new SettlementBatchSummaryGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -215,7 +220,7 @@ class Gateway
      */
     public function subscription()
     {
-        return new SubscriptionGateway($this);
+        return (new SubscriptionGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -224,7 +229,7 @@ class Gateway
      */
     public function testing()
     {
-        return new TestingGateway($this);
+        return (new TestingGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -233,7 +238,7 @@ class Gateway
      */
     public function transaction()
     {
-        return new TransactionGateway($this);
+        return (new TransactionGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -242,7 +247,7 @@ class Gateway
      */
     public function transactionLineItem()
     {
-        return new TransactionLineItemGateway($this);
+        return (new TransactionLineItemGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -251,7 +256,7 @@ class Gateway
      */
     public function usBankAccount()
     {
-        return new UsBankAccountGateway($this);
+        return (new UsBankAccountGateway($this))->setHttpClient($this->http);
     }
 
     /**
@@ -260,7 +265,7 @@ class Gateway
      */
     public function usBankAccountVerification()
     {
-        return new UsBankAccountVerificationGateway($this);
+        return (new UsBankAccountVerificationGateway($this))->setHttpClient($this->http);
     }
 
     /**
