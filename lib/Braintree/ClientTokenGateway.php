@@ -28,7 +28,7 @@ class ClientTokenGateway
     /**
      * Generate a client token for client-side authorization
      *
-     * @param Optional $params containing request parameters
+     * @param $params Optional, containing request parameters
      *
      * @return string client token
      */
