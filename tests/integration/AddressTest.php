@@ -26,7 +26,8 @@ class AddressTest extends Setup
             'countryCodeAlpha2' => 'VA',
             'countryCodeAlpha3' => 'VAT',
             'countryCodeNumeric' => '336',
-            'phoneNumber' => '312-123-4567'
+            'phoneNumber' => '312-123-4567',
+            'internationalPhone' => ['countryCode' => '1', 'nationalNumber' => '3121234567']
         ]);
         $this->assertTrue($result->success);
         $address = $result->address;
@@ -43,6 +44,8 @@ class AddressTest extends Setup
         $this->assertEquals('VAT', $address->countryCodeAlpha3);
         $this->assertEquals('336', $address->countryCodeNumeric);
         $this->assertEquals('312-123-4567', $address->phoneNumber);
+        $this->assertEquals('1', $address->internationalPhone['countryCode']);
+        $this->assertEquals('3121234567', $address->internationalPhone['nationalNumber']);
     }
 
     public function testGatewayCreate()
@@ -61,7 +64,8 @@ class AddressTest extends Setup
             'locality' => 'Chicago',
             'region' => 'IL',
             'postalCode' => '60622',
-            'phoneNumber' => '312-123-4567'
+            'phoneNumber' => '312-123-4567',
+            'internationalPhone' => ['countryCode' => '1', 'nationalNumber' => '3121234567']
         ]);
 
         $this->assertTrue($result->success);
@@ -71,6 +75,8 @@ class AddressTest extends Setup
         $this->assertEquals('IL', $address->region);
         $this->assertEquals('60622', $address->postalCode);
         $this->assertEquals('312-123-4567', $address->phoneNumber);
+        $this->assertEquals('1', $address->internationalPhone['countryCode']);
+        $this->assertEquals('3121234567', $address->internationalPhone['nationalNumber']);
     }
 
     public function testCreate_withValidationErrors()
@@ -219,7 +225,9 @@ class AddressTest extends Setup
             'countryName' => 'Mexico',
             'countryCodeAlpha2' => 'MX',
             'countryCodeAlpha3' => 'MEX',
-            'countryCodeNumeric' => '484'
+            'countryCodeNumeric' => '484',
+            'phoneNumber' => '312-123-4567',
+            'internationalPhone' => ['countryCode' => '1', 'nationalNumber' => '3121234567']
         ]);
         $this->assertTrue($result->success);
         $address = $result->address;
@@ -235,6 +243,9 @@ class AddressTest extends Setup
         $this->assertEquals('MX', $address->countryCodeAlpha2);
         $this->assertEquals('MEX', $address->countryCodeAlpha3);
         $this->assertEquals('484', $address->countryCodeNumeric);
+        $this->assertEquals('312-123-4567', $address->phoneNumber);
+        $this->assertEquals('1', $address->internationalPhone['countryCode']);
+        $this->assertEquals('3121234567', $address->internationalPhone['nationalNumber']);
     }
 
     public function testUpdate_withValidationErrors()

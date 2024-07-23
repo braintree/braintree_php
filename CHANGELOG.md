@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.19.0
+* Add `foreignRetailer` to Transaction
+* Add `internationalPhone` to `Address` and `Customer`
+* Add `fundingSourceDescription` to PayPalAccount
+* Add missing `GooglePayCard` error code
+* Add `REFUND_FAILED` to WebhookNotification
+* Add `final_capture` to Transaction `submitForPartialSettlement`
+* Deprecate `paypalTrackingId` in favor of `paypalTrackerId`
+
 ## 6.18.0
 * Deprecate `CreditCard::credit` in favor of `Transaction::credit`
 * Deprecate `CreditCard::sale` in favor of `Transaction::sale`

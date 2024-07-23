@@ -13,6 +13,7 @@ class PackageTrackingTest extends Setup
     public function testPackageTrackingHandlesInvalidRequest()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = Braintree\Test\Nonces::$paypalOneTimePayment;
 
         // Create Transaction
         $result = Braintree\Transaction::sale([
@@ -20,10 +21,7 @@ class PackageTrackingTest extends Setup
             'options' => [
                 'submitForSettlement' => true,
             ],
-            'paypalAccount' => [
-                'paymentId' => 'fake-payment-id',
-                'payerId' => 'fake-payer-id',
-            ],
+            'paymentMethodNonce' => $nonce
         ]);
 
         $this->assertTrue($result->success);
@@ -39,9 +37,11 @@ class PackageTrackingTest extends Setup
         $this->assertFalse($invalidResult->success);
         $this->assertEquals('Tracking number is required.', $invalidResult->message);
     }
+
     public function testPackageTracking()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = Braintree\Test\Nonces::$paypalOneTimePayment;
 
         // Create Transaction
         $result = Braintree\Transaction::sale([
@@ -49,10 +49,7 @@ class PackageTrackingTest extends Setup
             'options' => [
                 'submitForSettlement' => true,
             ],
-            'paypalAccount' => [
-                'paymentId' => 'fake-payment-id',
-                'payerId' => 'fake-payer-id',
-            ],
+            'paymentMethodNonce' => $nonce
         ]);
 
         $this->assertTrue($result->success);
@@ -122,5 +119,19 @@ class PackageTrackingTest extends Setup
         // Find transaction gives both packages
         $findTransaction = Braintree\Transaction::find($transaction->id);
         $this->assertEquals(2, count($findTransaction->packages));
+    }
+
+    public function testPackageTrackingRetrievingTrackers()
+    {
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+
+        // Find transaction gives both packages
+        $findTransaction = Braintree\Transaction::find('package_tracking_tx');
+
+        $packages = $findTransaction->packages;
+
+        $this->assertEquals(2, count($packages));
+        $this->assertEquals('paypal_tracker_id_1', $packages[0]->paypalTrackerId);
+        $this->assertEquals('paypal_tracker_id_2', $packages[1]->paypalTrackerId);
     }
 }

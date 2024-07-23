@@ -31,6 +31,7 @@ class PayPalAccountTest extends Setup
         $this->assertSame('jane.doe@example.com', $foundPayPalAccount->email);
         $this->assertSame($paymentMethodToken, $foundPayPalAccount->token);
         $this->assertNotNull($foundPayPalAccount->imageUrl);
+        $this->assertNull($foundPayPalAccount->fundingSourceDescription);
         $this->assertNull($foundPayPalAccount->revokedAt);
     }
 

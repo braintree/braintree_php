@@ -109,6 +109,9 @@ class WebhookTestingGateway
             case WebhookNotification::DISPUTE_WON:
                 $subjectXml = self::_disputeWonSampleXml($id);
                 break;
+            case WebhookNotification::REFUND_FAILED:
+                $subjectXml = self::_refundFailedSampleXml($id);
+                break;
             case WebhookNotification::SUBSCRIPTION_BILLING_SKIPPED:
                 $subjectXml = self::_subscriptionBillingSkippedSampleXml($id);
                 break;
@@ -433,6 +436,24 @@ class WebhookTestingGateway
           <date-opened type=\"date\">2014-03-21</date-opened>
           <date-won type=\"date\">2014-03-22</date-won>
         </dispute>
+        ";
+    }
+
+    private static function _refundFailedSampleXml($id)
+    {
+        return "
+        <transaction>
+            <id>{$id}</id>
+            <amount>250.00</amount>
+            <us-bank-account>
+                <routing-number>123456789</routing-number>
+                <last-4>1234</last-4>
+                <account-type>checking</account-type>
+                <account-holder-name>Dan Schulman</account-holder-name>
+            </us-bank-account>
+            <status>processor_declined</status>
+            <refunded-transaction-fk>1</refunded-transaction-fk>
+        </transaction>
         ";
     }
 

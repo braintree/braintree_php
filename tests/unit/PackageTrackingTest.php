@@ -39,13 +39,17 @@ class PackageTrackingTest extends Setup
                     'id' => 'id1',
                     'carrier' => "UPS",
                     'trackingNumber' => "tracking_number_1",
+                    // NEXT_MAJOR_VERSION Remove paypalTrackingId
                     'paypalTrackingId' => 'pp_tracking_number_1',
+                    'paypalTrackerId' => 'pp_tracker_id_1',
                 ],
                 [
                     'id' => 'id2',
                     'carrier' => "FEDEX",
                     'trackingNumber' => "tracking_number_2",
+                    // NEXT_MAJOR_VERSION Remove paypalTrackingId
                     'paypalTrackingId' => 'pp_tracking_number_2',
+                    'paypalTrackerId' => 'pp_tracker_id_2',
                 ]
             ]
         ]);
@@ -54,12 +58,16 @@ class PackageTrackingTest extends Setup
         $this->assertEquals("id1", $packages[0]->id);
         $this->assertEquals("UPS", $packages[0]->carrier);
         $this->assertEquals("tracking_number_1", $packages[0]->trackingNumber);
+        // NEXT_MAJOR_VERSION Remove paypalTrackingId assertion
         $this->assertEquals("pp_tracking_number_1", $packages[0]->paypalTrackingId);
+        $this->assertEquals("pp_tracker_id_1", $packages[0]->paypalTrackerId);
 
         $this->assertEquals("id2", $packages[1]->id);
         $this->assertEquals("FEDEX", $packages[1]->carrier);
         $this->assertEquals("tracking_number_2", $packages[1]->trackingNumber);
+        // NEXT_MAJOR_VERSION Remove paypalTrackingId assertion
         $this->assertEquals("pp_tracking_number_2", $packages[1]->paypalTrackingId);
+        $this->assertEquals("pp_tracker_id_2", $packages[1]->paypalTrackerId);
     }
 
     public function testPackageTrackingRequest()

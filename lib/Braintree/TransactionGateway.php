@@ -114,6 +114,7 @@ class TransactionGateway
             'shippingAmount',
             'discountAmount',
             'shipsFromPostalCode',
+            'foreignRetailer',
             ['riskData' =>
                 [
                     'customerBrowser', 'customerIp', 'customerDeviceId',
@@ -134,20 +135,20 @@ class TransactionGateway
             ['customer' =>
                 [
                     'id', 'company', 'email', 'fax', 'firstName',
-                    'lastName', 'phone', 'website'],
+                    'lastName', 'phone', ['internationalPhone' => ['countryCode', 'nationalNumber']], 'website'],
             ],
             ['billing' =>
                 [
                     'firstName', 'lastName', 'company', 'countryName',
                     'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
-                    'extendedAddress', 'locality', 'phoneNumber', 'postalCode', 'region',
+                    'extendedAddress', 'locality', 'phoneNumber', ['internationalPhone' => ['countryCode', 'nationalNumber']], 'postalCode', 'region',
                     'streetAddress'],
             ],
             ['shipping' =>
                 [
                     'firstName', 'lastName', 'company', 'countryName',
                     'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
-                    'extendedAddress', 'locality', 'phoneNumber', 'postalCode', 'region',
+                    'extendedAddress', 'locality', 'phoneNumber', ['internationalPhone' => ['countryCode', 'nationalNumber']], 'postalCode', 'region',
                     'shippingMethod', 'streetAddress'],
             ],
             ['threeDSecurePassThru' =>
@@ -478,6 +479,19 @@ class TransactionGateway
      *
      * @return array gateway request signature format
      */
+    public static function submitForPartialSettlementSignature()
+    {
+        return array_merge(
+            self::submitForSettlementSignature(),
+            ['finalCapture']
+        );
+    }
+
+    /**
+     * creates a full array signature of a valid gateway request
+     *
+     * @return array gateway request signature format
+     */
     public static function updateDetailsSignature()
     {
         return ['amount', 'orderId', ['descriptor' => ['name', 'phone', 'url']]];
@@ -764,7 +778,7 @@ class TransactionGateway
     public function submitForPartialSettlement($transactionId, $amount, $attribs = [])
     {
         $this->_validateId($transactionId);
-        Util::verifyKeys(self::submitForSettlementSignature(), $attribs);
+        Util::verifyKeys(self::submitForPartialSettlementSignature(), $attribs);
         $attribs['amount'] = $amount;
 
         $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/submit_for_partial_settlement';

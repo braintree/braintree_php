@@ -41,6 +41,7 @@ namespace Braintree;
  *     'company' => 'Braintree',
  *     'email' => 'dan@example.com',
  *     'phone' => '419-555-1234',
+ *     'internationalPhone' => array('countryCode' => '1', 'nationalNumber' => '3121234567'),
  *     'fax' => '419-555-1235',
  *     'website' => 'http://braintreepayments.com'
  *    ),
@@ -54,7 +55,8 @@ namespace Braintree;
  *      'region' => 'IL',
  *      'postalCode' => '60622',
  *      'countryName' => 'United States of America',
- *      'phoneNumber' => '312-123-4567'
+ *      'phoneNumber' => '312-123-4567',
+ *      'internationalPhone' => array('countryCode' => '1', 'nationalNumber' => '3121234567')
  *    ),
  *    'shipping' => array(
  *      'firstName'    => 'Andrew',
@@ -66,7 +68,8 @@ namespace Braintree;
  *      'region'    => 'IL',
  *      'postalCode'    => '60103',
  *      'countryName'    => 'United States of America',
- *      'phoneNumber' => '312-123-4567'
+ *      'phoneNumber' => '312-123-4567',
+ *      'internationalPhone' => array('countryCode' => '1', 'nationalNumber' => '3121234567')
  *    ),
  *    'customFields'    => array(
  *      'birthdate'    => '11/13/1954'

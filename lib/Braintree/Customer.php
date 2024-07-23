@@ -356,19 +356,20 @@ class Customer extends Base
     }
 
     protected $_attributes = [
-        'addresses'      => '',
-        'company'        => '',
-        'creditCards'    => '',
-        'email'          => '',
-        'fax'            => '',
-        'firstName'      => '',
-        'id'             => '',
-        'lastName'       => '',
-        'phone'          => '',
-        'taxIdentifiers' => '',
-        'createdAt'      => '',
-        'updatedAt'      => '',
-        'website'        => '',
+        'addresses'          => '',
+        'company'            => '',
+        'createdAt'          => '',
+        'creditCards'        => '',
+        'email'              => '',
+        'fax'                => '',
+        'firstName'          => '',
+        'id'                 => '',
+        'internationalPhone' => '',
+        'lastName'           => '',
+        'phone'              => '',
+        'taxIdentifiers'     => '',
+        'updatedAt'          => '',
+        'website'            => '',
         ];
 
     /**

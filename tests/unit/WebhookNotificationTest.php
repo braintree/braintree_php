@@ -512,6 +512,22 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
     }
 
+    public function testBuildsASampleNotificationForARefundFailedWebhook()
+    {
+        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
+            Braintree\WebhookNotification::REFUND_FAILED,
+            "my_id"
+        );
+
+        $webhookNotification = Braintree\WebhookNotification::parse(
+            $sampleNotification['bt_signature'],
+            $sampleNotification['bt_payload']
+        );
+
+        $this->assertEquals(Braintree\WebhookNotification::REFUND_FAILED, $webhookNotification->kind);
+        $this->assertEquals("my_id", $webhookNotification->transaction->id);
+    }
+
     public function testBuildsASampleNotificationForADisputeUnderReviewWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(

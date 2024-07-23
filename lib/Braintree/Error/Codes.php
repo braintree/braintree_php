@@ -45,6 +45,8 @@ class Codes
 
     const ADJUSTMENT_AMOUNT_MUST_BE_GREATER_THAN_ZERO                   = '95605';
 
+    const ANDROID_PAY_CARDS_ARE_NOT_ACCEPTED                                = '83708';
+
     const APPLE_PAY_CARDS_ARE_NOT_ACCEPTED                                  = '83501';
     const APPLE_PAY_CUSTOMER_ID_IS_REQUIRED_FOR_VAULTING                    = '83502';
     const APPLE_PAY_TOKEN_IS_IN_USE                                         = '93503';

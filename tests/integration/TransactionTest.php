@@ -2602,6 +2602,7 @@ class TransactionTest extends Setup
                 'company' => 'Braintree',
                 'email' => 'dan@example.com',
                 'phone' => '419-555-1234',
+                'internationalPhone' => ['countryCode' => '1', 'nationalNumber' => '3121234567'],
                 'fax' => '419-555-1235',
                 'website' => 'http://braintreepayments.com'
             ],
@@ -2614,6 +2615,7 @@ class TransactionTest extends Setup
                 'locality' => 'Chicago',
                 'region' => 'IL',
                 'phoneNumber' => '122-555-1237',
+                'internationalPhone' => ['countryCode' => '1', 'nationalNumber' => '3121234567'],
                 'postalCode' => '60622',
                 'countryName' => 'United States of America',
                 'countryCodeAlpha2' => 'US',
@@ -2629,6 +2631,7 @@ class TransactionTest extends Setup
                 'locality' => 'Bartlett',
                 'region' => 'IL',
                 'phoneNumber' => '122-555-1236',
+                'internationalPhone' => ['countryCode' => '1', 'nationalNumber' => '3121234567'],
                 'postalCode' => '60103',
                 'countryName' => 'United States of America',
                 'countryCodeAlpha2' => 'US',
@@ -2669,6 +2672,8 @@ class TransactionTest extends Setup
         $this->assertEquals('Braintree', $transaction->customerDetails->company);
         $this->assertEquals('dan@example.com', $transaction->customerDetails->email);
         $this->assertEquals('419-555-1234', $transaction->customerDetails->phone);
+        $this->assertEquals('1', $transaction->customerDetails->internationalPhone['countryCode']);
+        $this->assertEquals('3121234567', $transaction->customerDetails->internationalPhone['nationalNumber']);
         $this->assertEquals('419-555-1235', $transaction->customerDetails->fax);
         $this->assertEquals('http://braintreepayments.com', $transaction->customerDetails->website);
 
@@ -2684,6 +2689,9 @@ class TransactionTest extends Setup
         $this->assertEquals('US', $transaction->billingDetails->countryCodeAlpha2);
         $this->assertEquals('USA', $transaction->billingDetails->countryCodeAlpha3);
         $this->assertEquals('840', $transaction->billingDetails->countryCodeNumeric);
+        $this->assertEquals('122-555-1237', $transaction->billingDetails->phoneNumber);
+        $this->assertEquals('1', $transaction->billingDetails->internationalPhone['countryCode']);
+        $this->assertEquals('3121234567', $transaction->billingDetails->internationalPhone['nationalNumber']);
 
         $this->assertEquals('Andrew', $transaction->shippingDetails->firstName);
         $this->assertEquals('Mason', $transaction->shippingDetails->lastName);
@@ -2697,6 +2705,9 @@ class TransactionTest extends Setup
         $this->assertEquals('US', $transaction->shippingDetails->countryCodeAlpha2);
         $this->assertEquals('USA', $transaction->shippingDetails->countryCodeAlpha3);
         $this->assertEquals('840', $transaction->shippingDetails->countryCodeNumeric);
+        $this->assertEquals('122-555-1236', $transaction->shippingDetails->phoneNumber);
+        $this->assertEquals('1', $transaction->shippingDetails->internationalPhone['countryCode']);
+        $this->assertEquals('3121234567', $transaction->shippingDetails->internationalPhone['nationalNumber']);
 
         $this->assertNotNull($transaction->processorAuthorizationCode);
         $this->assertEquals('510510', $transaction->creditCardDetails->bin);
@@ -6214,6 +6225,31 @@ class TransactionTest extends Setup
         $this->assertEquals(2, count($refreshedAuthorizedTransaction->partialSettlementTransactionIds));
     }
 
+    public function testSubmitForPartialSettlement_withFinalCapture()
+    {
+        $attribs = ['finalCapture' => true];
+        $authorizedTransaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $authorizedTransaction->status);
+        $partialSettlementResult1 = Braintree\Transaction::submitForPartialSettlement($authorizedTransaction->id, '30.00');
+        $this->assertTrue($partialSettlementResult1->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $partialSettlementResult1->transaction->status);
+        $this->assertEquals('30.00', $partialSettlementResult1->transaction->amount);
+        $refreshedAuthorizedTransaction1 = Braintree\Transaction::find($authorizedTransaction->id);
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $refreshedAuthorizedTransaction1->status);
+
+        $partialSettlementResult2 = Braintree\Transaction::submitForPartialSettlement($authorizedTransaction->id, '40.00', $attribs);
+        $this->assertTrue($partialSettlementResult2->success);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $partialSettlementResult2->transaction->status);
+        $refreshedAuthorizedTransaction2 = Braintree\Transaction::find($authorizedTransaction->id);
+        $this->assertEquals(Braintree\Transaction::SETTLEMENT_PENDING, $refreshedAuthorizedTransaction2->status);
+    }
+
     public function testSubmitForPartialSettlementUnsuccesful()
     {
         $authorizedTransaction = Braintree\Transaction::saleNoValidate([
@@ -7247,5 +7283,52 @@ class TransactionTest extends Setup
 
         $transaction = $result->transaction;
         $this->assertFalse($transaction->retried);
+    }
+
+    public function testCreateTransactionReturnsForeignRetailerWhenSetToTrueInRequest()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2030'
+            ],
+            'foreignRetailer' => true
+        ]);
+
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $this->assertTrue($transaction->foreignRetailer);
+    }
+
+    public function testCreateTransactionDoesNotReturnForeignRetailerWhenSetToFalseInRequest()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2030'
+            ],
+            'foreignRetailer' => false
+        ]);
+
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $this->assertFalse(property_exists($transaction, "foreignRetailer"));
+    }
+
+    public function testCreateTransactionDoesNotReturnForeignRetailerWhenSkippedInRequest()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2030'
+            ]
+        ]);
+
+        $transaction = $result->transaction;
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $this->assertFalse(property_exists($transaction, "foreignRetailer"));
     }
 }

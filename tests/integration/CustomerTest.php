@@ -34,6 +34,7 @@ class CustomerTest extends Setup
             'company' => 'Jones Co.',
             'email' => 'mike.jones@example.com',
             'phone' => '419.555.1234',
+            'internationalPhone' => ['countryCode' => '1', 'nationalNumber' => '3121234567'],
             'fax' => '419.555.1235',
             'website' => 'http://example.com'
         ]);
@@ -44,6 +45,8 @@ class CustomerTest extends Setup
         $this->assertEquals('Jones Co.', $customer->company);
         $this->assertEquals('mike.jones@example.com', $customer->email);
         $this->assertEquals('419.555.1234', $customer->phone);
+        $this->assertEquals('1', $customer->internationalPhone['countryCode']);
+        $this->assertEquals('3121234567', $customer->internationalPhone['nationalNumber']);
         $this->assertEquals('419.555.1235', $customer->fax);
         $this->assertEquals('http://example.com', $customer->website);
         $this->assertNotNull($customer->merchantId);
@@ -1086,6 +1089,7 @@ class CustomerTest extends Setup
             'company' => 'Old Company',
             'email' => 'old.email@example.com',
             'phone' => 'old phone',
+            'internationalPhone' => ['countryCode' => '2', 'nationalNumber' => '1234567890'],
             'fax' => 'old fax',
             'website' => 'http://old.example.com'
         ]);
@@ -1097,6 +1101,7 @@ class CustomerTest extends Setup
             'company' => 'New Company',
             'email' => 'new.email@example.com',
             'phone' => 'new phone',
+            'internationalPhone' => ['countryCode' => '1', 'nationalNumber' => '3121234567'],
             'fax' => 'new fax',
             'website' => 'http://new.example.com'
         ]);
@@ -1108,6 +1113,8 @@ class CustomerTest extends Setup
         $this->assertEquals('new phone', $updateResult->customer->phone);
         $this->assertEquals('new fax', $updateResult->customer->fax);
         $this->assertEquals('http://new.example.com', $updateResult->customer->website);
+        $this->assertEquals('1', $updateResult->customer->internationalPhone['countryCode']);
+        $this->assertEquals('3121234567', $updateResult->customer->internationalPhone['nationalNumber']);
     }
 
     public function testUpdate_withCountry()

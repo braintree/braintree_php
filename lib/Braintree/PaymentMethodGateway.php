@@ -171,7 +171,7 @@ class PaymentMethodGateway
                         'firstName', 'lastName', 'company', 'countryName',
                         'countryCodeAlpha2', 'countryCodeAlpha3', 'countryCodeNumeric',
                         'extendedAddress', 'locality', 'postalCode', 'region',
-                        'streetAddress', 'phoneNumber'],
+                        'streetAddress', 'phoneNumber', ['internationalPhone' => ['countryCode', 'nationalNumber']]],
                 ],
             ]],
         ];

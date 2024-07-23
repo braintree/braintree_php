@@ -753,7 +753,8 @@ class PaymentMethodTest extends Setup
             'customerId' => $customer->id,
             'billingAddress' => [
                 'streetAddress' => '123 Abc Way',
-                'phoneNumber' => '312-123-4567'
+                'phoneNumber' => '312-123-4567',
+                'internationalPhone' => ['countryCode' => '1', 'nationalNumber' => '3121234567']
             ]
         ]);
 
@@ -765,6 +766,8 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(null != $foundCreditCard);
         $this->assertEquals('123 Abc Way', $foundCreditCard->billingAddress->streetAddress);
         $this->assertEquals('312-123-4567', $foundCreditCard->billingAddress->phoneNumber);
+        $this->assertEquals('1', $foundCreditCard->billingAddress->internationalPhone['countryCode']);
+        $this->assertEquals('3121234567', $foundCreditCard->billingAddress->internationalPhone['nationalNumber']);
     }
 
     public function testCreate_overridesTheBillingAddressInTheNonce()

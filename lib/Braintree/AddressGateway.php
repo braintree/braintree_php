@@ -185,6 +185,7 @@ class AddressGateway
             'customerId',
             'extendedAddress',
             'firstName',
+            ['internationalPhone' => ['countryCode', 'nationalNumber']],
             'lastName',
             'locality',
             'phoneNumber',
