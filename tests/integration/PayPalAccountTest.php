@@ -32,6 +32,7 @@ class PayPalAccountTest extends Setup
         $this->assertSame($paymentMethodToken, $foundPayPalAccount->token);
         $this->assertNotNull($foundPayPalAccount->imageUrl);
         $this->assertNull($foundPayPalAccount->fundingSourceDescription);
+        $this->assertArrayNotHasKey("editPaypalVaultId", $foundPayPalAccount->toArray());
         $this->assertNull($foundPayPalAccount->revokedAt);
     }
 

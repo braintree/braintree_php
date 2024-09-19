@@ -109,6 +109,7 @@ class Codes
     const CREDIT_CARD_EXPIRATION_YEAR_IS_INVALID                                           = '81713';
     const CREDIT_CARD_INVALID_PARAMS_FOR_CREDIT_CARD_UPDATE                                = '91745';
     const CREDIT_CARD_INVALID_VENMO_SDK_PAYMENT_METHOD_CODE                                = '91727';
+    const CREDIT_CARD_NETWORK_TOKENIZATION_ATTRIBUTE_CRYPTOGRAM_IS_REQUIRED                = '81762';
     const CREDIT_CARD_NUMBER_INVALID_LENGTH                                                = '81716';
     const CREDIT_CARD_NUMBER_IS_INVALID                                                    = '81715';
     const CREDIT_CARD_NUMBER_IS_PROHIBITED                                                 = '81750';

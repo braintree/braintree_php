@@ -28,6 +28,26 @@ class CreditCardVerificationTest extends Setup
         $this->assertNotNull($verification->graphQLId);
     }
 
+    public function test_createWithSuccessfulResponseForVisaAni()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '05/2011',
+            ],
+        ]);
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->processorResponseCode, '1000');
+        $this->assertEquals($verification->processorResponseText, 'Approved');
+        $this->assertEquals($verification->aniFirstNameResponseCode, "I");
+        $this->assertEquals($verification->aniLastNameResponseCode, "I");
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
+        $this->assertNotNull($verification->graphQLId);
+    }
+
     public function test_createWithUnsuccessfulResponse()
     {
         $result = Braintree\CreditCardVerification::create([

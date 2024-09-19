@@ -802,8 +802,11 @@ class WebhookTestingGateway
     {
         return "
 		<local-payment>
-            <payment-id>a-payment-id</payment-id>
+            <bic>a-bic</bic>
+            <iban-last-chars>1234</iban-last-chars>
             <payer-id>a-payer-id</payer-id>
+            <payer-name>a-payer-name</payer-name>
+            <payment-id>a-payment-id</payment-id>
             <payment-method-nonce>ee257d98-de40-47e8-96b3-a6954ea7a9a4</payment-method-nonce>
             <transaction>
                 <id>1</id>

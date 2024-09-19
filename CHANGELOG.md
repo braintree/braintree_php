@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.20.0
+* Add `payer_name`, `bic` and `iban_last_chars` to LocalPaymentCompleted webhook
+* Fixes "Array to String conversion" error when an international phone number is included in customer details
+* Add `editPaypalVaultId` to PayPalAccount
+* Add `aniFirstNameResponseCode` and `aniLastNameResponseCode` to CreditCardVerification
+* Add `shippingTaxAmount` to Transaction
+* Add `networkTokenizationAttributes` parameter to `Transaction.sale`
+* Add `CREDIT_CARD_NETWORK_TOKENIZATION_ATTRIBUTE_CRYPTOGRAM_IS_REQUIRED` to validation error codes.
+
 ## 6.19.0
 * Add `foreignRetailer` to Transaction
 * Add `internationalPhone` to `Address` and `Customer`

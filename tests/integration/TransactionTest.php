@@ -421,6 +421,28 @@ class TransactionTest extends Setup
         $this->assertEquals('12345', $transaction->shipsFromPostalCode);
     }
 
+    public function testSaleWithShippingTaxAmount()
+    {
+        $result = Braintree\Transaction::sale([
+          'amount' => '35.05',
+          'creditCard' => [
+              'number' => Braintree\Test\CreditCardNumbers::$visa,
+              'expirationDate' => '05/2009',
+          ],
+          'shippingAmount' => '1.00',
+          'discountAmount' => '2.00',
+          'shippingTaxAmount' => '3.00',
+          'shipsFromPostalCode' => '12345',
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('1.00', $transaction->shippingAmount);
+        $this->assertEquals('2.00', $transaction->discountAmount);
+        $this->assertEquals('3.00', $transaction->shippingTaxAmount);
+        $this->assertEquals('12345', $transaction->shipsFromPostalCode);
+    }
+
     public function testSaleWhenDiscountAmountFormatIsInvalid()
     {
         $result = Braintree\Transaction::sale([
@@ -3244,6 +3266,36 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
     }
 
+    public function testSubmitForSettlement_withShippingTaxAmount()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
+        $submitForSettlementParams = [
+          'shippingAmount' => '1.00',
+          'discountAmount' => '2.00',
+          'shippingTaxAmount' => '3.00',
+          'shipsFromPostalCode' => '12345',
+          'lineItems' => [[
+              'quantity' => '1.0232',
+              'name' => 'Name #1',
+              'kind' => Braintree\TransactionLineItem::DEBIT,
+              'unitAmount' => '45.1232',
+              'totalAmount' => '45.15',
+          ]]
+        ];
+        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, null, $submitForSettlementParams);
+        $this->assertEquals(true, $submitResult->success);
+        $this->assertEquals('3.00', $submitResult->transaction->shippingTaxAmount);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
+    }
+
     public function testSubmitForSettlement_withDescriptor()
     {
         $transaction = Braintree\Transaction::saleNoValidate([
@@ -4544,7 +4596,7 @@ class TransactionTest extends Setup
 
         $result = $gateway->merchant()->create([
             'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'USA',
+            'countryCodeAlpha3' => 'GBR',
             'paymentMethods' => ['credit_card', 'paypal']
         ]);
 
@@ -7076,6 +7128,48 @@ class TransactionTest extends Setup
         ]);
 
         $this->assertFalse($result->success);
+    }
+
+    public function testValidNetworkTokenTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
+                'networkTokenizationAttributes' => [
+                    'cryptogram' => '/wAAAAAAAcb8AlGUF/1JQEkAAAA=',
+                    'ecommerceIndicator' => '45310020105',
+                    'tokenRequestorId' => '05'
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(true, $transaction->processedWithNetworkToken);
+        $this->assertEquals(true, $transaction->networkToken['isNetworkTokenized']);
+    }
+
+    public function testInvalidNetworkTokenTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
+                'networkTokenizationAttributes' => [
+                    'ecommerceIndicator' => '45310020105',
+                    'tokenRequestorId' => '05'
+                ],
+            ],
+        ]);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->forKey('creditCard')->onAttribute('networkTokenizationAttributes');
+        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_NETWORK_TOKENIZATION_ATTRIBUTE_CRYPTOGRAM_IS_REQUIRED, $errors[0]->code);
     }
 
     public function testInstallmentsTransaction()

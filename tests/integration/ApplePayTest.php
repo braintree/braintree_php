@@ -31,7 +31,7 @@ class ApplePayTest extends Setup
 
         $result = $gateway->merchant()->create([
             'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'USA',
+            'countryCodeAlpha3' => 'GBR',
             'paymentMethods' => ['credit_card', 'paypal'],
         ]);
 

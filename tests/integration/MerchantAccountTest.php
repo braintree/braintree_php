@@ -399,8 +399,8 @@ class MerchantAccountTest extends Setup
     public function testCreateForCurrency()
     {
         $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$signup_client_id',
-            'clientSecret' => 'client_secret$development$signup_client_secret',
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
         ]);
         $result = $gateway->merchant()->create([
             'email' => 'name@email.com',
@@ -428,8 +428,8 @@ class MerchantAccountTest extends Setup
     public function testCreateForCurrencyWithDuplicateCurrency()
     {
         $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$signup_client_id',
-            'clientSecret' => 'client_secret$development$signup_client_secret',
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
         ]);
         $result = $gateway->merchant()->create([
             'email' => 'name@email.com',
@@ -457,8 +457,8 @@ class MerchantAccountTest extends Setup
     public function testCreateForCurrencyWithInvalidCurrency()
     {
         $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$signup_client_id',
-            'clientSecret' => 'client_secret$development$signup_client_secret',
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
         ]);
         $result = $gateway->merchant()->create([
             'email' => 'name@email.com',
@@ -485,8 +485,8 @@ class MerchantAccountTest extends Setup
     public function testCreateForCurrencyWithoutCurrency()
     {
         $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$signup_client_id',
-            'clientSecret' => 'client_secret$development$signup_client_secret',
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
         ]);
         $result = $gateway->merchant()->create([
             'email' => 'name@email.com',
@@ -511,8 +511,8 @@ class MerchantAccountTest extends Setup
     public function testCreateForCurrencyWithDuplicateId()
     {
         $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$signup_client_id',
-            'clientSecret' => 'client_secret$development$signup_client_secret',
+            'clientId' => 'client_id$development$integration_client_id',
+            'clientSecret' => 'client_secret$development$integration_client_secret',
         ]);
         $result = $gateway->merchant()->create([
             'email' => 'name@email.com',
@@ -575,7 +575,7 @@ class MerchantAccountTest extends Setup
 
         $result = $gateway->merchant()->create([
             'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'USA',
+            'countryCodeAlpha3' => 'GBR',
             'paymentMethods' => ['credit_card', 'paypal'],
         ]);
 
@@ -591,7 +591,7 @@ class MerchantAccountTest extends Setup
 
         $this->assertEquals(1, count($merchantAccounts));
         $merchantAccount = $merchantAccounts[0];
-        $this->assertEquals("USD", $merchantAccount->currencyIsoCode);
+        $this->assertEquals("GBP", $merchantAccount->currencyIsoCode);
         $this->assertEquals(Braintree\MerchantAccount::STATUS_ACTIVE, $merchantAccount->status);
         $this->assertTrue($merchantAccount->default);
     }

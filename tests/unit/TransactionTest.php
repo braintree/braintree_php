@@ -106,6 +106,32 @@ class TransactionTest extends Setup
         ]);
     }
 
+    public function testSaleWithExternalNetworkTokenOption()
+    {
+        $transactionGateway = $this->mockTransactionGatewayDoCreate();
+        $transactionGateway
+            ->expects($this->once())
+            ->method('_doCreate')
+            ->will($this->returnCallback(function ($path, $params) {
+                $this->assertEquals("/wAAAAAAAcb8AlGUF/1JQEkAAAA=", $params["transaction"]["creditCard"]["networkTokenizationAttributes"]["cryptogram"]);
+                $this->assertEquals("45310020105", $params["transaction"]["creditCard"]["networkTokenizationAttributes"]["ecommerceIndicator"]);
+                $this->assertEquals("05", $params["transaction"]["creditCard"]["networkTokenizationAttributes"]["tokenRequestorId"]);
+            }));
+        $transactionGateway->sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationMonth' => '11',
+                'expirationYear' => '2099',
+                'networkTokenizationAttributes' => [
+                    'cryptogram' => '/wAAAAAAAcb8AlGUF/1JQEkAAAA=',
+                    'ecommerceIndicator' => '45310020105',
+                    'tokenRequestorId' => '05'
+                ]
+            ]
+        ]);
+    }
+
     public function testTransactionWithMetaCheckoutCardAttributes()
     {
         $transaction = Braintree\Transaction::factory([

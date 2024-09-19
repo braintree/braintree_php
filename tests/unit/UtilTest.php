@@ -298,13 +298,18 @@ class UtilTest extends Setup
 
     public function testimplodeAssociativeArray()
     {
+        $nested_array = [
+            "prop1" => "val1"
+        ];
         $array = [
             'test1' => 'val1',
             'test2' => 'val2',
             'test3' => new DateTime('2015-05-15 17:21:00'),
+            'test4' => $nested_array
         ];
         $string = Braintree\Util::implodeAssociativeArray($array);
-        $this->assertEquals('test1=val1, test2=val2, test3=Fri, 15 May 2015 17:21:00 +0000', $string);
+        $expected = 'test1=val1, test2=val2, test3=Fri, 15 May 2015 17:21:00 +0000, test4=[prop1=val1]';
+        $this->assertEquals($expected, $string);
     }
 
     public function testVerifyKeys_withThreeLevels()

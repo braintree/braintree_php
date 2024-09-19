@@ -356,10 +356,11 @@ class Util
      * @param array  $array     associative array to implode
      * @param string $separator (optional, defaults to =)
      * @param string $glue      (optional, defaults to ', ')
+     * @param string $parens    parentheses to enclose nested arrays (optional, defaults to '[]')
      *
      * @return string|false
      */
-    public static function implodeAssociativeArray($array, $separator = '=', $glue = ', ')
+    public static function implodeAssociativeArray($array, $separator = '=', $glue = ', ', $parens = '[]')
     {
         // build a new array with joined keys and values
         $tmpArray = null;
@@ -367,7 +368,12 @@ class Util
             if ($value instanceof DateTime) {
                 $value = $value->format('r');
             }
-            $tmpArray[] = $key . $separator . $value;
+            if (is_array($value)) {
+                $nested_value = self::implodeAssociativeArray($value);
+                $tmpArray[] = $key . $separator . $parens[0] . $nested_value . $parens[1];
+            } else {
+                $tmpArray[] = $key . $separator . $value;
+            }
         }
         // implode and return the new array
         return (is_array($tmpArray)) ? implode($glue, $tmpArray) : false;

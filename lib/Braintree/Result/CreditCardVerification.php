@@ -24,6 +24,8 @@ class CreditCardVerification extends Base
     const VERIFIED                 = 'verified';
 
     private $_amount;
+    private $_aniFirstNameResponseCode;
+    private $_aniLastNameResponseCode;
     private $_avsErrorResponseCode;
     private $_avsPostalCodeResponseCode;
     private $_avsStreetAddressResponseCode;
