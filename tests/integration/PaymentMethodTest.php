@@ -679,6 +679,36 @@ class PaymentMethodTest extends Setup
         $this->assertEquals("81724", $resultErrors[0]->code);
     }
 
+    public function testCreate_respectsFailOnDuplicatePaymentMethodForCustomerWhenIncludedOutsideTheNonce()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\CreditCard::create([
+            'customerId' => $customer->id,
+            'number' => Braintree\Test\CreditCardNumbers::$visa,
+            'expirationDate' => "05/2012"
+        ]);
+        $this->assertTrue($result->success);
+
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonce_for_new_card([
+            'credit_card' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => "05/2012"
+            ]
+        ]);
+        $updateResult = Braintree\PaymentMethod::create([
+            'paymentMethodNonce' => $nonce,
+            'customerId' => $customer->id,
+            'options' => [
+                'failOnDuplicatePaymentMethodForCustomer' => 'true',
+            ]
+        ]);
+
+        $this->assertFalse($updateResult->success);
+        $resultErrors = $updateResult->errors->deepAll();
+        $this->assertEquals("81763", $resultErrors[0]->code);
+    }
+
     public function testCreate_includesRiskDataWhenSkipAdvancedFraudCheckingIsFalse()
     {
         $gateway = Test\Helper::fraudProtectionEnterpriseIntegrationMerchantGateway();
@@ -892,6 +922,7 @@ class PaymentMethodTest extends Setup
             'options' => [
                 'verifyCard' => 'true',
                 'failOnDuplicatePaymentMethod' => 'true',
+                'failOnDuplicatePaymentMethodForCustomer' => 'true',
                 'verificationMerchantAccountId' => 'Not a Real Merchant Account Id'
             ]
         ]);
@@ -1012,7 +1043,7 @@ class PaymentMethodTest extends Setup
             'paymentMethodNonce' => $nonce,
             'options' => [
                 'verifyCard' => true,
-                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationMerchantAccountId' => 'card_processor_brl',
                 'verificationAccountType' => 'debit'
             ]
         ]);
@@ -1070,7 +1101,7 @@ class PaymentMethodTest extends Setup
             'expirationDate' => '06/2013',
             'options' => [
                 'verifyCard' => true,
-                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationMerchantAccountId' => 'card_processor_brl',
                 'verificationAccountType' => 'debit'
             ]
         ]);

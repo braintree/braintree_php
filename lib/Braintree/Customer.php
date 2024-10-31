@@ -276,7 +276,8 @@ class Customer extends Base
         }
         $this->_set('visaCheckoutCards', $visaCheckoutCardArray);
 
-        $samsungPayCardArray = [];
+        // NEXT_MAJOR_VERSION remove samsungPayCard
+        $samsungPayCardArray = []; // Deprecated
         if (isset($customerAttribs['samsungPayCards'])) {
             foreach ($customerAttribs['samsungPayCards'] as $samsungPayCard) {
                 $samsungPayCardArray[] = SamsungPayCard::factory($samsungPayCard);
@@ -300,6 +301,7 @@ class Customer extends Base
         }
         $this->_set('usBankAccounts', $usBankAccountArray);
 
+        // NEXT_MAJOR_VERSION remove samsungPayCard
         $this->_set('paymentMethods', array_merge(
             $this->creditCards,
             $this->paypalAccounts,
@@ -307,7 +309,7 @@ class Customer extends Base
             $this->googlePayCards,
             $this->venmoAccounts,
             $this->visaCheckoutCards,
-            $this->samsungPayCards,
+            $this->samsungPayCards, // Deprecated
             $this->usBankAccounts
         ));
 

@@ -30,6 +30,7 @@ class PaymentMethodTest extends Setup
             'token',
             ['options' => [
                 'failOnDuplicatePaymentMethod',
+                'failOnDuplicatePaymentMethodForCustomer',
                 'makeDefault',
                 'skipAdvancedFraudChecking',
                 'usBankAccountVerificationMethod',

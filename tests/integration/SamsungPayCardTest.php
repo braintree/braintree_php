@@ -9,8 +9,16 @@ use Test\Braintree\CreditCardNumbers\CardTypeIndicators;
 use Test\Setup;
 use Braintree;
 
+// NEXT_MAJOR_VERSION remove this class
+// SamsungPay has been deprecateds
 class SamsungPayCardTest extends Setup
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->markTestIncomplete();
+    }
+
     public function testCreateWithSamsungPayCardNonce()
     {
         $customer = Braintree\Customer::createNoValidate();

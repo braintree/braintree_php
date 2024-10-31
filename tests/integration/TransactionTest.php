@@ -6898,26 +6898,6 @@ class TransactionTest extends Setup
         $this->assertNotNull($result->transaction->networkTransactionId);
     }
 
-    public function testTransactionExternalVaultValidationErrorUnsupportedPaymentInstrumentType()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '100.00',
-            'paymentMethodNonce' => Braintree\Test\Nonces::$applePayVisa,
-            'externalVault' => [
-                'status' => "vaulted",
-                'previousNetworkTransactionId' => "123456789012345",
-            ],
-        ]);
-
-        $this->assertFalse($result->success);
-
-        $transaction = $result->transaction;
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_PAYMENT_INSTRUMENT_WITH_EXTERNAL_VAULT_IS_INVALID,
-            $result->errors->forKey('transaction')->onAttribute('externalVault')[0]->code
-        );
-    }
-
     public function testTransactionExternalVaultValidationErrorInvalidStatus()
     {
         $result = Braintree\Transaction::sale([

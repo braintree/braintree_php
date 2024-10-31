@@ -339,6 +339,8 @@ class CreditCardGateway
     private static function baseOptions()
     {
         return [
+            'failOnDuplicatePaymentMethod',
+            'failOnDuplicatePaymentMethodForCustomer',
             'makeDefault',
             'skipAdvancedFraudChecking',
             'venmoSdkSession', //Deprecated
@@ -388,7 +390,6 @@ class CreditCardGateway
     public static function createSignature()
     {
         $options = self::baseOptions();
-        $options[] = "failOnDuplicatePaymentMethod";
         $signature = self::baseSignature($options);
         $signature[] = 'customerId';
         $signature[] = self::threeDSecurePassThruSignature();
@@ -416,7 +417,6 @@ class CreditCardGateway
     public static function updateSignature()
     {
         $options = self::baseOptions();
-        $options[] = "failOnDuplicatePaymentMethod";
         $signature = self::baseSignature($options);
         $signature[] = self::threeDSecurePassThruSignature();
 

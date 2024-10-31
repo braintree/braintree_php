@@ -149,7 +149,7 @@ class WebhookTestingGateway
                 $subjectXml = self::_paymentMethodRevokedByCustomerSampleXml($id);
                 break;
             case WebhookNotification::LOCAL_PAYMENT_COMPLETED:
-                $subjectXml = self::_localPaymentCompletedSampleXml();
+                $subjectXml = self::_localPaymentCompletedSampleXml($id);
                 break;
             case WebhookNotification::LOCAL_PAYMENT_EXPIRED:
                 $subjectXml = self::_localPaymentExpiredSampleXml();
@@ -798,7 +798,41 @@ class WebhookTestingGateway
         ";
     }
 
-    private static function _localPaymentCompletedSampleXml()
+    private static function _localPaymentCompletedSampleXml($id)
+    {
+        if ($id == "blik_one_click_id") {
+            return self::_blikOneClickLocalPaymentCompletedSampleXml();
+        } else {
+            return self::_defaultLocalPaymentCompletedSampleXml();
+        }
+    }
+    private static function _blikOneClickLocalPaymentCompletedSampleXml()
+    {
+        return "
+		<local-payment>
+            <bic>a-bic</bic>
+            <blik-aliases type='array'>
+                <blik-alias>
+                    <key>unique-key-1</key>
+                    <label>unique-label-1</label>
+                </blik-alias>
+            </blik-aliases>
+            <iban-last-chars>1234</iban-last-chars>
+            <payer-id>a-payer-id</payer-id>
+            <payer-name>a-payer-name</payer-name>
+            <payment-id>a-payment-id</payment-id>
+            <payment-method-nonce>ee257d98-de40-47e8-96b3-a6954ea7a9a4</payment-method-nonce>
+            <transaction>
+                <id>1</id>
+                <status>authorizing</status>
+                <amount>10.00</amount>
+                <order-id>order1234</order-id>
+            </transaction>
+		</local-payment>
+        ";
+    }
+
+    private static function _defaultLocalPaymentCompletedSampleXml()
     {
         return "
 		<local-payment>

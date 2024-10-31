@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.21.0
+* Add `fail_on_duplicate_payment_method_for_customer` option to 
+  * `ClientToken`
+  * `PaymentMethod`
+  * `CreditCard`
+* Add `blik_aliases` to LocalPaymentCompleted webhook
+* Deprecate `SamsungPayCard`
+* Updated expiring pinned vendor SSL certificates
+
 ## 6.20.0
 * Add `payer_name`, `bic` and `iban_last_chars` to LocalPaymentCompleted webhook
 * Fixes "Array to String conversion" error when an international phone number is included in customer details

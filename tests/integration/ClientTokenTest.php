@@ -159,6 +159,50 @@ class ClientTokenTest extends Setup
         $this->assertEquals(422, $response["status"]);
     }
 
+    public function test_GatewayRespectsFailOnDuplicatePaymentMethodForCustomer()
+    {
+        $result = Braintree\Customer::create();
+        $this->assertTrue($result->success);
+        $customerId = $result->customer->id;
+
+        $clientToken = Test\Helper::decodedClientToken([
+            "customerId" => $customerId,
+        ]);
+        $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
+
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $response = $http->post('/client_api/v1/payment_methods/credit_cards.json', json_encode([
+            "credit_card" => [
+                "number" => "4242424242424242",
+                "expirationDate" => "11/2099"
+            ],
+            "authorization_fingerprint" => $authorizationFingerprint,
+            "shared_customer_identifier" => "fake_identifier",
+            "shared_customer_identifier_type" => "testing"
+        ]));
+        $this->assertEquals(201, $response["status"]);
+
+        $clientToken = Test\Helper::decodedClientToken([
+            "customerId" => $customerId,
+            "options" => [
+                "failOnDuplicatePaymentMethodForCustomer" => true
+            ]
+        ]);
+        $authorizationFingerprint = json_decode($clientToken)->authorizationFingerprint;
+
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $response = $http->post('/client_api/v1/payment_methods/credit_cards.json', json_encode([
+            "credit_card" => [
+                "number" => "4242424242424242",
+                "expirationDate" => "11/2099"
+            ],
+            "authorization_fingerprint" => $authorizationFingerprint,
+            "shared_customer_identifier" => "fake_identifier",
+            "shared_customer_identifier_type" => "testing"
+        ]));
+        $this->assertEquals(422, $response["status"]);
+    }
+
     public function test_GatewayRespectsMakeDefault()
     {
         $result = Braintree\Customer::create();

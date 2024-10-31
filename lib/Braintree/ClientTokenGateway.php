@@ -87,7 +87,7 @@ class ClientTokenGateway
             "proxyMerchantId",
             "version",
             ["domains" => ['_anyKey_']],
-            ["options" => ["makeDefault", "verifyCard", "failOnDuplicatePaymentMethod"]]
+            ["options" => ["failOnDuplicatePaymentMethod", "failOnDuplicatePaymentMethodForCustomer", "makeDefault", "verifyCard"]]
         ];
     }
 
@@ -104,7 +104,7 @@ class ClientTokenGateway
     {
         return [
             "version", "customerId", "proxyMerchantId",
-            ["options" => ["makeDefault", "verifyCard", "failOnDuplicatePaymentMethod"]],
+            ["options" => ["makeDefault", "verifyCard", "failOnDuplicatePaymentMethod", "failOnDuplicatePaymentMethodForCustomer"]],
             "merchantAccountId"];
     }
 

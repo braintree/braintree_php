@@ -124,7 +124,7 @@ class CustomerTest extends Setup
                 'expirationDate' => '05/12',
                 'options' => [
                     'verifyCard' => true,
-                    'verificationMerchantAccountId' => 'hiper_brl',
+                    'verificationMerchantAccountId' => 'card_processor_brl',
                     'verificationAccountType' => 'debit'
                 ]
             ]
@@ -1383,6 +1383,30 @@ class CustomerTest extends Setup
         $errors = $result->errors->forKey('customer')->forKey('creditCard')->onAttribute('number');
         $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_DUPLICATE_CARD_EXISTS, $errors[0]->code);
         $this->assertEquals(1, preg_match('/Duplicate card exists in the vault\./', $result->message));
+    }
+
+    public function testUpdate_failOnDuplicatePaymentMethodForCustomer()
+    {
+        $create_result = Braintree\Customer::create([
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '11/14',
+            ]
+        ]);
+        $this->assertEquals(true, $create_result->success);
+        $result = Braintree\Customer::update($create_result->customer->id, [
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '11/14',
+                'options' => [
+                    'failOnDuplicatePaymentMethodForCustomer' => true
+                ]
+            ]
+        ]);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('customer')->forKey('creditCard')->onAttribute('number');
+        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_DUPLICATE_CARD_EXISTS_FOR_CUSTOMER, $errors[0]->code);
+        $this->assertEquals(1, preg_match('/Duplicate card exists in the vault for the customer\./', $result->message));
     }
 
     public function testUpdate_forBillingAddressAndExistingCreditCardAndCustomerDetailsTogether()

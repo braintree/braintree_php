@@ -31,7 +31,8 @@ class PaymentMethodParser
         } elseif (isset($response['visaCheckoutCard'])) {
             return VisaCheckoutCard::factory($response['visaCheckoutCard']);
         } elseif (isset($response['samsungPayCard'])) {
-            return SamsungPayCard::factory($response['samsungPayCard']);
+            // NEXT_MAJOR_VERSION remove samsungPayCard
+            return SamsungPayCard::factory($response['samsungPayCard']); // Deprecated
         } elseif (isset($response['sepaDebitAccount'])) {
             return SepaDirectDebitAccount::factory($response['sepaDebitAccount']);
         } elseif (is_array($response)) {

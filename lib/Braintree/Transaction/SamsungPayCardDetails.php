@@ -1,5 +1,7 @@
 <?php
 
+// NEXT_MAJOR_VERSION remove this class
+// SamsungPayCard has been deprecated
 namespace Braintree\Transaction;
 
 use Braintree\Instance;
@@ -7,6 +9,8 @@ use Braintree\Instance;
 /**
  * SamsungPayCard details from a transaction
  * creates an instance of SamsungPayCardDetails
+ *
+ * @deprecated SamsungPayCard has been deprecated
  *
  * See our {@link https://developer.paypal.com/braintree/docs/reference/response/transaction#samsung_pay_card_details developer docs} for information on attributes
  */

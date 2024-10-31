@@ -25,14 +25,15 @@ class CustomerTest extends Setup
             // phpcs:ignore
             if (is_array($value) and array_key_exists('options', $value)) {
                 $this->assertEquals([
+                    'failOnDuplicatePaymentMethod',
+                    'failOnDuplicatePaymentMethodForCustomer',
                     'makeDefault',
                     'skipAdvancedFraudChecking',
                     'venmoSdkSession',  // Deprecated
                     'verificationAccountType',
                     'verificationAmount',
                     'verificationMerchantAccountId',
-                    'verifyCard',
-                    'failOnDuplicatePaymentMethod',
+                    'verifyCard'
                 ], $value['options']);
             }
         }

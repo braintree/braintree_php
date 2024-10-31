@@ -42,6 +42,7 @@ class Nonces
     public static $processorDeclinedMasterCard = "fake-processor-declined-mastercard-nonce";
     public static $processorDeclinedVisa = "fake-processor-declined-visa-nonce";
     public static $processorFailureJCB = "fake-processor-failure-jcb-nonce";
+    // NEXT_MAJOR_VERSION samsungPay is deprecated, remove all associated values
     public static $samsungPayAmEx = "tokensam_fake_american_express";
     public static $samsungPayDiscover = "tokensam_fake_discover";
     public static $samsungPayMasterCard = "tokensam_fake_mastercard";

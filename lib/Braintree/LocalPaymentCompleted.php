@@ -49,6 +49,15 @@ class LocalPaymentCompleted extends Base
                 )
             );
         }
+
+        $blikAliasesArray = array();
+        if (isset($localPaymentCompletedAttribs['blikAliases'])) {
+            foreach ($localPaymentCompletedAttribs['blikAliases'] as $blikAlias) {
+                $blikAliasesArray[] = BlikAlias::factory($blikAlias);
+            }
+        }
+
+        $this->_set('blikAliases', $blikAliasesArray);
     }
 
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing

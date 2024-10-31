@@ -192,6 +192,25 @@ class CreditCardTest extends Setup
         $this->assertEquals(1, preg_match('/Duplicate card exists in the vault\./', $result->message));
     }
 
+    public function testCreate_withDuplicateCardCheckForCustomer()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+
+        $attributes = [
+            'customerId' => $customer->id,
+            'number' => '5105105105105100',
+            'expirationDate' => '05/2011',
+            'options' => ['failOnDuplicatePaymentMethodForCustomer' => true]
+        ];
+        Braintree\CreditCard::create($attributes);
+
+        $result = Braintree\CreditCard::create($attributes);
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('creditCard')->onAttribute('number');
+        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_DUPLICATE_CARD_EXISTS_FOR_CUSTOMER, $errors[0]->code);
+        $this->assertEquals(1, preg_match('/Duplicate card exists in the vault for the customer\./', $result->message));
+    }
+
     public function testCreate_withCardVerification()
     {
         $customer = Braintree\Customer::createNoValidate();
@@ -421,7 +440,7 @@ class CreditCardTest extends Setup
             'expirationDate' => '05/12',
             'options' => [
                 'verifyCard' => true,
-                'verificationMerchantAccountId' => 'hiper_brl',
+                'verificationMerchantAccountId' => 'card_processor_brl',
                 'verificationAccountType' => 'debit'
             ]
         ]);
@@ -1194,6 +1213,32 @@ class CreditCardTest extends Setup
 
         $this->assertFalse(Braintree\CreditCard::find($card1->token)->isDefault());
         $this->assertTrue(Braintree\CreditCard::find($card2->token)->isDefault());
+    }
+
+    public function testUpdate_withDuplicateCardCheckForCustomer()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $card1 = Braintree\CreditCard::create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '5105105105105100',
+            'expirationDate' => '05/12'
+        ])->creditCard;
+        $card2 = Braintree\CreditCard::create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => '4111111111111111',
+            'expirationDate' => '05/12'
+        ])->creditCard;
+
+        $result = Braintree\CreditCard::update($card2->token, [
+            'number' => '5105105105105100',
+            'options' => ['failOnDuplicatePaymentMethodForCustomer' => true]
+        ]);
+
+        $errors = $result->errors->forKey('creditCard')->onAttribute('number');
+        $this->assertEquals(Braintree\Error\Codes::CREDIT_CARD_DUPLICATE_CARD_EXISTS_FOR_CUSTOMER, $errors[0]->code);
+        $this->assertEquals(1, preg_match('/Duplicate card exists in the vault for the customer\./', $result->message));
     }
 
     public function testDelete_deletesThePaymentMethod()

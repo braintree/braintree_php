@@ -19,6 +19,7 @@
         </testsuite>
         <testsuite name="integration">
           <directory>./tests/integration</directory>
+          <exclude>./tests/integration/SamsungPayCardTest.php</exclude>
         </testsuite>
     </testsuites>
 </phpunit>

@@ -9,7 +9,7 @@ namespace Braintree;
 class Version
 {
     const MAJOR = 6;
-    const MINOR = 20;
+    const MINOR = 21;
     const TINY = 0;
 
     protected function __construct()

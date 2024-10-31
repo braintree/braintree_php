@@ -1,10 +1,14 @@
 <?php
 
+// NEXT_MAJOR_VERSION remove this class
+// SamsungPayCard has been deprecated
 namespace Braintree;
 
 /**
  * Braintree SamsungPayCard module
  * Creates and manages Braintree SamsungPayCards
+ *
+ * @deprecated SamsungPayCard has been deprecated. This payment method type can no longer be used
  *
  * See our {@link https://developer.paypal.com/braintree/docs/reference/response/samsung-pay-card developer docs} for information on attributes
  */

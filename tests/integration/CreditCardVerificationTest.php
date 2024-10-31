@@ -110,7 +110,7 @@ class CreditCardVerificationTest extends Setup
                 'expirationDate' => '05/2011',
             ],
             'options' => [
-                'merchantAccountId' => 'hiper_brl',
+                'merchantAccountId' => 'card_processor_brl',
                 'accountType' => 'debit'
             ]
         ]);

@@ -273,6 +273,7 @@ class Transaction extends Base
             );
         }
 
+        // NEXT_MAJOR_VERSION remove samsungPayCard
         if (isset($transactionAttribs['samsungPayCard'])) {
             $this->_set(
                 'samsungPayCardDetails',

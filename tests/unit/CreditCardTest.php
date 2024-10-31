@@ -56,14 +56,15 @@ class CreditCardTest extends Setup
             'paymentMethodNonce',
             [
                 'options' => [
+                    'failOnDuplicatePaymentMethod',
+                    'failOnDuplicatePaymentMethodForCustomer',
                     'makeDefault',
                     'skipAdvancedFraudChecking',
                     'venmoSdkSession',  // Deprecated
                     'verificationAccountType',
                     'verificationAmount',
                     'verificationMerchantAccountId',
-                    'verifyCard',
-                    'failOnDuplicatePaymentMethod',
+                    'verifyCard'
                 ]
             ],
             [
@@ -118,6 +119,8 @@ class CreditCardTest extends Setup
             'paymentMethodNonce',
             [
                 'options' => [
+                    'failOnDuplicatePaymentMethod',
+                    'failOnDuplicatePaymentMethodForCustomer',
                     'makeDefault',
                     'skipAdvancedFraudChecking',
                     'venmoSdkSession',  // Deprecated
@@ -125,7 +128,6 @@ class CreditCardTest extends Setup
                     'verificationAmount',
                     'verificationMerchantAccountId',
                     'verifyCard',
-                    'failOnDuplicatePaymentMethod',
                 ]
             ],
             [
