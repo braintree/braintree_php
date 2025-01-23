@@ -20,6 +20,7 @@ PHP version >= 7.3 is required. The Braintree PHP SDK is tested against PHP vers
 _The PHP core development community has released [End-of-Life branches](https://www.php.net/eol.php) for PHP versions 5.4 - 7.2, and are no longer receiving security updates. As a result, Braintree does not support these versions of PHP._
 
 ## Versions
+> :warning: **The SSL certificates for PHP SDK versions older than 6.21.0 are set to expire by June 31, 2025. If you do not update your SDK to the latest version with the updated certificates by June 31, 2025, 100% of your impacted traffic will fail**
 
 Braintree employs a deprecation policy for our SDKs. For more information on the statuses of an SDK check our [developer docs](https://developer.paypal.com/braintree/docs/reference/general/server-sdk-deprecation-policy).
 

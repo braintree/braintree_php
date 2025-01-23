@@ -234,18 +234,19 @@ class TransactionGateway
             'merchantAccountId',
             ['options' =>
                 [
-                    'holdInEscrow',
-                    'storeInVault',
-                    'storeInVaultOnSuccess',
-                    'submitForSettlement',
                     'addBillingAddressToPaymentMethod',
-                    'venmoSdkSession',  // Deprecated
-                    'storeShippingAddressInVault',
+                    'holdInEscrow',
                     'payeeId',
                     'payeeEmail',
                     'skipAdvancedFraudChecking',
                     'skipAvs',
                     'skipCvv',
+                    'storeInVault',
+                    'storeInVaultOnSuccess',
+                    'storeShippingAddressInVault',
+                    'submitForSettlement',
+                    'venmoSdkSession',  // Deprecated
+
                     ['creditCard' =>
                         ['accountType',
                         'processDebitAsCredit']
@@ -255,10 +256,14 @@ class TransactionGateway
                     ],
                     ['paypal' =>
                         [
-                            'payeeId',
-                            'payeeEmail',
                             'customField',
                             'description',
+                            'payeeEmail',
+                            'payeeId',
+                            'recipientEmail',
+                            ['recipientPhone' =>
+                                ['countryCode', 'nationalNumber']
+                            ],
                             ['supplementaryData' => ['_anyKey_']],
                         ]
                     ],

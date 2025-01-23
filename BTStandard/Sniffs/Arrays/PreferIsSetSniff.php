@@ -1,6 +1,6 @@
 <?php
 
-namespace BTStandard\Sniffs;
+namespace BTStandard\Sniffs\Arrays;
 
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;

@@ -5189,6 +5189,32 @@ class TransactionTest extends Setup
         Braintree\PaymentMethod::find($paymentMethodToken);
     }
 
+    public function testContactDetails_returnedFromTransaction()
+    {
+        $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
+        $http = new HttpClientApi(Braintree\Configuration::$global);
+        $nonce = $http->nonceForPayPalAccount([
+            'paypal_account' => [
+                'consent_code' => 'PAYPAL_CONSENT_CODE',
+                'token' => $paymentMethodToken
+            ]
+        ]);
+
+        $result = Braintree\Transaction::sale([
+            'amount' => '10.00',
+            'paymentMethodNonce' => $nonce,
+            'paypalAccount' => [],
+            'options' => [
+                'paypal' => []
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('test@paypal.com', $transaction->paypalDetails->recipientEmail);
+        $this->assertNotNull($transaction->paypalDetails->recipientPhone);
+    }
+
     public function testCreate_withPayeeEmailInOptionsPayPal()
     {
         $paymentMethodToken = 'PAYPAL_TOKEN-' . strval(rand());
