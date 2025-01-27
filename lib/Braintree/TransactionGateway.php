@@ -549,7 +549,9 @@ class TransactionGateway
      *
      * @param string $id unique identifier of the transaction
      *
-     * @return Transaction|Exception\NotFound
+     * @return Transaction
+     *
+     * @throws Exception\NotFound
      */
     public function find($id)
     {
@@ -604,6 +606,8 @@ class TransactionGateway
      * @param mixed $query search query
      *
      * @return ResourceCollection
+     *
+     * @throws Exception\RequestTimeout
      */
     public function search($query)
     {
@@ -635,6 +639,8 @@ class TransactionGateway
      * @param array $ids   to use in searching
      *
      * @return array
+     *
+     * @throws Exception\RequestTimeout
      */
     public function fetch($query, $ids)
     {
@@ -695,7 +701,9 @@ class TransactionGateway
      *
      * @param string $transactionId unique identifier
      *
-     * @return Transaction|Result\Error
+     * @return Transaction
+     *
+     * @throws Exception
      */
     public function voidNoValidate($transactionId)
     {
@@ -730,7 +738,9 @@ class TransactionGateway
      * @param string|null $amount        to be submitted for settlement
      * @param array       $attribs       containing any additional request parameters
      *
-     * @return Transaction|Exception
+     * @return Transaction
+     *
+     * @throws Exception
      */
     public function submitForSettlementNoValidate($transactionId, $amount = null, $attribs = [])
     {
@@ -781,7 +791,9 @@ class TransactionGateway
      * @param string $amount        optional
      * @param mixed  $attribs       any additional request parameters
      *
-     * @return Result\Successful|Exception\NotFound
+     * @return Result\Successful|Result\Error
+     *
+     * @throws Exception
      */
     public function submitForPartialSettlement($transactionId, $amount, $attribs = [])
     {
