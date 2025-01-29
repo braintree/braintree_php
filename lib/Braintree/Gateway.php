@@ -94,6 +94,15 @@ class Gateway
 
     /**
      *
+     * @return CustomerSessionGateway
+     */
+    public function customerSession()
+    {
+        return new CustomerSessionGateway($this->graphQLClient);
+    }
+
+    /**
+     *
      * @return DiscountGateway
      */
     public function discount()
