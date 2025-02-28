@@ -193,6 +193,15 @@ class Gateway
 
     /**
      *
+     * @return PayPalPaymentResourceGateway
+     */
+    public function payPalPaymentResource()
+    {
+        return new PayPalPaymentResourceGateway($this);
+    }
+
+    /**
+     *
      * @return SepaDirectDebitAccountGateway
      */
     public function sepaDirectDebitAccount()

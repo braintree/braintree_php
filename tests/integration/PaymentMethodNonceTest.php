@@ -224,6 +224,7 @@ class PaymentMethodNonceTest extends Setup
         $this->assertEquals(Braintree\CreditCard::HEALTHCARE_UNKNOWN, $binData->healthcare);
         $this->assertEquals(Braintree\CreditCard::PAYROLL_UNKNOWN, $binData->payroll);
         $this->assertEquals(Braintree\CreditCard::PREPAID_NO, $binData->prepaid);
+        $this->assertEquals(Braintree\CreditCard::PREPAID_RELOADABLE_UNKNOWN, $binData->prepaidReloadable);
         $this->assertEquals("Unknown", $binData->issuingBank);
         $this->assertEquals("Unknown", $binData->productId);
     }
@@ -308,6 +309,15 @@ class PaymentMethodNonceTest extends Setup
         $this->assertEquals('CreditCard', $nonce->type);
         $this->assertNotNull($nonce->binData);
         $this->assertEquals(Braintree\CreditCard::PREPAID_YES, $nonce->binData->prepaid);
+    }
+
+    public function testFind_returnsBinDataForPrepaidReloadableNonce()
+    {
+        $nonce = Braintree\PaymentMethodNonce::find(Braintree\Test\Nonces::$transactablePrepaidReloadable);
+        $this->assertEquals(Braintree\Test\Nonces::$transactablePrepaidReloadable, $nonce->nonce);
+        $this->assertEquals('CreditCard', $nonce->type);
+        $this->assertNotNull($nonce->binData);
+        $this->assertEquals(Braintree\CreditCard::PREPAID_RELOADABLE_YES, $nonce->binData->prepaidReloadable);
     }
 
     public function testFind_returnsBinDataForCountryOfIssuanceNonce()

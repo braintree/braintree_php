@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.24.0
+* Add support for `PayPalPaymentResource` requests
+* Add prepaid_reloadable from bin data in credit card responses
+
 ## 6.23.0
 * Add support for creating and updating PayPal customer session
 * Add support for getting PayPal customer recommendations

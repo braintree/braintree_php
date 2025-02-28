@@ -36,6 +36,10 @@ class CreditCard extends Base
     const PREPAID_NO = 'No';
     const PREPAID_UNKNOWN = 'Unknown';
 
+    const PREPAID_RELOADABLE_YES = 'Yes';
+    const PREPAID_RELOADABLE_NO = 'No';
+    const PREPAID_RELOADABLE_UNKNOWN = 'Unknown';
+
     const PAYROLL_YES = 'Yes';
     const PAYROLL_NO = 'No';
     const PAYROLL_UNKNOWN = 'Unknown';

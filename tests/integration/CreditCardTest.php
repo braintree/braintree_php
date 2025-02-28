@@ -229,6 +229,7 @@ class CreditCardTest extends Setup
         $this->assertEquals('I', $result->creditCardVerification->avsPostalCodeResponseCode);
         $this->assertEquals('I', $result->creditCardVerification->avsStreetAddressResponseCode);
         $this->assertEquals(Braintree\CreditCard::PREPAID_UNKNOWN, $result->creditCardVerification->creditCard['prepaid']);
+        $this->assertEquals(Braintree\CreditCard::PREPAID_RELOADABLE_UNKNOWN, $result->creditCardVerification->creditCard['prepaidReloadable']);
     }
 
     public function testCreate_withCardVerificationReturnsVerificationWithRiskData()
@@ -305,6 +306,7 @@ class CreditCardTest extends Setup
         $this->assertEquals('I', $result->creditCardVerification->avsPostalCodeResponseCode);
         $this->assertEquals('I', $result->creditCardVerification->avsStreetAddressResponseCode);
         $this->assertEquals(Braintree\CreditCard::PREPAID_UNKNOWN, $result->creditCardVerification->creditCard['prepaid']);
+        $this->assertEquals(Braintree\CreditCard::PREPAID_RELOADABLE_UNKNOWN, $result->creditCardVerification->creditCard['prepaidReloadable']);
     }
 
     public function testCreate_withCardVerificationAndSpecificMerchantAccount()
@@ -1322,6 +1324,19 @@ class CreditCardTest extends Setup
         $this->assertEquals(Braintree\CreditCard::PREPAID_YES, $result->creditCard->prepaid);
     }
 
+    public function testPrepaidReloadableCard()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\CreditCard::create([
+            'customerId' => $customer->id,
+            'cardholderName' => 'Cardholder',
+            'number' => CardTypeIndicators::PREPAID_RELOADABLE,
+            'expirationDate' => '05/25',
+            'options' => ['verifyCard' => true]
+        ]);
+        $this->assertEquals(Braintree\CreditCard::PREPAID_RELOADABLE_YES, $result->creditCard->prepaidReloadable);
+    }
+
     public function testCommercialCard()
     {
         $customer = Braintree\Customer::createNoValidate();
@@ -1426,6 +1441,7 @@ class CreditCardTest extends Setup
             'options' => ['verifyCard' => true]
         ]);
         $this->assertEquals(Braintree\CreditCard::PREPAID_NO, $result->creditCard->prepaid);
+        $this->assertEquals(Braintree\CreditCard::PREPAID_RELOADABLE_NO, $result->creditCard->prepaidReloadable);
         $this->assertEquals(Braintree\CreditCard::DURBIN_REGULATED_NO, $result->creditCard->durbinRegulated);
         $this->assertEquals(Braintree\CreditCard::PAYROLL_NO, $result->creditCard->payroll);
         $this->assertEquals(Braintree\CreditCard::DEBIT_NO, $result->creditCard->debit);
@@ -1445,6 +1461,7 @@ class CreditCardTest extends Setup
             'options' => ['verifyCard' => true]
         ]);
         $this->assertEquals(Braintree\CreditCard::PREPAID_UNKNOWN, $result->creditCard->prepaid);
+        $this->assertEquals(Braintree\CreditCard::PREPAID_RELOADABLE_UNKNOWN, $result->creditCard->prepaidReloadable);
         $this->assertEquals(Braintree\CreditCard::DURBIN_REGULATED_UNKNOWN, $result->creditCard->durbinRegulated);
         $this->assertEquals(Braintree\CreditCard::PAYROLL_UNKNOWN, $result->creditCard->payroll);
         $this->assertEquals(Braintree\CreditCard::DEBIT_UNKNOWN, $result->creditCard->debit);

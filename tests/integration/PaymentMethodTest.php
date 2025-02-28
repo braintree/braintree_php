@@ -161,6 +161,7 @@ class PaymentMethodTest extends Setup
         $this->assertNotNull($applePayCard->token);
         $this->assertNotNull($applePayCard->bin);
         $this->assertNotNull($applePayCard->prepaid);
+        $this->assertNotNull($applePayCard->prepaidReloadable);
         $this->assertNotNull($applePayCard->healthcare);
         $this->assertNotNull($applePayCard->debit);
         $this->assertNotNull($applePayCard->durbinRegulated);
@@ -191,19 +192,20 @@ class PaymentMethodTest extends Setup
         $this->assertTrue($result->success);
         $googlePayCard = $result->paymentMethod;
         $this->assertNotNull($googlePayCard->token);
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCard->virtualCardType);
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCard->cardType);
-        $this->assertSame("1117", $googlePayCard->virtualCardLast4);
-        $this->assertSame("1117", $googlePayCard->last4);
-        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCard->sourceCardType);
+        $this->assertFalse($googlePayCard->isNetworkTokenized);
+        $this->assertNotNull($googlePayCard->prepaidReloadable);
         $this->assertSame("1111", $googlePayCard->sourceCardLast4);
+        $this->assertSame("1117", $googlePayCard->last4);
+        $this->assertSame("1117", $googlePayCard->virtualCardLast4);
         $this->assertSame("Discover 1111", $googlePayCard->sourceDescription);
-        $this->assertTrue($googlePayCard->default);
+        $this->assertSame($customer->id, $googlePayCard->customerId);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCard->cardType);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCard->sourceCardType);
+        $this->assertSame(Braintree\CreditCard::DISCOVER, $googlePayCard->virtualCardType);
         $this->assertStringContainsString('android_pay', $googlePayCard->imageUrl);
+        $this->assertTrue($googlePayCard->default);
         $this->assertTrue(intval($googlePayCard->expirationMonth) > 0);
         $this->assertTrue(intval($googlePayCard->expirationYear) > 0);
-        $this->assertSame($customer->id, $googlePayCard->customerId);
-        $this->assertFalse($googlePayCard->isNetworkTokenized);
     }
 
     public function testCreate_fromFakeGooglePayNetworkTokenNonce()
@@ -231,6 +233,7 @@ class PaymentMethodTest extends Setup
         $this->assertSame($customer->id, $googlePayCard->customerId);
         $this->assertTrue($googlePayCard->isNetworkTokenized);
         $this->assertNotNull($googlePayCard->prepaid);
+        $this->assertNotNull($googlePayCard->prepaidReloadable);
         $this->assertNotNull($googlePayCard->healthcare);
         $this->assertNotNull($googlePayCard->debit);
         $this->assertNotNull($googlePayCard->durbinRegulated);

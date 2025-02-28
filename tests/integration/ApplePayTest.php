@@ -81,4 +81,19 @@ class ApplePayTest extends Setup
         $registeredDomains = $result->applePayOptions->domains;
         $this->assertEmpty(array_diff(['www.example.com'], $registeredDomains));
     }
+
+    public function testPrepaidReloadableForApplePay()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$applePayVisa,
+            'cardholderName' => 'Jenny Block',
+        ]);
+
+        $this->assertTrue($result->success);
+        $applePayCard = $result->paymentMethod;
+        $this->assertNotNull($applePayCard->token);
+        $this->assertNotNull($applePayCard->prepaidReloadable);
+    }
 }

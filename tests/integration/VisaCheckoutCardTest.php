@@ -56,6 +56,7 @@ class VisaCheckoutCardTest extends Setup
         $this->assertNotNull($visaCheckoutCard->maskedNumber);
         $this->assertNotNull($visaCheckoutCard->payroll);
         $this->assertNotNull($visaCheckoutCard->prepaid);
+        $this->assertNotNull($visaCheckoutCard->prepaidReloadable);
         $this->assertNotNull($visaCheckoutCard->productId);
         $this->assertNotNull($visaCheckoutCard->subscriptions);
         $this->assertNotNull($visaCheckoutCard->token);
@@ -146,6 +147,7 @@ class VisaCheckoutCardTest extends Setup
         $this->assertNotNull($visaCheckoutCardDetails->maskedNumber);
         $this->assertNotNull($visaCheckoutCardDetails->payroll);
         $this->assertNotNull($visaCheckoutCardDetails->prepaid);
+        $this->assertNotNull($visaCheckoutCardDetails->prepaidReloadable);
         $this->assertNotNull($visaCheckoutCardDetails->productId);
         $this->assertNotNull($visaCheckoutCardDetails->token);
     }
