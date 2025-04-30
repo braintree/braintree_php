@@ -17,12 +17,6 @@ class MerchantAccountGateway
         $this->_http = new Http($gateway->config);
     }
 
-    public function create($attribs)
-    {
-        Util::verifyKeys(self::createSignature(), $attribs);
-        return $this->_doCreate('/merchant_accounts/create_via_api', ['merchant_account' => $attribs]);
-    }
-
     public function find($merchant_account_id)
     {
         try {
@@ -32,20 +26,6 @@ class MerchantAccountGateway
         } catch (Exception\NotFound $e) {
             throw new Exception\NotFound('merchant account with id ' . $merchant_account_id . ' not found');
         }
-    }
-
-    public function update($merchant_account_id, $attributes)
-    {
-        Util::verifyKeys(self::updateSignature(), $attributes);
-        $queryPath = '/merchant_accounts/' . $merchant_account_id . '/update_via_api';
-        return $this->_doUpdate($queryPath, ['merchant_account' => $attributes]);
-    }
-
-    public static function updateSignature()
-    {
-        $signature = self::createSignature();
-        unset($signature['tosAccepted']);
-        return $signature;
     }
 
     public function createForCurrency($attribs)
@@ -73,63 +53,7 @@ class MerchantAccountGateway
         $pageSize = $body['pageSize'][0];
         return new PaginatedResult($totalItems, $pageSize, $merchantAccounts);
     }
-
-    public static function createSignature()
-    {
-        $addressSignature = ['streetAddress', 'postalCode', 'locality', 'region'];
-        $individualSignature = [
-            'firstName',
-            'lastName',
-            'email',
-            'phone',
-            'dateOfBirth',
-            'ssn',
-            ['address' => $addressSignature]
-        ];
-
-        $businessSignature = [
-            'dbaName',
-            'legalName',
-            'taxId',
-            ['address' => $addressSignature]
-        ];
-
-        $fundingSignature = [
-            'routingNumber',
-            'accountNumber',
-            'destination',
-            'email',
-            'mobilePhone',
-            'descriptor',
-        ];
-
-        return [
-            'id',
-            'tosAccepted',
-            'masterMerchantAccountId',
-            ['individual' => $individualSignature],
-            ['funding' => $fundingSignature],
-            ['business' => $businessSignature]
-        ];
-    }
-
-    // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
-    public function _doCreate($subPath, $params)
-    {
-        $fullPath = $this->_config->merchantPath() . $subPath;
-        $response = $this->_http->post($fullPath, $params);
-
-        return $this->_verifyGatewayResponse($response);
-    }
-
-    private function _doUpdate($subPath, $params)
-    {
-        $fullPath = $this->_config->merchantPath() . $subPath;
-        $response = $this->_http->put($fullPath, $params);
-
-        return $this->_verifyGatewayResponse($response);
-    }
-
+    
     private function _verifyGatewayResponse($response)
     {
         if (isset($response['response'])) {

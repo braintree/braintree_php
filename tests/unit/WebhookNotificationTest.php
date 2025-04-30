@@ -387,47 +387,6 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals(0, count($webhookNotification->subscription->transactions));
     }
 
-    public function testBuildsASampleNotificationForAMerchantAccountApprovedWebhook()
-    {
-        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
-            Braintree\WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED,
-            "my_id"
-        );
-
-        $webhookNotification = Braintree\WebhookNotification::parse(
-            $sampleNotification['bt_signature'],
-            $sampleNotification['bt_payload']
-        );
-
-        $this->assertEquals(Braintree\WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED, $webhookNotification->kind);
-        $this->assertEquals("my_id", $webhookNotification->merchantAccount->id);
-        $this->assertEquals(Braintree\MerchantAccount::STATUS_ACTIVE, $webhookNotification->merchantAccount->status);
-        $this->assertEquals("master_ma_for_my_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
-        $this->assertEquals(Braintree\MerchantAccount::STATUS_ACTIVE, $webhookNotification->merchantAccount->masterMerchantAccount->status);
-    }
-
-    public function testBuildsASampleNotificationForAMerchantAccountDeclinedWebhook()
-    {
-        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
-            Braintree\WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED,
-            "my_id"
-        );
-
-        $webhookNotification = Braintree\WebhookNotification::parse(
-            $sampleNotification['bt_signature'],
-            $sampleNotification['bt_payload']
-        );
-
-        $this->assertEquals(Braintree\WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED, $webhookNotification->kind);
-        $this->assertEquals("my_id", $webhookNotification->merchantAccount->id);
-        $this->assertEquals(Braintree\MerchantAccount::STATUS_SUSPENDED, $webhookNotification->merchantAccount->status);
-        $this->assertEquals("master_ma_for_my_id", $webhookNotification->merchantAccount->masterMerchantAccount->id);
-        $this->assertEquals(Braintree\MerchantAccount::STATUS_SUSPENDED, $webhookNotification->merchantAccount->masterMerchantAccount->status);
-        $this->assertEquals("Credit score is too low", $webhookNotification->message);
-        $errors = $webhookNotification->errors->forKey('merchantAccount')->onAttribute('base');
-        $this->assertEquals(Braintree\Error\Codes::MERCHANT_ACCOUNT_DECLINED_OFAC, $errors[0]->code);
-    }
-
     public function testBuildsASampleNotificationForATransactionDisbursedWebhook()
     {
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
@@ -674,31 +633,6 @@ class WebhookNotificationTest extends Setup
         $this->assertEquals("my_id", $webhookNotification->dispute->id);
         $this->assertEquals(Braintree\Dispute::EXPIRED, $webhookNotification->dispute->status);
         $this->assertEquals(Braintree\Dispute::CHARGEBACK, $webhookNotification->dispute->kind);
-    }
-
-    public function testBuildsASampleNotificationForADisbursementExceptionWebhook()
-    {
-        $sampleNotification = Braintree\WebhookTesting::sampleNotification(
-            Braintree\WebhookNotification::DISBURSEMENT_EXCEPTION,
-            "my_id"
-        );
-
-        $webhookNotification = Braintree\WebhookNotification::parse(
-            $sampleNotification['bt_signature'],
-            $sampleNotification['bt_payload']
-        );
-
-
-        $this->assertEquals(Braintree\WebhookNotification::DISBURSEMENT_EXCEPTION, $webhookNotification->kind);
-        $this->assertEquals("my_id", $webhookNotification->disbursement->id);
-        $this->assertEquals(false, $webhookNotification->disbursement->retry);
-        $this->assertEquals(false, $webhookNotification->disbursement->success);
-        $this->assertEquals("bank_rejected", $webhookNotification->disbursement->exceptionMessage);
-        $this->assertEquals(100.00, $webhookNotification->disbursement->amount);
-        $this->assertEquals("update_funding_information", $webhookNotification->disbursement->followUpAction);
-        $this->assertEquals("merchant_account_token", $webhookNotification->disbursement->merchantAccount->id);
-        $this->assertEquals(new DateTime("2014-02-10"), $webhookNotification->disbursement->disbursementDate);
-        $this->assertEquals(["asdfg", "qwert"], $webhookNotification->disbursement->transactionIds);
     }
 
     public function testBuildsASampleNotificationForADisbursementWebhook()

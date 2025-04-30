@@ -45,8 +45,6 @@ class WebhookNotification extends Base
     const SUBSCRIPTION_TRIAL_ENDED = 'subscription_trial_ended';
     const SUBSCRIPTION_WENT_ACTIVE = 'subscription_went_active';
     const SUBSCRIPTION_WENT_PAST_DUE = 'subscription_went_past_due';
-    const SUB_MERCHANT_ACCOUNT_APPROVED = 'sub_merchant_account_approved';
-    const SUB_MERCHANT_ACCOUNT_DECLINED = 'sub_merchant_account_declined';
     const TRANSACTION_DISBURSED = 'transaction_disbursed';
     const TRANSACTION_REVIEWED = 'transaction_reviewed';
     const TRANSACTION_SETTLED = 'transaction_settled';

@@ -43,12 +43,6 @@ class WebhookTestingGateway
     private static function _sampleXml($kind, $id, $sourceMerchantId)
     {
         switch ($kind) {
-            case WebhookNotification::SUB_MERCHANT_ACCOUNT_APPROVED:
-                $subjectXml = self::_merchantAccountApprovedSampleXml($id);
-                break;
-            case WebhookNotification::SUB_MERCHANT_ACCOUNT_DECLINED:
-                $subjectXml = self::_merchantAccountDeclinedSampleXml($id);
-                break;
             case WebhookNotification::TRANSACTION_DISBURSED:
                 $subjectXml = self::_transactionDisbursedSampleXml($id);
                 break;
@@ -292,31 +286,6 @@ class WebhookTestingGateway
             <account-holder-name>Dan Schulman</account-holder-name>
           </us-bank-account>
         </transaction>
-        ";
-    }
-
-    private static function _disbursementExceptionSampleXml($id)
-    {
-        return "
-        <disbursement>
-          <id>{$id}</id>
-          <transaction-ids type=\"array\">
-            <item>asdfg</item>
-            <item>qwert</item>
-          </transaction-ids>
-          <success type=\"boolean\">false</success>
-          <retry type=\"boolean\">false</retry>
-          <merchant-account>
-            <id>merchant_account_token</id>
-            <currency-iso-code>USD</currency-iso-code>
-            <sub-merchant-account type=\"boolean\">false</sub-merchant-account>
-            <status>active</status>
-          </merchant-account>
-          <amount>100.00</amount>
-          <disbursement-date type=\"date\">2014-02-10</disbursement-date>
-          <exception-message>bank_rejected</exception-message>
-          <follow-up-action>update_funding_information</follow-up-action>
-        </disbursement>
         ";
     }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.25.0 
+* Remove marketplace features
+* Add support for capturing payment facilitator and sub-merchant details with transactions 
+
 ## 6.24.0
 * Add support for `PayPalPaymentResource` requests
 * Add prepaid_reloadable from bin data in credit card responses

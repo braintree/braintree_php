@@ -15,14 +15,10 @@ class DisbursementTest extends Setup
         $disbursement = Braintree\Disbursement::factory([
             "id" => "123456",
             "merchantAccount" => [
-                "id" => "sandbox_sub_merchant_account",
-                "masterMerchantAccount" => [
-                    "id" => "sandbox_master_merchant_account",
-                    "status" => "active"
-                    ],
+                "id" => "ma_card_processor_brazil",
                 "status" => "active"
                 ],
-            "transactionIds" => ["sub_merchant_transaction"],
+            "transactionIds" => ["transaction_with_installments_and_adjustments"],
             "exceptionMessage" => "invalid_account_number",
             "amount" => "100.00",
             "disbursementDate" => new DateTime("2013-04-10"),
@@ -35,6 +31,5 @@ class DisbursementTest extends Setup
 
         $this->assertNotNull($transactions);
         $this->assertEquals($transactions->maximumCount(), 1);
-        $this->assertEquals($transactions->firstItem()->id, 'sub_merchant_transaction');
     }
 }

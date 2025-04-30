@@ -92,11 +92,6 @@ class Helper
         return 'sandbox_credit_card_non_default';
     }
 
-    public static function nonDefaultSubMerchantAccountId()
-    {
-        return 'sandbox_sub_merchant_account';
-    }
-
     public static function threeDSecureMerchantAccountId()
     {
         return 'three_d_secure_merchant_account';
@@ -167,13 +162,6 @@ class Helper
     public static function assertPrintable($object)
     {
         " " . $object;
-    }
-
-    public static function escrow($transactionId)
-    {
-        $http = new Braintree\Http(Braintree\Configuration::$global);
-        $path = Braintree\Configuration::$global->merchantPath() . '/transactions/' . $transactionId . '/escrow';
-        $http->put($path);
     }
 
     public static function create3DSVerification($merchantAccountId, $params)

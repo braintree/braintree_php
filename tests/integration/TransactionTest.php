@@ -2422,22 +2422,6 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_TRANSACTION_SOURCE_IS_INVALID, $result->errors->forKey('transaction')->onAttribute('transactionSource')[0]->code);
     }
 
-    public function testSale_withServiceFee()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '10.00',
-            'merchantAccountId' => Test\Helper::nonDefaultSubMerchantAccountId(),
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ],
-            'serviceFeeAmount' => '1.00'
-        ]);
-        $this->assertTrue($result->success);
-        $transaction = $result->transaction;
-        $this->assertEquals('1.00', $transaction->serviceFeeAmount);
-    }
-
     public function testSale_isInvalidIfTransactionMerchantAccountIsNotSub()
     {
         $result = Braintree\Transaction::sale([
@@ -2453,22 +2437,6 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $serviceFeeErrors = $result->errors->forKey('transaction')->onAttribute('serviceFeeAmount');
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SERVICE_FEE_AMOUNT_NOT_ALLOWED_ON_MASTER_MERCHANT_ACCOUNT, $serviceFeeErrors[0]->code);
-    }
-
-    public function testSale_isInvalidIfSubMerchantAccountHasNoServiceFee()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '10.00',
-            'merchantAccountId' => Test\Helper::nonDefaultSubMerchantAccountId(),
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ]
-        ]);
-        $this->assertFalse($result->success);
-        $transaction = $result->transaction;
-        $serviceFeeErrors = $result->errors->forKey('transaction')->onAttribute('merchantAccountId');
-        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SUB_MERCHANT_ACCOUNT_REQUIRES_SERVICE_FEE_AMOUNT, $serviceFeeErrors[0]->code);
     }
 
     public function testSale_withLevel2Attributes()
@@ -2509,22 +2477,6 @@ class TransactionTest extends Setup
 
         $taxAmountErrors = $result->errors->forKey('transaction')->onAttribute('taxAmount');
         $this->assertEquals(Braintree\Error\Codes::TRANSACTION_TAX_AMOUNT_FORMAT_IS_INVALID, $taxAmountErrors[0]->code);
-    }
-
-    public function testSale_withServiceFeeTooLarge()
-    {
-        $result = Braintree\Transaction::sale([
-            'amount' => '10.00',
-            'merchantAccountId' => Test\Helper::nonDefaultSubMerchantAccountId(),
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ],
-            'serviceFeeAmount' => '20.00'
-        ]);
-        $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('transaction')->onAttribute('serviceFeeAmount');
-        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SERVICE_FEE_AMOUNT_IS_TOO_LARGE, $errors[0]->code);
     }
 
     public function testSale_withTooLongPurchaseOrderAttribute()
@@ -3171,22 +3123,6 @@ class TransactionTest extends Setup
         $this->assertEquals(true, $submitResult->success);
         $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $submitResult->transaction->status);
         $this->assertEquals('100.00', $submitResult->transaction->amount);
-    }
-
-    public function testSubmitForSettlement_amountLessThanServiceFee()
-    {
-        $transaction = Braintree\Transaction::saleNoValidate([
-            'amount' => '10.00',
-            'merchantAccountId' => Test\Helper::nonDefaultSubMerchantAccountId(),
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ],
-            'serviceFeeAmount' => '5.00'
-        ]);
-        $submitResult = Braintree\Transaction::submitForSettlement($transaction->id, '1.00');
-        $errors = $submitResult->errors->forKey('transaction')->onAttribute('amount');
-        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_SETTLEMENT_AMOUNT_IS_LESS_THAN_SERVICE_FEE_AMOUNT, $errors[0]->code);
     }
 
     public function testSubmitForSettlement_withAmount()
@@ -4204,46 +4140,6 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Error\Codes::DESCRIPTOR_URL_FORMAT_IS_INVALID, $errors[0]->code);
     }
 
-    public function testSale_withHoldInEscrow()
-    {
-        $result = Braintree\Transaction::sale([
-            'merchantAccountId' => Test\Helper::nonDefaultSubMerchantAccountId(),
-            'amount' => '100.00',
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ],
-            'options' => [
-                'holdInEscrow' => true
-            ],
-            'serviceFeeAmount' => '1.00'
-        ]);
-        $this->assertTrue($result->success);
-        $transaction = $result->transaction;
-        $this->assertEquals(Braintree\Transaction::ESCROW_HOLD_PENDING, $transaction->escrowStatus);
-    }
-
-    public function testSale_withHoldInEscrowFailsForMasterMerchantAccount()
-    {
-        $result = Braintree\Transaction::sale([
-            'merchantAccountId' => Test\Helper::nonDefaultMerchantAccountId(),
-            'amount' => '100.00',
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ],
-            'options' => [
-                'holdInEscrow' => true
-            ]
-        ]);
-        $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_CANNOT_HOLD_IN_ESCROW,
-            $errors[0]->code
-        );
-    }
-
     public function testSale_withThreeDSecureOptionRequired()
     {
         $http = new HttpClientApi(Braintree\Configuration::$global);
@@ -4391,93 +4287,6 @@ class TransactionTest extends Setup
         $this->assertEquals(
             Braintree\Error\Codes::TRANSACTION_THREE_D_SECURE_ECI_FLAG_IS_REQUIRED,
             $errors->onAttribute("eciFlag")[0]->code
-        );
-    }
-
-
-    public function testHoldInEscrow_afterSale()
-    {
-        $result = Braintree\Transaction::sale([
-            'merchantAccountId' => Test\Helper::nonDefaultSubMerchantAccountId(),
-            'amount' => '100.00',
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ],
-            'serviceFeeAmount' => '1.00'
-        ]);
-        $result = Braintree\Transaction::holdInEscrow($result->transaction->id);
-        $this->assertTrue($result->success);
-        $this->assertEquals(Braintree\Transaction::ESCROW_HOLD_PENDING, $result->transaction->escrowStatus);
-    }
-
-    public function testHoldInEscrow_afterSaleFailsWithMasterMerchantAccount()
-    {
-        $result = Braintree\Transaction::sale([
-            'merchantAccountId' => Test\Helper::nonDefaultMerchantAccountId(),
-            'amount' => '100.00',
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ]
-        ]);
-        $result = Braintree\Transaction::holdInEscrow($result->transaction->id);
-        $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_CANNOT_HOLD_IN_ESCROW,
-            $errors[0]->code
-        );
-    }
-
-    public function testSubmitForRelease_FromEscrow()
-    {
-        $transaction = $this->createEscrowedTransaction();
-        $result = Braintree\Transaction::releaseFromEscrow($transaction->id);
-        $this->assertTrue($result->success);
-        $this->assertEquals(Braintree\Transaction::ESCROW_RELEASE_PENDING, $result->transaction->escrowStatus);
-    }
-
-    public function testSubmitForRelease_fromEscrowFailsForTransactionsNotHeldInEscrow()
-    {
-        $result = Braintree\Transaction::sale([
-            'merchantAccountId' => Test\Helper::nonDefaultMerchantAccountId(),
-            'amount' => '100.00',
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ]
-        ]);
-        $result = Braintree\Transaction::releaseFromEscrow($result->transaction->id);
-        $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_CANNOT_RELEASE_FROM_ESCROW,
-            $errors[0]->code
-        );
-    }
-
-    public function testCancelRelease_fromEscrow()
-    {
-        $transaction = $this->createEscrowedTransaction();
-        $result = Braintree\Transaction::releaseFromEscrow($transaction->id);
-        $result = Braintree\Transaction::cancelRelease($transaction->id);
-        $this->assertTrue($result->success);
-        $this->assertEquals(
-            Braintree\Transaction::ESCROW_HELD,
-            $result->transaction->escrowStatus
-        );
-    }
-
-    public function testCancelRelease_fromEscrowFailsIfTransactionNotSubmittedForRelease()
-    {
-        $transaction = $this->createEscrowedTransaction();
-        $result = Braintree\Transaction::cancelRelease($transaction->id);
-        $this->assertFalse($result->success);
-        $errors = $result->errors->forKey('transaction')->onAttribute('base');
-        $this->assertEquals(
-            Braintree\Error\Codes::TRANSACTION_CANNOT_CANCEL_RELEASE,
-            $errors[0]->code
         );
     }
 
@@ -4867,24 +4676,6 @@ class TransactionTest extends Setup
         ]);
         Braintree\Test\Transaction::settle($transaction->id);
         return $transaction;
-    }
-
-    public function createEscrowedTransaction()
-    {
-        $result = Braintree\Transaction::sale([
-            'merchantAccountId' => Test\Helper::nonDefaultSubMerchantAccountId(),
-            'amount' => '100.00',
-            'creditCard' => [
-                'number' => '5105105105105100',
-                'expirationDate' => '05/12'
-            ],
-            'options' => [
-                'holdInEscrow' => true
-            ],
-            'serviceFeeAmount' => '1.00'
-        ]);
-        Test\Helper::escrow($result->transaction->id);
-        return $result->transaction;
     }
 
     public function testCardTypeIndicators()

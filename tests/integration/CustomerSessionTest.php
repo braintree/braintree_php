@@ -185,7 +185,7 @@ class CustomerSessionTest extends Setup
     {
         $customer = $this->buildCustomerSessionInput("PR9_test@example.com", "4085005009");
 
-        $customerRecommendationsInput = CustomerRecommendationsInput::builder('11EF-A1E7-A5F5EE5C-A2E5-AFD2801469FC', [Recommendations::PAYMENT_RECOMMENDATIONS])
+        $customerRecommendationsInput = CustomerRecommendationsInput::builder('11EF-34BC-2702904B-9026-C3ECF4BAC765', [Recommendations::PAYMENT_RECOMMENDATIONS])
             ->customer($customer)
             ->build();
 

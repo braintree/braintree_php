@@ -33,42 +33,15 @@ class MerchantAccount extends Base
     {
         $this->_attributes = $merchantAccountAttribs;
 
-        if (isset($merchantAccountAttribs['individual'])) {
-            $individual = $merchantAccountAttribs['individual'];
-            $this->_set('individualDetails', MerchantAccount\IndividualDetails::Factory($individual));
-        }
-
-        if (isset($merchantAccountAttribs['business'])) {
-            $business = $merchantAccountAttribs['business'];
-            $this->_set('businessDetails', MerchantAccount\BusinessDetails::Factory($business));
-        }
-
-        if (isset($merchantAccountAttribs['funding'])) {
-            $funding = $merchantAccountAttribs['funding'];
-            $this->_set('fundingDetails', new MerchantAccount\FundingDetails($funding));
-        }
-
-        if (isset($merchantAccountAttribs['masterMerchantAccount'])) {
-            $masterMerchantAccount = $merchantAccountAttribs['masterMerchantAccount'];
-            $this->_set('masterMerchantAccount', self::Factory($masterMerchantAccount));
-        }
     }
 
 
     // static methods redirecting to gateway
 
-    public static function create($attribs)
-    {
-        return Configuration::gateway()->merchantAccount()->create($attribs);
-    }
 
     public static function find($merchant_account_id)
     {
         return Configuration::gateway()->merchantAccount()->find($merchant_account_id);
     }
 
-    public static function update($merchant_account_id, $attributes)
-    {
-        return Configuration::gateway()->merchantAccount()->update($merchant_account_id, $attributes);
-    }
 }

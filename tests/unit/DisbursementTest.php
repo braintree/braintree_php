@@ -15,14 +15,10 @@ class DisbursementTest extends Setup
         $disbursement = Braintree\Disbursement::factory([
             "id" => "123456",
             "merchantAccount" => [
-                "id" => "sandbox_sub_merchant_account",
-                "masterMerchantAccount" => [
-                    "id" => "sandbox_master_merchant_account",
-                    "status" => "active"
-                    ],
+                "id" => "ma_card_processor_brazil",
                 "status" => "active"
                 ],
-            "transactionIds" => ["sub_merchant_transaction"],
+            "transactionIds" => ["transaction_with_installments_and_adjustments"],
             "exceptionMessage" => "invalid_account_number",
             "amount" => "100.00",
             "disbursementType" => "credit",
@@ -32,7 +28,7 @@ class DisbursementTest extends Setup
             "success" => false
         ]);
 
-        $this->assertEquals((string) $disbursement, 'Braintree\Disbursement[id=123456, merchantAccountDetails=id=sandbox_sub_merchant_account, masterMerchantAccount=id=sandbox_master_merchant_account, status=active, status=active, exceptionMessage=invalid_account_number, amount=100.00, disbursementDate=Wednesday, 10-Apr-13 00:00:00 UTC, followUpAction=update, retry=, success=, transactionIds=0=sub_merchant_transaction, disbursementType=credit]');
+        $this->assertEquals((string) $disbursement, 'Braintree\Disbursement[id=123456, merchantAccountDetails=id=ma_card_processor_brazil, status=active, exceptionMessage=invalid_account_number, amount=100.00, disbursementDate=Wednesday, 10-Apr-13 00:00:00 UTC, followUpAction=update, retry=, success=, transactionIds=0=transaction_with_installments_and_adjustments, disbursementType=credit]');
     }
 
     public function testIsDebit()
@@ -40,14 +36,10 @@ class DisbursementTest extends Setup
         $disbursement = Braintree\Disbursement::factory([
             "id" => "123456",
             "merchantAccount" => [
-                "id" => "sandbox_sub_merchant_account",
-                "masterMerchantAccount" => [
-                    "id" => "sandbox_master_merchant_account",
-                    "status" => "active"
-                    ],
+                "id" => "ma_card_processor_brazil",
                 "status" => "active"
                 ],
-            "transactionIds" => ["sub_merchant_transaction"],
+            "transactionIds" => ["transaction_with_installments_and_adjustments"],
             "exceptionMessage" => "invalid_account_number",
             "amount" => "100.00",
             "disbursementType" => "debit",
@@ -65,14 +57,10 @@ class DisbursementTest extends Setup
         $disbursement = Braintree\Disbursement::factory([
             "id" => "123456",
             "merchantAccount" => [
-                "id" => "sandbox_sub_merchant_account",
-                "masterMerchantAccount" => [
-                    "id" => "sandbox_master_merchant_account",
-                    "status" => "active"
-                    ],
+                "id" => "ma_card_processor_brazil",
                 "status" => "active"
                 ],
-            "transactionIds" => ["sub_merchant_transaction"],
+            "transactionIds" => ["transaction_with_installments_and_adjustments"],
             "exceptionMessage" => "invalid_account_number",
             "amount" => "100.00",
             "disbursementType" => "credit",
