@@ -66,7 +66,10 @@ class Nonces
     public static $threeDSecureVisaUnavailable = "fake-three-d-secure-visa-unavailable-nonce";
     public static $transactable = "fake-valid-nonce";
     public static $transactableAmEx = "fake-valid-amex-nonce";
+    public static $transactableBusiness = "fake-valid-business-nonce";
     public static $transactableCommercial = "fake-valid-commercial-nonce";
+    public static $transactableConsumer = "fake-valid-consumer-nonce";
+    public static $transactableCorporate = "fake-valid-corporate-nonce";
     public static $transactableCountryOfIssuanceCAD = "fake-valid-country-of-issuance-cad-nonce";
     public static $transactableCountryOfIssuanceUSA = "fake-valid-country-of-issuance-usa-nonce";
     public static $transactableDebit = "fake-valid-debit-nonce";
@@ -82,6 +85,7 @@ class Nonces
     public static $transactablePayroll = "fake-valid-payroll-nonce";
     public static $transactablePrepaid = "fake-valid-prepaid-nonce";
     public static $transactablePrepaidReloadable = "fake-valid-prepaid-reloadable-nonce";
+    public static $transactablePurchase = "fake-valid-purchase-nonce";
     public static $transactableUnknownIndicators = "fake-valid-unknown-indicators-nonce";
     public static $transactableVisa = "fake-valid-visa-nonce";
     public static $transactablePinlessDebitVisa = "fake-pinless-debit-visa-nonce";

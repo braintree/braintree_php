@@ -7,6 +7,8 @@ use Braintree\Util;
 
 /**
  * Represents the input to request the creation of a PayPal customer session.
+ *
+ * @experimental This class is experimental and may change in future releases.
  */
 class CreateCustomerSessionInput extends Base
 {
@@ -15,17 +17,20 @@ class CreateCustomerSessionInput extends Base
     {
         $this->_attributes = $attributes;
 
-        if (isset($attributes['merchantAccountId'])) {
-            $this->_set('merchantAccountId', $attributes['merchantAccountId']);
-        }
         if (isset($attributes['sessionId'])) {
             $this->_set('sessionId', $attributes['sessionId']);
         }
         if (isset($attributes['customer'])) {
             $this->_set('customer', $attributes['customer']);
         }
+        if (isset($attributes['purchaseUnits'])) {
+            $this->_set('purchaseUnits', $attributes['purchaseUnits']);
+        }
         if (isset($attributes['domain'])) {
             $this->_set('domain', $attributes['domain']);
+        }
+        if (isset($attributes['merchantAccountId'])) {
+            $this->_set('merchantAccountId', $attributes['merchantAccountId']);
         }
     }
 

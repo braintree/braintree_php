@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.26.0
+* Add `accountInformationInquiry` to:
+  * `CreditCard.create` and `CreditCard.update`
+  * `PaymentMethod.create` and `PaymentMethod.update`
+  * `CreditCardVerification.create`
+* Enhancements to PayPal customer recommendations
+  * Create a session and get recommendations in one call
+  * Hash customer email and phone number
+* Add `business`, `consumer`, `corporate`, and `purchase` from the bin data to credit card responses
+
 ## 6.25.0 
 * Remove marketplace features
 * Add support for capturing payment facilitator and sub-merchant details with transactions 

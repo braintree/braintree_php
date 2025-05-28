@@ -7,6 +7,8 @@ use Braintree\Util;
 
 /**
  * Customer identifying information for a PayPal customer session.
+ *
+ * @experimental This class is experimental and may change in future releases.
  */
 class CustomerSessionInput extends Base
 {
@@ -20,6 +22,12 @@ class CustomerSessionInput extends Base
         }
         if (isset($attributes['phone'])) {
             $this->_set('phone', $attributes['phone']);
+        }
+        if (isset($attributes['hashedEmail'])) {
+            $this->_set('hashedEmail', $attributes['hashedEmail']);
+        }
+        if (isset($attributes['hashedPhoneNumber'])) {
+            $this->_set('hashedPhoneNumber', $attributes['hashedPhoneNumber']);
         }
         if (isset($attributes['deviceFingerprintId'])) {
             $this->_set('deviceFingerprintId', $attributes['deviceFingerprintId']);

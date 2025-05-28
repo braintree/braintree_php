@@ -160,8 +160,12 @@ class PaymentMethodTest extends Setup
         $applePayCard = $result->paymentMethod;
         $this->assertNotNull($applePayCard->token);
         $this->assertNotNull($applePayCard->bin);
+        $this->assertNotNull($applePayCard->business);
+        $this->assertNotNull($applePayCard->consumer);
+        $this->assertNotNull($applePayCard->corporate);
         $this->assertNotNull($applePayCard->prepaid);
         $this->assertNotNull($applePayCard->prepaidReloadable);
+        $this->assertNotNull($applePayCard->purchase);
         $this->assertNotNull($applePayCard->healthcare);
         $this->assertNotNull($applePayCard->debit);
         $this->assertNotNull($applePayCard->durbinRegulated);
@@ -193,7 +197,11 @@ class PaymentMethodTest extends Setup
         $googlePayCard = $result->paymentMethod;
         $this->assertNotNull($googlePayCard->token);
         $this->assertFalse($googlePayCard->isNetworkTokenized);
+        $this->assertNotNull($googlePayCard->business);
+        $this->assertNotNull($googlePayCard->consumer);
+        $this->assertNotNull($googlePayCard->corporate);
         $this->assertNotNull($googlePayCard->prepaidReloadable);
+        $this->assertNotNull($googlePayCard->purchase);
         $this->assertSame("1111", $googlePayCard->sourceCardLast4);
         $this->assertSame("1117", $googlePayCard->last4);
         $this->assertSame("1117", $googlePayCard->virtualCardLast4);
@@ -232,8 +240,12 @@ class PaymentMethodTest extends Setup
         $this->assertTrue(intval($googlePayCard->expirationYear) > 0);
         $this->assertSame($customer->id, $googlePayCard->customerId);
         $this->assertTrue($googlePayCard->isNetworkTokenized);
+        $this->assertNotNull($googlePayCard->business);
+        $this->assertNotNull($googlePayCard->consumer);
+        $this->assertNotNull($googlePayCard->corporate);
         $this->assertNotNull($googlePayCard->prepaid);
         $this->assertNotNull($googlePayCard->prepaidReloadable);
+        $this->assertNotNull($googlePayCard->purchase);
         $this->assertNotNull($googlePayCard->healthcare);
         $this->assertNotNull($googlePayCard->debit);
         $this->assertNotNull($googlePayCard->durbinRegulated);
@@ -766,6 +778,39 @@ class PaymentMethodTest extends Setup
         $this->assertNull($verification->riskData);
     }
 
+    public function testCreate_includesAniResponseWhenAccountInformationInquiryIsPresent()
+    {
+        $gateway = new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ]);
+        $customer = $gateway->customer()->createNoValidate();
+        $http = new HttpClientApi($gateway->config);
+        $nonce = $http->nonce_for_new_card([
+            'credit_card' => [
+                'number' => '4111111111111111',
+                'expirationMonth' => '11',
+                'expirationYear' => '2099'
+            ],
+        ]);
+
+        $result = $gateway->paymentMethod()->create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'verifyCard' => true,
+                'accountInformationInquiry' => 'send_data',
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $verification = $result->paymentMethod->verification;
+        $this->assertNotNull($verification->aniFirstNameResponseCode);
+        $this->assertNotNull($verification->aniLastNameResponseCode);
+    }
+
     public function testCreate_allowsPassingABillingAddressOutsideOfTheNonce()
     {
         $customer = Braintree\Customer::createNoValidate();
@@ -1229,6 +1274,35 @@ class PaymentMethodTest extends Setup
         $this->assertTrue($result->success);
         $verification = $result->paymentMethod->verification;
         $this->assertNull($verification->riskData);
+    }
+
+    public function testUpdate_includesAniResponseWhenAccountInformationInquiryIsPresent()
+    {
+        $gateway = new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key'
+        ]);
+        $customer = $gateway->customer()->createNoValidate();
+        $creditCard = $gateway->creditCard()->create([
+            'customerId' => $customer->id,
+            'number' => '4111111111111111',
+            'expirationDate' => '05/2031',
+        ])->creditCard;
+
+        $result = $gateway->paymentMethod()->update($creditCard->token, [
+            'expirationDate' => '06/2033',
+            'options' => [
+                'verifyCard' => true,
+                'accountInformationInquiry' => 'send_data',
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $verification = $result->paymentMethod->verification;
+        $this->assertNotNull($verification->aniFirstNameResponseCode);
+        $this->assertNotNull($verification->aniLastNameResponseCode);
     }
 
     public function testCreate_ErrorsWithVerificationAccountTypeIsInvalid()

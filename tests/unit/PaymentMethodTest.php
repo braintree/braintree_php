@@ -29,6 +29,7 @@ class PaymentMethodTest extends Setup
             'paymentMethodNonce',
             'token',
             ['options' => [
+                'accountInformationInquiry',
                 'failOnDuplicatePaymentMethod',
                 'failOnDuplicatePaymentMethodForCustomer',
                 'makeDefault',

@@ -148,6 +148,7 @@ class PaymentMethodGateway
     {
         $billingAddressSignature = AddressGateway::createSignature();
         $optionsSignature = [
+            'accountInformationInquiry',
             'failOnDuplicatePaymentMethod',
             'failOnDuplicatePaymentMethodForCustomer',
             'makeDefault',

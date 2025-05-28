@@ -6,6 +6,8 @@ use Braintree\Base;
 
 /**
  * Represents the customer recommendations associated with a PayPal customer session.
+ *
+ * @experimental This class is experimental and may change in future releases.
  */
 class CustomerRecommendationsPayload extends Base
 {

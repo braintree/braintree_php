@@ -4,12 +4,15 @@ namespace Braintree\GraphQL\Inputs;
 
 /**
  * This class provides a fluent interface for constructing CustomerSessionInput objects.
+ *
+ * @experimental This class is experimental and may change in future releases.
  */
 class CustomerSessionInputBuilder
 {
     private $email;
-
     private $phone;
+    private $hashedEmail;
+    private $hashedPhoneNumber;
     private $deviceFingerprintId;
     private $paypalAppInstalled;
     private $venmoAppInstalled;
@@ -46,6 +49,32 @@ class CustomerSessionInputBuilder
     public function phone(PhoneInput $phone): self
     {
         $this->phone = $phone;
+        return $this;
+    }
+
+    /**
+     * Sets the hashed customer email address.
+     *
+     * @param string $hashedEmail The hashed customer email address.
+     *
+     * @return self
+     */
+    public function hashedEmail(string $hashedEmail): self
+    {
+        $this->hashedEmail = $hashedEmail;
+        return $this;
+    }
+
+    /**
+     * Sets the hased customer phone number.
+     *
+     * @param string $hashedPhoneNumber The hashed customer phone number.
+     *
+     * @return self
+     */
+    public function hashedPhoneNumber(string $hashedPhoneNumber): self
+    {
+        $this->hashedPhoneNumber = $hashedPhoneNumber;
         return $this;
     }
 
@@ -111,6 +140,12 @@ class CustomerSessionInputBuilder
         }
         if ($this->phone !== null) {
             $attributes['phone'] = $this->phone;
+        }
+        if ($this->hashedEmail !== null) {
+            $attributes['hashedEmail'] = $this->hashedEmail;
+        }
+        if ($this->hashedPhoneNumber !== null) {
+            $attributes['hashedPhoneNumber'] = $this->hashedPhoneNumber;
         }
         if ($this->deviceFingerprintId !== null) {
             $attributes['deviceFingerprintId'] = $this->deviceFingerprintId;

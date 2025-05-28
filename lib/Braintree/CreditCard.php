@@ -56,9 +56,25 @@ class CreditCard extends Base
     const DEBIT_NO = 'No';
     const DEBIT_UNKNOWN = 'Unknown';
 
+    const BUSINESS_YES = 'Yes';
+    const BUSINESS_NO = 'No';
+    const BUSINESS_UNKNOWN = 'Unknown';
+
     const COMMERCIAL_YES = 'Yes';
     const COMMERCIAL_NO = 'No';
     const COMMERCIAL_UNKNOWN = 'Unknown';
+
+    const CONSUMER_YES = 'Yes';
+    const CONSUMER_NO = 'No';
+    const CONSUMER_UNKNOWN = 'Unknown';
+
+    const CORPORATE_YES = 'Yes';
+    const CORPORATE_NO = 'No';
+    const CORPORATE_UNKNOWN = 'Unknown';
+
+    const PURCHASE_YES = 'Yes';
+    const PURCHASE_NO = 'No';
+    const PURCHASE_UNKNOWN = 'Unknown';
 
     const COUNTRY_OF_ISSUANCE_UNKNOWN = "Unknown";
     const ISSUING_BANK_UNKNOWN = "Unknown";

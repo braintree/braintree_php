@@ -15,7 +15,9 @@ class CustomerSessionInputTest extends TestCase
         $customerSessionInput = CustomerSessionInput::builder()
             ->email('nobody@nowehwere.com')
             ->phone($phoneInput)
-            ->deviceFingerprintId('device-fingerprint-id"')
+            ->hashedEmail('a-hashed-email-address')
+            ->hashedPhoneNumber('a-hashed-phone-number')
+            ->deviceFingerprintId('device-fingerprint-id')
             ->paypalAppInstalled(true)
             ->venmoAppInstalled(false)
             ->userAgent("Mozilla")
@@ -31,13 +33,15 @@ class CustomerSessionInputTest extends TestCase
         $customerSessionInput = CustomerSessionInput::builder()
             ->email('nobody@nowehwere.com')
             ->phone($phoneInput)
+            ->hashedEmail('a-hashed-email-address')
+            ->hashedPhoneNumber('a-hashed-phone-number')
             ->deviceFingerprintId('device-fingerprint-id')
             ->paypalAppInstalled(true)
             ->venmoAppInstalled(false)
             ->userAgent("Mozilla")
             ->build();
 
-        $expectedString = "Braintree\GraphQL\Inputs\CustomerSessionInput[email=nobody@nowehwere.com, phone=Braintree\GraphQL\Inputs\PhoneInput[countryPhoneCode=1, phoneNumber=5551234567, extensionNumber=1234], deviceFingerprintId=device-fingerprint-id, paypalAppInstalled=1, venmoAppInstalled=, userAgent=Mozilla]";
+        $expectedString = "Braintree\GraphQL\Inputs\CustomerSessionInput[email=nobody@nowehwere.com, phone=Braintree\GraphQL\Inputs\PhoneInput[countryPhoneCode=1, phoneNumber=5551234567, extensionNumber=1234], hashedEmail=a-hashed-email-address, hashedPhoneNumber=a-hashed-phone-number, deviceFingerprintId=device-fingerprint-id, paypalAppInstalled=1, venmoAppInstalled=, userAgent=Mozilla]";
 
         $this->assertEquals($expectedString, (string) $customerSessionInput);
     }
@@ -60,6 +64,8 @@ class CustomerSessionInputTest extends TestCase
         $customerSessionInput = CustomerSessionInput::builder()
             ->email('nobody@nowehwere.com')
             ->phone($phoneInput)
+            ->hashedEmail('a-hashed-email-address')
+            ->hashedPhoneNumber('a-hashed-phone-number')
             ->deviceFingerprintId('device-fingerprint-id')
             ->paypalAppInstalled(true)
             ->venmoAppInstalled(false)
@@ -73,6 +79,8 @@ class CustomerSessionInputTest extends TestCase
                 'phoneNumber' => '5551234567',
                 'extensionNumber' => '1234'
             ],
+            'hashedEmail' => 'a-hashed-email-address',
+            'hashedPhoneNumber' => 'a-hashed-phone-number',
             'deviceFingerprintId' => 'device-fingerprint-id',
             'paypalAppInstalled' => true,
             'venmoAppInstalled' => false,

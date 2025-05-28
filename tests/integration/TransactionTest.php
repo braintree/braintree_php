@@ -1965,6 +1965,10 @@ class TransactionTest extends Setup
         $this->assertSame('401288******1881', $details->maskedNumber);
         $this->assertSame('No', $details->prepaid);
         $this->assertSame('Unknown', $details->prepaidReloadable);
+        $this->assertSame('Unknown', $details->business);
+        $this->assertSame('Unknown', $details->consumer);
+        $this->assertSame('Unknown', $details->corporate);
+        $this->assertSame('Unknown', $details->purchase);
     }
 
     public function testCreateMetaCheckoutTokenTxnWithFakeNonce()
@@ -1993,6 +1997,10 @@ class TransactionTest extends Setup
         $this->assertSame('401288******1881', $details->maskedNumber);
         $this->assertSame('No', $details->prepaid);
         $this->assertSame('Unknown', $details->prepaidReloadable);
+        $this->assertSame('Unknown', $details->business);
+        $this->assertSame('Unknown', $details->consumer);
+        $this->assertSame('Unknown', $details->corporate);
+        $this->assertSame('Unknown', $details->purchase);
     }
 
     public function testCreateTransactionUsingFakeApplePayNonce()
@@ -2014,13 +2022,17 @@ class TransactionTest extends Setup
         $this->assertStringContainsString('apple_pay', $applePayDetails->imageUrl);
         $this->assertNotNull($applePayDetails->cardholderName);
         $this->assertNotNull($applePayDetails->bin);
+        $this->assertNotNull($applePayDetails->business);
         $this->assertNotNull($applePayDetails->commercial);
+        $this->assertNotNull($applePayDetails->consumer);
+        $this->assertNotNull($applePayDetails->corporate);
         $this->assertNotNull($applePayDetails->debit);
         $this->assertNotNull($applePayDetails->durbinRegulated);
         $this->assertNotNull($applePayDetails->healthcare);
         $this->assertNotNull($applePayDetails->payroll);
         $this->assertNotNull($applePayDetails->prepaid);
         $this->assertNotNull($applePayDetails->prepaidReloadable);
+        $this->assertNotNull($applePayDetails->purchase);
         $this->assertNotNull($applePayDetails->productId);
     }
 
@@ -2074,7 +2086,10 @@ class TransactionTest extends Setup
         $this->assertSame("10", $googlePayCardDetails->expirationMonth);
         $this->assertSame("17", $googlePayCardDetails->expirationYear);
         $this->assertNotNull($googlePayCardDetails->bin);
+        $this->assertNotNull($googlePayCardDetails->business);
         $this->assertNotNull($googlePayCardDetails->commercial);
+        $this->assertNotNull($googlePayCardDetails->consumer);
+        $this->assertNotNull($googlePayCardDetails->corporate);
         $this->assertNotNull($googlePayCardDetails->debit);
         $this->assertNotNull($googlePayCardDetails->durbinRegulated);
         $this->assertNotNull($googlePayCardDetails->healthcare);
@@ -2082,6 +2097,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($googlePayCardDetails->prepaid);
         $this->assertNotNull($googlePayCardDetails->prepaidReloadable);
         $this->assertNotNull($googlePayCardDetails->productId);
+        $this->assertNotNull($googlePayCardDetails->purchase);
         $this->assertTrue($googlePayCardDetails->isNetworkTokenized);
     }
 
@@ -2108,7 +2124,10 @@ class TransactionTest extends Setup
         $this->assertTrue(intval($googlePayCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($googlePayCardDetails->expirationYear) > 0);
         $this->assertNotNull($googlePayCardDetails->bin);
+        $this->assertNotNull($googlePayCardDetails->business);
         $this->assertNotNull($googlePayCardDetails->commercial);
+        $this->assertNotNull($googlePayCardDetails->consumer);
+        $this->assertNotNull($googlePayCardDetails->corporate);
         $this->assertNotNull($googlePayCardDetails->debit);
         $this->assertNotNull($googlePayCardDetails->durbinRegulated);
         $this->assertNotNull($googlePayCardDetails->healthcare);
@@ -2116,6 +2135,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($googlePayCardDetails->prepaid);
         $this->assertNotNull($googlePayCardDetails->prepaidReloadable);
         $this->assertNotNull($googlePayCardDetails->productId);
+        $this->assertNotNull($googlePayCardDetails->purchase);
         $this->assertFalse($googlePayCardDetails->isNetworkTokenized);
     }
 
@@ -2142,7 +2162,10 @@ class TransactionTest extends Setup
         $this->assertTrue(intval($googlePayCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($googlePayCardDetails->expirationYear) > 0);
         $this->assertNotNull($googlePayCardDetails->bin);
+        $this->assertNotNull($googlePayCardDetails->business);
         $this->assertNotNull($googlePayCardDetails->commercial);
+        $this->assertNotNull($googlePayCardDetails->consumer);
+        $this->assertNotNull($googlePayCardDetails->corporate);
         $this->assertNotNull($googlePayCardDetails->debit);
         $this->assertNotNull($googlePayCardDetails->durbinRegulated);
         $this->assertNotNull($googlePayCardDetails->healthcare);
@@ -2150,6 +2173,7 @@ class TransactionTest extends Setup
         $this->assertNotNull($googlePayCardDetails->prepaid);
         $this->assertNotNull($googlePayCardDetails->prepaidReloadable);
         $this->assertNotNull($googlePayCardDetails->productId);
+        $this->assertNotNull($googlePayCardDetails->purchase);
         $this->assertTrue($googlePayCardDetails->isNetworkTokenized);
     }
 
@@ -4700,7 +4724,17 @@ class TransactionTest extends Setup
 
         $this->assertEquals(Braintree\CreditCard::PREPAID_RELOADABLE_YES, $prepaid_reloadable_card_transaction->creditCardDetails->prepaidReloadable);
 
-        $prepaid_card_transaction = Braintree\Transaction::saleNoValidate([
+        $business_card_transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => CardTypeIndicators::BUSINESS,
+                'expirationDate' => '05/12',
+            ]
+        ]);
+
+        $this->assertEquals(Braintree\CreditCard::BUSINESS_YES, $business_card_transaction->creditCardDetails->business);
+
+        $commercial_card_transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',
             'creditCard' => [
                 'number' => CardTypeIndicators::COMMERCIAL,
@@ -4708,7 +4742,37 @@ class TransactionTest extends Setup
             ]
         ]);
 
-        $this->assertEquals(Braintree\CreditCard::COMMERCIAL_YES, $prepaid_card_transaction->creditCardDetails->commercial);
+        $this->assertEquals(Braintree\CreditCard::COMMERCIAL_YES, $commercial_card_transaction->creditCardDetails->commercial);
+
+        $consumer_card_transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => CardTypeIndicators::CONSUMER,
+                'expirationDate' => '05/12',
+            ]
+        ]);
+
+        $this->assertEquals(Braintree\CreditCard::CONSUMER_YES, $consumer_card_transaction->creditCardDetails->consumer);
+
+        $corporate_card_transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => CardTypeIndicators::CORPORATE,
+                'expirationDate' => '05/12',
+            ]
+        ]);
+
+        $this->assertEquals(Braintree\CreditCard::CORPORATE_YES, $corporate_card_transaction->creditCardDetails->corporate);
+
+        $purchase_card_transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => CardTypeIndicators::PURCHASE,
+                'expirationDate' => '05/12',
+            ]
+        ]);
+
+        $this->assertEquals(Braintree\CreditCard::PURCHASE_YES, $purchase_card_transaction->creditCardDetails->purchase);
 
         $transaction = Braintree\Transaction::saleNoValidate([
             'amount' => '100.00',

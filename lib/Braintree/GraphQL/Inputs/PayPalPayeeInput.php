@@ -6,23 +6,20 @@ use Braintree\Base;
 use Braintree\Util;
 
 /**
- * Phone number input for PayPal customer session.
+ * The details for the merchant who receives the funds and fulfills the order. The merchant is also known as the payee.
  *
  * @experimental This class is experimental and may change in future releases.
  */
-class PhoneInput extends Base
+class PayPalPayeeInput extends Base
 {
     protected function _initialize($attributes)
     {
         $this->_attributes = $attributes;
-        if (isset($attributes['countryPhoneCode'])) {
-            $this->_set('countryPhoneCode', $attributes['countryPhoneCode']);
+        if (isset($attributes['emailAddress'])) {
+            $this->_set('emailAddress', $attributes['emailAddress']);
         }
-        if (isset($attributes['phoneNumber'])) {
-            $this->_set('phoneNumber', $attributes['phoneNumber']);
-        }
-        if (isset($attributes['extensionNumber'])) {
-            $this->_set('extensionNumber', $attributes['extensionNumber']);
+        if (isset($attributes['clientId'])) {
+            $this->_set('clientId', $attributes['clientId']);
         }
     }
 
@@ -34,13 +31,13 @@ class PhoneInput extends Base
     }
 
     /**
-     * Creates a builder instance for fluent construction of PhoneInput objects.
+     * Creates a builder instance for fluent construction of PayPalPayeeInput objects.
      *
-     * @return PhoneInputBuilder
+     * @return PayPalPayeeInputBuilder
      */
     public static function builder()
     {
-        return new PhoneInputBuilder(function ($attributes) {
+        return new PayPalPayeeInputBuilder(function ($attributes) {
             return self::factory($attributes);
         });
     }

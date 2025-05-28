@@ -1,27 +1,26 @@
 <?php
 
-namespace Braintree\GraphQL\Unions;
+namespace Braintree\GraphQL\Types;
 
 use Braintree\Base;
 
 /**
- * A union of all possible customer recommendations associated with a PayPal customer session.
+ * Represents the payment method and priority associated with a PayPal customer session.
  *
  * @experimental This class is experimental and may change in future releases.
  */
-class CustomerRecommendations extends Base
+class PaymentRecommendation extends Base
 {
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     protected function _initialize($attributes)
     {
         $this->_attributes = $attributes;
 
-        if (isset($attributes['paymentRecommendations'])) {
-            $this->_set('paymentOptions', $attributes['paymentRecommendations']);
+        if (isset($attributes['paymentOption'])) {
+            $this->_set('paymentOption', $attributes['paymentOption']);
         }
-
-        if (isset($attributes['paymentRecommendations'])) {
-            $this->_set('paymentRecommendations', $attributes['paymentRecommendations']);
+        if (isset($attributes['recommendedPriority'])) {
+            $this->_set('recommendedPriority', $attributes['recommendedPriority']);
         }
     }
 

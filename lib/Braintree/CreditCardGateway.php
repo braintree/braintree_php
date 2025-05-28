@@ -339,6 +339,7 @@ class CreditCardGateway
     private static function baseOptions()
     {
         return [
+            'accountInformationInquiry',
             'failOnDuplicatePaymentMethod',
             'failOnDuplicatePaymentMethodForCustomer',
             'makeDefault',

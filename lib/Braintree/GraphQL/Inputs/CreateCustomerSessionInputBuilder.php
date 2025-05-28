@@ -4,12 +4,15 @@ namespace Braintree\GraphQL\Inputs;
 
 /**
  * This class provides a fluent interface for constructing CreateCustomerSessionInput objects.
+ *
+ * @experimental This class is experimental and may change in future releases.
  */
 class CreateCustomerSessionInputBuilder
 {
     private $merchantAccountId;
     private $sessionId;
     private $customer;
+    private $purchaseUnits;
     private $domain;
 
     private $factory;
@@ -18,19 +21,6 @@ class CreateCustomerSessionInputBuilder
     public function __construct($factory)
     {
         $this->factory = $factory;
-    }
-
-    /**
-     * Sets the merchant account ID.
-     *
-     * @param string $merchantAccountId The merchant account ID.
-     *
-     * @return self
-     */
-    public function merchantAccountId(string $merchantAccountId): self
-    {
-        $this->merchantAccountId = $merchantAccountId;
-        return $this;
     }
 
      /**
@@ -60,6 +50,19 @@ class CreateCustomerSessionInputBuilder
     }
 
     /**
+     *  Sets the Purchase Units for the items purchased.
+     *
+     * @param array $purchaseUnits An array of purchase units.
+     *
+     * @return self
+     */
+    public function purchaseUnits(array $purchaseUnits): self
+    {
+        $this->purchaseUnits = $purchaseUnits;
+        return $this;
+    }
+
+    /**
      * Sets the customer domain.
      *
      * @param string $domain The customer domain.
@@ -72,21 +75,37 @@ class CreateCustomerSessionInputBuilder
         return $this;
     }
 
+    /**
+     * Sets the merchant account ID.
+     *
+     * @param string $merchantAccountId The merchant account ID.
+     *
+     * @return self
+     */
+    public function merchantAccountId(string $merchantAccountId): self
+    {
+        $this->merchantAccountId = $merchantAccountId;
+        return $this;
+    }
+
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function build(): CreateCustomerSessionInput
     {
         $attributes = [];
-        if ($this->merchantAccountId !== null) {
-            $attributes['merchantAccountId'] = $this->merchantAccountId;
-        }
         if ($this->sessionId !== null) {
             $attributes['sessionId'] = $this->sessionId;
         }
         if ($this->customer !== null) {
             $attributes['customer'] = $this->customer;
         }
+        if ($this->purchaseUnits !== null) {
+            $attributes['purchaseUnits'] = $this->purchaseUnits;
+        }
         if ($this->domain !== null) {
             $attributes['domain'] = $this->domain;
+        }
+        if ($this->merchantAccountId !== null) {
+            $attributes['merchantAccountId'] = $this->merchantAccountId;
         }
         $func = $this->factory;
         return $func($attributes);

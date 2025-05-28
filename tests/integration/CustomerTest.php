@@ -553,6 +553,33 @@ class CustomerTest extends Setup
         $this->assertNull($verification->riskData);
     }
 
+    public function testCreate_includesAniResponseWhenAccountInformationInquiryIsPresent()
+    {
+        $gateway = new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key']);
+        $result = $gateway->customer()->create([
+                'creditCard' => [
+                    'number' => '4111111111111111',
+                    'expirationDate' => '05/2031',
+                    'billingAddress' => [
+                        'firstName' => 'John',
+                        'lastName' => 'Doe',
+                    ],
+                    'options' => [
+                        'verifyCard' => true,
+                        'accountInformationInquiry' => 'send_data',
+                    ],
+                ],
+            ]);
+        $this->assertTrue($result->success);
+        $verification = $result->customer->creditCards[0]->verification;
+        $this->assertNotNull($verification->aniFirstNameResponseCode);
+        $this->assertNotNull($verification->aniLastNameResponseCode);
+    }
+
     public function testCreate_withTaxIdentifiers()
     {
         $result = Braintree\Customer::create([
@@ -1359,6 +1386,39 @@ class CustomerTest extends Setup
         $this->assertTrue($updateResult->success);
         $verification = $updateResult->customer->creditCards[0]->verification;
         $this->assertNull($verification->riskData);
+    }
+
+    public function testUpdate_includesAniResponseWhenAccountInformationInquiryIsPresent()
+    {
+        $gateway = new Braintree\Gateway([
+            'environment' => 'development',
+            'merchantId' => 'integration_merchant_id',
+            'publicKey' => 'integration_public_key',
+            'privateKey' => 'integration_private_key']);
+            $createResult = $gateway->customer()->create([
+                'firstName' => 'Jane',
+                'lastName' => 'Smith',
+            ]);
+
+        $updateResult = $gateway->customer()->update($createResult->customer->id, [
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '05/2031',
+                'billingAddress' => [
+                    'firstName' => 'John',
+                    'lastName' => 'Doe',
+                ],
+                'options' => [
+                    'verifyCard' => true,
+                    'accountInformationInquiry' => 'send_data',
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($updateResult->success);
+        $verification = $updateResult->customer->creditCards[0]->verification;
+        $this->assertNotNull($verification->aniFirstNameResponseCode);
+        $this->assertNotNull($verification->aniLastNameResponseCode);
     }
 
     public function testUpdate_failOnDuplicatePaymentMethod()

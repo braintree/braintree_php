@@ -4,6 +4,9 @@ namespace Test\Unit\GraphQL;
 
 use Braintree\GraphQL\Inputs\CustomerRecommendationsInput;
 use Braintree\GraphQL\Inputs\CustomerSessionInput;
+use Braintree\GraphQL\Inputs\MonetaryAmountInput;
+use Braintree\GraphQL\Inputs\PayPalPayeeInput;
+use Braintree\GraphQL\Inputs\PayPalPurchaseUnitInput;
 use Braintree\GraphQL\Inputs\PhoneInput;
 use Braintree\GraphQL\Enums\Recommendations;
 use PHPUnit\Framework\TestCase;
@@ -15,9 +18,22 @@ class CustomerRecommendationsInputTest extends TestCase
         $customerSessionInput = CustomerSessionInput::builder()
             ->build();
 
-        $customerRecommendationsInput = CustomerRecommendationsInput::builder('session-id', [Recommendations::PAYMENT_RECOMMENDATIONS])
+        $payee = PayPalPayeeInput::builder()
+            ->emailAddress('test@example.com')
+            ->clientId('merchant-public-id')
+            ->build();
+
+        $amount = MonetaryAmountInput::factory(['value' => '300.00', 'currencyCode' => 'USD']);
+
+        $purchaseUnit = PayPalPurchaseUnitInput::builder($amount)
+            ->payee($payee)
+            ->build();
+
+        $customerRecommendationsInput = CustomerRecommendationsInput::builder()
+            ->sessionId('session-id')
             ->merchantAccountId('merchant-account-id')
             ->customer($customerSessionInput)
+            ->purchaseUnits([$purchaseUnit])
             ->build();
 
 
@@ -30,12 +46,26 @@ class CustomerRecommendationsInputTest extends TestCase
         $customerSessionInput = CustomerSessionInput::builder()
             ->build();
 
-        $customerRecommendationsInput = CustomerRecommendationsInput::builder('session-id', [Recommendations::PAYMENT_RECOMMENDATIONS])
-            ->merchantAccountId('merchant-account-id')
-            ->customer($customerSessionInput)
+        $payee = PayPalPayeeInput::builder()
+            ->emailAddress('test@example.com')
+            ->clientId('merchant-public-id')
             ->build();
 
-        $expectedString = "Braintree\GraphQL\Inputs\CustomerRecommendationsInput[merchantAccountId=merchant-account-id, sessionId=session-id, recommendations=[PAYMENT_RECOMMENDATIONS], customer=Braintree\GraphQL\Inputs\CustomerSessionInput[]]";
+        $amount = MonetaryAmountInput::factory(['value' => '300.00', 'currencyCode' => 'USD']);
+
+        $purchaseUnit = PayPalPurchaseUnitInput::builder($amount)
+            ->payee($payee)
+            ->build();
+
+        $customerRecommendationsInput = CustomerRecommendationsInput::builder()
+            ->sessionId('session-id')
+            ->merchantAccountId('merchant-account-id')
+            ->customer($customerSessionInput)
+            ->purchaseUnits([$purchaseUnit])
+            ->domain('a-domain')
+            ->build();
+
+        $expectedString = "Braintree\GraphQL\Inputs\CustomerRecommendationsInput[sessionId=session-id, customer=Braintree\GraphQL\Inputs\CustomerSessionInput[], purchaseUnits=[Braintree\GraphQL\Inputs\PayPalPurchaseUnitInput[payee=Braintree\GraphQL\Inputs\PayPalPayeeInput[emailAddress=test@example.com, clientId=merchant-public-id], amount=Braintree\GraphQL\Inputs\MonetaryAmountInput[value=300.00, currencyCode=USD]]], domain=a-domain, merchantAccountId=merchant-account-id]";
 
         $this->assertEquals($expectedString, (string) $customerRecommendationsInput);
     }
@@ -45,15 +75,28 @@ class CustomerRecommendationsInputTest extends TestCase
 
         $customerSessionInput = $this->createTestCustomerSessionInput();
 
-        $customerRecommendationsInput = CustomerRecommendationsInput::builder('session-id', [Recommendations::PAYMENT_RECOMMENDATIONS])
+        $payee = PayPalPayeeInput::builder()
+            ->emailAddress('test@example.com')
+            ->clientId('merchant-public-id')
+            ->build();
+
+        $amount = MonetaryAmountInput::factory(['value' => '300.00', 'currencyCode' => 'USD']);
+
+        $purchaseUnit = PayPalPurchaseUnitInput::builder($amount)
+            ->payee($payee)
+            ->build();
+
+        $customerRecommendationsInput = CustomerRecommendationsInput::builder()
+            ->sessionId('session-id')
             ->merchantAccountId('merchant-account-id')
             ->customer($customerSessionInput)
+            ->purchaseUnits([$purchaseUnit])
+            ->domain('a-domain')
             ->build();
 
         $expectedArray = [
             'merchantAccountId' => 'merchant-account-id',
             'sessionId' => 'session-id',
-            'recommendations' => ['PAYMENT_RECOMMENDATIONS'],
             'customer' => [
                 'email' => 'nobody@nowehwere.com',
                 'phone' => [
@@ -64,7 +107,20 @@ class CustomerRecommendationsInputTest extends TestCase
                 'deviceFingerprintId' => 'device-fingerprint-id',
                 'paypalAppInstalled' => true,
                 'venmoAppInstalled' => false,
-            ]
+            ],
+            'purchaseUnits' => [
+                [
+                    'payee' => [
+                        'emailAddress' => 'test@example.com',
+                        'clientId' => 'merchant-public-id',
+                    ],
+                    'amount' => [
+                        'value' => '300.00',
+                        'currencyCode' => 'USD',
+                    ]
+                ],
+            ],
+            'domain' => 'a-domain',
         ];
 
         $this->assertEquals($expectedArray, $customerRecommendationsInput->toArray());

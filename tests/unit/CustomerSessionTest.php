@@ -8,6 +8,9 @@ use Braintree\GraphQL\Enums\Recommendations;
 use Braintree\GraphQL\Inputs\CreateCustomerSessionInput;
 use Braintree\GraphQL\Inputs\CustomerRecommendationsInput;
 use Braintree\GraphQL\Inputs\CustomerSessionInput;
+use Braintree\GraphQL\Inputs\MonetaryAmountInput;
+use Braintree\GraphQL\Inputs\PayPalPayeeInput;
+use Braintree\GraphQL\Inputs\PayPalPurchaseUnitInput;
 use Braintree\GraphQL\Inputs\PhoneInput;
 use Braintree\GraphQL\Inputs\UpdateCustomerSessionInput;
 use Braintree\GraphQL\Types\CustomerRecommendationsPayload;
@@ -42,6 +45,7 @@ class CustomerSessionTest extends TestCase
             ->merchantAccountId('merchant-account-id')
             ->sessionId('session-id')
             ->customer($customerSessionInput)
+            ->purchaseUnits([CustomerSessionTest::createTestPurchaseUnit()])
             ->domain('a-domain')
             ->build();
 
@@ -72,6 +76,7 @@ class CustomerSessionTest extends TestCase
         $input = UpdateCustomerSessionInput::builder('session-id')
             ->merchantAccountId('merchant-account-id')
             ->customer($customerSessionInput)
+            ->purchaseUnits([CustomerSessionTest::createTestPurchaseUnit()])
             ->build();
 
         $this->mockGraphQLClient->expects($this->once())
@@ -100,30 +105,32 @@ class CustomerSessionTest extends TestCase
         $customerSessionInput = CustomerSessionInput::builder()
             ->build();
 
-        $input = CustomerRecommendationsInput::builder('session-id', [Recommendations::PAYMENT_RECOMMENDATIONS])
+        $input = CustomerRecommendationsInput::builder()
+            ->sessionId('session-id')
             ->merchantAccountId('merchant-account-id')
             ->customer($customerSessionInput)
+            ->purchaseUnits([CustomerSessionTest::createTestPurchaseUnit()])
+            ->domain('a-domain')
             ->build();
+
 
         $this->mockGraphQLClient->expects($this->once())
             ->method('query')
             ->with(
-                CustomerSessionGateway::GET_CUSTOMER_RECOMMENDATIONS_QUERY,
+                CustomerSessionGateway::GENERATE_CUSTOMER_RECOMMENDATIONS_MUTATION,
                 ['input' => $input->toArray()]
             )->willReturn([
                     'data' => [
-                        'customerRecommendations' => [
+                        'generateCustomerRecommendations' => [
                             'isInPayPalNetwork' => true,
-                            'recommendations' => [
-                                'paymentOptions' => [
-                                    [
-                                        'paymentOption' => 'paypal',
-                                        'recommendedPriority' => 1
-                                    ],
-                                    [
-                                        'paymentOption' => 'venmo',
-                                        'recommendedPriority' => 2
-                                    ]
+                            'paymentRecommendations' => [
+                                [
+                                    'paymentOption' => 'paypal',
+                                    'recommendedPriority' => 1
+                                ],
+                                [
+                                    'paymentOption' => 'venmo',
+                                    'recommendedPriority' => 2
                                 ]
                             ]
                         ]
@@ -145,6 +152,16 @@ class CustomerSessionTest extends TestCase
 
         $this->assertEquals('venmo', $paymentOptions[1]->paymentOption);
         $this->assertEquals(2, $paymentOptions[1]->recommendedPriority);
+
+        $paymentRecommendations = $result->customerRecommendations->recommendations->paymentRecommendations;
+
+        $this->assertEquals(2, count($paymentRecommendations));
+
+        $this->assertEquals('paypal', $paymentRecommendations[0]->paymentOption);
+        $this->assertEquals(1, $paymentRecommendations[0]->recommendedPriority);
+
+        $this->assertEquals('venmo', $paymentRecommendations[1]->paymentOption);
+        $this->assertEquals(2, $paymentRecommendations[1]->recommendedPriority);
     }
 
     public function testExecuteMutation_returnsErrorIfResponseHasErrors()
@@ -172,9 +189,9 @@ class CustomerSessionTest extends TestCase
     }
 
 
-    public function testExecuteMutation_throwsUnexpectedIfResponseKeyIsMissing()
+    public function testExecuteMutation_throwsExceptionIfResponseKeyIsMissing()
     {
-        $this->expectException(Exception\Unexpected::class);
+        $this->expectException(Exception\ServerError::class);
         $input = $this->createMock(CreateCustomerSessionInput::class);
         $input->method('toArray')->willReturn([]);
         $this->mockGraphQLClient
@@ -185,22 +202,23 @@ class CustomerSessionTest extends TestCase
         $this->gateway->createCustomerSession($input);
     }
 
-    public function testExtractCustomerRecommendations_throwsUnexpectedIfResponseKeyIsMissing()
+    public function testExtractCustomerRecommendations_throwsExceptionIfResponseKeyIsMissing()
     {
         $customerSessionInput = CustomerSessionInput::builder()
             ->build();
 
-            $input = CustomerRecommendationsInput::builder('session-id', [Recommendations::PAYMENT_RECOMMENDATIONS])
+        $input = CustomerRecommendationsInput::builder()
+            ->sessionId('session-id')
             ->merchantAccountId('merchant-account-id')
             ->customer($customerSessionInput)
             ->build();
 
-        $this->expectException(Exception\Unexpected::class);
+        $this->expectException(Exception\ServerError::class);
 
         $this->mockGraphQLClient->expects($this->once())
             ->method('query')
             ->with(
-                CustomerSessionGateway::GET_CUSTOMER_RECOMMENDATIONS_QUERY,
+                CustomerSessionGateway::GENERATE_CUSTOMER_RECOMMENDATIONS_MUTATION,
                 ['input' => $input->toArray()]
             )->willReturn([
                     'data' => [
@@ -225,22 +243,23 @@ class CustomerSessionTest extends TestCase
         $this->gateway->getCustomerRecommendations($input);
     }
 
-    public function testGetPaymentOptions_throwsUnexpectedIfResponseKeyIsMissing()
+    public function testGetPaymentOptions_throwsExceptionIfResponseKeyIsMissing()
     {
         $customerSessionInput = CustomerSessionInput::builder()
             ->build();
 
-            $input = CustomerRecommendationsInput::builder('session-id', [Recommendations::PAYMENT_RECOMMENDATIONS])
+        $input = CustomerRecommendationsInput::builder()
+            ->sessionId('session-id')
             ->merchantAccountId('merchant-account-id')
             ->customer($customerSessionInput)
             ->build();
 
-        $this->expectException(Exception\Unexpected::class);
+        $this->expectException(Exception\ServerError::class);
 
         $this->mockGraphQLClient->expects($this->once())
             ->method('query')
             ->with(
-                CustomerSessionGateway::GET_CUSTOMER_RECOMMENDATIONS_QUERY,
+                CustomerSessionGateway::GENERATE_CUSTOMER_RECOMMENDATIONS_MUTATION,
                 ['input' => $input->toArray()]
             )->willReturn([
                     'data' => [
@@ -284,6 +303,20 @@ class CustomerSessionTest extends TestCase
             ->countryPhoneCode('1')
             ->phoneNumber('5551234567')
             ->extensionNumber('1234')
+            ->build();
+    }
+
+    public static function createTestPurchaseUnit()
+    {
+        $payee = PayPalPayeeInput::builder()
+            ->emailAddress('test@example.com')
+            ->clientId('merchant-public-id')
+            ->build();
+
+        $amount = MonetaryAmountInput::factory(['value' => '300.00', 'currencyCode' => 'USD']);
+
+        return PayPalPurchaseUnitInput::builder($amount)
+            ->payee($payee)
             ->build();
     }
 }

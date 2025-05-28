@@ -4,6 +4,8 @@ namespace Braintree\GraphQL\Inputs;
 
 /**
  * This class provides a fluent interface for constructing PhoneInput objects.
+ *
+ * @experimental This class is experimental and may change in future releases.
  */
 
 class PhoneInputBuilder

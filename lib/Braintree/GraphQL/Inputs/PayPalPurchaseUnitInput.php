@@ -6,24 +6,15 @@ use Braintree\Base;
 use Braintree\Util;
 
 /**
- * Phone number input for PayPal customer session.
+ * Payee and Amount of the item purchased.
  *
  * @experimental This class is experimental and may change in future releases.
  */
-class PhoneInput extends Base
+class PayPalPurchaseUnitInput extends Base
 {
     protected function _initialize($attributes)
     {
         $this->_attributes = $attributes;
-        if (isset($attributes['countryPhoneCode'])) {
-            $this->_set('countryPhoneCode', $attributes['countryPhoneCode']);
-        }
-        if (isset($attributes['phoneNumber'])) {
-            $this->_set('phoneNumber', $attributes['phoneNumber']);
-        }
-        if (isset($attributes['extensionNumber'])) {
-            $this->_set('extensionNumber', $attributes['extensionNumber']);
-        }
     }
 
     private static function factory($attributes)
@@ -34,13 +25,15 @@ class PhoneInput extends Base
     }
 
     /**
-     * Creates a builder instance for fluent construction of PhoneInput objects.
+     * Creates a builder instance for fluent construction of PayPalPurchaseUnitInput objects.
      *
-     * @return PhoneInputBuilder
+     * @param MonetaryAmountInput $amount The amount with currency.
+     *
+     * @return PayPalPurchaseUnitInputBuilder
      */
-    public static function builder()
+    public static function builder(MonetaryAmountInput $amount)
     {
-        return new PhoneInputBuilder(function ($attributes) {
+        return new PayPalPurchaseUnitInputBuilder($amount, function ($attributes) {
             return self::factory($attributes);
         });
     }

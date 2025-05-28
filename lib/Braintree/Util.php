@@ -78,7 +78,7 @@ class Util
                 throw new Exception\TooManyRequests();
             break;
             case 500:
-                throw new Exception\ServerError();
+                throw new Exception\ServerError($message);
             break;
             case 504:
                 throw new Exception\GatewayTimeout();

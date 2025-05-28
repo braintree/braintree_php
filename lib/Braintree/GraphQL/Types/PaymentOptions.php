@@ -6,6 +6,8 @@ use Braintree\Base;
 
 /**
  * Represents the payment method and priority associated with a PayPal customer session.
+ *
+ * @deprecated Use PaymentRecommendation instead
  */
 class PaymentOptions extends Base
 {

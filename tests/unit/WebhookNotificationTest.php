@@ -859,9 +859,12 @@ class WebhookNotificationTest extends Setup
                 <subject>
                     <credit-card>
                         <bin>555555</bin>
+                        <business>Unknown</business>
                         <card-type>MasterCard</card-type>
                         <cardholder-name>Amber Ankunding</cardholder-name>
                         <commercial>Unknown</commercial>
+                        <consumer>Unknown</consumer>
+                        <corporate>Unknown</corporate>
                         <country-of-issuance>Unknown</country-of-issuance>
                         <created-at type='datetime'>2018-10-10T22:46:41Z</created-at>
                         <customer-id>credit_card_customer_id</customer-id>
@@ -881,6 +884,7 @@ class WebhookNotificationTest extends Setup
                         <prepaid>Unknown</prepaid>
                         <prepaid-reloadable>Unknown</prepaid-reloadable>
                         <product-id>Unknown</product-id>
+                        <purchase>Unknown</purchase>
                         <subscriptions type='array'/>
                         <token>credit_card_token</token>
                         <unique-number-identifier>08199d188e37460163207f714faf074a</unique-number-identifier>

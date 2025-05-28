@@ -25,6 +25,7 @@ class CustomerTest extends Setup
             // phpcs:ignore
             if (is_array($value) and array_key_exists('options', $value)) {
                 $this->assertEquals([
+                    'accountInformationInquiry',
                     'failOnDuplicatePaymentMethod',
                     'failOnDuplicatePaymentMethodForCustomer',
                     'makeDefault',

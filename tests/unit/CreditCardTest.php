@@ -56,6 +56,7 @@ class CreditCardTest extends Setup
             'paymentMethodNonce',
             [
                 'options' => [
+                    'accountInformationInquiry',
                     'failOnDuplicatePaymentMethod',
                     'failOnDuplicatePaymentMethodForCustomer',
                     'makeDefault',
@@ -119,6 +120,7 @@ class CreditCardTest extends Setup
             'paymentMethodNonce',
             [
                 'options' => [
+                    'accountInformationInquiry',
                     'failOnDuplicatePaymentMethod',
                     'failOnDuplicatePaymentMethodForCustomer',
                     'makeDefault',
@@ -208,5 +210,21 @@ class CreditCardTest extends Setup
         );
 
         $this->assertEquals('932', $creditCard->verification->id);
+    }
+
+    public function testBinData()
+    {
+        $creditCard = Braintree\CreditCard::factory(
+            [
+                'business' => 'Yes',
+                'consumer' => 'No',
+                'corporate' => 'Yes',
+                'purchase' => 'No'
+            ]
+        );
+        $this->assertEquals(Braintree\CreditCard::BUSINESS_YES, $creditCard->business);
+        $this->assertEquals(Braintree\CreditCard::CONSUMER_NO, $creditCard->consumer);
+        $this->assertEquals(Braintree\CreditCard::CORPORATE_YES, $creditCard->corporate);
+        $this->assertEquals(Braintree\CreditCard::PURCHASE_NO, $creditCard->purchase);
     }
 }

@@ -94,11 +94,35 @@ abstract class Base extends \stdClass implements JsonSerializable
     public function toArray()
     {
         return array_map(function ($value) {
-            if (!is_array($value)) {
-                return is_object($value) && method_exists($value, 'toArray') ? $value->toArray() : $value;
+            if (is_object($value) && method_exists($value, 'toArray')) {
+                return $value->toArray();
+            } elseif (is_array($value)) {
+                return array_map(function ($item) {
+                    return is_object($item) && method_exists($item, 'toArray') ? $item->toArray() : (is_array($item) ? $this->toArrayRecursive($item) : $item);
+                }, $value);
             } else {
                 return $value;
             }
         }, $this->_attributes);
+    }
+
+    /**
+     * Helper method to make arrays recursive for toArray
+     *
+     * @param array $array
+     *
+     * @return array
+     */
+    private function toArrayRecursive(array $array)
+    {
+        return array_map(function ($item) {
+            if (is_object($item) && method_exists($item, 'toArray')) {
+                return $item->toArray();
+            } elseif (is_array($item)) {
+                return $this->toArrayRecursive($item);
+            } else {
+                return $item;
+            }
+        }, $array);
     }
 }

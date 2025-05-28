@@ -6,3 +6,4 @@
 composer.lock
 composer.phar
 tests/fixtures/large_file.png
+./vscode

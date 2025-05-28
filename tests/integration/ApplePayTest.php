@@ -82,7 +82,7 @@ class ApplePayTest extends Setup
         $this->assertEmpty(array_diff(['www.example.com'], $registeredDomains));
     }
 
-    public function testPrepaidReloadableForApplePay()
+    public function testBinFieldsForApplePay()
     {
         $customer = Braintree\Customer::createNoValidate();
         $result = Braintree\PaymentMethod::create([
@@ -94,6 +94,10 @@ class ApplePayTest extends Setup
         $this->assertTrue($result->success);
         $applePayCard = $result->paymentMethod;
         $this->assertNotNull($applePayCard->token);
+        $this->assertNotNull($applePayCard->business);
+        $this->assertNotNull($applePayCard->consumer);
+        $this->assertNotNull($applePayCard->corporate);
         $this->assertNotNull($applePayCard->prepaidReloadable);
+        $this->assertNotNull($applePayCard->purchase);
     }
 }

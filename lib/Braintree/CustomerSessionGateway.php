@@ -5,16 +5,49 @@ namespace Braintree;
 use Braintree\GraphQL\Unions\CustomerRecommendations;
 use Braintree\GraphQL\Types\CustomerRecommendationsPayload;
 use Braintree\GraphQL\Types\PaymentOptions;
+use Braintree\GraphQL\Types\PaymentRecommendation;
 use Braintree\GraphQL\Inputs\CreateCustomerSessionInput;
 use Braintree\GraphQL\Inputs\UpdateCustomerSessionInput;
 use Braintree\GraphQL\Inputs\CustomerRecommendationsInput;
 
 /**
  * Creates and manages PayPal customer sessions.
+ *
+ * @experimental This class is experimental and may change in future releases.
  */
 class CustomerSessionGateway
 {
     private $graphQLClient;
+
+    const CREATE_CUSTOMER_SESSION_MUTATION = <<<'GRAPHQL'
+    mutation CreateCustomerSession($input: CreateCustomerSessionInput!) {
+      createCustomerSession(input: $input) {
+        sessionId
+      }
+    }
+    GRAPHQL;
+
+
+    const UPDATE_CUSTOMER_SESSION_MUTATION = <<<'GRAPHQL'
+    mutation UpdateCustomerSession($input: UpdateCustomerSessionInput!) {
+      updateCustomerSession(input: $input) {
+        sessionId
+      }
+    }
+    GRAPHQL;
+
+    const  GENERATE_CUSTOMER_RECOMMENDATIONS_MUTATION = <<<'GRAPHQL'
+    mutation GenerateCustomerRecommendations($input: GenerateCustomerRecommendationsInput!) {
+        generateCustomerRecommendations(input: $input) {
+            sessionId
+            isInPayPalNetwork
+            paymentRecommendations {
+                paymentOption
+                recommendedPriority
+            }
+        }
+    }
+    GRAPHQL;
 
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($graphQLClient)
@@ -44,7 +77,7 @@ class CustomerSessionGateway
      *
      * @return Result\Error|Result\Successful A result object with session ID if successful, or errors otherwise.
      *
-     * @throws Exception\Unexpected If there is an unexpected error during the process.
+     * @throws Exception\ServerError If there is an unexpected error during the process.
      */
     public function createCustomerSession(CreateCustomerSessionInput $input)
     {
@@ -73,7 +106,7 @@ class CustomerSessionGateway
      *
      * @return Result\Error|Result\Successful A result object with session ID if successful, or errors otherwise.
      *
-     * @throws Exception\Unexpected If there is an unexpected error during the process.
+     * @throws Exception\ServerError If there is an unexpected error during the process.
      */
     public function updateCustomerSession($input)
     {
@@ -81,11 +114,12 @@ class CustomerSessionGateway
     }
 
     /**
-     * Retrieves customer recommendations associated with a customer session.
+     * Retrieves customer recommendations associated with a customer session. Creates a new session if a session ID is not specified.
      *
      * Example:
      *
-     *   $input = CustomerRecommendationsInput::builder($sessionId, [Recommendations::PAYMENT_RECOMMENDATIONS])
+     *   $input = CustomerRecommendationsInput::builder()
+     *      ->sessionId("1234")
      *      ->build();
      *
      *  $result = $gateway->customerSession()->getCustomerRecommendations($input);
@@ -99,23 +133,19 @@ class CustomerSessionGateway
      *
      * @return Result\Error|Result\Successful A result object containing customer recommendations if successful, or errors otherwise.
      *
-     * @throws Exception\Unexpected If there is an unexpected error during the process.
+     * @throws Exception\ServerError If there is an unexpected error during the process.
      */
     public function getCustomerRecommendations(CustomerRecommendationsInput $input)
     {
         $inputMap = $input->toArray();
         $variables = (count($inputMap) == 0) ? ['input' => self::empty()] : ['input' => $inputMap];
 
-        try {
-            $response = $this->graphQLClient->query(self::GET_CUSTOMER_RECOMMENDATIONS_QUERY, $variables);
-            $errors = GraphQLClient::getValidationErrors($response);
-            if ($errors) {
-                return new Result\Error(['errors' => $errors]);
-            }
-            return new Result\Successful($this->extractCustomerRecommendationsPayload($response), "customerRecommendations");
-        } catch (\Throwable $e) {
-            throw new Exception\Unexpected($e->getMessage());
+        $response = $this->graphQLClient->query(self::GENERATE_CUSTOMER_RECOMMENDATIONS_MUTATION, $variables);
+        $errors = GraphQLClient::getValidationErrors($response);
+        if ($errors) {
+            return new Result\Error(['errors' => $errors]);
         }
+        return new Result\Successful($this->extractCustomerRecommendationsPayload($response), "customerRecommendations");
     }
 
 
@@ -123,19 +153,15 @@ class CustomerSessionGateway
     {
         $inputMap = $input->toArray();
         $variables = (count($inputMap) == 0) ? ['input' => self::empty()] : ['input' => $inputMap];
-        try {
-            $response = $this->graphQLClient->query($query, $variables);
-            $errors = GraphQLClient::getValidationErrors($response);
-            if ($errors) {
-                return new Result\Error(['errors' => $errors]);
-            }
-
-            $sessionId = $this->getValue($response, "data.{$operationName}.sessionId");
-
-            return new Result\Successful($sessionId, "sessionId");
-        } catch (Exception $e) {
-            throw new Exception\Unexpected($e->getMessage());
+        $response = $this->graphQLClient->query($query, $variables);
+        $errors = GraphQLClient::getValidationErrors($response);
+        if ($errors) {
+            return new Result\Error(['errors' => $errors]);
         }
+
+        $sessionId = $this->getValue($response, "data.{$operationName}.sessionId");
+
+        return new Result\Successful($sessionId, "sessionId");
     }
 
     private function getValue($response, $key)
@@ -156,17 +182,17 @@ class CustomerSessionGateway
     private function popValue($map, $key)
     {
         if (!isset($map[$key])) {
-            throw new Exception\Unexpected("Couldn't parse response $key");
+            throw new Exception\ServerError("Couldn't parse server response");
         }
         return $map[$key];
     }
 
     private function extractCustomerRecommendationsPayload($response)
     {
-        $isInPayPalNetwork = $this->getValue($response, 'data.customerRecommendations.isInPayPalNetwork');
-        $recommendationsMap = $this->getValue($response, 'data.customerRecommendations.recommendations');
+        $isInPayPalNetwork = $this->getValue($response, 'data.generateCustomerRecommendations.isInPayPalNetwork');
+        $paymentRecommendationsList = $this->getValue($response, 'data.generateCustomerRecommendations.paymentRecommendations');
         $recommendations = CustomerRecommendations::factory([
-            "paymentOptions" => $this->getPaymentOptions($recommendationsMap)
+            "paymentRecommendations" => $this->getPaymentRecommendations($paymentRecommendationsList)
         ]);
         $payload = CustomerRecommendationsPayload::factory([
             "isInPayPalNetwork" => $isInPayPalNetwork,
@@ -175,62 +201,28 @@ class CustomerSessionGateway
         return $payload;
     }
 
-    private function getPaymentOptions($recommendationsMap)
+    private function getPaymentRecommendations($recommendationsList)
     {
-        $paymentOptions = [];
-        if ($recommendationsMap == null) {
-            return $paymentOptions;
+        $paymentRecommendations = [];
+        if ($recommendationsList == null) {
+            return $paymentRecommendations;
         }
-        $paymentOptionsObjs = $this->popValue($recommendationsMap, "paymentOptions");
 
-        foreach ($paymentOptionsObjs as $paymentOptionsObj) {
-            $recommendedPriority = $this->popValue($paymentOptionsObj, 'recommendedPriority');
-            $paymentOption = $this->popValue($paymentOptionsObj, 'paymentOption');
+        foreach ($recommendationsList as $paymentRecommendation) {
+            $recommendedPriority = $this->popValue($paymentRecommendation, 'recommendedPriority');
+            $paymentOption = $this->popValue($paymentRecommendation, 'paymentOption');
 
-            $paymentOptions[] = PaymentOptions::factory([
-            "paymentOption" => $paymentOption,
-            "recommendedPriority" => $recommendedPriority
+            $paymentRecommendations[] = PaymentRecommendation::factory([
+              "paymentOption" => $paymentOption,
+              "recommendedPriority" => $recommendedPriority
             ]);
         }
 
-        return $paymentOptions;
+        return $paymentRecommendations;
     }
 
     private static function empty()
     {
         return (object)[];
     }
-
-    const CREATE_CUSTOMER_SESSION_MUTATION = <<<'GRAPHQL'
-    mutation CreateCustomerSession($input: CreateCustomerSessionInput!) {
-      createCustomerSession(input: $input) {
-        sessionId
-      }
-    }
-    GRAPHQL;
-
-
-    const UPDATE_CUSTOMER_SESSION_MUTATION = <<<'GRAPHQL'
-    mutation UpdateCustomerSession($input: UpdateCustomerSessionInput!) {
-      updateCustomerSession(input: $input) {
-        sessionId
-      }
-    }
-    GRAPHQL;
-
-    const GET_CUSTOMER_RECOMMENDATIONS_QUERY = <<<'GRAPHQL'
-    query CustomerRecommendations($input: CustomerRecommendationsInput!) {
-                customerRecommendations(input: $input) {
-                  isInPayPalNetwork
-                  recommendations {
-                    ... on PaymentRecommendations {
-                      paymentOptions {
-                        paymentOption
-                        recommendedPriority
-                      }
-                    }
-                  }
-                }
-              }
-    GRAPHQL;
 }

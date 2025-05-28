@@ -34,10 +34,13 @@ class VisaCheckoutCardTest extends Setup
 
         $this->assertNotNull($visaCheckoutCard->billingAddress);
         $this->assertNotNull($visaCheckoutCard->bin);
+        $this->assertNotNull($visaCheckoutCard->business);
         $this->assertNotNull($visaCheckoutCard->callId);
         $this->assertNotNull($visaCheckoutCard->cardType);
         $this->assertNotNull($visaCheckoutCard->cardholderName);
         $this->assertNotNull($visaCheckoutCard->commercial);
+        $this->assertNotNull($visaCheckoutCard->consumer);
+        $this->assertNotNull($visaCheckoutCard->corporate);
         $this->assertNotNull($visaCheckoutCard->countryOfIssuance);
         $this->assertNotNull($visaCheckoutCard->createdAt);
         $this->assertNotNull($visaCheckoutCard->customerId);
@@ -58,6 +61,7 @@ class VisaCheckoutCardTest extends Setup
         $this->assertNotNull($visaCheckoutCard->prepaid);
         $this->assertNotNull($visaCheckoutCard->prepaidReloadable);
         $this->assertNotNull($visaCheckoutCard->productId);
+        $this->assertNotNull($visaCheckoutCard->purchase);
         $this->assertNotNull($visaCheckoutCard->subscriptions);
         $this->assertNotNull($visaCheckoutCard->token);
         $this->assertNotNull($visaCheckoutCard->uniqueNumberIdentifier);

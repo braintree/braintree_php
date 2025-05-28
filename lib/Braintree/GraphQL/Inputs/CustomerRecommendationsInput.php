@@ -7,6 +7,8 @@ use Braintree\Util;
 
 /**
  * Represents the input to request PayPal customer session recommendations.
+ *
+ * @experimental This class is experimental and may change in future releases.
  */
 class CustomerRecommendationsInput extends Base
 {
@@ -15,17 +17,20 @@ class CustomerRecommendationsInput extends Base
     {
         $this->_attributes = $attributes;
 
-        if (isset($attributes['merchantAccountId'])) {
-            $this->_set('merchantAccountId', $attributes['merchantAccountId']);
-        }
         if (isset($attributes['sessionId'])) {
             $this->_set('sessionId', $attributes['sessionId']);
         }
-        if (isset($attributes['recommendations'])) {
-            $this->_set('recommendations', $attributes['recommendations']);
-        }
         if (isset($attributes['customer'])) {
             $this->_set('customer', $attributes['customer']);
+        }
+        if (isset($attributes['purchaseUnits'])) {
+            $this->_set('purchaseUnits', $attributes['purchaseUnits']);
+        }
+        if (isset($attributes['domain'])) {
+            $this->_set('domain', $attributes['domain']);
+        }
+        if (isset($attributes['merchantAccountId'])) {
+            $this->_set('merchantAccountId', $attributes['merchantAccountId']);
         }
     }
 
@@ -39,14 +44,11 @@ class CustomerRecommendationsInput extends Base
     /**
      * Creates a builder instance for fluent construction of CustomerRecommendationsInput objects.
      *
-     * @param string $sessionId       The customer session id
-     * @param array  $recommendations The types of recommendations to be requested
-     *
      * @return CustomerRecommendationsInputBuilder
      */
-    public static function builder(string $sessionId, array $recommendations)
+    public static function builder()
     {
-        return new CustomerRecommendationsInputBuilder($sessionId, $recommendations, function ($attributes) {
+        return new CustomerRecommendationsInputBuilder(function ($attributes) {
             return self::factory($attributes);
         });
     }

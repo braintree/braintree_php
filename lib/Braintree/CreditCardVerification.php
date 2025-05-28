@@ -92,6 +92,7 @@ class CreditCardVerification extends Result\CreditCardVerification
                 'intendedTransactionSource',
                 ['options' =>
                     [
+                        'accountInformationInquiry',
                         'accountType',
                         'amount',
                         'merchantAccountId',

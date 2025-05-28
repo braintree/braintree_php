@@ -32,6 +32,7 @@ class CreditCardVerificationTest extends Setup
             'intendedTransactionSource',
             ['options' =>
                 [
+                    'accountInformationInquiry',
                     'accountType',
                     'amount',
                     'merchantAccountId'
