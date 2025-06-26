@@ -122,6 +122,7 @@ class CustomerSessionTest extends TestCase
             )->willReturn([
                     'data' => [
                         'generateCustomerRecommendations' => [
+                            'sessionId' => 'session-id',
                             'isInPayPalNetwork' => true,
                             'paymentRecommendations' => [
                                 [
@@ -142,6 +143,7 @@ class CustomerSessionTest extends TestCase
         $this->assertInstanceOf(Successful::class, $result);
         $this->assertInstanceOf(CustomerRecommendationsPayload::class, $result->customerRecommendations);
         $this->assertTrue($result->customerRecommendations->isInPayPalNetwork);
+        $this->assertEquals('session-id', $result->customerRecommendations->sessionId);
 
         $paymentOptions = $result->customerRecommendations->recommendations->paymentOptions;
 

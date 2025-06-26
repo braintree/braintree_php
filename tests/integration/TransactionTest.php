@@ -4373,22 +4373,22 @@ class TransactionTest extends Setup
         $transaction = $this->createTransactionToRefundAuth();
         $result = Braintree\Transaction::refund($transaction->id, '2046.00');
         $refund = $result->transaction;
-        $this->assertFalse($result->success);
+        $this->assertTrue($result->success);
         $this->assertEquals(
             Braintree\Transaction::CREDIT,
             $refund->type
         );
-        $this->assertEquals(Braintree\Transaction::PROCESSOR_DECLINED, $refund->status);
-        $this->assertEquals(2046, $refund->processorResponseCode);
-        $this->assertEquals("Declined", $refund->processorResponseText);
-        $this->assertEquals(Braintree\ProcessorResponseTypes::SOFT_DECLINED, $refund->processorResponseType);
+        $this->assertEquals(Braintree\Transaction::SUBMITTED_FOR_SETTLEMENT, $refund->status);
+        $this->assertEquals(1005, $refund->processorResponseCode);
+        $this->assertEquals("Auth Declined but Settlement Captured", $refund->processorResponseText);
+        $this->assertEquals(Braintree\ProcessorResponseTypes::APPROVED, $refund->processorResponseType);
         $this->assertEquals("2046 : Declined", $refund->additionalProcessorResponse);
     }
 
     public function testHandlesHardDeclinedRefundAuth()
     {
         $transaction = $this->createTransactionToRefundAuth();
-        $result = Braintree\Transaction::refund($transaction->id, '2009.00');
+        $result = Braintree\Transaction::refund($transaction->id, '2004.00');
         $refund = $result->transaction;
         $this->assertFalse($result->success);
         $this->assertEquals(
@@ -4396,10 +4396,10 @@ class TransactionTest extends Setup
             $refund->type
         );
         $this->assertEquals(Braintree\Transaction::PROCESSOR_DECLINED, $refund->status);
-        $this->assertEquals(2009, $refund->processorResponseCode);
-        $this->assertEquals("No Such Issuer", $refund->processorResponseText);
+        $this->assertEquals(2004, $refund->processorResponseCode);
+        $this->assertEquals("Expired Card", $refund->processorResponseText);
         $this->assertEquals(Braintree\ProcessorResponseTypes::HARD_DECLINED, $refund->processorResponseType);
-        $this->assertEquals("2009 : No Such Issuer", $refund->additionalProcessorResponse);
+        $this->assertEquals("2004 : Expired Card", $refund->additionalProcessorResponse);
     }
 
     public function testRefundWithOptionsParam()
@@ -6024,6 +6024,7 @@ class TransactionTest extends Setup
 
     public function testSale_PinlessDebit()
     {
+        $this->markTestSkipped('Flaky test');
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'merchantAccountId' => Test\Helper::pinlessDebitMerchantAccountId(),

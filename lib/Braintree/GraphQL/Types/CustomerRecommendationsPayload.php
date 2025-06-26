@@ -16,6 +16,9 @@ class CustomerRecommendationsPayload extends Base
     {
         $this->_attributes = $attributes;
 
+        if (isset($attributes['sessionId'])) {
+            $this->_set('sessionId', $attributes['sessionId']);
+        }
         if (isset($attributes['isInPayPalNetwork'])) {
             $this->_set('isInPayPalNetwork', $attributes['isInPayPalNetwork']);
         }

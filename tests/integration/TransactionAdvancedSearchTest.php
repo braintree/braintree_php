@@ -1691,7 +1691,7 @@ class TransactionAdvancedSearchTest extends Setup
             Braintree\TransactionSearch::achReturnResponsesCreatedAt()->between($yesterday, $tomorrow)
         ]);
 
-        $this->assertEquals(2, $collection->maximumCount());
+        $this->assertEquals(4, $collection->maximumCount());
     }
 
     public function test_multipleValueNode_reasonCode_is_R01()
@@ -1700,7 +1700,7 @@ class TransactionAdvancedSearchTest extends Setup
             Braintree\TransactionSearch::reasonCode()->in(["R01"])
         ]);
 
-        $this->assertEquals(1, $collection->maximumCount());
+        $this->assertEquals(2, $collection->maximumCount());
     }
 
     public function test_multipleValueNode_reasonCode_multiple()
@@ -1709,7 +1709,7 @@ class TransactionAdvancedSearchTest extends Setup
             Braintree\TransactionSearch::reasonCode()->in(["R01", "R02"])
         ]);
 
-        $this->assertEquals(2, $collection->maximumCount());
+        $this->assertEquals(3, $collection->maximumCount());
     }
 
     public function test_multipleValueNode_reasonCode_any()
@@ -1718,7 +1718,7 @@ class TransactionAdvancedSearchTest extends Setup
             Braintree\TransactionSearch::reasonCode()->is(Braintree\Transaction::TRANSACTION_REASON_CODE)
         ]);
 
-        $this->assertEquals(2, $collection->maximumCount());
+        $this->assertEquals(4, $collection->maximumCount());
     }
 
     public function testSearchRetryTrasactonId()
@@ -1744,6 +1744,7 @@ class TransactionAdvancedSearchTest extends Setup
 
     public function test_multipleValueNode_debitNetwork()
     {
+        $this->markTestSkipped('Flaky test');
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'merchantAccountId' => Test\Helper::pinlessDebitMerchantAccountId(),

@@ -203,6 +203,7 @@ class CustomerSessionTest extends Setup
         $payload = $result->customerRecommendations;
 
         $this->assertTrue($payload->isInPayPalNetwork);
+        $this->assertEquals($payload->sessionId, '94f0b2db-5323-4d86-add3-paypal000000');
 
         $paymentOptions = $payload->recommendations->paymentOptions[0];
         $this->assertEquals($paymentOptions->paymentOption, RecommendedPaymentOption::PAYPAL);

@@ -189,12 +189,14 @@ class CustomerSessionGateway
 
     private function extractCustomerRecommendationsPayload($response)
     {
+        $sessionId = $this->getValue($response, 'data.generateCustomerRecommendations.sessionId');
         $isInPayPalNetwork = $this->getValue($response, 'data.generateCustomerRecommendations.isInPayPalNetwork');
         $paymentRecommendationsList = $this->getValue($response, 'data.generateCustomerRecommendations.paymentRecommendations');
         $recommendations = CustomerRecommendations::factory([
             "paymentRecommendations" => $this->getPaymentRecommendations($paymentRecommendationsList)
         ]);
         $payload = CustomerRecommendationsPayload::factory([
+            "sessionId" => $sessionId,
             "isInPayPalNetwork" => $isInPayPalNetwork,
             "recommendations" => $recommendations
         ]);

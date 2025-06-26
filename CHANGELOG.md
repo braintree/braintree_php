@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.27.0
+* Add Session Id to Customer Recommendations Payload
+
 ## 6.26.0
 * Add `accountInformationInquiry` to:
   * `CreditCard.create` and `CreditCard.update`
