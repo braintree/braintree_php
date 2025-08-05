@@ -7303,4 +7303,15 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::AUTHORIZED, $transaction->status);
         $this->assertFalse(property_exists($transaction, "foreignRetailer"));
     }
+
+    public function testTransactionWithUpcomingRetryDate()
+    {
+        $transaction = Braintree\Transaction::find('first_attempted_ach_transaction');
+
+        $tomorrow = new DateTime('tomorrow');
+        $expectedDate = $tomorrow->format('Y-m-d');
+
+        $this->assertNotNull($transaction->upcomingRetryDate);
+        $this->assertStringContainsString($expectedDate, $transaction->upcomingRetryDate);
+    }
 }

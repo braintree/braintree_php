@@ -93,6 +93,23 @@ class DisputeTest extends Setup
         $this->assertEquals($result->evidence->id, $updatedDispute->evidence[0]->id);
     }
 
+    public function testAddFileEvidence_updatesRemainingFileEvidenceStorage()
+    {
+        $dispute = $this->createSampleDispute();
+        $initialStorage = $dispute->remainingFileEvidenceStorage;
+
+        $this->assertNotNull($initialStorage);
+
+        $disputeId = $this->createSampleDispute()->id;
+        $documentId = $this->createSampleDocument()->id;
+        $this->gateway->dispute()->addFileEvidence($disputeId, $documentId);
+
+        $updatedDispute = $this->gateway->dispute()->find($disputeId);
+        $updatedStorage = $updatedDispute->remainingFileEvidenceStorage;
+
+        $this->assertTrue($updatedStorage < $initialStorage);
+    }
+
     public function testAddFileEvidence_addsEvidence_withCategory()
     {
         $disputeId = $this->createSampleDispute()->id;

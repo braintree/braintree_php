@@ -220,6 +220,19 @@ class TransactionTest extends Setup
         $this->assertEquals("1234", $details["last4"]);
     }
 
+    public function testTransactionWithUpcomingRetryDate()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'id' => '123',
+            'type' => 'sale',
+            'amount' => '12.34',
+            'status' => 'processor_declined',
+            'upcomingRetryDate' => '2023-12-15'
+        ]);
+
+        $this->assertEquals('2023-12-15', $transaction->upcomingRetryDate);
+    }
+
     private function mockTransactionGatewayDoCreate()
     {
         return $this->getMockBuilder('Braintree\TransactionGateway')

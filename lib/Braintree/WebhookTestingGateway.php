@@ -46,6 +46,9 @@ class WebhookTestingGateway
             case WebhookNotification::TRANSACTION_DISBURSED:
                 $subjectXml = self::_transactionDisbursedSampleXml($id);
                 break;
+            case WebhookNotification::TRANSACTION_RETRIED:
+                $subjectXml = self::_transactionRetriedSampleXml($id);
+                break;
             case WebhookNotification::TRANSACTION_REVIEWED:
                 $subjectXml = self::_transactionReviewedSampleXml($id);
                 break;
@@ -230,6 +233,20 @@ class WebhookTestingGateway
             <disbursement-details>
                 <disbursement-date type=\"date\">2013-07-09</disbursement-date>
             </disbursement-details>
+        </transaction>
+        ";
+    }
+
+    private static function _transactionRetriedSampleXml($id)
+    {
+        return "
+        <transaction>
+            <id>{$id}</id>
+            <amount>100.00</amount>
+            <status>submitted_for_settlement</status>
+            <type>sale</type>
+            <currency-iso-code>USD</currency-iso-code>
+            <retried-transaction-id>original_txn_id</retried-transaction-id>
         </transaction>
         ";
     }

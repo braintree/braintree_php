@@ -83,6 +83,7 @@ class TransactionGateway
     public static function createSignature()
     {
         return [
+            'accountFundingTransaction',
             'amount',
             ['applePayCard' =>
                 [
@@ -335,6 +336,10 @@ class TransactionGateway
             'threeDSecureToken', //Deprecated
             'threeDSecureAuthenticationId',
             'transactionSource',
+            [   'transfer' => [
+                    'type',
+                ],
+            ],
             'type',
             'venmoSdkPaymentMethodCode',  // Deprecated
             [

@@ -40,6 +40,7 @@ class DisputeTest extends Setup
             'replyByDate' => DateTime::createFromFormat('Ymd-His', '20130417-0000417'),
             'status' => 'open',
             'updatedAt' => DateTime::createFromFormat('Ymd-His', '20130410-105039'),
+            'remainingFileEvidenceStorage' => '31902983',
             'evidence' => [[
                 'category' => null,
                 'comment' => null,
@@ -148,6 +149,7 @@ class DisputeTest extends Setup
         $this->assertEquals("Reason code 83 description", $dispute->reasonDescription);
         $this->assertEquals("123456", $dispute->referenceNumber);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130410-105039'), $dispute->updatedAt);
+        $this->assertEquals("31902983", $dispute->remainingFileEvidenceStorage);
         $this->assertNull($dispute->evidence[0]->comment);
         $this->assertEquals(DateTime::createFromFormat('Ymd-His', '20130411-105039'), $dispute->evidence[0]->createdAt);
         $this->assertNull($dispute->evidence[0]->category);
