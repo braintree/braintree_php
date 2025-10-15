@@ -39,7 +39,7 @@ class ClientTokenGateway
             $params["version"] = ClientToken::DEFAULT_VERSION;
         }
 
-        Util::verifyKeys(self::generateSignature(), $params);
+        $this->conditionallyVerifyKeys($params);
         $generateParams = ["client_token" => $params];
 
         return $this->_doGenerate('/client_token', $generateParams);

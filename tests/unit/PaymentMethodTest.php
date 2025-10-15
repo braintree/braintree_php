@@ -61,6 +61,10 @@ class PaymentMethodTest extends Setup
             ['billingAddress' => Braintree\AddressGateway::createSignature()],
             'customerId',
             'paypalRefreshToken',
+            ['usBankAccount' => [
+                'achMandateText',
+                'achMandateAcceptedAt'
+            ]],
             [ 'threeDSecurePassThru' => [
                 'eciFlag',
                 'cavv',

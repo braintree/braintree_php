@@ -47,4 +47,18 @@ class GatewayTest extends Setup
         $this->assertEquals('sandbox', $gateway->config->getEnvironment());
         $this->assertEquals('sandbox_merchant_id', $gateway->config->getMerchantId());
     }
+
+    public function testBankAccountInstantVerificationReturnsGatewayInstance()
+    {
+        $gateway = new Braintree\Gateway([
+            'environment' => 'sandbox',
+            'merchantId' => 'sandbox_merchant_id',
+            'publicKey' => 'sandbox_public_key',
+            'privateKey' => 'sandbox_private_key'
+        ]);
+
+        $bankAccountInstantVerificationGateway = $gateway->bankAccountInstantVerification();
+
+        $this->assertInstanceOf(Braintree\BankAccountInstantVerificationGateway::class, $bankAccountInstantVerificationGateway);
+    }
 }

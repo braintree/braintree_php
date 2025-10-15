@@ -341,6 +341,12 @@ class TransactionGateway
                 ],
             ],
             'type',
+            ['usBankAccount' =>
+                [
+                    'achMandateText',
+                    'achMandateAcceptedAt'
+                ]
+            ],
             'venmoSdkPaymentMethodCode',  // Deprecated
             [
                 'paymentFacilitator' => [
@@ -369,6 +375,60 @@ class TransactionGateway
                     ],
                 ],
             ],
+
+             [
+                'transfer' => [
+                    'type',
+                    [
+                        'sender' => [
+                            'firstName',
+                            'lastName',
+                            'accountReferenceNumber',
+                            'taxId',
+                            [
+                                'address' => [
+                                    'streetAddress',
+                                    'extendedAddress',
+                                    'locality',
+                                    'region',
+                                    'countryCodeAlpha2',
+                                    'postalCode',
+                                    [
+                                        'internationalPhone' => [
+                                            'countryCode',
+                                            'nationalNumber',
+                                        ],
+                                    ]
+                                ]
+                            ]
+                        ],
+                    ],
+                    [
+                        'receiver' => [
+                            'firstName',
+                            'lastName',
+                            'accountReferenceNumber',
+                            'taxId',
+                            [
+                                'address' => [
+                                    'streetAddress',
+                                    'extendedAddress',
+                                    'locality',
+                                    'region',
+                                    'countryCodeAlpha2',
+                                    'postalCode',
+                                    [
+                                        'internationalPhone' => [
+                                            'countryCode',
+                                            'nationalNumber',
+                                        ],
+                                    ]
+                                ]
+                            ]
+                        ],
+                    ]
+                ]
+            ]
         ];
     }
 

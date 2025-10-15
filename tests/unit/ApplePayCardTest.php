@@ -24,4 +24,16 @@ class ApplePayCardTest extends Setup
         $this->assertEquals(Braintree\CreditCard::CORPORATE_NO, $card->corporate);
         $this->assertEquals(Braintree\CreditCard::PURCHASE_YES, $card->purchase);
     }
+
+    public function testMpanData()
+    {
+        $card = Braintree\ApplePayCard::factory(
+            [
+                'isDeviceToken' => false,
+                'merchantTokenIdentifier' => 'a-merchant-token-identifier'
+            ]
+        );
+        $this->assertEquals(false, $card->isDeviceToken);
+        $this->assertEquals("a-merchant-token-identifier", $card->merchantTokenIdentifier);
+    }
 }

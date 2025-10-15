@@ -171,6 +171,45 @@ class PaymentMethodTest extends Setup
         $this->assertNotNull($applePayCard->durbinRegulated);
         $this->assertNotNull($applePayCard->commercial);
         $this->assertNotNull($applePayCard->payroll);
+        $this->assertTrue($applePayCard->isDeviceToken);
+        $this->assertNotNull($applePayCard->issuingBank);
+        $this->assertNotNull($applePayCard->countryOfIssuance);
+        $this->assertNotNull($applePayCard->productId);
+
+        $this->assertSame(Braintree\ApplePayCard::VISA, $applePayCard->cardType);
+        $this->assertStringContainsString("Visa ", $applePayCard->paymentInstrumentName);
+        $this->assertStringContainsString("Visa ", $applePayCard->sourceDescription);
+        $this->assertTrue($applePayCard->default);
+        $this->assertStringContainsString('apple_pay', $applePayCard->imageUrl);
+        $this->assertTrue(intval($applePayCard->expirationMonth) > 0);
+        $this->assertTrue(intval($applePayCard->expirationYear) > 0);
+        $this->assertSame($customer->id, $applePayCard->customerId);
+    }
+
+    public function testCreate_fromFakeApplePayMpanNonce()
+    {
+        $customer = Braintree\Customer::createNoValidate();
+        $result = Braintree\PaymentMethod::create([
+            'customerId' => $customer->id,
+            'paymentMethodNonce' => Braintree\Test\Nonces::$applePayMpan,
+        ]);
+
+        $this->assertTrue($result->success);
+        $applePayCard = $result->paymentMethod;
+        $this->assertNotNull($applePayCard->token);
+        $this->assertNotNull($applePayCard->bin);
+        $this->assertNotNull($applePayCard->business);
+        $this->assertNotNull($applePayCard->consumer);
+        $this->assertNotNull($applePayCard->corporate);
+        $this->assertNotNull($applePayCard->prepaid);
+        $this->assertNotNull($applePayCard->prepaidReloadable);
+        $this->assertNotNull($applePayCard->purchase);
+        $this->assertNotNull($applePayCard->healthcare);
+        $this->assertNotNull($applePayCard->debit);
+        $this->assertNotNull($applePayCard->durbinRegulated);
+        $this->assertNotNull($applePayCard->commercial);
+        $this->assertNotNull($applePayCard->payroll);
+        $this->assertFalse($applePayCard->isDeviceToken);
         $this->assertNotNull($applePayCard->issuingBank);
         $this->assertNotNull($applePayCard->countryOfIssuance);
         $this->assertNotNull($applePayCard->productId);
@@ -229,11 +268,11 @@ class PaymentMethodTest extends Setup
         $this->assertNotNull($googlePayCard->token);
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCard->virtualCardType);
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCard->cardType);
-        $this->assertSame("4444", $googlePayCard->virtualCardLast4);
-        $this->assertSame("4444", $googlePayCard->last4);
+        $this->assertSame("0005", $googlePayCard->virtualCardLast4);
+        $this->assertSame("0005", $googlePayCard->last4);
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCard->sourceCardType);
-        $this->assertSame("4444", $googlePayCard->sourceCardLast4);
-        $this->assertSame("MasterCard 4444", $googlePayCard->sourceDescription);
+        $this->assertSame("0005", $googlePayCard->sourceCardLast4);
+        $this->assertSame("MasterCard 0005", $googlePayCard->sourceDescription);
         $this->assertTrue($googlePayCard->default);
         $this->assertStringContainsString('android_pay', $googlePayCard->imageUrl);
         $this->assertTrue(intval($googlePayCard->expirationMonth) > 0);

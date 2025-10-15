@@ -298,4 +298,15 @@ class Gateway
     {
         return new WebhookTestingGateway($this);
     }
+
+    /**
+     * Returns a BankAccountInstantVerificationGateway for interacting with
+     * Bank Account Instant Verification functionality.
+     *
+     * @return BankAccountInstantVerificationGateway
+     */
+    public function bankAccountInstantVerification()
+    {
+        return new BankAccountInstantVerificationGateway($this);
+    }
 }

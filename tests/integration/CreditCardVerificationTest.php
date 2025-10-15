@@ -365,4 +365,16 @@ class CreditCardVerificationTest extends Setup
         $verification = $result->verification;
         $this->assertTrue(strlen($verification->networkTransactionId) > 0);
     }
+
+    public function test_findVerificationWithPaymentAccountReference()
+    {
+        $collection = Braintree\CreditCardVerification::search([
+            Braintree\CreditCardVerificationSearch::id()->is('threedsecuredverification')
+        ]);
+
+        $verification = $collection->firstItem();
+
+        $this->assertNotNull($verification->creditCard);
+        $this->assertArrayHasKey('paymentAccountReference', $verification->creditCard);
+    }
 }

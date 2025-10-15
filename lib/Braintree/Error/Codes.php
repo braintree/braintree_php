@@ -639,6 +639,10 @@ class Codes
 
     const TRANSACTION_TRANSACTION_SOURCE_IS_INVALID                                   = '915133';
 
+
+     const TRANSFER_DETAILS_NOT_APPLICABLE                                            = '97501';
+    const TRANSFER_DETAILS_NOT_AVAILABLE                                              = '97510';
+
     const US_BANK_ACCOUNT_VERIFICATION_NOT_CONFIRMABLE                      = '96101';
     const US_BANK_ACCOUNT_VERIFICATION_MUST_BE_MICRO_TRANSFERS_VERIFICATION = '96102';
     const US_BANK_ACCOUNT_VERIFICATION_AMOUNTS_DO_NOT_MATCH                 = '96103';

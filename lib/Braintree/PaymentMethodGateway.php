@@ -199,6 +199,10 @@ class PaymentMethodGateway
         $signature = array_merge(self::baseSignature(), [
             'customerId',
             'paypalRefreshToken',
+            ['usBankAccount' => [
+                'achMandateText',
+                'achMandateAcceptedAt'
+            ]],
             CreditCardGateway::threeDSecurePassThruSignature()
         ]);
         return $signature;

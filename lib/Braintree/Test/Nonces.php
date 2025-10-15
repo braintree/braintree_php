@@ -19,6 +19,7 @@ class Nonces
     public static $applePayAmEx = "fake-apple-pay-amex-nonce";
     public static $applePayMasterCard = "fake-apple-pay-visa-nonce";
     public static $applePayVisa = "fake-apple-pay-visa-nonce";
+    public static $applePayMpan = "fake-apple-pay-mpan-nonce";
     public static $consumed = "fake-consumed-nonce";
     public static $europe = "fake-europe-bank-account-nonce";
     public static $gatewayRejectedFraud = "fake-gateway-rejected-fraud-nonce";

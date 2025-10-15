@@ -1,5 +1,21 @@
 # Changelog
 
+## 6.29.0
+
+* Add Bank Account Instant Verification functionality
+* Add `BankAccountInstantVerificationGateway` for creating JWT tokens
+* Add `BankAccountInstantVerificationJwt` and `BankAccountInstantVerificationJwtRequest` classes
+* Add `bankAccountInstantVerification()` method to main Gateway class
+* Add ACH mandate support for US Bank Account transactions
+* Add `achMandateText` and `achMandateAcceptedAt` fields to Transaction and PaymentMethod create signatures
+* Add `usBankAccount` parameter support for ACH mandate details
+* Add `INSTANT_VERIFICATION_ACCOUNT_VALIDATION` as a new US Bank Account verification method
+* Add `sender` and `receiver` to `transfer` in `Transaction`
+* Add `achRejectReason` field to `Transaction`
+* Add `sender` and `receiver` to `transfer` in `Transaction`
+* Add `isDeviceToken` and `merchantTokenIdentifier` to `ApplePayCard` and `ApplePayDetails`
+* Add `paymentAccountReference` to `ApplePayCardDetails`, `GooglePayCardDetails`, `CreditCardDetails` and `CreditCardVerification`
+
 ## 6.28.0
 * Add `upcomingRetryDate` to Transaction
 * Add `remainingFileEvidenceStorage` to `Dispute`

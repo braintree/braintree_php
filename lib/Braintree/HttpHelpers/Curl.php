@@ -96,7 +96,7 @@ class Curl
         }
 
         if ($errorCode) {
-            throw new Exception\Connection($error, $errorCode);
+            throw new Exception\Connection($error, $httpStatus ?? 0);
         }
 
         return ['status' => $httpStatus, 'body' => $response];

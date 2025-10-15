@@ -233,6 +233,75 @@ class TransactionTest extends Setup
         $this->assertEquals('2023-12-15', $transaction->upcomingRetryDate);
     }
 
+    public function testTransactionWithRejectReasonAttribute()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'id' => '123',
+            'type' => 'sale',
+            'amount' => '12.34',
+            'status' => 'processor_declined',
+            'achReturnCode' => 'RJCT',
+            'achRejectReason' => 'Reject Reason'
+        ]);
+
+        $this->assertEquals('RJCT', $transaction->achReturnCode);
+        $this->assertEquals('Reject Reason', $transaction->achRejectReason);
+    }
+
+    public function testTransactionWithCreditCardPaymentAccountReference()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'id' => '123',
+            'type' => 'sale',
+            'amount' => '12.34',
+            'status' => 'settled',
+            'creditCard' => [
+                'expirationMonth' => '05',
+                'expirationYear' => '2025',
+                'bin' => '510510',
+                'last4' => '5100',
+                'paymentAccountReference' => 'V0010013019339005665779448477'
+            ]
+        ]);
+
+        $this->assertEquals('V0010013019339005665779448477', $transaction->creditCardDetails->paymentAccountReference);
+    }
+
+    public function testTransactionWithApplePayPaymentAccountReference()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'id' => '123',
+            'type' => 'sale',
+            'amount' => '12.34',
+            'status' => 'settled',
+            'applePay' => [
+                'bin' => '510510',
+                'last4' => '5100',
+                'cardType' => 'Visa',
+                'paymentAccountReference' => 'V0010013019339005665779448477'
+            ]
+        ]);
+
+        $this->assertEquals('V0010013019339005665779448477', $transaction->applePayCardDetails->paymentAccountReference);
+    }
+
+    public function testTransactionWithGooglePayPaymentAccountReference()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'id' => '123',
+            'type' => 'sale',
+            'amount' => '12.34',
+            'status' => 'settled',
+            'androidPayCard' => [
+                'virtualCardLast4' => '5100',
+                'virtualCardType' => 'Visa',
+                'paymentAccountReference' => 'V0010013019339005665779448477'
+            ]
+        ]);
+
+        $this->assertEquals('V0010013019339005665779448477', $transaction->googlePayCardDetails->paymentAccountReference);
+    }
+
     private function mockTransactionGatewayDoCreate()
     {
         return $this->getMockBuilder('Braintree\TransactionGateway')

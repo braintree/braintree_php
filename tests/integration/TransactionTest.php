@@ -2034,6 +2034,42 @@ class TransactionTest extends Setup
         $this->assertNotNull($applePayDetails->prepaidReloadable);
         $this->assertNotNull($applePayDetails->purchase);
         $this->assertNotNull($applePayDetails->productId);
+        $this->assertTrue($applePayDetails->isDeviceToken);
+    }
+
+    public function testCreateTransactionUsingFakeApplePayMpanNonce()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '47.00',
+            'paymentMethodNonce' => Braintree\Test\Nonces::$applePayMpan
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals('47.00', $transaction->amount);
+        $applePayDetails = $transaction->applePayCardDetails;
+        $this->assertSame(Braintree\ApplePayCard::VISA, $applePayDetails->cardType);
+        $this->assertStringContainsString("Visa ", $applePayDetails->sourceDescription);
+        $this->assertStringContainsString("Visa ", $applePayDetails->paymentInstrumentName);
+        $this->assertTrue(intval($applePayDetails->expirationMonth) > 0);
+        $this->assertTrue(intval($applePayDetails->expirationYear) > 0);
+        $this->assertStringContainsString('apple_pay', $applePayDetails->imageUrl);
+        $this->assertNotNull($applePayDetails->cardholderName);
+        $this->assertNotNull($applePayDetails->bin);
+        $this->assertNotNull($applePayDetails->business);
+        $this->assertNotNull($applePayDetails->commercial);
+        $this->assertNotNull($applePayDetails->consumer);
+        $this->assertNotNull($applePayDetails->corporate);
+        $this->assertNotNull($applePayDetails->debit);
+        $this->assertNotNull($applePayDetails->durbinRegulated);
+        $this->assertNotNull($applePayDetails->healthcare);
+        $this->assertFalse($applePayDetails->isDeviceToken);
+        $this->assertNotNull($applePayDetails->merchantTokenIdentifier);
+        $this->assertNotNull($applePayDetails->payroll);
+        $this->assertNotNull($applePayDetails->prepaid);
+        $this->assertNotNull($applePayDetails->prepaidReloadable);
+        $this->assertNotNull($applePayDetails->purchase);
+        $this->assertNotNull($applePayDetails->productId);
     }
 
     public function testCreateTransactionUsingRawApplePayParams()
@@ -2151,13 +2187,13 @@ class TransactionTest extends Setup
         $this->assertEquals('47.00', $transaction->amount);
         $googlePayCardDetails = $transaction->googlePayCardDetails;
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCardDetails->cardType);
-        $this->assertSame("4444", $googlePayCardDetails->last4);
+        $this->assertSame("0005", $googlePayCardDetails->last4);
         $this->assertNull($googlePayCardDetails->token);
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCardDetails->virtualCardType);
-        $this->assertSame("4444", $googlePayCardDetails->virtualCardLast4);
+        $this->assertSame("0005", $googlePayCardDetails->virtualCardLast4);
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCardDetails->sourceCardType);
-        $this->assertSame("4444", $googlePayCardDetails->sourceCardLast4);
-        $this->assertSame("MasterCard 4444", $googlePayCardDetails->sourceDescription);
+        $this->assertSame("0005", $googlePayCardDetails->sourceCardLast4);
+        $this->assertSame("MasterCard 0005", $googlePayCardDetails->sourceDescription);
         $this->assertStringContainsString('android_pay', $googlePayCardDetails->imageUrl);
         $this->assertTrue(intval($googlePayCardDetails->expirationMonth) > 0);
         $this->assertTrue(intval($googlePayCardDetails->expirationYear) > 0);
@@ -7313,5 +7349,45 @@ class TransactionTest extends Setup
 
         $this->assertNotNull($transaction->upcomingRetryDate);
         $this->assertStringContainsString($expectedDate, $transaction->upcomingRetryDate);
+    }
+
+    public function testTransactionwithRejectReason()
+    {
+        $transaction = Braintree\Transaction::find('ach_txn_ret3');
+
+        $this->assertEquals('RJCT', $transaction->achReturnCode);
+        $this->assertEquals('Bank accounts located outside of the U.S. are not supported.', $transaction->achRejectReason);
+    }
+
+    public function test_findTransactionWithPaymentAccountReference()
+    {
+        $transaction = Braintree\Transaction::find('aft_txn');
+
+        $this->assertNotNull($transaction->creditCardDetails);
+        $this->assertArrayHasKey('paymentAccountReference', $transaction->creditCardDetails->toArray());
+    }
+
+    public function test_findTransactionWithPaymentAccountReferenceInApplePayDetails()
+    {
+        $transaction = Braintree\Transaction::find('apple_pay_transaction');
+
+        $this->assertNotNull($transaction->applePayCardDetails);
+        $this->assertArrayHasKey('paymentAccountReference', $transaction->applePayCardDetails->toArray());
+    }
+
+    public function test_findTransactionWithPaymentAccountReferenceInGooglePayDetailsForAndroidPayCard()
+    {
+        $transaction = Braintree\Transaction::find('android_pay_card_transaction');
+
+        $this->assertNotNull($transaction->googlePayCardDetails);
+        $this->assertArrayHasKey('paymentAccountReference', $transaction->googlePayCardDetails->toArray());
+    }
+
+    public function test_findTransactionWithPaymentAccountReferenceInGooglePayDetailsForAndroidPayNetworkToken()
+    {
+        $transaction = Braintree\Transaction::find('android_pay_network_token_transaction');
+
+        $this->assertNotNull($transaction->googlePayCardDetails);
+        $this->assertArrayHasKey('paymentAccountReference', $transaction->googlePayCardDetails->toArray());
     }
 }

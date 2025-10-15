@@ -78,7 +78,7 @@ class Util
                 throw new Exception\TooManyRequests();
             break;
             case 500:
-                throw new Exception\ServerError($message);
+                throw new Exception\ServerError($message ?? "");
             break;
             case 504:
                 throw new Exception\GatewayTimeout();
@@ -244,6 +244,10 @@ class Util
      */
     public static function delimiterToCamelCase($string, $delimiter = '[\-\_]')
     {
+        if ($string === null) {
+            return null;
+        }
+
         static $callback = null;
         if ($callback === null) {
             $callback = function ($matches) {

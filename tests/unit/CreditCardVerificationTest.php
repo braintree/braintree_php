@@ -75,4 +75,15 @@ class CreditCardVerificationTest extends Setup
         $this->expectException('InvalidArgumentException', 'invalid keys: creditCard[venmoSdkPaymentMethodCode]');
         Braintree\CreditCardVerification::create(['options' => ['amount' => '123.45'], 'creditCard' => ['venmoSdkPaymentMethodCode' => 'foo']]);
     }
+
+    public function test_paymentAccountReference_returnsValueWhenPresent()
+    {
+        $verification = new Braintree\Result\CreditCardVerification([
+            'creditCard' => [
+                'paymentAccountReference' => 'V0010013019339005665779448477'
+            ]
+        ]);
+
+        $this->assertEquals('V0010013019339005665779448477', $verification->creditCard['paymentAccountReference']);
+    }
 }

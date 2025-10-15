@@ -1,0 +1,23 @@
+name: Security
+
+permissions:
+  contents: write         # Needed by both CodeQL and dependency review
+  pull-requests: write    # Needed by dependency review
+  statuses: write         # Needed by dependency review (to post checks)
+  security-events: write  # Needed by CodeQL to upload SARIF
+  packages: read          # Needed by CodeQL for private/internal packs
+  actions: read           # Needed by CodeQL to access internal actions
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  semgrep-php:
+    uses: PayPal-Braintree/security-workflows/.github/workflows/semgrep-php.yml@main
+
+  dependency-review:
+    uses: PayPal-Braintree/security-workflows/.github/workflows/dependency-review.yml@main
