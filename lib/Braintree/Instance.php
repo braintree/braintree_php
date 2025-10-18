@@ -2,12 +2,14 @@
 
 namespace Braintree;
 
+use JsonSerializable;
+
 /**
  * Braintree Class Instance template
  *
  * @abstract
  */
-abstract class Instance extends \stdClass
+abstract class Instance extends \stdClass implements JsonSerializable
 {
     protected $_attributes = [];
 
