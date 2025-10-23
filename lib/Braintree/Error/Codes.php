@@ -584,6 +584,7 @@ class Codes
     const TRANSACTION_PAYPAL_NOT_ENABLED                                              = '91576';
     const TRANSACTION_PAY_PAL_AUTH_EXPIRED                                            = '91579';
     const TRANSACTION_PAY_PAL_VAULT_RECORD_MISSING_DATA                               = '91583';
+    const TRANSACTION_PROCESSING_MERCHANT_CATEGORY_CODE_IS_INVALID                    = '915265';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_CANNOT_BE_SET                      = '91519';
     const TRANSACTION_PROCESSOR_AUTHORIZATION_CODE_IS_INVALID                         = '81520';
     const TRANSACTION_PROCESSOR_DOES_NOT_SUPPORT_AUTHS                                = '915104';
@@ -640,8 +641,19 @@ class Codes
     const TRANSACTION_TRANSACTION_SOURCE_IS_INVALID                                   = '915133';
 
 
-     const TRANSFER_DETAILS_NOT_APPLICABLE                                            = '97501';
-    const TRANSFER_DETAILS_NOT_AVAILABLE                                              = '97510';
+    const TRANSFER_DETAILS_NOT_APPLICABLE                                             = '97501'; //Deprecated
+    const TRANSFER_DETAILS_NOT_AVAILABLE                                              = '97510'; //Deprecated
+    const TRANSACTION_TRANSFER_DETAILS_NOT_APPLICABLE                                 = '97511';
+    const TRANSACTION_TRANSFER_DETAILS_NOT_AVAILABLE                                  = '97510';
+    const TRANSACTION_TRANSFER_RECEIVER_ACCOUNT_REFERENCE_NUMBER_IS_NOT_VALID         = '97509';
+    const TRANSACTION_TRANSFER_RECEIVER_FIRST_NAME_IS_NOT_VALID                       = '97507';
+    const TRANSACTION_TRANSFER_RECEIVER_LAST_NAME_IS_NOT_VALID                        = '97508';
+    const TRANSACTION_TRANSFER_RECEIVER_TAX_ID_IS_NOT_VALID                           = '97506';
+    const TRANSACTION_TRANSFER_SENDER_ACCOUNT_REFERENCE_NUMBER_IS_NOT_VALID           = '97505';
+    const TRANSACTION_TRANSFER_SENDER_FIRST_NAME_IS_NOT_VALID                         = '97503';
+    const TRANSACTION_TRANSFER_SENDER_LAST_NAME_IS_NOT_VALID                          = '97504';
+    const TRANSACTION_TRANSFER_SENDER_TAX_ID_IS_NOT_VALID                             = '97502';
+    const TRANSACTION_TRANSFER_TYPE_INVALID                                           = '97501';
 
     const US_BANK_ACCOUNT_VERIFICATION_NOT_CONFIRMABLE                      = '96101';
     const US_BANK_ACCOUNT_VERIFICATION_MUST_BE_MICRO_TRANSFERS_VERIFICATION = '96102';

@@ -7390,4 +7390,72 @@ class TransactionTest extends Setup
         $this->assertNotNull($transaction->googlePayCardDetails);
         $this->assertArrayHasKey('paymentAccountReference', $transaction->googlePayCardDetails->toArray());
     }
+
+    public function testSale_withValidProcessingMerchantCategoryCode()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2025',
+            ],
+            'processingMerchantCategoryCode' => '5411'
+        ]);
+
+        $this->assertTrue($result->success);
+    }
+
+    public function testSale_withInvalidProcessingMerchantCategoryCodeTooLong()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2025',
+            ],
+            'processingMerchantCategoryCode' => '54111'
+        ]);
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_PROCESSING_MERCHANT_CATEGORY_CODE_IS_INVALID,
+            $result->errors->forKey('transaction')->onAttribute('processingMerchantCategoryCode')[0]->code
+        );
+    }
+
+    public function testSale_withInvalidProcessingMerchantCategoryCodeNonNumeric()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2025',
+            ],
+            'processingMerchantCategoryCode' => 'abcd'
+        ]);
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_PROCESSING_MERCHANT_CATEGORY_CODE_IS_INVALID,
+            $result->errors->forKey('transaction')->onAttribute('processingMerchantCategoryCode')[0]->code
+        );
+    }
+
+    public function testSale_withInvalidProcessingMerchantCategoryCodeTooShort()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/2025',
+            ],
+            'processingMerchantCategoryCode' => '541'
+        ]);
+
+        $this->assertFalse($result->success);
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_PROCESSING_MERCHANT_CATEGORY_CODE_IS_INVALID,
+            $result->errors->forKey('transaction')->onAttribute('processingMerchantCategoryCode')[0]->code
+        );
+    }
 }

@@ -169,6 +169,25 @@ class TransactionTest extends Setup
         $transactionGateway->sale($transactionParams);
     }
 
+    public function testSaleWithProcessingMerchantCategoryCode()
+    {
+        $transactionGateway = $this->mockTransactionGatewayDoCreate();
+        $transactionGateway
+            ->expects($this->once())
+            ->method('_doCreate')
+            ->will($this->returnCallback(function ($path, $params) {
+                $this->assertEquals('5411', $params["transaction"]["processingMerchantCategoryCode"]);
+            }));
+        $transactionGateway->sale([
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/2009',
+            ],
+            'processingMerchantCategoryCode' => '5411'
+        ]);
+    }
+
     public function testTransactionWithMetaCheckoutCardAttributes()
     {
         $transaction = Braintree\Transaction::factory([

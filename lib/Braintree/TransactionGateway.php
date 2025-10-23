@@ -294,6 +294,7 @@ class TransactionGateway
             'paymentMethodNonce',
             'paymentMethodToken',
             ['paypalAccount' => ['payeeId', 'payeeEmail', 'payerId', 'paymentId']],
+            'processingMerchantCategoryCode',
             'productSku',
             'purchaseOrderNumber',
             'recurring',
