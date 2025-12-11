@@ -2187,10 +2187,10 @@ class TransactionTest extends Setup
         $this->assertEquals('47.00', $transaction->amount);
         $googlePayCardDetails = $transaction->googlePayCardDetails;
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCardDetails->cardType);
-        $this->assertSame("0005", $googlePayCardDetails->last4);
+        $this->assertSame("4444", $googlePayCardDetails->last4);
         $this->assertNull($googlePayCardDetails->token);
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCardDetails->virtualCardType);
-        $this->assertSame("0005", $googlePayCardDetails->virtualCardLast4);
+        $this->assertSame("4444", $googlePayCardDetails->virtualCardLast4);
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCardDetails->sourceCardType);
         $this->assertSame("0005", $googlePayCardDetails->sourceCardLast4);
         $this->assertSame("MasterCard 0005", $googlePayCardDetails->sourceDescription);
@@ -4469,25 +4469,33 @@ class TransactionTest extends Setup
             'clientSecret' => 'client_secret$development$integration_client_secret'
         ]);
 
-        $result = $gateway->merchant()->create([
-            'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'GBR',
-            'paymentMethods' => ['credit_card', 'paypal']
+        $code = \Test\Braintree\OAuthTestHelper::createGrant($gateway, [
+            'merchant_public_id' => 'partner_merchant_id',
+            'scope' => 'read_write'
         ]);
 
-        $gateway = new Braintree\Gateway([
-            'accessToken' => $result->credentials->accessToken,
+        $result = $gateway->oauth()->createTokenFromCode([
+            'code' => $code,
+            'scope' => 'read_write'
         ]);
 
-        $result = $gateway->transaction()->sale([
-            'amount' => '4000.00',
+        $merchantGateway = new Braintree\Gateway([
+            'accessToken' => $result->credentials->accessToken
+        ]);
+
+        $transactionResult = $merchantGateway->transaction()->sale([
+            'amount' => '5001.00',
+            'billing' => [
+                'streetAddress' => '200 Fake Street'
+            ],
             'creditCard' => [
                 'number' => '4111111111111111',
-                'expirationDate' => '05/20'
+                'expirationDate' => '05/2009'
             ]
         ]);
-        $this->assertFalse($result->success);
-        $transaction = $result->transaction;
+
+        $this->assertFalse($transactionResult->success);
+        $transaction = $transactionResult->transaction;
         $this->assertEquals(Braintree\Transaction::APPLICATION_INCOMPLETE, $transaction->gatewayRejectionReason);
     }
 
@@ -7201,8 +7209,8 @@ class TransactionTest extends Setup
         $this->assertFalse($adjust_authorize_result->success);
         $adjusted_transaction = $adjust_authorize_result->transaction;
         $this->assertEquals("75.50", $adjusted_transaction->amount);
-        $baseErrors = $adjust_authorize_result->errors->forKey('authorizationAdjustment')->onAttribute('amount');
-        $this->assertEquals(Braintree\Error\Codes::ADJUSTMENT_AMOUNT_MUST_BE_GREATER_THAN_ZERO, $baseErrors[0]->code);
+        $baseErrors = $adjust_authorize_result->errors->forKey('transaction')->onAttribute('amount');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_AMOUNT_MUST_BE_GREATER_THAN_ZERO, $baseErrors[0]->code);
     }
 
     public function testAdjustAuthorizationOnAmountSubmittedIsSameAsAuthorizedAmount()

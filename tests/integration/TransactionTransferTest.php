@@ -4,13 +4,13 @@ namespace Test\Integration;
 
 require_once dirname(__DIR__) . '/Setup.php';
 
+use DateTime;
 use Braintree;
 use Test\Setup;
 
 class TransactionTransferTest extends Setup
 {
     public const TRANSFER_TYPE = ["account_to_account", "person_to_person", "wallet_transfer", "boleto_ticket"];
-
 
     public function testSaleWithValidAftTransferType()
     {
@@ -25,6 +25,30 @@ class TransactionTransferTest extends Setup
             ],
             'transfer' => [
                 'type' => 'wallet_transfer',
+                'sender' => [
+                    'firstName' => 'Alice',
+                    'middleName' => 'A',
+                    'lastName' => 'Silva',
+                    'accountReferenceNumber' => '1000012345',
+                    'address' => [
+                        'streetAddress' => '1st Main Road',
+                        'locality' => 'Los Angeles',
+                        'region' => 'CA',
+                        'countryCodeAlpha2' => 'US',
+                    ],
+                    'dateOfBirth' => DateTime::createFromFormat('Y-m-d', '2012-04-10'),
+                ],
+                'receiver' => [
+                    'firstName' => 'Bob',
+                    'middleName' => 'A',
+                    'lastName' => 'Souza',
+                    'address' => [
+                        'streetAddress' => '2nd Main Road',
+                        'locality' => 'Los Angeles',
+                        'region' => 'CA',
+                        'countryCodeAlpha2' => 'US',
+                    ],
+                ],
             ],
         ];
 

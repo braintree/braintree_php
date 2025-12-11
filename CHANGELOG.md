@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.31.0
+* Filter CreditCardVerification::search() to only return credit card verifications
+* Add `middleName` to sender and receiver, and `dateOfBirth` to sender in transfer on `Transaction`
+* Remove unused error code `AdjustmentAmountMustBeGreaterThanZero`
+
 ## 6.30.0
 * Add `processingMerchantCategoryCode` to `TransactionGateway`
 * Add missing `transfer` validation error codes in `Transaction`
@@ -15,7 +20,6 @@
 * Add `INSTANT_VERIFICATION_ACCOUNT_VALIDATION` as a new US Bank Account verification method
 * Add `sender` and `receiver` to `transfer` in `Transaction`
 * Add `achRejectReason` field to `Transaction`
-* Add `sender` and `receiver` to `transfer` in `Transaction`
 * Add `isDeviceToken` and `merchantTokenIdentifier` to `ApplePayCard` and `ApplePayDetails`
 * Add `paymentAccountReference` to `ApplePayCardDetails`, `GooglePayCardDetails`, `CreditCardDetails` and `CreditCardVerification`
 

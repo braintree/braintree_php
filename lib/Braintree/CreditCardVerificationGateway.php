@@ -66,6 +66,7 @@ class CreditCardVerificationGateway
             $criteria[$term->name] = $term->toparam();
         }
         $criteria["ids"] = CreditCardVerificationSearch::ids()->in($ids)->toparam();
+        $criteria["verification_type"] = ["credit_card"];
         $path = $this->_config->merchantPath() . '/verifications/advanced_search';
         $response = $this->_http->post($path, ['search' => $criteria]);
 
@@ -88,6 +89,7 @@ class CreditCardVerificationGateway
         foreach ($query as $term) {
             $criteria[$term->name] = $term->toparam();
         }
+        $criteria["verification_type"] = ["credit_card"];
 
         $path = $this->_config->merchantPath() . '/verifications/advanced_search_ids';
         $response = $this->_http->post($path, ['search' => $criteria]);

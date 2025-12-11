@@ -29,10 +29,14 @@ class ApplePayTest extends Setup
             'clientSecret' => 'client_secret$development$integration_client_secret',
         ]);
 
-        $result = $gateway->merchant()->create([
-            'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'GBR',
-            'paymentMethods' => ['credit_card', 'paypal'],
+        $code = \Test\Braintree\OAuthTestHelper::createGrant($gateway, [
+            'merchant_public_id' => 'partner_merchant_id',
+            'scope' => 'read_write'
+        ]);
+
+        $result = $gateway->oauth()->createTokenFromCode([
+            'code' => $code,
+            'scope' => 'read_write'
         ]);
 
         return new Braintree\Gateway([

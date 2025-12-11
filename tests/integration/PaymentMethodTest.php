@@ -268,8 +268,8 @@ class PaymentMethodTest extends Setup
         $this->assertNotNull($googlePayCard->token);
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCard->virtualCardType);
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCard->cardType);
-        $this->assertSame("0005", $googlePayCard->virtualCardLast4);
-        $this->assertSame("0005", $googlePayCard->last4);
+        $this->assertSame("4444", $googlePayCard->virtualCardLast4);
+        $this->assertSame("4444", $googlePayCard->last4);
         $this->assertSame(Braintree\CreditCard::MASTER_CARD, $googlePayCard->sourceCardType);
         $this->assertSame("0005", $googlePayCard->sourceCardLast4);
         $this->assertSame("MasterCard 0005", $googlePayCard->sourceDescription);

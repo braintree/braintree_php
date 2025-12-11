@@ -33,4 +33,45 @@ class OAuthTestHelper
 
         return $credentials;
     }
+
+    public static function getMerchant($params = [])
+    {
+        $environment = 'development';
+
+        $gateway = new Braintree\Gateway([
+            'clientId' => "client_id\${$environment}\$integration_client_id",
+            'clientSecret' => "client_secret\${$environment}\$integration_client_secret"
+        ]);
+
+        $code = self::createGrant($gateway, [
+            'merchant_public_id' => 'partner_merchant_id',
+            'scope' => 'read_write'
+        ]);
+
+        $result = $gateway->oauth()->createTokenFromCode([
+            'code' => $code,
+            'scope' => 'read_write'
+        ]);
+
+        $merchantGateway = new Braintree\Gateway([
+            'accessToken' => $result->credentials->accessToken
+        ]);
+
+        $maResult = $merchantGateway->merchantAccount()->all();
+
+        $merchantAccounts = [];
+        foreach ($maResult as $ma) {
+            array_push($merchantAccounts, $ma);
+        }
+
+        $merchantObj = Braintree\Merchant::factory([
+            'id' => 'partner_merchant_id',
+            'merchantAccounts' => $merchantAccounts
+        ]);
+
+        return new Braintree\Result\Successful([
+            'credentials' => $result->credentials,
+            'merchant' => $merchantObj
+        ]);
+    }
 }

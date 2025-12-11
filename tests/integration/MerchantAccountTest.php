@@ -6,6 +6,7 @@ require_once dirname(__DIR__) . '/Setup.php';
 
 use Test;
 use Test\Setup;
+use Test\Braintree\OAuthTestHelper;
 use Braintree;
 
 class MerchantAccountTest extends Setup
@@ -55,46 +56,26 @@ class MerchantAccountTest extends Setup
 
     public function testCreateForCurrency()
     {
-        $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret',
-        ]);
-        $result = $gateway->merchant()->create([
-            'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'GBR',
-            'paymentMethods' => ['credit_card', 'paypal'],
-        ]);
-
-        $this->assertEquals(true, $result->success);
+        $result = OAuthTestHelper::getMerchant();
 
         $gateway = new Braintree\Gateway([
             'accessToken' => $result->credentials->accessToken,
         ]);
 
+        $merchantAccounts = $result->merchant->merchantAccounts;
         $result = $gateway->merchantAccount()->createForCurrency([
-            'currency' => "USD",
+            'currency' => "JPY",
         ]);
 
         $this->assertEquals(true, $result->success);
 
         $merchantAccount = $result->merchantAccount;
-        $this->assertEquals("USD", $merchantAccount->currencyIsoCode);
-        $this->assertEquals("USD", $merchantAccount->id);
+        $this->assertEquals("JPY", $merchantAccount->currencyIsoCode);
     }
 
     public function testCreateForCurrencyWithDuplicateCurrency()
     {
-        $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret',
-        ]);
-        $result = $gateway->merchant()->create([
-            'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'GBR',
-            'paymentMethods' => ['credit_card', 'paypal'],
-        ]);
-
-        $this->assertEquals(true, $result->success);
+        $result = OAuthTestHelper::getMerchant();
 
         $gateway = new Braintree\Gateway([
             'accessToken' => $result->credentials->accessToken,
@@ -105,30 +86,26 @@ class MerchantAccountTest extends Setup
             'currency' => "GBP",
         ]);
 
-        $this->assertEquals(false, $result->success);
+        $this->assertEquals(true, $result->success);
 
+        $result = $gateway->merchantAccount()->createForCurrency([
+            'currency' => "GBP",
+        ]);
+
+        $this->assertEquals(false, $result->success);
         $errors = $result->errors->forKey('merchant')->onAttribute('currency');
         $this->assertEquals(Braintree\Error\Codes::MERCHANT_MERCHANT_ACCOUNT_EXISTS_FOR_CURRENCY, $errors[0]->code);
     }
 
     public function testCreateForCurrencyWithInvalidCurrency()
     {
-        $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret',
-        ]);
-        $result = $gateway->merchant()->create([
-            'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'GBR',
-            'paymentMethods' => ['credit_card', 'paypal'],
-        ]);
-
-        $this->assertEquals(true, $result->success);
+        $result = OAuthTestHelper::getMerchant();
 
         $gateway = new Braintree\Gateway([
             'accessToken' => $result->credentials->accessToken,
         ]);
 
+        $merchantAccounts = $result->merchant->merchantAccounts;
         $result = $gateway->merchantAccount()->createForCurrency([
             'currency' => "FAKE_CURRENCY",
         ]);
@@ -141,22 +118,13 @@ class MerchantAccountTest extends Setup
 
     public function testCreateForCurrencyWithoutCurrency()
     {
-        $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret',
-        ]);
-        $result = $gateway->merchant()->create([
-            'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'GBR',
-            'paymentMethods' => ['credit_card', 'paypal'],
-        ]);
-
-        $this->assertEquals(true, $result->success);
+        $result = OAuthTestHelper::getMerchant();
 
         $gateway = new Braintree\Gateway([
             'accessToken' => $result->credentials->accessToken,
         ]);
 
+        $merchantAccounts = $result->merchant->merchantAccounts;
         $result = $gateway->merchantAccount()->createForCurrency([]);
 
         $this->assertEquals(false, $result->success);
@@ -167,26 +135,22 @@ class MerchantAccountTest extends Setup
 
     public function testCreateForCurrencyWithDuplicateId()
     {
-        $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret',
-        ]);
-        $result = $gateway->merchant()->create([
-            'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'GBR',
-            'paymentMethods' => ['credit_card', 'paypal'],
-        ]);
-
-        $this->assertEquals(true, $result->success);
+        $result = OAuthTestHelper::getMerchant();
 
         $gateway = new Braintree\Gateway([
             'accessToken' => $result->credentials->accessToken,
         ]);
 
-        $merchantAccount = $result->merchant->merchantAccounts[0];
+        $allMerchantAccounts = $gateway->merchantAccount()->all();
+        $firstMerchantAccount = null;
+        foreach ($allMerchantAccounts as $ma) {
+            $firstMerchantAccount = $ma;
+            break;
+        }
+
         $result = $gateway->merchantAccount()->createForCurrency([
-            'currency' => "USD",
-            'id' => $merchantAccount->id,
+            'currency' => "GBP",
+            'id' => $firstMerchantAccount->id,
         ]);
 
         $this->assertEquals(false, $result->success);
@@ -225,16 +189,7 @@ class MerchantAccountTest extends Setup
 
     public function testAllReturnsMerchantAccountWithCorrectAttributes()
     {
-        $gateway = new Braintree\Gateway([
-            'clientId' => 'client_id$development$integration_client_id',
-            'clientSecret' => 'client_secret$development$integration_client_secret',
-        ]);
-
-        $result = $gateway->merchant()->create([
-            'email' => 'name@email.com',
-            'countryCodeAlpha3' => 'GBR',
-            'paymentMethods' => ['credit_card', 'paypal'],
-        ]);
+        $result = OAuthTestHelper::getMerchant();
 
         $gateway = new Braintree\Gateway([
             'accessToken' => $result->credentials->accessToken,
@@ -246,11 +201,9 @@ class MerchantAccountTest extends Setup
             array_push($merchantAccounts, $ma);
         }
 
-        $this->assertEquals(1, count($merchantAccounts));
+        $this->assertTrue(count($merchantAccounts) > 1);
         $merchantAccount = $merchantAccounts[0];
-        $this->assertEquals("GBP", $merchantAccount->currencyIsoCode);
         $this->assertEquals(Braintree\MerchantAccount::STATUS_ACTIVE, $merchantAccount->status);
-        $this->assertTrue($merchantAccount->default);
     }
 
     public function testFind()

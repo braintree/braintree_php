@@ -337,10 +337,6 @@ class TransactionGateway
             'threeDSecureToken', //Deprecated
             'threeDSecureAuthenticationId',
             'transactionSource',
-            [   'transfer' => [
-                    'type',
-                ],
-            ],
             'type',
             ['usBankAccount' =>
                 [
@@ -382,9 +378,11 @@ class TransactionGateway
                     'type',
                     [
                         'sender' => [
+                            'accountReferenceNumber',
+                            'dateOfBirth',
                             'firstName',
                             'lastName',
-                            'accountReferenceNumber',
+                            'middleName',
                             'taxId',
                             [
                                 'address' => [
@@ -406,9 +404,10 @@ class TransactionGateway
                     ],
                     [
                         'receiver' => [
+                            'accountReferenceNumber',
                             'firstName',
                             'lastName',
-                            'accountReferenceNumber',
+                            'middleName',
                             'taxId',
                             [
                                 'address' => [

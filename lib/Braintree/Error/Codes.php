@@ -43,8 +43,6 @@ class Codes
     const ADDRESS_STREET_ADDRESS_IS_TOO_LONG                           = '81812';
     const ADDRESS_TOO_MANY_ADDRESSES_PER_CUSTOMER                      = '91818';
 
-    const ADJUSTMENT_AMOUNT_MUST_BE_GREATER_THAN_ZERO                   = '95605';
-
     const ANDROID_PAY_CARDS_ARE_NOT_ACCEPTED                                = '83708';
 
     const APPLE_PAY_CARDS_ARE_NOT_ACCEPTED                                  = '83501';

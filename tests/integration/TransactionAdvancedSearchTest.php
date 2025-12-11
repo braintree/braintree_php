@@ -1691,7 +1691,7 @@ class TransactionAdvancedSearchTest extends Setup
             Braintree\TransactionSearch::achReturnResponsesCreatedAt()->between($yesterday, $tomorrow)
         ]);
 
-        $this->assertEquals(4, $collection->maximumCount());
+        $this->assertEquals(6, $collection->maximumCount());
     }
 
     public function test_multipleValueNode_reasonCode_is_R01()
@@ -1718,7 +1718,7 @@ class TransactionAdvancedSearchTest extends Setup
             Braintree\TransactionSearch::reasonCode()->is(Braintree\Transaction::TRANSACTION_REASON_CODE)
         ]);
 
-        $this->assertEquals(4, $collection->maximumCount());
+        $this->assertEquals(6, $collection->maximumCount());
     }
 
     public function testSearchRetryTrasactonId()

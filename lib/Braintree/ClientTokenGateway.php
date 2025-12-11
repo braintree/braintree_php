@@ -104,6 +104,7 @@ class ClientTokenGateway
     {
         return [
             "version", "customerId", "proxyMerchantId",
+            ["domains" => ['_anyKey_']],
             ["options" => ["makeDefault", "verifyCard", "failOnDuplicatePaymentMethod", "failOnDuplicatePaymentMethodForCustomer"]],
             "merchantAccountId"];
     }
@@ -119,7 +120,7 @@ class ClientTokenGateway
      */
     public function generateWithoutCustomerIdSignature()
     {
-        return ["version", "proxyMerchantId", "merchantAccountId"];
+        return ["version", "proxyMerchantId", ["domains" => ['_anyKey_']], "merchantAccountId"];
     }
 
     /**

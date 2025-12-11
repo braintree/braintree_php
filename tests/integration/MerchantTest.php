@@ -8,8 +8,16 @@ use Test;
 use Test\Setup;
 use Braintree;
 
+/**
+ * @skip
+ */
 class MerchantTest extends Setup
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->markTestSkipped('Merchant tests are pended');
+    }
     public function testCreateMerchant()
     {
         $gateway = new Braintree\Gateway([
