@@ -46,6 +46,8 @@ class CurlRequest implements HttpRequest
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function close()
     {
-        curl_close($this->_handle);
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($this->_handle);
+        }
     }
 }
