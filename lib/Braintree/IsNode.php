@@ -20,24 +20,18 @@ class IsNode
 
     /**
      * Sets the value of the object's "is" key to a string of $value
-     *
-     * @param object $value to have its string value set in $this
-     *
-     * @return object
      */
-    public function is($value)
+    public function is(string $value): self
     {
-        $this->searchTerms['is'] = strval($value);
+        $this->searchTerms['is'] = $value;
 
         return $this;
     }
 
     /**
      * The searchTerms
-     *
-     * @return array
      */
-    public function toParam()
+    public function toParam(): array
     {
         return $this->searchTerms;
     }
