@@ -251,4 +251,72 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertEquals($sale->transaction->amount, '100.00');
         self::integrationMerchantConfig();
     }
+
+    public function testSaleWithUsBankAccountAchTypeStandard()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => Test\Helper::usBankMerchantAccount(),
+            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
+            'options' => [
+                'submitForSettlement' => true,
+                'usBankAccount' => [
+                    'achType' => 'standard'
+                ]
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+
+        $this->assertEquals('standard', $transaction->achType);
+        $this->assertEquals('standard', $transaction->requestedAchType);
+    }
+
+    public function testFindTransactionReturnsAchType()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'merchantAccountId' => Test\Helper::usBankMerchantAccount(),
+            'paymentMethodNonce' => Test\Helper::generateValidUsBankAccountNonce(),
+            'options' => [
+                'submitForSettlement' => true,
+                'usBankAccount' => [
+                    'achType' => 'standard'
+                ]
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+        $createdTransaction = $result->transaction;
+
+        $foundTransaction = Braintree\Transaction::find($createdTransaction->id);
+
+        $this->assertEquals('standard', $foundTransaction->achType);
+        $this->assertEquals('standard', $foundTransaction->requestedAchType);
+    }
+
+    public function testFindReturnsTransactionWithSamedayAchSamedayRequested()
+    {
+        $transaction = Braintree\Transaction::find("sameday_ach_sameday_requested");
+
+        $this->assertEquals('same_day', $transaction->achType);
+        $this->assertEquals('same_day', $transaction->requestedAchType);
+    }
+
+    public function testFindReturnsTransactionWithStandardAchSamedayRequested()
+    {
+        $transaction = Braintree\Transaction::find("standard_ach_sameday_requested");
+
+        $this->assertEquals('standard', $transaction->achType);
+        $this->assertEquals('same_day', $transaction->requestedAchType);
+    }
+
+    public function testFindReturnsTransactionWithStandardAchStandardRequested()
+    {
+        $transaction = Braintree\Transaction::find("standard_ach_standard_requested");
+
+        $this->assertEquals('standard', $transaction->achType);
+        $this->assertEquals('standard', $transaction->requestedAchType);
+    }
 }

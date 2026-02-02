@@ -46,6 +46,9 @@ class CurlRequest implements HttpRequest
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function close()
     {
-        curl_close($this->_handle);
+        // curl_close() deprecated in PHP 8.5, no-op since PHP 8.0
+        if (PHP_VERSION_ID < 80000 && is_resource($this->_handle)) {
+            curl_close($this->_handle);
+        }
     }
 }

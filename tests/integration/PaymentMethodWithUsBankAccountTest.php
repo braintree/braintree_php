@@ -53,7 +53,7 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         $this->assertEquals('123456789', $usBankAccount->routingNumber);
         $this->assertEquals('0000', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
-        $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
+        $this->assertEquals('Marty McFly', $usBankAccount->accountHolderName);
         $this->assertEquals('Wells Fargo', $usBankAccount->bankName);
         $this->assertEquals(true, $usBankAccount->verified);
 
@@ -82,7 +82,7 @@ class PaymentMethodWithUsBankAccountTest extends Setup
         $this->assertEquals('123456789', $usBankAccount->routingNumber);
         $this->assertEquals('0000', $usBankAccount->last4);
         $this->assertEquals('checking', $usBankAccount->accountType);
-        $this->assertEquals('Dan Schulman', $usBankAccount->accountHolderName);
+        $this->assertEquals('Marty McFly', $usBankAccount->accountHolderName);
         $this->assertEquals('Wells Fargo', $usBankAccount->bankName);
         $this->assertEquals(true, $usBankAccount->verified);
 

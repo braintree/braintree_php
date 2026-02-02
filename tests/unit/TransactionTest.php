@@ -321,11 +321,38 @@ class TransactionTest extends Setup
         $this->assertEquals('V0010013019339005665779448477', $transaction->googlePayCardDetails->paymentAccountReference);
     }
 
+    public function testTransactionWithAchTypeAttribute()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'id' => '123',
+            'type' => 'sale',
+            'amount' => '12.34',
+            'status' => 'settlement_pending',
+            'achType' => 'standard',
+            'requestedAchType' => 'standard',
+        ]);
+
+        $this->assertEquals('standard', $transaction->achType);
+        $this->assertEquals('standard', $transaction->requestedAchType);
+    }
+
     private function mockTransactionGatewayDoCreate()
     {
         return $this->getMockBuilder('Braintree\TransactionGateway')
             ->setConstructorArgs(array(Braintree\Configuration::gateway()))
             ->setMethods(array('_doCreate'))
             ->getMock();
+    }
+
+    public function testTransactionWithPartiallyAuthorized()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'acceptPartialAuthorization' => true,
+            'processorResponseCode' => '1004'
+        ]);
+
+        $this->assertEquals(true, $transaction->acceptPartialAuthorization);
+        $this->assertEquals(1004, $transaction->processorResponseCode);
+        $this->assertEquals(true, $transaction->partiallyAuthorized);
     }
 }

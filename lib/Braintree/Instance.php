@@ -7,7 +7,7 @@ namespace Braintree;
  *
  * @abstract
  */
-abstract class Instance extends \stdClass
+abstract class Instance extends \stdClass implements \JsonSerializable
 {
     protected $_attributes = [];
 
@@ -77,6 +77,7 @@ abstract class Instance extends \stdClass
      *
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->_attributes;

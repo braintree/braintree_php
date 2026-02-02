@@ -29,7 +29,8 @@ class PaymentMethodParser
         } elseif (isset($response['venmoAccount'])) {
             return VenmoAccount::factory($response['venmoAccount']);
         } elseif (isset($response['visaCheckoutCard'])) {
-            return VisaCheckoutCard::factory($response['visaCheckoutCard']);
+          // NEXT_MAJOR_VERSION remove VisaCheckoutCard
+          return VisaCheckoutCard::factory($response['visaCheckoutCard']);
         } elseif (isset($response['samsungPayCard'])) {
             // NEXT_MAJOR_VERSION remove samsungPayCard
             return SamsungPayCard::factory($response['samsungPayCard']); // Deprecated

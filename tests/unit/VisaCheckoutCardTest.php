@@ -7,6 +7,8 @@ require_once dirname(__DIR__) . '/Setup.php';
 use Test\Setup;
 use Braintree;
 
+# DEPRECATED: Visa Checkout is no longer supprted for creating new transactions
+
 class VisaCheckoutCardTest extends Setup
 {
     public function testBinData()

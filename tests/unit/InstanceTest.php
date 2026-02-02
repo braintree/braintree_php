@@ -95,4 +95,29 @@ class InstanceTest extends Setup
         $serialized = $transaction->creditCardDetails->jsonSerialize();
         $this->assertEquals('MasterCard', $serialized["cardType"]);
     }
+
+    public function testStatusHistoryJsonEncode()
+    {
+        $transaction = Braintree\Transaction::factory([
+          'statusHistory' => [
+            [
+              'timestamp' => new \DateTime('2025-10-23 18:21:37'),
+              'status' => 'authorized',
+              'amount' => '15.00',
+              'user' => 'username_here',
+              'transactionSource' => 'api'
+            ]
+          ]
+        ]);
+        $json = json_encode($transaction);
+        $decoded = json_decode($json, true);
+
+        $this->assertArrayHasKey('timestamp', $decoded['statusHistory'][0]);
+        $this->assertIsArray($decoded['statusHistory'][0]['timestamp']);
+        $this->assertEquals('2025-10-23 18:21:37.000000', $decoded['statusHistory'][0]['timestamp']['date']);
+        $this->assertEquals('authorized', $decoded['statusHistory'][0]['status']);
+        $this->assertEquals('15.00', $decoded['statusHistory'][0]['amount']);
+        $this->assertEquals('username_here', $decoded['statusHistory'][0]['user']);
+        $this->assertEquals('api', $decoded['statusHistory'][0]['transactionSource']);
+    }
 }

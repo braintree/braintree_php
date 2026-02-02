@@ -6,6 +6,9 @@ namespace Braintree;
  * Braintree VisaCheckoutCard module
  * Creates and manages Braintree VisaCheckoutCards
  *
+ * DEPRECATED: Visa Checkout is no longer supported for creating new transactions.
+ * This class is retained for search functionality and historical transaction data only.
+ *
  * See our {@link https://developer.paypal.com/braintree/docs/reference/response/visa-checkout-card developer docs} for information on attributes
  */
 class VisaCheckoutCard extends Base

@@ -83,6 +83,7 @@ class TransactionGateway
     public static function createSignature()
     {
         return [
+            'acceptPartialAuthorization',
             'accountFundingTransaction',
             'amount',
             ['applePayCard' =>
@@ -278,6 +279,11 @@ class TransactionGateway
                     ['venmo' =>
                         [
                             'profileId'
+                        ]
+                    ],
+                    ['usBankAccount' =>
+                        [
+                            'achType'
                         ]
                     ],
                     ['processingOverrides' =>

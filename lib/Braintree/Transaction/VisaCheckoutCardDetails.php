@@ -8,6 +8,9 @@ use Braintree\Instance;
  * VisaCheckoutCard details from a transaction
  * creates an instance of VisaCheckoutCardDetails
  *
+ * DEPRECATED: Visa Checkout is no longer supported for creating new transactions.
+ * This class is retained for search functionality and historical transaction data only.
+ *
  * See our {@link https://developer.paypal.com/braintree/docs/reference/response/transaction#visa_checkout_card_details developer docs} for information on attributes
  */
 class VisaCheckoutCardDetails extends Instance

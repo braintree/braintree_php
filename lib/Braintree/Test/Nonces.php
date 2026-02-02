@@ -91,6 +91,7 @@ class Nonces
     public static $transactableVisa = "fake-valid-visa-nonce";
     public static $transactablePinlessDebitVisa = "fake-pinless-debit-visa-nonce";
     public static $usBankAccount = "fake-us-bank-account-nonce";
+    // NEXT_MAJOR_VERSION visaCheckoutCard is deprecated, remove all associated values
     public static $venmoAccount = "fake-venmo-account-nonce";
     public static $visaCheckoutAmEx = "fake-visa-checkout-amex-nonce";
     public static $visaCheckoutDiscover = "fake-visa-checkout-discover-nonce";

@@ -268,6 +268,7 @@ class Customer extends Base
         }
         $this->_set('venmoAccounts', $venmoAccountArray);
 
+        // NEXT_MAJOR_VERSION remove Visa_Checkout_Card
         $visaCheckoutCardArray = [];
         if (isset($customerAttribs['visaCheckoutCards'])) {
             foreach ($customerAttribs['visaCheckoutCards'] as $visaCheckoutCard) {

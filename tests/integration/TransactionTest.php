@@ -2435,6 +2435,23 @@ class TransactionTest extends Setup
         $this->assertEquals(true, $transaction->recurring);
     }
 
+    public function testPartiallyAuthorizedInTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => Braintree\Test\TransactionAmounts::$partiallyAuthorized,
+            'acceptPartialAuthorization' => true,
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(1004, $result->transaction->processorResponseCode);
+        $this->assertEquals(true, $result->transaction->partiallyAuthorized);
+    }
+
     public function testTransactionSourceWithMerchant()
     {
         $result = Braintree\Transaction::sale([
@@ -5647,7 +5664,7 @@ class TransactionTest extends Setup
     public function testIncludeProcessorSettlementResponseForSettlementDeclinedTransaction()
     {
         $result = Braintree\Transaction::sale([
-            "paymentMethodNonce" => Braintree\Test\Nonces::$visaCheckoutVisa,
+            "paymentMethodNonce" => Braintree\Test\Nonces::$applePayVisa,
             "amount" => "100",
             "options" => [
                 "submitForSettlement" => true
@@ -5668,7 +5685,7 @@ class TransactionTest extends Setup
     public function testIncludeProcessorSettlementResponseForSettlementPendingTransaction()
     {
         $result = Braintree\Transaction::sale([
-            "paymentMethodNonce" => Braintree\Test\Nonces::$visaCheckoutVisa,
+            "paymentMethodNonce" => Braintree\Test\Nonces::$applePayVisa,
             "amount" => "100",
             "options" => [
                 "submitForSettlement" => true

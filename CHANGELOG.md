@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.32.0
+* Add JsonSerializable interface to Instance class for proper JSON encoding support
+* Fix PHP 8.5 curl_close() deprecation warning by using version-conditional cleanup
+* Add `acceptPartialAuthorization` to `TransactionGateway` and `partiallyAuthorized` to `Transaction`
+* Deprecate transactions for `visa_checkout_card` and maintain search functionality
+* Add `achType` to `options` -> `usBankAccount` in `Transaction::sale()`
+* Add `achType` and `requestedAchType` to `Transaction`
+
 ## 6.31.0
 * Filter CreditCardVerification::search() to only return credit card verifications
 * Add `middleName` to sender and receiver, and `dateOfBirth` to sender in transfer on `Transaction`

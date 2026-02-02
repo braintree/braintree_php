@@ -249,7 +249,10 @@ class Helper
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $error_code = curl_errno($curl);
-        curl_close($curl);
+        // curl_close() deprecated in PHP 8.5, no-op since PHP 8.0
+        if (PHP_VERSION_ID < 80000 && is_resource($curl)) {
+            curl_close($curl);
+        }
         $jsonResponse = json_decode($response, true);
         return $jsonResponse['data']['tokenizeUsBankAccount']['paymentMethod']['id'];
     }
@@ -310,7 +313,10 @@ class Helper
         $response = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $error_code = curl_errno($curl);
-        curl_close($curl);
+        // curl_close() deprecated in PHP 8.5, no-op since PHP 8.0
+        if (PHP_VERSION_ID < 80000 && is_resource($curl)) {
+            curl_close($curl);
+        }
         $jsonResponse = json_decode($response, true);
         return $jsonResponse['data']['tokenizeUsBankLogin']['paymentMethod']['id'];
     }

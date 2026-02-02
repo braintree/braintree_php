@@ -17,6 +17,31 @@ pipeline {
   }
 
   stages {
+    stage("Lint") {
+      when {
+        branch 'master'
+      }
+
+      agent {
+        node {
+          label ""
+          customWorkspace "workspace/${REPO_NAME}"
+        }
+      }
+
+      steps {
+        build job: 'php_sdk_master_lint', wait: true
+      }
+
+      post {
+        failure {
+          script {
+            FAILED_STAGE = env.STAGE_NAME
+          }
+        }
+      }
+    }
+
     stage("SDK Tests") {
       when {
         branch 'master'

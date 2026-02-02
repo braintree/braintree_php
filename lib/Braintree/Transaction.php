@@ -220,6 +220,10 @@ class Transaction extends Base
     {
         $this->_attributes = $transactionAttribs;
 
+        if (isset($transactionAttribs['processorResponseCode'])) {
+            $this->partiallyAuthorized = ($transactionAttribs['processorResponseCode'] === '1004');
+        }
+
         if (isset($transactionAttribs['applePay'])) {
             $this->_set(
                 'applePayCardDetails',
