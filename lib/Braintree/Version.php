@@ -10,7 +10,7 @@ class Version
 {
     const MAJOR = 6;
     const MINOR = 33;
-    :const TINY = 0;
+    const TINY = 0;
 
     protected function __construct()
     {
