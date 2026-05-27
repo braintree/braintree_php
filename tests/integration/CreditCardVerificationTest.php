@@ -48,6 +48,42 @@ class CreditCardVerificationTest extends Setup
         $this->assertNotNull($verification->graphQLId);
     }
 
+    public function test_createWithSuccessfulResponseWithMastercardTransactionLinkId()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => '5555555555554444',
+                'expirationDate' => '05/2031',
+            ],
+        ]);
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->processorResponseCode, '1000');
+        $this->assertEquals($verification->processorResponseText, 'Approved');
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
+        $this->assertMatchesRegularExpression('/^[a-zA-Z0-9]{22}$/', $verification->mastercardTransactionLinkId);
+    }
+
+    public function test_createWithSuccessfulResponseWithOutMastercardTransactionLinkIdForNonMasterCard()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '05/2031',
+            ],
+        ]);
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertEquals($verification->processorResponseCode, '1000');
+        $this->assertEquals($verification->processorResponseText, 'Approved');
+        $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
+        $this->assertNull($verification->mastercardTransactionLinkId);
+    }
+
     public function test_createWithSuccessfulResponseForVisaAniWhenAccountInformationInquiryIsSentInOptions()
     {
         $result = Braintree\CreditCardVerification::create([

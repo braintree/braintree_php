@@ -368,6 +368,23 @@ class Configuration
     }
 
     /*
+     * Check if configuration has API key credentials (publicKey and privateKey).
+     * Required for operations that perform HMAC signature verification, such as
+     * webhook parsing. OAuth access tokens do not provide signing material.
+     *
+     * @throws Exception\Configuration
+     *
+     * @return void
+     */
+    public function assertHasKeys()
+    {
+        if (empty($this->_publicKey) || empty($this->_privateKey)) {
+            // phpcs:ignore Generic.Files.LineLength
+            throw new Exception\Configuration('Webhook signature verification requires API key credentials (publicKey and privateKey).');
+        }
+    }
+
+    /*
      * Getter function
      *
      * @return string environment

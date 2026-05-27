@@ -86,4 +86,13 @@ class CreditCardVerificationTest extends Setup
 
         $this->assertEquals('V0010013019339005665779448477', $verification->creditCard['paymentAccountReference']);
     }
+
+    public function test_mastercardTransactionLinkId_returnsValueWhenPresent()
+    {
+        $verification = new Braintree\Result\CreditCardVerification([
+                'mastercardTransactionLinkId' => 'ZairABg6CIFekPMsnK0cJ2'
+        ]);
+
+        $this->assertEquals('ZairABg6CIFekPMsnK0cJ2', $verification->mastercardTransactionLinkId);
+    }
 }

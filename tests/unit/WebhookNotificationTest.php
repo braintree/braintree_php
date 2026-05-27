@@ -29,11 +29,12 @@ class WebhookNotificationTest extends Setup
         Braintree\WebhookNotification::verify('bad challenge');
     }
 
-    public function testVerifyRaisesErrorWhenEnvironmentNotSet()
+    public function testVerifyRaisesErrorWhenKeysNotSet()
     {
         Braintree\Configuration::reset();
 
-        $this->expectException('Braintree\Exception\Configuration', 'Braintree\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\Gateway)');
+        $this->expectException('Braintree\Exception\Configuration');
+        $this->expectExceptionMessage('Webhook signature verification requires API key credentials (publicKey and privateKey).');
 
         Braintree\WebhookNotification::verify('20f9f8ed05f77439fe955c977e4c8a53');
     }
@@ -89,19 +90,36 @@ class WebhookNotificationTest extends Setup
 
     public function testParsingWithNoKeysRaisesError()
     {
-        Braintree\Configuration::reset();
-
-        $this->expectException('Braintree\Exception\Configuration', 'Braintree\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\Gateway)');
-
         $sampleNotification = Braintree\WebhookTesting::sampleNotification(
             Braintree\WebhookNotification::SUBSCRIPTION_WENT_PAST_DUE,
             'my_id'
         );
 
+        Braintree\Configuration::reset();
+
+        $this->expectException('Braintree\Exception\Configuration');
+        $this->expectExceptionMessage('Webhook signature verification requires API key credentials (publicKey and privateKey).');
+
         $webhookNotification = Braintree\WebhookNotification::parse(
             $sampleNotification['bt_signature'],
             $sampleNotification['bt_payload']
         );
+    }
+
+    public function testParsingWithOAuthAccessTokenOnlyRaisesError()
+    {
+        $gateway = new Braintree\Gateway([
+            'accessToken' => 'access_token$development$integration_merchant_id$0123456789abcdef',
+        ]);
+
+        $this->expectException('Braintree\Exception\Configuration');
+        $this->expectExceptionMessage('Webhook signature verification requires API key credentials (publicKey and privateKey).');
+
+        $payload = base64_encode('<notification><kind>check</kind><subject></subject></notification>') . "\n";
+        $forgedHmac = hash_hmac('sha1', $payload, sha1('', true));
+        $forgedSignature = "|{$forgedHmac}";
+
+        $gateway->webhookNotification()->parse($forgedSignature, $payload);
     }
 
     public function testParsingWebhookWithWrongKeysRaisesError()

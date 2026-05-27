@@ -14,7 +14,7 @@ class WebhookNotificationGateway
     public function __construct($gateway)
     {
         $this->config = $gateway->config;
-        $this->config->assertHasAccessTokenOrKeys();
+        $this->config->assertHasKeys();
     }
 
     /**
@@ -90,7 +90,7 @@ class WebhookNotificationGateway
     {
         foreach ($signaturePairs as $pair) {
             $components = preg_split("/\|/", $pair);
-            if ($components[0] == $this->config->getPublicKey()) {
+            if (count($components) >= 2 && $components[0] === $this->config->getPublicKey()) {
                 return $components[1];
             }
         }

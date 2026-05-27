@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.35.0
+* Add `mastercardTransactionLinkId` to `Transaction` and `Verification`
+* Fix webhook signature verification vulnerability when using OAuth Connect
+
 ## 6.34.0
 * Add support for apple pay card verifications
 

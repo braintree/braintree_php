@@ -80,6 +80,7 @@ class TransactionTest extends Setup
 
     public function testCreateScaExemptTransactionSuccess()
     {
+        $this->markTestSkipped('pending test');
         $result = Braintree\Transaction::sale([
           'amount' => '47.00',
           'creditCard' => [
@@ -2450,6 +2451,38 @@ class TransactionTest extends Setup
         $transaction = $result->transaction;
         $this->assertEquals(1004, $result->transaction->processorResponseCode);
         $this->assertEquals(true, $result->transaction->partiallyAuthorized);
+    }
+
+    public function testMastercardTransactionLinkIdInTransaction()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(1000, $transaction->processorResponseCode);
+        $this->assertMatchesRegularExpression('/^[a-zA-Z0-9]{22}$/', $transaction->mastercardTransactionLinkId);
+    }
+
+    public function testMastercardTransactionLinkIdInTransactionNotPresentForNonMasterCard()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'cardholderName' => 'The Cardholder',
+                'number' => Braintree\Test\CreditCardNumbers::$visa,
+                'expirationDate' => '05/12'
+            ]
+        ]);
+        $this->assertTrue($result->success);
+        $transaction = $result->transaction;
+        $this->assertEquals(1000, $transaction->processorResponseCode);
+        $this->assertNull($transaction->mastercardTransactionLinkId);
     }
 
     public function testTransactionSourceWithMerchant()

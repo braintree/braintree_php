@@ -364,4 +364,13 @@ class TransactionTest extends Setup
 
         $this->assertEquals('1.00', $transaction->surchargeAmount);
     }
+
+    public function testTransactionWithMastercardTransactionLinkId()
+    {
+        $transaction = Braintree\Transaction::factory([
+            'mastercardTransactionLinkId' => 'ZairABg6CIFekPMsnK0cJ2'
+        ]);
+
+        $this->assertEquals('ZairABg6CIFekPMsnK0cJ2', $transaction->mastercardTransactionLinkId);
+    }
 }
