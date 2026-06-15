@@ -12,6 +12,8 @@ use Braintree\Instance;
  * creates an instance of PayPalDetails
  *
  * See our {@link https://developer.paypal.com/braintree/docs/reference/response/transaction#paypal_details developer docs} for information on attributes
+ *
+ * @property string $debugId @deprecated
  */
 class PayPalDetails extends Instance
 {

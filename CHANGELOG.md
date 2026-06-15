@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.36.0
+* Deprecate `debugId` on `Transaction\PayPalDetails`, `Transaction\LocalPaymentDetails`, and `Transaction\SepaDirectDebitAccountDetails`
+* Add `accountReferenceNumberType` to sender and receiver in transfer on `Transaction`
+* Add `CannotCloneThirdPartyCofNetworkTokenTransaction (915274)` transaction validation error code
+
 ## 6.35.0
 * Add `mastercardTransactionLinkId` to `Transaction` and `Verification`
 * Fix webhook signature verification vulnerability when using OAuth Connect

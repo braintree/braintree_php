@@ -12,6 +12,8 @@ use Braintree\Instance;
  * Creates an instance of SepaDirectDebitAccountDetails
  *
  * See our {@link https://developer.paypal.com/braintree/docs/reference/response/transaction#sepa_direct_debit_account_details developer docs} for information on attributes
+ *
+ * @property string $debugId @deprecated
  */
 class SepaDirectDebitAccountDetails extends Instance
 {

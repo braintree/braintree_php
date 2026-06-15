@@ -1,0 +1,105 @@
+name: PR Title Validation
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  validate-pr:
+    runs-on: gh-2-core-ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Validate PR title and Jira link
+        id: validate
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          ERRORS=""
+
+          echo "Checking PR Title: $PR_TITLE"
+
+          # 1. Validate title format (Conventional Commits + Jira reference)
+          title_pattern='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9_/-]+\))?(!)?: [A-Z][A-Z0-9]+-[0-9]+ .+'
+          if [[ ! "$PR_TITLE" =~ $title_pattern ]]; then
+            echo "❌ Invalid PR title format"
+            echo ""
+            echo "  This repo uses Conventional Commits (https://www.conventionalcommits.org/)."
+            echo "  PR titles must follow this format:"
+            echo ""
+            echo "    <type>[(<scope>)][!]: <JIRA-ID> <description>"
+            echo ""
+            echo "  type       — what kind of change this is (required):"
+            echo "               feat     | a new feature"
+            echo "               fix      | a bug fix"
+            echo "               docs     | documentation only"
+            echo "               style    | formatting, no logic change"
+            echo "               refactor | restructuring, no feature or bug change"
+            echo "               perf     | performance improvement"
+            echo "               test     | adding or fixing tests"
+            echo "               build    | build system or dependency changes"
+            echo "               ci       | CI configuration changes"
+            echo "               chore    | maintenance tasks"
+            echo "               revert   | reverting a previous commit"
+            echo "  scope      — affected area in parentheses, e.g. (auth) — optional"
+            echo "  !          — append after type/scope to flag a breaking change — optional"
+            echo "  JIRA-ID    — ticket reference, e.g. DTBTUNIAPI-1234 (required)"
+            echo "  description — short summary in present tense (required)"
+            echo ""
+            echo "  Examples:"
+            echo "    feat: DTBTUNIAPI-1234 Add deleteWebhook mutation"
+            echo "    fix(auth): DTBTSERV-567 Resolve token expiry issue"
+            echo "    chore!: DTXOPRTNER-89 Drop support for Java 11"
+            echo ""
+            echo "  Got: $PR_TITLE"
+            ERRORS="${ERRORS}- ❌ **Invalid PR title format.**\n\n"
+            ERRORS="${ERRORS}  This repo uses [Conventional Commits](https://www.conventionalcommits.org/). PR titles must follow:\n\n"
+            ERRORS="${ERRORS}  \`<type>[(<scope>)][!]: <JIRA-ID> <description>\`\n\n"
+            ERRORS="${ERRORS}  **type** (required) — one of: \`feat\`, \`fix\`, \`docs\`, \`style\`, \`refactor\`, \`perf\`, \`test\`, \`build\`, \`ci\`, \`chore\`, \`revert\`\n"
+            ERRORS="${ERRORS}  **scope** (optional) — affected area in parentheses, e.g. \`(auth)\`\n"
+            ERRORS="${ERRORS}  **!** (optional) — append after type/scope to flag a breaking change\n"
+            ERRORS="${ERRORS}  **JIRA-ID** (required) — ticket reference, e.g. \`DTBTUNIAPI-1234\`\n"
+            ERRORS="${ERRORS}  **description** (required) — short summary in present tense\n\n"
+            ERRORS="${ERRORS}  Examples:\n"
+            ERRORS="${ERRORS}  - \`feat: DTBTUNIAPI-1234 Add deleteWebhook mutation\`\n"
+            ERRORS="${ERRORS}  - \`fix(auth): DTBTSERV-567 Resolve token expiry issue\`\n"
+            ERRORS="${ERRORS}  - \`chore!: DTXOPRTNER-89 Drop support for Java 11\`\n\n"
+          else
+            echo "✅ Title format is valid"
+          fi
+
+          # 2. Validate Jira link in PR description
+          if [[ ! "$PR_BODY" =~ https://[a-zA-Z0-9.-]+/browse/[A-Z0-9]+-[0-9]+ ]]; then
+            echo "❌ Missing or invalid Jira link in PR description"
+            ERRORS="${ERRORS}- ❌ **Missing Jira link in PR description.** Please add a link like \`https://paypal.atlassian.net/browse/DTBTUNIAPI-3132\`\n"
+          else
+            echo "✅ Jira link found in PR description"
+          fi
+
+          if [[ -n "$ERRORS" ]]; then
+            echo "errors<<EOF" >> "$GITHUB_OUTPUT"
+            echo -e "$ERRORS" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+      - name: Comment on PR with validation errors
+        if: failure() && steps.validate.outputs.errors
+        uses: actions/github-script@v7
+        env:
+          VALIDATION_ERRORS: ${{ steps.validate.outputs.errors }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const marker = '<!-- pr-validation-check -->';
+            const errors = process.env.VALIDATION_ERRORS;
+            const body = marker + '\n## PR Validation Failed\n\n' + errors + '\nPlease update your PR and the check will re-run automatically.';
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+

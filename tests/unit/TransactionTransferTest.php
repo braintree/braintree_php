@@ -46,6 +46,7 @@ class TransactionTransferTest extends Setup
                         'middleName' => 'A',
                         'lastName' => 'Silva',
                         'accountReferenceNumber' => '1000012345',
+                        'accountReferenceNumberType' => 'SOCIAL_NETWORK_PROFILE_ID',
                         'address' => [
                             'streetAddress' => '1st Main Road',
                             'locality' => 'Los Angeles',
@@ -58,6 +59,8 @@ class TransactionTransferTest extends Setup
                         'firstName' => 'Bob',
                         'middleName' => 'A',
                         'lastName' => 'Souza',
+                        'accountReferenceNumber' => '1000012345',
+                        'accountReferenceNumberType' => 'IBAN',
                         'address' => [
                             'streetAddress' => '2nd Main Road',
                             'locality' => 'Los Angeles',

@@ -30,6 +30,7 @@ class TransactionTransferTest extends Setup
                     'middleName' => 'A',
                     'lastName' => 'Silva',
                     'accountReferenceNumber' => '1000012345',
+                    'accountReferenceNumberType' => 'SOCIAL_NETWORK_PROFILE_ID',
                     'address' => [
                         'streetAddress' => '1st Main Road',
                         'locality' => 'Los Angeles',
@@ -42,6 +43,8 @@ class TransactionTransferTest extends Setup
                     'firstName' => 'Bob',
                     'middleName' => 'A',
                     'lastName' => 'Souza',
+                    'accountReferenceNumber' => '2000012345',
+                    'accountReferenceNumberType' => 'IBAN',
                     'address' => [
                         'streetAddress' => '2nd Main Road',
                         'locality' => 'Los Angeles',
@@ -256,5 +259,75 @@ class TransactionTransferTest extends Setup
 
         $this->assertTrue($result->success);
         $this->assertEquals(Braintree\Transaction::AUTHORIZED, $result->transaction->status);
+    }
+
+    public function testSaleWithInvalidSenderAccountReferenceNumberType()
+    {
+        $transactionParams = [
+            'type' => 'sale',
+            'amount' => '100.00',
+
+            'merchantAccountId' => 'aft_first_data_wallet_transfer',
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '06/2036',
+                'cvv' => '123',
+            ],
+            'transfer' => [
+                'type' => 'wallet_transfer',
+                'sender' => [
+                    'firstName' => 'Alice',
+                    'middleName' => 'A',
+                    'lastName' => 'Silva',
+                    'accountReferenceNumber' => '1000012345',
+                    'accountReferenceNumberType' => 'INVALID_TYPE',
+                    'address' => [
+                        'streetAddress' => '1st Main Road',
+                        'locality' => 'Los Angeles',
+                        'region' => 'CA',
+                        'countryCodeAlpha2' => 'US',
+                    ]
+                ]
+            ],
+        ];
+        $result = Braintree\Transaction::sale($transactionParams);
+        $errors = $result->errors->forKey('accountFundingTransaction')->errors;
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_TRANSFER_SENDER_ACCOUNT_REFERENCE_NUMBER_TYPE_IS_INVALID, $errors[0]->code);
+    }
+
+    public function testSaleWithInvalidReceiverAccountReferenceNumberType()
+    {
+        $transactionParams = [
+            'type' => 'sale',
+            'amount' => '100.00',
+
+            'merchantAccountId' => 'aft_first_data_wallet_transfer',
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '06/2036',
+                'cvv' => '123',
+            ],
+            'transfer' => [
+                'type' => 'wallet_transfer',
+                'receiver' => [
+                    'firstName' => 'Alice',
+                    'middleName' => 'A',
+                    'lastName' => 'Silva',
+                    'accountReferenceNumber' => '1000012345',
+                    'accountReferenceNumberType' => 'INVALID_TYPE',
+                    'address' => [
+                        'streetAddress' => '1st Main Road',
+                        'locality' => 'Los Angeles',
+                        'region' => 'CA',
+                        'countryCodeAlpha2' => 'US',
+                    ]
+                ]
+            ],
+        ];
+        $result = Braintree\Transaction::sale($transactionParams);
+        $errors = $result->errors->forKey('accountFundingTransaction')->errors;
+        $this->assertFalse($result->success);
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_TRANSFER_RECEIVER_ACCOUNT_REFERENCE_NUMBER_TYPE_IS_INVALID, $errors[0]->code);
     }
 }

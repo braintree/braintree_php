@@ -386,6 +386,7 @@ class TransactionGateway
                     [
                         'sender' => [
                             'accountReferenceNumber',
+                            'accountReferenceNumberType',
                             'dateOfBirth',
                             'firstName',
                             'lastName',
@@ -412,6 +413,7 @@ class TransactionGateway
                     [
                         'receiver' => [
                             'accountReferenceNumber',
+                            'accountReferenceNumberType',
                             'firstName',
                             'lastName',
                             'middleName',

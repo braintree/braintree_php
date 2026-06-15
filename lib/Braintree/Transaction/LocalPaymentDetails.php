@@ -12,6 +12,8 @@ use Braintree\Instance;
  * creates an instance of LocalPaymentDetails
  *
  * See our {@link https://developer.paypal.com/braintree/docs/reference/response/transaction developer docs} for information on attributes
+ *
+ * @property string $debugId @deprecated
  */
 class LocalPaymentDetails extends Instance
 {
