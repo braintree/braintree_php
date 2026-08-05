@@ -80,7 +80,6 @@ class TransactionTest extends Setup
 
     public function testCreateScaExemptTransactionSuccess()
     {
-        $this->markTestSkipped('pending test');
         $result = Braintree\Transaction::sale([
           'amount' => '47.00',
           'creditCard' => [
@@ -3647,7 +3646,7 @@ class TransactionTest extends Setup
             'amount' => '90.00',
             'orderId' => '123',
             'descriptor' => [
-                'name' => 'invalid name',
+                'name' => str_repeat('a', 31),
                 'phone' => 'invalid phone',
                 'url' => 'invalid way too long url'
             ]
@@ -4232,7 +4231,7 @@ class TransactionTest extends Setup
                 'expirationDate' => '05/12',
             ],
             'descriptor' => [
-                'name' => 'badcompanyname12*badproduct12',
+                'name' => str_repeat('a', 31),
                 'phone' => '%bad4445555',
                 'url' => '12345678901234'
             ]
@@ -4660,7 +4659,6 @@ class TransactionTest extends Setup
 
     public function testGatewayRejectionOnExcessiveRetry()
     {
-        $this->markTestSkipped('pending');
         $gateway = Test\Helper::duplicateCheckingMerchantGateway();
         $excessiveRetry = false;
         $counter = 0;
@@ -6034,7 +6032,6 @@ class TransactionTest extends Setup
 
     public function testSale_withAmexRewardsSucceeds()
     {
-        $this->markTestSkipped('Skipping until we have a more stable CI env');
         $result = Braintree\Transaction::sale([
             'amount' => '47.00',
             'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
@@ -6062,7 +6059,6 @@ class TransactionTest extends Setup
 
     public function testSale_withAmexRewardsSucceedsEvenIfCardIsIneligible()
     {
-        $this->markTestSkipped('Skipping until we have a more stable CI env');
         $result = Braintree\Transaction::sale([
             'amount' => '47.00',
             'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
@@ -6090,7 +6086,6 @@ class TransactionTest extends Setup
 
     public function testSale_withAmexRewardsSucceedsEvenIfCardBalanceIsInsufficient()
     {
-        $this->markTestSkipped('Skipping until we have a more stable CI env');
         $result = Braintree\Transaction::sale([
             'amount' => '47.00',
             'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
@@ -6118,7 +6113,6 @@ class TransactionTest extends Setup
 
     public function testSale_PinlessDebit()
     {
-        $this->markTestSkipped('Flaky test');
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'merchantAccountId' => Test\Helper::pinlessDebitMerchantAccountId(),
@@ -6154,7 +6148,6 @@ class TransactionTest extends Setup
 
     public function testSubmitForSettlement_withAmexRewardsSucceeds()
     {
-        $this->markTestSkipped('Skipping until we have a more stable CI env');
         $result = Braintree\Transaction::sale([
             'amount' => '47.00',
             'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
@@ -6185,7 +6178,6 @@ class TransactionTest extends Setup
 
     public function testSubmitForSettlement_withAmexRewardsSucceedsEvenIfCardIsIneligible()
     {
-        $this->markTestSkipped('Skipping until we have a more stable CI env');
         $result = Braintree\Transaction::sale([
             'amount' => '47.00',
             'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),
@@ -6216,7 +6208,6 @@ class TransactionTest extends Setup
 
     public function testSubmitForSettlement_withAmexRewardsSucceedsEvenIfCardBalanceIsInsufficient()
     {
-        $this->markTestSkipped('Skipping until we have a more stable CI env');
         $result = Braintree\Transaction::sale([
             'amount' => '47.00',
             'merchantAccountId' => Test\Helper::fakeAmexDirectMerchantAccountId(),

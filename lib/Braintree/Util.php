@@ -462,6 +462,19 @@ class Util
     }
 
     /**
+     * determines whether a value is unsafe to interpolate into a request URL path
+     *
+     * @param mixed $value value destined for a URL path segment
+     *
+     * @return bool
+     */
+    public static function isInvalidPathSegment($value)
+    {
+        return !is_string($value)
+            || preg_match('/^[A-Za-z0-9_-]+$/', $value) !== 1;
+    }
+
+    /**
      * flattens a numerically indexed nested array to a single level
      *
      * @param array  $keys

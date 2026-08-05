@@ -1370,7 +1370,6 @@ class PaymentMethodTest extends Setup
 
     public function testUpdate_acceptAccountTypeDebit()
     {
-        $this->markTestSkipped("Pending as flaky, until CI is more stable");
         $customer = Braintree\Customer::createNoValidate();
         $creditCardResult = Braintree\CreditCard::create([
             'cardholderName' => 'Original Holder',

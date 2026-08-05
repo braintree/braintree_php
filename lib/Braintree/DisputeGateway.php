@@ -33,7 +33,7 @@ class DisputeGateway
     public function accept($id)
     {
         try {
-            if (is_null($id) || trim($id) == "") {
+            if (Util::isInvalidPathSegment($id)) {
                 throw new Exception\NotFound();
             }
 
@@ -46,7 +46,7 @@ class DisputeGateway
 
             return new Result\Successful();
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound('dispute with id "' . $id . '" not found');
+            throw new Exception\NotFound('dispute with id "' . self::_idForMessage($id) . '" not found');
         }
     }
 
@@ -62,8 +62,8 @@ class DisputeGateway
     {
         $request = is_array($documentIdOrRequest) ? $documentIdOrRequest : ['documentId' => $documentIdOrRequest];
 
-        if (is_null($disputeId) || trim($disputeId) == "") {
-            throw new Exception\NotFound('dispute with id "' . $disputeId . '" not found');
+        if (Util::isInvalidPathSegment($disputeId)) {
+            throw new Exception\NotFound('dispute with id "' . self::_idForMessage($disputeId) . '" not found');
         }
 
         if (is_null($request['documentId']) || trim($request['documentId']) == "") {
@@ -93,7 +93,7 @@ class DisputeGateway
                 return new Result\Successful($evidence);
             }
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound('dispute with id "' . $disputeId . '" not found');
+            throw new Exception\NotFound('dispute with id "' . self::_idForMessage($disputeId) . '" not found');
         }
     }
 
@@ -117,7 +117,7 @@ class DisputeGateway
                 'comments' => $request['content'],
             ];
 
-            if (is_null($id) || trim($id) == "") {
+            if (Util::isInvalidPathSegment($id)) {
                 throw new Exception\NotFound();
             }
 
@@ -159,7 +159,7 @@ class DisputeGateway
                 return new Result\Successful($evidence);
             }
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound('dispute with id "' . $id . '" not found');
+            throw new Exception\NotFound('dispute with id "' . self::_idForMessage($id) . '" not found');
         }
     }
 
@@ -173,7 +173,7 @@ class DisputeGateway
     public function finalize($id)
     {
         try {
-            if (is_null($id) || trim($id) == "") {
+            if (Util::isInvalidPathSegment($id)) {
                 throw new Exception\NotFound();
             }
 
@@ -186,7 +186,7 @@ class DisputeGateway
 
             return new Result\Successful();
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound('dispute with id "' . $id . '" not found');
+            throw new Exception\NotFound('dispute with id "' . self::_idForMessage($id) . '" not found');
         }
     }
 
@@ -199,8 +199,8 @@ class DisputeGateway
      */
     public function find($id)
     {
-        if (is_null($id) || trim($id) == "") {
-            throw new Exception\NotFound('dispute with id "' . $id . '" not found');
+        if (Util::isInvalidPathSegment($id)) {
+            throw new Exception\NotFound('dispute with id "' . self::_idForMessage($id) . '" not found');
         }
 
         try {
@@ -208,7 +208,7 @@ class DisputeGateway
             $response = $this->_http->get($path);
             return Dispute::factory($response['dispute']);
         } catch (Exception\NotFound $e) {
-            throw new Exception\NotFound('dispute with id "' . $id . '" not found');
+            throw new Exception\NotFound('dispute with id "' . self::_idForMessage($id) . '" not found');
         }
     }
 
@@ -223,7 +223,7 @@ class DisputeGateway
     public function removeEvidence($disputeId, $evidenceId)
     {
         try {
-            if (is_null($disputeId) || trim($disputeId) == "" || is_null($evidenceId) || trim($evidenceId) == "") {
+            if (Util::isInvalidPathSegment($disputeId) || Util::isInvalidPathSegment($evidenceId)) {
                 throw new Exception\NotFound();
             }
 
@@ -236,9 +236,14 @@ class DisputeGateway
 
             return new Result\Successful();
         } catch (Exception\NotFound $e) {
-            $message = 'evidence with id "' . $evidenceId . '" for dispute with id "' . $disputeId . '" not found';
+            $message = 'evidence with id "' . self::_idForMessage($evidenceId) . '" for dispute with id "' . self::_idForMessage($disputeId) . '" not found';
             throw new Exception\NotFound($message);
         }
+    }
+
+    private static function _idForMessage($id)
+    {
+        return is_string($id) ? $id : '';
     }
 
     /**

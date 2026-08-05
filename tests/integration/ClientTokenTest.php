@@ -246,6 +246,28 @@ class ClientTokenTest extends Setup
         }
     }
 
+    public function test_CanPassPreferredPaymentMethodToken()
+    {
+        $result = Braintree\Customer::create();
+        $this->assertTrue($result->success);
+        $customerId = $result->customer->id;
+
+        $encodedClientToken = Braintree\ClientToken::generate([
+            "customerId" => $customerId,
+            "preferredPaymentMethodToken" => "a-pmt",
+        ]);
+        $clientToken = json_decode(base64_decode($encodedClientToken));
+
+        $this->assertNotNull($clientToken->paymentMethodIdJwt);
+        $jwtSegment = explode('.', $clientToken->paymentMethodIdJwt)[1];
+        $padding = strlen($jwtSegment) % 4;
+        if ($padding) {
+            $jwtSegment .= str_repeat('=', 4 - $padding);
+        }
+        $jwtPayload = json_decode(base64_decode(strtr($jwtSegment, '-_', '+/')));
+        $this->assertEquals('a-pmt', $jwtPayload->pmid);
+    }
+
     public function test_ClientTokenAcceptsMerchantAccountId()
     {
         $expectedMerchantAccountId = Test\Helper::nonDefaultMerchantAccountId();

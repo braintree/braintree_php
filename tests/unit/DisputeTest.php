@@ -516,4 +516,74 @@ class DisputeTest extends Setup
 
         Braintree\Dispute::removeEvidence("dispute_id", " ");
     }
+
+    public function testRemoveEvidencePathTraversalEvidenceIdRaisesNotFoundException()
+    {
+        $this->expectException('Braintree\Exception\NotFound');
+        $this->expectExceptionMessage('evidence with id "../../../customers/a-customer-id" for dispute with id "dispute_id" not found');
+
+        Braintree\Dispute::removeEvidence("dispute_id", "../../../customers/a-customer-id");
+    }
+
+    public function testRemoveEvidencePathTraversalDisputeIdRaisesNotFoundException()
+    {
+        $this->expectException('Braintree\Exception\NotFound');
+        $this->expectExceptionMessage('evidence with id "evidence" for dispute with id "../../../customers/a-customer-id" not found');
+
+        Braintree\Dispute::removeEvidence("../../../customers/a-customer-id", "evidence");
+    }
+
+    public function testRemoveEvidenceNonStringEvidenceIdRaisesNotFoundException()
+    {
+        $this->expectException('Braintree\Exception\NotFound');
+
+        Braintree\Dispute::removeEvidence("dispute_id", new \stdClass());
+    }
+
+    public function testRemoveEvidenceNonStringDisputeIdRaisesNotFoundException()
+    {
+        $this->expectException('Braintree\Exception\NotFound');
+
+        Braintree\Dispute::removeEvidence(["dispute_id"], "evidence");
+    }
+
+    public function testAcceptNonStringIdRaisesNotFoundException()
+    {
+        $this->expectException('Braintree\Exception\NotFound');
+        $this->expectExceptionMessage('dispute with id "" not found');
+
+        Braintree\Dispute::accept(new \stdClass());
+    }
+
+    public function testFinalizeNonStringIdRaisesNotFoundException()
+    {
+        $this->expectException('Braintree\Exception\NotFound');
+        $this->expectExceptionMessage('dispute with id "" not found');
+
+        Braintree\Dispute::finalize(["dispute_id"]);
+    }
+
+    public function testFindingNonStringIdRaisesNotFoundException()
+    {
+        $this->expectException('Braintree\Exception\NotFound');
+        $this->expectExceptionMessage('dispute with id "" not found');
+
+        Braintree\Dispute::find(new \stdClass());
+    }
+
+    public function testAddTextEvidenceNonStringIdRaisesNotFoundException()
+    {
+        $this->expectException('Braintree\Exception\NotFound');
+        $this->expectExceptionMessage('dispute with id "" not found');
+
+        Braintree\Dispute::addTextEvidence(["dispute_id"], "evidence");
+    }
+
+    public function testAddFileEvidenceNonStringIdRaisesNotFoundException()
+    {
+        $this->expectException('Braintree\Exception\NotFound');
+        $this->expectExceptionMessage('dispute with id "" not found');
+
+        Braintree\Dispute::addFileEvidence(new \stdClass(), 1);
+    }
 }

@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.37.0
+* Fix path traversal vulnerability in `Dispute` and `Address` gateways by validating that IDs used in request paths do not contain path separators or relative-path segments
+* Add `PAYPAL_ACCOUNT_EMAIL_FORMAT_IS_INVALID (92963)` and `PAYPAL_ACCOUNT_EMAIL_IS_TOO_LONG (92964)` validation error codes
+* Add `preferredPaymentMethodToken` to `ClientToken::generate`
+
 ## 6.36.0
 * Deprecate `debugId` on `Transaction\PayPalDetails`, `Transaction\LocalPaymentDetails`, and `Transaction\SepaDirectDebitAccountDetails`
 * Add `accountReferenceNumberType` to sender and receiver in transfer on `Transaction`

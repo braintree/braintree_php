@@ -388,6 +388,8 @@ class Codes
     const PAYPAL_ACCOUNT_CANNOT_VAULT_ONE_TIME_USE_PAYPAL_ACCOUNT                = '82902';
     const PAYPAL_ACCOUNT_CONSENT_CODE_OR_ACCESS_TOKEN_IS_REQUIRED                = '82901';
     const PAYPAL_ACCOUNT_CUSTOMER_ID_IS_REQUIRED_FOR_VAULTING                    = '82905';
+    const PAYPAL_ACCOUNT_EMAIL_FORMAT_IS_INVALID                                 = '92963';
+    const PAYPAL_ACCOUNT_EMAIL_IS_TOO_LONG                                       = '92964';
     const PAYPAL_ACCOUNT_INVALID_FUNDING_SOURCE_SELECTION                        = '92913';
     const PAYPAL_ACCOUNT_INVALID_PARAMS_FOR_PAYPAL_ACCOUNT_UPDATE                = '92915';
     const PAYPAL_ACCOUNT_PAYMENT_METHOD_NONCE_CONSUMED                           = '92907';

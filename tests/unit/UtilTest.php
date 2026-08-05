@@ -501,4 +501,54 @@ class UtilTest extends Setup
         $returnedParams = Braintree\Util::replaceKey($originalParams, $oldKey, $newKey);
         $this->assertEquals($returnedParams, $expectedParams);
     }
+
+    /**
+     * @dataProvider invalidPathSegmentProvider
+     */
+    public function testIsInvalidPathSegmentRejectsUnsafeValues($value)
+    {
+        $this->assertTrue(Braintree\Util::isInvalidPathSegment($value));
+    }
+
+    public function invalidPathSegmentProvider()
+    {
+        return [
+            'null' => [null],
+            'integer' => [12345],
+            'array' => [['id']],
+            'object' => [new stdClass()],
+            'boolean' => [true],
+            'empty string' => [''],
+            'whitespace only' => ['   '],
+            'double dot' => ['..'],
+            'leading traversal' => ['../customers/a-customer-id'],
+            'deep traversal' => ['../../../customers/a-customer-id'],
+            'trailing traversal' => ['evidence_id/..'],
+            'forward slash' => ['evidence/id'],
+            'back slash' => ['evidence\\id'],
+            'url-encoded slash' => ['..%2f..%2fcustomers'],
+            'percent sign' => ['50%off'],
+            'just a dot' => ['.'],
+            'single dot in name' => ['file.png'],
+            'embedded double dot' => ['evidence..id'],
+        ];
+    }
+
+    /**
+     * @dataProvider validPathSegmentProvider
+     */
+    public function testIsInvalidPathSegmentAllowsSafeValues($value)
+    {
+        $this->assertFalse(Braintree\Util::isInvalidPathSegment($value));
+    }
+
+    public function validPathSegmentProvider()
+    {
+        return [
+            'simple id' => ['evidence_123'],
+            'hyphenated id' => ['a-customer-id'],
+            'alphanumeric' => ['abc123XYZ'],
+            'graphql-style id' => ['ZGlzcHV0ZV9pZA'],
+        ];
+    }
 }

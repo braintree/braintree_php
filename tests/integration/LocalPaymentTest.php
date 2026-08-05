@@ -13,7 +13,6 @@ class LocalPaymentTest extends Setup
     public function setUp(): void
     {
         parent::setUp();
-        $this->markTestSkipped('Local payment tests are pended');
     }
 
     private function createGateway()

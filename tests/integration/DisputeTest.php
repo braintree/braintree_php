@@ -374,6 +374,34 @@ class DisputeTest extends Setup
         $this->assertEquals("Evidence can only be removed from disputes that are in an Open state", $error->message);
     }
 
+    public function testRemoveEvidence_raisesNotFound_andDoesNotDeleteResource_forPathTraversalEvidenceId()
+    {
+        $customerId = $this->gateway->customer()->create()->customer->id;
+        $disputeId = $this->createSampleDispute()->id;
+
+        try {
+            $this->gateway->dispute()->removeEvidence($disputeId, "../../../customers/" . $customerId);
+            $this->fail("Expected Braintree\Exception\NotFound to be thrown");
+        } catch (Braintree\Exception\NotFound $e) {
+        }
+
+        $this->assertEquals($customerId, $this->gateway->customer()->find($customerId)->id);
+    }
+
+    public function testRemoveEvidence_raisesNotFound_forPathTraversalDisputeId()
+    {
+        $this->expectException('Braintree\Exception\NotFound');
+        $this->gateway->dispute()->removeEvidence("../../../transactions/a-transaction-id", "evidence_id");
+    }
+
+    public function testRemoveEvidence_raisesNotFound_forUrlEncodedTraversalEvidenceId()
+    {
+        $disputeId = $this->createSampleDispute()->id;
+
+        $this->expectException('Braintree\Exception\NotFound');
+        $this->gateway->dispute()->removeEvidence($disputeId, "..%2f..%2fcustomers%2fa-customer-id");
+    }
+
     public function testCategorizedEvidence_fileForTextOnlyCategory()
     {
         $disputeId = $this->createSampleDispute()->id;
