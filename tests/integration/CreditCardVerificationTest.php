@@ -201,6 +201,68 @@ class CreditCardVerificationTest extends Setup
         $this->assertEquals($verification->processorResponseType, Braintree\ProcessorResponseTypes::APPROVED);
     }
 
+    public function test_createWithExternalVaultPreviousMastercardTransactionLinkId()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$masterCard,
+                'expirationDate' => '05/2029',
+            ],
+            'externalVault' => [
+                'status' => 'vaulted',
+                'previousMastercardTransactionLinkId' => '1234567890123456789012',
+            ]
+        ]);
+
+        $this->assertTrue($result->success);
+
+        $verification = $result->verification;
+
+        $this->assertMatchesRegularExpression('/^\w{6,}$/', $verification->id);
+    }
+
+    public function test_createWithExternalVaultValidationErrorInvalidStatusWithPreviousMastercardTransactionLinkId()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$masterCard,
+                'expirationDate' => '05/2029',
+            ],
+            'externalVault' => [
+                'status' => 'will_vault',
+                'previousMastercardTransactionLinkId' => '1234567890123456789012',
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+
+        $this->assertEquals(
+            Braintree\Error\Codes::VERIFICATION_EXTERNAL_VAULT_STATUS_WITH_PREVIOUS_MASTERCARD_TRANSACTION_LINK_ID_IS_INVALID,
+            $result->errors->forKey('verification')->forKey('externalVault')->onAttribute('status')[0]->code
+        );
+    }
+
+    public function test_createWithExternalVaultValidationErrorInvalidPreviousMastercardTransactionLinkId()
+    {
+        $result = Braintree\CreditCardVerification::create([
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$masterCard,
+                'expirationDate' => '05/2029',
+            ],
+            'externalVault' => [
+                'status' => 'vaulted',
+                'previousMastercardTransactionLinkId' => '1234567890123456789012123',
+            ]
+        ]);
+
+        $this->assertFalse($result->success);
+
+        $this->assertEquals(
+            Braintree\Error\Codes::VERIFICATION_EXTERNAL_VAULT_PREVIOUS_MASTERCARD_TRANSACTION_LINK_ID_IS_INVALID,
+            $result->errors->forKey('verification')->forKey('externalVault')->onAttribute('previousMastercardTransactionLinkId')[0]->code
+        );
+    }
+
     public function test_createWithIntendedTransactionSource()
     {
         $result = Braintree\CreditCardVerification::create([

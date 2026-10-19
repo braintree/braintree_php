@@ -635,6 +635,36 @@ class Transaction extends Base
     /**
      * Static methods redirecting to gateway class
      *
+     * @param string $transactionId unique identifier of the transaction to be reversed
+     * @param array  $attribs       containing any additional request parameters
+     *
+     * @see TransactionGateway::reverse()
+     *
+     * @return Result\Successful|Exception\NotFound
+     */
+    public static function reverse($transactionId, $attribs = [])
+    {
+        return Configuration::gateway()->transaction()->reverse($transactionId, $attribs);
+    }
+
+    /**
+     * Static methods redirecting to gateway class
+     *
+     * @param string $transactionId unique identifier of the transaction to be reversed
+     * @param array  $attribs       containing any additional request parameters
+     *
+     * @see TransactionGateway::reverseNoValidate()
+     *
+     * @return Transaction|Result\Error
+     */
+    public static function reverseNoValidate($transactionId, $attribs = [])
+    {
+        return Configuration::gateway()->transaction()->reverseNoValidate($transactionId, $attribs);
+    }
+
+    /**
+     * Static methods redirecting to gateway class
+     *
      * @param mixed $attribs containing any request parameters
      *
      * @see TransactionGateway::sale()

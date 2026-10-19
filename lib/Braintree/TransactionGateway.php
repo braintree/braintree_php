@@ -131,7 +131,7 @@ class TransactionGateway
             'discountAmount',
             'exchangeRateQuoteId',
             ['externalVault' =>
-                ['status' , 'previousNetworkTransactionId'],
+                ['status' , 'previousNetworkTransactionId', 'previousMastercardTransactionLinkId'],
             ],
             'foreignRetailer',
             ['googlePayCard' =>
@@ -630,6 +630,16 @@ class TransactionGateway
     }
 
     /**
+     * creates a full array signature of a valid gateway request
+     *
+     * @return array gateway request signature format
+     */
+    public static function reverseSignature()
+    {
+        return ['apiRequestKey'];
+    }
+
+    /**
      * Request a credit to a payment method
      *
      * @param array $attribs containing request parameters
@@ -814,6 +824,40 @@ class TransactionGateway
     public function voidNoValidate($transactionId, $attribs = [])
     {
         $result = $this->void($transactionId, $attribs);
+        return Util::returnObjectOrThrowException(__CLASS__, $result);
+    }
+
+    /**
+     * Reverses a transaction by id. If the transaction can still be voided, it
+     * will be; otherwise, it creates a full refund.
+     *
+     * @param string $transactionId unique identifier
+     * @param array  $attribs       containing any additional request parameters
+     *
+     * @return Result\Successful|Result\Error
+     */
+    public function reverse($transactionId, $attribs = [])
+    {
+        $this->_validateId($transactionId);
+        Util::verifyKeys(self::reverseSignature(), $attribs);
+
+        $path = $this->_config->merchantPath() . '/transactions/' . $transactionId . '/reverse';
+        $params = !empty($attribs) ? ['transaction' => $attribs] : null;
+        $response = $this->_http->post($path, $params);
+        return $this->_verifyGatewayResponse($response);
+    }
+
+    /**
+     * Reverses a transaction by id. Returns a Transaction instead of Result\Successful.
+     *
+     * @param string $transactionId unique identifier
+     * @param array  $attribs       containing any additional request parameters
+     *
+     * @return Transaction|Result\Error
+     */
+    public function reverseNoValidate($transactionId, $attribs = [])
+    {
+        $result = $this->reverse($transactionId, $attribs);
         return Util::returnObjectOrThrowException(__CLASS__, $result);
     }
 

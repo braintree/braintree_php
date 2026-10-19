@@ -86,6 +86,7 @@ class CreditCardVerification extends Result\CreditCardVerification
                 ['externalVault' =>
                     [
                         'previousNetworkTransactionId',
+                        'previousMastercardTransactionLinkId',
                         'status'
                     ]
                 ],

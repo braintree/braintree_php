@@ -153,6 +153,22 @@ class TransactionGatewayTest extends Setup
         $this->assertContains('submitForSettlement', $optionsSig);
     }
 
+    public function testCreateSignature_includesExternalVaultFields()
+    {
+        $sig = Braintree\TransactionGateway::createSignature();
+        $externalVault = null;
+        foreach ($sig as $value) {
+            // phpcs:ignore
+            if (is_array($value) and array_key_exists('externalVault', $value)) {
+                $externalVault = $value['externalVault'];
+                break;
+            }
+        }
+        $this->assertNotNull($externalVault);
+        $this->assertContains('previousNetworkTransactionId', $externalVault);
+        $this->assertContains('previousMastercardTransactionLinkId', $externalVault);
+    }
+
     public function testSale_returnsSuccessfulResult()
     {
         $gateway = $this->gatewayWithMock('post', $this->transactionResponse());
@@ -224,6 +240,47 @@ class TransactionGatewayTest extends Setup
         $gateway = $this->gatewayWithMock('put', $this->errorResponse());
         $result = $gateway->void('txn_123');
         $this->assertInstanceOf('Braintree\Result\Error', $result);
+    }
+
+    public function testReverse_returnsSuccessfulResult()
+    {
+        $gateway = $this->gatewayWithMock('post', $this->transactionResponse());
+        $result = $gateway->reverse('txn_123');
+        $this->assertInstanceOf('Braintree\Result\Successful', $result);
+    }
+
+    public function testReverse_returnsErrorResult()
+    {
+        $gateway = $this->gatewayWithMock('post', $this->errorResponse());
+        $result = $gateway->reverse('txn_123');
+        $this->assertInstanceOf('Braintree\Result\Error', $result);
+    }
+
+    public function testReverseNoValidate_returnsTransaction()
+    {
+        $gateway = $this->gatewayWithMock('post', $this->transactionResponse());
+        $result = $gateway->reverseNoValidate('txn_123');
+        $this->assertInstanceOf('Braintree\Transaction', $result);
+    }
+
+    public function testReverseNoValidate_throwsValidationException()
+    {
+        $this->expectException('Braintree\Exception\ValidationsFailed');
+        $gateway = $this->gatewayWithMock('post', $this->errorResponse());
+        $gateway->reverseNoValidate('txn_123');
+    }
+
+    public function testReverseSignature_containsApiRequestKey()
+    {
+        $sig = Braintree\TransactionGateway::reverseSignature();
+        $this->assertContains('apiRequestKey', $sig);
+    }
+
+    public function testReverse_throwsForInvalidId()
+    {
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('../transactions/victim is an invalid transaction id.');
+        Helper::integrationMerchantGateway()->transaction()->reverse('../transactions/victim');
     }
 
     public function testSubmitForSettlement_returnsSuccessfulResult()

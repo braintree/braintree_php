@@ -26,6 +26,7 @@ class CreditCardVerificationTest extends Setup
             ['externalVault' =>
                 [
                     'previousNetworkTransactionId',
+                    'previousMastercardTransactionLinkId',
                     'status'
                 ]
             ],

@@ -3850,6 +3850,67 @@ class TransactionTest extends Setup
         $this->assertEquals(Braintree\Transaction::VOIDED, $voidResult->transaction->status);
     }
 
+    public function testReverseVoidsAVoidableTransaction()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $result = Braintree\Transaction::reverse($transaction->id);
+
+        $this->assertTrue($result->success);
+        $this->assertEquals($transaction->id, $result->transaction->id);
+        $this->assertEquals(Braintree\Transaction::VOIDED, $result->transaction->status);
+        $this->assertNull($result->transaction->refundedTransactionId);
+    }
+
+    public function testReverseWithoutApiRequestKeyCannotBeRepeated()
+    {
+        $transaction = Braintree\Transaction::saleNoValidate([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => '5105105105105100',
+                'expirationDate' => '05/12'
+            ]
+        ]);
+
+        $this->assertTrue(Braintree\Transaction::reverse($transaction->id)->success);
+        $result = Braintree\Transaction::reverse($transaction->id);
+
+        $this->assertFalse($result->success);
+        $errors = $result->errors->forKey('transaction')->onAttribute('base');
+        $this->assertEquals(Braintree\Error\Codes::TRANSACTION_CANNOT_REFUND_UNLESS_SETTLED, $errors[0]->code);
+    }
+
+    public function testReverseVoidsAnExplicitlyCreatedVoidableRefund()
+    {
+        $transaction = $this->createTransactionToRefund();
+        $refundResult = Braintree\Transaction::refund($transaction->id);
+        $this->assertTrue($refundResult->success);
+
+        $result = Braintree\Transaction::reverse($refundResult->transaction->id);
+
+        $this->assertTrue($result->success);
+        $this->assertEquals($refundResult->transaction->id, $result->transaction->id);
+        $this->assertEquals(Braintree\Transaction::VOIDED, $result->transaction->status);
+        $this->assertEquals($transaction->id, $result->transaction->refundedTransactionId);
+    }
+
+    public function testReverseRefundsASettledTransaction()
+    {
+        $transaction = $this->createTransactionToRefund();
+
+        $result = Braintree\Transaction::reverse($transaction->id);
+
+        $this->assertTrue($result->success);
+        $this->assertEquals(Braintree\Transaction::CREDIT, $result->transaction->type);
+        $this->assertEquals($transaction->id, $result->transaction->refundedTransactionId);
+    }
+
     public function test_countryValidationError_inconsistency()
     {
         $result = Braintree\Transaction::sale([
@@ -7016,6 +7077,24 @@ class TransactionTest extends Setup
         $this->assertNotNull($result->transaction->networkTransactionId);
     }
 
+    public function testTransactionMastercardExternalVaultWorksWithPreviousMastercardTransactionLinkId()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$masterCard,
+                'expirationDate' => '05/2009',
+            ],
+            'externalVault' => [
+                'status' => "vaulted",
+                'previousMastercardTransactionLinkId' => "1234567890123456789012",
+            ],
+        ]);
+
+        $this->assertTrue($result->success);
+        $this->assertNotNull($result->transaction->networkTransactionId);
+    }
+
     public function testTransactionExternalVaultWorksWithStatusVaultedWithoutPreviousNetworkTransactionId()
     {
         $result = Braintree\Transaction::sale([
@@ -7075,6 +7154,50 @@ class TransactionTest extends Setup
         $this->assertEquals(
             Braintree\Error\Codes::TRANSACTION_EXTERNAL_VAULT_STATUS_WITH_PREVIOUS_NETWORK_TRANSACTION_ID_IS_INVALID,
             $result->errors->forKey('transaction')->forKey('externalVault')->onAttribute('status')[0]->code
+        );
+    }
+
+    public function testTransactionExternalVaultValidationErrorInvalidStatusWithPreviousMastercardTransactionLinkId()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$masterCard,
+                'expirationDate' => '05/2009',
+            ],
+            'externalVault' => [
+                'status' => "will_vault",
+                'previousMastercardTransactionLinkId' => "1234567890123456789012",
+            ],
+        ]);
+
+        $this->assertFalse($result->success);
+
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_EXTERNAL_VAULT_STATUS_WITH_PREVIOUS_MASTERCARD_TRANSACTION_LINK_ID_IS_INVALID,
+            $result->errors->forKey('transaction')->forKey('externalVault')->onAttribute('status')[0]->code
+        );
+    }
+
+    public function testTransactionExternalVaultValidationErrorInvalidPreviousMastercardTransactionLinkId()
+    {
+        $result = Braintree\Transaction::sale([
+            'amount' => '100.00',
+            'creditCard' => [
+                'number' => Braintree\Test\CreditCardNumbers::$masterCard,
+                'expirationDate' => '05/2009',
+            ],
+            'externalVault' => [
+                'status' => "vaulted",
+                'previousMastercardTransactionLinkId' => "1234567890123456789012123",
+            ],
+        ]);
+
+        $this->assertFalse($result->success);
+
+        $this->assertEquals(
+            Braintree\Error\Codes::TRANSACTION_EXTERNAL_VAULT_PREVIOUS_MASTERCARD_TRANSACTION_LINK_ID_IS_INVALID,
+            $result->errors->forKey('transaction')->forKey('externalVault')->onAttribute('previousMastercardTransactionLinkId')[0]->code
         );
     }
 

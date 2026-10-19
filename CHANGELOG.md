@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.39.0
+* Add `Transaction::reverse()` to automatically void or fully refund a transaction
+* Add `previousMastercardTransactionLinkId` to `externalVault` on `Transaction` and `CreditCardVerification::create`
+
 ## 6.38.0
 * Fix path traversal vulnerability in `CreditCard`, `Customer`, `MerchantAccount`, `PayPalAccount`, `PaymentMethod`, `PaymentMethodNonce`, `Plan`, `SepaDirectDebitAccount`, `Subscription`, `Testing`, `Transaction`, `TransactionLineItem`, `UsBankAccount`, and `UsBankAccountVerification` gateways by validating that IDs used in request paths do not contain path separators or relative-path segments
 * Add `shipping`(including `company`, `countryCodeAlpha2`, `countryCodeAlpha3`, `countryCodeNumeric`, `countryName`, `extendedAddress`, `firstName`, `lastName`, `locality`, `phoneNumber`, `internationalPhone`, `postalCode`, `region`, `streetAddress`) and `shippingAddressId` to `Transaction::submitForSettlement()`

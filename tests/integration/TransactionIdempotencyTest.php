@@ -189,6 +189,35 @@ class TransactionIdempotencyTest extends Setup
         $this->assertEquals(Braintree\Transaction::VOIDED, $voidedTransaction2->status);
     }
 
+    public function testReverseWithApiRequestKeyReturnsOriginalReverseOnDuplicateRequest()
+    {
+        $apiRequestKey = 'reverse-idempotency-key-' . rand(0, 1000000);
+
+        $saleRequest = [
+            'amount' => Braintree\Test\TransactionAmounts::$authorize,
+            'creditCard' => [
+                'number' => '4111111111111111',
+                'expirationDate' => '05/2035'
+            ]
+        ];
+
+        $saleResult = Braintree\Transaction::sale($saleRequest);
+        $this->assertTrue($saleResult->success);
+        $transactionId = $saleResult->transaction->id;
+
+        $reverseRequest = [
+            'apiRequestKey' => $apiRequestKey
+        ];
+
+        $reverseResult1 = Braintree\Transaction::reverse($transactionId, $reverseRequest);
+        $this->assertTrue($reverseResult1->success);
+
+        $reverseResult2 = Braintree\Transaction::reverse($transactionId, $reverseRequest);
+        $this->assertTrue($reverseResult2->success);
+        $this->assertEquals($reverseResult1->transaction->id, $reverseResult2->transaction->id);
+        $this->assertEquals(Braintree\Transaction::VOIDED, $reverseResult2->transaction->status);
+    }
+
     public function testRefundWithApiRequestKeyReturnsOriginalRefundOnDuplicateRequest()
     {
         $apiRequestKey = 'refund-idempotency-key-' . rand(0, 1000000);
