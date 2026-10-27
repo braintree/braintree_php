@@ -31,7 +31,7 @@ class UsBankAccountAccountTest extends Setup
         $this->assertEquals('checking', $foundUsBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
         $this->assertMatchesRegularExpression('/CHASE/', $foundUsBankAccount->bankName);
-        $this->assertEquals('cl mandate text', $foundUsBankAccount->achMandate->text);
+        $this->assertEquals('REDACTED', $foundUsBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($foundUsBankAccount->achMandate->acceptedAt));
         $this->assertEquals(true, $foundUsBankAccount->default);
     }
@@ -57,7 +57,7 @@ class UsBankAccountAccountTest extends Setup
         $this->assertEquals('checking', $foundUsBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $foundUsBankAccount->accountHolderName);
         $this->assertMatchesRegularExpression('/CHASE/', $foundUsBankAccount->bankName);
-        $this->assertEquals('cl mandate text', $foundUsBankAccount->achMandate->text);
+        $this->assertEquals('REDACTED', $foundUsBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($foundUsBankAccount->achMandate->acceptedAt));
         $this->assertEquals(true, $foundUsBankAccount->default);
     }
@@ -97,7 +97,7 @@ class UsBankAccountAccountTest extends Setup
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
         $this->assertMatchesRegularExpression('/CHASE/', $transaction->usBankAccount->bankName);
-        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('REDACTED', $transaction->usBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
     }
 }

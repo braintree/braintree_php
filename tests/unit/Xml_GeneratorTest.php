@@ -136,7 +136,7 @@ XML;
     public function testCanAcceptDateTimeImmutable()
     {
         $date = (new \DateTimeImmutable())->setTimestamp(strtotime('2016-05-17T21:22:26Z'));
-        $date->setTimezone(new \DateTimeZone('Europe/Paris'));
+        $date = $date->setTimezone(new \DateTimeZone('Europe/Paris'));
 
         $originalDate = clone $date;
 

@@ -9,6 +9,8 @@ namespace Braintree;
  */
 class AchMandate extends Base
 {
+    // TODO: Review removing in NEXT_MAJOR_VERSION
+
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __toString()
     {

@@ -16,7 +16,9 @@ class DisputeGatewayTest extends Setup
         $mock = $this->createMock('\Braintree\Http');
         $mock->method($httpMethod)->willReturn($response);
         $prop = new \ReflectionProperty('Braintree\DisputeGateway', '_http');
-        $prop->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $prop->setAccessible(true);
+        }
         $prop->setValue($gateway, $mock);
         return $gateway;
     }

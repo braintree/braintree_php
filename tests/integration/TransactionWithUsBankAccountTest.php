@@ -33,7 +33,7 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
         $this->assertMatchesRegularExpression('/CHASE/', $transaction->usBankAccount->bankName);
-        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('REDACTED', $transaction->usBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
     }
 
@@ -58,7 +58,7 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
-        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('REDACTED', $transaction->usBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
 
         $result = Braintree\Transaction::sale([
@@ -79,7 +79,7 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertEquals('1234', $transaction->usBankAccount->last4);
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
-        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('REDACTED', $transaction->usBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
     }
 
@@ -105,7 +105,7 @@ class UsBankAccountTransactionTest extends Setup
         $this->assertEquals('checking', $transaction->usBankAccount->accountType);
         $this->assertEquals('Dan Schulman', $transaction->usBankAccount->accountHolderName);
         $this->assertMatchesRegularExpression('/FEDERAL/', $transaction->usBankAccount->bankName);
-        $this->assertEquals('cl mandate text', $transaction->usBankAccount->achMandate->text);
+        $this->assertEquals('REDACTED', $transaction->usBankAccount->achMandate->text);
         $this->assertEquals('DateTime', get_class($transaction->usBankAccount->achMandate->acceptedAt));
     }
 

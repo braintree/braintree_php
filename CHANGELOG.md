@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.40.0
+* Verify compatibility with the patched PHP releases 8.2.35, 8.3.36, 8.4.27 and 8.5.12, which fix critical remote code execution (RCE) vulnerabilities in PHP (CVE-2026-109618, CVE-2026-109619). Upgrade your PHP runtime to one of these releases or later; see the README for supported and recommended PHP versions
+* Fix PHP 8.2+ deprecation notices for dynamic properties in `SignatureService` and `Error\Validation`
+
 ## 6.39.0
 * Add `Transaction::reverse()` to automatically void or fully refund a transaction
 * Add `previousMastercardTransactionLinkId` to `externalVault` on `Transaction` and `CreditCardVerification::create`

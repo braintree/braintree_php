@@ -170,7 +170,7 @@ class BankAccountInstantVerificationTest extends Setup
             'amount' => '12.34',
             'usBankAccountDetails' => [
                 'achMandate' => [
-                    'text' => self::ACH_MANDATE_TEXT,
+                    'text' => 'REDACTED',
                 ],
                 'accountHolderName' => 'Dan Schulman',
                 'last4' => '1234',
@@ -223,7 +223,7 @@ class BankAccountInstantVerificationTest extends Setup
                 ]
             ],
             'achMandate' => [
-                'text' => self::ACH_MANDATE_TEXT,
+                'text' => 'REDACTED',
             ]
         ];
 
@@ -252,7 +252,7 @@ class BankAccountInstantVerificationTest extends Setup
             'usBankAccountDetails' => [
                 'token' => $usBankAccount->token,
                 'achMandate' => [
-                    'text' => self::ACH_MANDATE_TEXT,
+                    'text' => 'REDACTED',
                 ],
                 'last4' => '1234',
                 'routingNumber' => '021000021',

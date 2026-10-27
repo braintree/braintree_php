@@ -2387,7 +2387,7 @@ class TransactionTest extends Setup
 
     public function testRecurring()
     {
-        error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
+        $errorReporting = error_reporting(E_ALL & ~E_USER_DEPRECATED); // turn off deprecated  error reporting so this test runs
         $result = Braintree\Transaction::sale([
             'amount' => '100.00',
             'recurring' => true,
@@ -2400,7 +2400,7 @@ class TransactionTest extends Setup
         $this->assertTrue($result->success);
         $transaction = $result->transaction;
         $this->assertEquals(true, $transaction->recurring);
-        error_reporting(E_ALL); // reset error reporting
+        error_reporting($errorReporting); // restore error reporting
     }
 
     public function testTransactionSourceWithRecurringFirst()

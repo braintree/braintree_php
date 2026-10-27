@@ -1352,8 +1352,8 @@ class TransactionAdvancedSearchTest extends Setup
             ]
         ]);
 
-        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("US/Pacific"));
-        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("US/Pacific"));
+        $ten_min_ago = date_create("now -10 minutes", new DateTimeZone("America/Los_Angeles"));
+        $ten_min_from_now = date_create("now +10 minutes", new DateTimeZone("America/Los_Angeles"));
 
         $collection = Braintree\Transaction::search([
             Braintree\TransactionSearch::id()->is($transaction->id),

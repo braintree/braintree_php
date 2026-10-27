@@ -16,7 +16,9 @@ class PaymentMethodNonceGatewayTest extends Setup
         $mock = $this->createMock('\Braintree\Http');
         $mock->method($httpMethod)->willReturn($response);
         $prop = new \ReflectionProperty('Braintree\PaymentMethodNonceGateway', '_http');
-        $prop->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $prop->setAccessible(true);
+        }
         $prop->setValue($gateway, $mock);
         return $gateway;
     }
@@ -76,7 +78,9 @@ class PaymentMethodNonceGatewayTest extends Setup
         $mock = $this->createMock('\Braintree\Http');
         $mock->method('get')->will($this->throwException(new Braintree\Exception\NotFound()));
         $prop = new \ReflectionProperty('Braintree\PaymentMethodNonceGateway', '_http');
-        $prop->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $prop->setAccessible(true);
+        }
         $prop->setValue($gateway, $mock);
         $gateway->find('missing-nonce');
     }

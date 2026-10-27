@@ -16,7 +16,9 @@ class SubscriptionGatewayTest extends Setup
         $mock = $this->createMock('\Braintree\Http');
         $mock->method($httpMethod)->willReturn($response);
         $prop = new \ReflectionProperty('Braintree\SubscriptionGateway', '_http');
-        $prop->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $prop->setAccessible(true);
+        }
         $prop->setValue($gateway, $mock);
         return $gateway;
     }
@@ -163,7 +165,9 @@ class SubscriptionGatewayTest extends Setup
         }));
         $gateway = Helper::integrationMerchantGateway()->subscription();
         $prop = new \ReflectionProperty('Braintree\SubscriptionGateway', '_http');
-        $prop->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $prop->setAccessible(true);
+        }
         $prop->setValue($gateway, $mock);
 
         $gateway->retryCharge('sub_123', '15.00');
@@ -181,7 +185,9 @@ class SubscriptionGatewayTest extends Setup
         }));
         $gateway = Helper::integrationMerchantGateway()->subscription();
         $prop = new \ReflectionProperty('Braintree\SubscriptionGateway', '_http');
-        $prop->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $prop->setAccessible(true);
+        }
         $prop->setValue($gateway, $mock);
 
         $gateway->retryCharge('sub_123', null, true);

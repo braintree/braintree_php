@@ -21,7 +21,9 @@ class GraphQLClientTest extends TestCase
 
         $reflection = new \ReflectionClass('Braintree\GraphQLClient');
         $property = $reflection->getProperty('_service');
-        $property->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
         $property->setValue($graphQLClient, $mockGraphQLService);
 
         $result = $graphQLClient->query('query { customer }', ['id' => '123']);

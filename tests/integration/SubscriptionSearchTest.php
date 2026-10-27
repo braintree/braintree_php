@@ -445,8 +445,8 @@ class SubscriptionSearchTest extends Setup
             'planId' => $plan['id'],
         ])->subscription;
 
-        $tenMinAgo = date_create("now -10 minutes", new DateTimeZone("US/Pacific"));
-        $tenMinFromNow = date_create("now +10 minutes", new DateTimeZone("US/Pacific"));
+        $tenMinAgo = date_create("now -10 minutes", new DateTimeZone("America/Los_Angeles"));
+        $tenMinFromNow = date_create("now +10 minutes", new DateTimeZone("America/Los_Angeles"));
 
         $collection = Braintree\Subscription::search([
             Braintree\SubscriptionSearch::createdAt()->between($tenMinAgo, $tenMinFromNow),

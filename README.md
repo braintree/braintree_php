@@ -2,6 +2,14 @@
 
 The Braintree PHP library provides integration access to the Braintree Gateway.
 
+> [!CAUTION]
+> **Critical PHP vulnerabilities: CVE-2026-109618 and CVE-2026-109619 (remote code execution, CVSS 9.2).**
+>
+> - [CVE-2026-109618](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w), "RCE via OOM corruption": out-of-memory errors can leave request memory uninitialized, which PHP then reads during request cleanup.
+> - [CVE-2026-109619](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp), "RCE via stale global state": global state that isn't reset between requests can point into freed request memory.
+>
+> Both can be exploited over the network without authentication. They are fixed in PHP 8.2.35, 8.3.36, 8.4.27 and 8.5.12; earlier releases of those branches are affected, and PHP 8.1 and older have reached end of life and will not receive a fix. Upgrade your PHP runtime to at least one of these patched releases and keep up with the latest patch release of your PHP branch. This SDK is tested on the patched releases; see [Dependencies](#dependencies) for supported and recommended PHP versions.
+
 ## TLS 1.2 required
 > **The Payment Card Industry (PCI) Council has [mandated](https://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls) that early versions of TLS be retired from service.  All organizations that handle credit card information are required to comply with this standard. As part of this obligation, Braintree has updated its services to require TLS 1.2 for all HTTPS connections. Braintrees require HTTP/1.1 for all connections. Please see our [technical documentation](https://github.com/paypal/tls-update) for more information.**
 
@@ -15,7 +23,9 @@ The following PHP extensions are required:
 * openssl
 * xmlwriter
 
-PHP version >= 7.3 is required. The Braintree PHP SDK is tested against PHP versions 7.3 and 7.4, and 8.0.
+PHP version >= 7.3 is required. The Braintree PHP SDK is tested against PHP versions 7.4, 8.2, 8.3, 8.4 and 8.5.
+
+We recommend PHP 8.4 or 8.5 at the latest patch release, and at minimum PHP 8.2.35, 8.3.36, 8.4.27 or 8.5.12 (see the security notice above). This SDK still runs on PHP 7.3 and later, but PHP 8.1 and older no longer receive security fixes, so we strongly recommend upgrading to a supported PHP version.
 
 _The PHP core development community has released [End-of-Life branches](https://www.php.net/eol.php) for PHP versions 5.4 - 7.2, and are no longer receiving security updates. As a result, Braintree does not support these versions of PHP._
 

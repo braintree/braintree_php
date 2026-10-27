@@ -5,6 +5,9 @@ namespace Braintree;
 
 class SignatureService
 {
+    public $key;
+    public $digest;
+
     // phpcs:ignore PEAR.Commenting.FunctionComment.Missing
     public function __construct($key, $digest)
     {
